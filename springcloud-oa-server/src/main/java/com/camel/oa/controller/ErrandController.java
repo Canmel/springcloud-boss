@@ -27,7 +27,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -87,7 +89,7 @@ public class ErrandController extends BaseCommonController {
     @GetMapping("/imperfect")
     public Result imperfect(){
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return null;
+        return ResultUtil.success(errandService.imperfect(member.getId()));
     }
 
     @GetMapping("/{id}")

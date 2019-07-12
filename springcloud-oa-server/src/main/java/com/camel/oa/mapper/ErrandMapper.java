@@ -35,9 +35,18 @@ import java.util.List;
 @Repository
 public interface ErrandMapper extends BaseMapper<Errand> {
     /**
-     * 查询报销列表
+     * 查询出差申请列表
      * @param entity
      * @return
      */
-    List<Reimbursement> list(Errand entity);
+    List<Errand> list(Errand entity);
+
+    /**
+     * 未完善的出差申请单
+     * @param id
+     * @param status
+     * @return
+     */
+    List<Errand> imperfect(Integer id, Integer status);
+
 }

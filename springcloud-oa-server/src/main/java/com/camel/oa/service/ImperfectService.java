@@ -13,4 +13,10 @@ import com.camel.oa.model.Imperfect;
  */
 public interface ImperfectService extends IService<Imperfect> {
 
+    /**
+     * 验证行程是否被占用
+     * @param errandId
+     * @return
+     */
+    boolean valid(Integer errandId);
 }

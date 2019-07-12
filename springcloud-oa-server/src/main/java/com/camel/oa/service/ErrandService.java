@@ -6,6 +6,8 @@ import com.camel.oa.model.Errand;
 import com.camel.oa.model.Reimbursement;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  *
  *                 ___====-_  _-====___
@@ -37,4 +39,11 @@ public interface ErrandService extends IService<Errand> {
      @return
      */
     PageInfo<Errand> selectPage(Errand entity);
+
+    /**
+     * 获取个人未完善的出差申请单
+     * @param uid
+     * @return
+     */
+    List<Errand> imperfect(Integer uid);
 }

@@ -61,7 +61,10 @@
     <select id="imperfect" resultMap="BaseResultMAp">
         SELECT <include refid="BASE_SQL"></include>
         FROM errand
-        WHERE
-          errand.status = #{status}
+        <where>
+            <if test="status != null">status = #{status}</if>
+            <if test="id != null">and uid = #{id}</if>
+            and errand.id NOT IN (select imperfect.errand_id from imperfect)
+        </where>
     </select>
 </mapper>
