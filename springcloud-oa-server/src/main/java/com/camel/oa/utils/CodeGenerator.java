@@ -49,7 +49,6 @@ public class CodeGenerator {
                 .setDbColumnUnderline(true)
                 .setNaming(NamingStrategy.underline_to_camel);
         config.setActiveRecord(false)
-                // 这里就直接输出到项目里面，不用再复制进来
                 .setEnableCache(false)
                 .setOutputDir(path)
                 .setFileOverride(true)

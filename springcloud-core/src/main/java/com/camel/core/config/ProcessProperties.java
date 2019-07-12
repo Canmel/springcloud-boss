@@ -24,5 +24,5 @@ package com.camel.core.config;
  * @date 2019/7/7
  **/
 public class ProcessProperties {
-    public static final String PROCESS_ISEND_KEY = "end";
+    public static final String PROCESS_ISEND_KEY = "isEnd";
 }

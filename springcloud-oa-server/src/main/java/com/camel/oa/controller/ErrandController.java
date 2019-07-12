@@ -1,6 +1,8 @@
 package com.camel.oa.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.baomidou.mybatisplus.toolkit.MapUtils;
 import com.camel.common.entity.Member;
@@ -13,11 +15,13 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.oa.enums.ErrandStatus;
 import com.camel.oa.enums.ReimbursementStatus;
 import com.camel.oa.model.Errand;
+import com.camel.oa.model.Reimbursement;
 import com.camel.oa.service.ErrandService;
 import com.camel.oa.service.impl.BaseProcessServiceImpl;
 import com.camel.redis.utils.SessionContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -58,6 +62,7 @@ public class ErrandController extends BaseCommonController {
     public static final String TASK_OPERATION = "运营管理部确认";
     public static final String TASK_RESOURCES = "人力资源部核准";
     public static final String TASK_MANAGER = "总经理意见";
+    public static final String TASK_NAME_KEY = "name";
 
     @Autowired
     public ErrandService errandService;
@@ -77,6 +82,22 @@ public class ErrandController extends BaseCommonController {
     public Result save(@RequestBody Errand errand) {
         errand.setEno(UUID.randomUUID().toString());
         return super.save(errand);
+    }
+
+    @GetMapping("/imperfect")
+    public Result imperfect(){
+        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return null;
+    }
+
+    @GetMapping("/{id}")
+    public Result ditail(@PathVariable Integer id) {
+        return super.details(id);
+    }
+
+    @PutMapping
+    public Result update(@RequestBody Errand entity) {
+        return super.update(entity);
     }
 
     @GetMapping("/apply/{id}")
@@ -106,26 +127,26 @@ public class ErrandController extends BaseCommonController {
         Object o = SessionContextUtils.getInstance().currentUser(redisTemplate, username);
         Member member = (Member) o;
         if (MapUtils.isNotEmpty(rMapData)) {
-            if ((Boolean) rMapData.get(ProcessProperties.PROCESS_ISEND_KEY)) {
+            if (HttpStatus.PROCESSING.value() == result.getCode()) {
                 errand.setStatus(ErrandStatus.APPLY_SUCCESS.getValue());
             }
-            if (!StringUtils.isEmpty(rMapData.get("name")) && rMapData.get("name").equals(TASK_DIRECTOR)) {
+            if (TASK_DIRECTOR.equals(rMapData.get(TASK_NAME_KEY))) {
                 errand.setDirector(member.getId());
                 errand.setDirectorComment(activitiForm.getComment());
             }
-            if (!StringUtils.isEmpty(rMapData.get("name")) && rMapData.get("name").equals(TASK_LEADER)) {
+            if (TASK_LEADER.equals(rMapData.get(TASK_NAME_KEY))) {
                 errand.setLeader(member.getId());
                 errand.setLeaderComment(activitiForm.getComment());
             }
-            if (!StringUtils.isEmpty(rMapData.get("name")) && rMapData.get("name").equals(TASK_OPERATION)) {
+            if (TASK_OPERATION.equals(rMapData.get(TASK_NAME_KEY))) {
                 errand.setOperator(member.getId());
                 errand.setOperatorComment(activitiForm.getComment());
             }
-            if (!StringUtils.isEmpty(rMapData.get("name")) && rMapData.get("name").equals(TASK_RESOURCES)) {
+            if (TASK_RESOURCES.equals(rMapData.get(TASK_NAME_KEY))) {
                 errand.setResources(member.getId());
                 errand.setResourcesComment(activitiForm.getComment());
             }
-            if (!StringUtils.isEmpty(rMapData.get("name")) && rMapData.get("name").equals(TASK_MANAGER)) {
+            if (TASK_MANAGER.equals(rMapData.get(TASK_NAME_KEY))) {
                 errand.setManager(member.getId());
                 errand.setManagerComment(activitiForm.getComment());
             }

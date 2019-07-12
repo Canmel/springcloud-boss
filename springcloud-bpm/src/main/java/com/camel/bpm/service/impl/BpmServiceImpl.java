@@ -388,7 +388,7 @@ public class BpmServiceImpl implements BpmService {
     private void commitProcess(String taskId, Map<String, Object> variables,
                                String activityId) throws Exception {
         if (variables == null) {
-            variables = new HashMap<String, Object>();
+            variables = new HashMap<String, Object>(16);
         }
         // 跳转节点为空，默认提交操作
         if (StringUtils.isEmpty(activityId)) {

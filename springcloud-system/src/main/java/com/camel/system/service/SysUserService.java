@@ -43,5 +43,10 @@ public interface SysUserService extends IService<SysUser> {
      */
     boolean addRoles(SysUser user);
 
+    /**
+     * 所有用户
+     * @param user
+     * @return
+     */
     List<SysUser> all(SysUser user);
 }
