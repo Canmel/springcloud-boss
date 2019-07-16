@@ -15,8 +15,10 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.oa.enums.ErrandStatus;
 import com.camel.oa.enums.ReimbursementStatus;
 import com.camel.oa.model.Errand;
+import com.camel.oa.model.Imperfect;
 import com.camel.oa.model.Reimbursement;
 import com.camel.oa.service.ErrandService;
+import com.camel.oa.service.ImperfectService;
 import com.camel.oa.service.impl.BaseProcessServiceImpl;
 import com.camel.redis.utils.SessionContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +75,9 @@ public class ErrandController extends BaseCommonController {
     private RedisTemplate redisTemplate;
 
     @Autowired
+    private ImperfectService imperfectService;
+
+    @Autowired
     public BaseProcessServiceImpl baseProcessService;
 
     @GetMapping
@@ -84,6 +89,11 @@ public class ErrandController extends BaseCommonController {
     public Result save(@RequestBody Errand errand) {
         errand.setEno(UUID.randomUUID().toString());
         return super.save(errand);
+    }
+
+    @GetMapping("/trips/{id}")
+    public Result trips(@PathVariable Integer id) {
+        return ResultUtil.success(errandService.trips(id));
     }
 
     @GetMapping("/imperfect")
@@ -131,6 +141,7 @@ public class ErrandController extends BaseCommonController {
         if (MapUtils.isNotEmpty(rMapData)) {
             if (HttpStatus.PROCESSING.value() == result.getCode()) {
                 errand.setStatus(ErrandStatus.APPLY_SUCCESS.getValue());
+                imperfectService.insert(Imperfect.getInstance(errand.getId()));
             }
             if (TASK_DIRECTOR.equals(rMapData.get(TASK_NAME_KEY))) {
                 errand.setDirector(member.getId());

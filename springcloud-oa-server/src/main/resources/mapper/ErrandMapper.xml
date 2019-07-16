@@ -56,6 +56,7 @@
     <select id="list" resultMap="BaseResultMAp">
         SELECT <include refid="BASE_SQL"></include>
         FROM errand
+        ORDER BY errand.id DESC
     </select>
 
     <select id="imperfect" resultMap="BaseResultMAp">

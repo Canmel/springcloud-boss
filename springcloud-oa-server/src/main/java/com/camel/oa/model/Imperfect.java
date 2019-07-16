@@ -4,17 +4,34 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * <p>
- * 
- * </p>
  *
- * @author ${author}
- * @since 2019-07-12
- */
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <>
+ * @author baily
+ * @since 1.0
+ * @date 2019/7/16
+ **/
+@Data
 public class Imperfect extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,39 +42,6 @@ public class Imperfect extends BasePaginationEntity implements Serializable {
     private Integer status;
     private Date createdAt;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getErrandId() {
-        return errandId;
-    }
-
-    public void setErrandId(Integer errandId) {
-        this.errandId = errandId;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public String toString() {
         return "Imperfect{" +
@@ -66,5 +50,12 @@ public class Imperfect extends BasePaginationEntity implements Serializable {
         ", status=" + status +
         ", createdAt=" + createdAt +
         "}";
+    }
+
+    public static Imperfect getInstance(Integer errandId) {
+        Imperfect imperfect = new Imperfect();
+        imperfect.setErrandId(errandId);
+        imperfect.setStatus(1);
+        return imperfect;
     }
 }

@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.camel.oauth.resource.mapper.TripMapper">
+<mapper namespace="com.camel.oa.mapper.TripMapper">
+    <resultMap id="BASE_RESULT" type="com.camel.oa.model.Trip">
 
+    </resultMap>
+
+    <sql id="BaseSql">
+        trip.id,
+        trip.imperfect_id,
+        trip.`start`,
+        trip.finish,
+        trip.amount,
+        trip.finish_at,
+        trip.start_at
+    </sql>
+
+    <select id="list" resultMap="BASE_RESULT">
+        SELECT
+            <include refid="BaseSql"></include>
+        FROM trip
+    </select>
 </mapper>

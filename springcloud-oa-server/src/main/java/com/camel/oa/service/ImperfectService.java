@@ -1,7 +1,14 @@
 package com.camel.oa.service;
 
+
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.oa.model.Errand;
 import com.camel.oa.model.Imperfect;
+import com.camel.oa.model.Trip;
+import com.github.pagehelper.PageInfo;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -19,4 +26,13 @@ public interface ImperfectService extends IService<Imperfect> {
      * @return
      */
     boolean valid(Integer errandId);
+
+    List<Trip> trips(Integer id);
+
+
+    PageInfo<Imperfect> selectPage(Imperfect imperfect);
+
+    Imperfect getByErrand(Integer id);
+
+
 }

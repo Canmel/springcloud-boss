@@ -2,8 +2,11 @@ package com.camel.oa.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.oa.model.Imperfect;
+import com.camel.oa.model.Reimbursement;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ImperfectMapper extends BaseMapper<Imperfect> {
 
+    List<Imperfect> list(Imperfect imperfect);
 }

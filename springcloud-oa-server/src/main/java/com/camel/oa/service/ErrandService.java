@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.oa.model.Errand;
 import com.camel.oa.model.Reimbursement;
+import com.camel.oa.model.Trip;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -46,4 +47,11 @@ public interface ErrandService extends IService<Errand> {
      * @return
      */
     List<Errand> imperfect(Integer uid);
+
+    /**
+     * 通过出差单获取车船票
+     * @param id
+     * @return
+     */
+    List<Trip> trips(Integer id);
 }
