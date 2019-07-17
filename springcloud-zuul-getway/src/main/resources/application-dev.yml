@@ -52,7 +52,7 @@ zuul:
       enabled: true
   host:
     connect-timeout-millis: 8000
-    socket-timeout-millis: 5000
+    socket-timeout-millis: 150000
   add-proxy-headers: true
 
 
@@ -69,8 +69,8 @@ security:
 
 #----------------------超时配置-------------------
 ribbon:
-  ReadTimeout: 6000
-  ConnectTimeout: 6000
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
   MaxAutoRetries: 2             # 对当前实例的重试次数
   MaxAutoRetriesNextServer: 3   # 切换实例重试次数
   eureka:
@@ -83,4 +83,4 @@ hystrix:
           enabled: true                   # 如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
         isolation:
           thread:
-            timeoutInMilliseconds: 5000   # 断路器超时时间
+            timeoutInMilliseconds: 120000   # 断路器超时时间

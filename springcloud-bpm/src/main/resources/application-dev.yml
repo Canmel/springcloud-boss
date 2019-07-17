@@ -3,9 +3,9 @@ spring:
     name: springcloud-bpm-server
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${APPLICATION_IP}:3306/dw_bpm?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://${DATABASE_IP}:3306/dw_bpm?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
-    password: 1234
+    password: sunrise
 
 server:
   port: 9002

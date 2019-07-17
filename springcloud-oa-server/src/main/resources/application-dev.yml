@@ -2,9 +2,9 @@ spring:
   application:
     name: springcloud-oa-server
   datasource:
-    url: jdbc:mysql://${APPLICATION_IP}:3306/dw_service?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://${DATABASE_IP}:3306/dw_service?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
     username: root
-    password: 1234
+    password: sunrise
     driver-class-name: com.mysql.cj.jdbc.Driver
   aop:
     auto: true
