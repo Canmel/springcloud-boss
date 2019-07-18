@@ -31,5 +31,8 @@
 ### Springcloud-system
 > springcloud 系统模块，包含用户，角色， 菜单， 日志， 字典等模块， 也是一个资源服务器。
 
-### SPringcloud-zuul-getway
+### Springcloud-zuul-getway
 > springcloud 基于`zuul`的网关模块，oauth2.0客户端，单点登录模块，也是一个资源服务器，好包含了统一登录界面。
+
+### Springcloud-oa-server 
+> springcloud-oa-server 是一个依赖其他模块的一个办公室oa系统，包含流程审批，定制，出差，请假等单据的打印与流转
