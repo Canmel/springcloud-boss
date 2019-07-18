@@ -13,7 +13,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <往返路线>
+ * @author baily
+ * @since 1.0
+ * @date 2019/7/18
+ **/
 @RestController
 @RequestMapping("/route")
 public class RouteController extends BaseCommonController {
@@ -41,7 +63,7 @@ public class RouteController extends BaseCommonController {
         // route.getImperfectId() 实际我放的是errandId;
         Imperfect imperfect = imperfectService.getByErrand(route.getImperfectId());
         route.setImperfectId(imperfect.getId());
-        Route r = service.selectOne(route);
+        Route r = service.selectOne(new Route(imperfect.getId()));
         if(ObjectUtils.isEmpty(r)) {
             return super.save(route);
         }else{
