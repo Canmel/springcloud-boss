@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.camel.oa.mapper.RouteMapper">
     <resultMap id="BaseResultMap" type="com.camel.oa.model.Route">
-        <id column="id" property="id"></id>
+        <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="come" property="come" jdbcType="VARCHAR"></result>
         <result column="come_to" property="comeTo" jdbcType="VARCHAR"></result>
         <result column="come_at" property="comeAt" jdbcType="TIMESTAMP"></result>
@@ -12,6 +12,7 @@
         <result column="back_at" property="backAt" jdbcType="TIMESTAMP"></result>
         <result column="back_to_at" property="backToAt" jdbcType="TIMESTAMP"></result>
         <result column="days" property="days" jdbcType="FLOAT"></result>
+        <result column="imperfect_id" property="imperfectId" jdbcType="INTEGER"></result>
     </resultMap>
 
     <sql id="BaseSql">
@@ -24,7 +25,8 @@
         route.back_to,
         route.back_at,
         route.back_to_at,
-        route.days
+        route.days,
+        route.imperfect_id
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

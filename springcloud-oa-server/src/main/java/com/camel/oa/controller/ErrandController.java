@@ -96,6 +96,11 @@ public class ErrandController extends BaseCommonController {
         return ResultUtil.success(errandService.trips(id));
     }
 
+    @GetMapping("/routes/{id}")
+    public Result routes(@PathVariable Integer id) {
+        return ResultUtil.success(errandService.route(id));
+    }
+
     @GetMapping("/imperfect")
     public Result imperfect(){
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());

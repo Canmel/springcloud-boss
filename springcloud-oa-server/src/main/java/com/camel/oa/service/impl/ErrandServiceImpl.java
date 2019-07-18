@@ -8,14 +8,18 @@ import com.camel.oa.enums.ErrandStatus;
 import com.camel.oa.mapper.ErrandMapper;
 import com.camel.oa.model.Errand;
 import com.camel.oa.model.Imperfect;
+import com.camel.oa.model.Route;
 import com.camel.oa.model.Trip;
 import com.camel.oa.service.ErrandService;
 import com.camel.oa.service.ImperfectService;
+import com.camel.oa.service.RouteService;
 import com.camel.oa.service.TripService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +56,9 @@ public class ErrandServiceImpl extends ServiceImpl<ErrandMapper, Errand> impleme
     @Autowired
     private ImperfectService imperfectService;
 
+    @Autowired
+    private RouteService routeService;
+
     @Override
     public PageInfo<Errand> selectPage(Errand entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
@@ -71,5 +78,17 @@ public class ErrandServiceImpl extends ServiceImpl<ErrandMapper, Errand> impleme
         wrapper.eq("errand_id", id);
         List<Imperfect> imperfects = imperfectService.selectList(wrapper);
         return tripService.getTripByImperfect(imperfects.get(0).getId());
+    }
+
+    @Override
+    public Route route(Integer id) {
+        Wrapper wrapper = new EntityWrapper();
+        wrapper.eq("errand_id", id);
+        List<Imperfect> imperfects = imperfectService.selectList(wrapper);
+        if(ObjectUtils.isEmpty(imperfects)) {
+            return null;
+        }else {
+            return routeService.getByImperfectId(imperfects.get(0).getId());
+        }
     }
 }
