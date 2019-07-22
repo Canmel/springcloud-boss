@@ -45,6 +45,9 @@ zuul:
       path: /oa/**
       serviceId: springcloud-oa-server
       sensitiveHeaders: "*"
+    activiti:
+      path: /acti/**
+      serviceId: springcloud-activiti
   retryable: false
   ignored-services: "*"
   ribbon:

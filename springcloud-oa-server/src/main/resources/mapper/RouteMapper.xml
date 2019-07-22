@@ -5,12 +5,12 @@
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="come" property="come" jdbcType="VARCHAR"></result>
         <result column="come_to" property="comeTo" jdbcType="VARCHAR"></result>
-        <result column="come_at" property="comeAt" jdbcType="TIMESTAMP"></result>
-        <result column="come_to_at" property="comeToAt" jdbcType="TIMESTAMP"></result>
+        <result column="come_at" property="comeAt" jdbcType="DATE"></result>
+        <result column="come_to_at" property="comeToAt" jdbcType="DATE"></result>
         <result column="back" property="back" jdbcType="VARCHAR"></result>
         <result column="back_to" property="backTo" jdbcType="VARCHAR"></result>
-        <result column="back_at" property="backAt" jdbcType="TIMESTAMP"></result>
-        <result column="back_to_at" property="backToAt" jdbcType="TIMESTAMP"></result>
+        <result column="back_at" property="backAt" jdbcType="DATE"></result>
+        <result column="back_to_at" property="backToAt" jdbcType="DATE"></result>
         <result column="days" property="days" jdbcType="FLOAT"></result>
         <result column="imperfect_id" property="imperfectId" jdbcType="INTEGER"></result>
     </resultMap>

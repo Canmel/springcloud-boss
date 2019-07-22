@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
                    _ooOoo_
                   o8888888o
@@ -37,8 +39,15 @@ public class ResourceConfigurer extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable();
-        http.authorizeRequests().anyRequest().authenticated();
+//        http.httpBasic().disable();
+//        http.authorizeRequests().anyRequest().authenticated();
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic();
+        //        httpBasic()基础认证 当一个web客户端需要保护任何web资源的时候，服务器会发送一个带有401状态码（未授权）的HTTP回应
     }
 
 }
