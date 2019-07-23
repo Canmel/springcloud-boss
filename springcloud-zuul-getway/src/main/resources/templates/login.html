@@ -56,7 +56,7 @@
     var redirect_url = '';
 
     $(function () {
-        redirect_url = getQueryVariable('redirct_url');
+        redirect_url = getQueryVariable('redirect_url');
     });
 
     function hasClass(elem, cls) {
@@ -98,7 +98,7 @@
                 sessionStorage.setItem("access_token", resp['access_token']);
                 sessionStorage.setItem("refresh_token", resp['refresh_token']);
                 if(redirect_url != '') {
-                    redirect_url += '?access_token='+ resp['access_token'];
+                    // redirect_url += '?access_token='+ resp['access_token'];
                     window.location.href = redirect_url;
                 }else {
                     window.location.href = "/"
