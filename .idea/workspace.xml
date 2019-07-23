@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21194d6-4da2-4ac1-95e9-d28f0d95cba4" name="Default Changelist" comment="Default Changelist">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/spring-boot-activiti" afterPath="$PROJECT_DIR$/spring-boot-activiti" />
-      <change beforePath="$PROJECT_DIR$/springcloud-bpm/springcloud-bpm.iml" afterPath="$PROJECT_DIR$/springcloud-bpm/springcloud-bpm.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-core/pom.xml" afterPath="$PROJECT_DIR$/springcloud-core/pom.xml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-core/springcloud-core.iml" afterPath="$PROJECT_DIR$/springcloud-core/springcloud-core.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-system/springcloud-system.iml" afterPath="$PROJECT_DIR$/springcloud-system/springcloud-system.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/templates/login.html" afterPath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/templates/login.html" />
+      <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/SecurityConfig.java" afterPath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/SecurityConfig.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -254,11 +249,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ResourceServerConfig.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ResourceServerConfig.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/activiti/config/ResourceServerConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="463">
-              <caret line="53" column="1" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="1" />
+            <state relative-caret-position="349">
+              <caret line="47" column="16" lean-forward="false" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebMvcConfigurer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/web/WebMvcConfigurer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="186">
+              <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SecurityConfig.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/SecurityConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="444">
+              <caret line="49" column="24" lean-forward="true" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -311,16 +326,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="error.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spring-boot-activiti/src/main/resources/static/error.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="model-list.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spring-boot-activiti/src/main/resources/static/model-list.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -353,13 +358,6 @@
               <caret line="38" column="9" lean-forward="true" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
               <folding />
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="favicon.ico" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spring-boot-activiti/src/main/resources/static/favicon.ico">
-          <provider selected="true" editor-type-id="images">
-            <state />
           </provider>
         </entry>
       </file>
@@ -446,7 +444,6 @@
         <option value="$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/ResourceConfigurer.java" />
         <option value="$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/UnauthorizedEntryPoint.java" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/config/UnauthorizedEntryPoint.java" />
-        <option value="$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/SecurityConfig.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/config/ResourceConfigurer.java" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/config/SecurityConfig.java" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/config/ResourceServerConfig.java" />
@@ -475,6 +472,7 @@
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/resources/static/index.html" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/activiti/controller/PageController.java" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/activiti/config/ResourceServerConfig.java" />
+        <option value="$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/SecurityConfig.java" />
       </list>
     </option>
   </component>
@@ -1196,7 +1194,7 @@
       <workItem from="1563357170227" duration="1285000" />
       <workItem from="1563450710434" duration="34820000" />
       <workItem from="1563775582679" duration="7442000" />
-      <workItem from="1563789743640" duration="38065000" />
+      <workItem from="1563789743640" duration="38235000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1562217200574</created>
@@ -1394,7 +1392,14 @@
       <option name="project" value="LOCAL" />
       <updated>1563789808674</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Default Changelist">
+      <created>1563885931045</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1563885931045</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1403,7 +1408,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="337652000" />
+    <option name="totallyTimeSpent" value="337822000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1838,22 +1843,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/web/WebMvcConfigurer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/SecurityConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="35" column="13" lean-forward="false" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/config/ResourceServerConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
@@ -2108,8 +2097,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/activiti/config/ResourceServerConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="53" column="1" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="1" />
+        <state relative-caret-position="349">
+          <caret line="47" column="16" lean-forward="false" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/web/WebMvcConfigurer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/SecurityConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="49" column="24" lean-forward="true" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="26" />
           <folding />
         </state>
       </provider>

@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
+                .and().headers().frameOptions().disable()
                 .and()
                 .csrf().disable();
     }
