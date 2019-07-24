@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/spring-boot-activiti/spring-boot-activiti.iml" filepath="$PROJECT_DIR$/spring-boot-activiti/spring-boot-activiti.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-auth-server/springcloud-auth-server.iml" filepath="$PROJECT_DIR$/springcloud-auth-server/springcloud-auth-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-boss.iml" filepath="$PROJECT_DIR$/springcloud-boss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-bpm/springcloud-bpm.iml" filepath="$PROJECT_DIR$/springcloud-bpm/springcloud-bpm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-common/springcloud-common.iml" filepath="$PROJECT_DIR$/springcloud-common/springcloud-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-core/springcloud-core.iml" filepath="$PROJECT_DIR$/springcloud-core/springcloud-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-eureka-server/springcloud-eureka-server.iml" filepath="$PROJECT_DIR$/springcloud-eureka-server/springcloud-eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-feign/springcloud-feign.iml" filepath="$PROJECT_DIR$/springcloud-feign/springcloud-feign.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-oa-server/springcloud-oa-server.iml" filepath="$PROJECT_DIR$/springcloud-oa-server/springcloud-oa-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-redis/springcloud-redis.iml" filepath="$PROJECT_DIR$/springcloud-redis/springcloud-redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-system/springcloud-system.iml" filepath="$PROJECT_DIR$/springcloud-system/springcloud-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-zuul-getway/springcloud-zuul-getway.iml" filepath="$PROJECT_DIR$/springcloud-zuul-getway/springcloud-zuul-getway.iml" />
+    </modules>
+  </component>
+</project>
