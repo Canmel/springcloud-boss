@@ -49,4 +49,11 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     List<SysUser> all(SysUser user);
+
+    /**
+     * 通过角色ID查询用户
+     * @param id 角色ID
+     * @return
+     */
+    List<SysUser> byRole(Integer id);
 }

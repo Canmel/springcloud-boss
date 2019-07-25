@@ -99,4 +99,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
         return mapper.selectList(userWrapper);
     }
+
+    @Override
+    public List<SysUser> byRole(Integer id) {
+        return mapper.byRole(id);
+    }
 }

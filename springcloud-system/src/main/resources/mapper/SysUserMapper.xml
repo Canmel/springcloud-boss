@@ -47,13 +47,19 @@
 
     <select id="list" resultMap="BaseResultMap" parameterType="com.camel.system.model.SysUser">
         SELECT
-            <include refid="BASE_SQL"></include>
-            FROM
-            sys_user
+        <include refid="BASE_SQL"></include>
+        FROM
+        sys_user
         <where>
-            <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%') </if>
-            <if test="username !=null and username != ''">and sys_user.username like CONCAT('%', #{username}, '%') </if>
+            <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%')</if>
+            <if test="username !=null and username != ''">and sys_user.username like CONCAT('%', #{username}, '%')</if>
         </where>
         ORDER BY sys_user.uid
+    </select>
+
+    <select id="byRole" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BASE_SQL"/>
+        FROM sys_user sys_user WHERE sys_user.uid IN (SELECT user_id FROM sys_user_role sur WHERE role_id = #{id})
     </select>
 </mapper>

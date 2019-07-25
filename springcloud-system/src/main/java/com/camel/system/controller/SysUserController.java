@@ -106,6 +106,16 @@ public class SysUserController extends BaseCommonController {
         return ResultUtil.success(service.all(user));
     }
 
+    /**
+     * 查询指定角色的所有用户
+     * @return
+     */
+    @GetMapping("/role/{id}")
+    public Result byRole(@PathVariable String id){
+        return ResultUtil.success(service.byRole(Integer.parseInt(id)));
+    }
+
+
     @Override
     public IService getiService() {
         return service;

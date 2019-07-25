@@ -41,4 +41,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     List<SysUser> list(SysUser sysUser);
+
+    List<SysUser> byRole(Integer id);
 }

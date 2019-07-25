@@ -16,4 +16,7 @@ public class Result {
         this.data = data;
         this.success = success;
     }
+
+    public Result() {
+    }
 }
