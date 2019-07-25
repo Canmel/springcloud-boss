@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="spring-boot-activiti" />
+        <module name="springcloud-activiti" />
         <module name="springcloud-auth-server" />
         <module name="springcloud-bpm" />
         <module name="springcloud-common" />
@@ -21,6 +22,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="spring-boot-activiti" target="1.8" />
+      <module name="springcloud-activiti" target="1.8" />
       <module name="springcloud-auth-server" target="1.8" />
       <module name="springcloud-boss" target="1.8" />
       <module name="springcloud-bpm" target="1.8" />
