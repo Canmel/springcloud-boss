@@ -5,460 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21194d6-4da2-4ac1-95e9-d28f0d95cba4" name="Default Changelist" comment="Default Changelist">
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/springcloud-activiti.iml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/Cfg_View.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/MvcConfig.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/ResourceServerConfig.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DashBoardController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/FeignController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/PageController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/FeignService.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/FeignServiceImpl.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/FeignRequestInterceptor.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/OAuth2RestTemplateConfiguration.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/SpringCloudSystemFeignClient.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/fallback/SpringCloudBpmApprovalFallback.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/util/ActivitiObj2HashMapUtils.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application-dev.yml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application-prod.yml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application-test.yml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap-multiselect.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap-responsive.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/fullcalendar.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/styles.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/toastr.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/properties/assignment-popup-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/error.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/img/glyphicons-halflings-white.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/img/glyphicons-halflings.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/img/jane.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/img/nate.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/img/stars.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/img/white-batch-32.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/img/white-batch-64.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/bootstrap-multiselect.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/bootstrap.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/d3-setup.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/dateformate.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/fullcalendar.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/gcal.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/jquery.knob.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/jquery.peity.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/jquery.pjax.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/jquery.sparkline.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/jquery.tablesorter.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/setup.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/toastr.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/public/model-list.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/index.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/dashbord.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/deployment-list.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/model-list.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/application-dev.yml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/application-prod.yml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/application-test.yml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/application.yml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/SpringBootWithActivitiApplication.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/config/Cfg_Activiti.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/config/Cfg_Util.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/config/Cfg_View.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/config/MvcConfig.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/config/ResourceServerConfig.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/controller/DashBoardController.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/controller/DeploymentController.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/controller/FeignController.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/controller/ModelerController.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/controller/PageController.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/service/FeignService.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/service/FeignServiceImpl.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/activiti/vo/DeploymentResponse.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/common/RestServiceController.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/feign/FeignRequestInterceptor.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/feign/OAuth2RestTemplateConfiguration.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/feign/SpringCloudSystemFeignClient.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/feign/fallback/SpringCloudBpmApprovalFallback$1.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/feign/fallback/SpringCloudBpmApprovalFallback.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/interceptor/MyInterceptor.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/util/ActivitiObj2HashMapUtils.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/util/Status.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/util/ToWeb$Rows.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/util/ToWeb.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/util/exception/BaseException.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/com/jerryl/util/exception/GlobalExceptionHandler.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/FilterServletOutputStream.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/GenericResponseWrapper.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/JsonpCallbackFilter.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/rest/diagram/services/BaseProcessDefinitionDiagramLayoutResource.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/rest/diagram/services/ProcessDefinitionDiagramLayoutResource.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/rest/diagram/services/ProcessInstanceDiagramLayoutResource.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/rest/diagram/services/ProcessInstanceHighlightsResource.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/rest/editor/main/StencilsetRestResource.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/rest/editor/model/ModelEditorJsonRestResource.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/org/activiti/rest/editor/model/ModelSaveRestResource.class" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/css/bootstrap-multiselect.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/css/bootstrap-responsive.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/css/bootstrap.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/css/fullcalendar.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/css/styles.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/css/toastr.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/bg.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/breadcrumbs.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/checker-bg.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/blue/message_catch.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/business_rule.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/error_catch.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/error_throw.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/manual.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/message_catch.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/message_throw.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/receive.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/script.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/send.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/service.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/signal_catch.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/signal_throw.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/timer.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/images/deployer/user.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/index.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/ActivitiRest.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/ActivityImpl.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/Color.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/LineBreakMeasurer.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/Polyline.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/ProcessDiagramCanvas.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/ProcessDiagramGenerator.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/jquery/jquery.asyncqueue.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/jquery/jquery.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/jquery/jquery.progressbar.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/jstools.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/raphael.2.1.1.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/raphael.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/raphael_uncompressed.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/js/textlayout.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/diagram-viewer/style.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/app-cfg.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/app.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-assignment-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-condition-expression-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-custom-controllers.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-default-controllers.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-event-listeners-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-execution-listeners-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-fields-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-form-properties-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-in-parameters-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-message-definitions-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-message-scope-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-multiinstance-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-out-parameters-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-sequenceflow-order-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-signal-definitions-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-signal-scope-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties-task-listeners-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/assignment-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/assignment-popup-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/assignment-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/assignment-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/boolean-property-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/condition-expression-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/condition-expression-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/condition-expression-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/default-value-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/event-listeners-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/event-listeners-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/event-listeners-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/execution-listeners-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/execution-listeners-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/execution-listeners-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/feedback-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/fields-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/fields-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/fields-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/form-properties-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/form-properties-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/form-properties-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/in-parameters-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/in-parameters-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/in-parameters-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/message-definitions-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/message-definitions-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/message-definitions-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/message-property-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/multiinstance-property-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/out-parameters-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/out-parameters-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/out-parameters-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/sequenceflow-order-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/sequenceflow-order-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/sequenceflow-order-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/signal-definitions-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/signal-definitions-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/signal-definitions-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/signal-property-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/string-property-write-mode-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/subprocess-reference-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/subprocess-reference-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/subprocess-reference-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/task-listeners-display-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/task-listeners-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/task-listeners-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/text-popup.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/properties/text-property-write-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/toolbar-custom-actions.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/toolbar-default-actions.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/toolbar.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/configuration/url-config.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/css/style-common.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/css/style-editor.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/css/style.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor-config.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor-utils.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor/css/editor.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor/i18n/translation_de.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor/i18n/translation_en_us.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor/i18n/translation_signavio_de.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor/i18n/translation_signavio_en_us.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor/oryx.debug.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/editor/oryx.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/eventbus.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/activiti-admin-webfont.eot" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/activiti-admin-webfont.svg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/activiti-admin-webfont.ttf" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/activiti-admin-webfont.woff" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/glyphicons-halflings-regular.eot" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/glyphicons-halflings-regular.svg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/glyphicons-halflings-regular.ttf" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/fonts/glyphicons-halflings-regular.woff" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/header-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/i18n/en.json" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/i18n/en.json_bak" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/bpmn-error.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/bpmn-warning.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/datadefinition.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/delete.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/loading.gif" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/logo-2x.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/logo.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/nw-handle-dark.gif" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/se-handle-dark.gif" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/shapemenu_highlight.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/images/wrench.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-cookies_1.2.13/angular-cookies.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-cookies_1.2.13/angular-cookies.min.js.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-dragdrop.min-1.0.3.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-dragdrop_1.0.7/angular-dragdrop.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-mocks_1.2.13/angular-mocks.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-resource_1.2.13/angular-resource.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-resource_1.2.13/angular-resource.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-resource_1.2.13/angular-resource.min.js.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-route_1.2.13/angular-route.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-route_1.2.13/angular-route.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-route_1.2.13/angular-route.min.js.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-sanitize_1.2.13/angular-sanitize.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-sanitize_1.2.13/angular-sanitize.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-sanitize_1.2.13/angular-sanitize.min.js.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-scroll_0.5.7/angular-scroll.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-strap_2.0.5/angular-strap.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-strap_2.0.5/angular-strap.tpl.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate-loader-static-files/.bower.json" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate-loader-static-files/angular-translate-loader-static-files.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate-storage-cookie/.bower.json" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate-storage-cookie/angular-translate-storage-cookie.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate_2.4.2/angular-translate.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular-translate_2.4.2/angular-translate.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular_1.2.13/angular-animate.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/angular_1.2.13/angular.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap-daterangepicker_1.3.7/daterangepicker-bs3.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap-daterangepicker_1.3.7/daterangepicker.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/css/bootstrap-theme.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/css/bootstrap-theme.css.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/css/bootstrap-theme.min.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/css/bootstrap.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/css/bootstrap.css.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/css/bootstrap.min.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/fonts/glyphicons-halflings-regular.eot" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/fonts/glyphicons-halflings-regular.svg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/fonts/glyphicons-halflings-regular.ttf" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/fonts/glyphicons-halflings-regular.woff" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/js/bootstrap.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/bootstrap_3.1.1/js/bootstrap.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/.bower.json" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/.gitignore" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/CHANGES" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/CONTRIBUTORS.md" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/LICENSE" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/README.md" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/es5-sham.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/es5-sham.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/es5-sham.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/es5-shim.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/es5-shim.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/es5-shim.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/package.json" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/helpers/h-kill.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/helpers/h-matchers.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/helpers/h.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/index.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/index.min.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/lib/jasmine-html.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/lib/jasmine.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/lib/jasmine.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/lib/jasmine_favicon.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/lib/json2.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/spec/s-array.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/spec/s-date.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/spec/s-function.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/spec/s-number.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/spec/s-object.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/es5-shim-15.3.4.5/tests/spec/s-string.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/jquery-ui-1.10.3.custom.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/jquery.autogrow-textarea.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/jquery_1.11.0/jquery.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/jquery_1.11.0/jquery.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/jquery_1.11.0/jquery.min.map" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/json3_3.2.6/LICENSE" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/json3_3.2.6/lib/json3.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/json3_3.2.6/lib/json3.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/momentjs_2.5.1/momentjs.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/mousetrap-1.4.5.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/ng-grid-2.0.7-min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/ng-grid-2.0.7.min.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/path_parser.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/prototype-1.5.1.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/libs/ui-utils.min-0.0.4.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/partials/root-stencil-item-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/partials/stencil-item-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/plugins.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/popups/icon-template.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/popups/save-model.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/popups/select-shape.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/popups/unsaved-changes.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/select-shape-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencil-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/event.subprocess.collapsed.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/event.subprocess.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/expanded.subprocess.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.business.rule.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.camel.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.manual.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.mule.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.receive.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.script.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.send.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.service.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.shell.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/list/type.user.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/subprocess.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/activity/task.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/artifact/text.annotation.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/catching/cancel.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/catching/compensation.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/catching/error.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/catching/message.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/catching/signal.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/catching/timer.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/connector/association.undirected.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/connector/association.unidirectional.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/connector/messageflow.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/connector/sequenceflow.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/dataobject/data.store.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/diagram.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/endevent/cancel.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/endevent/error.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/endevent/none.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/endevent/terminate.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/gateway/eventbased.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/gateway/exclusive.databased.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/gateway/inclusive.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/gateway/parallel.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/startevent/error.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/startevent/message.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/startevent/none.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/startevent/signal.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/startevent/timer.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/swimlane/lane.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/swimlane/pool.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/throwing/none.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/stencilsets/bpmn2.0/icons/throwing/signal.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/editor-app/toolbar-controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/error.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/favicon.ico" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/img/glyphicons-halflings-white.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/img/glyphicons-halflings.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/img/jane.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/img/nate.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/img/stars.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/img/white-batch-32.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/img/white-batch-64.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/ajax-util.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/bootstrap-multiselect.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/bootstrap.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/d3-setup.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/dateformate.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/fullcalendar.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/gcal.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/jquery.knob.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/jquery.peity.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/jquery.pjax.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/jquery.sparkline.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/jquery.tablesorter.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/setup.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/js/toastr.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/lib/js/jquery-1.10.2.min.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/lib/js/jquery.cookie.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/lib/js/template.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/model-list.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/static/public/model-list.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/stencilset.json" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/templates/index.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/templates/modeler.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/templates/pages/dashbord.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/templates/pages/deployment-list.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/classes/templates/pages/model-list.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/target/test-classes/com/jerryl/SpringBootWithActivitiApplicationTests.class" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_1_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_transaction_javax_transaction_api_1_2.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_nekohtml_nekohtml_1_9_22.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_diagram_rest_5_22_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_common_hibernate_commons_annotations_5_0_1_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_5_2_17_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_javax_persistence_hibernate_jpa_2_1_api_1_0_0_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_javassist_javassist_3_22_0_GA.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_jandex_2_0_3_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_3_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_0_2_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_jpa_2_0_2_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_jpa_2_0_7_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aspects_5_0_6_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__xerces_xercesImpl_2_11_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti" afterPath="$PROJECT_DIR$/springcloud-activiti" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/.gitignore" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/README.md" afterPath="$PROJECT_DIR$/springcloud-activiti/README.md" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/pom.xml" afterPath="$PROJECT_DIR$/springcloud-activiti/pom.xml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/SpringBootWithActivitiApplication.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/activiti/config/Cfg_Activiti.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/Cfg_Activiti.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/activiti/config/Cfg_Util.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/Cfg_Util.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/activiti/config/Cfg_View.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/activiti/controller/DeploymentController.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/activiti/controller/ModelerController.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ModelerController.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/activiti/controller/PageController.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/activiti/vo/DeploymentResponse.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/vo/DeploymentResponse.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/common/RestServiceController.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/common/RestServiceController.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/util/Status.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/util/Status.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/util/ToWeb.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/util/ToWeb.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/util/exception/BaseException.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/util/exception/BaseException.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/jerryl/util/exception/GlobalExceptionHandler.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/util/exception/GlobalExceptionHandler.java" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application.yml" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application.yml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/diagram-viewer/js/jquery/jquery.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/diagram-viewer/js/jquery/jquery.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/app-cfg.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/app-cfg.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/properties-assignment-controller.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/properties-assignment-controller.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/properties/assignment-popup.html" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/properties/assignment-popup.html" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/toolbar-default-actions.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/toolbar-default-actions.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/url-config.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/configuration/url-config.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/editor/oryx.debug.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/editor/oryx.debug.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/libs/jquery_1.11.0/jquery.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/libs/jquery_1.11.0/jquery.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/index.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/ajax-util.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/ajax-util.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/lib/js/template.js" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/lib/js/template.js" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/model-list.html" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/model-list.html" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/test/java/com/jerryl/SpringBootWithActivitiApplicationTests.java" afterPath="$PROJECT_DIR$/springcloud-activiti/src/test/java/com/camel/SpringBootWithActivitiApplicationTests.java" />
+      <change beforePath="$PROJECT_DIR$/springcloud-activiti" afterPath="" />
       <change beforePath="$PROJECT_DIR$/springcloud-common/src/main/java/com/camel/common/enums/BaseEnum.java" afterPath="$PROJECT_DIR$/springcloud-common/src/main/java/com/camel/common/enums/BaseEnum.java" />
       <change beforePath="$PROJECT_DIR$/springcloud-common/src/main/java/com/camel/common/enums/ResultEnum.java" afterPath="$PROJECT_DIR$/springcloud-common/src/main/java/com/camel/common/enums/ResultEnum.java" />
       <change beforePath="$PROJECT_DIR$/springcloud-common/src/main/java/com/camel/common/utils/Result.java" afterPath="$PROJECT_DIR$/springcloud-common/src/main/java/com/camel/common/utils/Result.java" />
@@ -738,36 +305,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DeploymentController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="684">
-              <caret line="50" column="42" lean-forward="false" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="deployment-list.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/deployment-list.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="29" column="30" lean-forward="false" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpringCloudActivitiApplication.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="11" column="14" lean-forward="false" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-feign/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
@@ -788,54 +325,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="38">
-                <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="springcloud-activiti.iml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/springcloud-activiti.iml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="380">
               <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="28" column="60" lean-forward="true" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/libs/es5-shim-15.3.4.5/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -894,7 +388,7 @@
     </dirStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/springcloud-activiti" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -904,7 +398,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/activiti/config/ResourceServerConfig.java" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/resources/static/js/jquery.pjax.js" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/resources/templates/public/model-list.html" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/activiti/config/Cfg_View.java" />
@@ -955,6 +448,7 @@
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/deployment-list.html" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/README.md" />
+        <option value="$PROJECT_DIR$/springcloud-activiti/pom.xml" />
       </list>
     </option>
   </component>
@@ -1160,6 +654,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -1167,48 +663,11 @@
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="camel" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="AndroidView" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -1449,7 +908,8 @@
       <workItem from="1563789743640" duration="46315000" />
       <workItem from="1563935400709" duration="53342000" />
       <workItem from="1564045867574" duration="5035000" />
-      <workItem from="1564359242345" duration="665000" />
+      <workItem from="1564359242345" duration="1063000" />
+      <workItem from="1564360331094" duration="184000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1562217200574</created>
@@ -1717,7 +1177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564359281506</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Default Changelist">
+      <created>1564359935987</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1564359935987</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1726,7 +1193,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="404944000" />
+    <option name="totallyTimeSpent" value="405526000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1748,15 +1215,14 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36403033" sideWeight="0.49499285" order="16" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27132195" sideWeight="0.4855196" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2739872" sideWeight="0.4855196" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22547974" sideWeight="0.5144804" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27110156" sideWeight="0.500994" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1771,6 +1237,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27110156" sideWeight="0.500994" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1794,6 +1261,7 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
+      <path value="$PROJECT_DIR$/springcloud-activiti" />
     </ignored-roots>
     <MESSAGE value="22" />
     <MESSAGE value="11" />
@@ -2058,7 +1526,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2137,7 +1604,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="292">
           <caret line="136" column="5" lean-forward="true" selection-start-line="136" selection-start-column="5" selection-end-line="136" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2187,7 +1653,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
           <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2228,9 +1693,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
           <caret line="18" column="30" lean-forward="false" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2238,7 +1700,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
           <caret line="21" column="5" lean-forward="false" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2246,68 +1707,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="627">
           <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-          <folding>
-            <marker date="1563328096541" expanded="false" signature="0:104" ph="/.../" />
-            <marker date="1563328096541" expanded="false" signature="148:2917" ph="..." />
-            <marker date="1563328096541" expanded="true" signature="3040:3047" ph="{}" />
-            <marker date="1563328096541" expanded="false" signature="3096:3107" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="3146:3152" ph=" }" />
-            <marker date="1563328096541" expanded="true" signature="3224:3322" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="3378:3469" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="3532:3622" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="3695:3788" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="3866:3965" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4032:4108" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4187:4269" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4343:4450" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4537:4660" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4744:4849" ph="{...}" />
-            <marker date="1563328096541" expanded="false" signature="4901:4912" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="4965:4971" ph=" }" />
-            <marker date="1563328096541" expanded="true" signature="5036:5111" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5191:5322" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5386:5491" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5587:5726" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5804:5923" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5998:6144" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="6273:6441" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="6518:6665" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="6796:6965" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7059:7202" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7350:7515" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7591:7738" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7869:8039" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8117:8265" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8398:8569" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8664:8808" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8958:9125" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="9217:9330" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="9399:9519" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="9590:9712" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="9791:9921" ph="{...}" />
-            <marker date="1563328096541" expanded="false" signature="9950:9961" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="10026:10032" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="10072:10083" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="10150:10156" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="10201:10212" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="10270:10276" ph=" }" />
-            <marker date="1563328096541" expanded="true" signature="10345:10438" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="10512:10610" ph="{...}" />
-            <marker date="1563328096541" expanded="false" signature="10652:10663" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="10711:10717" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="10771:10782" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="10836:10842" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="10885:10896" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="10965:10971" ph=" }" />
-            <marker date="1563328096541" expanded="true" signature="11028:11126" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11188:11291" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11376:11508" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11595:11728" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11818:11954" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="12042:12177" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="12274:12398" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="12470:12565" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2315,105 +1714,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="798">
           <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding>
-            <marker date="1563328096541" expanded="false" signature="0:104" ph="/.../" />
-            <marker date="1563328096541" expanded="false" signature="148:747" ph="..." />
-            <marker date="1563328096541" expanded="true" signature="1927:1934" ph="{}" />
-            <marker date="1563328096541" expanded="false" signature="2004:2015" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="2037:2043" ph=" }" />
-            <marker date="1563328096541" expanded="true" signature="2115:2126" ph=" { " />
-            <marker date="1563328096541" expanded="true" signature="2149:2155" ph=" }" />
-            <marker date="1563328096541" expanded="true" signature="2243:2310" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="2401:2779" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="2862:3067" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="3158:3379" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="3480:3721" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="3796:3985" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4068:4273" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4347:4558" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="4639:4992" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5065:5250" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5331:5532" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5623:5844" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="5943:6180" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="6262:6358" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="6464:6596" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="6710:6843" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="6947:7079" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7191:7324" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7375:7617" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7673:7729" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7774:7857" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="7905:7991" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8070:8293" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8380:8616" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8687:8752" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8833:8903" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="8988:9058" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="9137:9201" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="9291:9668" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="9719:10233" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="10291:10397" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="10463:10578" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="10649:10769" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="10834:10948" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11018:11137" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11204:11320" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11374:11495" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11557:11708" ph="{...}" />
-            <marker date="1563328096541" expanded="true" signature="11799:11952" ph="{...}" />
-            <marker date="1563328096541" expanded="false" signature="11984:11995" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12016:12022" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12059:12070" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12095:12101" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12144:12155" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12181:12187" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12214:12225" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12240:12246" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12279:12290" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12306:12312" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12341:12352" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12369:12375" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12408:12419" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12440:12446" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12474:12485" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12501:12507" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12539:12550" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12570:12576" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12609:12620" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12640:12646" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12681:12692" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12714:12720" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12756:12767" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12790:12796" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12831:12842" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12864:12870" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12906:12917" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="12940:12946" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="12977:12988" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13007:13013" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13046:13057" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13078:13084" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13121:13132" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13157:13163" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13200:13211" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13236:13242" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13283:13294" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13323:13329" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13378:13389" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13417:13423" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13492:13503" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13542:13548" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13590:13601" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13631:13637" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13670:13681" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13702:13708" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13745:13756" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13781:13787" ph=" }" />
-            <marker date="1563328096541" expanded="false" signature="13827:13838" ph=" { " />
-            <marker date="1563328096541" expanded="false" signature="13866:13872" ph=" }" />
-            <marker date="1563328096541" expanded="true" signature="13943:14153" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2421,13 +1721,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
           <caret line="18" column="20" lean-forward="false" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
+        <state relative-caret-position="0">
           <caret line="50" column="42" lean-forward="false" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
           <folding />
         </state>
@@ -2473,14 +1772,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -2502,8 +1793,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="28" column="60" lean-forward="true" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
+        <state relative-caret-position="304">
+          <caret line="16" column="46" lean-forward="false" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -2562,7 +1861,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>springcloud-oa-server</last-edited>
+          <last-edited>springcloud-boss</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
