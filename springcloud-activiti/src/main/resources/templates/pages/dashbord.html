@@ -1,0 +1,169 @@
+<div class="container dashboard">
+    <div class="row">
+        <div class="span3">
+            <h4>流程概况总览</h4>
+            <div class="sidebar">
+                <ul class="col-nav span3">
+                    <li><a href="#bookmarks" data-toggle="collapse" class="accordion-toggle"><span
+                            class="label label-inverse pull-right">3 </span>功能菜单</a></li>
+                    <li id="bookmarks" class="collapse">
+                        <ul>
+                            <li><a href="#"> <i class="pull-right icon-plane"></i>开发中...</a><a href="#"> <i
+                                    class="pull-right icon-fire"></i>开发中...</a><a href="#"> <i
+                                    class="pull-right icon-comment"></i>开发中...</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="span9">
+            <div id="d3" style="width: 100%; margin-top: -30px"></div>
+            <br/>
+            <h4 class="header">流程分布</h4>
+            <div class="stats">
+                <div class="row-fluid">
+                    <div class="span3">
+                        <div class="stat info">
+                            <h2>{{processStatus.modelNum}}</h2>
+                            <h6>流程模型</h6>
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="stat danger">
+                            <h2>{{processStatus.deploymentNum}}</h2>
+                            <h6>已发布</h6>
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="stat warning">
+                            <h2>{{processStatus.instanceNum}}</h2>
+                            <h6>活动流程</h6>
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="stat inverse">
+                            <h2>{{processStatus.taskNum}}</h2>
+                            <h6>待办任务</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="header">实例看板</h4>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="widget">
+                        <table style="width:100%">
+                            <tr>
+                                <td class="bar-label">总实例</td>
+                                <td class="bar-number">{{processInstances.instanceNum + processInstances.hisInstanceNum}}</td>
+                                <td>
+                                    <div class="progress">
+                                        <div style="width:0%" class="bar"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bar-label">完成数</td>
+                                <td class="bar-number">{{processInstances.hisInstanceNum}}</td>
+                                <td>
+                                    <div class="progress">
+                                        <div style="width: 0%;" class="bar"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bar-label">审核中</td>
+                                <td class="bar-number">{{processInstances.instanceNum}}</td>
+                                <td>
+                                    <div class="progress">
+                                        <div style="width: 0%;" class="bar"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="widget">
+                        <table style="width:100%">
+                            <tr>
+                                <td class="bar-label">总任务</td>
+                                <td class="bar-number">{{processInstances.taskNum}}</td>
+                                <td>
+                                    <div class="progress">
+                                        <div style="width:0%" class="bar"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bar-label">审核中</td>
+                                <td class="bar-number">{{processInstances.taskActiveNum}}</td>
+                                <td>
+                                    <div class="progress">
+                                        <div style="width: 0%;" class="bar"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bar-label">已结束</td>
+                                <td class="bar-number">{{processInstances.hisInstanceNum}}</td>
+                                <td>
+                                    <div class="progress">
+                                        <div style="width: 0%;" class="bar"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var vm = new Vue({
+        el: '.dashboard',
+        data: {
+            applicationContextRootPath: '/acti/',
+            processStatus: {
+                modelNum: 0,
+                deploymentNum: 0,
+                instanceNum: 0,
+                taskNum: 0
+            },
+            processInstances: {
+                instanceNum: 0,
+                taskActiveNum: 0,
+                taskNum: 0,
+                hisTaskNum: 0,
+                hisInstanceNum: 0
+            }
+        },
+        methods: {
+            loadProcessStatus: function () {
+                var _this = this;
+                AJAX.GET(this.applicationContextRootPath + 'home/status', null, function (resp) {
+                    _this.processStatus.modelNum = resp['data']['modelNum'] || 0;
+                    _this.processStatus.deploymentNum = resp['data']['deploymentNum'] || 0;
+                    _this.processStatus.instanceNum = resp['data']['instanceNum'] || 0;
+                    _this.processStatus.taskNum = resp['data']['taskNum'] || 0;
+                })
+            },
+            loadProcessInstanceBoard: function () {
+                var _this = this;
+                AJAX.GET(this.applicationContextRootPath + 'home/board', null, function (resp) {
+                    _this.processInstances.instanceNum = resp['data']['instanceNum'] || 0;
+                    _this.processInstances.taskActiveNum = resp['data']['taskActiveNum'] || 0;
+                    _this.processInstances.taskNum = resp['data']['taskNum'] || 0;
+                    _this.processInstances.hisTaskNum = resp['data']['hisTaskNum'] || 0;
+                    _this.processInstances.hisInstanceNum = resp['data']['hisInstanceNum'] || 0;
+                });
+            }
+        },
+        created: function () {
+            this.loadProcessStatus();
+            this.loadProcessInstanceBoard();
+        }
+    });
+</script>

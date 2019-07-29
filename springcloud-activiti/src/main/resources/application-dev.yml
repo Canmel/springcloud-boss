@@ -1,0 +1,37 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: springcloud-activiti
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/dw_activiti?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: 1234
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_IP}:8888/eureka/
+
+#security:
+#  basic:
+#    enabled: false
+
+security:
+  oauth2:
+    resource:
+      id: springcloud-activiti
+      user-info-uri: http://${APPLICATION_IP}:8080/auth/session/me
+      prefer-token-info: false
+

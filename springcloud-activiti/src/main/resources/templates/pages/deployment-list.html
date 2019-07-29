@@ -1,0 +1,90 @@
+<div class="containe" style="min-height: 800px;" xmlns:v-on="http://www.w3.org/1999/xhtml">
+    <div class="row models">
+        <div class="span3">
+            <h4>在线流程</h4>
+            <div class="sidebar">
+                <ul class="col-nav span3">
+                    <li><a href="#bookmarks" data-toggle="collapse" class="accordion-toggle"><span
+                            class="label label-inverse pull-right">3 </span>功能菜单</a></li>
+                    <li id="bookmarks" class="collapse">
+                        <ul>
+                            <li><a href="#"> <i class="pull-right icon-plane"></i>开发中...</a><a href="#"> <i
+                                    class="pull-right icon-fire"></i>开发中...</a><a href="#"> <i
+                                    class="pull-right icon-comment"></i>开发中...</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="span9">
+            <h4 class="header">已发布流程</h4>
+            <div id="d3" style="width: 100%; margin-top: -30px"></div>
+            <br/>
+            <div class="row-fluid">
+                <table class="table table-striped sortable">
+                    <thead>
+                    <tr>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>版本</th>
+                        <th>操作</th>
+                    </tr>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in deployments">
+                        <td>{{item.id}}</td>
+                        <td>{{item.diagramResourceName}}</td>
+                        <td>{{item.version}}</td>
+                        <td><a v-on:click="deleteItem(item.id)" style="cursor: pointer;">删除</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+            el: '.models',
+            data: {
+                applicationContextRootPath: '/acti',
+                deployments: [],
+                accessToken: ''
+            },
+            filters: {
+                dateformat: function (val, formate) {
+
+                    return (new Date(val)).format(formate);
+                }
+            },
+            methods: {
+                loadDeployments: function () {
+                    AJAX.GET("../deployments", null
+                        , function (result) {
+                            vm.deployments = result['data'];
+                        });
+                },
+                saveCookie: function () {
+                    var token = sessionStorage.getItem('access_token');
+                    if (token) {
+                        $.cookie('access_token', token);
+                    }
+                },
+                deleteItem: function (id) {
+                    AJAX.DELETE(this.applicationContextRootPath + '/deployments/' + id, null, function (resp) {
+                        toastr.success(resp['msg'], '操作成功');
+                        vm.loadDeployments();
+                    });
+                }
+            },
+            created: function () {
+                this.accessToken = sessionStorage.getItem('access_token');
+                this.saveCookie();
+                this.loadDeployments();
+
+            }
+        })
+    ;
+</script>
