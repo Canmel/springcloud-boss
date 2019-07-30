@@ -17,8 +17,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${DATABASE_IP}:3306/dw_oauth2?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
-    username: root
-    password: sunrise
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
   druid:
     initialSize: 5 #初始化连接大小
     minIdle: 5     #最小连接池数量

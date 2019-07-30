@@ -6,8 +6,8 @@ spring:
     name: springcloud-activiti
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/dw_activiti?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
-    username: root
-    password: 1234
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
   thymeleaf:
     mode: LEGACYHTML5
     cache: false

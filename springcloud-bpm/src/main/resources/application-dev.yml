@@ -4,8 +4,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${DATABASE_IP}:3306/dw_bpm?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
-    username: root
-    password: sunrise
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
 
 server:
   port: 9002
