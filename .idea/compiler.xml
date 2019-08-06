@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="spring-boot-activiti" />
+        <module name="springcloud-activiti" />
         <module name="springcloud-auth-server" />
         <module name="springcloud-bpm" />
         <module name="springcloud-common" />
@@ -21,24 +22,13 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="spring-boot-activiti" target="1.8" />
-      <module name="springcloud-activiti" target="1.8" />
-      <module name="springcloud-auth-server" target="1.8" />
-      <module name="springcloud-boss" target="1.8" />
-      <module name="springcloud-bpm" target="1.8" />
       <module name="springcloud-bpm-server" target="1.8" />
-      <module name="springcloud-common" target="1.8" />
-      <module name="springcloud-core" target="1.8" />
-      <module name="springcloud-eureka-server" target="1.8" />
-      <module name="springcloud-feign" target="1.8" />
-      <module name="springcloud-oa-server" target="1.8" />
-      <module name="springcloud-redis" target="1.8" />
-      <module name="springcloud-system" target="1.8" />
       <module name="springcloud-system (1)" target="1.8" />
-      <module name="springcloud-zuul-getway" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="springcloud-activiti" options="-parameters" />
       <module name="springcloud-auth-server" options="-parameters" />
       <module name="springcloud-bpm" options="-parameters" />
       <module name="springcloud-bpm-server" options="-parameters" />

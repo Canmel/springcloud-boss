@@ -10,10 +10,7 @@
 	</parent>
 	<groupId>com.camel.springcloud</groupId>
 	<artifactId>springcloud-activiti</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
-	<name>spring-boot-activiti</name>
 	<description>Demo project for Spring Boot2</description>
 
 	<properties>
@@ -127,6 +124,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

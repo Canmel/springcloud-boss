@@ -3,8 +3,8 @@ spring:
     name: springcloud-system
   datasource:
     url: jdbc:mysql://${DATABASE_IP}:3306/dw_oauth2?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
-    username: root
-    password: sunrise
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   aop:
     auto: true
