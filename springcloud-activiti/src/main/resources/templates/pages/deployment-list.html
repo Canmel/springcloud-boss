@@ -1,4 +1,4 @@
-<div class="containe" style="min-height: 800px;" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<div class="container dashboard">
     <div class="row models">
         <div class="span3">
             <h4>在线流程</h4>
@@ -37,7 +37,7 @@
                         <td>{{item.id}}</td>
                         <td>{{item.diagramResourceName}}</td>
                         <td>{{item.version}}</td>
-                        <td><a v-on:click="deleteItem(item.id)" style="cursor: pointer;">删除</a></td>
+                        <td><a v-on:click="deleteItem(item.deploymentId)" style="cursor: pointer;">删除</a></td>
                     </tr>
                     </tbody>
                 </table>
