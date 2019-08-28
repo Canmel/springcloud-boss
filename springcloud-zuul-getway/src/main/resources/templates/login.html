@@ -56,6 +56,13 @@
     var redirect_url = '';
 
     $(function () {
+        $('#password').bind('keyup', function(event) {
+            if (event.keyCode == "13") {
+                //回车执行查询
+                $('.login-button').click();
+            }
+        });
+
         redirect_url = getQueryVariable('redirect_url');
     });
 
@@ -97,10 +104,10 @@
             success: function (resp) {
                 sessionStorage.setItem("access_token", resp['access_token']);
                 sessionStorage.setItem("refresh_token", resp['refresh_token']);
-                if(redirect_url != '') {
+                if (redirect_url != '') {
                     // redirect_url += '?access_token='+ resp['access_token'];
                     window.location.href = redirect_url;
-                }else {
+                } else {
                     window.location.href = "/"
                 }
             },
@@ -120,6 +127,16 @@
             }
         }
         return (false);
+    }
+
+    function enterLogin(e) {
+        var theEvent = e || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code == 13) {
+            $('.login-button').click();
+            return false;
+        }
+        return true;
     }
 </script>
 </body>
