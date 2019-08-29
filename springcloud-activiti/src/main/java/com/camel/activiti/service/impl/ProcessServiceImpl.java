@@ -1,11 +1,11 @@
-package com.camel.activiti.controller;
+package com.camel.activiti.service.impl;
 
-import com.camel.core.entity.Result;
-import com.camel.activiti.service.FeignService;
+import com.camel.activiti.service.ProcessService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -25,33 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <Feign>
+ * <>
  * @author baily
  * @since 1.0
  * @date 2019/8/28
  **/
-@RestController
-public class FeignController {
+@Service
+public class ProcessServiceImpl implements ProcessService {
 
     @Autowired
-    private FeignService feignService;
+    private RuntimeService runtimeService;
 
-    /**
-     * 查询所有角色
-     * @return
-     */
-    @GetMapping("/role/all")
-    public Result allRole(){
-        return feignService.allRole();
-    }
-
-    /**
-     * 查询指定角色的用户
-     * @param id
-     * @return
-     */
-    @GetMapping("/user/role/{id}")
-    public Result usersByRoleId(@PathVariable Integer id){
-        return feignService.usersByRole(id);
+    @Override
+    public boolean apply(String busniessKey, String flowId) {
+        ProcessInstance instance = runtimeService.startProcessInstanceById(flowId, busniessKey);
+        return ObjectUtils.allNotNull(instance);
     }
 }

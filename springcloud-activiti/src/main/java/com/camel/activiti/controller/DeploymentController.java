@@ -33,7 +33,7 @@ public class DeploymentController implements RestServiceController<Deployment, S
 
     @GetMapping("def/{key}")
     public Result deployed(@PathVariable String key) {
-        List<ProcessDefinition> l = repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).list();
+        List<ProcessDefinition> l = repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).latestVersion().list();
         List<Map<String, Object>> result = new ArrayList<>();
         l.forEach(processDefinition -> {
             result.add(ActivitiObj2HashMapUtils.getInstance().processDefinition2Map(processDefinition));
@@ -43,7 +43,7 @@ public class DeploymentController implements RestServiceController<Deployment, S
 
     @Override
     public Result getList(@RequestParam(value = "rowSize", defaultValue = "1000", required = false) Integer rowSize, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page) {
-        List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().list();
+        List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().latestVersion().list();
         List<Map<String, Object>> result = new ArrayList<>();
         list.forEach(processDefinition -> {
             result.add(ActivitiObj2HashMapUtils.getInstance().processDefinition2Map(processDefinition));

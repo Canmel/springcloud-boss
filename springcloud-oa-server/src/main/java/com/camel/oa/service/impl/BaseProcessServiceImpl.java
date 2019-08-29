@@ -3,6 +3,7 @@ package com.camel.oa.service.impl;
 import com.camel.core.BaseProcessService;
 import com.camel.core.entity.Result;
 import com.camel.core.entity.process.ActivitiForm;
+import com.camel.oa.feign.SpringCloudActivitiFeignClient;
 import com.camel.oa.feign.SpringCloudBpmFeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -37,6 +38,9 @@ public class BaseProcessServiceImpl implements BaseProcessService {
 
     @Resource
     private SpringCloudBpmFeignClient springCloudBpmFeignClient;
+
+    @Resource
+    private SpringCloudActivitiFeignClient springCloudActivitiFeignClient;
 
     @Override
     public Boolean apply(Integer id, String flowId, String busniessKey) {
