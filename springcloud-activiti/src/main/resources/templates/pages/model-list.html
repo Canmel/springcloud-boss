@@ -29,6 +29,7 @@
                     <tr>
                         <th>模型编号</th>
                         <th>模型名称</th>
+                        <th>KEY</th>
                         <th>版本</th>
                         <th>创建时间</th>
                         <th>操作</th>
@@ -38,6 +39,7 @@
                     <tr v-for="item in models">
                         <td>{{item.id}}</td>
                         <td>{{item.name}}</td>
+                        <td>{{item.key}}</td>
                         <td>{{item.version}}</td>
                         <td>{{item.createTime | dateformat("yyyy-MM-dd hh:mm:ss") }}</td>
                         <td>

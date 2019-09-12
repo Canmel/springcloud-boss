@@ -38,6 +38,7 @@ public class ActivitiObj2HashMapUtils {
 
     public Map<String, Object> processDefinition2Map(ProcessDefinition definition){
         Map<String, Object> result = new HashMap<>(16);
+
         result.put("key", definition.getKey());
         result.put("version", definition.getVersion());
         result.put("deploymentId", definition.getDeploymentId());

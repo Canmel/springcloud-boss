@@ -7,29 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- *                 ___====-_  _-====___
- *           _--^^^#####//      \\#####^^^--_
- *        _-^##########// (    ) \\##########^-_
- *       -############//  |\^^/|  \\############-
- *     _/############//   (@::@)   \\############\_
- *    /#############((     \\//     ))#############\
- *   -###############\\    (oo)    //###############-
- *  -#################\\  / VV \  //#################-
- * -###################\\/      \//###################-
- *_#/|##########/\######(   /\   )######/\##########|\#_
- *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
- *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
- *   `   `  `      `   / | |  | | \   '      '  '   '
- *                    (  | |  | |  )
- *                   __\ | |  | | /__
- *                  (vvv(VVV)(VVV)vvv)
- * <Feign>
- * @author baily
- * @since 1.0
- * @date 2019/8/28
- **/
 @RestController
 public class FeignController {
 

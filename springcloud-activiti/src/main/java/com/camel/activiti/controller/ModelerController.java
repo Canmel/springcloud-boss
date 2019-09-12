@@ -124,7 +124,6 @@ public class ModelerController implements RestServiceController<Model, String> {
     public Result getList(@RequestParam(value = "rowSize", defaultValue = "1000", required = false) Integer rowSize, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page) {
         List<Model> list = repositoryService.createModelQuery().listPage(rowSize * (page - 1)
                 , rowSize);
-        long count = repositoryService.createModelQuery().count();
         return ResultUtil.success(list);
     }
 

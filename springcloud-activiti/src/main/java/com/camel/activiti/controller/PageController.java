@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by liuruijie on 2017/5/12.
  */
-
 @Controller
 public class PageController {
     @GetMapping("editor")

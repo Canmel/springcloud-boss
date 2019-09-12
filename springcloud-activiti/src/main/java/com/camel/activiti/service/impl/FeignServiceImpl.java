@@ -1,6 +1,5 @@
-package com.camel.activiti.service.impl;
+package com.camel.activiti.service;
 
-import com.camel.activiti.service.FeignService;
 import com.camel.core.entity.Result;
 import com.camel.feign.SpringCloudSystemFeignClient;
 import org.springframework.stereotype.Service;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
-public class FeignServiceImpl implements FeignService {
+public class FeignServiceImpl implements FeignService{
     @Resource
     private SpringCloudSystemFeignClient springCloudSystemFeignClient;
 
