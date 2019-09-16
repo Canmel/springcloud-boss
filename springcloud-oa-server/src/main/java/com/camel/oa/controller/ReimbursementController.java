@@ -11,6 +11,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.entity.process.ActivitiForm;
 import com.camel.core.utils.ResultUtil;
 import com.camel.oa.enums.ReimbursementStatus;
+import com.camel.oa.feign.SpringCloudActivitiFeignClient;
 import com.camel.oa.model.Reimbursement;
 import com.camel.oa.service.ReimbursementService;
 import com.camel.oa.service.impl.BaseProcessServiceImpl;
@@ -19,10 +20,12 @@ import com.camel.redis.utils.SessionContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +50,19 @@ public class ReimbursementController extends BaseCommonController {
 
     @Autowired
     private BaseProcessService baseProcessService;
+
+    @Autowired
+    private SpringCloudActivitiFeignClient springCloudActivitiFeignClient;
+
+    @Autowired
+    private RestTemplate template;
+
+    @GetMapping("/pass")
+    public Result pass() {
+        String result = springCloudActivitiFeignClient.pass("id", "comment", "businessId");
+        return ResultUtil.success(result);
+    }
+
 
     @GetMapping
     public Result index(Reimbursement reimbursement) {
@@ -97,6 +113,8 @@ public class ReimbursementController extends BaseCommonController {
 
     @GetMapping("/pass/{id}")
     public Result pass(@PathVariable Integer id, ActivitiForm activitiForm) {
+        String result1 = springCloudActivitiFeignClient.pass("id", "comment", "businessId");
+        System.out.println(result1);
         Result result = super.passed(id, activitiForm);
         HashMap<String, Object> rMapData = (HashMap<String, Object>) result.getData();
         if (MapUtils.isNotEmpty(rMapData) && (boolean) rMapData.get(ProcessProperties.PROCESS_ISEND_KEY)) {

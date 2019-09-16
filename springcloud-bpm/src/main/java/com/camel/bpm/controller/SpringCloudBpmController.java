@@ -123,6 +123,10 @@ public class SpringCloudBpmController {
 
     @GetMapping("/current")
     public Result current(String busniessKey, String flowKey) {
+        List<ProcessInstance> instances = engine.getRuntimeService().createProcessInstanceQuery().list();
+        for (ProcessInstance i: instances) {
+            System.out.println(i.getBusinessKey());
+        }
         List<Task> tasks = service.current(busniessKey, flowKey);
         List<UserTask> userTasks = new ArrayList<>();
         tasks.forEach(task -> {

@@ -2,6 +2,7 @@ package com.camel.oa.feign;
 
 import com.camel.core.entity.Result;
 import com.camel.oa.config.KeepErrMsgConfiguration;
+import com.camel.oa.feign.fallback.SpringCloudActivitiApprovalFallback;
 import com.camel.oa.feign.fallback.SpringCloudBpmApprovalFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @author baily
  */
-@FeignClient(value = "springcloud-activiti", fallback = SpringCloudBpmApprovalFallback.class, configuration = {KeepErrMsgConfiguration.class})
+@FeignClient(value = "springcloud-activiti", fallback = SpringCloudActivitiApprovalFallback.class, configuration = {KeepErrMsgConfiguration.class})
 public interface SpringCloudActivitiFeignClient {
 
     /**
@@ -49,8 +50,8 @@ public interface SpringCloudActivitiFeignClient {
      @param id
      @return
      */
-    @RequestMapping(value = "/flow/pass", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    Result pass(@RequestParam("id") String id, @RequestParam("comment") String comment, @RequestParam("businessId") String businessId);
+    @RequestMapping(value = "/process/pass", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    String pass(@RequestParam("id") String id, @RequestParam("comment") String comment, @RequestParam("businessId") String businessId);
 
     /**
      审批驳回当前流程
@@ -63,6 +64,7 @@ public interface SpringCloudActivitiFeignClient {
     Result back(@RequestParam("id") String id, @RequestParam("comment") String comment, @RequestParam("businessId") String businessId);
 
     /**
+     *
      获取审批意见
      @param id
      @return

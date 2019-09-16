@@ -36,7 +36,7 @@ public class OAuth2RestTemplateConfiguration {
         ClientCredentialsResourceDetails resourceDetails = new ClientCredentialsResourceDetails();
         resourceDetails.setClientId("android");
         resourceDetails.setClientSecret("android");
-        resourceDetails.setId("springcloud-oa-server");
+        resourceDetails.setId("springcloud-activiti");
         resourceDetails.setAccessTokenUri("http://127.0.0.1:8080/auth/oauth/token");
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(resourceDetails);
         oAuth2RestTemplate.setAuthenticator(new DefaultOAuth2RequestAuthenticator());

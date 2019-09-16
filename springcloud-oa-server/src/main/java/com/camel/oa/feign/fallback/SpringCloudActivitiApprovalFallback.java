@@ -38,7 +38,7 @@ public class SpringCloudActivitiApprovalFallback implements FallbackFactory<Spri
             }
 
             @Override
-            public Result pass(String id, String comment, String businessId) {
+            public String pass(String id, String comment, String businessId) {
                 return null;
             }
 

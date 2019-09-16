@@ -6,12 +6,36 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <测试流程>
+ * @author baily
+ * @since 1.0
+ * @date 2019/9/16
+ **/
 @RestController
-@RequestMapping("process")
+@RequestMapping("/process")
 public class ProcessController {
-    @GetMapping("pass")
-    public Result pass(){
-        return ResultUtil.success("审核成功");
+    @GetMapping("/pass")
+    public String pass(){
+        System.out.println("pass");
+        return "审核成功";
     }
 
     @GetMapping("reject")

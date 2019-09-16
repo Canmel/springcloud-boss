@@ -2,6 +2,8 @@ package com.camel.interceptor;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -39,8 +41,10 @@ public class MyInterceptor implements HandlerInterceptor {
     }
 
     public boolean isNoLogin(HttpServletRequest request) {
-        String[] token = request.getParameterValues(ACCESS_TOKEN);
-        return ObjectUtils.isEmpty(token);
+        String[] paramStoken = request.getParameterValues(ACCESS_TOKEN);
+        OAuth2AuthenticationDetails details  = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        String token = details.getTokenValue();
+        return ObjectUtils.isEmpty(paramStoken) && ObjectUtils.isEmpty(details) && ObjectUtils.isEmpty(details.getTokenValue());
     }
 
     public boolean isHtml(HttpServletRequest request){
