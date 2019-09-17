@@ -4,22 +4,25 @@
     <option name="GROUP_BY_SEVERITY" value="true" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java" line="101" />
+    <bookmark url="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java" line="91" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21194d6-4da2-4ac1-95e9-d28f0d95cba4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/utils/ActivitiObj2HashMapUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/utils/ActivitiObj2SystemObjUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/ProcessNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/String2XmlException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/UnAuthenticationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/WorkFlowImageGenerateFaildException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/FeignRequestInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/FeignRequestInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/OAuth2RestTemplateConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/OAuth2RestTemplateConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/controller/SpringCloudBpmController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/controller/SpringCloudBpmController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/impl/BpmServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/impl/BpmServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/config/FeignConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/config/FeignConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/ProcessService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/ProcessService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/converter/ExtMappingJackson2HttpMessageConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/converter/ExtMappingJackson2HttpMessageConverter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudActivitiApprovalFallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudActivitiApprovalFallback.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -205,10 +208,10 @@
           <entry key="class" value="1" />
           <entry key="dummy" value="51" />
           <entry key="html" value="588" />
-          <entry key="java" value="11893" />
+          <entry key="java" value="12214" />
           <entry key="md" value="953" />
           <entry key="pom" value="1" />
-          <entry key="txt" value="169" />
+          <entry key="txt" value="187" />
           <entry key="xml" value="2002" />
           <entry key="yml" value="448" />
         </counts>
@@ -217,9 +220,9 @@
         <counts>
           <entry key="CLASS" value="1" />
           <entry key="HTML" value="588" />
-          <entry key="JAVA" value="11893" />
+          <entry key="JAVA" value="12214" />
           <entry key="Markdown" value="953" />
-          <entry key="PLAIN_TEXT" value="220" />
+          <entry key="PLAIN_TEXT" value="238" />
           <entry key="SQL" value="53" />
           <entry key="XML" value="1950" />
           <entry key="YAML" value="448" />
@@ -234,7 +237,7 @@
           <entry key="dtd" value="2" />
           <entry key="html" value="15" />
           <entry key="iml" value="7" />
-          <entry key="java" value="1227" />
+          <entry key="java" value="1265" />
           <entry key="js" value="4" />
           <entry key="md" value="5" />
           <entry key="mvnw" value="1" />
@@ -250,7 +253,7 @@
           <entry key="DTD" value="2" />
           <entry key="HTML" value="15" />
           <entry key="IDEA_MODULE" value="7" />
-          <entry key="JAVA" value="1227" />
+          <entry key="JAVA" value="1265" />
           <entry key="JavaScript" value="4" />
           <entry key="Markdown" value="5" />
           <entry key="PLAIN_TEXT" value="5" />
@@ -267,41 +270,16 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java">
+        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="116" selection-start-line="116" selection-end-line="116" />
+            <state relative-caret-position="355">
+              <caret line="127" column="83" lean-forward="true" selection-start-line="127" selection-start-column="83" selection-end-line="127" selection-end-column="83" />
               <folding>
-                <element signature="e#1997#1998#0" expanded="true" />
-                <element signature="e#2073#2074#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#6766#6767#0" expanded="true" />
+                <element signature="e#6793#6794#0" expanded="true" />
+                <element signature="e#20572#20587#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="46" column="46" selection-start-line="46" selection-start-column="46" selection-end-line="46" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/web/method/support/InvocableHandlerMethod.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="219" column="33" selection-start-line="219" selection-start-column="33" selection-end-line="219" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -309,8 +287,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+            <state relative-caret-position="284">
+              <caret line="71" column="36" lean-forward="true" selection-start-line="71" selection-start-column="36" selection-end-line="71" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -319,46 +297,82 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/oauth/spring-security-oauth2/2.2.1.RELEASE/spring-security-oauth2-2.2.1.RELEASE-sources.jar!/org/springframework/security/oauth2/client/DefaultOAuth2RequestAuthenticator.java">
+        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="89">
-              <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+            <state relative-caret-position="170">
+              <caret line="99" column="32" selection-start-line="99" selection-start-column="32" selection-end-line="99" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudActivitiApprovalFallback.java">
+        <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="40" column="25" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
+            <state relative-caret-position="145">
+              <caret line="170" column="37" selection-start-line="170" selection-start-column="37" selection-end-line="170" selection-end-column="37" />
+              <folding>
+                <element signature="e#3421#3422#0" expanded="true" />
+                <element signature="e#3493#3494#0" expanded="true" />
+                <element signature="e#5266#5267#0" expanded="true" />
+                <element signature="e#5320#5321#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java">
+        <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/BaseProcessService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="15" column="42" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="42" />
+            <state relative-caret-position="261">
+              <caret line="77" column="11" selection-start-line="77" selection-start-column="11" selection-end-line="77" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="65">
+              <caret line="38" selection-start-line="38" selection-end-line="38" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/OAuth2RestTemplateConfiguration.java">
+        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/SpringCloudOaServerApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="42" column="34" lean-forward="true" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="34" />
+            <state relative-caret-position="306">
+              <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/FeignRequestInterceptor.java">
+        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/ProcessService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="48" column="76" selection-start-line="48" selection-start-column="46" selection-end-line="48" selection-end-column="76" />
+            <state relative-caret-position="576">
+              <caret line="59" column="16" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/controller/SpringCloudBpmController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="215">
+              <caret line="129" column="38" lean-forward="true" selection-start-line="129" selection-start-column="38" selection-end-line="129" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/BpmService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="244">
+              <caret line="103" column="66" lean-forward="true" selection-start-line="97" selection-start-column="4" selection-end-line="103" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -375,19 +389,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>code 60</find>
-      <find>Error while extracting response for type</find>
-      <find>HttpMessageConverterExtractor</find>
-      <find>&quot;/reimbursement</find>
-      <find>/current</find>
-      <find>curr</find>
-      <find>/modeler</find>
-      <find>modeler</find>
-      <find>/editor</find>
-      <find>系统错误</find>
-      <find>instance</find>
       <find>passed</find>
-      <find>passProcess</find>
       <find>/flow/pass</find>
       <find>SpringCloudBpmFeignClient</find>
       <find>JsonParseException</find>
@@ -405,6 +407,18 @@
       <find>resource</find>
       <find>springcloud-bpm-server</find>
       <find>springcloud-activiti</find>
+      <find>instances</find>
+      <find>ActivitiObj2SystemObjUtils</find>
+      <find>redisTemplate</find>
+      <find>commentsByInstanceId</find>
+      <find>comments</find>
+      <find>backProcess</find>
+      <find>passProcess</find>
+      <find>processTraceImage</find>
+      <find>PROCESS_NAME_SUFFIX</find>
+      <find>END_TAG</find>
+      <find>cuurent</find>
+      <find>/comment</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -421,8 +435,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/resources/static/editor-app/configuration/properties-assignment-controller.js" />
-        <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/resources/templates/pages/dashbord.html" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/resources/templates/pages/deployment-list.html" />
         <option value="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/BpmService.java" />
         <option value="$PROJECT_DIR$/spring-boot-activiti/src/main/java/com/jerryl/activiti/controller/ModelerController.java" />
@@ -444,34 +456,36 @@
         <option value="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/templates/login.html" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/common/RestServiceController.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/FeignController.java" />
-        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java" />
-        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/ProcessService.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudBpmApprovalFallback.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/SpringCloudOaServerApplication.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudBpmFeignClient.java" />
         <option value="$PROJECT_DIR$/springcloud-bpm/src/main/resources/application-dev.yml" />
-        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/PageController.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/pom.xml" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/model-list.html" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/util/ActivitiObj2HashMapUtils.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ModelerController.java" />
-        <option value="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/controller/SpringCloudBpmController.java" />
-        <option value="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/impl/BpmServiceImpl.java" />
-        <option value="$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/config/FeignConfig.java" />
-        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java" />
-        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java" />
-        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudActivitiApprovalFallback.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/OAuth2RestTemplateConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/OAuth2RestTemplateConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/FeignRequestInterceptor.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/FeignRequestInterceptor.java" />
         <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/converter/ExtMappingJackson2HttpMessageConverter.java" />
-        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java" />
+        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudActivitiApprovalFallback.java" />
+        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java" />
+        <option value="$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java" />
+        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java" />
+        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/UnAuthenticationException.java" />
+        <option value="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/impl/BpmServiceImpl.java" />
+        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/utils/ActivitiObj2SystemObjUtils.java" />
+        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java" />
+        <option value="$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/controller/SpringCloudBpmController.java" />
+        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/ProcessService.java" />
+        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java" />
+        <option value="$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java" />
       </list>
     </option>
   </component>
@@ -703,6 +717,50 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="camel" type="462c0819:PsiDirectoryNode" />
+              <item name="activiti" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="camel" type="462c0819:PsiDirectoryNode" />
+              <item name="activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="camel" type="462c0819:PsiDirectoryNode" />
+              <item name="activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="camel" type="462c0819:PsiDirectoryNode" />
+              <item name="activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="camel" type="462c0819:PsiDirectoryNode" />
               <item name="interceptor" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -710,6 +768,71 @@
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
               <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
               <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bpm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bpm" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
@@ -840,10 +963,10 @@
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RequestMappingsPanelWidth2" value="75" />
-    <property name="SearchEverywhereHistoryKey" value="FeignBasicAuthRequestInterceptor&#9;PSI&#9;JAVA://com.canmel.dwsurvey.springcloudfeign.config.FeignBasicAuthRequestInterceptor&#10;com.fasterxml.jackson.core.JsonParse&#9;PSI&#9;JAVA://com.fasterxml.jackson.core.JsonParseException&#10;reimbursement/pass/&#9;null&#9;null&#10;reimbursement/pass&#9;null&#9;null&#10;SpringCloudBpmFeignClient&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudBpmFeignClient.java&#10;/flow/applyById&#9;null&#9;null&#10;HttpMessageConverterExtractor&#9;PSI&#9;JAVA://org.springframework.web.client.HttpMessageConverterExtractor&#10;HttpMessageNotReadableException&#9;FILE&#9;jar:///Users/baily/.m2/repository/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/http/converter/HttpMessageNotReadableException.java&#10;process/applyById&#9;null&#9;null&#10;ignor&#9;FILE&#9;file://C:/Users/Administrator/IdeaProjects/springcloud-boss/springcloud-oa-server/.gitignore&#10;sysUser/role&#9;null&#9;null&#10;OAuth2RestTemplate&#9;PSI&#9;JAVA://com.camel.oa.feign.OAuth2RestTemplateConfiguration&#10;KeepErrMsgConfiguration&#9;PSI&#9;JAVA://com.camel.oa.config.KeepErrMsgConfiguration&#10;KisBpmChoseAssignmentCtrl&#9;null&#9;null&#10;KisBpmAssignmentPopupCtrl&#9;null&#9;null&#10;properties-assignment-controller&#9;FILE&#9;file://C:/Users/Administrator/IdeaProjects/springcloud-boss/spring-boot-activiti/src/main/resources/static/editor-app/configuration/properties-assignment-controller.js&#10;com.jerryl.activiti.controller.ModelerController&#9;PSI&#9;JAVA://com.jerryl.activiti.controller.ModelerController&#10;service/model/&#9;null&#9;null&#10;org.apache.ibatis.type.JdbcType&#9;PSI&#9;JAVA://org.apache.ibatis.type.JdbcType&#10;/flow/current&#9;null&#9;null&#10;FallbackFactory&#9;PSI&#9;JAVA://com.sun.corba.se.spi.copyobject.CopyobjectDefaults#makeFallbackObjectCopierFactory&#10;Result&#9;PSI&#9;JAVA://com.camel.common.entity.Result&#10;BCryptPasswordEncoder&#9;PSI&#9;JAVA://org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder&#10;BasePaginationEntity&#9;PSI&#9;JAVA://com.camel.core.entity.BasePaginationEntity&#10;GlobalAuthenticationConfigurerAdapter&#9;PSI&#9;JAVA://org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter&#10;SecurityContextHol&#9;PSI&#9;JAVA://org.springframework.security.core.context.SecurityContextHolder&#10;com.curise.eshop.common.entity&#9;PSI&#9;JAVA://com.curise.eshop.common.model.BaseEntity" />
+    <property name="SearchEverywhereHistoryKey" value="ActivitiObj2SystemObjUtils&#9;PSI&#9;JAVA://com.camel.bpm.utils.ActivitiObj2SystemObjUtils&#10;FeignBasicAuthRequestInterceptor&#9;PSI&#9;JAVA://com.canmel.dwsurvey.springcloudfeign.config.FeignBasicAuthRequestInterceptor&#10;com.fasterxml.jackson.core.JsonParse&#9;PSI&#9;JAVA://com.fasterxml.jackson.core.JsonParseException&#10;reimbursement/pass/&#9;null&#9;null&#10;reimbursement/pass&#9;null&#9;null&#10;SpringCloudBpmFeignClient&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudBpmFeignClient.java&#10;/flow/applyById&#9;null&#9;null&#10;HttpMessageConverterExtractor&#9;PSI&#9;JAVA://org.springframework.web.client.HttpMessageConverterExtractor&#10;HttpMessageNotReadableException&#9;FILE&#9;jar:///Users/baily/.m2/repository/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/http/converter/HttpMessageNotReadableException.java&#10;process/applyById&#9;null&#9;null&#10;ignor&#9;FILE&#9;file://C:/Users/Administrator/IdeaProjects/springcloud-boss/springcloud-oa-server/.gitignore&#10;sysUser/role&#9;null&#9;null&#10;OAuth2RestTemplate&#9;PSI&#9;JAVA://com.camel.oa.feign.OAuth2RestTemplateConfiguration&#10;KeepErrMsgConfiguration&#9;PSI&#9;JAVA://com.camel.oa.config.KeepErrMsgConfiguration&#10;KisBpmChoseAssignmentCtrl&#9;null&#9;null&#10;KisBpmAssignmentPopupCtrl&#9;null&#9;null&#10;properties-assignment-controller&#9;FILE&#9;file://C:/Users/Administrator/IdeaProjects/springcloud-boss/spring-boot-activiti/src/main/resources/static/editor-app/configuration/properties-assignment-controller.js&#10;com.jerryl.activiti.controller.ModelerController&#9;PSI&#9;JAVA://com.jerryl.activiti.controller.ModelerController&#10;service/model/&#9;null&#9;null&#10;org.apache.ibatis.type.JdbcType&#9;PSI&#9;JAVA://org.apache.ibatis.type.JdbcType&#10;/flow/current&#9;null&#9;null&#10;FallbackFactory&#9;PSI&#9;JAVA://com.sun.corba.se.spi.copyobject.CopyobjectDefaults#makeFallbackObjectCopierFactory&#10;Result&#9;PSI&#9;JAVA://com.camel.common.entity.Result&#10;BCryptPasswordEncoder&#9;PSI&#9;JAVA://org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder&#10;BasePaginationEntity&#9;PSI&#9;JAVA://com.camel.core.entity.BasePaginationEntity&#10;GlobalAuthenticationConfigurerAdapter&#9;PSI&#9;JAVA://org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter&#10;SecurityContextHol&#9;PSI&#9;JAVA://org.springframework.security.core.context.SecurityContextHolder&#10;com.curise.eshop.common.entity&#9;PSI&#9;JAVA://com.curise.eshop.common.model.BaseEntity" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568645928308" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568685910717" />
     <property name="ignore_missing_gitignore" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/eshop-common/src/main/java/com/curise/eshop/common" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -856,15 +979,19 @@
     <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.ignored.files" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\myIdeaWorkspace\eshop\eshop-member\src\main\resources\mybatis" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.curise.eshop.auth.config.oauth" />
       <recent name="com.curise.eshop.server" />
       <recent name="com.curise.eshop.member" />
       <recent name="com.curise.eshop.gateway" />
       <recent name="com.curise.eshop.auth" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/utils" />
+      <recent name="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel" />
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\static\editor-app\configuration\properties" />
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\templates\pages" />
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\static\public" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.camel.oa.feign.fallback" />
@@ -873,12 +1000,8 @@
       <recent name="com.jerryl.feign" />
       <recent name="com.jerryl.activiti.config" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\static\editor-app\configuration\properties" />
-      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\templates\pages" />
-      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\static\public" />
-      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\templates" />
-      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\spring-boot-activiti\src\main\resources\static\js" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\myIdeaWorkspace\eshop\eshop-member\src\main\resources\mybatis" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1082,7 +1205,7 @@
       <workItem from="1566872112660" duration="33943000" />
       <workItem from="1568195353887" duration="1977000" />
       <workItem from="1568250327307" duration="15090000" />
-      <workItem from="1568635238758" duration="9942000" />
+      <workItem from="1568635238758" duration="15191000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1562217200574</created>
@@ -1406,7 +1529,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568255783212</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="真是令人振奋振奋的消息！">
+      <created>1568645970725</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1568645970725</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1415,7 +1545,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="488746000" />
+    <option name="totallyTimeSpent" value="493995000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -1462,6 +1592,48 @@
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info anchor="right" id="Bean Validation" order="9" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.29899856" />
+      <window_info id="Designer" order="1" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="UI Designer" order="3" />
+      <window_info id="Structure" order="4" sideWeight="0.516129" side_tool="true" weight="0.29470673" />
+      <window_info id="Favorites" order="5" sideWeight="0.500994" side_tool="true" weight="0.27110156" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Web" order="7" sideWeight="0.516129" side_tool="true" weight="0.29470673" />
+      <window_info id="JRebel" order="8" sideWeight="0.500994" side_tool="true" weight="0.27110156" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32827735" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3290653" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3592881" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Spring" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3277849" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5028612" side_tool="true" weight="0.3559539" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49928468" weight="0.32522407" />
+      <window_info anchor="bottom" id="Statistic" order="11" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.3290653" />
+      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="14" weight="0.3277849" />
+      <window_info anchor="bottom" id="JRebel Executor" order="15" />
+      <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.50500715" side_tool="true" weight="0.36363637" />
+      <window_info anchor="bottom" id="Run Dashboard" order="17" sideWeight="0.49499285" visible="true" weight="0.36491677" />
+      <window_info active="true" anchor="bottom" id="Inspection Results" order="18" visible="true" weight="0.3290653" />
+      <window_info anchor="bottom" id="Problems" order="19" />
+      <window_info anchor="bottom" id="Thumbnails" order="20" weight="0.3290653" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24964234" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Maven Projects" order="5" weight="0.16237482" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Bean Validation" order="9" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -1503,7 +1675,8 @@
     <MESSAGE value="Default Changelist" />
     <MESSAGE value="列表倒序" />
     <MESSAGE value="更换可执行流程列表的地址" />
-    <option name="LAST_COMMIT_MESSAGE" value="更换可执行流程列表的地址" />
+    <MESSAGE value="真是令人振奋振奋的消息！" />
+    <option name="LAST_COMMIT_MESSAGE" value="真是令人振奋振奋的消息！" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1587,12 +1760,6 @@
           <option name="timeStamp" value="153" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java</url>
-          <line>96</line>
-          <properties />
-          <option name="timeStamp" value="174" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/controller/SpringCloudBpmController.java</url>
           <line>168</line>
           <properties />
@@ -1610,48 +1777,6 @@
           <properties />
           <option name="timeStamp" value="191" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java</url>
-          <line>116</line>
-          <properties />
-          <option name="timeStamp" value="193" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java</url>
-          <line>36</line>
-          <properties />
-          <option name="timeStamp" value="195" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java</url>
-          <line>61</line>
-          <properties />
-          <option name="timeStamp" value="197" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java</url>
-          <line>62</line>
-          <properties />
-          <option name="timeStamp" value="198" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java</url>
-          <line>26</line>
-          <properties />
-          <option name="timeStamp" value="219" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java</url>
-          <line>20</line>
-          <properties />
-          <option name="timeStamp" value="220" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java</url>
-          <line>43</line>
-          <properties />
-          <option name="timeStamp" value="221" />
-        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -1659,7 +1784,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
-        <watch expression="SecurityContextHolder.getContext().getAuthentication().getDetails()" language="JAVA" custom="org.springframework.security.core.context.SecurityContextHolder,org.apache.catalina.security.SecurityUtil" />
+        <watch expression="details.getTokenValue()" language="JAVA" custom="org.springframework.security.core.context.SecurityContextHolder,org.apache.catalina.security.SecurityUtil" />
         <watch expression="session.getAttribute(&quot;test&quot;)" />
         <watch expression="principal.getName()" language="JAVA" />
         <watch expression="this.authenticationManager" />
@@ -1696,6 +1821,8 @@
         <watch expression="userTask.get(USER_ID_PROP_NAME).toString()" />
         <watch expression="getBusinessKey()" />
         <watch expression=" getBusinessKey()" />
+        <watch expression="this.responseType" />
+        <watch expression="String.format(&quot;%s %s&quot;,&#10;                        BEARER_TOKEN_TYPE,&#10;                        accessToken)" />
       </configuration>
     </watches-manager>
   </component>
@@ -1752,143 +1879,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-298">
-          <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/ReimbursementService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/ReimbursementServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/baomidou/mybatis-plus-support/2.2.0/mybatis-plus-support-2.2.0-sources.jar!/com/baomidou/mybatisplus/service/IService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2160">
-          <caret line="164" column="12" selection-start-line="164" selection-start-column="12" selection-end-line="164" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/baomidou/mybatis-plus-support/2.2.0/mybatis-plus-support-2.2.0-sources.jar!/com/baomidou/mybatisplus/service/impl/ServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3360">
-          <caret line="279" column="19" selection-start-line="279" selection-start-column="19" selection-end-line="279" selection-end-column="19" />
-          <folding>
-            <element signature="e#9307#9308#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/common/RestServiceController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/SpringCloudZuulApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/controller/SessionController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="29" column="13" lean-forward="true" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/lang/Integer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="51" column="19" selection-start-line="51" selection-start-column="19" selection-end-line="51" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="48" column="73" selection-start-line="48" selection-start-column="62" selection-end-line="48" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/FeignController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ModelerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="89" selection-start-line="89" selection-end-line="89" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/PageController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/java/com/camel/eureka/server/SpringCloudEurekaServerApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.9.3/jackson-core-2.9.3-sources.jar!/com/fasterxml/jackson/core/JsonParseException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/Cfg_View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/SpringCloudSystemFeignClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-feign/src/main/java/com/canmel/dwsurvey/springcloudfeign/config/FeignBasicAuthRequestInterceptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/web/client/ResponseExtractor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/web/client/RestTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
@@ -2011,34 +2001,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="148" column="44" lean-forward="true" selection-start-line="148" selection-start-column="44" selection-end-line="148" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/BaseProcessService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="39" column="32" selection-start-line="39" selection-start-column="32" selection-end-line="39" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudBpmFeignClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/converter/ExtMappingJackson2HttpMessageConverter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -2049,59 +2011,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="116" selection-start-line="116" selection-end-line="116" />
-          <folding>
-            <element signature="e#1997#1998#0" expanded="true" />
-            <element signature="e#2073#2074#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/web/method/support/InvocableHandlerMethod.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="219" column="33" selection-start-line="219" selection-start-column="33" selection-end-line="219" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/oauth/spring-security-oauth2/2.2.1.RELEASE/spring-security-oauth2-2.2.1.RELEASE-sources.jar!/org/springframework/security/oauth2/client/DefaultOAuth2RequestAuthenticator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="89">
           <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudActivitiApprovalFallback.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="40" column="25" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="15" column="42" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -2119,10 +2032,211 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/web/method/support/InvocableHandlerMethod.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="217" selection-start-line="217" selection-end-line="217" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="46" column="46" selection-start-line="46" selection-start-column="46" selection-end-line="46" selection-end-column="46" />
+        <state relative-caret-position="149">
+          <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/fallback/SpringCloudActivitiApprovalFallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="40" column="25" selection-start-line="40" selection-start-column="19" selection-end-line="40" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/config/ProcessProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudBpmFeignClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="42" column="11" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="43" column="11" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/exceptions/ProcessNotFoundException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+          <folding>
+            <element signature="e#161#162#0" expanded="true" />
+            <element signature="e#194#195#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/ProcessNotFoundException.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/String2XmlException.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/WorkFlowImageGenerateFaildException.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/exceptions/UnAuthenticationException.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/impl/WorkFlowServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-24">
+          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/impl/BpmServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="80" column="4" lean-forward="true" selection-start-line="80" selection-start-column="4" selection-end-line="578" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/FeignServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="48" column="73" selection-start-line="48" selection-start-column="62" selection-end-line="48" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/utils/ActivitiObj2SystemObjUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/utils/ActivitiObj2HashMapUtils.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/utils/ActivitiObj2SystemObjUtils.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/FeignService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/controller/SpringCloudBpmController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="129" column="38" lean-forward="true" selection-start-line="129" selection-start-column="38" selection-end-line="129" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-bpm/src/main/java/com/camel/bpm/service/BpmService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="103" column="66" lean-forward="true" selection-start-line="97" selection-start-column="4" selection-end-line="103" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="127" column="83" lean-forward="true" selection-start-line="127" selection-start-column="83" selection-end-line="127" selection-end-column="83" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6766#6767#0" expanded="true" />
+            <element signature="e#6793#6794#0" expanded="true" />
+            <element signature="e#20572#20587#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/ProcessService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="59" column="16" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="71" column="36" lean-forward="true" selection-start-line="71" selection-start-column="36" selection-end-line="71" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/SpringCloudOaServerApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ReimbursementController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="99" column="32" selection-start-line="99" selection-start-column="32" selection-end-line="99" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="170" column="37" selection-start-line="170" selection-start-column="37" selection-end-line="170" selection-end-column="37" />
+          <folding>
+            <element signature="e#3421#3422#0" expanded="true" />
+            <element signature="e#3493#3494#0" expanded="true" />
+            <element signature="e#5266#5267#0" expanded="true" />
+            <element signature="e#5320#5321#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/BaseProcessService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="77" column="11" selection-start-line="77" selection-start-column="11" selection-end-line="77" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>

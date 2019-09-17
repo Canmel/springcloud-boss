@@ -140,6 +140,7 @@ public abstract class BaseCommonController {
      */
     public Result passed(Integer id, ActivitiForm activitiForm){
         Result result = getProcessService().current(id, getBusinessKey());
+        
         if(!ObjectUtils.isEmpty(result.getData())){
             List<Map<String, Object>> list = (List) result.getData();
             Map<String, Object> userTask = list.get(0);

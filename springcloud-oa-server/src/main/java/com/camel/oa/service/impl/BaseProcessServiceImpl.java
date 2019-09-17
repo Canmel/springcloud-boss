@@ -37,14 +37,11 @@ import javax.annotation.Resource;
 public class BaseProcessServiceImpl implements BaseProcessService {
 
     @Resource
-    private SpringCloudBpmFeignClient springCloudBpmFeignClient;
-
-    @Resource
     private SpringCloudActivitiFeignClient springCloudActivitiFeignClient;
 
     @Override
     public Boolean apply(Integer id, String flowId, String busniessKey) {
-        Result result = springCloudBpmFeignClient.applyById(busniessKey + id, flowId);
+        Result result = springCloudActivitiFeignClient.applyById(busniessKey + id, flowId);
         return ObjectUtils.isEmpty(result) ? false : result.isSuccess();
     }
 
@@ -56,31 +53,31 @@ public class BaseProcessServiceImpl implements BaseProcessService {
 
     @Override
     public Result current(String id, String businessKey) {
-        Result result = springCloudBpmFeignClient.current(businessKey + id, businessKey);
+        Result result = springCloudActivitiFeignClient.current(businessKey + id, businessKey);
         return result;
     }
 
     @Override
     public Result pass(String id, ActivitiForm activitiForm, String businessKey) {
-        Result result = springCloudBpmFeignClient.pass(id, activitiForm.getComment(), businessKey + activitiForm.getBusinessId());
+        Result result = springCloudActivitiFeignClient.pass(id, activitiForm.getComment(), businessKey + activitiForm.getBusinessId());
         return result;
     }
 
     @Override
     public Result back(String id, ActivitiForm activitiForm, String businessKey) {
-        Result result = springCloudBpmFeignClient.back(id, activitiForm.getComment(), businessKey + activitiForm.getBusinessId());
+        Result result = springCloudActivitiFeignClient.back(id, activitiForm.getComment(), businessKey + activitiForm.getBusinessId());
         return result;
     }
 
     @Override
     public Result comment(String id) {
-        Result result = springCloudBpmFeignClient.comment(id);
+        Result result = springCloudActivitiFeignClient.comment(id);
         return result;
     }
 
     @Override
     public Result toDO() {
-        Result result = springCloudBpmFeignClient.toDo();
+        Result result = springCloudActivitiFeignClient.toDo();
         return result;
     }
 }

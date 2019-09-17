@@ -1,10 +1,17 @@
 package com.camel.activiti.controller;
 
+import com.camel.activiti.service.ProcessService;
 import com.camel.core.entity.Result;
+import com.camel.core.entity.process.UserTask;
 import com.camel.core.utils.ResultUtil;
+import org.activiti.engine.task.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -32,10 +39,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/process")
 public class ProcessController {
+
+    @Autowired
+    private ProcessService processService;
+
     @GetMapping("/pass")
-    public String pass(){
+    public Result pass() {
         System.out.println("pass");
-        return "审核成功";
+        return ResultUtil.success("审核成功");
     }
 
     @GetMapping("reject")
@@ -46,5 +57,20 @@ public class ProcessController {
     @GetMapping("start")
     public Result start() {
         return ResultUtil.success("发起流程成功");
+    }
+
+    @GetMapping("current")
+    public Result current(String busniessKey, String flowKey) {
+        List<Task> tasks = processService.current(busniessKey, flowKey);
+        List<UserTask> userTasks = new ArrayList<>();
+        tasks.forEach(task -> {
+            UserTask userTask = new UserTask();
+            userTask.setName(task.getName());
+            userTask.setDescription(task.getDescription());
+            userTask.setEnd(false);
+            userTask.setId(task.getId());
+            userTasks.add(userTask);
+        });
+        return ResultUtil.success(userTasks);
     }
 }

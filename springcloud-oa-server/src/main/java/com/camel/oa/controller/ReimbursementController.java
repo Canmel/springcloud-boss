@@ -54,16 +54,6 @@ public class ReimbursementController extends BaseCommonController {
     @Autowired
     private SpringCloudActivitiFeignClient springCloudActivitiFeignClient;
 
-    @Autowired
-    private RestTemplate template;
-
-    @GetMapping("/pass")
-    public Result pass() {
-        String result = springCloudActivitiFeignClient.pass("id", "comment", "businessId");
-        return ResultUtil.success(result);
-    }
-
-
     @GetMapping
     public Result index(Reimbursement reimbursement) {
         return ResultUtil.success(service.selectPage(reimbursement));
@@ -113,8 +103,6 @@ public class ReimbursementController extends BaseCommonController {
 
     @GetMapping("/pass/{id}")
     public Result pass(@PathVariable Integer id, ActivitiForm activitiForm) {
-        String result1 = springCloudActivitiFeignClient.pass("id", "comment", "businessId");
-        System.out.println(result1);
         Result result = super.passed(id, activitiForm);
         HashMap<String, Object> rMapData = (HashMap<String, Object>) result.getData();
         if (MapUtils.isNotEmpty(rMapData) && (boolean) rMapData.get(ProcessProperties.PROCESS_ISEND_KEY)) {

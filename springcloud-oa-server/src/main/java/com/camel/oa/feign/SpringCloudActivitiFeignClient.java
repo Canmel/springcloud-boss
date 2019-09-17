@@ -22,7 +22,7 @@ public interface SpringCloudActivitiFeignClient {
      * @param flowKey       流程关键字 KEY
      * @return
      */
-    @RequestMapping(value = "/flow/apply", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/process/apply", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     Result apply(@RequestParam("busniessKey") String busniessKey, @RequestParam("flowKey") String flowKey);
 
     /**
@@ -40,7 +40,7 @@ public interface SpringCloudActivitiFeignClient {
      @param flowKey         流程关键字 KEY
      @return
      */
-    @RequestMapping(value = "/flow/current", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/process/current", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     Result current(@RequestParam("busniessKey") String busniessKey, @RequestParam("flowKey") String flowKey);
 
     /**
@@ -51,7 +51,7 @@ public interface SpringCloudActivitiFeignClient {
      @return
      */
     @RequestMapping(value = "/process/pass", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    String pass(@RequestParam("id") String id, @RequestParam("comment") String comment, @RequestParam("businessId") String businessId);
+    Result pass(@RequestParam("id") String id, @RequestParam("comment") String comment, @RequestParam("businessId") String businessId);
 
     /**
      审批驳回当前流程
@@ -60,7 +60,7 @@ public interface SpringCloudActivitiFeignClient {
      @param id
      @return
      */
-    @RequestMapping(value = "/flow/back", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/process/back", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     Result back(@RequestParam("id") String id, @RequestParam("comment") String comment, @RequestParam("businessId") String businessId);
 
     /**
