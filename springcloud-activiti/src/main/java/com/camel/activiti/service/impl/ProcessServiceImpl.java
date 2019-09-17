@@ -500,13 +500,11 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public List<UserTask> toDo(OAuth2Authentication authentication) {
         List<String> authrities = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
 
         authentication.getAuthorities().forEach(grantedAuthority -> {
-//            SimpleGrantedAuthority simpleGrantedAuthority = (SimpleGrantedAuthority)grantedAuthority;
-            authrities.add(grantedAuthority.getAuthority().toUpperCase());
-            authrities.add(grantedAuthority.getAuthority());
+            tasks.addAll(taskService.createTaskQuery().active().taskAssignee(grantedAuthority.getAuthority()).list());
         });
-        List<Task> tasks = taskService.createTaskQuery().active().taskCandidateGroupIn(authrities).list();
         List<UserTask> userTasks = ActivitiObj2SystemObjUtils.getInstance().tasks2UserTasks(tasks);
         return userTasks;
     }

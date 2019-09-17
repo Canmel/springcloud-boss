@@ -57,6 +57,7 @@ public class ActivitiObj2SystemObjUtils {
             userTask.setEnd(false);
             userTask.setName(task.getName());
             userTask.setProcessDefinitionId(task.getProcessDefinitionId());
+            userTask.setCreatedTime(task.getCreateTime());
             userTaskList.add(userTask);
         });
         return userTaskList;

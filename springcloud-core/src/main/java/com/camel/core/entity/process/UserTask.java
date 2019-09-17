@@ -2,6 +2,7 @@ package com.camel.core.entity.process;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,4 +48,9 @@ public class UserTask {
      流程定义ID
      */
     private String processDefinitionId;
+
+    /**
+     * 创建时间
+     */
+    private Date createdTime;
 }

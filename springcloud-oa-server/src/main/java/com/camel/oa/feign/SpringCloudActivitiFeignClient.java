@@ -76,6 +76,6 @@ public interface SpringCloudActivitiFeignClient {
      获取当前用户的任务列表
      @return
      */
-    @RequestMapping(value = "/flow/todo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/process/todo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     Result toDo();
 }
