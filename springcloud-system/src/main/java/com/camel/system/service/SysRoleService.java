@@ -44,4 +44,6 @@ public interface SysRoleService extends IService<SysRole> {
      * @return
      */
     boolean delete(Serializable serializable);
+
+    void loadRoleMenus(SysRole role);
 }

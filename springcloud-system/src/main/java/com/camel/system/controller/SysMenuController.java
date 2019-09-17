@@ -1,13 +1,17 @@
 package com.camel.system.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.system.enums.MenuStatus;
 import com.camel.system.enums.MenuType;
+import com.camel.system.enums.RoleStatus;
 import com.camel.system.model.SysMenu;
+import com.camel.system.model.SysRole;
 import com.camel.system.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -92,6 +96,12 @@ public class SysMenuController extends BaseCommonController {
         return ResultUtil.success(service.exist(name, id));
     }
 
+    @GetMapping("/all/list")
+    public Result all(){
+        Wrapper<SysMenu> menuWrapper = new EntityWrapper<>();
+        menuWrapper.eq("status", MenuStatus.NORMAL.getValue());
+        return ResultUtil.success(service.selectList(menuWrapper));
+    }
 
     @Override
     public IService getiService() {

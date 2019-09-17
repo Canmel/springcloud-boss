@@ -5,7 +5,11 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.system.enums.RoleStatus;
 import com.camel.system.mapper.SysRoleMapper;
+import com.camel.system.mapper.SysRoleMenuMapper;
+import com.camel.system.model.SysMenu;
 import com.camel.system.model.SysRole;
+import com.camel.system.model.SysRoleMenu;
+import com.camel.system.service.SysRoleMenuService;
 import com.camel.system.service.SysRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +31,9 @@ import java.util.List;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
     @Autowired
     private SysRoleMapper mapper;
+
+    @Autowired
+    private SysRoleMenuMapper roleMenuMapper;
 
     @Override
     public PageInfo<SysRole> pageQuery(SysRole entity) {
@@ -56,5 +64,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public boolean delete(Serializable serializable) {
         SysRole sysRole = new SysRole((Integer) serializable, RoleStatus.UNVALID.getCode());
         return mapper.updateById(sysRole) > -1;
+    }
+
+    @Override
+    public void loadRoleMenus(SysRole role) {
+        Wrapper<SysRoleMenu> sysRoleMenuWrapper = new EntityWrapper<>();
+        sysRoleMenuWrapper.eq("role_id", role.getRoleId());
+        List<SysRoleMenu> sysRoleMenuList = roleMenuMapper.selectList(sysRoleMenuWrapper);
+        List<Integer> menuIds = new ArrayList<>();
+        sysRoleMenuList.forEach(roleMenu -> {
+            menuIds.add(roleMenu.getMenuId());
+        });
+        role.setMenuIds(menuIds);
     }
 }

@@ -65,7 +65,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUserRoleWrapper.eq("user_id", user.getUid());
         List<SysUserRole> userRoleList = userRoleMapper.selectList(sysUserRoleWrapper);
         List<Integer> roleIds = new ArrayList<>();
-        List<SysRole> roles = new ArrayList<>();
         userRoleList.forEach(userRole -> {
             roleIds.add(userRole.getRoleId());
         });

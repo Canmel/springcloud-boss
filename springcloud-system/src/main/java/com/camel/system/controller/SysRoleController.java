@@ -2,10 +2,12 @@ package com.camel.system.controller;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.system.enums.RoleStatus;
 import com.camel.system.model.SysRole;
 import com.camel.system.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +70,10 @@ public class SysRoleController extends BaseCommonController {
 
     @GetMapping("/{id}")
     public Result detail(@PathVariable(required = true) Integer id){
-        return super.details(id);
+        Result result = super.details(id);
+        SysRole role = (SysRole) result.getData();
+        service.loadRoleMenus(role);
+        return ResultUtil.success(role);
     }
 
     @DeleteMapping("/{id}")
@@ -87,8 +92,9 @@ public class SysRoleController extends BaseCommonController {
 
     @GetMapping("/all/list")
     public Result all(){
-        System.out.println(service.selectList(new EntityWrapper<>()));
-        return ResultUtil.success(service.selectList(new EntityWrapper<>()));
+        Wrapper<SysRole> roleWrapper = new EntityWrapper<>();
+        roleWrapper.eq("status", RoleStatus.NORMAL.getValue());
+        return ResultUtil.success(service.selectList(roleWrapper));
     }
 }
 

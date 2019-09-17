@@ -1,5 +1,6 @@
 package com.camel.system.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
@@ -7,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -65,6 +67,12 @@ public class SysRole extends BasePaginationEntity implements Serializable {
      * 状态(0：已删除，1：正常)
      */
     private String status;
+
+    @TableField(exist = false)
+    private List menuIds;
+
+    @TableField(exist = false)
+    private List<SysMenu> menus;
 
 
     public SysRole() {
