@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,13 +43,16 @@ public class DeploymentController implements RestServiceController<Deployment, S
     }
 
     @Override
-    public Result getList(@RequestParam(value = "rowSize", defaultValue = "1000", required = false) Integer rowSize, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page) {
-        List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().latestVersion().list();
+    public Result getList(@RequestParam(value = "rowSize", defaultValue = "10", required = false) Integer rowSize, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page) {
+        List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().latestVersion().listPage(rowSize * (page - 1), rowSize);
         List<Map<String, Object>> result = new ArrayList<>();
         list.forEach(processDefinition -> {
             result.add(ActivitiObj2HashMapUtils.getInstance().processDefinition2Map(processDefinition));
         });
-        return ResultUtil.success(result);
+        Map<String, Object> r = new HashMap<>(16);
+        r.put("count", repositoryService.createProcessDefinitionQuery().latestVersion().count());
+        r.put("list", result);
+        return ResultUtil.success(r);
     }
 
     @Override

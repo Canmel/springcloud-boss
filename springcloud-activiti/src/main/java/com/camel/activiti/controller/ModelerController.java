@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liuruijie on 2017/4/20.
@@ -121,10 +123,14 @@ public class ModelerController implements RestServiceController<Model, String> {
     }
 
     @Override
-    public Result getList(@RequestParam(value = "rowSize", defaultValue = "1000", required = false) Integer rowSize, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page) {
+    public Result getList(@RequestParam(value = "rowSize", defaultValue = "10", required = false) Integer rowSize, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page) {
         List<Model> list = repositoryService.createModelQuery().listPage(rowSize * (page - 1)
                 , rowSize);
-        return ResultUtil.success(list);
+
+        Map<String, Object> r = new HashMap<>(16);
+        r.put("count", repositoryService.createModelQuery().count());
+        r.put("list", repositoryService.createModelQuery().listPage(rowSize * (page - 1), rowSize));
+        return ResultUtil.success(r);
     }
 
     @Override

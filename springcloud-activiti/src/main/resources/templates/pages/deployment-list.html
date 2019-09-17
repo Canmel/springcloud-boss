@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
 <div class="container dashboard">
     <div class="row models">
         <div class="span3">
@@ -27,8 +28,8 @@
                     <tr>
                         <th>编号</th>
                         <th>名称</th>
-                        <th>版本</th>
-                        <th>操作</th>
+                        <th style="min-width: 100px;">版本</th>
+                        <th style="min-width: 100px;">操作</th>
                     </tr>
                     </tr>
                     </thead>
@@ -42,6 +43,10 @@
                     </tbody>
                 </table>
             </div>
+            <div id="page" class="text-center">
+                <navigation :pages="pages" :current.sync="pageNo" @navpage="msgListView"></navigation>
+                <p>当前是第<span v-text="pageNo"></span>页</p>
+            </div>
         </div>
     </div>
 </div>
@@ -51,7 +56,9 @@
             data: {
                 applicationContextRootPath: '/acti',
                 deployments: [],
-                accessToken: ''
+                accessToken: '',
+                pageNo: 1,
+                pages: 5
             },
             filters: {
                 dateformat: function (val, formate) {
@@ -60,10 +67,17 @@
                 }
             },
             methods: {
+                msgListView(curPage) {
+                    //根据当前页获取数据
+                    this.pageNo = curPage;
+                    this.loadDeployments();
+                },
                 loadDeployments: function () {
                     AJAX.GET("../deployments", null
                         , function (result) {
-                            vm.deployments = result['data'];
+                            vm.deployments = result['data']['list'];
+                            console.log(123);
+                            vm.pages = result['data']['count']%10 === 0 ? Math.floor(result['data']['count'] / 10) : Math.ceil(result['data']['count'] / 10);
                         });
                 },
                 saveCookie: function () {

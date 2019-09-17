@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
 <div class="container dashboard">
     <div class="row models">
         <div class="span3">
@@ -43,7 +44,8 @@
                         <td>{{item.version}}</td>
                         <td>{{item.createTime | dateformat("yyyy-MM-dd hh:mm:ss") }}</td>
                         <td>
-                            <a :href="applicationContextRootPath + '/editor?modelId=' + item.id + '&access_token='+ accessToken " style="cursor: pointer;">编辑</a>
+                            <a :href="applicationContextRootPath + '/editor?modelId=' + item.id + '&access_token='+ accessToken "
+                               style="cursor: pointer;">编辑</a>
                             <a v-on:click="deleteItem(item.id)" style="cursor: pointer;">删除</a>
                             <a v-on:click="deploymentItem(item.id)" style="cursor: pointer;">发布</a>
                         </td>
@@ -52,7 +54,12 @@
                     </tbody>
                 </table>
             </div>
+            <div id="page" class="text-center">
+                <navigation :pages="pages" :current.sync="pageNo" @navpage="msgListView"></navigation>
+                <p>当前是第<span v-text="pageNo"></span>页</p>
+            </div>
         </div>
+
     </div>
 </div>
 <script type="text/javascript">
@@ -62,7 +69,9 @@
                 applicationContextRootPath: '/acti',
                 models: [],
                 deployments: [],
-                accessToken: ''
+                accessToken: '',
+                pageNo: 1,
+                pages: 5
             },
             filters: {
                 dateformat: function (val, formate) {
@@ -71,10 +80,17 @@
                 }
             },
             methods: {
+                msgListView(curPage) {
+                    //根据当前页获取数据
+                    this.pageNo = curPage;
+                    this.loadModels();
+                },
                 loadModels: function () {
-                    AJAX.GET("../models", null
+                    AJAX.GET("../models", {page: this.pageNo}
                         , function (result) {
-                            vm.models = result['data'];
+                            vm.models = result['data']['list'];
+                            console.log(123);
+                            vm.pages = result['data']['count']%10 < 1 ? Math.floor(result['data']['count'] / 10) : Math.ceil(result['data']['count'] / 10);
                         });
                 },
                 saveCookie: function () {

@@ -17,7 +17,6 @@ public class MyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(request.getRequestURL());
         if(isHtml(request)) {
             if(!isPjaxRequest(request)) {
                 response.sendRedirect("http://127.0.0.1:8080/acti/index.html");
