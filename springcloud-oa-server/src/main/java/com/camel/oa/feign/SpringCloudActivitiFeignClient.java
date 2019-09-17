@@ -69,7 +69,7 @@ public interface SpringCloudActivitiFeignClient {
      @param id
      @return
      */
-    @RequestMapping(value = "/flow/comments", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/process/comments", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     Result comment(@RequestParam("id") String id);
 
     /**
