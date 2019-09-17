@@ -140,7 +140,7 @@ public abstract class BaseCommonController {
      */
     public Result passed(Integer id, ActivitiForm activitiForm){
         Result result = getProcessService().current(id, getBusinessKey());
-        
+
         if(!ObjectUtils.isEmpty(result.getData())){
             List<Map<String, Object>> list = (List) result.getData();
             Map<String, Object> userTask = list.get(0);
@@ -153,7 +153,7 @@ public abstract class BaseCommonController {
             if(!ObjectUtils.isEmpty(o)){
                 Boolean isEnd = (Boolean) o;
                 if(isEnd) {
-                    return new Result(HttpStatus.PROCESSING.value(), "审批成功", ((List) result.getData()).get(0), true);
+                    return new Result(HttpStatus.OK.value(), "审批成功", r.getData(), true);
                 }
             }
             return ResultUtil.success("审批成功", ((List) result.getData()).get(0));

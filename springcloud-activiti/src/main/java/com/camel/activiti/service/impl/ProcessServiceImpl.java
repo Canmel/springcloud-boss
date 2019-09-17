@@ -106,6 +106,12 @@ public class ProcessServiceImpl implements ProcessService {
 //    }
 
     @Override
+    public boolean applyById(String busniessKey, String flowId) {
+        ProcessInstance instance = runtimeService.startProcessInstanceById(flowId, busniessKey);
+        return ObjectUtils.allNotNull(instance);
+    }
+
+    @Override
     public boolean apply(String busniessKey, String flowKey) {
         ProcessInstance instance = runtimeService.startProcessInstanceByKey(flowKey, busniessKey);
         return ObjectUtils.allNotNull(instance);

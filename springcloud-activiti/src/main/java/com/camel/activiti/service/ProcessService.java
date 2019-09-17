@@ -43,13 +43,13 @@ public interface ProcessService {
      */
     boolean apply(String busniessKey, String flowKey);
 
-//    /**
-//     通过流程ID发起流程，并绑定业务key
-//     @param busniessKey
-//     @param flowId
-//     @return
-//     */
-//    boolean applyById(String busniessKey, String flowId);
+    /**
+     通过流程ID发起流程，并绑定业务key
+     @param busniessKey
+     @param flowId
+     @return
+     */
+    boolean applyById(String busniessKey, String flowId);
 
     /**
      查询当前流程
