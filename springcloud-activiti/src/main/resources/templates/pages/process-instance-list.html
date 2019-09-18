@@ -1,7 +1,7 @@
 <div class="container dashboard">
     <div class="row models">
         <div class="span3">
-            <h4>在线流程</h4>
+            <h4>流程实例</h4>
             <div class="sidebar">
                 <ul class="col-nav span3">
                     <li><a href="#bookmarks" data-toggle="collapse" class="accordion-toggle"><span
@@ -17,27 +17,27 @@
             </div>
         </div>
         <div class="span9">
-            <h4 class="header">已发布流程</h4>
+            <h4 class="header">工作流程实例</h4>
             <div id="d3" style="width: 100%; margin-top: -30px"></div>
             <br/>
             <div class="row-fluid">
                 <table class="table table-striped sortable">
                     <thead>
                     <tr>
-                    <tr>
-                        <th>编号</th>
-                        <th>名称</th>
-                        <th style="min-width: 100px;">版本</th>
-                        <th style="min-width: 100px;">操作</th>
-                    </tr>
+                        <th>实例ID</th>
+                        <th>流程名称</th>
+                        <th>流程定义KEY</th>
+                        <th>流程版本</th>
+                        <th>业务KEY</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in deployments">
+                    <tr v-for="item in models">
                         <td>{{item.id}}</td>
-                        <td>{{item.diagramResourceName}}</td>
-                        <td>{{item.version}}</td>
-                        <td><a v-on:click="deleteItem(item.deploymentId)" style="cursor: pointer;">删除</a></td>
+                        <td>{{item.definitionName}}</td>
+                        <td>{{item.definitionKey}}</td>
+                        <td>{{item.definitionVersion}}</td>
+                        <td>{{item.businessKey }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -47,6 +47,7 @@
                 <p>当前是第<span v-text="pageNo"></span>页</p>
             </div>
         </div>
+
     </div>
 </div>
 <script type="text/javascript">
@@ -54,6 +55,7 @@
             el: '.models',
             data: {
                 applicationContextRootPath: '/acti',
+                models: [],
                 deployments: [],
                 accessToken: '',
                 pageNo: 1,
@@ -61,22 +63,22 @@
             },
             filters: {
                 dateformat: function (val, formate) {
-
-                    return (new Date(val)).format(formate);
+                    var date = new Date(val);
+                    return date.format(formate);
                 }
             },
             methods: {
                 msgListView(curPage) {
                     //根据当前页获取数据
                     this.pageNo = curPage;
-                    this.loadDeployments();
+                    this.loadInstance();
                 },
-                loadDeployments: function () {
-                    AJAX.GET("../deployments", null
+                loadInstance: function () {
+                    AJAX.GET("../instance", {page: this.pageNo}
                         , function (result) {
-                            vm.deployments = result['data']['list'];
+                            vm.models = result['data']['list'];
                             console.log(123);
-                            vm.pages = result['data']['count']%10 === 0 ? Math.floor(result['data']['count'] / 10) : Math.ceil(result['data']['count'] / 10);
+                            vm.pages = result['data']['count']%10 < 1 ? Math.floor(result['data']['count'] / 10) : Math.ceil(result['data']['count'] / 10);
                         });
                 },
                 saveCookie: function () {
@@ -86,16 +88,26 @@
                     }
                 },
                 deleteItem: function (id) {
-                    AJAX.DELETE(this.applicationContextRootPath + '/deployments/' + id, null, function (resp) {
+                    AJAX.DELETE(this.applicationContextRootPath + '/models/' + id, null, function (resp) {
                         toastr.success(resp['msg'], '操作成功');
-                        vm.loadDeployments();
+                        vm.loadInstance();
+                    });
+                },
+                deploymentItem: function (id) {
+                    AJAX.POST(this.applicationContextRootPath + '/models/' + id + '/deployment', null, function (resp) {
+                        toastr.success(resp['msg'], '操作成功');
+                    });
+                },
+                newModel: function (id) {
+                    AJAX.POST(this.applicationContextRootPath + '/models/newModel', null, function (resp) {
+                        location.href = resp['data'] + '&access_token=' + sessionStorage.getItem('access_token');
                     });
                 }
             },
             created: function () {
                 this.accessToken = sessionStorage.getItem('access_token');
                 this.saveCookie();
-                this.loadDeployments();
+                this.loadInstance();
 
             }
         })

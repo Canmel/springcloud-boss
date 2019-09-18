@@ -15,7 +15,6 @@
         <module>springcloud-system</module>
         <module>springcloud-eureka-server</module>
         <module>springcloud-zuul-getway</module>
-        <module>springcloud-bpm</module>
         <module>springcloud-core</module>
         <module>springcloud-redis</module>
         <module>springcloud-feign</module>

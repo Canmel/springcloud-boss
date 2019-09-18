@@ -2,15 +2,12 @@ package com.camel.oa.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
-import com.camel.oa.feign.SpringCloudBpmFeignClient;
 import com.camel.oa.mapper.ReimbursementMapper;
 import com.camel.oa.model.Reimbursement;
 import com.camel.oa.service.ReimbursementService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  *
@@ -40,9 +37,6 @@ public class ReimbursementServiceImpl extends ServiceImpl<ReimbursementMapper, R
 
     @Autowired
     private ReimbursementMapper mapper;
-
-    @Resource
-    private SpringCloudBpmFeignClient springCloudBpmFeignClient;
 
     @Override
     public PageInfo<Reimbursement> selectPage(Reimbursement entity) {

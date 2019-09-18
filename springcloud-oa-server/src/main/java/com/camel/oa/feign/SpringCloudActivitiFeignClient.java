@@ -3,7 +3,6 @@ package com.camel.oa.feign;
 import com.camel.core.entity.Result;
 import com.camel.oa.config.KeepErrMsgConfiguration;
 import com.camel.oa.feign.fallback.SpringCloudActivitiApprovalFallback;
-import com.camel.oa.feign.fallback.SpringCloudBpmApprovalFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;

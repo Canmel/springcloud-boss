@@ -1,10 +1,10 @@
 package com.camel.activiti.controller;
 
+import com.camel.activiti.utils.ActivitiObj2HashMapUtils;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.activiti.vo.DeploymentResponse;
 import com.camel.common.RestServiceController;
-import com.camel.util.ActivitiObj2HashMapUtils;
 import com.camel.util.ToWeb;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
@@ -18,8 +18,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by liuruijie on 2017/4/20.
- */
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <部署>
+ * @author baily
+ * @since 1.0
+ * @date 2019/9/18
+ **/
 @RestController
 @RequestMapping("deployments")
 public class DeploymentController implements RestServiceController<Deployment, String> {

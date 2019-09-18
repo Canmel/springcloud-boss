@@ -51,7 +51,7 @@ public class ModelerController implements RestServiceController<Model, String> {
         String name = "new-process";
         String description = "";
         int revision = 1;
-        String key = "process";
+        String key = "default-process";
 
         ObjectNode modelNode = objectMapper.createObjectNode();
         modelNode.put(ModelDataJsonConstants.MODEL_NAME, name);
@@ -124,12 +124,9 @@ public class ModelerController implements RestServiceController<Model, String> {
 
     @Override
     public Result getList(@RequestParam(value = "rowSize", defaultValue = "10", required = false) Integer rowSize, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page) {
-        List<Model> list = repositoryService.createModelQuery().listPage(rowSize * (page - 1)
-                , rowSize);
-
         Map<String, Object> r = new HashMap<>(16);
         r.put("count", repositoryService.createModelQuery().count());
-        r.put("list", repositoryService.createModelQuery().listPage(rowSize * (page - 1), rowSize));
+        r.put("list", repositoryService.createModelQuery().orderByCreateTime().desc().listPage(rowSize * (page - 1), rowSize));
         return ResultUtil.success(r);
     }
 

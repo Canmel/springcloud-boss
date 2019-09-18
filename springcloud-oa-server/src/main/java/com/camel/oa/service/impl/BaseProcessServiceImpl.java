@@ -4,7 +4,6 @@ import com.camel.core.BaseProcessService;
 import com.camel.core.entity.Result;
 import com.camel.core.entity.process.ActivitiForm;
 import com.camel.oa.feign.SpringCloudActivitiFeignClient;
-import com.camel.oa.feign.SpringCloudBpmFeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 

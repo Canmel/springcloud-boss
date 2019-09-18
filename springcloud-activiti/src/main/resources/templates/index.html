@@ -35,6 +35,7 @@
     <script src="js/setup.js"></script>
     <script src="lib/js/jquery.cookie.js"></script>
     <script src="js/ajax-util.js"></script>
+    <link rel="stylesheet" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
@@ -66,7 +67,7 @@
                                 class="batch stream"></i><br/>原始模型</a></li>
                         <li><a :href="applicationContextRootPath + 'pages/deployment-list.html'" v-on:click="menuClickHandler($event)" data-pjax><i
                                 class="batch plane"></i><br/>已发布流程</a></li>
-                        <li><a href="calendar.html"><i class="batch calendar"></i><br/>未完待续...</a></li>
+                        <li><a :href="applicationContextRootPath + 'pages/process-instance-list.html'" v-on:click="menuClickHandler($event)" data-pjax><i class="batch calendar"></i><br/>流程实例</a></li>
                         <!--<li><a href="paragraphs.html"><i class="batch quill"></i><br/>Paragraphs</a></li>-->
                         <!--<li><a href="faq.html"><i class="batch forms"></i><br/>FAQ</a></li>-->
                         <!--<li><a href="users.html"><i class="batch users"></i><br/>Users</a></li>-->

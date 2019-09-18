@@ -52,9 +52,9 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             accessToken =oAuth2RestTemplate.getAccessToken().getValue();
         }
         logger.debug("RequestInterceptorConfig accessToken :" +accessToken);
-//        requestTemplate.header(AUTHORIZATION_HEADER,
-//                String.format("%s %s",
-//                        BEARER_TOKEN_TYPE,
-//                        accessToken));
+        requestTemplate.header(AUTHORIZATION_HEADER,
+                String.format("%s %s",
+                        BEARER_TOKEN_TYPE,
+                        accessToken));
     }
 }

@@ -1,10 +1,7 @@
 package com.camel.oa.feign.fallback;
 
 import com.camel.core.entity.Result;
-import com.camel.core.enums.ResultEnum;
-import com.camel.core.utils.ResultUtil;
 import com.camel.oa.feign.SpringCloudActivitiFeignClient;
-import com.camel.oa.feign.SpringCloudBpmFeignClient;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
