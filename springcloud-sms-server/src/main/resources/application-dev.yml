@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: springcloud-sms-server
+  aop:
+    auto: true
+
+server:
+  port: 9002
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_IP}:8888/eureka/

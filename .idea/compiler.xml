@@ -15,6 +15,7 @@
         <module name="springcloud-feign" />
         <module name="springcloud-oa-server" />
         <module name="springcloud-redis" />
+        <module name="springcloud-sms-server" />
         <module name="springcloud-system" />
         <module name="springcloud-zuul-getway" />
       </profile>
@@ -38,6 +39,7 @@
       <module name="springcloud-feign" options="-parameters" />
       <module name="springcloud-oa-server" options="-parameters" />
       <module name="springcloud-redis" options="-parameters" />
+      <module name="springcloud-sms-server" options="-parameters" />
       <module name="springcloud-system" options="-parameters" />
       <module name="springcloud-system (1)" options="-parameters" />
       <module name="springcloud-zuul-getway" options="-parameters" />

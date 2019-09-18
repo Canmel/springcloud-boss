@@ -18,6 +18,7 @@
         <module>springcloud-core</module>
         <module>springcloud-redis</module>
         <module>springcloud-feign</module>
+        <module>springcloud-sms-server</module>
 
     </modules>
     <packaging>pom</packaging>
