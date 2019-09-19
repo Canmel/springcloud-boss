@@ -124,12 +124,7 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public List<Task> current(String busniessKey, String processDifinitionKey) {
-        List<ProcessInstance> instance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(busniessKey, processDifinitionKey).active().list();
-        List<ProcessInstance> instances = runtimeService.createProcessInstanceQuery().list();
-        for (ProcessInstance i: instances) {
-            System.out.println(i.getBusinessKey());
-        }
-
+        List<ProcessInstance> instance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(busniessKey).active().list();
         if (org.springframework.util.ObjectUtils.isEmpty(instance)) {
             // The current process is empty, and there may be value in the history.
             List<HistoricProcessInstance> hpi = historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(busniessKey).list();

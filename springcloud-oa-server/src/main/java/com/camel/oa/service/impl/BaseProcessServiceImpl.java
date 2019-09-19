@@ -52,14 +52,12 @@ public class BaseProcessServiceImpl implements BaseProcessService {
 
     @Override
     public Result current(String id, String businessKey) {
-        Result result = springCloudActivitiFeignClient.current(businessKey + id, businessKey);
-        return result;
+        return springCloudActivitiFeignClient.current(businessKey + id, businessKey);
     }
 
     @Override
     public Result pass(String id, ActivitiForm activitiForm, String businessKey) {
-        Result result = springCloudActivitiFeignClient.pass(id, activitiForm.getComment(), businessKey + activitiForm.getBusinessId());
-        return result;
+        return springCloudActivitiFeignClient.pass(id, activitiForm.getComment(), businessKey + activitiForm.getBusinessId());
     }
 
     @Override

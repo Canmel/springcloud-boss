@@ -120,7 +120,7 @@ public class ErrandController extends BaseCommonController {
     @GetMapping("/apply/{id}")
     public Result apply(@PathVariable Integer id, String flowId) {
         Result result = super.applyed(id, flowId);
-        Errand entity = new Errand(id, ReimbursementStatus.APPLY.getValue());
+        Errand entity = new Errand(id, ErrandStatus.APPLY.getValue());
         errandService.updateById(entity);
         return result;
     }

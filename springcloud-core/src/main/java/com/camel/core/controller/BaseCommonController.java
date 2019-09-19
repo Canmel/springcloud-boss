@@ -115,7 +115,8 @@ public abstract class BaseCommonController {
      * @param id 业务主键
      * @return
      */
-    public Result currented(Integer id){
+    public Result
+    currented(Integer id){
         return getProcessService().current(id, getBusinessKey());
     }
 
