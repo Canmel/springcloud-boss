@@ -8,6 +8,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   aop:
     auto: true
+  activemq:
+    broker-url: tcp://127.0.0.1:61616
+    close-timeout: 15s
+    user: admin
+    password: admin
+#  jms:
+#    pub-sub-domain: true
 
 server:
   port: 9001

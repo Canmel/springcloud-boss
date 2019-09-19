@@ -5,6 +5,7 @@ import com.camel.redis.entity.RedisUser;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.system.annotation.Log;
 import com.camel.system.model.SysLog;
+import com.camel.system.service.MqService;
 import com.camel.system.service.SysLogService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -35,6 +36,9 @@ public class LogAspect {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private MqService mqService;
+
     @Pointcut("@annotation(com.camel.system.annotation.Log)")
     public void operationLog() {
 
@@ -57,6 +61,7 @@ public class LogAspect {
         }
         SysLog sysLog = new SysLog(null, username, log.option(), time, joinPoint.getArgs().toString(), joinPoint.getSignature().toShortString(), joinPoint.getArgs().toString(), log.moduleName());
         sysLogService.insert(sysLog);
+        mqService.sendMsg(sysLog.toString());
         LOGGER.info("==============================================用户操作日志-通知结束执行......==========================================");
         return result;
     }

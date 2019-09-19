@@ -3,6 +3,13 @@ spring:
     name: springcloud-sms-server
   aop:
     auto: true
+  activemq:
+    broker-url: tcp://127.0.0.1:61616
+    close-timeout: 15s
+    user: admin
+    password: admin
+  jms:
+#    pub-sub-domain: true # topic时需要注释掉
 
 server:
   port: 9002
@@ -14,3 +21,4 @@ eureka:
   client:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
+
