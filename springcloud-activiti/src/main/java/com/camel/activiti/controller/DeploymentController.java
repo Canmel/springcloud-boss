@@ -54,7 +54,7 @@ public class DeploymentController implements RestServiceController<Deployment, S
 
     @GetMapping("def/{key}")
     public Result deployed(@PathVariable String key) {
-        List<ProcessDefinition> l = repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).list();
+        List<ProcessDefinition> l = repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).latestVersion().list();
         List<Map<String, Object>> result = new ArrayList<>();
         l.forEach(processDefinition -> {
             result.add(ActivitiObj2HashMapUtils.getInstance().processDefinition2Map(processDefinition));

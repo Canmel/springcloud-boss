@@ -60,7 +60,7 @@ public class DashBoardController {
     public Result processStatus() {
         Map<String, Object> result = new HashMap<>();
         result.put("modelNum", repositoryService.createModelQuery().count());
-        result.put("deploymentNum",  repositoryService.createDeploymentQuery().count());
+        result.put("deploymentNum",  repositoryService.createProcessDefinitionQuery().latestVersion().count());
         result.put("instanceNum",  runtimeService.createProcessInstanceQuery().active().count());
         result.put("taskNum",  taskService.createTaskQuery().count());
         return ResultUtil.success(result);
