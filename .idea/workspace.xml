@@ -8,11 +8,333 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21194d6-4da2-4ac1-95e9-d28f0d95cba4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap-select.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/bootstrap-select.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/springcloud_auth_server_war.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/springcloud_auth_server_war_exploded.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_2_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_2_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_10.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_15.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_47.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_aliyun_aliyun_java_sdk_core_4_1_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_baomidou_mybatis_plus_2_2_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_baomidou_mybatis_plus_boot_starter_2_2_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_baomidou_mybatis_plus_core_2_2_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_baomidou_mybatis_plus_generate_2_2_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_baomidou_mybatis_plus_support_2_2_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_classmate_1_3_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_9_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_dataformat_jackson_dataformat_xml_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_afterburner_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_jaxb_annotations_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_parameter_names_2_9_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_woodstox_woodstox_core_5_0_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_gexin_platform_gexin_rp_fastjson_1_0_0_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_gexin_platform_gexin_rp_sdk_base_4_0_0_30.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_gexin_platform_gexin_rp_sdk_http_4_1_0_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_gexin_platform_gexin_rp_sdk_template_4_0_0_24.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_andrewoma_dexx_dexx_collections_0_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jsqlparser_jsqlparser_1_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_5_1_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_spring_boot_autoconfigure_1_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_spring_boot_starter_1_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_vlsi_compactmap_compactmap_1_2_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_3_0_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_16_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_18_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_inject_guice_4_1_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_2_5_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_2_6_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jayway_jsonpath_json_path_2_4_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_archaius_archaius_core_0_7_6.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_eureka_eureka_client_1_9_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_eureka_eureka_core_1_9_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_feign_feign_core_8_18_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_feign_feign_httpclient_8_18_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_hystrix_hystrix_core_1_4_10.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_hystrix_hystrix_core_1_5_12.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_hystrix_hystrix_javanica_1_5_12.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_hystrix_hystrix_metrics_event_stream_1_5_12.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_hystrix_hystrix_serialization_1_5_12.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_netflix_commons_netflix_commons_util_0_3_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_netflix_commons_netflix_eventbus_0_3_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_netflix_commons_netflix_infix_0_3_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_netflix_commons_netflix_statistics_0_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_ribbon_ribbon_2_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_ribbon_ribbon_core_2_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_ribbon_ribbon_eureka_2_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_ribbon_ribbon_httpclient_2_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_ribbon_ribbon_loadbalancer_2_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_ribbon_ribbon_transport_2_2_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_servo_servo_core_0_12_21.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_netflix_zuul_zuul_core_1_3_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_contribs_jersey_apache_client4_1_19_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_client_1_19_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_core_1_19_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_server_1_19_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_servlet_1_19_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_6_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_xml_bind_jaxb_core_2_1_14.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_xml_bind_jaxb_impl_2_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_xstream_xstream_1_4_10.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_zaxxer_HikariCP_2_7_9.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_11.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_configuration_commons_configuration_1_8.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_dbcp_commons_dbcp_1_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_jxpath_commons_jxpath_1_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_0_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_pool_commons_pool_1_6.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_github_openfeign_feign_core_9_5_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_github_openfeign_feign_hystrix_9_5_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_github_openfeign_feign_hystrix_9_5_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_github_openfeign_feign_java8_9_5_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_github_openfeign_feign_slf4j_9_5_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_lettuce_lettuce_core_5_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_micrometer_micrometer_core_1_0_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_buffer_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_http_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_common_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_handler_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_resolver_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_transport_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_transport_native_epoll_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_transport_native_unix_common_4_1_24_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_projectreactor_reactor_core_3_1_7_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_reactivex_rxjava_1_3_8.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_reactivex_rxjava_reactive_streams_1_2_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_reactivex_rxnetty_0_4_9.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_reactivex_rxnetty_contexts_0_4_9.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_reactivex_rxnetty_servo_0_4_9.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_annotation_javax_annotation_api_1_3_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_inject_javax_inject_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_jms_javax_jms_api_2_0_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_transaction_javax_transaction_api_1_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_2_0_1_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_ws_rs_jsr311_api_1_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_3_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_xml_stream_stax_api_1_0_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_9_9.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__math_geom2d_javaGeom_0_11_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_46.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_11.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_7_11.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_bytebuddy_byte_buddy_agent_1_7_11.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_accessors_smart_1_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_json_smart_2_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_nekohtml_nekohtml_1_9_22.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_bpmn_converter_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_bpmn_model_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_common_rest_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_diagram_rest_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_engine_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_image_generator_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_json_converter_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_modeler_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_process_validation_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_activiti_activiti_spring_5_22_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr_runtime_3_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_stringtemplate_3_2_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_activemq_activemq_broker_5_15_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_activemq_activemq_client_5_15_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_activemq_activemq_openwire_legacy_5_15_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_avalon_framework_avalon_framework_api_4_3_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_avalon_framework_avalon_framework_impl_4_3_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_email_1_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_math_2_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_geronimo_specs_geronimo_j2ee_management_1_1_spec_1_0_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_geronimo_specs_geronimo_jms_1_1_spec_1_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_5.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_9.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_10_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_to_slf4j_2_10_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_8_5_31.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_8_5_31.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_8_5_31.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_tomcat_annotations_api_8_5_31.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_velocity_velocity_engine_core_2_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_anim_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_awt_util_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_bridge_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_codec_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_css_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_dom_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_ext_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_gvt_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_js_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_parser_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_script_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_svg_dom_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_svggen_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_transcoder_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_util_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_batik_xml_1_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_fop_0_94.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_8_13.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_assertj_assertj_core_3_9_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_attoparser_attoparser_2_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bouncycastle_bcpkix_jdk15on_1_56.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bouncycastle_bcprov_jdk15on_1_56.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_9_13.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_9_13.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jettison_jettison_1_3_7.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_woodstox_stax2_api_3_1_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_woodstox_woodstox_core_asl_4_4_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_freemarker_freemarker_2_3_28.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_fusesource_hawtbuf_hawtbuf_1_11.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_library_1_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hdrhistogram_HdrHistogram_2_1_10.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hdrhistogram_HdrHistogram_2_1_9.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_common_hibernate_commons_annotations_5_0_1_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_5_2_17_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_javax_persistence_hibernate_jpa_2_1_api_1_0_0_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_0_9_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_javassist_javassist_3_22_0_GA.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_jandex_2_0_3_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_3_2_Final.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jvnet_animal_sniffer_annotation_1_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_latencyutils_LatencyUtils_2_0_3.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mockito_mockito_core_2_15_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_3_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_4_6.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_spring_1_3_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_autoconfigure_1_3_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_starter_1_3_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_2_6.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_5_0_4.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_16_10.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_16_20.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_reactivestreams_reactive_streams_1_0_2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_skyscreamer_jsonassert_1_5_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_actuator_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_actuator_autoconfigure_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_activemq_1_5_0_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_activemq_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_actuator_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_aop_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_jpa_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_redis_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_redis_2_1_5_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_freemarker_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_jdbc_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_json_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_security_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_test_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_thymeleaf_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_tomcat_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_web_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_autoconfigure_2_0_2_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_commons_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_context_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_archaius_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_core_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_eureka_client_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_eureka_server_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_hystrix_dashboard_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_ribbon_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_zuul_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_openfeign_core_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_security_2_0_0_RC1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_feign_1_4_3_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_hystrix_1_4_3_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_hystrix_dashboard_1_4_3_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_archaius_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_client_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_server_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_hystrix_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_hystrix_dashboard_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_ribbon_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_zuul_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_oauth2_2_0_0_RC1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_openfeign_2_0_0_RC2.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_security_2_0_0_RC1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_2_0_7_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_jpa_2_0_7_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_keyvalue_2_0_7_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_redis_2_0_7_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_oauth_boot_spring_security_oauth2_autoconfigure_2_0_0_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_oauth_spring_security_oauth2_2_2_1_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_config_5_0_5_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_core_5_0_5_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_crypto_5_0_5_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_jwt_1_0_9_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_rsa_1_0_5_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_web_5_0_5_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aspects_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jms_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_messaging_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_oxm_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_5_0_6_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_extras_thymeleaf_extras_java8time_3_0_1_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_3_0_9_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_spring5_3_0_9_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_unbescape_unbescape_1_1_5_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_d3js_3_4_11.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_jquery_2_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_xmlunit_xmlunit_core_2_5_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_19.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__stax_stax_api_1_0_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xerces_xercesImpl_2_11_0.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_1_4_01.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_ext_1_3_04.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xmlpull_xmlpull_1_1_3_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xpp3_xpp3_min_1_1_4c.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-activiti/springcloud-activiti.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-sms-server/sms.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/example/UniPushServer.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application-dev.yml" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application-dev.yml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-auth-server/springcloud-auth-server.iml" afterPath="$PROJECT_DIR$/springcloud-auth-server/springcloud-auth-server.iml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-boss.iml" afterPath="$PROJECT_DIR$/springcloud-boss.iml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-common/springcloud-common.iml" afterPath="$PROJECT_DIR$/springcloud-common/springcloud-common.iml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-core/springcloud-core.iml" afterPath="$PROJECT_DIR$/springcloud-core/springcloud-core.iml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-eureka-server/springcloud-eureka-server.iml" afterPath="$PROJECT_DIR$/springcloud-eureka-server/springcloud-eureka-server.iml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-redis/springcloud-redis.iml" afterPath="$PROJECT_DIR$/springcloud-redis/springcloud-redis.iml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-sms-server/pom.xml" afterPath="$PROJECT_DIR$/springcloud-sms-server/pom.xml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-system/springcloud-system.iml" afterPath="$PROJECT_DIR$/springcloud-system/springcloud-system.iml" />
+      <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/springcloud-zuul-getway.iml" afterPath="$PROJECT_DIR$/springcloud-zuul-getway/springcloud-zuul-getway.iml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -40,6 +362,7 @@
     <ignored path="$PROJECT_DIR$/springcloud-activiti/target/" />
     <ignored path="$PROJECT_DIR$/springcloud-sms-server/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -267,90 +590,97 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-sms-server/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="134" column="54" selection-start-line="134" selection-start-column="54" selection-end-line="134" selection-end-column="54" />
+            <state relative-caret-position="468">
+              <caret line="56" column="19" lean-forward="false" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java">
+      <file leaf-file-name="UniPushServer.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/example/UniPushServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="56" column="84" selection-start-line="56" selection-start-column="84" selection-end-line="56" selection-end-column="84" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DashBoardController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="64">
-              <caret line="56" column="30" lean-forward="true" selection-start-line="56" selection-start-column="30" selection-end-line="56" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/styles.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="74">
-              <caret line="275" column="28" lean-forward="true" selection-start-line="275" selection-start-column="28" selection-end-line="275" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/dashbord.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="61" column="42" lean-forward="true" selection-start-line="61" selection-start-column="42" selection-end-line="61" selection-end-column="42" />
+            <state relative-caret-position="284">
+              <caret line="39" column="25" lean-forward="false" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
               <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#td#2;n#tr#1;n#table#0;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#950#951#0" expanded="true" />
+                <element signature="e#972#973#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/index.html">
+      <file leaf-file-name="ParamUtils.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-http/4.1.0.5/gexin-rp-sdk-http-4.1.0.5.jar!/com/gexin/rp/sdk/http/utils/ParamUtils.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
+            <state relative-caret-position="197">
+              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/model-list.html">
+      <file leaf-file-name="SingleMessage.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/impl/SingleMessage.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2079" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/error.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/public/model-list.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-280">
-              <folding>
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="171">
+              <caret line="12" column="38" lean-forward="true" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/modeler.html">
+      <file leaf-file-name="Message.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/impl/Message.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1764" />
+            <state relative-caret-position="114">
+              <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IGtPush.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-http/4.1.0.5/gexin-rp-sdk-http-4.1.0.5.jar!/com/gexin/rp/sdk/http/IGtPush.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="33" column="36" lean-forward="false" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IIGtPush.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/IIGtPush.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="48" column="48" lean-forward="true" selection-start-line="48" selection-start-column="48" selection-end-line="49" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Target.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/impl/Target.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="12" column="11" lean-forward="false" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TransmissionTemplate.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-template/4.0.0.24/gexin-rp-sdk-template-4.0.0.24.jar!/com/gexin/rp/sdk/template/TransmissionTemplate.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="24" column="31" lean-forward="false" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="31" />
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
@@ -366,12 +696,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ActivitiObj2SystemObjUtils</find>
-      <find>redisTemplate</find>
-      <find>commentsByInstanceId</find>
-      <find>backProcess</find>
-      <find>passProcess</find>
-      <find>processTraceImage</find>
       <find>PROCESS_NAME_SUFFIX</find>
       <find>END_TAG</find>
       <find>/comment</find>
@@ -396,6 +720,12 @@
       <find>current</find>
       <find>processDifinitionKey</find>
       <find>.bar-label</find>
+      <find>IGtNotify</find>
+      <find>template</find>
+      <find>appIds</find>
+      <find>push</find>
+      <find>target</find>
+      <find>appId</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -409,12 +739,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/vue.js" />
-        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap.css" />
-        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap.min.css" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/model-list.html" />
         <option value="$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/controller/SysMenuController.java" />
         <option value="$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/service/SysRoleService.java" />
@@ -445,7 +777,6 @@
         <option value="$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/aop/LogAspect.java" />
         <option value="$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/listener/MqMessageListener.java" />
         <option value="$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/config/MqFactoryConfig.java" />
-        <option value="$PROJECT_DIR$/springcloud-sms-server/pom.xml" />
         <option value="$PROJECT_DIR$/springcloud-common/pom.xml" />
         <option value="$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml" />
         <option value="$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/service/MqService.java" />
@@ -463,6 +794,10 @@
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap-select.min.css" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap-select.min.js" />
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/index.html" />
+        <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/application-dev.yml" />
+        <option value="$PROJECT_DIR$/springcloud-sms-server/pom.xml" />
+        <option value="$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/example/PushMessageToAppDemo.java" />
+        <option value="$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/example/UniPushServer.java" />
       </list>
     </option>
   </component>
@@ -639,10 +974,22 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -653,25 +1000,70 @@
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-sms-server" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-sms-server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-sms-server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-sms-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-sms-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="sms" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-sms-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="sms" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -679,69 +1071,29 @@
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="camel" type="462c0819:PsiDirectoryNode" />
+              <item name="gateway" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="camel" type="462c0819:PsiDirectoryNode" />
-              <item name="activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="gateway" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="camel" type="462c0819:PsiDirectoryNode" />
-              <item name="activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
@@ -751,7 +1103,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -775,7 +1127,7 @@
     <property name="project.structure.proportion" value="0.15208334" />
     <property name="project.structure.side.proportion" value="0.31122032" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.ignored.files" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -822,19 +1174,96 @@
     </option>
     <option name="contentProportion" value="0.3109489" />
   </component>
-  <component name="RunManager" selected="Spring Boot.SpringCloudSmsServerApplication">
-    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
-      <module name="springcloud-bpm" />
+  <component name="RunManager" selected="Application.UniPushServer">
+    <configuration name="UniPushServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.camel.sms.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="com.camel.sms.example.UniPushServer" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="springcloud-sms-server" />
+      <envs />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
-      <method v="2">
+      <module name="springcloud-bpm" />
+      <envs />
+      <method>
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="SpringCloudActivitiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.SpringCloudActivitiApplication" />
+      <module name="springcloud-activiti" />
+      <envs />
+    </configuration>
+    <configuration name="SpringCloudAuthServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.camel.auth.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.auth.SpringCloudAuthServerApplication" />
+      <module name="springcloud-auth-server" />
+      <envs />
+    </configuration>
+    <configuration name="SpringCloudEurekaServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.camel.eureka.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.eureka.server.SpringCloudEurekaServerApplication" />
+      <module name="springcloud-eureka-server" />
+      <envs />
+    </configuration>
+    <configuration name="SpringCloudOaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.oa.SpringCloudOaServerApplication" />
+      <module name="springcloud-oa-server" />
+      <envs />
+    </configuration>
+    <configuration name="SpringCloudSystemApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.camel.system.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.system.SpringCloudSystemApplication" />
+      <module name="springcloud-system" />
+      <envs />
+    </configuration>
+    <configuration name="SpringCloudZuulApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.camel.gateway.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.gateway.SpringCloudZuulApplication" />
+      <module name="springcloud-zuul-getway" />
+      <envs />
     </configuration>
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
       <module name="springcloud-bpm" />
@@ -870,103 +1299,27 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SpringCloudActivitiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="springcloud-activiti" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.SpringCloudActivitiApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SpringCloudAuthServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="springcloud-auth-server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.camel.auth.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.auth.SpringCloudAuthServerApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SpringCloudEurekaServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="springcloud-eureka-server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.camel.eureka.server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.eureka.server.SpringCloudEurekaServerApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SpringCloudOaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="springcloud-oa-server" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.oa.SpringCloudOaServerApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SpringCloudSmsServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="springcloud-sms-server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.camel.sms.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.sms.SpringCloudSmsServerApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SpringCloudSystemApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="springcloud-system" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.camel.system.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.system.SpringCloudSystemApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SpringCloudZuulApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="springcloud-zuul-getway" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.camel.gateway.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.gateway.SpringCloudZuulApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Spring Boot.SpringCloudOaServerApplication" />
-      <item itemvalue="Spring Boot.SpringCloudActivitiApplication" />
-      <item itemvalue="Spring Boot.SpringCloudEurekaServerApplication (1)" />
-      <item itemvalue="Spring Boot.SpringCloudAuthServerApplication (1)" />
-      <item itemvalue="Spring Boot.SpringCloudSystemApplication (1)" />
-      <item itemvalue="Spring Boot.SpringCloudZuulApplication (1)" />
-      <item itemvalue="Spring Boot.SpringCloudSmsServerApplication" />
+    <list size="7">
+      <item index="0" class="java.lang.String" itemvalue="Spring Boot.SpringCloudOaServerApplication" />
+      <item index="1" class="java.lang.String" itemvalue="Spring Boot.SpringCloudActivitiApplication" />
+      <item index="2" class="java.lang.String" itemvalue="Spring Boot.SpringCloudEurekaServerApplication (1)" />
+      <item index="3" class="java.lang.String" itemvalue="Spring Boot.SpringCloudAuthServerApplication (1)" />
+      <item index="4" class="java.lang.String" itemvalue="Spring Boot.SpringCloudSystemApplication (1)" />
+      <item index="5" class="java.lang.String" itemvalue="Spring Boot.SpringCloudZuulApplication (1)" />
+      <item index="6" class="java.lang.String" itemvalue="Application.UniPushServer" />
     </list>
     <recent_temporary>
-      <list>
-        <item itemvalue="Spring Boot.SpringCloudZuulApplication (1)" />
-        <item itemvalue="Spring Boot.SpringCloudSmsServerApplication" />
-        <item itemvalue="Spring Boot.SpringCloudSystemApplication (1)" />
-        <item itemvalue="Spring Boot.SpringCloudAuthServerApplication (1)" />
-        <item itemvalue="Spring Boot.SpringCloudEurekaServerApplication (1)" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Application.UniPushServer" />
+        <item index="1" class="java.lang.String" itemvalue="Spring Boot.SpringCloudZuulApplication (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Spring Boot.SpringCloudSystemApplication (1)" />
+        <item index="3" class="java.lang.String" itemvalue="Spring Boot.SpringCloudAuthServerApplication (1)" />
+        <item index="4" class="java.lang.String" itemvalue="Spring Boot.SpringCloudEurekaServerApplication (1)" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration>C:\Users\admin\AppData\Roaming\Subversion</configuration>
@@ -1018,6 +1371,10 @@
       <workItem from="1568819697762" duration="8571000" />
       <workItem from="1568900144874" duration="5373000" />
       <workItem from="1569145459057" duration="3579000" />
+      <workItem from="1569315170108" duration="361000" />
+      <workItem from="1569315557356" duration="3677000" />
+      <workItem from="1569470302490" duration="3504000" />
+      <workItem from="1569483661650" duration="4403000" />
     </task>
     <task id="LOCAL-00011" summary="BPM">
       <created>1562412900200</created>
@@ -1371,93 +1728,93 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="546791000" />
+    <option name="totallyTimeSpent" value="559092000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4820296" visible="true" weight="0.3197425" />
-      <window_info id="Designer" order="1" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="UI Designer" order="3" />
-      <window_info id="Structure" order="4" sideWeight="0.516129" side_tool="true" weight="0.29470673" />
-      <window_info id="Favorites" order="5" sideWeight="0.500994" side_tool="true" weight="0.27110156" />
-      <window_info id="Capture Tool" order="6" />
-      <window_info id="Web" order="7" sideWeight="0.5179704" side_tool="true" weight="0.3111588" />
-      <window_info id="JRebel" order="8" sideWeight="0.500994" side_tool="true" weight="0.27110156" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32827735" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3290653" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3592881" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Spring" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3277849" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5028612" side_tool="true" weight="0.3559539" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49928468" weight="0.32522407" />
-      <window_info anchor="bottom" id="Statistic" order="11" />
-      <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.3290653" />
-      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="14" weight="0.3277849" />
-      <window_info anchor="bottom" id="JRebel Executor" order="15" />
-      <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.50500715" side_tool="true" weight="0.36363637" />
-      <window_info anchor="bottom" id="Run Dashboard" order="17" sideWeight="0.49499285" visible="true" weight="0.3943662" />
-      <window_info active="true" anchor="bottom" id="Inspection Results" order="18" visible="true" weight="0.3290653" />
-      <window_info anchor="bottom" id="Problems" order="19" />
-      <window_info anchor="bottom" id="Thumbnails" order="20" weight="0.3290653" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24964234" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Maven Projects" order="5" weight="0.16237482" />
-      <window_info anchor="right" id="Database" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info anchor="right" id="Bean Validation" order="9" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559539" sideWeight="0.5028612" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16237482" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29470673" sideWeight="0.516129" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3592881" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32502708" sideWeight="0.49928468" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3943662" sideWeight="0.49499285" order="17" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277849" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277849" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33422175" sideWeight="0.4820296" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3111588" sideWeight="0.5179704" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27110156" sideWeight="0.500994" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36363637" sideWeight="0.50500715" order="16" side_tool="true" content_ui="tabs" />
+      <window_info id="Database Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection Results" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="20" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27110156" sideWeight="0.500994" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.29899856" />
-      <window_info id="Designer" order="1" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="UI Designer" order="3" />
-      <window_info id="Structure" order="4" sideWeight="0.516129" side_tool="true" weight="0.29470673" />
-      <window_info id="Favorites" order="5" sideWeight="0.500994" side_tool="true" weight="0.27110156" />
-      <window_info id="Capture Tool" order="6" />
-      <window_info id="Web" order="7" sideWeight="0.516129" side_tool="true" weight="0.29470673" />
-      <window_info id="JRebel" order="8" sideWeight="0.500994" side_tool="true" weight="0.27110156" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32827735" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3290653" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3592881" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Spring" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3277849" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5028612" side_tool="true" weight="0.3559539" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49928468" weight="0.32522407" />
-      <window_info anchor="bottom" id="Statistic" order="11" />
-      <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.3290653" />
-      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="14" weight="0.3277849" />
-      <window_info anchor="bottom" id="JRebel Executor" order="15" />
-      <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.50500715" side_tool="true" weight="0.36363637" />
-      <window_info anchor="bottom" id="Run Dashboard" order="17" sideWeight="0.49499285" visible="true" weight="0.36491677" />
-      <window_info active="true" anchor="bottom" id="Inspection Results" order="18" visible="true" weight="0.3290653" />
-      <window_info anchor="bottom" id="Problems" order="19" />
-      <window_info anchor="bottom" id="Thumbnails" order="20" weight="0.3290653" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24964234" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Maven Projects" order="5" weight="0.16237482" />
-      <window_info anchor="right" id="Database" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info anchor="right" id="Bean Validation" order="9" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559539" sideWeight="0.5028612" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="JRebel Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36363637" sideWeight="0.50500715" order="16" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16237482" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection Results" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29470673" sideWeight="0.516129" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3592881" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32522407" sideWeight="0.49928468" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36491677" sideWeight="0.49499285" order="17" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277849" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="20" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277849" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29899856" sideWeight="0.48387095" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29470673" sideWeight="0.516129" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27110156" sideWeight="0.500994" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27110156" sideWeight="0.500994" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1726,179 +2083,18 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/controller/SysUserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="74" column="11" selection-start-line="74" selection-start-column="11" selection-end-line="74" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/annotation/Log.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/model/SysLog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="94" column="18" selection-start-line="94" selection-start-column="18" selection-end-line="94" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="59" column="21" selection-start-line="54" selection-start-column="8" selection-end-line="59" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/activemq/activemq-all/5.9.0/activemq-all-5.9.0.jar!/org/apache/activemq/ActiveMQConnectionFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/config/MqFactoryConfig.java" />
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/service/SmsService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/service/MqCustomerService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/service/impl/SmsServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="17" column="33" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/service/impl/MqCustomerServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-common/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="21" lean-forward="true" selection-start-line="29" selection-start-column="21" selection-end-line="29" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-auth-server/src/main/java/com/camel/auth/SpringCloudAuthServerApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/SpringCloudSystemApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="7" lean-forward="true" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/service/MqService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/activemq/activemq-client/5.15.3/activemq-client-5.15.3.jar!/org/apache/activemq/command/ActiveMQQueue.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="17" column="16" lean-forward="true" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/listener/MqMessageListener.java" />
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/aop/LogAspect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="63" selection-start-line="63" selection-end-line="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/SpringCloudSmsServerApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/controller/ConsumerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jms/5.0.6.RELEASE/spring-jms-5.0.6.RELEASE.jar!/org/springframework/jms/annotation/JmsListener.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="25" column="11" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/service/impl/MqServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/config/MqConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="20" column="15" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
+          <caret line="20" column="15" lean-forward="false" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/javax/jms/javax.jms-api/2.0.1/javax.jms-api-2.0.1.jar!/javax/jms/Topic.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/javax/jms/javax.jms-api/2.0.1/javax.jms-api-2.0.1.jar!/javax/jms/Queue.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/javax/jms/javax.jms-api/2.0.1/javax.jms-api-2.0.1.jar!/javax/jms/Topic.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/javax/jms/javax.jms-api/2.0.1/javax.jms-api-2.0.1.jar!/javax/jms/Queue.class" />
     <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/resources/application-dev.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -1906,101 +2102,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/SpringCloudZuulApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="45" column="13" lean-forward="true" selection-start-line="45" selection-start-column="13" selection-end-line="45" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/enums/ErrandStatus.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
-          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
+          <caret line="37" column="4" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/controller/ErrandController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1185">
-          <caret line="120" column="49" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
+          <caret line="120" column="49" lean-forward="false" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/controller/BaseCommonController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1515">
-          <caret line="119" column="37" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+          <caret line="119" column="37" lean-forward="false" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-core/src/main/java/com/camel/core/BaseProcessService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
-          <caret line="44" column="11" selection-start-line="44" selection-start-column="11" selection-end-line="44" selection-end-column="11" />
+          <caret line="44" column="11" lean-forward="false" selection-start-line="44" selection-start-column="11" selection-end-line="44" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/service/impl/BaseProcessServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="705">
-          <caret line="54" column="14" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/SpringCloudOaServerApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="30" column="17" selection-start-line="29" selection-start-column="13" selection-end-line="30" selection-end-column="17" />
+          <caret line="54" column="14" lean-forward="false" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/SpringCloudActivitiApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
-          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessInstanceController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
-          <caret line="43" column="13" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+          <caret line="43" column="13" lean-forward="false" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/ProcessController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1380">
-          <caret line="122" column="46" selection-start-line="122" selection-start-column="46" selection-end-line="122" selection-end-column="46" />
+          <caret line="122" column="46" lean-forward="false" selection-start-line="122" selection-start-column="46" selection-end-line="122" selection-end-column="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/ProcessService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
-          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+          <caret line="59" column="9" lean-forward="false" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/service/impl/ProcessServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
-          <caret line="134" column="54" selection-start-line="134" selection-start-column="54" selection-end-line="134" selection-end-column="54" />
+          <caret line="134" column="54" lean-forward="false" selection-start-line="134" selection-start-column="54" selection-end-line="134" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/controller/DeploymentController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="56" column="84" selection-start-line="56" selection-start-column="84" selection-end-line="56" selection-end-column="84" />
+          <caret line="56" column="84" lean-forward="false" selection-start-line="56" selection-start-column="84" selection-end-line="56" selection-end-column="84" />
         </state>
       </provider>
     </entry>
@@ -2020,7 +2195,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/modeler.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1764" />
+        <state relative-caret-position="-1764">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/css/bootstrap-select.min.css">
@@ -2033,10 +2210,7 @@
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/bootstrap-select.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="8" column="48" selection-start-line="8" selection-start-column="48" selection-end-line="8" selection-end-column="48" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+          <caret line="8" column="48" lean-forward="false" selection-start-line="8" selection-start-column="48" selection-end-line="8" selection-end-column="48" />
         </state>
       </provider>
     </entry>
@@ -2044,32 +2218,240 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
           <caret line="61" column="42" lean-forward="true" selection-start-line="61" selection-start-column="42" selection-end-line="61" selection-end-column="42" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#td#2;n#tr#1;n#table#0;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
+          <caret line="25" column="17" lean-forward="false" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/model-list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2079" />
+        <state relative-caret-position="-2079">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/error.html">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/public/model-list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-280">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/controller/SysRoleController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1406">
+          <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/pages/process-instance-list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="20" lean-forward="false" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/util/exception/GlobalExceptionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="24" column="11" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/java/com/camel/eureka/server/SpringCloudEurekaServerApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="665">
+          <caret line="42" column="95" lean-forward="false" selection-start-line="42" selection-start-column="95" selection-end-line="42" selection-end-column="95" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/SpringCloudSystemFeignClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="665">
+          <caret line="42" column="18" lean-forward="false" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/SpringCloudActivitiFeignClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="14" column="126" lean-forward="false" selection-start-line="14" selection-start-column="126" selection-end-line="14" selection-end-column="126" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/SpringCloudOaServerApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="37" column="13" lean-forward="false" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java/com/camel/oa/feign/FeignRequestInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="36" column="13" lean-forward="false" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-oa-server/src/main/resources/application-dev.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="36" lean-forward="false" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/resources/application-dev.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/feign/FeignRequestInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="912">
+          <caret line="56" column="42" lean-forward="false" selection-start-line="56" selection-start-column="42" selection-end-line="56" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/SpringCloudZuulApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/KeepErrMsgConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="779">
+          <caret line="52" column="48" lean-forward="false" selection-start-line="52" selection-start-column="48" selection-end-line="52" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="32" column="19" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/java/com/camel/system/controller/SysUserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="43" column="27" lean-forward="false" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/activiti/config/ResourceServerConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="35" column="13" lean-forward="false" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-template/4.0.0.24/gexin-rp-sdk-template-4.0.0.24.jar!/com/gexin/rp/sdk/template/TransmissionTemplate.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="24" column="31" lean-forward="false" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/impl/Target.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="12" column="11" lean-forward="false" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-http/4.1.0.5/gexin-rp-sdk-http-4.1.0.5.jar!/com/gexin/rp/sdk/http/IGtPush.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="33" column="36" lean-forward="false" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/impl/Message.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/impl/SingleMessage.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="12" column="38" lean-forward="true" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-base/4.0.0.30/gexin-rp-sdk-base-4.0.0.30.jar!/com/gexin/rp/sdk/base/IIGtPush.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="48" column="48" lean-forward="true" selection-start-line="48" selection-start-column="48" selection-end-line="49" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/example/PushMessageToAppDemo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/gexin/platform/gexin-rp-sdk-http/4.1.0.5/gexin-rp-sdk-http-4.1.0.5.jar!/com/gexin/rp/sdk/http/utils/ParamUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="56" column="19" lean-forward="false" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java/com/camel/sms/example/UniPushServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="39" column="25" lean-forward="false" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#950#951#0" expanded="true" />
+            <element signature="e#972#973#0" expanded="true" />
           </folding>
         </state>
       </provider>
