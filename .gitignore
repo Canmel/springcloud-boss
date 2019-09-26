@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+/.idea/
+/springcloud-zuul-getway/target/
+/springcloud-system/springcloud-system.iml
+/springcloud-zuul-getway/springcloud-zuul-getway.iml
+/springcloud-boss.iml
+/springcloud-sms-server/target/
+/springcloud-activiti/springcloud-activiti.iml
+/springcloud-activiti/target/
+/springcloud-sms-server/springcloud-sms-server.iml

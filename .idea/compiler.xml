@@ -16,33 +16,21 @@
         <module name="springcloud-feign" />
         <module name="springcloud-oa-server" />
         <module name="springcloud-redis" />
-        <module name="springcloud-sms-server" />
         <module name="springcloud-system" />
         <module name="springcloud-zuul-getway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="sms" target="1.8" />
       <module name="spring-boot-activiti" target="1.8" />
-      <module name="springcloud-activiti" target="1.8" />
-      <module name="springcloud-auth-server" target="1.8" />
-      <module name="springcloud-boss" target="1.8" />
       <module name="springcloud-bpm" target="1.8" />
       <module name="springcloud-bpm-server" target="1.8" />
-      <module name="springcloud-common" target="1.8" />
-      <module name="springcloud-core" target="1.8" />
-      <module name="springcloud-eureka-server" target="1.8" />
-      <module name="springcloud-feign" target="1.8" />
-      <module name="springcloud-oa-server" target="1.8" />
-      <module name="springcloud-redis" target="1.8" />
       <module name="springcloud-sms-server" target="1.8" />
-      <module name="springcloud-system" target="1.8" />
       <module name="springcloud-system (1)" target="1.8" />
-      <module name="springcloud-zuul-getway" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="sms" options="-parameters" />
       <module name="springcloud-activiti" options="-parameters" />
       <module name="springcloud-auth-server" options="-parameters" />
       <module name="springcloud-bpm" options="-parameters" />
