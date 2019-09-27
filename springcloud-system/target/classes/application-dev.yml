@@ -2,14 +2,14 @@ spring:
   application:
     name: springcloud-system
   datasource:
-    url: jdbc:mysql://${DATABASE_IP}:3306/dw_oauth2?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://${DATABASE_IP}:3306/dw_oauth2?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   aop:
     auto: true
   activemq:
-    broker-url: tcp://127.0.0.1:61616
+    broker-url: tcp://${ACTIVEMQ_HOST}:61616
     close-timeout: 15s
     user: admin
     password: admin
