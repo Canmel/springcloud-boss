@@ -1,0 +1,8 @@
+web:
+  image: 172.17.32.114:1180/canmel/restful:latest
+  ports:
+  - '22'
+  - '8081:8081'
+  privileged: true
+  restart: always
+  tty: true
