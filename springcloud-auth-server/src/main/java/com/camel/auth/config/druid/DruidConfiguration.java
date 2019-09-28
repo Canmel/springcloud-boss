@@ -51,46 +51,46 @@ public class DruidConfiguration {
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
 
-    @Value("${spring.druid.initialSize}")
+    @Value("${spring.datasource.druid.initial-size}")
     private int initialSize;
 
-    @Value("${spring.druid.minIdle}")
+    @Value("${spring.datasource.druid.min-idle}")
     private int minIdle;
 
-    @Value("${spring.druid.maxActive}")
+    @Value("${spring.datasource.druid.max-active}")
     private int maxActive;
 
-    @Value("${spring.druid.maxWait}")
+    @Value("${spring.datasource.druid.max-wait}")
     private int maxWait;
 
-    @Value("${spring.druid.timeBetweenEvictionRunsMillis}")
+    @Value("${spring.datasource.druid.time-between-eviction-runs-millis}")
     private int timeBetweenEvictionRunsMillis;
 
-    @Value("${spring.druid.minEvictableIdleTimeMillis}")
+    @Value("${spring.datasource.druid.min-evictable-idle-time-millis}")
     private int minEvictableIdleTimeMillis;
 
-    @Value("${spring.druid.validationQuery}")
+    @Value("${spring.datasource.druid.validation-query}")
     private String validationQuery;
 
-    @Value("${spring.druid.testWhileIdle}")
+    @Value("${spring.datasource.druid.test-while-idle}")
     private boolean testWhileIdle;
 
-    @Value("${spring.druid.testOnBorrow}")
+    @Value("${spring.datasource.druid.test-on-borrow}")
     private boolean testOnBorrow;
 
-    @Value("${spring.druid.testOnReturn}")
+    @Value("${spring.datasource.druid.test-on-return}")
     private boolean testOnReturn;
 
-    @Value("${spring.druid.poolPreparedStatements}")
+    @Value("${spring.datasource.druid.pool-prepared-statements}")
     private boolean poolPreparedStatements;
 
-    @Value("${spring.druid.maxPoolPreparedStatementPerConnectionSize}")
+    @Value("${spring.datasource.druid.max-pool-prepared-statement-per-connection-size}")
     private int maxPoolPreparedStatementPerConnectionSize;
 
-    @Value("${spring.druid.filters}")
+    @Value("${spring.datasource.druid.filters}")
     private String filters;
 
-    @Value("{spring.druid.connectionProperties}")
+    @Value("{spring.datasource.druid.connection-properties}")
     private String connectionProperties;
 
     @Bean

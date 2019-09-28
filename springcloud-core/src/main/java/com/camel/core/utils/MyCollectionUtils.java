@@ -1,11 +1,7 @@
-package com.camel.sms.controller;
+package com.camel.core.utils;
 
-import com.camel.core.entity.Result;
-import com.camel.core.utils.ResultUtil;
-import com.camel.sms.service.AppPushService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  *
@@ -25,22 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <App消息推送>
+ * <自定义的集合操作>
  * @author baily
  * @since 1.0
- * @date 2019/9/26
+ * @date 2019/9/28
  **/
-@RestController
-public class AppPushController {
-
-    public static final String QUEUE_NAME = "app-notice-msg-push-queue";
-
-    @Autowired
-    private AppPushService appPushService;
-
-    @JmsListener(destination = QUEUE_NAME)
-    public Result push(String msg) {
-        appPushService.send();
-        return ResultUtil.success("推送成功");
-    }
+public class MyCollectionUtils {
+    public static List removeRepeat(List list){
+        LinkedHashSet lhs = new LinkedHashSet();
+        lhs.addAll(list);
+        list.clear();
+        list.addAll(lhs);
+        return list;
+    } 
 }

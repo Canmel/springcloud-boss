@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").authenticated()
+                .antMatchers("/druid/*").permitAll()
                 .and()
                 .csrf().disable();
     }

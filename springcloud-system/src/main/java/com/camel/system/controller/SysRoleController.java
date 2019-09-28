@@ -9,6 +9,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.system.enums.RoleStatus;
 import com.camel.system.model.SysRole;
+import com.camel.system.model.SysUser;
 import com.camel.system.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -95,6 +96,14 @@ public class SysRoleController extends BaseCommonController {
         Wrapper<SysRole> roleWrapper = new EntityWrapper<>();
         roleWrapper.eq("status", RoleStatus.NORMAL.getValue());
         return ResultUtil.success(service.selectList(roleWrapper));
+    }
+
+    @PostMapping("/menus")
+    public Result addRole(@RequestBody SysRole role) {
+        if (service.addMenus(role)) {
+            return ResultUtil.success("修改角色菜单成功");
+        }
+        return ResultUtil.error(400, "修改角色菜单失败");
     }
 }
 

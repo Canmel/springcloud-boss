@@ -62,6 +62,22 @@ public class SysRoleMenu extends BasePaginationEntity implements Serializable {
      */
     private Date gmtModified;
 
+    public SysRoleMenu() {
+    }
+
+    public SysRoleMenu(Integer roleId, Integer menuId) {
+        this.roleId = roleId;
+        this.menuId = menuId;
+    }
+
+    public SysRoleMenu(Integer id, Integer roleId, Integer menuId, String status, Date gmtCreate, Date gmtModified) {
+        this.id = id;
+        this.roleId = roleId;
+        this.menuId = menuId;
+        this.status = status;
+        this.gmtCreate = gmtCreate;
+        this.gmtModified = gmtModified;
+    }
 
     public Integer getId() {
         return id;

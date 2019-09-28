@@ -6,6 +6,38 @@ spring:
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 初始化时连接数
+      initial-size: 10
+      # 最大连接数
+      max-active: 100
+      # 最小空闲连接数
+      min-idle: 5
+      # 连接最大等待时间
+      max-wait: 60000
+      # 是否缓存（PsCatch）
+      pool-prepared-statements: true
+      # PsCatch 最大连接数
+      max-pool-prepared-statement-per-connection-size: 10
+      # Destroy线程定时监测的间隔
+      time-between-eviction-runs-millis: 60000
+      # 连接保持空闲而不被驱逐的最长时间
+      min-evictable-idle-time-millis: 300000
+      # 连接保持空闲而不被驱逐的最长时间
+#      max-evictable-idle-time-millis: 60000
+      validation-query: SELECT 1 FROM DUAL
+      # validation-query-timeout: 5000
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      #filters: #配置多个英文逗号分隔(统计，sql注入，log4j过滤)
+      filters: stat,wall, log4j
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: 123456
   aop:
     auto: true
 
@@ -38,3 +70,13 @@ pagehelper:
   helper-dialect: mysql
   reasonable: true
   support-methods-arguments: true
+
+logging:
+  path: /tmp/log
+  pattern:
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS}=== [%thread]=== %-5level === %logger{50} === %ms%n'
+  level:
+    com:
+      camel:
+        oa: INFO

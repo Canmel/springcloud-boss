@@ -1,7 +1,9 @@
 package com.camel.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.system.model.SysMenu;
 import com.camel.system.model.SysRole;
+import com.camel.system.model.SysUser;
 import com.github.pagehelper.PageInfo;
 
 import java.io.Serializable;
@@ -46,4 +48,11 @@ public interface SysRoleService extends IService<SysRole> {
     boolean delete(Serializable serializable);
 
     void loadRoleMenus(SysRole role);
+
+    /**
+     * 给用户添加角色
+     * @param role
+     * @return
+     */
+    boolean addMenus(SysRole role);
 }

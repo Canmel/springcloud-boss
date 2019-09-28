@@ -3,6 +3,7 @@ package com.camel.system.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.core.utils.MyCollectionUtils;
 import com.camel.system.mapper.SysUserMapper;
 import com.camel.system.mapper.SysUserRoleMapper;
 import com.camel.system.model.SysRole;
@@ -79,18 +80,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         userRoleWrapper.eq("user_id", user.getUid());
 
         userRoleMapper.delete(userRoleWrapper);
-        removeRepeat(user.getRoleIds()).forEach(roleId -> {
+        MyCollectionUtils.removeRepeat(user.getRoleIds()).forEach(roleId -> {
             userRoleMapper.insert(new SysUserRole(user.getUid(), (Integer) roleId));
         });
         return true;
-    }
-
-    public List removeRepeat(List list){
-        LinkedHashSet lhs = new LinkedHashSet();
-        lhs.addAll(list);
-        list.clear();
-        list.addAll(lhs);
-        return list;
     }
 
     @Override
