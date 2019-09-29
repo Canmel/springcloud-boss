@@ -37,16 +37,16 @@ public class MysqlGenerator {
         path += "src/main/java";
 
         com.baomidou.mybatisplus.generator.config.GlobalConfig config = new com.baomidou.mybatisplus.generator.config.GlobalConfig();
-        String dbUrl = "jdbc:mysql://192.168.2.135:3306/dw_service?useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8";
+        String dbUrl = "jdbc:mysql://47.106.234.117:3306/dw_oauth2?useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8";
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDbType(DbType.MYSQL)
                 .setUrl(dbUrl)
                 .setUsername("root")
-                .setPassword("1234")
+                .setPassword("Ldj1654167*")
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"route"});
+        strategyConfig.setInclude(new String[] {"sys_notice"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
@@ -63,7 +63,7 @@ public class MysqlGenerator {
                 .setStrategy(strategyConfig)
                 .setPackageInfo(
                         new PackageConfig()
-                                .setParent("com.camel.oauth.resource")
+                                .setParent("com.camel.system")
                                 .setController("controller")
                                 .setEntity("model")
                 ).execute();
