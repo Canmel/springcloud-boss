@@ -22,3 +22,7 @@ springcloud-system/target/classes/log4j.properties
 springcloud-system/target/classes/mapper/
 springcloud-system/target/generated-sources/
 /.idea/workspace.xml
+springcloud-auth-server/src/main/webapp/
+springcloud-oa-server/src/test/java/com/camel/springcloud/
+springcloud-sms-server/src/main/java/com/camel/sms/config/
+springcloud-sms-server/src/test/
