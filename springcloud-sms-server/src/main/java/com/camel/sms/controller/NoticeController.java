@@ -1,6 +1,10 @@
-package com.camel.system.service;
+package com.camel.sms.controller;
 
-import javax.jms.JMSException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  *
@@ -20,15 +24,18 @@ import javax.jms.JMSException;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <Mq>
+ * <>
  * @author baily
  * @since 1.0
- * @date 2019/9/19
+ * @date 2019/9/29
  **/
-public interface MqService {
-    boolean sendMsg(String msg) throws JMSException;
+@RestController
+public class NoticeController {
 
-    boolean send(String msg);
-
-    boolean sendForNotice(String msg);
+    public static Logger logger = LoggerFactory.getLogger(NoticeController.class);
+    
+    @JmsListener(destination = "ActiveMQ.Notice.Topic")
+    public void notice(String msg) {
+        logger.info(msg);
+    }
 }

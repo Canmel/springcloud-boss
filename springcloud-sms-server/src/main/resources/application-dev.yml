@@ -9,7 +9,7 @@ spring:
     user: admin
     password: admin
   jms:
-#    pub-sub-domain: true # topic时需要注释掉
+    pub-sub-domain: true # topic时需要注释掉
 
 server:
   port: 9002

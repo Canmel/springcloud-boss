@@ -1,3 +1,6 @@
+server:
+  port: 9001
+
 spring:
   application:
     name: springcloud-system
@@ -48,9 +51,6 @@ spring:
     password: admin
 #  jms:
 #    pub-sub-domain: true
-
-server:
-  port: 9001
 
 eureka:
   instance:

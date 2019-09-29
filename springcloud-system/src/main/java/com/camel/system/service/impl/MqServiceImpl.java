@@ -2,6 +2,7 @@ package com.camel.system.service.impl;
 
 import com.camel.system.service.MqService;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -38,20 +39,26 @@ public class MqServiceImpl implements MqService {
     private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
-    private Queue queue;
+    private Topic logTopic;
 
     @Autowired
     private Topic topic;
 
     @Override
-    public boolean sendMsg(String msg) throws JMSException {
-        this.jmsMessagingTemplate.convertAndSend(this.queue, msg);
+    public boolean sendMsg(String msg) {
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Log.Topic"), msg);
         return true;
     }
 
     @Override
     public boolean send(String msg) {
         this.jmsMessagingTemplate.convertAndSend(this.topic, msg);
+        return true;
+    }
+
+    @Override
+    public boolean sendForNotice(String msg) {
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Notice.Topic"), msg);
         return true;
     }
 }

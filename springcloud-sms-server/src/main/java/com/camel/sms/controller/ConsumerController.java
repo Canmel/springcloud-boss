@@ -1,5 +1,7 @@
 package com.camel.sms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,11 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConsumerController {
 
-    public static final String QUEUE_NAME = "test";
+    public static Logger logger = LoggerFactory.getLogger(ConsumerController.class);
 
-    @JmsListener(destination=QUEUE_NAME)
-    public void readActiveQueue(String message) {
-        System.out.println("接受到：" + message);
-        //TODO something
+    @JmsListener(destination = "ActiveMQ.Log.Topic")
+    public void log(String msg) {
+        logger.info(msg);
     }
 }

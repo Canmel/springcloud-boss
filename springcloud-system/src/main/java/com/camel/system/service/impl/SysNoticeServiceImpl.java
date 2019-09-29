@@ -56,7 +56,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     @Override
     public boolean push(Integer id) {
         // 推送消息
-//        mqService.send("{title: '', context: '我想放个假', target: ['12313', '123332']}", new ActiveMQTopic("notice.topic"));
+        mqService.sendForNotice("{title: '', context: '我想放个假', target: ['12313', '123332']}");
         return false;
     }
 }
