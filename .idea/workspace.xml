@@ -9,18 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f21194d6-4da2-4ac1-95e9-d28f0d95cba4" name="Default Changelist" comment="Default Changelist">
       <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/springcloud_auth_server_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/springcloud_auth_server_war_exploded.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-activiti/springcloud-activiti.iml" afterPath="$PROJECT_DIR$/springcloud-activiti/springcloud-activiti.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-auth-server/springcloud-auth-server.iml" afterPath="$PROJECT_DIR$/springcloud-auth-server/springcloud-auth-server.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-boss.iml" afterPath="$PROJECT_DIR$/springcloud-boss.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-common/springcloud-common.iml" afterPath="$PROJECT_DIR$/springcloud-common/springcloud-common.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-core/springcloud-core.iml" afterPath="$PROJECT_DIR$/springcloud-core/springcloud-core.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-eureka-server/springcloud-eureka-server.iml" afterPath="$PROJECT_DIR$/springcloud-eureka-server/springcloud-eureka-server.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-redis/springcloud-redis.iml" afterPath="$PROJECT_DIR$/springcloud-redis/springcloud-redis.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-system/springcloud-system.iml" afterPath="$PROJECT_DIR$/springcloud-system/springcloud-system.iml" />
-      <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/springcloud-zuul-getway.iml" afterPath="$PROJECT_DIR$/springcloud-zuul-getway/springcloud-zuul-getway.iml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -345,8 +334,8 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state relative-caret-position="133">
+              <caret line="7" column="29" lean-forward="true" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -688,6 +677,11 @@
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -971,14 +965,7 @@
       <workItem from="1569584177777" duration="90000" />
       <workItem from="1569584291025" duration="1940000" />
       <workItem from="1569600973366" duration="13764000" />
-      <workItem from="1569718616625" duration="173000" />
-    </task>
-    <task id="LOCAL-00015" summary="readme">
-      <created>1562469055356</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1562469055356</updated>
+      <workItem from="1569718616625" duration="276000" />
     </task>
     <task id="LOCAL-00016" summary="添加一个新的项目，作为oa服务">
       <created>1562487228451</created>
@@ -1316,7 +1303,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569604278148</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Default Changelist">
+      <created>1569718797286</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1569718797286</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1325,7 +1319,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="593233000" />
+    <option name="totallyTimeSpent" value="593336000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1347,9 +1341,9 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43228602" sideWeight="0.49499285" order="18" side_tool="false" content_ui="tabs" />
+      <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43228602" sideWeight="0.49499285" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277849" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277849" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32719395" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277849" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2835821" sideWeight="0.4820296" order="0" side_tool="false" content_ui="combo" />
@@ -1978,8 +1972,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        <state relative-caret-position="133">
+          <caret line="7" column="29" lean-forward="true" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
           <folding />
         </state>
       </provider>

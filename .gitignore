@@ -21,3 +21,4 @@ springcloud-system/target/classes/com/
 springcloud-system/target/classes/log4j.properties
 springcloud-system/target/classes/mapper/
 springcloud-system/target/generated-sources/
+/.idea/workspace.xml
