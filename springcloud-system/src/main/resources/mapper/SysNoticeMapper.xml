@@ -33,4 +33,8 @@
         </where>
         ORDER BY sys_notice.oder_num, sys_notice.created_at DESC
     </select>
+
+    <select id="selectMaxOrderNum">
+        SELECT max(oder_num) FROM sys_notice
+    </select>
 </mapper>

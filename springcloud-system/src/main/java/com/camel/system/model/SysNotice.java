@@ -63,6 +63,10 @@ public class SysNotice extends BasePaginationEntity implements Serializable {
     public SysNotice() {
     }
 
+    public SysNotice(Integer id) {
+        this.id = id;
+    }
+
     public SysNotice(Integer id, Integer status) {
         this.id = id;
         this.status = status;

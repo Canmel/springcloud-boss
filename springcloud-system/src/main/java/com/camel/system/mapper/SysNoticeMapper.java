@@ -32,4 +32,6 @@ import java.util.List;
  */
 public interface SysNoticeMapper extends BaseMapper<SysNotice> {
     List<SysNotice> list(SysNotice sysNotice);
+
+    Integer selectMaxOrderNum();
 }

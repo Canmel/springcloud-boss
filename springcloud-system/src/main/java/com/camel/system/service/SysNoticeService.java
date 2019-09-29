@@ -28,4 +28,18 @@ public interface SysNoticeService extends IService<SysNotice> {
      * @return
      */
     boolean delete(Serializable serializable);
+
+    /**
+     * 将指定ID的通知置顶
+     * @param id
+     * @return
+     */
+    boolean top(Integer id);
+
+    /**
+     * 推送消息
+     * @param id
+     * @return
+     */
+    boolean push(Integer id);
 }
