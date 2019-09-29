@@ -8,3 +8,16 @@
 /springcloud-activiti/target/
 /springcloud-sms-server/target/
 /springcloud-zuul-getway/target/
+springcloud-auth-server/target/classes/com/
+springcloud-auth-server/target/classes/log4j.properties
+springcloud-auth-server/target/classes/mybatis/
+springcloud-auth-server/target/generated-sources/
+springcloud-common/target/
+springcloud-core/target/
+springcloud-eureka-server/target/classes/com/
+springcloud-eureka-server/target/generated-sources/
+springcloud-redis/target/generated-sources/
+springcloud-system/target/classes/com/
+springcloud-system/target/classes/log4j.properties
+springcloud-system/target/classes/mapper/
+springcloud-system/target/generated-sources/
