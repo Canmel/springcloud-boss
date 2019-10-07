@@ -16,6 +16,8 @@ import com.camel.system.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 /**
  *
  *                 ___====-_  _-====___
@@ -77,13 +79,13 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @GetMapping("/tops")
-    public Result tops(SysMenu sysMenu) {
-        return ResultUtil.success(service.tops());
+    public Result tops(SysMenu sysMenu, Principal principal) {
+        return ResultUtil.success(service.tops(principal));
     }
 
     @GetMapping("/subs")
-    public Result subs(SysMenu sysMenu) {
-        return ResultUtil.success(service.subs());
+    public Result subs(SysMenu sysMenu, Principal principal) {
+        return ResultUtil.success(service.subs(principal));
     }
 
     @GetMapping("/typies")

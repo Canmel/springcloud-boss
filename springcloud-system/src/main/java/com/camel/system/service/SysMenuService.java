@@ -5,6 +5,7 @@ import com.camel.system.model.SysMenu;
 import com.github.pagehelper.PageInfo;
 
 import java.io.Serializable;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -27,13 +28,13 @@ public interface SysMenuService extends IService<SysMenu> {
      * 查询一级菜单
      * @return
      */
-    List<SysMenu> tops();
+    List<SysMenu> tops(Principal principal);
 
     /**
      * 查询子菜单
      * @return
      */
-    List<SysMenu> subs();
+    List<SysMenu> subs(Principal principal);
 
     /**
      * 是否存在
