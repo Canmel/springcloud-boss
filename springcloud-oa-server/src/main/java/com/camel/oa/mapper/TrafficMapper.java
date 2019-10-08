@@ -1,7 +1,9 @@
-package com.camel.system.mapper;
+package com.camel.oa.mapper;
 
-import com.camel.system.model.Traffic;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.camel.oa.model.Traffic;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +13,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author ${author}
  * @since 2019-10-08
  */
+@Mapper
+@Repository
 public interface TrafficMapper extends BaseMapper<Traffic> {
 
 }

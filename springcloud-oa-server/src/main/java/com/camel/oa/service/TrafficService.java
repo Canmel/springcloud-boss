@@ -1,7 +1,9 @@
-package com.camel.system.service;
+package com.camel.oa.service;
 
-import com.camel.system.model.Traffic;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.oa.model.Traffic;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface TrafficService extends IService<Traffic> {
 
+    List<Traffic> traffic(Integer id);
 }

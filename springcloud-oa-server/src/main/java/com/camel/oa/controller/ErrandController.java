@@ -19,6 +19,7 @@ import com.camel.oa.model.Imperfect;
 import com.camel.oa.model.Reimbursement;
 import com.camel.oa.service.ErrandService;
 import com.camel.oa.service.ImperfectService;
+import com.camel.oa.service.TrafficService;
 import com.camel.oa.service.impl.BaseProcessServiceImpl;
 import com.camel.redis.utils.SessionContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,9 @@ public class ErrandController extends BaseCommonController {
     private ImperfectService imperfectService;
 
     @Autowired
+    private TrafficService trafficService;
+
+    @Autowired
     public BaseProcessServiceImpl baseProcessService;
 
     @GetMapping
@@ -105,6 +109,11 @@ public class ErrandController extends BaseCommonController {
     public Result imperfect(){
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return ResultUtil.success(errandService.imperfect(member.getId()));
+    }
+
+    @GetMapping("/traffic/{id}")
+    public Result traffic(@PathVariable Integer id) {
+        return ResultUtil.success(trafficService.traffic(id));
     }
 
     @GetMapping("/{id}")
