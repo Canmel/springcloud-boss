@@ -72,6 +72,11 @@ public class RouteController extends BaseCommonController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) {
+        return super.delete(id);
+    }
+
     @Override
     public IService getiService() {
         return service;

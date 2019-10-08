@@ -9,10 +9,7 @@ import com.camel.oa.model.Trip;
 import com.camel.oa.service.ImperfectService;
 import com.camel.oa.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -37,6 +34,12 @@ public class TripController extends BaseCommonController {
         entity.setImperfectId(imperfect.getId());
         return super.save(entity);
     }
+
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id){
+        return super.delete(id);
+    }
+
 
     @Override
     public IService getiService() {

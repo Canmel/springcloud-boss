@@ -37,6 +37,11 @@ public class TrafficController extends BaseCommonController {
         return super.save(entity);
     }
 
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) {
+        return super.delete(id);
+    }
+
     @Override
     public IService getiService() {
         return trafficService;
