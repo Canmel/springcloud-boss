@@ -1,5 +1,7 @@
 package com.camel.system.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.system.mapper.SysNoticeMapper;
@@ -48,7 +50,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     public boolean top(Integer id) {
         Integer maxOrderNum = mapper.selectMaxOrderNum();
         SysNotice sysNotice = mapper.selectOne(new SysNotice(id));
-        sysNotice.setOderNum(maxOrderNum++);
+        sysNotice.setOderNum(maxOrderNum + 1);
         mapper.updateById(sysNotice);
         return true;
     }
@@ -56,7 +58,16 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     @Override
     public boolean push(Integer id) {
         // 推送消息
-        mqService.sendForNotice("{title: '', context: '我想放个假', target: ['12313', '123332']}");
+        SysNotice notice = mapper.selectById(id);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", notice.getTitle());
+        jsonObject.put("context", notice.getContent());
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add("ahdfoagfqhdhiopq");
+        jsonArray.add("sadfajbadbuakgdfl");
+        jsonObject.put("target", jsonArray);
+        jsonObject.toString();
+        mqService.sendForNotice(jsonObject.toString());
         return false;
     }
 }
