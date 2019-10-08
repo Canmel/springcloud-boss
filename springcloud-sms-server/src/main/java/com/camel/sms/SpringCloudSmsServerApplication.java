@@ -39,6 +39,6 @@ public class SpringCloudSmsServerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        LoggerFactory.getLogger(this.getClass()).info("SpringCloud 短信服务启动玩笑...");
+        LoggerFactory.getLogger(this.getClass()).info("SpringCloud 短信服务启动完成...");
     }
 }

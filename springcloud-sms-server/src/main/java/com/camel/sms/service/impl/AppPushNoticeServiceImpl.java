@@ -1,7 +1,9 @@
 package com.camel.sms.service.impl;
 
 import com.camel.sms.config.AppPushConfig;
+import com.camel.sms.service.AppPushNoticeService;
 import com.camel.sms.service.AppPushService;
+import com.gexin.fastjson.JSONObject;
 import com.gexin.rp.sdk.base.IPushResult;
 import com.gexin.rp.sdk.base.impl.AppMessage;
 import com.gexin.rp.sdk.base.impl.SingleMessage;
@@ -9,48 +11,19 @@ import com.gexin.rp.sdk.exceptions.RequestException;
 import com.gexin.rp.sdk.http.IGtPush;
 import com.gexin.rp.sdk.template.NotificationTemplate;
 import com.gexin.rp.sdk.template.style.Style0;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.gson.JsonObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- *                 ___====-_  _-====___
- *           _--^^^#####//      \\#####^^^--_
- *        _-^##########// (    ) \\##########^-_
- *       -############//  |\^^/|  \\############-
- *     _/############//   (@::@)   \\############\_
- *    /#############((     \\//     ))#############\
- *   -###############\\    (oo)    //###############-
- *  -#################\\  / VV \  //#################-
- * -###################\\/      \//###################-
- *_#/|##########/\######(   /\   )######/\##########|\#_
- *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
- *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
- *   `   `  `      `   / | |  | | \   '      '  '   '
- *                    (  | |  | |  )
- *                   __\ | |  | | /__
- *                  (vvv(VVV)(VVV)vvv)
- * <移动端推送实现>
- * @author baily
- * @since 1.0
- * @date 2019/9/26
- **/
 @Service
-public class AppPushServiceImpl implements AppPushService {
-
-    public static Logger logger = LoggerFactory.getLogger(AppPushServiceImpl.class);
-
+public class AppPushNoticeServiceImpl implements AppPushNoticeService {
     @Override
-    public Boolean send() {
+    public Boolean send(String msg) {
+        System.out.println(msg);
         IGtPush push = new IGtPush(AppPushConfig.URL, AppPushConfig.APPKEY, AppPushConfig.MASTERSECRET);
-        NotificationTemplate template = getNotificationTemplate();
-        SingleMessage message = new SingleMessage();
-
+        NotificationTemplate template = getNotificationTemplate(msg);
         AppMessage appMessage = new AppMessage();
         appMessage.setOffline(true);
         appMessage.setOfflineExpireTime(24 * 3600 * 1000);
@@ -61,27 +34,11 @@ public class AppPushServiceImpl implements AppPushService {
         appMessage.setAppIdList(appList);
 
 
-
-
-//        message.setOffline(true);
-//        // 离线有效时间，单位为毫秒
-//        message.setOfflineExpireTime(24 * 3600 * 1000);
-//        message.setData(template);
-//        // 可选，1为wifi，0为不限制网络环境。根据手机处于的网络情况，决定是否下发
-//        message.setPushNetWorkType(0);
-//
-//
-//        Target target = new Target();
-//        target.setAppId(appId);
-
-
-        //target.setAlias(Alias);
         IPushResult ret = null;
         try {
             ret = push.pushMessageToApp(appMessage);
         } catch (RequestException e) {
             e.printStackTrace();
-//            ret = push.pushMessageToSingle(message, target, e.getRequestId());
         }
         if (ret != null) {
             System.out.println(ret.getResponse().toString());
@@ -91,16 +48,17 @@ public class AppPushServiceImpl implements AppPushService {
         return true;
     }
 
-    public static NotificationTemplate getNotificationTemplate() {
+    public static NotificationTemplate getNotificationTemplate(String msg) {
         NotificationTemplate template = new NotificationTemplate();
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(msg);
         // 设置APPID与APPKEY
         template.setAppId(AppPushConfig.APPID);
         template.setAppkey(AppPushConfig.APPKEY);
 
         Style0 style = new Style0();
         // 设置通知栏标题与内容
-        style.setTitle("请输入通知栏标题");
-        style.setText("请输入通知栏内容");
+        style.setTitle((String) jsonObject.get(AppPushConfig.PUSH_TITLE_KEY));
+        style.setText((String) jsonObject.get(AppPushConfig.PUSH_CONTEXT_KEY));
         // 配置通知栏图标
         style.setLogo("icon.png");
         // 配置通知栏网络图标
