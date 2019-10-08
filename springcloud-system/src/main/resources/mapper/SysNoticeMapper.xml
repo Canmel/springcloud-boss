@@ -21,7 +21,7 @@
         sys_notice.target_value,
         sys_notice.status,
         sys_notice.oder_num,
-        sys_notice.created_at
+        DATE_FORMAT(sys_notice.created_at ,'%Y-%m-%d %H:%i:%s') as created_at
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -30,10 +30,10 @@
         FROM
           sys_notice
         <where>
-            <if test="status != null and status != ''">sys_notice.`status` = #{status}</if>
-            <if test="title != null and title != ''">AND sys_notice.`title` LIKE CONCAT('%', #{title}, '%')</if>
-        </where>
-        ORDER BY sys_notice.oder_num DESC
+        <if test="status != null and status != ''">AND sys_notice.`status` = #{status}</if>
+        <if test="title != null and title != ''">AND sys_notice.`title` LIKE CONCAT('%', #{title}, '%')</if>
+    </where>
+    ORDER BY sys_notice.oder_num DESC
     </select>
 
     <select id="selectMaxOrderNum" resultType="java.lang.Integer">

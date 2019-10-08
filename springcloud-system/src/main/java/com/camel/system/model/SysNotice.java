@@ -53,7 +53,7 @@ public class SysNotice extends BasePaginationEntity implements Serializable {
     /**
      * 更新时间
      */
-    private Date createdAt;
+    private String createdAt;
 
     /**
      * 排序
