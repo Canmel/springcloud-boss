@@ -44,6 +44,27 @@ public class Document implements Serializable {
      */
     private Integer creator;
 
+    public Document() {
+    }
+
+    public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator) {
+        this.id = id;
+        this.dname = dname;
+        this.address = address;
+        this.dsize = dsize;
+        this.dtype = dtype;
+        this.createdAt = createdAt;
+        this.creator = creator;
+    }
+
+    public Document(String dname, String address, Double dsize, String dtype, Integer creator) {
+        this.dname = dname;
+        this.address = address;
+        this.dsize = dsize;
+        this.dtype = dtype;
+        this.creator = creator;
+    }
+
     @Override
     public String toString() {
         return "Document{" +
