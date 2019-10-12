@@ -2,6 +2,7 @@ package com.camel.oa.model;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.camel.core.entity.BaseProcessPaginationEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.util.Date;
  * @since 2019-10-12
  */
 @Data
-public class Document implements Serializable {
+public class Document extends BaseProcessPaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

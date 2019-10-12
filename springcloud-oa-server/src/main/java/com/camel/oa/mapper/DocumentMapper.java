@@ -5,6 +5,8 @@ import com.camel.oa.model.Document;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * <p>
  * Mapper 接口
@@ -17,4 +19,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DocumentMapper extends BaseMapper<Document> {
 
+    /**
+     * 查询文档列表
+     * @param entity
+     * @return
+     */
+    List<Document> list(Document entity);
 }
