@@ -1,10 +1,8 @@
 package com.camel.system.aop;
 
 
-import com.camel.redis.entity.RedisUser;
-import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.system.annotation.Log;
-import com.camel.system.model.SysLog;
+import com.camel.core.model.SysLog;
 import com.camel.system.service.MqService;
 import com.camel.system.service.SysLogService;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,12 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
 
 /**@author baily */
 @Aspect

@@ -8,7 +8,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.redis.entity.RedisUser;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.system.annotation.Log;
-import com.camel.system.model.SysUser;
+import com.camel.core.model.SysUser;
 import com.camel.system.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

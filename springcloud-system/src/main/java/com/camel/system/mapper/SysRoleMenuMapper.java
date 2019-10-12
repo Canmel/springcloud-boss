@@ -1,7 +1,7 @@
 package com.camel.system.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.camel.system.model.SysRoleMenu;
+import com.camel.core.model.SysRoleMenu;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

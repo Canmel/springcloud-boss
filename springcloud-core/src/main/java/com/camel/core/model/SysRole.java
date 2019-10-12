@@ -1,4 +1,4 @@
-package com.camel.system.model;
+package com.camel.core.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;

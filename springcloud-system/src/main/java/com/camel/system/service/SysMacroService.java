@@ -1,7 +1,7 @@
 package com.camel.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.camel.system.model.SysMacro;
+import com.camel.core.model.SysMacro;
 import com.github.pagehelper.PageInfo;
 
 /**

@@ -2,7 +2,7 @@ package com.camel.system.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.system.mapper.SysLogMapper;
-import com.camel.system.model.SysLog;
+import com.camel.core.model.SysLog;
 import com.camel.system.service.SysLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

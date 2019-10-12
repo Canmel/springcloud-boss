@@ -1,6 +1,4 @@
-package com.camel.system.enums;
-
-import com.camel.core.enums.BaseEnum;
+package com.camel.core.enums;
 
 import java.util.ArrayList;
 import java.util.HashMap;

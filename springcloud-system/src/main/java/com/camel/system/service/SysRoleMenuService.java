@@ -1,7 +1,7 @@
 package com.camel.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.camel.system.model.SysRoleMenu;
+import com.camel.core.model.SysRoleMenu;
 
 /**
  * <p>

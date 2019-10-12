@@ -5,12 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.system.mapper.SysNoticeMapper;
-import com.camel.system.model.SysMenu;
 import com.camel.system.model.SysNotice;
 import com.camel.system.service.MqService;
 import com.camel.system.service.SysNoticeService;
 import com.github.pagehelper.PageInfo;
-import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

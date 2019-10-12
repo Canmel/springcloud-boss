@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
-import com.camel.system.model.SysLog;
+import com.camel.core.model.SysLog;
 import com.camel.system.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

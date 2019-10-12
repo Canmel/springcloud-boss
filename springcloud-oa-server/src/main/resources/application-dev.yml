@@ -89,7 +89,7 @@ logging:
   level:
     com:
       camel:
-        oa: INFO
+        oa: DEBUG
 qiniu:
   acount:
     access_key: ${ACCESS_KEY}

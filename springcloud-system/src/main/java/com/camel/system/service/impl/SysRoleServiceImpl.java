@@ -4,14 +4,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.MyCollectionUtils;
-import com.camel.system.enums.RoleStatus;
+import com.camel.core.enums.RoleStatus;
 import com.camel.system.mapper.SysRoleMapper;
 import com.camel.system.mapper.SysRoleMenuMapper;
-import com.camel.system.model.SysMenu;
-import com.camel.system.model.SysRole;
-import com.camel.system.model.SysRoleMenu;
-import com.camel.system.model.SysUserRole;
-import com.camel.system.service.SysRoleMenuService;
+import com.camel.core.model.SysRole;
+import com.camel.core.model.SysRoleMenu;
 import com.camel.system.service.SysRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,7 +19,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**

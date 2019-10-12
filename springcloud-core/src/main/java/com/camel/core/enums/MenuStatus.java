@@ -1,4 +1,4 @@
-package com.camel.system.enums;
+package com.camel.core.enums;
 
 import com.camel.core.enums.BaseEnum;
 

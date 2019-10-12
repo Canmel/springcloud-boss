@@ -1,9 +1,7 @@
 package com.camel.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.camel.system.model.SysMenu;
-import com.camel.system.model.SysRole;
-import com.camel.system.model.SysUser;
+import com.camel.core.model.SysRole;
 import com.github.pagehelper.PageInfo;
 
 import java.io.Serializable;

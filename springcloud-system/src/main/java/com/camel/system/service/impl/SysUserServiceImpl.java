@@ -6,9 +6,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.MyCollectionUtils;
 import com.camel.system.mapper.SysUserMapper;
 import com.camel.system.mapper.SysUserRoleMapper;
-import com.camel.system.model.SysRole;
-import com.camel.system.model.SysUser;
-import com.camel.system.model.SysUserRole;
+import com.camel.core.model.SysUser;
+import com.camel.core.model.SysUserRole;
 import com.camel.system.service.SysRoleService;
 import com.camel.system.service.SysUserService;
 import com.github.pagehelper.PageHelper;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**

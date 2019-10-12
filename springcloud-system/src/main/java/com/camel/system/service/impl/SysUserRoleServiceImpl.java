@@ -2,7 +2,7 @@ package com.camel.system.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.system.mapper.SysUserRoleMapper;
-import com.camel.system.model.SysUserRole;
+import com.camel.core.model.SysUserRole;
 import com.camel.system.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
 

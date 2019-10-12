@@ -1,10 +1,10 @@
-package com.camel.system.model;
+package com.camel.core.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
-import com.camel.system.enums.MacroStatus;
+import com.camel.core.enums.MacroStatus;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -29,7 +29,7 @@ import java.io.Serializable;
  *     ...:::           ::::::::::::'              ``::.
  *    ```` ':.          ':::::::::'                  ::::..
  *                       '.:::::'                    ':'````..
- * @author baily 
+ * @author baily
  * @since 2019/7/4
  **/
 @Data

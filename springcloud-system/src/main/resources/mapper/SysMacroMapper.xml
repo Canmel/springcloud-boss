@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.camel.system.mapper.SysMacroMapper">
-    <resultMap id="BaseResultMap" type="com.camel.system.model.SysMacro">
+    <resultMap id="BaseResultMap" type="com.camel.core.model.SysMacro">
         <id column="macro_id" property="macroId" javaType="INTEGER"></id>
         <result column="parent_id" property="parentId" jdbcType="INTEGER"></result>
         <result column="code" property="code" jdbcType="VARCHAR"></result>
         <result column="name" property="name" jdbcType="VARCHAR"></result>
         <result column="value" property="value" jdbcType="VARCHAR"></result>
-        <result column="status" property="macroStatus" jdbcType="INTEGER" javaType="com.camel.system.enums.MacroStatus"
+        <result column="status" property="macroStatus" jdbcType="INTEGER" javaType="com.camel.core.enums.MacroStatus"
                 typeHandler="com.camel.core.config.BaseEnumTypeHandler"></result>
         <result column="status" property="status" jdbcType="INTEGER"></result>
         <result column="type" property="type" jdbcType="INTEGER"></result>

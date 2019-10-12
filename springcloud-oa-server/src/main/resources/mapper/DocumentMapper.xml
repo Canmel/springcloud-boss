@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.camel.oa.mapper.DocumentMapper">
-    <resultMap id="BaseResultMAp" type="com.camel.oa.model.Document">
+    <resultMap id="BaseResultMap" type="com.camel.oa.model.Document">
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="dname" property="dname" jdbcType="VARCHAR"></result>
         <result column="address" property="address" jdbcType="VARCHAR"></result>
@@ -21,7 +21,7 @@
         document.creator
     </sql>
 
-    <select id="list">
+    <select id="list" resultMap="BaseResultMap">
         SELECT
         <include refid="BASE_SQL"></include>
         FROM document

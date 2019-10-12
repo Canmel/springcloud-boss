@@ -1,9 +1,9 @@
 package com.camel.system.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.camel.system.enums.MacroStatus;
+import com.camel.core.enums.MacroStatus;
 import com.camel.system.mapper.SysMacroMapper;
-import com.camel.system.model.SysMacro;
+import com.camel.core.model.SysMacro;
 import com.camel.system.service.SysMacroService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
