@@ -33,20 +33,21 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenu> tops(Principal principal) {
-        Wrapper<SysMenu> menuWrapper = new EntityWrapper<>();
-        menuWrapper.eq(MenuType.TOP.getColumn(), MenuType.TOP.getCode());
-        menuWrapper.eq(MenuStatus.NORMAL.getColumn(), MenuStatus.NORMAL.getCode());
-        menuWrapper.in("url", getAuthoritiesCollection(principal));
-        return mapper.selectList(menuWrapper);
+        return  selectMenus(MenuType.TOP, principal);
     }
 
     @Override
     public List<SysMenu> subs(Principal principal) {
-        System.out.println(principal);
+        return  selectMenus(MenuType.SUB, principal);
+    }
+
+    public List<SysMenu> selectMenus(MenuType menuType, Principal principal) {
         Wrapper<SysMenu> menuWrapper = new EntityWrapper<>();
-        menuWrapper.eq(MenuType.SUB.getColumn(), MenuType.SUB.getCode());
+        menuWrapper.eq(menuType.getColumn(), menuType.getCode());
         menuWrapper.eq(MenuStatus.NORMAL.getColumn(), MenuStatus.NORMAL.getCode());
-        menuWrapper.in("url", getAuthoritiesCollection(principal));
+        if(!ObjectUtils.isEmpty(principal)) {
+            menuWrapper.in("url", getAuthoritiesCollection(principal));
+        }
         return mapper.selectList(menuWrapper);
     }
 

@@ -14,6 +14,7 @@ import com.camel.system.model.SysMenu;
 import com.camel.system.model.SysRole;
 import com.camel.system.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -80,6 +81,9 @@ public class SysMenuController extends BaseCommonController {
 
     @GetMapping("/tops")
     public Result tops(SysMenu sysMenu, Principal principal) {
+        if(!ObjectUtils.isEmpty(sysMenu.getParentId()) && sysMenu.getParentId() != 1) {
+            principal = null;
+        }
         return ResultUtil.success(service.tops(principal));
     }
 

@@ -62,26 +62,11 @@ public class AppPushServiceImpl implements AppPushService {
 
 
 
-
-//        message.setOffline(true);
-//        // 离线有效时间，单位为毫秒
-//        message.setOfflineExpireTime(24 * 3600 * 1000);
-//        message.setData(template);
-//        // 可选，1为wifi，0为不限制网络环境。根据手机处于的网络情况，决定是否下发
-//        message.setPushNetWorkType(0);
-//
-//
-//        Target target = new Target();
-//        target.setAppId(appId);
-
-
-        //target.setAlias(Alias);
         IPushResult ret = null;
         try {
             ret = push.pushMessageToApp(appMessage);
         } catch (RequestException e) {
             e.printStackTrace();
-//            ret = push.pushMessageToSingle(message, target, e.getRequestId());
         }
         if (ret != null) {
             System.out.println(ret.getResponse().toString());

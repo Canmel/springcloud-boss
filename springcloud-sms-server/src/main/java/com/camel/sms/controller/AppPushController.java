@@ -40,7 +40,6 @@ public class AppPushController {
 
     @JmsListener(destination = QUEUE_NAME)
     public Result push(String msg) {
-        System.out.println("-----------------------------msg------------------------" + msg);
         appPushService.send();
         return ResultUtil.success("推送成功");
     }

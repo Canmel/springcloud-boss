@@ -42,7 +42,7 @@ public class CodeGenerator {
                 .setDbType(DbType.MYSQL) .setUrl(dbUrl) .setUsername("root") .setPassword("1234") .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"t_survey_directory"});
+        strategyConfig.setInclude(new String[] {"document"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
