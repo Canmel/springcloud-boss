@@ -127,8 +127,7 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         if(ObjectUtils.isEmpty(document)) {
             throw  new FileNotFoundException();
         }
-        String fileName = document.getDname();
-        String domainOfBucket = BUCKET_NAME;
+        String fileName = document.getAddress();
         String encodedFileName = null;
         try {
             encodedFileName = URLEncoder.encode(fileName, "utf-8").replace("+", "%20");
@@ -138,10 +137,9 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         if (StringUtils.isNullOrEmpty(encodedFileName)) {
             return null;
         }
-        String publicUrl = String.format("%s/%s", domainOfBucket, encodedFileName);
+        String publicUrl = String.format("%s/%s", BUCKET_NAME, encodedFileName);
         Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
         // 1小时，可以自定义链接过期时间
-        long expireInSeconds = 3600;
-        return auth.privateDownloadUrl(publicUrl, expireInSeconds);
+        return auth.privateDownloadUrl(publicUrl, 3600);
     }
 }

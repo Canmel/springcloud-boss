@@ -39,7 +39,7 @@ public class SpringCloudEurekaServerApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         LoggerFactory.getLogger(this.getClass()).info("SpringCloud Eureka Server 注册中心启动完成...");
     }
 }
