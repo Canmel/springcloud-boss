@@ -34,7 +34,7 @@ public interface SysUserService extends IService<SysUser> {
      * 获取用户的所有角色
      * @param user
      */
-    void getRolesByUser(SysUser user);
+    SysUser getRolesByUser(SysUser user);
 
     /**
      * 给用户添加角色
@@ -45,10 +45,9 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 所有用户
-     * @param user
      * @return
      */
-    List<SysUser> all(SysUser user);
+    List<SysUser> all();
 
     /**
      * 通过角色ID查询用户

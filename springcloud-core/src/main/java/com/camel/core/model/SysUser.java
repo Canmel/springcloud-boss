@@ -118,6 +118,16 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private List<SysRole> sysRoles;
 
+    @TableField(exist = false)
+    private SysUser sysUser;
+
+    public SysUser(Integer uid) {
+        this.uid = uid;
+    }
+
+    public SysUser() {
+    }
+
     @Override
     public String toString() {
         return "SysUser{" +

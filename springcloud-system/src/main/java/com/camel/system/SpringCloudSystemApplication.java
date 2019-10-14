@@ -1,7 +1,9 @@
 package com.camel.system;
 
+import com.camel.system.config.SysUserCacheConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,5 +46,9 @@ public class SpringCloudSystemApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         LoggerFactory.getLogger(this.getClass()).info("SpringCloud 资源服务-系统服务启动完成...");
+        sysUserCacheConfig.initSysUsers();
     }
+
+    @Autowired
+    private SysUserCacheConfig sysUserCacheConfig;
 }

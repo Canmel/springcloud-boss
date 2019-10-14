@@ -65,8 +65,7 @@ public class SysUserController extends BaseCommonController {
     public Result save(@PathVariable(required = true) Integer id) {
         Result result = super.details(id);
         SysUser user = (SysUser) result.getData();
-        service.getRolesByUser(user);
-        user.setPassword("");
+        service.getRolesByUser(user).setPassword("");
         return ResultUtil.success(user);
     }
 
@@ -103,7 +102,7 @@ public class SysUserController extends BaseCommonController {
 
     @GetMapping("/all")
     public Result all(SysUser user){
-        return ResultUtil.success(service.all(user));
+        return ResultUtil.success(service.all());
     }
 
     /**

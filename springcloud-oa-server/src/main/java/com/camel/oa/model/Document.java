@@ -3,6 +3,7 @@ package com.camel.oa.model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BaseProcessPaginationEntity;
+import com.camel.core.model.SysUser;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -43,11 +44,19 @@ public class Document extends BaseProcessPaginationEntity implements Serializabl
     /**
      * 创建者
      */
-    private Integer creator;
+    private SysUser creator;
 
-
+    /**
+     * 状态
+     */
+    private Integer status;
 
     public Document() {
+    }
+
+    public Document(Integer id, Integer status) {
+        this.id = id;
+        this.status = status;
     }
 
     public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator) {
@@ -57,7 +66,18 @@ public class Document extends BaseProcessPaginationEntity implements Serializabl
         this.dsize = dsize;
         this.dtype = dtype;
         this.createdAt = createdAt;
-        this.creator = creator;
+        this.creator = new SysUser(creator);
+    }
+
+    public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator, Integer status) {
+        this.id = id;
+        this.dname = dname;
+        this.address = address;
+        this.dsize = dsize;
+        this.dtype = dtype;
+        this.createdAt = createdAt;
+        this.creator = new SysUser(creator);
+        this.status = status;
     }
 
     public Document(String dname, String address, Double dsize, String dtype, Integer creator) {
@@ -65,7 +85,7 @@ public class Document extends BaseProcessPaginationEntity implements Serializabl
         this.address = address;
         this.dsize = dsize;
         this.dtype = dtype;
-        this.creator = creator;
+        this.creator = new SysUser(creator);
     }
 
     @Override

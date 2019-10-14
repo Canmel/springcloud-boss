@@ -8,6 +8,12 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.oa.model.Document;
 import com.camel.oa.service.DocumentService;
+import com.qiniu.common.QiniuException;
+import com.qiniu.util.IOUtils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
@@ -15,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.security.Principal;
 
 /**
@@ -35,7 +38,11 @@ public class DocumentController extends BaseCommonController {
     @Autowired
     private DocumentService service;
 
-
+    /**
+     * 获取分页列表
+     * @param document
+     * @return
+     */
     @GetMapping
     public Result index(Document document) {
         return ResultUtil.success(service.selectPage(document));
@@ -66,21 +73,40 @@ public class DocumentController extends BaseCommonController {
         }
     }
 
+    /**
+     * 下载所需文件
+     * @param id
+     * @param response
+     * @throws Exception
+     */
     @GetMapping("/download/{id}")
     public void download(@PathVariable Integer id, HttpServletResponse response) throws Exception {
         Document document = service.selectById(id);
         if (ObjectUtils.isEmpty(document)) {
             throw new RuntimeException("找不到文件");
         }
-        response.reset(); //清除buffer缓存
+        response.reset();
         response = setHeader(response, document.getDname());
         OutputStream output;
         String url = service.url(id);
-
+        byte[] downloadFileByte= downloadFile(url);
         output = response.getOutputStream();
-        BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
-        bufferedOutPut.flush();
-        bufferedOutPut.close();
+        output.write(downloadFileByte);
+        output.flush();
+        output.close();
+    }
+
+    /**
+     * 删除文档
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) throws QiniuException {
+        if(service.delete(id) > 0) {
+            return ResultUtil.success("删除文档成功！");
+        }
+        return ResultUtil.error(ResultEnum.BAD_REQUEST);
     }
 
     @GetMapping("/{id}")
@@ -96,12 +122,35 @@ public class DocumentController extends BaseCommonController {
      * @return
      */
     private HttpServletResponse setHeader(HttpServletResponse response, String fileName) {
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
         response.setContentType("application;charset=UTF-8");
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         return response;
+    }
+
+    /**
+     * 通过请求地址下载文件
+     * @param downloadUrl 七牛下载文件地址
+     * @return  文件字节数据
+     */
+    private byte[] downloadFile(String downloadUrl) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(downloadUrl).build();
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                ResponseBody body = response.body();
+                InputStream is = body.byteStream();
+                return IOUtils.toByteArray(is);
+            }
+            return null;
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override

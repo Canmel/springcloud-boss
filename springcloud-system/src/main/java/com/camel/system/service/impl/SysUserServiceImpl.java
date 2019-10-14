@@ -59,7 +59,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void getRolesByUser(SysUser user) {
+    public SysUser getRolesByUser(SysUser user) {
         Wrapper<SysUserRole> sysUserRoleWrapper = new EntityWrapper<>();
         sysUserRoleWrapper.eq("user_id", user.getUid());
         List<SysUserRole> userRoleList = userRoleMapper.selectList(sysUserRoleWrapper);
@@ -69,6 +69,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         });
         user.setRoleIds(roleIds);
         user.setSysRoles(roleService.loadRolesByRoleIds(roleIds));
+        return user;
     }
 
     @Override
@@ -85,7 +86,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysUser> all(SysUser user) {
+    public List<SysUser> all() {
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
         return mapper.selectList(userWrapper);
     }

@@ -3,6 +3,7 @@ package com.camel.oa.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.oa.model.Document;
 import com.github.pagehelper.PageInfo;
+import com.qiniu.common.QiniuException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,4 +39,11 @@ public interface DocumentService extends IService<Document> {
      * @return 文档分页数据
      */
     PageInfo<Document> selectPage(Document document);
+
+    /**
+     * 删除文档
+     * @param id
+     * @return
+     */
+    int delete(Integer id) throws QiniuException;
 }

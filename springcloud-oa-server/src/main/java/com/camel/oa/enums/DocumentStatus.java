@@ -10,7 +10,7 @@ import java.util.Map;
  *                       .::::.
  *                     .::::::::.
  *                    :::::::::::
- *                 ..:::::::::::'      报销管理
+ *                 ..:::::::::::'      文档状态
  *              '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -28,18 +28,15 @@ import java.util.Map;
  * @author baily
  * @since 2019/7/8
  **/
-public enum ReimbursementStatus {
+public enum DocumentStatus {
     /**/
-    CREATED("创建", 1),
-    APPLY("申请中", 2),
-    APPLY_SUCCESS("申请成功", 3),
-    APPLY_FAILD("申请失败", 4);
+    NORMAL("正常", 1), INVALID("无效", 0);
 
 
     private String name;
     private Integer value;
 
-    ReimbursementStatus(String name, Integer value) {
+    DocumentStatus(String name, Integer value) {
         this.name = name;
         this.value = value;
     }
@@ -61,7 +58,7 @@ public enum ReimbursementStatus {
 
     public static List all() {
         List list = new ArrayList<>();
-        for (ReimbursementStatus reimbursementStatus : ReimbursementStatus.values()) {
+        for (DocumentStatus reimbursementStatus : DocumentStatus.values()) {
             list.add(reimbursementStatus.getValueMap());
         }
         return list;
