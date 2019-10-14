@@ -19,7 +19,6 @@
         <module>springcloud-redis</module>
         <module>springcloud-feign</module>
         <module>springcloud-sms-server</module>
-
     </modules>
     <packaging>pom</packaging>
     <description>springcloud 通关</description>
