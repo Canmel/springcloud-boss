@@ -15,10 +15,8 @@ import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
-import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringUtils;
-import com.sun.deploy.net.URLEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -26,9 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 

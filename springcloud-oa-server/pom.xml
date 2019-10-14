@@ -6,13 +6,16 @@
 		<groupId>com.camel.springcloud</groupId>
 		<artifactId>springcloud-boss</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath/>
 	</parent>
 	<groupId>com.camel.springcloud</groupId>
 	<artifactId>springcloud-oa-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>springcloud-oa-server</name>
 	<description>Demo project for Spring Boot</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -133,7 +136,7 @@
 		<dependency>
 			<groupId>com.qiniu</groupId>
 			<artifactId>qiniu-java-sdk</artifactId>
-			<version>[7.2.0, 7.2.99]</version>
+			<version>7.2.26</version>
 		</dependency>
 	</dependencies>
 
