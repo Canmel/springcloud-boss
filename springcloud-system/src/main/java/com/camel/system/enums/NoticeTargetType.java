@@ -45,4 +45,8 @@ public enum NoticeTargetType implements BaseEnum {
         map.put("value", this.getCode());
         return map;
     }
+
+    public BaseEnum getEnumByValue(Integer value) {
+        return null;
+    }
 }

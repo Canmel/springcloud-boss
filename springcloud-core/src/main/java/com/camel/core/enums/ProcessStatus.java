@@ -47,4 +47,8 @@ public enum ProcessStatus implements BaseEnum {
     public Integer getValue() {
         return getCode();
     }
+
+    public BaseEnum getEnumByValue(Integer value) {
+        return null;
+    }
 }

@@ -27,4 +27,8 @@ public enum RoleStatus implements BaseEnum {
     public Integer getValue() {
         return Integer.parseInt(getCode());
     }
+
+    public BaseEnum getEnumByValue(Integer value) {
+        return null;
+    }
 }

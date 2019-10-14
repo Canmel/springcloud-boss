@@ -69,6 +69,7 @@ security:
       user-info-uri: http://${APPLICATION_IP}:8080/auth/session/me
       prefer-token-info: false
 
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.camel.oa.model
@@ -94,4 +95,6 @@ qiniu:
   acount:
     access_key: ${ACCESS_KEY}
     secret_key: ${SECRET_KEY}
+mybatis:
+  type-handlers-package: com.camel.oa.enum.typeHandler
 

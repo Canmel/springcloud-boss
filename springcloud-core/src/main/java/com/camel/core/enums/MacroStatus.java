@@ -65,6 +65,10 @@ public enum MacroStatus implements BaseEnum {
         return getCode();
     }
 
+    public BaseEnum getEnumByValue(Integer value) {
+        return null;
+    }
+
     @Override
     public String toString() {
         return "MacroStatus{" +
@@ -73,4 +77,6 @@ public enum MacroStatus implements BaseEnum {
                 ", column='" + column + '\'' +
                 '}';
     }
+
+
 }

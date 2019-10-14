@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.common.entity.Member;
 import com.camel.core.model.SysUser;
-import com.camel.core.utils.ApplicationUtils;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.oa.config.QiNiuConfig;
 import com.camel.oa.enums.DocumentStatus;
@@ -67,10 +66,10 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
+
         List<SysUser> users = applicationToolsUtils.allUsers();
         List<Document> documentList = pageInfo.getList();
         documentList.forEach(document -> {
-            System.out.println(document);
             users.forEach(user -> {
                 if (user.getUid().equals(document.getCreator().getUid())) {
                     document.setCreator(user);
