@@ -76,6 +76,8 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  type-handlers-package: com.camel.oa.typeHandler
+  type-enums-package: com.camel.oa.enums
 
 pagehelper:
   helper-dialect: mysql

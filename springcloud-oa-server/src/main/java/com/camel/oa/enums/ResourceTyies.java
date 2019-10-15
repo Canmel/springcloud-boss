@@ -1,7 +1,8 @@
 package com.camel.oa.enums;
 
-import com.camel.core.enums.BaseEnum;
+import com.baomidou.mybatisplus.enums.IEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,10 +33,9 @@ import java.util.Map;
  * @since 2019/7/8
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ResourceTyies implements BaseEnum {
+public enum ResourceTyies implements IEnum {
     /* 多个类型 */
-    NORMAL("土地", 1), INVALID("厂房", 2), OFFICE_BUILDING("写字楼", 3), SHOPS("商铺", 2), PARK("园区", 2), SYNTHESIS("综合体", 2);
-
+    NORMAL("土地", 1), WORKSHOP("厂房", 2), OFFICE_BUILDING("写字楼", 3), SHOPS("商铺", 2), PARK("园区", 2), SYNTHESIS("综合体", 2);
 
     private String name;
     private Integer value;
@@ -45,10 +45,12 @@ public enum ResourceTyies implements BaseEnum {
         this.value = value;
     }
 
+    @JsonValue
     public String getName() {
         return name;
     }
 
+    @Override
     public Integer getValue() {
         return value;
     }
@@ -62,8 +64,8 @@ public enum ResourceTyies implements BaseEnum {
 
     public static List all() {
         List list = new ArrayList<>();
-        for (ResourceTyies reimbursementStatus : ResourceTyies.values()) {
-            list.add(reimbursementStatus.getValueMap());
+        for (ResourceTyies resourceTyies : ResourceTyies.values()) {
+            list.add(resourceTyies.getValueMap());
         }
         return list;
     }

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.oa.enums.ResourceStatus;
+import com.camel.oa.enums.ResourceTyies;
 import com.camel.oa.model.Resource;
 import com.camel.oa.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ public class ResourceController extends BaseCommonController {
      */
     @PostMapping
     public Result save(@RequestBody Resource resource) {
+        resource.setStatus(ResourceStatus.NORMAL);
         return ResultUtil.success(super.save(resource));
     }
 
@@ -55,6 +58,24 @@ public class ResourceController extends BaseCommonController {
     @GetMapping("/{id}")
     public Result detail(@PathVariable Integer id) {
         return ResultUtil.success(super.details(id));
+    }
+
+    /**
+     * 资源类型
+     * @return
+     */
+    @GetMapping("/typies")
+    public Result typies() {
+        return ResultUtil.success(ResourceTyies.all());
+    }
+
+    /**
+     * 资源状态
+     * @return
+     */
+    @GetMapping("/status")
+    public Result status() {
+        return ResultUtil.success(ResourceStatus.all());
     }
 
     @Override

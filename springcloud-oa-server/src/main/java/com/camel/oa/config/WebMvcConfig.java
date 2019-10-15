@@ -1,6 +1,6 @@
 package com.camel.oa.config;
 
-import com.camel.oa.enums.convertor.IntegerToEnumConverterFactory;
+import com.camel.oa.convertor.IntegerToEnumConverterFactory;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,7 +12,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        System.out.println("问问成水何惧");
         registry.addConverterFactory(new IntegerToEnumConverterFactory());
     }
 }

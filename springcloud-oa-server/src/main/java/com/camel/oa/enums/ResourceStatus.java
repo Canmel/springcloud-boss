@@ -1,7 +1,9 @@
 package com.camel.oa.enums;
 
+import com.baomidou.mybatisplus.enums.IEnum;
 import com.camel.core.enums.BaseEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ import java.util.Map;
  * @since 2019/7/8
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ResourceStatus implements BaseEnum {
+public enum ResourceStatus implements IEnum {
     /**/
     NORMAL("正常", 1), INVALID("无效", 0);
 
@@ -45,10 +47,12 @@ public enum ResourceStatus implements BaseEnum {
         this.value = value;
     }
 
+    @JsonValue
     public String getName() {
         return name;
     }
 
+    @Override
     public Integer getValue() {
         return value;
     }

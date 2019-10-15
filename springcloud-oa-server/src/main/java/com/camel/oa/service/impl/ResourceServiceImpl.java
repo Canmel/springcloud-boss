@@ -10,6 +10,7 @@ import com.camel.oa.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         List<Resource> resourceList = pageInfo.getList();
         resourceList.forEach(resource -> {
             users.forEach(user -> {
-                if (user.getUid().equals(resource.getCreator().getUid())) {
+                if (!ObjectUtils.isEmpty(resource.getCreator()) && user.getUid().equals(resource.getCreator().getUid())) {
                     resource.setCreator(user);
                 }
             });

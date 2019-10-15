@@ -1,5 +1,6 @@
 package com.camel.oa.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BaseProcessPaginationEntity;
@@ -47,6 +48,7 @@ public class Resource extends BaseProcessPaginationEntity implements Serializabl
     /**
      * 资源类型
      */
+    @TableField(value = "type")
     private ResourceTyies type;
     /**
      * 资源名称
@@ -68,10 +70,12 @@ public class Resource extends BaseProcessPaginationEntity implements Serializabl
     /**
      * 状态
      */
+    @TableField(value = "status")
     private ResourceStatus status;
     /**
      * 创建者
      */
+    @TableField(value = "creator")
     private SysUser creator;
     /**
      * 创建时间

@@ -1,4 +1,4 @@
-package com.camel.oa.enums.typeHandler;
+package com.camel.oa.typeHandler;
 
 import com.camel.oa.enums.ResourceStatus;
 import org.apache.ibatis.type.BaseTypeHandler;

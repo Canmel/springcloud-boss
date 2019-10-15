@@ -9,8 +9,8 @@
         <result column="map_position" property="mapPosition" jdbcType="VARCHAR"></result>
         <result column="remark" property="remark" jdbcType="VARCHAR"></result>
         <result column="created_at" property="createdAt" jdbcType="DATE"></result>
-        <result column="status" property="status" javaType="INTEGER" typeHandler="com.camel.oa.enums.typeHandler.ResourceStatusEnumHandler"></result>
-        <result column="type" property="type" javaType="INTEGER" typeHandler="com.camel.oa.enums.typeHandler.ResourceTyiesEnumHandler"></result>
+        <result column="status" property="status" javaType="INTEGER" typeHandler="com.camel.oa.typeHandler.ResourceStatusEnumHandler"></result>
+        <result column="type" property="type" javaType="INTEGER" typeHandler="com.camel.oa.typeHandler.ResourceTyiesEnumHandler"></result>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>

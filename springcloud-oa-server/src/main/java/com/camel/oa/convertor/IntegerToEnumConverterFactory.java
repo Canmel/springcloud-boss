@@ -1,18 +1,19 @@
-package com.camel.oa.enums.convertor;
+package com.camel.oa.convertor;
 
-import com.camel.core.enums.BaseEnum;
+import com.baomidou.mybatisplus.enums.IEnum;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IntegerToEnumConverterFactory implements ConverterFactory<Integer, BaseEnum> {
+public class IntegerToEnumConverterFactory implements ConverterFactory<Serializable, IEnum> {
     private static final Map<Class, Converter> converterMap =  new HashMap<>();
 
     @Override
-    public <T extends BaseEnum> Converter<Integer, T> getConverter(Class<T> targetType) {
-        Converter<Integer, T> converter = converterMap.get(targetType);
+    public <T extends IEnum> Converter<Serializable, T> getConverter(Class<T> targetType) {
+        Converter<Serializable, T> converter = converterMap.get(targetType);
         if(converter == null) {
             converter = new IntegerToEnumConverter<>(targetType);
             converterMap.put(targetType, converter);
@@ -20,9 +21,9 @@ public class IntegerToEnumConverterFactory implements ConverterFactory<Integer, 
         return converter;
     }
 
-    class IntegerToEnumConverter<T extends BaseEnum> implements Converter<Integer, T> {
+    class IntegerToEnumConverter<T extends IEnum> implements Converter<Serializable, T> {
 
-        private Map<Integer, T> enumMap = new HashMap<>();
+        private Map<Serializable, T> enumMap = new HashMap<>();
 
         IntegerToEnumConverter(Class<T> enumType) {
             T[] enums = enumType.getEnumConstants();
@@ -32,7 +33,7 @@ public class IntegerToEnumConverterFactory implements ConverterFactory<Integer, 
         }
 
         @Override
-        public T convert(Integer source) {
+        public T convert(Serializable source) {
 
             T t = enumMap.get(source);
             if (t == null) {
