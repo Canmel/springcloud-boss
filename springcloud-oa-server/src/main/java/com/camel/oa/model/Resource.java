@@ -2,6 +2,7 @@ package com.camel.oa.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BaseProcessPaginationEntity;
 import com.camel.core.model.SysUser;
@@ -70,6 +71,7 @@ public class Resource extends BaseProcessPaginationEntity implements Serializabl
     /**
      * 状态
      */
+    @TableLogic
     @TableField(value = "status")
     private ResourceStatus status;
     /**

@@ -78,6 +78,9 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #  type-handlers-package: com.camel.oa.typeHandler
   type-enums-package: com.camel.oa.enums
+  global-config:
+    logic-delete-value: 0
+    logic-not-delete-value: 1
 
 pagehelper:
   helper-dialect: mysql

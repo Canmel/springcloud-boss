@@ -1,8 +1,10 @@
 package com.camel.oa.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.entity.Result;
 import com.camel.oa.model.Resource;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 /**
  *
@@ -34,4 +36,12 @@ public interface ResourceService extends IService<Resource> {
      @return
      */
     PageInfo<Resource> selectPage(Resource entity);
+
+    /**
+     * 保存
+     * @param resource
+     * @param oAuth2Authentication
+     * @return
+     */
+    boolean save(Resource resource, OAuth2Authentication oAuth2Authentication);
 }
