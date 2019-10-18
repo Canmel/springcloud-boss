@@ -9,8 +9,10 @@
         <result column="map_position" property="mapPosition" jdbcType="VARCHAR"></result>
         <result column="remark" property="remark" jdbcType="VARCHAR"></result>
         <result column="created_at" property="createdAt" jdbcType="DATE"></result>
-        <result column="status" property="status" javaType="INTEGER" typeHandler="com.camel.oa.typeHandler.ResourceStatusEnumHandler"></result>
-        <result column="type" property="type" javaType="INTEGER" typeHandler="com.camel.oa.typeHandler.ResourceTyiesEnumHandler"></result>
+        <result column="status" property="status" javaType="INTEGER"
+                typeHandler="com.camel.oa.typeHandler.ResourceStatusEnumHandler"></result>
+        <result column="type" property="type" javaType="INTEGER"
+                typeHandler="com.camel.oa.typeHandler.ResourceTyiesEnumHandler"></result>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -35,6 +37,7 @@
         resource
         <where>
             resource.status = 1
+            <if test="name != null and name != ''">AND resource.`name` LIKE CONCAT('%', #{name} , '%')</if>
         </where>
     </select>
 </mapper>

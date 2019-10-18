@@ -76,6 +76,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         resource.setStatus(ResourceStatus.NORMAL);
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, authentication.getName());
         resource.setCreator(new SysUser(member.getId()));
+        resource.setCreatorId(member.getId());
         return this.insert(resource);
     }
 }

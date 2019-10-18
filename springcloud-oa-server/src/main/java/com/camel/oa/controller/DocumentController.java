@@ -103,10 +103,7 @@ public class DocumentController extends BaseCommonController {
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) throws QiniuException {
-        if(service.delete(id) > 0) {
-            return ResultUtil.success("删除文档成功！");
-        }
-        return ResultUtil.error(ResultEnum.BAD_REQUEST);
+        return super.delete(id);
     }
 
     @GetMapping("/{id}")

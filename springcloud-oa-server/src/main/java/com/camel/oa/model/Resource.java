@@ -78,6 +78,9 @@ public class Resource extends BaseProcessPaginationEntity implements Serializabl
      * 创建者
      */
     @TableField(value = "creator")
+    private Integer creatorId;
+
+    @TableField(exist = false)
     private SysUser creator;
     /**
      * 创建时间

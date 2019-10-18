@@ -47,7 +47,7 @@ public enum ResourceStatus implements IEnum {
         this.value = value;
     }
 
-    @JsonValue
+    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }

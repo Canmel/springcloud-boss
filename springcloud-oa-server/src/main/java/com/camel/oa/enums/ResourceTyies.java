@@ -35,7 +35,7 @@ import java.util.Map;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ResourceTyies implements IEnum {
     /* 多个类型 */
-    NORMAL("土地", 1), WORKSHOP("厂房", 2), OFFICE_BUILDING("写字楼", 3), SHOPS("商铺", 2), PARK("园区", 2), SYNTHESIS("综合体", 2);
+    NORMAL("土地", 1), WORKSHOP("厂房", 2), OFFICE_BUILDING("写字楼", 3), SHOPS("商铺", 4), PARK("园区", 5), SYNTHESIS("综合体", 6);
 
     private String name;
     private Integer value;
@@ -45,7 +45,7 @@ public enum ResourceTyies implements IEnum {
         this.value = value;
     }
 
-    @JsonValue
+    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }

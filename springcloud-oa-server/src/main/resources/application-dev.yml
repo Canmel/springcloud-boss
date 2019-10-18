@@ -81,6 +81,7 @@ mybatis-plus:
   global-config:
     logic-delete-value: 0
     logic-not-delete-value: 1
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 
 pagehelper:
   helper-dialect: mysql

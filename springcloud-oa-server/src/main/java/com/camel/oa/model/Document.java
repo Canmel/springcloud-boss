@@ -1,5 +1,6 @@
 package com.camel.oa.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BaseProcessPaginationEntity;
@@ -44,7 +45,11 @@ public class Document extends BaseProcessPaginationEntity implements Serializabl
     /**
      * 创建者
      */
+    @TableField(exist = false)
     private SysUser creator;
+
+    @TableField(value = "creator")
+    private Integer creatorId;
 
     /**
      * 状态
@@ -67,6 +72,7 @@ public class Document extends BaseProcessPaginationEntity implements Serializabl
         this.dtype = dtype;
         this.createdAt = createdAt;
         this.creator = new SysUser(creator);
+        this.creatorId = creator;
     }
 
     public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator, Integer status) {
@@ -78,6 +84,7 @@ public class Document extends BaseProcessPaginationEntity implements Serializabl
         this.createdAt = createdAt;
         this.creator = new SysUser(creator);
         this.status = status;
+        this.creatorId = creator;
     }
 
     public Document(String dname, String address, Double dsize, String dtype, Integer creator) {
@@ -86,6 +93,7 @@ public class Document extends BaseProcessPaginationEntity implements Serializabl
         this.dsize = dsize;
         this.dtype = dtype;
         this.creator = new SysUser(creator);
+        this.creatorId = creator;
     }
 
     @Override

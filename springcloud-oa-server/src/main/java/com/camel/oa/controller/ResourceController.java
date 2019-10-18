@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 /**
- *
- *                 ___====-_  _-====___
- *           _--^^^#####//      \\#####^^^--_
- *        _-^##########// (    ) \\##########^-_
- *       -############//  |\^^/|  \\############-
- *     _/############//   (@::@)   \\############\_
- *    /#############((     \\//     ))#############\
- *   -###############\\    (oo)    //###############-
- *  -#################\\  / VV \  //#################-
+ * ___====-_  _-====___
+ * _--^^^#####//      \\#####^^^--_
+ * _-^##########// (    ) \\##########^-_
+ * -############//  |\^^/|  \\############-
+ * _/############//   (@::@)   \\############\_
+ * /#############((     \\//     ))#############\
+ * -###############\\    (oo)    //###############-
+ * -#################\\  / VV \  //#################-
  * -###################\\/      \//###################-
- *_#/|##########/\######(   /\   )######/\##########|\#_
- *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
- *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
- *   `   `  `      `   / | |  | | \   '      '  '   '
- *                    (  | |  | |  )
- *                   __\ | |  | | /__
- *                  (vvv(VVV)(VVV)vvv)
+ * _#/|##########/\######(   /\   )######/\##########|\#_
+ * |/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ * `  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ * `   `  `      `   / | |  | | \   '      '  '   '
+ * (  | |  | |  )
+ * __\ | |  | | /__
+ * (vvv(VVV)(VVV)vvv)
  * <资源控制器>
+ *
  * @author baily
- * @since 1.0
  * @date 2019/10/15
+ * @since 1.0
  **/
 @RestController
 @RequestMapping("/resource")
@@ -48,6 +48,7 @@ public class ResourceController extends BaseCommonController {
 
     /**
      * 分页查询
+     *
      * @param resource
      * @return
      */
@@ -58,13 +59,14 @@ public class ResourceController extends BaseCommonController {
 
     /**
      * 新增
+     *
      * @param resource
      * @return
      */
     @PostMapping
     public Result save(@RequestBody Resource resource, Principal principal) {
         OAuth2Authentication authentication = (OAuth2Authentication) principal;
-        if(service.save(resource, authentication)) {
+        if (service.save(resource, authentication)) {
             return ResultUtil.success("创建资源成功！");
         }
         return ResultUtil.error(ResultEnum.BAD_REQUEST);
@@ -72,26 +74,39 @@ public class ResourceController extends BaseCommonController {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
-        return ResultUtil.success(super.delete(id));
+        return super.delete(id);
     }
 
     /**
      * 详细
+     *
      * @param id
      * @return
      */
     @GetMapping("/{id}")
     public Result detail(@PathVariable Integer id) {
-        return ResultUtil.success(super.details(id));
+        return super.details(id);
+    }
+
+    /**
+     * 编辑 更新
+     * @param entity
+     * @return
+     */
+    @PutMapping
+    public Result update(@RequestBody Resource entity) {
+        return super.update(entity);
     }
 
     /**
      * 资源类型
+     *
      * @return
      */
     @GetMapping("/typies")
@@ -101,6 +116,7 @@ public class ResourceController extends BaseCommonController {
 
     /**
      * 资源状态
+     *
      * @return
      */
     @GetMapping("/status")
