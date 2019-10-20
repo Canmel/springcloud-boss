@@ -1,0 +1,99 @@
+package ${package.Controller};
+import org.springframework.web.bind.annotation.GetMapping;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+import com.baomidou.mybatisplus.service.IService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.camel.core.entity.Result;
+import com.camel.core.utils.ResultUtil;
+
+import java.util.List;
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@RestController
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+    #if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+    #else
+public class ${table.controllerName} {
+    #end
+
+
+
+    private ${table.serviceName} service;
+
+    /**
+    * 分页查询
+    */
+    @GetMapping
+    public Result index(${entity} entity) {
+        return ResultUtil.success(service.selectPage(entity));
+    }
+
+    /**
+    * 获取详情
+    */
+    @GetMapping("/{id}")
+    public Result details(@PathVariable Integer id){
+        return super.details(id);
+    }
+
+    /**
+    * 新建保存
+    */
+    @PostMapping
+    public Result save(@RequestBody ${entity} entity) {
+        return super.save(entity);
+    }
+
+    /**
+     * 编辑 更新
+     */
+    @PutMapping
+    public Result update(@RequestBody ${entity} entity) {
+        return super.update(entity);
+    }
+
+    /**
+    * 删除
+    */
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) {
+        return super.delete(id);
+    }
+
+    /**
+    * 获取service
+    */
+    @Override
+    public IService getiService() {
+       return service;
+    }
+
+    /**
+    * 获取模块名称
+    */
+    @Override
+    public String getMouduleName() {
+        return "";
+    }
+
+#end
+}
