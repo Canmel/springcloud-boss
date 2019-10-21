@@ -4,28 +4,44 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.oa.model.Project">
-        <id column="id" property="id" />
-        <result column="pname" property="pname" />
-        <result column="code" property="code" />
-        <result column="current_copies" property="currentCopies" />
-        <result column="copies" property="copies" />
-        <result column="collect_copies" property="collectCopies" />
-        <result column="status" property="status" />
-        <result column="type" property="type" />
-        <result column="created_at" property="createdAt" />
-        <result column="creator" property="creator" />
-        <result column="release_at" property="releaseAt" />
+        <id column="id" property="id"/>
+        <result column="pname" property="pname"/>
+        <result column="code" property="code"/>
+        <result column="current_copies" property="currentCopies"/>
+        <result column="copies" property="copies"/>
+        <result column="collect_copies" property="collectCopies"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ProjectStatusEnumHandler"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.typeHandler.ProjectTyiesEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="release_at" property="releaseAt"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pname, code, current_copies, copies, collect_copies, status, type, created_at, creator, release_at
+        project.id,
+        project.pname,
+        project.code,
+        project.current_copies,
+        project.copies,
+        project.collect_copies,
+        project.`status`,
+        project.`type`,
+        project.created_at,
+        project.creator,
+        project.release_at
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
-        select
-         <include refid="Base_Column_List"></include>
-        from
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
         project
+        <where>
+            project.`status` != 0
+            <if test="pname != null and pname != ''">AND project.pname LIKE CONCAT('%', #{pname}, '%')</if>
+        </where>
     </select>
 </mapper>

@@ -1,11 +1,17 @@
 package com.camel.oa.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ProjectStatus;
+import com.camel.oa.enums.ProjectTyies;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -34,6 +40,7 @@ import java.io.Serializable;
  * @since 1.0
  * @date 2019-10-21
  **/
+@Data
 public class Project extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,107 +73,52 @@ public class Project extends BasePaginationEntity implements Serializable {
     /**
      * 状态
      */
-    private Integer status;
+    @TableLogic
+    @TableField(value = "status")
+    private ProjectStatus status;
     /**
      * 调查类型
      */
-    private Integer type;
+    @TableField(value = "type")
+    private ProjectTyies type;
     /**
      * 时间戳
      */
     private Date createdAt;
     /**
-     * 创建人
+     * 创建者
      */
-    private Integer creator;
+    @TableField(value = "creator")
+    private Integer creatorId;
+
+    @TableField(exist = false)
+    private SysUser creator;
+
+    /**
+     * 发布时间
+     */
     private Date releaseAt;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
+    public Project(Integer id, ProjectStatus status) {
         this.id = id;
-    }
-
-    public String getPname() {
-        return pname;
-    }
-
-    public void setPname(String pname) {
-        this.pname = pname;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Integer getCurrentCopies() {
-        return currentCopies;
-    }
-
-    public void setCurrentCopies(Integer currentCopies) {
-        this.currentCopies = currentCopies;
-    }
-
-    public Integer getCopies() {
-        return copies;
-    }
-
-    public void setCopies(Integer copies) {
-        this.copies = copies;
-    }
-
-    public Integer getCollectCopies() {
-        return collectCopies;
-    }
-
-    public void setCollectCopies(Integer collectCopies) {
-        this.collectCopies = collectCopies;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public Integer getType() {
-        return type;
+    public Project() {
     }
 
-    public void setType(Integer type) {
+    public Project(Integer id, String pname, String code, Integer currentCopies, Integer copies, Integer collectCopies, ProjectStatus status, ProjectTyies type, Date createdAt, Integer creatorId, SysUser creator, Date releaseAt) {
+        this.id = id;
+        this.pname = pname;
+        this.code = code;
+        this.currentCopies = currentCopies;
+        this.copies = copies;
+        this.collectCopies = collectCopies;
+        this.status = status;
         this.type = type;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Integer getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Integer creator) {
+        this.creatorId = creatorId;
         this.creator = creator;
-    }
-
-    public Date getReleaseAt() {
-        return releaseAt;
-    }
-
-    public void setReleaseAt(Date releaseAt) {
         this.releaseAt = releaseAt;
     }
 
