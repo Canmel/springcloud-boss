@@ -31,7 +31,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
  **/
 public interface ResourceService extends IService<Resource> {
     /**
-     分页查询报销信息
+     分页查询
      @param entity
      @return
      */
