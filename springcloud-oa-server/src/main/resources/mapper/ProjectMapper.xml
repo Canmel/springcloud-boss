@@ -4,16 +4,16 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.oa.model.Project">
-        <id column="id" property="id"/>
-        <result column="pname" property="pname"/>
-        <result column="code" property="code"/>
-        <result column="current_copies" property="currentCopies"/>
-        <result column="copies" property="copies"/>
-        <result column="collect_copies" property="collectCopies"/>
-        <result column="status" property="status"/>
-        <result column="created_at" property="createdAt"/>
-        <result column="creator" property="creator"/>
-        <result column="release_at" property="releaseAt"/>
+        <id column="id" property="id" />
+        <result column="pname" property="pname" />
+        <result column="code" property="code" />
+        <result column="current_copies" property="currentCopies" />
+        <result column="copies" property="copies" />
+        <result column="collect_copies" property="collectCopies" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+        <result column="creator" property="creator" />
+        <result column="release_at" property="releaseAt" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -23,7 +23,7 @@
 
     <select id="list" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"></include>
+         <include refid="Base_Column_List"></include>
         from
         project
     </select>

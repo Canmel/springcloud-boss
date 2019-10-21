@@ -7,13 +7,30 @@ import com.camel.core.entity.BasePaginationEntity;
 import java.io.Serializable;
 
 /**
- * <p>
- * 
- * </p>
  *
+ *                       .::::.
+ *                     .::::::::.
+ *                    :::::::::::
+ *                 ..:::::::::::'
+ *              '::::::::::::'
+ *                .::::::::::
+ *           '::::::::::::::..
+ *                ..::::::::::::.
+ *              ``::::::::::::::::
+ *               ::::``:::::::::'        .:::.
+ *              ::::'   ':::::'       .::::::::.
+ *            .::::'      ::::     .:::::::'::::.
+ *           .:::'       :::::  .:::::::::' ':::::.
+ *          .::'        :::::.:::::::::'      ':::::.
+ *         .::'         ::::::::::::::'         ``::::.
+ *     ...:::           ::::::::::::'              ``::.
+ *    ```` ':.          ':::::::::'                  ::::..
+ *                       '.:::::'                    ':'````..
+ * <项目 服务实现类>
  * @author baily
- * @since 2019-10-20
- */
+ * @since 1.0
+ * @date 2019-10-21
+ **/
 public class Project extends BasePaginationEntity implements Serializable {
 
 private static final long serialVersionUID = 1L;

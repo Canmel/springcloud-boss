@@ -16,12 +16,27 @@ import com.camel.core.utils.ResultUtil;
 import java.util.List;
 
 /**
- * <p>
- * $!{table.comment} 前端控制器
- * </p>
- *
- * @author ${author}
- * @since ${date}
+ * 　　　　　　　 ┏┓　　　┏┓
+ * 　　　　　　　┏┛┻━━━━━┛┻┓
+ * 　　　　　　　┃         ┃ 　
+ * 　　　　　　　┃    ━    ┃
+ * 　　　　　　　┃  >   <  ┃
+ * 　　　　　　　┃         ┃
+ * 　　　　　　　┃... ⌒ ...┃
+ * 　　　　　　　┃         ┃
+ *             ┗━┓     ┏━┛
+ *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
+ *               ┃     ┃   神兽保佑,代码无bug
+ *               ┃     ┃　　　　　　　　　　　
+ *               ┃     ┃  　　　　　　
+ *               ┃     ┃        <$!{table.comment} 前端控制器>
+ *               ┃     ┃　　　　　　　　　　　
+ *               ┃     ┗━━━━┓   @author ${author}
+ *               ┃          ┣┓
+ *               ┃          ┏┛  @since 1.0
+ *               ┗┓┓┏━━━━┳┓┏┛
+ *                ┃┫┫    ┃┫┫    @date $!{date}
+ *                ┗┻┛    ┗┻┛
  */
 @RestController
 @RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
@@ -36,7 +51,7 @@ public class ${table.controllerName} {
     #end
 
 
-
+    @Autowired
     private ${table.serviceName} service;
 
     /**

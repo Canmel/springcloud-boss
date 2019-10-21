@@ -14,19 +14,34 @@ import com.camel.core.utils.ResultUtil;
 import java.util.List;
 
 /**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author baily
- * @since 2019-10-20
+ * 　　　　　　　 ┏┓　　　┏┓
+ * 　　　　　　　┏┛┻━━━━━┛┻┓
+ * 　　　　　　　┃         ┃ 　
+ * 　　　　　　　┃    ━    ┃
+ * 　　　　　　　┃  >   <  ┃
+ * 　　　　　　　┃         ┃
+ * 　　　　　　　┃... ⌒ ...┃
+ * 　　　　　　　┃         ┃
+ *             ┗━┓     ┏━┛
+ *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
+ *               ┃     ┃   神兽保佑,代码无bug
+ *               ┃     ┃　　　　　　　　　　　
+ *               ┃     ┃  　　　　　　
+ *               ┃     ┃        <项目 前端控制器>
+ *               ┃     ┃　　　　　　　　　　　
+ *               ┃     ┗━━━━┓   @author baily
+ *               ┃          ┣┓
+ *               ┃          ┏┛  @since 1.0
+ *               ┗┓┓┏━━━━┳┓┏┛
+ *                ┃┫┫    ┃┫┫    @date 2019-10-21
+ *                ┗┻┛    ┗┻┛
  */
 @RestController
 @RequestMapping("/project")
 public class ProjectController extends BaseCommonController {
 
 
-
+    @Autowired
     private ProjectService service;
 
     /**
