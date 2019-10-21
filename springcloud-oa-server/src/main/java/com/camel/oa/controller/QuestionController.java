@@ -97,7 +97,7 @@ public class QuestionController extends BaseCommonController {
     */
     @Override
     public String getMouduleName() {
-        return "";
+        return "问题";
     }
 
 }
