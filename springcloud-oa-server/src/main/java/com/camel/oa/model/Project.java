@@ -1,9 +1,12 @@
 package com.camel.oa.model;
 
 import com.baomidou.mybatisplus.enums.IdType;
+
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+
 import java.io.Serializable;
 
 /**
@@ -33,130 +36,142 @@ import java.io.Serializable;
  **/
 public class Project extends BasePaginationEntity implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
-                    @TableId(value = "id", type = IdType.AUTO)
-                private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 名称
      */
-        private String pname;
+    private String pname;
     /**
      * 编号
      */
-        private String code;
+    private String code;
     /**
      * 当前份数
      */
-        private Integer currentCopies;
+    private Integer currentCopies;
     /**
      * 总份数
      */
-        private Integer copies;
+    private Integer copies;
     /**
      * 需要收集的有效份数
      */
-        private Integer collectCopies;
+    private Integer collectCopies;
     /**
      * 状态
      */
-        private Integer status;
+    private Integer status;
+    /**
+     * 调查类型
+     */
+    private Integer type;
     /**
      * 时间戳
      */
-        private Date createdAt;
+    private Date createdAt;
     /**
      * 创建人
      */
-        private Integer creator;
-        private Date releaseAt;
+    private Integer creator;
+    private Date releaseAt;
 
 
     public Integer getId() {
-            return id;
-            }
+        return id;
+    }
 
-        public void setId(Integer id) {
-            this.id = id;
-            }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getPname() {
-            return pname;
-            }
+        return pname;
+    }
 
-        public void setPname(String pname) {
-            this.pname = pname;
-            }
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
 
     public String getCode() {
-            return code;
-            }
+        return code;
+    }
 
-        public void setCode(String code) {
-            this.code = code;
-            }
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Integer getCurrentCopies() {
-            return currentCopies;
-            }
+        return currentCopies;
+    }
 
-        public void setCurrentCopies(Integer currentCopies) {
-            this.currentCopies = currentCopies;
-            }
+    public void setCurrentCopies(Integer currentCopies) {
+        this.currentCopies = currentCopies;
+    }
 
     public Integer getCopies() {
-            return copies;
-            }
+        return copies;
+    }
 
-        public void setCopies(Integer copies) {
-            this.copies = copies;
-            }
+    public void setCopies(Integer copies) {
+        this.copies = copies;
+    }
 
     public Integer getCollectCopies() {
-            return collectCopies;
-            }
+        return collectCopies;
+    }
 
-        public void setCollectCopies(Integer collectCopies) {
-            this.collectCopies = collectCopies;
-            }
+    public void setCollectCopies(Integer collectCopies) {
+        this.collectCopies = collectCopies;
+    }
 
     public Integer getStatus() {
-            return status;
-            }
+        return status;
+    }
 
-        public void setStatus(Integer status) {
-            this.status = status;
-            }
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Date getCreatedAt() {
-            return createdAt;
-            }
+        return createdAt;
+    }
 
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-            }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Integer getCreator() {
-            return creator;
-            }
+        return creator;
+    }
 
-        public void setCreator(Integer creator) {
-            this.creator = creator;
-            }
+    public void setCreator(Integer creator) {
+        this.creator = creator;
+    }
 
     public Date getReleaseAt() {
-            return releaseAt;
-            }
+        return releaseAt;
+    }
 
-        public void setReleaseAt(Date releaseAt) {
-            this.releaseAt = releaseAt;
-            }
+    public void setReleaseAt(Date releaseAt) {
+        this.releaseAt = releaseAt;
+    }
 
-@Override
-public String toString() {
+    @Override
+    public String toString() {
         return "Project{" +
                 ", id=" + id +
                 ", pname=" + pname +
@@ -165,9 +180,10 @@ public String toString() {
                 ", copies=" + copies +
                 ", collectCopies=" + collectCopies +
                 ", status=" + status +
+                ", type=" + type +
                 ", createdAt=" + createdAt +
                 ", creator=" + creator +
                 ", releaseAt=" + releaseAt +
-        "}";
-        }
-        }
+                "}";
+    }
+}
