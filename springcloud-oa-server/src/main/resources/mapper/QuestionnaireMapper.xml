@@ -4,20 +4,27 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.oa.model.Questionnaire">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="status" property="status" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.QuestionnaireStatusEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, status
+        questionnaire.id, questionnaire.name, questionnaire.status, questionnaire.creator, questionnaire.created_at
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         questionnaire
+        <where>
+            questionnaire.`status` != 0
+        </where>
     </select>
 </mapper>

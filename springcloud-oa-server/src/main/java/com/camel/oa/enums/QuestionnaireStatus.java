@@ -1,7 +1,6 @@
 package com.camel.oa.enums;
 
 import com.baomidou.mybatisplus.enums.IEnum;
-import com.camel.core.enums.BaseEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.ArrayList;
@@ -33,16 +32,15 @@ import java.util.Map;
  * @since 2019/7/8
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ProjectStatus implements IEnum {
+public enum QuestionnaireStatus implements IEnum {
+    /* 多个类型 */
     INVALID("无效", 0),
-    NORMAL("正常", 1),
-    RELEASE("部署", 2);
-
+    NORMAL("正常", 1);
 
     private String name;
     private Integer value;
 
-    ProjectStatus(String name, Integer value) {
+    QuestionnaireStatus(String name, Integer value) {
         this.name = name;
         this.value = value;
     }
@@ -66,16 +64,16 @@ public enum ProjectStatus implements IEnum {
 
     public static List all() {
         List list = new ArrayList<>();
-        for (ProjectStatus reimbursementStatus : ProjectStatus.values()) {
-            list.add(reimbursementStatus.getValueMap());
+        for (QuestionnaireStatus questionnaireStatus : QuestionnaireStatus.values()) {
+            list.add(questionnaireStatus.getValueMap());
         }
         return list;
     }
 
-    public static ProjectStatus getEnumByValue(Integer value) {
-        for (ProjectStatus resourceStatus : ProjectStatus.values()) {
-            if (resourceStatus.getValue() == value) {
-                return resourceStatus;
+    public static QuestionnaireStatus getEnumByValue(Integer value) {
+        for (QuestionnaireStatus questionnaireStatus : QuestionnaireStatus.values()) {
+            if (questionnaireStatus.getValue() == value) {
+                return questionnaireStatus;
             }
         }
         return null;
