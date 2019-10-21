@@ -1,84 +1,82 @@
 package com.camel.oa.model;
 
-import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+import com.camel.oa.enums.QuestionnaireStatus;
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- *
- *                       .::::.
- *                     .::::::::.
- *                    :::::::::::
- *                 ..:::::::::::'
- *              '::::::::::::'
- *                .::::::::::
- *           '::::::::::::::..
- *                ..::::::::::::.
- *              ``::::::::::::::::
- *               ::::``:::::::::'        .:::.
- *              ::::'   ':::::'       .::::::::.
- *            .::::'      ::::     .:::::::'::::.
- *           .:::'       :::::  .:::::::::' ':::::.
- *          .::'        :::::.:::::::::'      ':::::.
- *         .::'         ::::::::::::::'         ``::::.
- *     ...:::           ::::::::::::'              ``::.
- *    ```` ':.          ':::::::::'                  ::::..
- *                       '.:::::'                    ':'````..
+ * .::::.
+ * .::::::::.
+ * :::::::::::
+ * ..:::::::::::'
+ * '::::::::::::'
+ * .::::::::::
+ * '::::::::::::::..
+ * ..::::::::::::.
+ * ``::::::::::::::::
+ * ::::``:::::::::'        .:::.
+ * ::::'   ':::::'       .::::::::.
+ * .::::'      ::::     .:::::::'::::.
+ * .:::'       :::::  .:::::::::' ':::::.
+ * .::'        :::::.:::::::::'      ':::::.
+ * .::'         ::::::::::::::'         ``::::.
+ * ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ * '.:::::'                    ':'````..
  * <调查问卷 服务实现类>
+ *
  * @author baily
- * @since 1.0
  * @date 2019-10-21
+ * @since 1.0
  **/
+@Data
 public class Questionnaire extends BasePaginationEntity implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
-                    @TableId(value = "id", type = IdType.AUTO)
-                private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 名称
      */
-        private String name;
+    private String name;
     /**
      * 状态
      */
-        private Integer status;
+    @TableLogic
+    private QuestionnaireStatus status;
 
+    /**
+     * 时间戳
+     */
+    private Date createdAt;
 
-    public Integer getId() {
-            return id;
-            }
+    /**
+     * 创建者
+     */
+    @TableField(value = "creator")
+    private Integer creatorId;
 
-        public void setId(Integer id) {
-            this.id = id;
-            }
+    @TableField(exist = false)
+    private SysUser creator;
 
-    public String getName() {
-            return name;
-            }
-
-        public void setName(String name) {
-            this.name = name;
-            }
-
-    public Integer getStatus() {
-            return status;
-            }
-
-        public void setStatus(Integer status) {
-            this.status = status;
-            }
-
-@Override
-public String toString() {
+    @Override
+    public String toString() {
         return "Questionnaire{" +
                 ", id=" + id +
                 ", name=" + name +
                 ", status=" + status +
-        "}";
-        }
-        }
+                "}";
+    }
+}
