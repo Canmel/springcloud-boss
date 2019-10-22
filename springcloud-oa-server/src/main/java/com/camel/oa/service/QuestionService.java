@@ -1,8 +1,10 @@
 package com.camel.oa.service;
 
+import com.camel.core.entity.Result;
 import com.camel.oa.model.Question;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.core.Authentication;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -34,4 +36,6 @@ public interface QuestionService extends IService<Question> {
      @return
      */
     PageInfo<Question> selectPage(Question entity);
+
+    Result save(Question question, Authentication authentication);
 }

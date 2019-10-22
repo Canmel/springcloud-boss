@@ -2,9 +2,13 @@ package com.camel.oa.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.oa.enums.QuestionStatus;
+import com.camel.oa.enums.QuestionTyies;
+import com.camel.oa.enums.QuestionnaireStatus;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -52,7 +56,7 @@ public class Question extends BasePaginationEntity implements Serializable {
     /**
      * 类型
      */
-    private Integer type;
+    private QuestionTyies type;
     /**
      * 创建时间
      */
@@ -69,7 +73,8 @@ public class Question extends BasePaginationEntity implements Serializable {
     /**
      * 状态
      */
-    private Integer status;
+    @TableLogic
+    private QuestionStatus status;
 
     @Override
     public String toString() {

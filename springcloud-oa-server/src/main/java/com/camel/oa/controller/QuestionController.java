@@ -1,4 +1,5 @@
 package com.camel.oa.controller;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.oa.service.QuestionService;
 import com.camel.oa.model.Question;
@@ -64,8 +65,8 @@ public class QuestionController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody Question entity) {
-        return super.save(entity);
+    public Result save(@RequestBody Question entity, OAuth2Authentication authentication) {
+        return service.save(entity, authentication);
     }
 
     /**
