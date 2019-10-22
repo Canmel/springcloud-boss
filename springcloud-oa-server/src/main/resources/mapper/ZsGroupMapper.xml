@@ -4,20 +4,21 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsGroup">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="status" property="status" />
-        <result column="remark" property="remark" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsGroupStatusEnumHandler"/>
+        <result column="remark" property="remark"/>
+        <result column="created_at" property="createdAt"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, status, remark
+        id, name, status, remark, created_at
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_group
     </select>
