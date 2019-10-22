@@ -21,5 +21,9 @@
         <include refid="Base_Column_List"></include>
         from
         zs_group
+        <where>
+            zs_group.`status` != 0
+            <if test="name != null and name != ''">AND zs_group.`name` LIKE CONCAT('%', #{name} , '%')</if>
+        </where>
     </select>
 </mapper>
