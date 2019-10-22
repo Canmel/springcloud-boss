@@ -59,7 +59,7 @@ public class MysqlGenerator {
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"zs_group"});
+        strategyConfig.setInclude(new String[] {"zs_industry"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
@@ -92,7 +92,7 @@ public class MysqlGenerator {
         InjectionConfig config = new InjectionConfig() {
             @Override
             public void initMap() {
-                Map<String, Object> conf = new HashMap<>();
+                Map<String, Object> conf = new HashMap<>(16);
                 conf.put("superControllerClassPackage", "superControllerClassPackage");
                 conf.put("superControllerClass", "superControllerClass");
                 this.setMap(conf);
