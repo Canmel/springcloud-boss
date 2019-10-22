@@ -1,0 +1,157 @@
+package com.camel.oa.model;
+
+import com.baomidou.mybatisplus.enums.IdType;
+import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.camel.core.entity.BasePaginationEntity;
+import java.io.Serializable;
+
+/**
+ *
+ *                       .::::.
+ *                     .::::::::.
+ *                    :::::::::::
+ *                 ..:::::::::::'
+ *              '::::::::::::'
+ *                .::::::::::
+ *           '::::::::::::::..
+ *                ..::::::::::::.
+ *              ``::::::::::::::::
+ *               ::::``:::::::::'        .:::.
+ *              ::::'   ':::::'       .::::::::.
+ *            .::::'      ::::     .:::::::'::::.
+ *           .:::'       :::::  .:::::::::' ':::::.
+ *          .::'        :::::.:::::::::'      ':::::.
+ *         .::'         ::::::::::::::'         ``::::.
+ *     ...:::           ::::::::::::'              ``::.
+ *    ```` ':.          ':::::::::'                  ::::..
+ *                       '.:::::'                    ':'````..
+ * <智慧招商项目 服务实现类>
+ * @author baily
+ * @since 1.0
+ * @date 2019-10-22
+ **/
+public class ZsProject extends BasePaginationEntity implements Serializable {
+
+private static final long serialVersionUID = 1L;
+
+    /**
+     * 主键
+     */
+                    @TableId(value = "id", type = IdType.AUTO)
+                private Integer id;
+    /**
+     * 名称
+     */
+        private String name;
+    /**
+     * 项目编号
+     */
+        private String code;
+    /**
+     * 金额
+     */
+        private Double amount;
+    /**
+     * 业务
+     */
+        private String business;
+        private Integer manager;
+    /**
+     * 状态
+     */
+        private Integer status;
+    /**
+     * 创建人
+     */
+        private Integer creator;
+        private Date createdAt;
+
+
+    public Integer getId() {
+            return id;
+            }
+
+        public void setId(Integer id) {
+            this.id = id;
+            }
+
+    public String getName() {
+            return name;
+            }
+
+        public void setName(String name) {
+            this.name = name;
+            }
+
+    public String getCode() {
+            return code;
+            }
+
+        public void setCode(String code) {
+            this.code = code;
+            }
+
+    public Double getAmount() {
+            return amount;
+            }
+
+        public void setAmount(Double amount) {
+            this.amount = amount;
+            }
+
+    public String getBusiness() {
+            return business;
+            }
+
+        public void setBusiness(String business) {
+            this.business = business;
+            }
+
+    public Integer getManager() {
+            return manager;
+            }
+
+        public void setManager(Integer manager) {
+            this.manager = manager;
+            }
+
+    public Integer getStatus() {
+            return status;
+            }
+
+        public void setStatus(Integer status) {
+            this.status = status;
+            }
+
+    public Integer getCreator() {
+            return creator;
+            }
+
+        public void setCreator(Integer creator) {
+            this.creator = creator;
+            }
+
+    public Date getCreatedAt() {
+            return createdAt;
+            }
+
+        public void setCreatedAt(Date createdAt) {
+            this.createdAt = createdAt;
+            }
+
+@Override
+public String toString() {
+        return "ZsProject{" +
+                ", id=" + id +
+                ", name=" + name +
+                ", code=" + code +
+                ", amount=" + amount +
+                ", business=" + business +
+                ", manager=" + manager +
+                ", status=" + status +
+                ", creator=" + creator +
+                ", createdAt=" + createdAt +
+        "}";
+        }
+        }
