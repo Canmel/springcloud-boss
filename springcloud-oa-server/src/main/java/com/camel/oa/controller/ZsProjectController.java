@@ -1,4 +1,6 @@
 package com.camel.oa.controller;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.oa.service.ZsProjectService;
 import com.camel.oa.model.ZsProject;
@@ -64,8 +66,13 @@ public class ZsProjectController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody ZsProject entity) {
-        return super.save(entity);
+    public Result save(@RequestBody ZsProject entity, OAuth2Authentication oAuth2Authentication) {
+        return service.save(entity, oAuth2Authentication);
+    }
+
+    @GetMapping("/all")
+    public Result all() {
+        return ResultUtil.success(service.selectList(new EntityWrapper<ZsProject>()));
     }
 
     /**

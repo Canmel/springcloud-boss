@@ -32,7 +32,7 @@ import java.util.Map;
  * @since 2019/7/8
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsProjectStatus implements IEnum {
+public enum ZsClueStatus implements IEnum {
     INVALID("无效", 0),
     NORMAL("正常", 1);
 
@@ -40,7 +40,7 @@ public enum ZsProjectStatus implements IEnum {
     private String name;
     private Integer value;
 
-    ZsProjectStatus(String name, Integer value) {
+    ZsClueStatus(String name, Integer value) {
         this.name = name;
         this.value = value;
     }
@@ -64,16 +64,16 @@ public enum ZsProjectStatus implements IEnum {
 
     public static List all() {
         List list = new ArrayList<>();
-        for (ZsProjectStatus reimbursementStatus : ZsProjectStatus.values()) {
-            list.add(reimbursementStatus.getValueMap());
+        for (ZsClueStatus status : ZsClueStatus.values()) {
+            list.add(status.getValueMap());
         }
         return list;
     }
 
-    public static ZsProjectStatus getEnumByValue(Integer value) {
-        for (ZsProjectStatus resourceStatus : ZsProjectStatus.values()) {
-            if (resourceStatus.getValue() == value) {
-                return resourceStatus;
+    public static ZsClueStatus getEnumByValue(Integer value) {
+        for (ZsClueStatus status : ZsClueStatus.values()) {
+            if (status.getValue() == value) {
+                return status;
             }
         }
         return null;

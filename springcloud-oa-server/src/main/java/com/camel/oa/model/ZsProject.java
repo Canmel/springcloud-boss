@@ -1,147 +1,90 @@
 package com.camel.oa.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
+
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ZsProjectStatus;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
- *
- *                       .::::.
- *                     .::::::::.
- *                    :::::::::::
- *                 ..:::::::::::'
- *              '::::::::::::'
- *                .::::::::::
- *           '::::::::::::::..
- *                ..::::::::::::.
- *              ``::::::::::::::::
- *               ::::``:::::::::'        .:::.
- *              ::::'   ':::::'       .::::::::.
- *            .::::'      ::::     .:::::::'::::.
- *           .:::'       :::::  .:::::::::' ':::::.
- *          .::'        :::::.:::::::::'      ':::::.
- *         .::'         ::::::::::::::'         ``::::.
- *     ...:::           ::::::::::::'              ``::.
- *    ```` ':.          ':::::::::'                  ::::..
- *                       '.:::::'                    ':'````..
+ * .::::.
+ * .::::::::.
+ * :::::::::::
+ * ..:::::::::::'
+ * '::::::::::::'
+ * .::::::::::
+ * '::::::::::::::..
+ * ..::::::::::::.
+ * ``::::::::::::::::
+ * ::::``:::::::::'        .:::.
+ * ::::'   ':::::'       .::::::::.
+ * .::::'      ::::     .:::::::'::::.
+ * .:::'       :::::  .:::::::::' ':::::.
+ * .::'        :::::.:::::::::'      ':::::.
+ * .::'         ::::::::::::::'         ``::::.
+ * ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ * '.:::::'                    ':'````..
  * <智慧招商项目 服务实现类>
+ *
  * @author baily
- * @since 1.0
  * @date 2019-10-22
+ * @since 1.0
  **/
+@Data
 public class ZsProject extends BasePaginationEntity implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
-                    @TableId(value = "id", type = IdType.AUTO)
-                private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 名称
      */
-        private String name;
+    private String name;
     /**
      * 项目编号
      */
-        private String code;
+    private String code;
     /**
      * 金额
      */
-        private Double amount;
+    private Double amount;
     /**
      * 业务
      */
-        private String business;
-        private Integer manager;
+    private String business;
+
+    private Integer manager;
     /**
      * 状态
      */
-        private Integer status;
+    @TableLogic
+    private ZsProjectStatus status;
     /**
-     * 创建人
+     * 创建者
      */
-        private Integer creator;
-        private Date createdAt;
+    @TableField(value = "creator")
+    private Integer creatorId;
 
+    @TableField(exist = false)
+    private SysUser creator;
 
-    public Integer getId() {
-            return id;
-            }
+    private Date createdAt;
 
-        public void setId(Integer id) {
-            this.id = id;
-            }
-
-    public String getName() {
-            return name;
-            }
-
-        public void setName(String name) {
-            this.name = name;
-            }
-
-    public String getCode() {
-            return code;
-            }
-
-        public void setCode(String code) {
-            this.code = code;
-            }
-
-    public Double getAmount() {
-            return amount;
-            }
-
-        public void setAmount(Double amount) {
-            this.amount = amount;
-            }
-
-    public String getBusiness() {
-            return business;
-            }
-
-        public void setBusiness(String business) {
-            this.business = business;
-            }
-
-    public Integer getManager() {
-            return manager;
-            }
-
-        public void setManager(Integer manager) {
-            this.manager = manager;
-            }
-
-    public Integer getStatus() {
-            return status;
-            }
-
-        public void setStatus(Integer status) {
-            this.status = status;
-            }
-
-    public Integer getCreator() {
-            return creator;
-            }
-
-        public void setCreator(Integer creator) {
-            this.creator = creator;
-            }
-
-    public Date getCreatedAt() {
-            return createdAt;
-            }
-
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-            }
-
-@Override
-public String toString() {
+    @Override
+    public String toString() {
         return "ZsProject{" +
                 ", id=" + id +
                 ", name=" + name +
@@ -152,6 +95,6 @@ public String toString() {
                 ", status=" + status +
                 ", creator=" + creator +
                 ", createdAt=" + createdAt +
-        "}";
-        }
-        }
+                "}";
+    }
+}

@@ -1,8 +1,11 @@
 package com.camel.oa.service;
 
+import com.camel.core.entity.Result;
+import com.camel.oa.model.Resource;
 import com.camel.oa.model.ZsProject;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -34,4 +37,11 @@ public interface ZsProjectService extends IService<ZsProject> {
      @return
      */
     PageInfo<ZsProject> selectPage(ZsProject entity);
+
+    /**
+     * 保存
+     * @param oAuth2Authentication
+     * @return
+     */
+    Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication);
 }

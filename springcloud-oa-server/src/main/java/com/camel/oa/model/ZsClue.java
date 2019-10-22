@@ -1,105 +1,80 @@
 package com.camel.oa.model;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- *
- *                       .::::.
- *                     .::::::::.
- *                    :::::::::::
- *                 ..:::::::::::'
- *              '::::::::::::'
- *                .::::::::::
- *           '::::::::::::::..
- *                ..::::::::::::.
- *              ``::::::::::::::::
- *               ::::``:::::::::'        .:::.
- *              ::::'   ':::::'       .::::::::.
- *            .::::'      ::::     .:::::::'::::.
- *           .:::'       :::::  .:::::::::' ':::::.
- *          .::'        :::::.:::::::::'      ':::::.
- *         .::'         ::::::::::::::'         ``::::.
- *     ...:::           ::::::::::::'              ``::.
- *    ```` ':.          ':::::::::'                  ::::..
- *                       '.:::::'                    ':'````..
+ * .::::.
+ * .::::::::.
+ * :::::::::::
+ * ..:::::::::::'
+ * '::::::::::::'
+ * .::::::::::
+ * '::::::::::::::..
+ * ..::::::::::::.
+ * ``::::::::::::::::
+ * ::::``:::::::::'        .:::.
+ * ::::'   ':::::'       .::::::::.
+ * .::::'      ::::     .:::::::'::::.
+ * .:::'       :::::  .:::::::::' ':::::.
+ * .::'        :::::.:::::::::'      ':::::.
+ * .::'         ::::::::::::::'         ``::::.
+ * ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ * '.:::::'                    ':'````..
  * < 服务实现类>
+ *
  * @author baily
- * @since 1.0
  * @date 2019-10-22
+ * @since 1.0
  **/
+@Data
 public class ZsClue extends BasePaginationEntity implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-                    @TableId(value = "id", type = IdType.AUTO)
-                private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 线索名称
      */
-        private String name;
+    private String name;
     /**
      * 描述
      */
-        private String business;
+    private String business;
     /**
-     * 创建人
+     * 创建者
      */
-        private Integer creator;
-        private Date createdAt;
+    @TableField(value = "creator")
+    private Integer creatorId;
 
+    @TableField(exist = false)
+    private SysUser creator;
 
-    public Integer getId() {
-            return id;
-            }
+    @TableField(exist = false)
+    private ZsProject project;
 
-        public void setId(Integer id) {
-            this.id = id;
-            }
+    @TableField(value = "project_id")
+    private Integer projectId;
 
-    public String getName() {
-            return name;
-            }
+    private Date createdAt;
 
-        public void setName(String name) {
-            this.name = name;
-            }
-
-    public String getBusiness() {
-            return business;
-            }
-
-        public void setBusiness(String business) {
-            this.business = business;
-            }
-
-    public Integer getCreator() {
-            return creator;
-            }
-
-        public void setCreator(Integer creator) {
-            this.creator = creator;
-            }
-
-    public Date getCreatedAt() {
-            return createdAt;
-            }
-
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-            }
-
-@Override
-public String toString() {
+    @Override
+    public String toString() {
         return "ZsClue{" +
                 ", id=" + id +
                 ", name=" + name +
                 ", business=" + business +
                 ", creator=" + creator +
                 ", createdAt=" + createdAt +
-        "}";
-        }
-        }
+                "}";
+    }
+}
