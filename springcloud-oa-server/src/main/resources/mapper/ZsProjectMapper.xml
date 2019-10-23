@@ -11,6 +11,7 @@
         <result column="business" property="business"/>
         <result column="manager" property="manager"/>
         <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsProjectStatusEnumHandler"/>
+        <result column="level" property="level" typeHandler="com.camel.oa.typeHandler.ZsProjectLevelsEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
@@ -19,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, code, amount, business, manager, status, creator, created_at
+        zs_project.id, zs_project.name, zs_project.code, zs_project.amount, zs_project.business, zs_project.manager, zs_project.status, zs_project.creator, zs_project.created_at, zs_project.level
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

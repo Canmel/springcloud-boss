@@ -1,4 +1,5 @@
 package com.camel.oa.controller;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.oa.service.ZsIndustryService;
 import com.camel.oa.model.ZsIndustry;
@@ -64,8 +65,8 @@ public class ZsIndustryController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody ZsIndustry entity) {
-        return super.save(entity);
+    public Result save(@RequestBody ZsIndustry entity, OAuth2Authentication auth2Authentication) {
+        return service.save(entity, auth2Authentication);
     }
 
     /**

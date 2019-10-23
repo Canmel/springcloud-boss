@@ -1,108 +1,83 @@
 package com.camel.oa.model;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ZsIndustryStatus;
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- *
- *                       .::::.
- *                     .::::::::.
- *                    :::::::::::
- *                 ..:::::::::::'
- *              '::::::::::::'
- *                .::::::::::
- *           '::::::::::::::..
- *                ..::::::::::::.
- *              ``::::::::::::::::
- *               ::::``:::::::::'        .:::.
- *              ::::'   ':::::'       .::::::::.
- *            .::::'      ::::     .:::::::'::::.
- *           .:::'       :::::  .:::::::::' ':::::.
- *          .::'        :::::.:::::::::'      ':::::.
- *         .::'         ::::::::::::::'         ``::::.
- *     ...:::           ::::::::::::'              ``::.
- *    ```` ':.          ':::::::::'                  ::::..
- *                       '.:::::'                    ':'````..
+ * .::::.
+ * .::::::::.
+ * :::::::::::
+ * ..:::::::::::'
+ * '::::::::::::'
+ * .::::::::::
+ * '::::::::::::::..
+ * ..::::::::::::.
+ * ``::::::::::::::::
+ * ::::``:::::::::'        .:::.
+ * ::::'   ':::::'       .::::::::.
+ * .::::'      ::::     .:::::::'::::.
+ * .:::'       :::::  .:::::::::' ':::::.
+ * .::'        :::::.:::::::::'      ':::::.
+ * .::'         ::::::::::::::'         ``::::.
+ * ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ * '.:::::'                    ':'````..
  * < 服务实现类>
+ *
  * @author baily
- * @since 1.0
  * @date 2019-10-22
+ * @since 1.0
  **/
+@Data
 public class ZsIndustry extends BasePaginationEntity implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
      */
-                    @TableId(value = "id", type = IdType.AUTO)
-                private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 名称
      */
-        private String name;
+    private String name;
     /**
      * 编号
      */
-        private String code;
-        private Integer status;
-        private Integer creator;
-        private Date createdAt;
+    private String code;
 
+    /**
+     * 状态
+     */
+    @TableLogic
+    private ZsIndustryStatus status;
 
-    public Integer getId() {
-            return id;
-            }
+    /**
+     * 创建者
+     */
+    @TableField(value = "creator")
+    private Integer creatorId;
 
-        public void setId(Integer id) {
-            this.id = id;
-            }
+    @TableField(exist = false)
+    private SysUser creator;
 
-    public String getName() {
-            return name;
-            }
+    /**
+     * 创建时间
+     */
+    private Date createdAt;
 
-        public void setName(String name) {
-            this.name = name;
-            }
-
-    public String getCode() {
-            return code;
-            }
-
-        public void setCode(String code) {
-            this.code = code;
-            }
-
-    public Integer getStatus() {
-            return status;
-            }
-
-        public void setStatus(Integer status) {
-            this.status = status;
-            }
-
-    public Integer getCreator() {
-            return creator;
-            }
-
-        public void setCreator(Integer creator) {
-            this.creator = creator;
-            }
-
-    public Date getCreatedAt() {
-            return createdAt;
-            }
-
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-            }
-
-@Override
-public String toString() {
+    @Override
+    public String toString() {
         return "ZsIndustry{" +
                 ", id=" + id +
                 ", name=" + name +
@@ -110,6 +85,6 @@ public String toString() {
                 ", status=" + status +
                 ", creator=" + creator +
                 ", createdAt=" + createdAt +
-        "}";
-        }
-        }
+                "}";
+    }
+}

@@ -9,6 +9,7 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ZsProjectLevels;
 import com.camel.oa.enums.ZsProjectStatus;
 import lombok.Data;
 
@@ -66,6 +67,14 @@ public class ZsProject extends BasePaginationEntity implements Serializable {
      */
     private String business;
 
+    /**
+     * 项目等级
+     */
+    private ZsProjectLevels level;
+
+    /**
+     * 负责人
+     */
     private Integer manager;
     /**
      * 状态
