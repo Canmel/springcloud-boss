@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.oa.mapper.ZsCommentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsComment">
+        <id column="int" property="int" />
+        <result column="comment" property="comment" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+        <result column="creator" property="creator" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        int, comment, type, status, created_at, creator
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List"></include>
+        from
+        zs_comment
+    </select>
+</mapper>
