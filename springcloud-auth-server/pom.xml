@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>springcloud-auth-server</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>授权模块</description>
 
     <dependencies>
