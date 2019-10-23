@@ -32,15 +32,14 @@ import java.util.Map;
  * @since 2019/7/8
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsProjectStatus implements IEnum {
-    INVALID("无效", 0),
-    NORMAL("正常", 1);
-
+public enum ZsCommentTyies implements IEnum {
+    /* 多个类型 */
+    COMMENT("评论", 0), REPLY("回复", 1);
 
     private String name;
     private Integer value;
 
-    ZsProjectStatus(String name, Integer value) {
+    ZsCommentTyies(String name, Integer value) {
         this.name = name;
         this.value = value;
     }
@@ -64,16 +63,16 @@ public enum ZsProjectStatus implements IEnum {
 
     public static List all() {
         List list = new ArrayList<>();
-        for (ZsProjectStatus status : ZsProjectStatus.values()) {
-            list.add(status.getValueMap());
+        for (ZsCommentTyies tyies : ZsCommentTyies.values()) {
+            list.add(tyies.getValueMap());
         }
         return list;
     }
 
-    public static ZsProjectStatus getEnumByValue(Integer value) {
-        for (ZsProjectStatus status : ZsProjectStatus.values()) {
-            if (status.getValue() == value) {
-                return status;
+    public static ZsCommentTyies getEnumByValue(Integer value) {
+        for (ZsCommentTyies tyies : ZsCommentTyies.values()) {
+            if (tyies.getValue() == value) {
+                return tyies;
             }
         }
         return null;

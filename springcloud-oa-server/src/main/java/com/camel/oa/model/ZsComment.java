@@ -1,121 +1,71 @@
 package com.camel.oa.model;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
-import java.io.Serializable;
+import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ZsCommentStatus;
+import com.camel.oa.enums.ZsCommentTyies;
+import com.camel.oa.enums.ZsProjectStatus;
+import lombok.Data;
 
-/**
- *
- *                       .::::.
- *                     .::::::::.
- *                    :::::::::::
- *                 ..:::::::::::'
- *              '::::::::::::'
- *                .::::::::::
- *           '::::::::::::::..
- *                ..::::::::::::.
- *              ``::::::::::::::::
- *               ::::``:::::::::'        .:::.
- *              ::::'   ':::::'       .::::::::.
- *            .::::'      ::::     .:::::::'::::.
- *           .:::'       :::::  .:::::::::' ':::::.
- *          .::'        :::::.:::::::::'      ':::::.
- *         .::'         ::::::::::::::'         ``::::.
- *     ...:::           ::::::::::::'              ``::.
- *    ```` ':.          ':::::::::'                  ::::..
- *                       '.:::::'                    ':'````..
- * < 服务实现类>
- * @author baily
- * @since 1.0
- * @date 2019-10-23
- **/
+import java.io.Serializable;
+import java.util.Date;
+
+@Data
 public class ZsComment extends BasePaginationEntity implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
-                    @TableId(value = "int", type = IdType.AUTO)
-                private Integer int;
-        private String comment;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    /**
+     * 评论
+     */
+    private String comment;
     /**
      * 类型 0： 评论， 1： 回复
      */
-        private Integer type;
+    private ZsCommentTyies type;
     /**
      * 状态
      */
-        private Integer status;
+    @TableLogic
+    private ZsCommentStatus status;
     /**
      * 创建时间
      */
-        private Date createdAt;
+    private Date createdAt;
+
     /**
-     * 评论人
+     * 创建者
      */
-        private Integer creator;
+    @TableField(value = "creator")
+    private Integer creatorId;
 
+    @TableField(exist = false)
+    private SysUser creator;
 
-    public Integer getInt() {
-            return int;
-            }
+    @TableField(value = "project")
+    private Integer projectId;
 
-        public void setInt(Integer int) {
-            this.int = int;
-            }
+    @TableField(exist = false)
+    private ZsProject project;
 
-    public String getComment() {
-            return comment;
-            }
-
-        public void setComment(String comment) {
-            this.comment = comment;
-            }
-
-    public Integer getType() {
-            return type;
-            }
-
-        public void setType(Integer type) {
-            this.type = type;
-            }
-
-    public Integer getStatus() {
-            return status;
-            }
-
-        public void setStatus(Integer status) {
-            this.status = status;
-            }
-
-    public Date getCreatedAt() {
-            return createdAt;
-            }
-
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-            }
-
-    public Integer getCreator() {
-            return creator;
-            }
-
-        public void setCreator(Integer creator) {
-            this.creator = creator;
-            }
-
-@Override
-public String toString() {
+    @Override
+    public String toString() {
         return "ZsComment{" +
-                ", int=" + int +
+                ", int=" + id +
                 ", comment=" + comment +
                 ", type=" + type +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", creator=" + creator +
-        "}";
-        }
-        }
+                "}";
+    }
+}

@@ -64,16 +64,16 @@ public enum ResourceTyies implements IEnum {
 
     public static List all() {
         List list = new ArrayList<>();
-        for (ResourceTyies resourceTyies : ResourceTyies.values()) {
-            list.add(resourceTyies.getValueMap());
+        for (ResourceTyies tyies : ResourceTyies.values()) {
+            list.add(tyies.getValueMap());
         }
         return list;
     }
 
     public static ResourceTyies getEnumByValue(Integer value) {
-        for (ResourceTyies resourceTyies : ResourceTyies.values()) {
-            if (resourceTyies.getValue() == value) {
-                return resourceTyies;
+        for (ResourceTyies tyies : ResourceTyies.values()) {
+            if (tyies.getValue() == value) {
+                return tyies;
             }
         }
         return null;

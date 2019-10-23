@@ -4,23 +4,43 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsComment">
-        <id column="int" property="int" />
-        <result column="comment" property="comment" />
-        <result column="type" property="type" />
-        <result column="status" property="status" />
-        <result column="created_at" property="createdAt" />
-        <result column="creator" property="creator" />
+        <id column="int" property="id"/>
+        <result column="comment" property="comment"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.typeHandler.ZsCommentTypiesEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsCommentStatusEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+        <association property="project" column="project" select="selectProject" javaType="com.camel.oa.model.ZsProject">
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        int, comment, type, status, created_at, creator
+        zs_comment.id,
+        zs_comment.comment,
+        zs_comment.type,
+        zs_comment.`status`,
+        zs_comment.created_at,
+        zs_comment.creator,
+        zs_comment.project
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_comment
+        <where>
+            zs_comment.`status` != 0
+            <if test="projectId != null and projectId != ''">AND zs_comment.project LIKE CONCAT('%', #{projectId} ,'%')</if>
+        </where>
+    </select>
+
+    <select id="selectProject" resultMap="com.camel.oa.mapper.ZsProjectMapper.BaseResultMap">
+        select
+        <include refid="com.camel.oa.mapper.ZsProjectMapper.Base_Column_List"></include>
+        from zs_project where id =#{id}
     </select>
 </mapper>
