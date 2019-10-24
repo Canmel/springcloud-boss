@@ -73,8 +73,7 @@ ribbon:
   ConnectTimeout: 60000
   MaxAutoRetries: 2             # 对当前实例的重试次数
   MaxAutoRetriesNextServer: 3   # 切换实例重试次数
-  eureka:
-    enabled: true
+
 hystrix:
   command:
     default:
