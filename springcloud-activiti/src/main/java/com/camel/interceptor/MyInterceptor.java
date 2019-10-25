@@ -17,17 +17,17 @@ public class MyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(isHtml(request)) {
-            if(!isPjaxRequest(request)) {
-                response.sendRedirect("http://127.0.0.1:8080/acti/index.html");
+        if (isHtml(request)) {
+            if (!isPjaxRequest(request)) {
+                response.sendRedirect("http://" + request.getRemoteHost() + ":8080/acti/index.html");
             }
             return true;
         }
         if (isNoLogin(request)) {
-            if(isAjaxRequest(request)) {
+            if (isAjaxRequest(request)) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            }else {
-                response.sendRedirect("http://127.0.0.1:8080/login?redirect_url=acti/index.html");
+            } else {
+                response.sendRedirect("http://" + request.getRemoteHost() + ":8080/login?redirect_url=acti/index.html");
 
             }
             return false;
@@ -41,12 +41,12 @@ public class MyInterceptor implements HandlerInterceptor {
 
     public boolean isNoLogin(HttpServletRequest request) {
         String[] paramStoken = request.getParameterValues(ACCESS_TOKEN);
-        OAuth2AuthenticationDetails details  = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String token = details.getTokenValue();
         return ObjectUtils.isEmpty(paramStoken) && ObjectUtils.isEmpty(details) && ObjectUtils.isEmpty(details.getTokenValue());
     }
 
-    public boolean isHtml(HttpServletRequest request){
+    public boolean isHtml(HttpServletRequest request) {
         return StringUtils.endsWith(request.getRequestURL().toString().toUpperCase(), ".HTML");
     }
 

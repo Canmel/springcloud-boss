@@ -115,7 +115,7 @@
                     alert(123);
                     AJAX.DELETE('/auth/session/exit', null, function (resp) {
 
-                        location.href = 'http://127.0.0.1:8080/login?redirect_url=/acti/model-list.html';
+                        location.href = 'http://' + window.location.host + ':8080/login?redirect_url=/acti/model-list.html';
                     });
                 }
             },

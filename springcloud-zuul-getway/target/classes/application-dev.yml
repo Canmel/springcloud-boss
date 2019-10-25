@@ -21,7 +21,7 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
   client:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
@@ -73,7 +73,8 @@ ribbon:
   ConnectTimeout: 60000
   MaxAutoRetries: 2             # 对当前实例的重试次数
   MaxAutoRetriesNextServer: 3   # 切换实例重试次数
-
+  eureka:
+    enabled: true
 hystrix:
   command:
     default:

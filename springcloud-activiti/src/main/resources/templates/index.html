@@ -61,13 +61,18 @@
             <div class="row">
                 <div class="span12">
                     <ul id="top-menus">
-                        <li><a :href="applicationContextRootPath + 'pages/dashbord.html'" v-on:click="menuClickHandler($event)" data-pjax class="active"><i
+                        <li><a :href="applicationContextRootPath + 'pages/dashbord.html'"
+                               v-on:click="menuClickHandler($event)" data-pjax class="active"><i
                                 class="batch home"></i><br/>看板</a></li>
-                        <li><a :href="applicationContextRootPath + 'pages/model-list.html'" v-on:click="menuClickHandler($event)" data-pjax><i
+                        <li><a :href="applicationContextRootPath + 'pages/model-list.html'"
+                               v-on:click="menuClickHandler($event)" data-pjax><i
                                 class="batch stream"></i><br/>原始模型</a></li>
-                        <li><a :href="applicationContextRootPath + 'pages/deployment-list.html'" v-on:click="menuClickHandler($event)" data-pjax><i
+                        <li><a :href="applicationContextRootPath + 'pages/deployment-list.html'"
+                               v-on:click="menuClickHandler($event)" data-pjax><i
                                 class="batch plane"></i><br/>已发布流程</a></li>
-                        <li><a :href="applicationContextRootPath + 'pages/process-instance-list.html'" v-on:click="menuClickHandler($event)" data-pjax><i class="batch calendar"></i><br/>流程实例</a></li>
+                        <li><a :href="applicationContextRootPath + 'pages/process-instance-list.html'"
+                               v-on:click="menuClickHandler($event)" data-pjax><i
+                                class="batch calendar"></i><br/>流程实例</a></li>
                         <!--<li><a href="paragraphs.html"><i class="batch quill"></i><br/>Paragraphs</a></li>-->
                         <!--<li><a href="faq.html"><i class="batch forms"></i><br/>FAQ</a></li>-->
                         <!--<li><a href="users.html"><i class="batch users"></i><br/>Users</a></li>-->
@@ -105,15 +110,15 @@
             menuClickHandler: function (e) {
                 $('#top-menus a').removeClass("active");
                 console.log(e.target);
-                if(e.target.tagName == 'A') {
+                if (e.target.tagName == 'A') {
                     $(e.target).addClass('active');
-                }else{
+                } else {
                     $(e.target).parent().addClass('active');
                 }
             },
             logout: function () {
-                AJAX.DELETE('http://127.0.0.1:8080/auth/session/exit', null, function (resp) {
-                    location.href = 'http://127.0.0.1:8080/login?redirect_url=/acti/index.html';
+                AJAX.DELETE('http://' + window.location.host + ':8080/auth/session/exit', null, function (resp) {
+                    location.href = 'http://' + window.location.host + ':8080/login?redirect_url=/acti/index.html';
                 });
             }
         },

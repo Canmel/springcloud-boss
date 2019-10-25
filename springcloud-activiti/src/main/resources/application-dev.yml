@@ -30,14 +30,10 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
   client:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
-
-#security:
-#  basic:
-#    enabled: false
 
 security:
   oauth2:
@@ -45,4 +41,6 @@ security:
       id: springcloud-activiti
       user-info-uri: http://${APPLICATION_IP}:8080/auth/session/me
       prefer-token-info: false
+  basic:
+    enabled: false
 
