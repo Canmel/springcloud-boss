@@ -1,4 +1,5 @@
 package com.camel.oa.controller;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.oa.service.ZsGroundService;
 import com.camel.oa.model.ZsGround;
@@ -64,8 +65,8 @@ public class ZsGroundController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody ZsGround entity) {
-        return super.save(entity);
+    public Result save(@RequestBody ZsGround entity, OAuth2Authentication auth2Authentication) {
+        return service.save(entity, auth2Authentication);
     }
 
     /**

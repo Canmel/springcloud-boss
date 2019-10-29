@@ -41,6 +41,4 @@ security:
       id: springcloud-activiti
       user-info-uri: http://${APPLICATION_IP}:8080/auth/session/me
       prefer-token-info: false
-  basic:
-    enabled: false
 

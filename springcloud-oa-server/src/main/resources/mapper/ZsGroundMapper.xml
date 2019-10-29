@@ -4,28 +4,39 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsGround">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="area_name" property="areaName" />
-        <result column="is_rentable" property="isRentable" />
-        <result column="is_saleable" property="isSaleable" />
-        <result column="industry_id" property="industryId" />
-        <result column="periphery" property="periphery" />
-        <result column="cooperation" property="cooperation" />
-        <result column="status" property="status" />
-        <result column="created_at" property="createdAt" />
-        <result column="creator" property="creator" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="area_name" property="areaName"/>
+        <result column="is_rentable" property="rentable" typeHandler="com.camel.oa.typeHandler.ZsYesOrNoEnumHandler"/>
+        <result column="is_saleable" property="rentable" typeHandler="com.camel.oa.typeHandler.ZsYesOrNoEnumHandler"/>
+        <result column="industry" property="industryId"/>
+        <result column="periphery" property="periphery"/>
+        <result column="cooperation" property="cooperation"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsGroundStatusEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+        <association property="industry" column="industry" select="selectIndustry"
+                     javaType="com.camel.oa.model.ZsIndustry">
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, area_name, is_rentable, is_saleable, industry_id, periphery, cooperation, status, created_at, creator
+        id, name, area_name, is_rentable, is_saleable, industry, periphery, cooperation, status, created_at, creator
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_ground
+    </select>
+
+    <select id="selectIndustry" resultMap="com.camel.oa.mapper.ZsIndustryMapper.BaseResultMap">
+        select
+        <include refid="com.camel.oa.mapper.ZsIndustryMapper.Base_Column_List"></include>
+        from zs_industry where id =#{id}
     </select>
 </mapper>

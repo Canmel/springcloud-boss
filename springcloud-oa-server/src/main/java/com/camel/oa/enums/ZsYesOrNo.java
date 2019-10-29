@@ -33,8 +33,8 @@ import java.util.Map;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ZsYesOrNo implements IEnum {
-    OK("是", 1),
-    NO("否", 0);
+    INVALID("否", 0),
+    NORMAL("是", 1);
 
 
     private String name;
