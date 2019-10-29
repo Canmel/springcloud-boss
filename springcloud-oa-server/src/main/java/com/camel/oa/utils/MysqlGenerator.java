@@ -41,8 +41,8 @@ import java.util.Map;
  * 　　　　　　　   ┗┻┛     ┗┻┛+ + + +
  */
 public class MysqlGenerator {
-    public static String CODE_FACTORY_OUT_PATH = "/Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-oa-server/src/main/java/com/camel/oa";
-    public static String XML_FACTORY_OUT_PATH = "/Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-oa-server/src/main/resources/";
+    public static String CODE_FACTORY_OUT_PATH = "./springcloud-oa-server/src/main/java/com/camel/oa";
+    public static String XML_FACTORY_OUT_PATH = "./springcloud-oa-server/src/main/resources/";
 
     public static void main(String[] args) {
         String path = new MysqlGenerator().getClass().getResource("/").getPath();
@@ -59,7 +59,7 @@ public class MysqlGenerator {
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"zs_comment"});
+        strategyConfig.setInclude(new String[] {"zs_ground"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)

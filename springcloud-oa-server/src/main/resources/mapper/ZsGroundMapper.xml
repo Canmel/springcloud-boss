@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.oa.mapper.ZsGroundMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsGround">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="area_name" property="areaName" />
+        <result column="is_rentable" property="isRentable" />
+        <result column="is_saleable" property="isSaleable" />
+        <result column="industry_id" property="industryId" />
+        <result column="periphery" property="periphery" />
+        <result column="cooperation" property="cooperation" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+        <result column="creator" property="creator" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, area_name, is_rentable, is_saleable, industry_id, periphery, cooperation, status, created_at, creator
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List"></include>
+        from
+        zs_ground
+    </select>
+</mapper>
