@@ -32,6 +32,10 @@
         <include refid="Base_Column_List"></include>
         from
         zs_ground
+        <where>
+            zs_ground.`status` != 0
+            <if test="name != null and name != ''">AND zs_ground.`name` LIKE CONCAT('%', #{name} , '%')</if>
+        </where>
     </select>
 
     <select id="selectIndustry" resultMap="com.camel.oa.mapper.ZsIndustryMapper.BaseResultMap">
