@@ -1,6 +1,11 @@
 server:
   port: 9999
 
+boss:
+  getway:
+    url: ${APPLICATION_GETWAY_URL}
+    port: 76213
+
 spring:
   application:
     name: springcloud-activiti

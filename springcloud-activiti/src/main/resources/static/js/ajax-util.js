@@ -60,7 +60,7 @@ __ajax = function(url, data, success, type ,contentType){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                location.href = 'http://' + window.location.host + '/login?redirect_url=/acti/model-list.html';
+                location.href = 'http://' + window.location.host + '/login?redirect_url=/acti/';
             }
         }
     };

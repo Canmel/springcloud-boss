@@ -1,25 +1,35 @@
 package com.camel.interceptor;
 
+import com.camel.activiti.config.ApplicationConfig;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class MyInterceptor implements HandlerInterceptor {
     public static final String ACCESS_TOKEN = "access_token";
 
     public static final String AJAX_REQUEST_HEADER = "XMLHttpRequest";
 
+    @Autowired
+    private ApplicationConfig applicationConfig;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String getWayUrl = StringUtils.isEmpty(applicationConfig.getGetWayUrl()) ? "127.0.0.1" : applicationConfig.getGetWayUrl();
+        String getWayPort = StringUtils.isEmpty(applicationConfig.getGetWayPort()) ? ":8080" : (":" + applicationConfig.getGetWayPort());
         if (isHtml(request)) {
             if (!isPjaxRequest(request)) {
-                response.sendRedirect("http://" + request.getRemoteHost() + ":8080/acti/index.html");
+                response.sendRedirect("http://" + getWayUrl + getWayPort + "/acti/index.html");
             }
             return true;
         }
@@ -27,7 +37,7 @@ public class MyInterceptor implements HandlerInterceptor {
             if (isAjaxRequest(request)) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
             } else {
-                response.sendRedirect("http://" + request.getRemoteHost() + ":8080/login?redirect_url=acti/index.html");
+                response.sendRedirect("http://" + getWayUrl + getWayPort + "/login?redirect_url=acti/index.html");
 
             }
             return false;
