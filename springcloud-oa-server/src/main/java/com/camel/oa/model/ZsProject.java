@@ -43,7 +43,7 @@ import java.io.Serializable;
  * @since 1.0
  **/
 @Data
-public class ZsProject extends BasePaginationEntity implements Serializable {
+public class ZsProject extends BaseOaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

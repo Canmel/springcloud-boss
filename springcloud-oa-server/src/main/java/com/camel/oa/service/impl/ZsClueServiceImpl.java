@@ -61,7 +61,6 @@ public class ZsClueServiceImpl extends ServiceImpl<ZsClueMapper, ZsClue> impleme
 
     @Override
     public Result save(ZsClue entity, OAuth2Authentication authentication) {
-//        entity.setStatus(ZsProjectStatus.NORMAL);
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, authentication.getName());
         entity.setCreator(new SysUser(member.getId()));
         entity.setCreatorId(member.getId());

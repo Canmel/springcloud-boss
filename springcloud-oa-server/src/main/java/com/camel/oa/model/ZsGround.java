@@ -13,8 +13,31 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <地块信息>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/30
+ **/
 @Data
-public class ZsGround extends BasePaginationEntity implements Serializable {
+public class ZsGround extends BaseOaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -67,15 +90,6 @@ public class ZsGround extends BasePaginationEntity implements Serializable {
      */
     private Date createdAt;
 
-    /**
-     * 创建者
-     */
-    @TableField(value = "creator")
-    private Integer creatorId;
-
-    @TableField(exist = false)
-    private SysUser creator;
-
     public ZsGround() {
     }
 
@@ -90,7 +104,6 @@ public class ZsGround extends BasePaginationEntity implements Serializable {
                 ", cooperation=" + cooperation +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
-                ", creator=" + creator +
                 "}";
     }
 }

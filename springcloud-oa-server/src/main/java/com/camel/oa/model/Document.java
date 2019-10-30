@@ -19,7 +19,7 @@ import java.util.Date;
  * @since 2019-10-12
  */
 @Data
-public class Document extends BaseProcessPaginationEntity implements Serializable {
+public class Document extends BaseOaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

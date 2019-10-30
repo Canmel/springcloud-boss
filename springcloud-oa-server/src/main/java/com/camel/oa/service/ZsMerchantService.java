@@ -1,8 +1,11 @@
 package com.camel.oa.service;
 
+import com.camel.core.entity.Result;
 import com.camel.oa.model.ZsMerchant;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.oa.model.ZsProject;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -34,4 +37,12 @@ public interface ZsMerchantService extends IService<ZsMerchant> {
      @return
      */
     PageInfo<ZsMerchant> selectPage(ZsMerchant entity);
+
+    /**
+     * 保存
+     * @param entity
+     * @param oAuth2Authentication
+     * @return
+     */
+    Result save(ZsMerchant entity, OAuth2Authentication oAuth2Authentication);
 }
