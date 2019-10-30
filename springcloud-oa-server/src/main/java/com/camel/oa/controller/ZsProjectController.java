@@ -5,36 +5,16 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.oa.enums.ZsProjectIndustryTypies;
 import com.camel.oa.enums.ZsProjectLevels;
+import com.camel.oa.enums.ZsProjectTypies;
 import com.camel.oa.model.ZsProject;
 import com.camel.oa.service.ZsProjectService;
+import com.camel.oa.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * 　　　　　　　 ┏┓　　　┏┓
- * 　　　　　　　┏┛┻━━━━━┛┻┓
- * 　　　　　　　┃         ┃
- * 　　　　　　　┃    ━    ┃
- * 　　　　　　　┃  >   <  ┃
- * 　　　　　　　┃         ┃
- * 　　　　　　　┃... ⌒ ...┃
- * 　　　　　　　┃         ┃
- * ┗━┓     ┏━┛
- * ┃     ┃　Code is far away from bug with the animal protecting
- * ┃     ┃   神兽保佑,代码无bug
- * ┃     ┃
- * ┃     ┃
- * ┃     ┃        <智慧招商项目 前端控制器>
- * ┃     ┃
- * ┃     ┗━━━━┓   @author baily
- * ┃          ┣┓
- * ┃          ┏┛  @since 1.0
- * ┗┓┓┏━━━━┳┓┏┛
- * ┃┫┫    ┃┫┫    @date 2019-10-22
- * ┗┻┛    ┗┻┛
- */
 @RestController
 @RequestMapping("/zsProject")
 public class ZsProjectController extends BaseCommonController {
@@ -42,6 +22,9 @@ public class ZsProjectController extends BaseCommonController {
 
     @Autowired
     private ZsProjectService service;
+
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
 
     /**
      * 分页查询
@@ -56,7 +39,9 @@ public class ZsProjectController extends BaseCommonController {
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
-        return super.details(id);
+        ZsProject project = service.selectById(id);
+        project.setManager(applicationToolsUtils.getUser(project.getManagerId()));
+        return ResultUtil.success(project);
     }
 
     /**
@@ -94,6 +79,16 @@ public class ZsProjectController extends BaseCommonController {
     @GetMapping("/levels")
     public Result levels() {
         return ResultUtil.success(ZsProjectLevels.all());
+    }
+
+    @GetMapping("/typies")
+    public Result typies() {
+        return ResultUtil.success(ZsProjectTypies.all());
+    }
+
+    @GetMapping("/industryTypies")
+    public Result industryTypies() {
+        return ResultUtil.success(ZsProjectIndustryTypies.all());
     }
 
     /**

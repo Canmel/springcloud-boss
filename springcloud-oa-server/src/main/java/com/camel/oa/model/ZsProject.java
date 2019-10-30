@@ -9,8 +9,10 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ZsProjectIndustryTypies;
 import com.camel.oa.enums.ZsProjectLevels;
 import com.camel.oa.enums.ZsProjectStatus;
+import com.camel.oa.enums.ZsProjectTypies;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -75,12 +77,41 @@ public class ZsProject extends BasePaginationEntity implements Serializable {
     /**
      * 负责人
      */
-    private Integer manager;
+    @TableField(exist = false)
+    private SysUser manager;
+
+    @TableField(value = "manager")
+    private Integer managerId;
     /**
      * 状态
      */
     @TableLogic
     private ZsProjectStatus status;
+
+    /**
+     * 项目所在地
+     */
+    private String place;
+
+    /**
+     * 落地时间
+     */
+    private Date confirmAt;
+
+    /**
+     * 开工时间
+     */
+    private Date startAt;
+
+    /**
+     * 项目类型
+     */
+    private ZsProjectTypies type;
+
+    /**
+     * 产业类别
+     */
+    private ZsProjectIndustryTypies industryType;
     /**
      * 创建者
      */
@@ -90,7 +121,15 @@ public class ZsProject extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private SysUser creator;
 
+    /**
+     * 创建时间
+     */
     private Date createdAt;
+
+    /**
+     * 用地面积
+     */
+    private Double areaSize;
 
     @Override
     public String toString() {

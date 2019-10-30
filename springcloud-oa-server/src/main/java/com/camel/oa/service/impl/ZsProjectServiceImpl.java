@@ -7,11 +7,13 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.oa.enums.ResourceStatus;
 import com.camel.oa.enums.ZsProjectStatus;
 import com.camel.oa.model.Resource;
+import com.camel.oa.model.ZsComment;
 import com.camel.oa.model.ZsProject;
 import com.camel.oa.mapper.ZsProjectMapper;
 import com.camel.oa.service.ZsProjectService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.oa.utils.ApplicationToolsUtils;
 import com.camel.redis.utils.SessionContextUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -52,11 +56,20 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
     public PageInfo<ZsProject> selectPage(ZsProject entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
+        List<SysUser> users = applicationToolsUtils.allUsers();
+        List<ZsProject> projectList = pageInfo.getList();
+        projectList.forEach(project -> {
+            project.setCreator(applicationToolsUtils.getUser(project.getCreator().getUid()));
+        });
+        pageInfo.setList(projectList);
         return pageInfo;
     }
 

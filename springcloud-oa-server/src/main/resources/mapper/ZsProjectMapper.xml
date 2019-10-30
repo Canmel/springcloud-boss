@@ -9,10 +9,16 @@
         <result column="code" property="code"/>
         <result column="amount" property="amount"/>
         <result column="business" property="business"/>
-        <result column="manager" property="manager"/>
+        <result column="manager" property="managerId"/>
         <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsProjectStatusEnumHandler"/>
         <result column="level" property="level" typeHandler="com.camel.oa.typeHandler.ZsProjectLevelsEnumHandler"/>
         <result column="created_at" property="createdAt"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.typeHandler.ZsProjectTypiesEnumHandler"/>
+        <result column="industry_type" property="industryType"
+                typeHandler="com.camel.oa.typeHandler.ZsProjectIndustryTypiesEnumHandler"/>
+        <result column="place" property="place"/>
+        <result column="confirm_at" property="confirmAt"/>
+        <result column="start_at" property="startAt"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -20,7 +26,21 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        zs_project.id, zs_project.name, zs_project.code, zs_project.amount, zs_project.business, zs_project.manager, zs_project.status, zs_project.creator, zs_project.created_at, zs_project.level
+        zs_project.id,
+        zs_project.name,
+        zs_project.code,
+        zs_project.amount,
+        zs_project.business,
+        zs_project.manager,
+        zs_project.level,
+        zs_project.type,
+        zs_project.place,
+        zs_project.confirm_at,
+        zs_project.start_at,
+        zs_project.status,
+        zs_project.creator,
+        zs_project.created_at,
+        zs_project.industry_type
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

@@ -14,6 +14,8 @@ import java.util.List;
 public class ApplicationToolsUtils {
     private final static ApplicationToolsUtils INSTANCE = new ApplicationToolsUtils();
 
+    public static SysUser result = null;
+
     public ApplicationToolsUtils() {
     }
 
@@ -29,5 +31,15 @@ public class ApplicationToolsUtils {
         byte[] cu = (byte[]) operations.get("ALL_SYS_USERS");
         List<SysUser> userList = (List<SysUser>) SerizlizeUtil.unserizlize(cu);
         return userList;
+    }
+
+    public SysUser getUser(Integer uid) {
+        allUsers().forEach(user -> {
+            if (user.getUid().equals(uid)) {
+                result = user;
+                return;
+            }
+        });
+        return result;
     }
 }
