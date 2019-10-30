@@ -1,4 +1,5 @@
 package com.camel.oa.controller;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.oa.service.ZsIndustryService;
@@ -83,6 +84,15 @@ public class ZsIndustryController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
+    }
+
+    /**
+     * 所有
+     * @return
+     */
+    @GetMapping("/all")
+    public Result all(){
+        return ResultUtil.success(service.selectList(new EntityWrapper<>()));
     }
 
     /**
