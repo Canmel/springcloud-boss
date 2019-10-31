@@ -1,8 +1,13 @@
 package com.camel.oa.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ZsTalentederStatus;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -68,10 +73,6 @@ public class ZsTalenteder extends BaseOaEntity implements Serializable {
     /**
      * 状态
      */
-    private Integer status;
-
-    @Override
-    public String toString() {
     private ZsTalentederStatus status;
 
     @Override

@@ -90,14 +90,6 @@ public class ZsMerchant extends BaseOaEntity implements Serializable {
      * 创建时间
      */
     private Date createdAt;
-    /**
-     * 创建者
-     */
-    @TableField(value = "creator")
-    private Integer creatorId;
-
-    @TableField(exist = false)
-    private SysUser creator;
 
     private ZsMerchantStatus status;
 
@@ -117,7 +109,6 @@ public class ZsMerchant extends BaseOaEntity implements Serializable {
                 ", source=" + source +
                 ", attribute=" + attribute +
                 ", createdAt=" + createdAt +
-                ", creator=" + creator +
                 "}";
     }
 }
