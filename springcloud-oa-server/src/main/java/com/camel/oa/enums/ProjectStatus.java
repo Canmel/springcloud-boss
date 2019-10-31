@@ -74,7 +74,7 @@ public enum ProjectStatus implements IEnum {
 
     public static ProjectStatus getEnumByValue(Integer value) {
         for (ProjectStatus resourceStatus : ProjectStatus.values()) {
-            if (resourceStatus.getValue() == value) {
+            if (resourceStatus.getValue().equals(value)) {
                 return resourceStatus;
             }
         }

@@ -72,7 +72,7 @@ public enum QuestionnaireStatus implements IEnum {
 
     public static QuestionnaireStatus getEnumByValue(Integer value) {
         for (QuestionnaireStatus questionnaireStatus : QuestionnaireStatus.values()) {
-            if (questionnaireStatus.getValue() == value) {
+            if (questionnaireStatus.getValue().equals(value)) {
                 return questionnaireStatus;
             }
         }

@@ -71,7 +71,7 @@ public enum ProjectTyies implements IEnum {
 
     public static ProjectTyies getEnumByValue(Integer value) {
         for (ProjectTyies projectTyies : ProjectTyies.values()) {
-            if (projectTyies.getValue() == value) {
+            if (projectTyies.getValue().equals(value)) {
                 return projectTyies;
             }
         }
