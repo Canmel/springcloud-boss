@@ -53,7 +53,7 @@ public class ZsTalenteder extends BaseOaEntity implements Serializable {
     /**
      * 联系电话
      */
-    private String cantactPhone;
+    private String contactPhone;
     /**
      * 备注
      */
@@ -61,15 +61,11 @@ public class ZsTalenteder extends BaseOaEntity implements Serializable {
     /**
      * 适合项目
      */
-    private Integer projectId;
-    /**
-     * 创建者
-     */
-    @TableField(value = "creator")
-    private Integer creatorId;
-
     @TableField(exist = false)
-    private SysUser creator;
+    private ZsProject project;
+
+    @TableField(value = "project")
+    private Integer projectId;
     /**
      * 状态
      */
@@ -80,9 +76,7 @@ public class ZsTalenteder extends BaseOaEntity implements Serializable {
         return "ZsTalenteder{" +
                 ", id=" + id +
                 ", name=" + name +
-                ", cantactPhone=" + cantactPhone +
                 ", remark=" + remark +
-                ", projectId=" + projectId +
                 ", status=" + status +
                 "}";
     }

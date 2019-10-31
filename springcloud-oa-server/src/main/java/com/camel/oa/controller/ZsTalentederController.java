@@ -1,19 +1,14 @@
 package com.camel.oa.controller;
-import com.camel.oa.model.ZsMerchant;
-import com.camel.oa.utils.ApplicationToolsUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.oa.service.ZsTalentederService;
-import com.camel.oa.model.ZsTalenteder;
-import com.camel.core.controller.BaseCommonController;
 
 import com.baomidou.mybatisplus.service.IService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
-
-import java.util.List;
+import com.camel.oa.model.ZsTalenteder;
+import com.camel.oa.service.ZsTalentederService;
+import com.camel.oa.utils.ApplicationToolsUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/zsTalenteder")
