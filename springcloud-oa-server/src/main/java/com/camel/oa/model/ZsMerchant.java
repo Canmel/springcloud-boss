@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.oa.enums.ZsMerchantStatus;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -97,6 +98,8 @@ public class ZsMerchant extends BasePaginationEntity implements Serializable {
 
     @TableField(exist = false)
     private SysUser creator;
+
+    private ZsMerchantStatus status;
 
 
     @Override

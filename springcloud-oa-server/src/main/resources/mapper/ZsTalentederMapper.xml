@@ -4,24 +4,36 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsTalenteder">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="cantact_phone" property="cantactPhone" />
-        <result column="remark" property="remark" />
-        <result column="project_id" property="projectId" />
-        <result column="creator" property="creator" />
-        <result column="status" property="status" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="cantact_phone" property="cantactPhone"/>
+        <result column="remark" property="remark"/>
+        <result column="project_id" property="projectId"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsTalentederStatusEnumHandler"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, cantact_phone, remark, project_id, creator, status
+        zs_talenteder.id,
+        zs_talenteder.name,
+        zs_talenteder.cantact_phone,
+        zs_talenteder.remark,
+        zs_talenteder.project_id,
+        zs_talenteder.creator,
+        zs_talenteder.status
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_talenteder
+        <where>
+            zs_talenteder.`status` != 0
+            <if test="name != null and name != ''">AND zs_talenteder.`name` LIKE CONCAT('%', #{name} , '%')</if>
+        </where>
     </select>
 </mapper>

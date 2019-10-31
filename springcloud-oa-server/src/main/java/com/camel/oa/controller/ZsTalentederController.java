@@ -1,4 +1,6 @@
 package com.camel.oa.controller;
+import com.camel.oa.model.ZsMerchant;
+import com.camel.oa.utils.ApplicationToolsUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.oa.service.ZsTalentederService;
 import com.camel.oa.model.ZsTalenteder;
@@ -13,29 +15,6 @@ import com.camel.core.utils.ResultUtil;
 
 import java.util.List;
 
-/**
- * 　　　　　　　 ┏┓　　　┏┓
- * 　　　　　　　┏┛┻━━━━━┛┻┓
- * 　　　　　　　┃         ┃ 　
- * 　　　　　　　┃    ━    ┃
- * 　　　　　　　┃  >   <  ┃
- * 　　　　　　　┃         ┃
- * 　　　　　　　┃... ⌒ ...┃
- * 　　　　　　　┃         ┃
- *             ┗━┓     ┏━┛
- *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
- *               ┃     ┃   神兽保佑,代码无bug
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 前端控制器>
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┗━━━━┓   @author baily
- *               ┃          ┣┓
- *               ┃          ┏┛  @since 1.0
- *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-10-30
- *                ┗┻┛    ┗┻┛
- */
 @RestController
 @RequestMapping("/zsTalenteder")
 public class ZsTalentederController extends BaseCommonController {
@@ -43,6 +22,9 @@ public class ZsTalentederController extends BaseCommonController {
 
     @Autowired
     private ZsTalentederService service;
+
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
 
     /**
     * 分页查询
@@ -57,7 +39,9 @@ public class ZsTalentederController extends BaseCommonController {
     */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id){
-        return super.details(id);
+        ZsTalenteder talenteder = service.selectById(id);
+        talenteder.setCreator(applicationToolsUtils.getUser(talenteder.getCreatorId()));
+        return ResultUtil.success(talenteder);
     }
 
     /**
@@ -97,7 +81,7 @@ public class ZsTalentederController extends BaseCommonController {
     */
     @Override
     public String getMouduleName() {
-        return "";
+        return "人才";
     }
 
 }

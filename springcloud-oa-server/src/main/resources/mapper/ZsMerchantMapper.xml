@@ -16,12 +16,28 @@
         <result column="source" property="source" />
         <result column="attribute" property="attribute" />
         <result column="created_at" property="createdAt" />
-        <result column="creator" property="creator" />
+        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsMerchantStatusEnumHandler"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, manager, addr, main_business, intention, contacts, contacts_post, contacts_phone, source, attribute, created_at, creator
+        zs_merchant.id,
+        zs_merchant.name,
+        zs_merchant.manager,
+        zs_merchant.addr,
+        zs_merchant.main_business,
+        zs_merchant.intention,
+        zs_merchant.contacts,
+        zs_merchant.contacts_post,
+        zs_merchant.contacts_phone,
+        zs_merchant.source,
+        zs_merchant.attribute,
+        zs_merchant.created_at,
+        zs_merchant.creator,
+        zs_merchant.status
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -29,5 +45,9 @@
          <include refid="Base_Column_List"></include>
         from
         zs_merchant
+        <where>
+            zs_merchant.`status` != 0
+            <if test="name != null and name != ''">AND zs_merchant.`name` LIKE CONCAT('%', #{name} , '%')</if>
+        </where>
     </select>
 </mapper>
