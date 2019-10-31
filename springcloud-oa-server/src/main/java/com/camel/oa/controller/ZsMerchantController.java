@@ -2,6 +2,7 @@ package com.camel.oa.controller;
 
 import com.camel.oa.model.ZsProject;
 import com.camel.oa.utils.ApplicationToolsUtils;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.oa.service.ZsMerchantService;
 import com.camel.oa.model.ZsMerchant;
@@ -49,8 +50,8 @@ public class ZsMerchantController extends BaseCommonController {
      * 新建保存
      */
     @PostMapping
-    public Result save(@RequestBody ZsMerchant entity) {
-        return super.save(entity);
+    public Result save(@RequestBody ZsMerchant entity, OAuth2Authentication auth2Authentication) {
+        return service.save(entity, auth2Authentication);
     }
 
     /**

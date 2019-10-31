@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class ZsComment extends BasePaginationEntity implements Serializable {
+public class ZsComment extends BaseOaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

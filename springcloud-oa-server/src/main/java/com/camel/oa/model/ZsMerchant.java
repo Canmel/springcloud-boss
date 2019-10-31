@@ -37,7 +37,7 @@ import java.util.Date;
  * @date 2019-10-30
  **/
 @Data
-public class ZsMerchant extends BasePaginationEntity implements Serializable {
+public class ZsMerchant extends BaseOaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

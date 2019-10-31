@@ -1,34 +1,30 @@
 package com.camel.oa.model;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
-import com.camel.core.model.SysUser;
-import com.camel.oa.enums.ZsTalentederStatus;
-import lombok.Data;
-
 import java.io.Serializable;
 
 /**
- * .::::.
- * .::::::::.
- * :::::::::::
- * ..:::::::::::'
- * '::::::::::::'
- * .::::::::::
- * '::::::::::::::..
- * ..::::::::::::.
- * ``::::::::::::::::
- * ::::``:::::::::'        .:::.
- * ::::'   ':::::'       .::::::::.
- * .::::'      ::::     .:::::::'::::.
- * .:::'       :::::  .:::::::::' ':::::.
- * .::'        :::::.:::::::::'      ':::::.
- * .::'         ::::::::::::::'         ``::::.
- * ...:::           ::::::::::::'              ``::.
- * ```` ':.          ':::::::::'                  ::::..
- * '.:::::'                    ':'````..
+ *
+ *                       .::::.
+ *                     .::::::::.
+ *                    :::::::::::
+ *                 ..:::::::::::'
+ *              '::::::::::::'
+ *                .::::::::::
+ *           '::::::::::::::..
+ *                ..::::::::::::.
+ *              ``::::::::::::::::
+ *               ::::``:::::::::'        .:::.
+ *              ::::'   ':::::'       .::::::::.
+ *            .::::'      ::::     .:::::::'::::.
+ *           .:::'       :::::  .:::::::::' ':::::.
+ *          .::'        :::::.:::::::::'      ':::::.
+ *         .::'         ::::::::::::::'         ``::::.
+ *     ...:::           ::::::::::::'              ``::.
+ *    ```` ':.          ':::::::::'                  ::::..
+ *                       '.:::::'                    ':'````..
  * < 服务实现类>
  *
  * @author baily
@@ -36,7 +32,7 @@ import java.io.Serializable;
  * @since 1.0
  **/
 @Data
-public class ZsTalenteder extends BasePaginationEntity implements Serializable {
+public class ZsTalenteder extends BaseOaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -72,6 +68,10 @@ public class ZsTalenteder extends BasePaginationEntity implements Serializable {
     /**
      * 状态
      */
+    private Integer status;
+
+    @Override
+    public String toString() {
     private ZsTalentederStatus status;
 
     @Override
@@ -82,7 +82,6 @@ public class ZsTalenteder extends BasePaginationEntity implements Serializable {
                 ", cantactPhone=" + cantactPhone +
                 ", remark=" + remark +
                 ", projectId=" + projectId +
-                ", creator=" + creator +
                 ", status=" + status +
                 "}";
     }

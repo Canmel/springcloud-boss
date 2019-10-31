@@ -1,10 +1,15 @@
 package com.camel.oa.utils;
 
+import com.camel.common.entity.Member;
+import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.oa.model.BaseOaEntity;
 import com.camel.redis.utils.SerizlizeUtil;
+import com.camel.redis.utils.SessionContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -41,5 +46,11 @@ public class ApplicationToolsUtils {
             }
         });
         return result;
+    }
+
+    public void setCreator(OAuth2Authentication authentication, BaseOaEntity entity) {
+        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, authentication.getName());
+        entity.setCreator(new SysUser(member.getId()));
+        entity.setCreatorId(member.getId());
     }
 }

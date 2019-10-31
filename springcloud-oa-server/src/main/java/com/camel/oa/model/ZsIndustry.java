@@ -38,7 +38,7 @@ import java.util.Date;
  * @since 1.0
  **/
 @Data
-public class ZsIndustry extends BasePaginationEntity implements Serializable {
+public class ZsIndustry extends BaseOaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
