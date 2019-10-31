@@ -26,9 +26,25 @@ import javax.jms.JMSException;
  * @date 2019/9/19
  **/
 public interface MqService {
+    /**
+     * 发送消息
+     * @param msg
+     * @return
+     * @throws JMSException
+     */
     boolean sendMsg(String msg) throws JMSException;
 
+    /**
+     * 发送
+     * @param msg
+     * @return
+     */
     boolean send(String msg);
 
+    /**
+     * 发送消息
+     * @param msg
+     * @return
+     */
     boolean sendForNotice(String msg);
 }

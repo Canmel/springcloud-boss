@@ -16,7 +16,7 @@
         <result column="source" property="source" />
         <result column="attribute" property="attribute" />
         <result column="created_at" property="createdAt" />
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsMerchantStatusEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsMerchantStatusEnumHandler"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>

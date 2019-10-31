@@ -7,12 +7,12 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="area_name" property="areaName"/>
-        <result column="is_rentable" property="rentable" typeHandler="com.camel.oa.typeHandler.ZsYesOrNoEnumHandler"/>
-        <result column="is_saleable" property="saleable" typeHandler="com.camel.oa.typeHandler.ZsYesOrNoEnumHandler"/>
+        <result column="is_rentable" property="rentable" typeHandler="com.camel.oa.enumhandler.ZsYesOrNoEnumHandler"/>
+        <result column="is_saleable" property="saleable" typeHandler="com.camel.oa.enumhandler.ZsYesOrNoEnumHandler"/>
         <result column="industry" property="industryId"/>
         <result column="periphery" property="periphery"/>
         <result column="cooperation" property="cooperation"/>
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsGroundStatusEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsGroundStatusEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>

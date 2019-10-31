@@ -10,8 +10,8 @@
         <result column="current_copies" property="currentCopies"/>
         <result column="copies" property="copies"/>
         <result column="collect_copies" property="collectCopies"/>
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ProjectStatusEnumHandler"/>
-        <result column="type" property="type" typeHandler="com.camel.oa.typeHandler.ProjectTyiesEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ProjectStatusEnumHandler"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.enumhandler.ProjectTyiesEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="release_at" property="releaseAt"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">

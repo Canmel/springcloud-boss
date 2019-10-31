@@ -12,23 +12,50 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <json回调>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @WebFilter("/service/*")
 public class JsonpCallbackFilter implements Filter {
 
     private static Logger log = LoggerFactory.getLogger(JsonpCallbackFilter.class);
 
+    public static final String CALLBACK_STR = "callback";
+
+    @Override
     public void init(FilterConfig fConfig) throws ServletException {
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         Map<String, String[]> parms = httpRequest.getParameterMap();
 
-        if (parms.containsKey("callback")) {
+        if (parms.containsKey(CALLBACK_STR)) {
             if (log.isDebugEnabled())
-                log.debug("Wrapping response with JSONP callback '" + parms.get("callback")[0] + "'");
+            {log.debug("Wrapping response with JSONP callback '" + parms.get("callback")[0] + "'");}
 
             OutputStream out = httpResponse.getOutputStream();
 
@@ -41,7 +68,7 @@ public class JsonpCallbackFilter implements Filter {
             outputStream.write(new String(parms.get("callback")[0] + "(").getBytes());
             outputStream.write(wrapper.getData());
             outputStream.write(new String(");").getBytes());
-            byte jsonpResponse[] = outputStream.toByteArray();
+            byte[] jsonpResponse = outputStream.toByteArray();
 
             wrapper.setContentType("text/javascript;charset=UTF-8");
             wrapper.setContentLength(jsonpResponse.length);
@@ -55,6 +82,7 @@ public class JsonpCallbackFilter implements Filter {
         }
     }
 
+    @Override
     public void destroy() {
     }
 }

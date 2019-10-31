@@ -7,7 +7,7 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="code" property="code"/>
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsIndustryStatusEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsIndustryStatusEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>

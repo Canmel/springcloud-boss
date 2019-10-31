@@ -41,6 +41,7 @@ public interface ZsProjectService extends IService<ZsProject> {
     /**
      * 保存
      * @param oAuth2Authentication
+     * @param entity
      * @return
      */
     Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication);

@@ -44,7 +44,6 @@ public enum ZsProjectLevels implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -71,7 +70,7 @@ public enum ZsProjectLevels implements IEnum {
 
     public static ZsProjectLevels getEnumByValue(Integer value) {
         for (ZsProjectLevels levels : ZsProjectLevels.values()) {
-            if (levels.getValue() == value) {
+            if (levels.getValue().equals(value)) {
                 return levels;
             }
         }

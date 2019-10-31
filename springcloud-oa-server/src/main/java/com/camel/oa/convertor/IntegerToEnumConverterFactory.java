@@ -8,15 +8,38 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <Integer 转换 枚举类型>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 public class IntegerToEnumConverterFactory implements ConverterFactory<Serializable, IEnum> {
-    private static final Map<Class, Converter> converterMap =  new HashMap<>();
+    private static final Map<Class, Converter> CONVERTER_MAP =  new HashMap<>();
 
     @Override
     public <T extends IEnum> Converter<Serializable, T> getConverter(Class<T> targetType) {
-        Converter<Serializable, T> converter = converterMap.get(targetType);
+        Converter<Serializable, T> converter = CONVERTER_MAP.get(targetType);
         if(converter == null) {
             converter = new IntegerToEnumConverter<>(targetType);
-            converterMap.put(targetType, converter);
+            CONVERTER_MAP.put(targetType, converter);
         }
         return converter;
     }

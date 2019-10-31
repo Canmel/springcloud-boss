@@ -34,8 +34,17 @@ import java.util.Map;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ProjectStatus implements IEnum {
+    /**
+     * 无效状态
+     */
     INVALID("无效", 0),
+    /**
+     * 正常状态
+     */
     NORMAL("正常", 1),
+    /**
+     * 部署状态
+     */
     RELEASE("部署", 2);
 
 
@@ -47,7 +56,6 @@ public enum ProjectStatus implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }

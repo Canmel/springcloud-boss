@@ -11,13 +11,37 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 /**
- * Created by liuruijie on 2017/2/20.
- * activiti工作流配置
- */
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <流程配置>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @Configuration
 public class Cfg_Activiti {
 
-    //流程配置，与spring整合采用SpringProcessEngineConfiguration这个实现
+    /**
+     * 流程配置，与spring整合采用SpringProcessEngineConfiguration这个实现
+     * @param dataSource
+     * @param transactionManager
+     * @return
+     */
     @Bean
     public ProcessEngineConfiguration processEngineConfiguration(DataSource dataSource, PlatformTransactionManager transactionManager){
         SpringProcessEngineConfiguration processEngineConfiguration = new SpringProcessEngineConfiguration();
@@ -35,7 +59,11 @@ public class Cfg_Activiti {
         return processEngineConfiguration;
     }
 
-    //流程引擎，与spring整合使用factoryBean
+    /**
+     * 流程引擎，与spring整合使用factoryBean
+     * @param processEngineConfiguration
+     * @return
+     */
     @Bean
     public ProcessEngineFactoryBean processEngine(ProcessEngineConfiguration processEngineConfiguration){
         ProcessEngineFactoryBean processEngineFactoryBean = new ProcessEngineFactoryBean();
@@ -43,7 +71,11 @@ public class Cfg_Activiti {
         return processEngineFactoryBean;
     }
 
-    //八大接口
+    /**
+     * 八大接口
+     * @param processEngine
+     * @return
+     */
     @Bean
     public RepositoryService repositoryService(ProcessEngine processEngine){
         return processEngine.getRepositoryService();
@@ -83,6 +115,4 @@ public class Cfg_Activiti {
     public DynamicBpmnService dynamicBpmnService(ProcessEngine processEngine){
         return processEngine.getDynamicBpmnService();
     }
-
-    //八大接口 end
 }

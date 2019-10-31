@@ -33,6 +33,7 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 获取用户的所有角色
      * @param user
+     * @return SysUser
      */
     SysUser getRolesByUser(SysUser user);
 

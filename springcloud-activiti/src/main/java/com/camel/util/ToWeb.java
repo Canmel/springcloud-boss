@@ -5,66 +5,76 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by liuruijie on 2016/9/28.
+ * @author baily
  * 前端页面控制
  */
 public class ToWeb {
-    private String status; //状态码
-    private String msg; //提示信息
-    private String redirectUrl; //重定向的url
-    private boolean back; //返回
-    private boolean refresh; //刷新页面
-    private Map<String, Object> data; //数据信息
+    /** 状态码 **/
+    private String status;
+    /** 提示信息 **/
+    private String msg;
+    /** 重定向的url **/
+    private String redirectUrl;
+    /** 返回 **/
+    private boolean back;
+    /** 刷新页面 **/
+    private boolean refresh;
+    /** 数据信息 **/
+    private Map<String, Object> data;
 
-    public ToWeb(){
+    public ToWeb() {
         data = new HashMap<>();
-        data.put("extra", new HashMap<>());//额外信息
-        data.put("obj", null);//对象数据
-        data.put("rows", null);//分页列表数据
+        /** 额外信息 **/
+        data.put("extra", new HashMap<>());
+        /** 对象数据 **/
+        data.put("obj", null);
+        /** 分页列表数据 **/
+        data.put("rows", null);
         refresh = false;
         back = false;
         status = Status.SUCCESS;
     }
 
-    public static ToWeb buildResult(){
+    public static ToWeb buildResult() {
         return new ToWeb();
     }
 
-    public ToWeb status(String status){
+    public ToWeb status(String status) {
         setStatus(status);
         return this;
     }
 
-    public ToWeb msg(String msg){
+    public ToWeb msg(String msg) {
         setMsg(msg);
         return this;
     }
 
-    public ToWeb redirectUrl(String redirectUrl){
+    public ToWeb redirectUrl(String redirectUrl) {
         setRedirectUrl(redirectUrl);
         return this;
     }
 
-    public ToWeb back(){
+    public ToWeb back() {
         setBack(true);
         return this;
     }
 
-    public ToWeb refresh(){
+    public ToWeb refresh() {
         setRefresh(true);
         return this;
     }
 
-    public ToWeb putExtra(String name, Object val){
-        ((HashMap<String, Object>)data.get("extra")).put(name, val);
+    public ToWeb putExtra(String name, Object val) {
+        ((HashMap<String, Object>) data.get("extra")).put(name, val);
         return this;
     }
-    public ToWeb setObjData(Object obj){
+
+    public ToWeb setObjData(Object obj) {
         data.put("obj", obj);
         return this;
     }
 
-    public ToWeb rows(Rows rows){
+    public ToWeb rows(Rows rows) {
         setRows(rows);
         return this;
     }
@@ -121,7 +131,8 @@ public class ToWeb {
         data.put("rows", rows);
         return this;
     }
-    public static class Rows{
+
+    public static class Rows {
         private long totalRows;
         private int current;
         private int rowSize;
@@ -184,7 +195,7 @@ public class ToWeb {
             return this;
         }
 
-        public static Rows buildRows(){
+        public static Rows buildRows() {
             return new Rows();
         }
     }

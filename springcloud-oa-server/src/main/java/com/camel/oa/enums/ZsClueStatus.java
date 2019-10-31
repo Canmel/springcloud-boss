@@ -33,6 +33,9 @@ import java.util.Map;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ZsClueStatus implements IEnum {
+    /**
+     * 状态
+     */
     INVALID("无效", 0),
     NORMAL("正常", 1);
 
@@ -45,7 +48,6 @@ public enum ZsClueStatus implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -72,7 +74,7 @@ public enum ZsClueStatus implements IEnum {
 
     public static ZsClueStatus getEnumByValue(Integer value) {
         for (ZsClueStatus status : ZsClueStatus.values()) {
-            if (status.getValue() == value) {
+            if (status.getValue().equals(value)) {
                 return status;
             }
         }

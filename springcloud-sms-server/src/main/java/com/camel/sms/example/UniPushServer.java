@@ -15,8 +15,33 @@ import com.gexin.rp.sdk.template.style.Style0;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <Uni推送>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 public class UniPushServer {
-    // STEP1：获取应用基本信息
+    /**
+     * STEP1：获取应用基本信息
+     */
     private static String appId = "CcP7u32rzr5SF1PYGgYNj8";
     private static String appKey = "Msw7TA0kJh9DFTiu5MOGZ2";
     private static String masterSecret = "TVsJONNDs87PKLJ66qMLF3";
@@ -40,28 +65,11 @@ public class UniPushServer {
         appList.add(appId);
         appMessage.setAppIdList(appList);
 
-
-
-
-//        message.setOffline(true);
-//        // 离线有效时间，单位为毫秒
-//        message.setOfflineExpireTime(24 * 3600 * 1000);
-//        message.setData(template);
-//        // 可选，1为wifi，0为不限制网络环境。根据手机处于的网络情况，决定是否下发
-//        message.setPushNetWorkType(0);
-//
-//
-//        Target target = new Target();
-//        target.setAppId(appId);
-
-
-        //target.setAlias(Alias);
         IPushResult ret = null;
         try {
             ret = push.pushMessageToApp(appMessage);
         } catch (RequestException e) {
             e.printStackTrace();
-//            ret = push.pushMessageToSingle(message, target, e.getRequestId());
         }
         if (ret != null) {
             System.out.println(ret.getResponse().toString());
@@ -73,28 +81,29 @@ public class UniPushServer {
 
     public static NotificationTemplate getNotificationTemplate() {
         NotificationTemplate template = new NotificationTemplate();
-        // 设置APPID与APPKEY
+        /** 设置APPID与APPKEY **/
         template.setAppId(appId);
         template.setAppkey(appKey);
 
         Style0 style = new Style0();
-        // 设置通知栏标题与内容
+        /** 设置通知栏标题与内容 **/
         style.setTitle("请输入通知栏标题");
         style.setText("请输入通知栏内容");
-        // 配置通知栏图标
+        /** 配置通知栏图标 **/
         style.setLogo("icon.png");
-        // 配置通知栏网络图标
+        /** 配置通知栏网络图标 **/
         style.setLogoUrl("");
-        // 设置通知是否响铃，震动，或者可清除
+        /** 设置通知是否响铃，震动，或者可清除 **/
         style.setRing(true);
         style.setVibrate(true);
         style.setClearable(true);
         style.setChannel("通知渠道id");
         style.setChannelName("通知渠道名称");
-        style.setChannelLevel(3); //设置通知渠道重要性
+        /** 设置通知渠道重要性 **/
+        style.setChannelLevel(3);
         template.setStyle(style);
-
-        template.setTransmissionType(1);  // 透传消息接受方式设置，1：立即启动APP，2：客户端收到消息后需要自行处理
+        /** 透传消息接受方式设置，1：立即启动APP，2：客户端收到消息后需要自行处理 **/
+        template.setTransmissionType(1);
         template.setTransmissionContent("请输入您要透传的内容");
         return template;
     }

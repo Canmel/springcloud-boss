@@ -10,12 +10,12 @@
         <result column="amount" property="amount"/>
         <result column="business" property="business"/>
         <result column="manager" property="managerId"/>
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsProjectStatusEnumHandler"/>
-        <result column="level" property="level" typeHandler="com.camel.oa.typeHandler.ZsProjectLevelsEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsProjectStatusEnumHandler"/>
+        <result column="level" property="level" typeHandler="com.camel.oa.enumhandler.ZsProjectLevelsEnumHandler"/>
         <result column="created_at" property="createdAt"/>
-        <result column="type" property="type" typeHandler="com.camel.oa.typeHandler.ZsProjectTypiesEnumHandler"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.enumhandler.ZsProjectTypiesEnumHandler"/>
         <result column="industry_type" property="industryType"
-                typeHandler="com.camel.oa.typeHandler.ZsProjectIndustryTypiesEnumHandler"/>
+                typeHandler="com.camel.oa.enumhandler.ZsProjectIndustryTypiesEnumHandler"/>
         <result column="place" property="place"/>
         <result column="confirm_at" property="confirmAt"/>
         <result column="start_at" property="startAt"/>

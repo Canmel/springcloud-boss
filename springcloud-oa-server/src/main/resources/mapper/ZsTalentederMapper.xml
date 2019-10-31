@@ -9,7 +9,7 @@
         <result column="cantact_phone" property="cantactPhone"/>
         <result column="remark" property="remark"/>
         <result column="project_id" property="projectId"/>
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsTalentederStatusEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsTalentederStatusEnumHandler"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>

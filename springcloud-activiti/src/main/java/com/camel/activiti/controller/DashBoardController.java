@@ -58,7 +58,7 @@ public class DashBoardController {
 
     @GetMapping("status")
     public Result processStatus() {
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>(16);
         result.put("modelNum", repositoryService.createModelQuery().count());
         result.put("deploymentNum",  repositoryService.createProcessDefinitionQuery().latestVersion().count());
         result.put("instanceNum",  runtimeService.createProcessInstanceQuery().active().count());
@@ -68,7 +68,7 @@ public class DashBoardController {
 
     @GetMapping("board")
     public Result processDashBoard() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         map.put("instanceNum", runtimeService.createProcessInstanceQuery().count());
         map.put("taskActiveNum", taskService.createTaskQuery().active().count());
         map.put("taskNum", taskService.createTaskQuery().count());

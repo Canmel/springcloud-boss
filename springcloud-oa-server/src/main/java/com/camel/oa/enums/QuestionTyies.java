@@ -33,7 +33,9 @@ import java.util.Map;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum QuestionTyies implements IEnum {
-    
+    /**
+     * 类型
+     */
     SINGLCHOICE("单选", 0), MULTIPLECHOICE("多选", 1), OTHER("其他", 2);
 
     private String name;
@@ -44,7 +46,6 @@ public enum QuestionTyies implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -71,7 +72,7 @@ public enum QuestionTyies implements IEnum {
 
     public static QuestionTyies getEnumByValue(Integer value) {
         for (QuestionTyies questionTyies : QuestionTyies.values()) {
-            if (questionTyies.getValue() == value) {
+            if (questionTyies.getValue().equals(value)) {
                 return questionTyies;
             }
         }

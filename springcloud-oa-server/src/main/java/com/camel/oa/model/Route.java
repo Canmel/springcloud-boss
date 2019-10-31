@@ -38,6 +38,7 @@ import java.util.Date;
 public class Route extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Integer ONE_DAY_HOURS = 24;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -71,7 +72,7 @@ public class Route extends BasePaginationEntity implements Serializable {
             int h2 = c2.get(Calendar.HOUR_OF_DAY);
             this.days = 0f;
             if( DateUtils.isSameDay(this.comeAt, this.backToAt)) {
-                if(h1 + h2 < 24) {
+                if(h1 + h2 < ONE_DAY_HOURS) {
                     this.days = 0.5f;
                 }else{
                     this.days = 1.0f;

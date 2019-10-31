@@ -8,8 +8,8 @@
         <result column="title" property="title"/>
         <result column="type" property="type"/>
         <result column="created_at" property="createdAt"/>
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.QuestionStatusEnumHandler"/>
-        <result column="type" property="type" typeHandler="com.camel.oa.typeHandler.QuestionTyiesEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.QuestionStatusEnumHandler"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.enumhandler.QuestionTyiesEnumHandler"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>

@@ -8,5 +8,6 @@ public interface BaseEnum extends IEnum {
      * 获取枚举值
      * @return
      */
+    @Override
     Integer getValue();
 }

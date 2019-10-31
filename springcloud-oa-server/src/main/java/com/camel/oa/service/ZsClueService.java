@@ -39,9 +39,10 @@ public interface ZsClueService extends IService<ZsClue> {
     PageInfo<ZsClue> selectPage(ZsClue entity);
 
     /**
-     * 保存
+     * 保存客商
      *
      * @param oAuth2Authentication
+     * @param entity
      * @return
      */
     Result save(ZsClue entity, OAuth2Authentication oAuth2Authentication);

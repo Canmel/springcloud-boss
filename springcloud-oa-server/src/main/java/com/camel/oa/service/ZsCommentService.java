@@ -44,9 +44,15 @@ public interface ZsCommentService extends IService<ZsComment> {
      * 保存
      *
      * @param oAuth2Authentication
+     * @param entity
      * @return
      */
     Result save(ZsComment entity, OAuth2Authentication oAuth2Authentication);
 
+    /**
+     * 查询列表
+     * @param entity
+     * @return
+     */
     List<ZsComment> list(ZsComment entity);
 }

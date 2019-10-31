@@ -56,5 +56,10 @@ public interface ErrandService extends IService<Errand> {
      */
     List<Trip> trips(Integer id);
 
+    /**
+     * 获取路由
+     * @param id
+     * @return
+     */
     Route route(Integer id);
 }

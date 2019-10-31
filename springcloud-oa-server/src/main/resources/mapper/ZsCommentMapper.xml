@@ -6,8 +6,8 @@
     <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsComment">
         <id column="int" property="id"/>
         <result column="comment" property="comment"/>
-        <result column="type" property="type" typeHandler="com.camel.oa.typeHandler.ZsCommentTypiesEnumHandler"/>
-        <result column="status" property="status" typeHandler="com.camel.oa.typeHandler.ZsCommentStatusEnumHandler"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.enumhandler.ZsCommentTypiesEnumHandler"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsCommentStatusEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>

@@ -9,30 +9,33 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * .::::.
- * .::::::::.
- * :::::::::::
- * ..:::::::::::'      文档状态
- * '::::::::::::'
- * .::::::::::
- * '::::::::::::::..
- * ..::::::::::::.
- * ``::::::::::::::::
- * ::::``:::::::::'        .:::.
- * ::::'   ':::::'       .::::::::.
- * .::::'      ::::     .:::::::'::::.
- * .:::'       :::::  .:::::::::' ':::::.
- * .::'        :::::.:::::::::'      ':::::.
- * .::'         ::::::::::::::'         ``::::.
- * ...:::           ::::::::::::'              ``::.
- * ```` ':.          ':::::::::'                  ::::..
- * '.:::::'                    ':'````..
  *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <分组状态>
  * @author baily
- * @since 2019/7/8
+ * @since 1.0
+ * @date 2019/10/31
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ZsGroupStatus implements IEnum {
+    /**
+     * 状态
+     */
     INVALID("无效", 0),
     NORMAL("正常", 1);
 
@@ -45,7 +48,6 @@ public enum ZsGroupStatus implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -72,7 +74,7 @@ public enum ZsGroupStatus implements IEnum {
 
     public static ZsGroupStatus getEnumByValue(Integer value) {
         for (ZsGroupStatus status : ZsGroupStatus.values()) {
-            if (status.getValue() == value) {
+            if (status.getValue().equals(value)) {
                 return status;
             }
         }

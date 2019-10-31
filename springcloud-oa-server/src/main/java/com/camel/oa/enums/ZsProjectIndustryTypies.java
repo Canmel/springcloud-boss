@@ -8,6 +8,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <项目行业>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ZsProjectIndustryTypies implements IEnum {
     /* 多个类型 */
@@ -21,7 +44,6 @@ public enum ZsProjectIndustryTypies implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -48,7 +70,7 @@ public enum ZsProjectIndustryTypies implements IEnum {
 
     public static ZsProjectIndustryTypies getEnumByValue(Integer value) {
         for (ZsProjectIndustryTypies levels : ZsProjectIndustryTypies.values()) {
-            if (levels.getValue() == value) {
+            if (levels.getValue().equals(value)) {
                 return levels;
             }
         }

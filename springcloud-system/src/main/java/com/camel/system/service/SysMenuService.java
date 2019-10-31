@@ -9,13 +9,28 @@ import java.security.Principal;
 import java.util.List;
 
 /**
- * <p>
- *  服务类
- * </p>
  *
- * @author ${author}
- * @since 2019-04-19
- */
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <菜单服务>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 public interface SysMenuService extends IService<SysMenu> {
     /**
      * 分页查询
@@ -26,12 +41,14 @@ public interface SysMenuService extends IService<SysMenu> {
 
     /**
      * 查询一级菜单
+     * @param principal
      * @return
      */
     List<SysMenu> tops(Principal principal);
 
     /**
      * 查询子菜单
+     * @param principal 
      * @return
      */
     List<SysMenu> subs(Principal principal);

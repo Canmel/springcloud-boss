@@ -1,7 +1,6 @@
-package com.camel.oa.typeHandler;
+package com.camel.oa.enumhandler;
 
 import com.camel.oa.enums.ZsCommentStatus;
-import com.camel.oa.enums.ZsGroupStatus;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -12,6 +11,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <评论状态转换器>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @MappedJdbcTypes(JdbcType.INTEGER)
 @MappedTypes({ZsCommentStatus.class})
 public class ZsCommentStatusEnumHandler extends BaseTypeHandler<ZsCommentStatus> {

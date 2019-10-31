@@ -37,5 +37,11 @@ public interface QuestionService extends IService<Question> {
      */
     PageInfo<Question> selectPage(Question entity);
 
+    /**
+     * 保存
+     * @param question
+     * @param authentication
+     * @return
+     */
     Result save(Question question, Authentication authentication);
 }

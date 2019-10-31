@@ -76,7 +76,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#  type-handlers-package: com.camel.oa.typeHandler
+#  type-handlers-package: com.camel.oa.enumhandler
   type-enums-package: com.camel.oa.enums
   global-config:
     logic-delete-value: 0
@@ -102,5 +102,5 @@ qiniu:
     access_key: ${ACCESS_KEY}
     secret_key: ${SECRET_KEY}
 mybatis:
-  type-handlers-package: com.camel.oa.enum.typeHandler
+  type-handlers-package: com.camel.oa.enum.enumhandler
 

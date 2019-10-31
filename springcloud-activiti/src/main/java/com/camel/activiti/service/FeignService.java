@@ -34,6 +34,7 @@ public interface FeignService {
 
     /**
      * 查询指定角色的用户
+     * @param id
      * @return
      */
     Result usersByRole(Integer id);

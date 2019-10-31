@@ -1,22 +1,39 @@
 package com.camel.oa.controller;
 
-import com.camel.oa.model.ZsProject;
-import com.camel.oa.utils.ApplicationToolsUtils;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.oa.service.ZsMerchantService;
-import com.camel.oa.model.ZsMerchant;
-import com.camel.core.controller.BaseCommonController;
-
 import com.baomidou.mybatisplus.service.IService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.oa.model.ZsMerchant;
+import com.camel.oa.service.ZsMerchantService;
+import com.camel.oa.utils.ApplicationToolsUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <客商控制器>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @RestController
 @RequestMapping("/zsMerchant")
 public class ZsMerchantController extends BaseCommonController {

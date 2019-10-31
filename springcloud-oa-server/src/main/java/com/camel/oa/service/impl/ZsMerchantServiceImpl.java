@@ -15,14 +15,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <客商服务>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @Service
 public class ZsMerchantServiceImpl extends ServiceImpl<ZsMerchantMapper, ZsMerchant> implements ZsMerchantService {
 
     @Autowired
     private ZsMerchantMapper mapper;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;

@@ -35,5 +35,10 @@ import java.util.List;
 @Repository
 public interface ImperfectMapper extends BaseMapper<Imperfect> {
 
+    /**
+     * 列表
+     * @param imperfect
+     * @return
+     */
     List<Imperfect> list(Imperfect imperfect);
 }

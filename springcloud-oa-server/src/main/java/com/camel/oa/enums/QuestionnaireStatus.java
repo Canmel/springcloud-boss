@@ -45,7 +45,6 @@ public enum QuestionnaireStatus implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }

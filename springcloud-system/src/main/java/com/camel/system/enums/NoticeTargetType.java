@@ -7,10 +7,45 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <告警目标类型>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 public enum NoticeTargetType implements BaseEnum {
+    /**
+     * 角色
+     */
     ROLE("角色", 1);
+    /**
+     * 描述
+     */
     private String description;
+    /**
+     * 编码
+     */
     private Integer code;
+    /**
+     * 数据库列名
+     */
     private String column;
 
     NoticeTargetType(String description, Integer code) {
@@ -46,6 +81,11 @@ public enum NoticeTargetType implements BaseEnum {
         return map;
     }
 
+    /**
+     * 根据value获取枚举类型
+     * @param value
+     * @return
+     */
     public BaseEnum getEnumByValue(Integer value) {
         return null;
     }

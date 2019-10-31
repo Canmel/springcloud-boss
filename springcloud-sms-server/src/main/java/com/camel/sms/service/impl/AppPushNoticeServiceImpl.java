@@ -17,6 +17,29 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <APP推送消息>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @Service
 public class AppPushNoticeServiceImpl implements AppPushNoticeService {
     @Override
@@ -51,28 +74,29 @@ public class AppPushNoticeServiceImpl implements AppPushNoticeService {
     public static NotificationTemplate getNotificationTemplate(String msg) {
         NotificationTemplate template = new NotificationTemplate();
         JSONObject jsonObject = (JSONObject) JSONObject.parse(msg);
-        // 设置APPID与APPKEY
+        /** 设置APPID与APPKEY **/
         template.setAppId(AppPushConfig.APPID);
         template.setAppkey(AppPushConfig.APPKEY);
 
         Style0 style = new Style0();
-        // 设置通知栏标题与内容
+        /** 设置通知栏标题与内容 **/
         style.setTitle((String) jsonObject.get(AppPushConfig.PUSH_TITLE_KEY));
         style.setText((String) jsonObject.get(AppPushConfig.PUSH_CONTEXT_KEY));
-        // 配置通知栏图标
+        /** 配置通知栏图标 **/
         style.setLogo("icon.png");
-        // 配置通知栏网络图标
+        /** 配置通知栏网络图标 **/
         style.setLogoUrl("");
-        // 设置通知是否响铃，震动，或者可清除
+        /** 设置通知是否响铃，震动，或者可清除 **/
         style.setRing(true);
         style.setVibrate(true);
         style.setClearable(true);
         style.setChannel("通知渠道id");
         style.setChannelName("通知渠道名称");
-        style.setChannelLevel(3); //设置通知渠道重要性
+        /** 设置通知渠道重要性 */
+        style.setChannelLevel(3);
         template.setStyle(style);
-
-        template.setTransmissionType(1);  // 透传消息接受方式设置，1：立即启动APP，2：客户端收到消息后需要自行处理
+        /** 透传消息接受方式设置，1：立即启动APP，2：客户端收到消息后需要自行处理 **/
+        template.setTransmissionType(1);
         template.setTransmissionContent("请输入您要透传的内容");
         return template;
     }

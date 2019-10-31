@@ -24,5 +24,8 @@ package com.camel.sms.service;
  * @date 2019/9/19
  **/
 public interface MqCustomerService {
+    /**
+     * 接收消息
+     */
     void receive();
 }

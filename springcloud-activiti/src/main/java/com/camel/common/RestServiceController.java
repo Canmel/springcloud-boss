@@ -26,7 +26,7 @@ public interface RestServiceController<T, ID extends Serializable> {
      * @return
      */
     @GetMapping
-    Result getList(@RequestParam(value = "rowSize",defaultValue = "1000", required = false) Integer rowSize
+    Result getList(@RequestParam(value = "rowSize", defaultValue = "1000", required = false) Integer rowSize
             , @RequestParam(value = "page", defaultValue = "1", required = false) Integer page);
 
     /**

@@ -42,11 +42,25 @@ public interface ImperfectService extends IService<Imperfect> {
      */
     boolean valid(Integer errandId);
 
+    /**
+     * 获取差程
+     * @param id
+     * @return
+     */
     List<Trip> trips(Integer id);
 
-
+    /**
+     * 分页差查询
+     * @param imperfect
+     * @return
+     */
     PageInfo<Imperfect> selectPage(Imperfect imperfect);
 
+    /**
+     * 获取差程
+     * @param id
+     * @return
+     */
     Imperfect getByErrand(Integer id);
 
 

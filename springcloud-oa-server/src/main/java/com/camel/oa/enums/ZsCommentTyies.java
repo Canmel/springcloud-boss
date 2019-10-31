@@ -44,7 +44,6 @@ public enum ZsCommentTyies implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -71,7 +70,7 @@ public enum ZsCommentTyies implements IEnum {
 
     public static ZsCommentTyies getEnumByValue(Integer value) {
         for (ZsCommentTyies tyies : ZsCommentTyies.values()) {
-            if (tyies.getValue() == value) {
+            if (tyies.getValue().equals(value)) {
                 return tyies;
             }
         }

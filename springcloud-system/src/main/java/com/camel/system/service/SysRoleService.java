@@ -8,13 +8,28 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * <p>
- *  服务类
- * </p>
  *
- * @author ${author}
- * @since 2019-04-19
- */
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <角色服务>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 public interface SysRoleService extends IService<SysRole> {
     /**
      * 分页查询角色
@@ -45,6 +60,10 @@ public interface SysRoleService extends IService<SysRole> {
      */
     boolean delete(Serializable serializable);
 
+    /**
+     * 获取角色的菜单
+     * @param role
+     */
     void loadRoleMenus(SysRole role);
 
     /**

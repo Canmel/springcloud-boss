@@ -47,7 +47,6 @@ public enum ResourceStatus implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -74,7 +73,7 @@ public enum ResourceStatus implements IEnum {
 
     public static ResourceStatus getEnumByValue(Integer value) {
         for (ResourceStatus resourceStatus : ResourceStatus.values()) {
-            if(resourceStatus.getValue() == value) {
+            if(resourceStatus.getValue().equals(value)) {
                 return resourceStatus;
             }
         }

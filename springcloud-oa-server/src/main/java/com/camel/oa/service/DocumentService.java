@@ -10,13 +10,28 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 
 /**
- * <p>
- * 服务类
- * </p>
  *
- * @author ${author}
- * @since 2019-10-12
- */
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <文档服务接口>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 public interface DocumentService extends IService<Document> {
     /**
      * 保存文档
@@ -30,6 +45,7 @@ public interface DocumentService extends IService<Document> {
      * 获取文档地址
      * @param id
      * @return
+     * @throws FileNotFoundException
      */
     String url(Integer id) throws FileNotFoundException;
 
@@ -44,6 +60,7 @@ public interface DocumentService extends IService<Document> {
      * 删除文档
      * @param id
      * @return
+     * @throws QiniuException
      */
-    int delete(Integer id) throws QiniuException;
+    Integer delete(Integer id) throws QiniuException;
 }

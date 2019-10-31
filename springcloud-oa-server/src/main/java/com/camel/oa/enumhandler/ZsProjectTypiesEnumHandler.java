@@ -1,4 +1,4 @@
-package com.camel.oa.typeHandler;
+package com.camel.oa.enumhandler;
 
 import com.camel.oa.enums.ZsProjectTypies;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -11,6 +11,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ *
+ *                 ___====-_  _-====___
+ *           _--^^^#####//      \\#####^^^--_
+ *        _-^##########// (    ) \\##########^-_
+ *       -############//  |\^^/|  \\############-
+ *     _/############//   (@::@)   \\############\_
+ *    /#############((     \\//     ))#############\
+ *   -###############\\    (oo)    //###############-
+ *  -#################\\  / VV \  //#################-
+ * -###################\\/      \//###################-
+ *_#/|##########/\######(   /\   )######/\##########|\#_
+ *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ *   `   `  `      `   / | |  | | \   '      '  '   '
+ *                    (  | |  | |  )
+ *                   __\ | |  | | /__
+ *                  (vvv(VVV)(VVV)vvv)
+ * <项目类型枚举类型>
+ * @author baily
+ * @since 1.0
+ * @date 2019/10/31
+ **/
 @MappedJdbcTypes(JdbcType.INTEGER)
 @MappedTypes({ZsProjectTypies.class})
 public class ZsProjectTypiesEnumHandler extends BaseTypeHandler<ZsProjectTypies> {

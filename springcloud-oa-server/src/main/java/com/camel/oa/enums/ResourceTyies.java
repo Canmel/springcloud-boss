@@ -45,7 +45,6 @@ public enum ResourceTyies implements IEnum {
         this.value = value;
     }
 
-    //    @JsonValue 直接返回name
     public String getName() {
         return name;
     }
@@ -72,7 +71,7 @@ public enum ResourceTyies implements IEnum {
 
     public static ResourceTyies getEnumByValue(Integer value) {
         for (ResourceTyies tyies : ResourceTyies.values()) {
-            if (tyies.getValue() == value) {
+            if (tyies.getValue().equals(value)) {
                 return tyies;
             }
         }

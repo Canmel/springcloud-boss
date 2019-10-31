@@ -193,7 +193,7 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
      * @return
      */
     @Override
-    public int delete(Integer id) throws QiniuException {
+    public Integer delete(Integer id) throws QiniuException {
         Integer result = mapper.updateById(new Document(id, DocumentStatus.INVALID.getValue()));
         Document document = mapper.selectById(id);
         this.bucketManager().delete(BUCKET_NAME, document.getAddress());

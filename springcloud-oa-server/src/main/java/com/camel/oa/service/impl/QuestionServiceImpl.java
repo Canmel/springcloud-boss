@@ -60,7 +60,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public Result save(Question entity, Authentication authentication) {
         entity.setStatus(QuestionStatus.NORMAL);
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, authentication.getName());
