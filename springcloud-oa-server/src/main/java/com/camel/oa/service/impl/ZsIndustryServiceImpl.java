@@ -10,6 +10,7 @@ import com.camel.oa.enums.ZsIndustryStatus;
 import com.camel.oa.mapper.ZsIndustryMapper;
 import com.camel.oa.model.ZsIndustry;
 import com.camel.oa.service.ZsIndustryService;
+import com.camel.oa.utils.ApplicationToolsUtils;
 import com.camel.redis.utils.SessionContextUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +53,14 @@ public class ZsIndustryServiceImpl extends ServiceImpl<ZsIndustryMapper, ZsIndus
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
-    public PageInfo<ZsIndustry> selectPage(ZsIndustry entity) {
-        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+    public PageInfo selectPage(ZsIndustry entity) {
+        return applicationToolsUtils.selectPage(entity, () -> {
             mapper.list(entity);
         });
-        return pageInfo;
     }
 
     @Override

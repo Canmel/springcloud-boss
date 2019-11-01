@@ -38,7 +38,7 @@ public interface ZsCommentService extends IService<ZsComment> {
      @param entity
      @return
      */
-    PageInfo<ZsComment> selectPage(ZsComment entity);
+    PageInfo selectPage(ZsComment entity);
 
     /**
      * 保存

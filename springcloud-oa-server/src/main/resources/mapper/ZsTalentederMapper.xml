@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsTalenteder">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
-        <result column="cantact_phone" property="cantactPhone"/>
+        <result column="cantact_phone" property="contactPhone"/>
         <result column="remark" property="remark"/>
         <result column="project_id" property="projectId"/>
         <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsTalentederStatusEnumHandler"/>
@@ -19,9 +19,9 @@
     <sql id="Base_Column_List">
         zs_talenteder.id,
         zs_talenteder.name,
-        zs_talenteder.cantact_phone,
+        zs_talenteder.contact_phone,
         zs_talenteder.remark,
-        zs_talenteder.project_id,
+        zs_talenteder.project,
         zs_talenteder.creator,
         zs_talenteder.status
     </sql>

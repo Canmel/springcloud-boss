@@ -33,5 +33,5 @@ public interface ZsTalentederService extends IService<ZsTalenteder> {
      @param entity
      @return
      */
-    PageInfo<ZsTalenteder> selectPage(ZsTalenteder entity);
+    PageInfo selectPage(ZsTalenteder entity);
 }

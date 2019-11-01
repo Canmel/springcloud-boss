@@ -48,11 +48,10 @@ public class ZsMerchantServiceImpl extends ServiceImpl<ZsMerchantMapper, ZsMerch
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
-    public PageInfo<ZsMerchant> selectPage(ZsMerchant entity) {
-        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+    public PageInfo selectPage(ZsMerchant entity) {
+        return applicationToolsUtils.selectPage(entity, () -> {
             mapper.list(entity);
         });
-        return pageInfo;
     }
 
     @Override

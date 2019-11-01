@@ -50,14 +50,6 @@ public class ZsClue extends BaseOaEntity implements Serializable {
      * 描述
      */
     private String business;
-    /**
-     * 创建者
-     */
-    @TableField(value = "creator")
-    private Integer creatorId;
-
-    @TableField(exist = false)
-    private SysUser creator;
 
     @TableField(exist = false)
     private ZsProject project;
@@ -73,7 +65,6 @@ public class ZsClue extends BaseOaEntity implements Serializable {
                 ", id=" + id +
                 ", name=" + name +
                 ", business=" + business +
-                ", creator=" + creator +
                 ", createdAt=" + createdAt +
                 "}";
     }

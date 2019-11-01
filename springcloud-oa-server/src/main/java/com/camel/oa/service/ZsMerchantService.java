@@ -36,7 +36,7 @@ public interface ZsMerchantService extends IService<ZsMerchant> {
      @param entity
      @return
      */
-    PageInfo<ZsMerchant> selectPage(ZsMerchant entity);
+    PageInfo selectPage(ZsMerchant entity);
 
     /**
      * 保存

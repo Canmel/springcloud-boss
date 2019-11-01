@@ -60,17 +60,10 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
-    public PageInfo<ZsProject> selectPage(ZsProject entity) {
-        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+    public PageInfo selectPage(ZsProject entity) {
+        return applicationToolsUtils.selectPage(entity, () -> {
             mapper.list(entity);
         });
-        List<SysUser> users = applicationToolsUtils.allUsers();
-        List<ZsProject> projectList = pageInfo.getList();
-        projectList.forEach(project -> {
-            project.setCreator(applicationToolsUtils.getUser(project.getCreator().getUid()));
-        });
-        pageInfo.setList(projectList);
-        return pageInfo;
     }
 
     @Override
@@ -84,4 +77,6 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");
     }
+
+
 }

@@ -1,35 +1,32 @@
 package com.camel.oa.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.camel.core.entity.BasePaginationEntity;
-import com.camel.core.model.SysUser;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.oa.enums.ZsTalentederStatus;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- *
- *                       .::::.
- *                     .::::::::.
- *                    :::::::::::
- *                 ..:::::::::::'
- *              '::::::::::::'
- *                .::::::::::
- *           '::::::::::::::..
- *                ..::::::::::::.
- *              ``::::::::::::::::
- *               ::::``:::::::::'        .:::.
- *              ::::'   ':::::'       .::::::::.
- *            .::::'      ::::     .:::::::'::::.
- *           .:::'       :::::  .:::::::::' ':::::.
- *          .::'        :::::.:::::::::'      ':::::.
- *         .::'         ::::::::::::::'         ``::::.
- *     ...:::           ::::::::::::'              ``::.
- *    ```` ':.          ':::::::::'                  ::::..
- *                       '.:::::'                    ':'````..
+ * .::::.
+ * .::::::::.
+ * :::::::::::
+ * ..:::::::::::'
+ * '::::::::::::'
+ * .::::::::::
+ * '::::::::::::::..
+ * ..::::::::::::.
+ * ``::::::::::::::::
+ * ::::``:::::::::'        .:::.
+ * ::::'   ':::::'       .::::::::.
+ * .::::'      ::::     .:::::::'::::.
+ * .:::'       :::::  .:::::::::' ':::::.
+ * .::'        :::::.:::::::::'      ':::::.
+ * .::'         ::::::::::::::'         ``::::.
+ * ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ * '.:::::'                    ':'````..
  * < 服务实现类>
  *
  * @author baily

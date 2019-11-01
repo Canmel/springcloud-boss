@@ -36,7 +36,7 @@ public interface ZsGroundService extends IService<ZsGround> {
      * @param entity
      * @return
      */
-    PageInfo<ZsGround> selectPage(ZsGround entity);
+    PageInfo selectPage(ZsGround entity);
 
     /**
      * 保存

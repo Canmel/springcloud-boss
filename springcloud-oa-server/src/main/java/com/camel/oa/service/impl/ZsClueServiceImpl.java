@@ -11,6 +11,7 @@ import com.camel.oa.model.ZsProject;
 import com.camel.oa.service.ZsClueService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.oa.utils.ApplicationToolsUtils;
 import com.camel.redis.utils.SessionContextUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +52,14 @@ public class ZsClueServiceImpl extends ServiceImpl<ZsClueMapper, ZsClue> impleme
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
-    public PageInfo<ZsClue> selectPage(ZsClue entity) {
-        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+    public PageInfo selectPage(ZsClue entity) {
+        return applicationToolsUtils.selectPage(entity, () -> {
             mapper.list(entity);
         });
-        return pageInfo;
     }
 
     @Override

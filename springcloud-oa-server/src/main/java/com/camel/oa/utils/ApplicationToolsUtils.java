@@ -3,9 +3,14 @@ package com.camel.oa.utils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.oa.model.BaseOaEntity;
+import com.camel.oa.model.ZsTalenteder;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.github.pagehelper.ISelect;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -75,5 +80,20 @@ public class ApplicationToolsUtils {
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, authentication.getName());
         entity.setCreator(new SysUser(member.getId()));
         entity.setCreatorId(member.getId());
+    }
+
+    /**
+     * 分页信息查询 顺便把创建者的用户信息添加进来
+     * @param entity
+     * @param iSelect
+     * @return
+     */
+    public PageInfo<BaseOaEntity> selectPage(BaseOaEntity entity, ISelect iSelect){
+        PageInfo pageInfo = PaginationUtil.startPage(entity, iSelect);
+        List<BaseOaEntity> projectList = pageInfo.getList();
+        projectList.forEach(baseOaEntity -> {
+            baseOaEntity.setCreator(getUser(baseOaEntity.getCreator().getUid()));
+        });
+        return pageInfo;
     }
 }

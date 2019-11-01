@@ -57,21 +57,10 @@ public class ZsCommentServiceImpl extends ServiceImpl<ZsCommentMapper, ZsComment
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
-    public PageInfo<ZsComment> selectPage(ZsComment entity) {
-        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+    public PageInfo selectPage(ZsComment entity) {
+        return applicationToolsUtils.selectPage(entity, () -> {
             mapper.list(entity);
         });
-        List<SysUser> users = applicationToolsUtils.allUsers();
-        List<ZsComment> zsComments = pageInfo.getList();
-        zsComments.forEach(zsComment -> {
-            users.forEach(user -> {
-                if (user.getUid().equals(zsComment.getCreator().getUid())) {
-                    zsComment.setCreator(user);
-                }
-            });
-        });
-        pageInfo.setList(zsComments);
-        return pageInfo;
     }
 
     @Override

@@ -36,7 +36,7 @@ public interface ZsIndustryService extends IService<ZsIndustry> {
      * @param entity
      * @return
      */
-    PageInfo<ZsIndustry> selectPage(ZsIndustry entity);
+    PageInfo selectPage(ZsIndustry entity);
 
     /**
      * 保存

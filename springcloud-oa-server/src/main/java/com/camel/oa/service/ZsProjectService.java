@@ -36,7 +36,7 @@ public interface ZsProjectService extends IService<ZsProject> {
      @param entity
      @return
      */
-    PageInfo<ZsProject> selectPage(ZsProject entity);
+    PageInfo selectPage(ZsProject entity);
 
     /**
      * 保存

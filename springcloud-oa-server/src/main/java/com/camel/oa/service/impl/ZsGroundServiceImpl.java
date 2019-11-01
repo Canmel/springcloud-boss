@@ -9,6 +9,7 @@ import com.camel.oa.mapper.ZsGroundMapper;
 import com.camel.oa.service.ZsGroundService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.oa.utils.ApplicationToolsUtils;
 import com.camel.redis.utils.SessionContextUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,14 @@ public class ZsGroundServiceImpl extends ServiceImpl<ZsGroundMapper, ZsGround> i
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
-    public PageInfo<ZsGround> selectPage(ZsGround entity) {
-        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+    public PageInfo selectPage(ZsGround entity) {
+        return applicationToolsUtils.selectPage(entity, () -> {
             mapper.list(entity);
         });
-        return pageInfo;
     }
 
     @Override
