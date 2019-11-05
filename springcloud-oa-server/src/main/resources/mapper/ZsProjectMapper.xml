@@ -19,6 +19,7 @@
         <result column="place" property="place"/>
         <result column="confirm_at" property="confirmAt"/>
         <result column="start_at" property="startAt"/>
+        <result column="area_size" property="areaSize"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -37,6 +38,7 @@
         zs_project.place,
         zs_project.confirm_at,
         zs_project.start_at,
+        zs_project.area_size,
         zs_project.status,
         zs_project.creator,
         zs_project.created_at,
