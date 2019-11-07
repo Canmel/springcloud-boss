@@ -3,6 +3,7 @@ package com.camel.oa.model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.camel.oa.enums.ZsGender;
 import com.camel.oa.enums.ZsTalentederStatus;
 import lombok.Data;
 
@@ -67,6 +68,11 @@ public class ZsTalenteder extends BaseOaEntity implements Serializable {
      * 状态
      */
     private ZsTalentederStatus status;
+
+    /**
+     * 男女
+     */
+    private ZsGender gender;
 
     @Override
     public String toString() {

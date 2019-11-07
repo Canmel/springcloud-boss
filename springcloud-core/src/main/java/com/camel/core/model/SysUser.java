@@ -108,9 +108,20 @@ public class SysUser extends BasePaginationEntity implements Serializable {
      */
     private String orgName;
 
+    /**
+     * 地址
+     */
     private String address;
 
+    /**
+     * 备注
+     */
     private String remark;
+
+    /**
+     * 头像
+     */
+    private String avatar;
 
     @TableField(exist = false)
     private List roleIds;

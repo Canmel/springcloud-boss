@@ -6,12 +6,15 @@
     <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsTalenteder">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
-        <result column="cantact_phone" property="contactPhone"/>
+        <result column="contact_phone" property="contactPhone"/>
         <result column="remark" property="remark"/>
-        <result column="project_id" property="projectId"/>
         <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsTalentederStatusEnumHandler"/>
+        <result column="gender" property="gender" typeHandler="com.camel.oa.enumhandler.ZsGenderEnumHandler"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+        <association property="project" column="project" select="selectProject"
+                     javaType="com.camel.oa.model.ZsProject">
         </association>
     </resultMap>
 
@@ -23,11 +26,12 @@
         zs_talenteder.remark,
         zs_talenteder.project,
         zs_talenteder.creator,
-        zs_talenteder.status
+        zs_talenteder.status,
+        zs_talenteder.gender
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
-        select
+        SELECT
         <include refid="Base_Column_List"></include>
         from
         zs_talenteder
@@ -35,5 +39,11 @@
             zs_talenteder.`status` != 0
             <if test="name != null and name != ''">AND zs_talenteder.`name` LIKE CONCAT('%', #{name} , '%')</if>
         </where>
+    </select>
+
+    <select id="selectProject" resultMap="com.camel.oa.mapper.ZsProjectMapper.BaseResultMap">
+        SELECT
+        <include refid="com.camel.oa.mapper.ZsProjectMapper.Base_Column_List"></include>
+        FROM zs_project WHERE id =#{id}
     </select>
 </mapper>

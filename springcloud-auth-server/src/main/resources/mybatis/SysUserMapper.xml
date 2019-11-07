@@ -3,18 +3,20 @@
 <mapper namespace="com.camel.auth.dao.SysUserDao">
 
     <resultMap id="BaseResultMap" type="com.camel.auth.model.SysUser">
-        <id property="uid" column="uid" jdbcType="INTEGER" />
-        <result property="username" column="username" jdbcType="VARCHAR" />
-        <result property="password" column="password" jdbcType="VARCHAR" />
-        <result property="mobile" column="mobile" jdbcType="VARCHAR" />
-        <result property="email" column="email" jdbcType="VARCHAR" />
-        <result property="status" column="status" jdbcType="VARCHAR" />
-        <result property="age" column="age" jdbcType="VARCHAR" />
-        <result property="orgNo" column="org_no" jdbcType="VARCHAR" />
-        <result property="orgName" column="org_name" jdbcType="VARCHAR" />
-        <result property="remark" column="remark" jdbcType="VARCHAR" />
-        <result property="gender" column="gender" jdbcType="VARCHAR" />
-        <collection property="sysRoles" fetchType="eager" column="uid" select="com.camel.auth.dao.SysRoleDao.findByUserId"></collection>
+        <id property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="VARCHAR"/>
+        <result property="orgNo" column="org_no" jdbcType="VARCHAR"/>
+        <result property="orgName" column="org_name" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <collection property="sysRoles" fetchType="eager" column="uid"
+                    select="com.camel.auth.dao.SysRoleDao.findByUserId"></collection>
     </resultMap>
 
     <sql id="BASE_SQL">
@@ -36,7 +38,8 @@
         sys_user.org_no,
         sys_user.org_name,
         sys_user.address,
-        sys_user.remark
+        sys_user.remark,
+        sys_user.avatar
     </sql>
 
     <select id="findByUserName" resultMap="BaseResultMap" parameterType="com.camel.auth.model.SysUser">

@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -92,8 +93,14 @@ public class ApplicationToolsUtils {
         PageInfo pageInfo = PaginationUtil.startPage(entity, iSelect);
         List<BaseOaEntity> projectList = pageInfo.getList();
         projectList.forEach(baseOaEntity -> {
-            baseOaEntity.setCreator(getUser(baseOaEntity.getCreator().getUid()));
+            if(!ObjectUtils.isEmpty(baseOaEntity.getCreator())) {
+                baseOaEntity.setCreator(getUser(baseOaEntity.getCreator().getUid()));
+            }
         });
         return pageInfo;
+    }
+
+    public Member currentUser(OAuth2Authentication oAuth2Authentication) {
+        return  (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
     }
 }

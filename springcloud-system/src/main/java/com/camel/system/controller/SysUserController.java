@@ -114,6 +114,11 @@ public class SysUserController extends BaseCommonController {
         return ResultUtil.success(service.byRole(Integer.parseInt(id)));
     }
 
+    @PutMapping("/avatar")
+    public Result avatar(@RequestBody SysUser sysUser) {
+        super.update(sysUser);
+        return ResultUtil.success("修改用户头像成功");
+    }
 
     @Override
     public IService getiService() {

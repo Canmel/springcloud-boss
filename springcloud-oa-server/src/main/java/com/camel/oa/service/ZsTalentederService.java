@@ -1,8 +1,11 @@
 package com.camel.oa.service;
 
+import com.camel.core.entity.Result;
+import com.camel.oa.model.ZsProject;
 import com.camel.oa.model.ZsTalenteder;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -34,4 +37,12 @@ public interface ZsTalentederService extends IService<ZsTalenteder> {
      @return
      */
     PageInfo selectPage(ZsTalenteder entity);
+
+    /**
+     * 保存
+     * @param oAuth2Authentication
+     * @param entity
+     * @return
+     */
+    Result save(ZsTalenteder entity, OAuth2Authentication oAuth2Authentication);
 }

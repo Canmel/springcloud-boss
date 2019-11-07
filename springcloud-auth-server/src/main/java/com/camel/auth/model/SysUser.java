@@ -107,6 +107,11 @@ public class SysUser implements Serializable {
 
     private String remark;
 
+    /**
+     * 头像
+     */
+    private String avatar;
+
     private List<SysRole> sysRoles;
 
     @Override

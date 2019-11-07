@@ -8,6 +8,7 @@ import com.camel.oa.model.ZsTalenteder;
 import com.camel.oa.service.ZsTalentederService;
 import com.camel.oa.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -66,8 +67,8 @@ public class ZsTalentederController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody ZsTalenteder entity) {
-        return super.save(entity);
+    public Result save(@RequestBody ZsTalenteder entity, OAuth2Authentication oAuth2Authentication) {
+        return service.save(entity, oAuth2Authentication);
     }
 
     /**
