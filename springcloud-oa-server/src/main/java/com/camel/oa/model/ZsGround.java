@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
-import com.camel.core.entity.BasePaginationEntity;
-import com.camel.core.model.SysUser;
 import com.camel.oa.enums.ZsGroundStatus;
 import com.camel.oa.enums.ZsYesOrNo;
 import lombok.Data;

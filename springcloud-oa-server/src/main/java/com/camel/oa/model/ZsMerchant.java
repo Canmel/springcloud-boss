@@ -1,10 +1,7 @@
 package com.camel.oa.model;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-import com.camel.core.entity.BasePaginationEntity;
-import com.camel.core.model.SysUser;
 import com.camel.oa.enums.ZsMerchantStatus;
 import lombok.Data;
 
@@ -31,7 +28,7 @@ import java.util.Date;
  *     ...:::           ::::::::::::'              ``::.
  *    ```` ':.          ':::::::::'                  ::::..
  *                       '.:::::'                    ':'````..
- * < 服务实现类>
+ * <客商服务实现类>
  * @author baily
  * @since 1.0
  * @date 2019-10-30
