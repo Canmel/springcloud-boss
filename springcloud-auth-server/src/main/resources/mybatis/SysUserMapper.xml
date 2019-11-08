@@ -52,6 +52,4 @@
         </where>
         ORDER BY sys_user.uid
     </select>
-
-
 </mapper>
