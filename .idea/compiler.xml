@@ -9,6 +9,7 @@
         <module name="sms" />
         <module name="spring-boot-activiti" />
         <module name="springcloud-activiti" />
+        <module name="springcloud-attendance" />
         <module name="springcloud-auth-server" />
         <module name="springcloud-common" />
         <module name="springcloud-core" />
@@ -18,6 +19,7 @@
         <module name="springcloud-redis" />
         <module name="springcloud-sms-server" />
         <module name="springcloud-system" />
+        <module name="springcloud-verify" />
         <module name="springcloud-zuul-getway" />
       </profile>
     </annotationProcessing>
@@ -33,6 +35,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="sms" options="-parameters" />
       <module name="springcloud-activiti" options="-parameters" />
+      <module name="springcloud-attendance" options="-parameters" />
       <module name="springcloud-auth-server" options="-parameters" />
       <module name="springcloud-bpm" options="-parameters" />
       <module name="springcloud-bpm-server" options="-parameters" />
@@ -45,6 +48,7 @@
       <module name="springcloud-sms-server" options="-parameters" />
       <module name="springcloud-system" options="-parameters" />
       <module name="springcloud-system (1)" options="-parameters" />
+      <module name="springcloud-verify" options="-parameters" />
       <module name="springcloud-zuul-getway" options="-parameters" />
     </option>
   </component>

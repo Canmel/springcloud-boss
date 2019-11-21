@@ -1,0 +1,48 @@
+server:
+  port: 10000
+
+spring:
+  application:
+    name: springcloud-attendance
+  redis:
+    database: 0
+    host: ${REDIS_HOST}
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  datasource:
+    url: jdbc:mysql://${DATABASE_IP}:3306/dw_service?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: Ldj1654167*
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_IP}:8888/eureka/
+
+survey:
+  getway:
+    url: ${APPLICATION_GETWAY_URL}
+    port: 8080
+
+security:
+  oauth2:
+    resource:
+      id: springcloud-attendance
+      user-info-uri: http://${APPLICATION_IP}:8080/auth/session/me
+      prefer-token-info: false

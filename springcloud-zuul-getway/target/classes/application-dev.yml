@@ -48,6 +48,12 @@ zuul:
     activiti:
       path: /acti/**
       serviceId: springcloud-activiti
+    survey:
+      path: /survey/**
+      serviceId: springcloud-attendance
+    attendance:
+      path: /attendance/**
+      serviceId: springcloud-attendance
   retryable: false
   ignored-services: "*"
   host:
