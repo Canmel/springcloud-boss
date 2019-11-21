@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: springcloud-attendance
+    name: springcloud-verify
   redis:
     database: 0
     host: ${REDIS_HOST}

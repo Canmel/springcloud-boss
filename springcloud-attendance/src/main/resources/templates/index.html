@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/orionicons.css">
     <link rel="stylesheet" href="css/style.blue.css" id="theme-stylesheet">
     <link rel="stylesheet" href="css/custom.css">
-    <link rel="shortcut icon" href="img/favicon.png?3">
+    <link rel="shortcut icon" href="../img/favicon.png?3">
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
     <script src="js/jquery.pjax.js"></script>
@@ -26,7 +26,7 @@
     <header class="header">
         <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
             <a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a>
-            <a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">Bubbly Dashboard</a>
+            <a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">考勤管理看板</a>
             <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
                 <li class="nav-item">
                     <form id="searchForm" class="ml-auto d-none d-lg-block">
@@ -34,12 +34,12 @@
                             <button type="submit" style="top: -3px; left: 0;"
                                     class="position-absolute bg-white border-0 p-0"><i
                                     class="o-search-magnify-1 text-gray text-lg"></i></button>
-                            <input type="search" placeholder="Search ..."
+                            <input type="search" placeholder="查询..."
                                    class="form-control form-control-sm border-0 no-shadow pl-4">
                         </div>
                     </form>
                 </li>
-                <li class="nav-item dropdown mr-3"><a id="notifications" href="http://example.com"
+                <li class="nav-item dropdown mr-3"><a id="notifications" href="#"
                                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                       class="nav-link dropdown-toggle text-gray-400 px-1"><i
                         class="fa fa-bell"></i><span class="notification-icon"></span></a>
@@ -79,7 +79,7 @@
                         </a>
                     </div>
                 </li>
-                <li class="nav-item dropdown ml-auto"><a id="userInfo" href="http://example.com" data-toggle="dropdown"
+                <li class="nav-item dropdown ml-auto"><a id="userInfo" href="#" data-toggle="dropdown"
                                                          aria-haspopup="true" aria-expanded="false"
                                                          class="nav-link dropdown-toggle"><img src="img/avatar-6.jpg"
                                                                                                alt="Jason Doe"
@@ -102,14 +102,14 @@
     <div class="d-flex align-items-stretch">
         <div id="sidebar" class="sidebar py-3">
             <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">
-                MAIN
+                菜单
             </div>
             <ul class="sidebar-menu list-unstyled">
-                <li class="sidebar-list-item"><a href="index.html" class="sidebar-link text-muted active"><i
-                        class="o-home-1 mr-3 text-gray"></i><span>Home</span></a></li>
-                <li class="sidebar-list-item"><a href="charts.html" class="sidebar-link text-muted"><i
-                        class="o-sales-up-1 mr-3 text-gray"></i><span>Charts</span></a></li>
-                <li class="sidebar-list-item"><a href="tables.html" class="sidebar-link text-muted"><i
+                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/home.html'" data-pjax class="sidebar-link text-muted active" v-on:click="sidebarClick($event)"><i
+                        class="o-home-1 mr-3 text-gray"></i><span>首页</span></a></li>
+                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args.html'" data-pjax class="sidebar-link text-muted"  v-on:click="sidebarClick($event)"><i
+                        class="o-sales-up-1 mr-3 text-gray"></i><span>参数配置</span></a></li>
+                <li class="sidebar-list-item"><a href="tables.html" class="sidebar-link text-muted" data-pjax v-on:click="sidebarClick($event)"><i
                         class="o-table-content-1 mr-3 text-gray"></i><span>Tables</span></a></li>
                 <li class="sidebar-list-item"><a href="forms.html" class="sidebar-link text-muted"><i
                         class="o-survey-1 mr-3 text-gray"></i><span>Forms</span></a></li>
@@ -182,6 +182,12 @@
         },
         created: function () {
 
+        },
+        methods: {
+            sidebarClick: function (e) {
+                $('.sidebar-link').removeClass('active')
+                $(e.srcElement).addClass('active');
+            }
         }
     });
     $.pjax({

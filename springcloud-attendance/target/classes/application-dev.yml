@@ -17,7 +17,7 @@ spring:
   datasource:
     url: jdbc:mysql://${DATABASE_IP}:3306/dw_service?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
-    password: Ldj1654167*
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     mode: LEGACYHTML5
@@ -35,10 +35,10 @@ eureka:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
 
-survey:
+attendance:
   getway:
     url: ${APPLICATION_GETWAY_URL}
-    port: 8080
+    port: ${APPLICATION_GETWAY_PORT}
 
 security:
   oauth2:
