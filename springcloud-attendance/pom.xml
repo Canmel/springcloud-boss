@@ -119,6 +119,12 @@
             <groupId>com.camel.springcloud</groupId>
             <artifactId>springcloud-common</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-activemq</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--似乎阿里的连接池 需要这个玩意-->

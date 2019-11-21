@@ -37,9 +37,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @SpringBootApplication
 @EnableOAuth2Client
-public class SpringCloudattendanceApplication implements CommandLineRunner {
+public class SpringCloudAttendanceApplication implements CommandLineRunner {
     public static void main(String[] args) {
-        SpringApplication.run(SpringCloudattendanceApplication.class,args);
+        SpringApplication.run(SpringCloudAttendanceApplication.class,args);
     }
 
     @Override

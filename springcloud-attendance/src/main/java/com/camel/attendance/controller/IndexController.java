@@ -45,7 +45,7 @@ public class IndexController {
         String getWayUrl = StringUtils.isEmpty(applicationConfig.getGetWayUrl()) ? "127.0.0.1" : applicationConfig.getGetWayUrl();
         String getWayPort = StringUtils.isEmpty(applicationConfig.getGetWayPort()) ? ":8080" : (":" + applicationConfig.getGetWayPort());
         if(ObjectUtils.isEmpty(principal)) {
-            response.sendRedirect("http://" + getWayUrl + getWayPort + "/login?redirect_url=survey/index.html");
+            response.sendRedirect("http://" + getWayUrl + getWayPort + "/login?redirect_url=attendance/index.html");
         }
         return "/index.html";
     }
