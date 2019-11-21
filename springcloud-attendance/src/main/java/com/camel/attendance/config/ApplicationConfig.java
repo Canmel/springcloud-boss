@@ -31,9 +31,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationConfig {
 
-    @Value("${survey.getway.url}")
+    @Value("${attendance.getway.url}")
     private String getWayUrl;
 
-    @Value("${survey.getway.port}")
+    @Value("${attendance.getway.port}")
     private String getWayPort;
 }

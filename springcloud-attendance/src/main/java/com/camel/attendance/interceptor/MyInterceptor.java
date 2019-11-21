@@ -51,7 +51,7 @@ public class MyInterceptor implements HandlerInterceptor {
         String getWayPort = StringUtils.isEmpty(applicationConfig.getGetWayPort()) ? ":8080" : (":" + applicationConfig.getGetWayPort());
         if (isHtml(request)) {
             if (!isPjaxRequest(request)) {
-                response.sendRedirect("http://" + getWayUrl + getWayPort + "/survey/index.html");
+                response.sendRedirect("http://" + getWayUrl + getWayPort + "/attendance/index.html");
             }
             return true;
         }
@@ -59,7 +59,7 @@ public class MyInterceptor implements HandlerInterceptor {
             if (isAjaxRequest(request)) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
             } else {
-                response.sendRedirect("http://" + getWayUrl + getWayPort + "/login?redirect_url=survey/index.html");
+                response.sendRedirect("http://" + getWayUrl + getWayPort + "/login?redirect_url=attendance/index.html");
 
             }
             return false;

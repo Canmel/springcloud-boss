@@ -35,10 +35,10 @@ eureka:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
 
-survey:
+attendance:
   getway:
     url: ${APPLICATION_GETWAY_URL}
-    port: 8080
+    port: ${APPLICATION_GETWAY_PORT}
 
 security:
   oauth2:
