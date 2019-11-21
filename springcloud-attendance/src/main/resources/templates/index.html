@@ -139,12 +139,12 @@
     var mvm = new Vue({
         el: '#main-container',
         data: {
-            applicationContextRootPath: '/acti/'
+            applicationContextRootPath: '/attendance/'
         }
     });
 
     $.pjax({
-        url: mvm.applicationContextRootPath + 'home/home.html',
+        url: mvm.applicationContextRootPath + 'pages/home.html',
         container: '.page-container'
     });
 </script>
