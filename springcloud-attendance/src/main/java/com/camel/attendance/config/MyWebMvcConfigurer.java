@@ -39,7 +39,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration registration = registry.addInterceptor(interceptor);
-        registration.excludePathPatterns("/error", "/lib/**", "/js/**", "/", "", "/index.html",
+        registration.excludePathPatterns("/error", "/lib/**", "/js/**", "/", "", "/index.html", "/fonts/**",
                 "/css/**", "/img/**", "/images/**", "/editor-app/**", "/diagram-viewer/**");
     }
 }
