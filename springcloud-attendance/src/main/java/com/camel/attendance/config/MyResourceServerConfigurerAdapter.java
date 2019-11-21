@@ -44,7 +44,6 @@ public class MyResourceServerConfigurerAdapter extends ResourceServerConfigurerA
         http
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and().authorizeRequests().mvcMatchers( "/", "/index.html", "", "/error.html").permitAll()
                 .and()
                 .authorizeRequests()
