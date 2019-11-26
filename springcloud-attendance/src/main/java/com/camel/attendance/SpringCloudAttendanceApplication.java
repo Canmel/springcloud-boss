@@ -1,5 +1,6 @@
 package com.camel.attendance;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,6 +33,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * @since 1.0
  * @date 2019/11/19
  **/
+@MapperScan("com.camel.attendance.mapper")
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableGlobalMethodSecurity(prePostEnabled = true)

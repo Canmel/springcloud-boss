@@ -10,6 +10,13 @@ web_status = {
     NO_PRIVILEGE : "004"
 };
 
+$(function () {
+    var access_token = sessionStorage.getItem('access_token');
+    if (!access_token) {
+        location.href = 'http://' + window.location.host + '/login?redirect_url=/attendance/';
+    }
+});
+
 function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);

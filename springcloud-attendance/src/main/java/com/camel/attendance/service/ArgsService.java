@@ -1,8 +1,10 @@
 package com.camel.attendance.service;
 
-import com.camel.attendance.model.Args;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.attendance.model.Args;
+import com.camel.core.entity.Result;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -34,4 +36,6 @@ public interface ArgsService extends IService<Args> {
      @return
      */
     PageInfo<Args> selectPage(Args entity);
+
+    Result save(Args entity, OAuth2Authentication oAuth2Authentication);
 }

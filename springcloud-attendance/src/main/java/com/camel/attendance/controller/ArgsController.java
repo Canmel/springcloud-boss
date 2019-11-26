@@ -1,4 +1,5 @@
 package com.camel.attendance.controller;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.attendance.service.ArgsService;
 import com.camel.attendance.model.Args;
@@ -63,7 +64,7 @@ public class ArgsController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody Args entity) {
+    public Result save(@RequestBody Args entity, OAuth2Authentication oAuth2Authentication) {
         return super.save(entity);
     }
 

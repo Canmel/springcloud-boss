@@ -1,7 +1,11 @@
 package com.camel.attendance.model;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+
 import java.io.Serializable;
 
 /**
@@ -31,93 +35,125 @@ import java.io.Serializable;
  **/
 public class Args extends BasePaginationEntity implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-                            private Integer id;
-        private String name;
-        private String value;
-        private String code;
-        private Integer status;
-        private Date createdAt;
-        private Integer creator;
-        private Date updateAt;
-        private Integer updator;
+    private Integer id;
+
+    private String name;
+
+    private String value;
+
+    private String code;
+
+    private Integer status;
+
+    private Date createdAt;
+
+    private Date updateAt;
+
+    @TableField(value = "creator")
+    private Integer creatorId;
+
+    @TableField(exist = false)
+    private SysUser creator;
+
+    @TableField(value = "updator")
+    private Integer updatorId;
+
+    @TableField(exist = false)
+    private SysUser updator;
 
 
     public Integer getId() {
-            return id;
-            }
+        return id;
+    }
 
-        public void setId(Integer id) {
-            this.id = id;
-            }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
-            return name;
-            }
+        return name;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-            }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getValue() {
-            return value;
-            }
+        return value;
+    }
 
-        public void setValue(String value) {
-            this.value = value;
-            }
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public String getCode() {
-            return code;
-            }
+        return code;
+    }
 
-        public void setCode(String code) {
-            this.code = code;
-            }
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Integer getStatus() {
-            return status;
-            }
+        return status;
+    }
 
-        public void setStatus(Integer status) {
-            this.status = status;
-            }
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Date getCreatedAt() {
-            return createdAt;
-            }
+        return createdAt;
+    }
 
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-            }
-
-    public Integer getCreator() {
-            return creator;
-            }
-
-        public void setCreator(Integer creator) {
-            this.creator = creator;
-            }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Date getUpdateAt() {
-            return updateAt;
-            }
+        return updateAt;
+    }
 
-        public void setUpdateAt(Date updateAt) {
-            this.updateAt = updateAt;
-            }
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
 
-    public Integer getUpdator() {
-            return updator;
-            }
+    public Integer getCreatorId() {
+        return creatorId;
+    }
 
-        public void setUpdator(Integer updator) {
-            this.updator = updator;
-            }
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
 
-@Override
-public String toString() {
+    public SysUser getCreator() {
+        return creator;
+    }
+
+    public void setCreator(SysUser creator) {
+        this.creator = creator;
+    }
+
+    public Integer getUpdatorId() {
+        return updatorId;
+    }
+
+    public void setUpdatorId(Integer updatorId) {
+        this.updatorId = updatorId;
+    }
+
+    public SysUser getUpdator() {
+        return updator;
+    }
+
+    public void setUpdator(SysUser updator) {
+        this.updator = updator;
+    }
+
+    @Override
+    public String toString() {
         return "Args{" +
                 ", id=" + id +
                 ", name=" + name +
@@ -128,6 +164,6 @@ public String toString() {
                 ", creator=" + creator +
                 ", updateAt=" + updateAt +
                 ", updator=" + updator +
-        "}";
-        }
-        }
+                "}";
+    }
+}

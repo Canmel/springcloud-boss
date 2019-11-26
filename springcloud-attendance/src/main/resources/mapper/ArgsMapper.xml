@@ -10,9 +10,9 @@
         <result column="code" property="code" />
         <result column="status" property="status" />
         <result column="created_at" property="createdAt" />
-        <result column="creator" property="creator" />
+        <result column="creator" property="creatorId" />
         <result column="update_at" property="updateAt" />
-        <result column="updator" property="updator" />
+        <result column="updator" property="updatorId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
