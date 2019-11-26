@@ -62,8 +62,9 @@ public class ArgsServiceImpl extends ServiceImpl<ArgsMapper, Args> implements Ar
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
         entity.setCreator(new SysUser(member.getId()));
         entity.setCreatorId(member.getId());
+        entity.setUpdator(new SysUser(member.getId()));
         entity.setUpdatorId(member.getId());
-        if (mapper.insert(entity) > -1) {
+        if (insert(entity)) {
             return ResultUtil.success("新增成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");

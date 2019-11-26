@@ -51,7 +51,7 @@ public class MyInterceptor implements HandlerInterceptor {
         String getWayPort = StringUtils.isEmpty(applicationConfig.getGetWayPort()) ? ":8080" : (":" + applicationConfig.getGetWayPort());
         if (isHtml(request)) {
             if (!isPjaxRequest(request)) {
-                response.sendRedirect("http://" + getWayUrl + getWayPort + "/attendance/index.html");
+                response.sendRedirect("http://" + getWayUrl + getWayPort + "/attendance/");
             }
             return true;
         }

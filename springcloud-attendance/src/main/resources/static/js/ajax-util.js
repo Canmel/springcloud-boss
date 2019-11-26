@@ -67,7 +67,7 @@ __ajax = function(url, data, success, type ,contentType){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                location.href = 'http://' + window.location.host + '/login?redirect_url=/acti/';
+                location.href = 'http://' + window.location.host + '/login?redirect_url=/attendance/';
             }
         }
     };
@@ -75,13 +75,12 @@ __ajax = function(url, data, success, type ,contentType){
     if(contentType){
         config.contentType = contentType;
     }
-
-    var token = $.cookie("token");
-    if(token){
-        config.beforeSend = function (xhr) {
-            xhr.setRequestHeader("Authorization", "Basic " + btoa(token));
-        }
-    }
+    // var token = $.cookie("token");
+    // if(token){
+    //     config.beforeSend = function (xhr) {
+    //         xhr.setRequestHeader("Authorization", "Basic " + btoa(token));
+    //     }
+    // }
     $.ajax(config)
 };
 

@@ -14,15 +14,8 @@
     <link rel="stylesheet" href="css/style.blue.css" id="theme-stylesheet">
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
-
-    <link rel="shortcut icon" href="../img/favicon.png?3">
-    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
-    <script src="js/jquery.pjax.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrapValidator.js"></script>
-    <script src="js/ajax-util.js"></script>
-    <script src="js/vue.js"></script>
+    <link rel="stylesheet" href="css/toast.style.css"/>
+    <link rel="shortcut icon" href="/attendance/img/favicon.png"/>
 </head>
 <body>
 <div id="main-container">
@@ -112,55 +105,57 @@
                                                  class="sidebar-link text-muted active"
                                                  v-on:click="sidebarClick($event)"><i
                         class="o-home-1 mr-3 text-gray"></i><span>首页</span></a></li>
-                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args.html'" data-pjax
+                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'" data-pjax
                                                  class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
                         class="o-sales-up-1 mr-3 text-gray"></i><span>考勤看板</span></a></li>
-                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args.html'" data-pjax
+                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'" data-pjax
                                                  class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
                         class="o-table-content-1 mr-3 text-gray"></i><span>参数配置</span></a></li>
                 <li class="sidebar-list-item"><a href="forms.html" class="sidebar-link text-muted"><i
                         class="o-survey-1 mr-3 text-gray"></i><span>Forms</span></a></li>
                 <li class="sidebar-list-item"><a href="login.html" class="sidebar-link text-muted"><i
                         class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
+
             </ul>
             <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">
                 菜单
             </div>
             <ul class="sidebar-menu list-unstyled">
-                <li class="sidebar-list-item"><a href="#" data-toggle="collapse" data-target="#pages"
-                                                 aria-expanded="false" aria-controls="pages"
-                                                 class="sidebar-link text-muted"><i
-                        class="o-wireframe-1 mr-3 text-gray"></i><span>考勤管理</span></a>
+                <li class="sidebar-list-item">
+                    <a href="#" data-toggle="collapse" aria-expanded="false" aria-controls="test" data-target="#test"
+                       v-on:click="collapseMenu($event)"
+                       class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>考勤管理</span></a>
+                    <div id="test" class="collapse">
+                        <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
+                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
+                                                             data-pjax v-on:click="sidebarClick($event)"
+                                                             class="sidebar-link text-muted pl-lg-5">考勤看板</a>
+                            </li>
+                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
+                                                             data-pjax v-on:click="sidebarClick($event)"
+                                                             class="sidebar-link text-muted pl-lg-5">考勤查询</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="sidebar-list-item">
+                    <a href="#" data-toggle="collapse" aria-expanded="false" aria-controls="pages" data-target="#pages"
+                       v-on:click="collapseMenu($event)"
+                       class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>考勤管理</span></a>
                     <div id="pages" class="collapse">
                         <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
-                            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">考勤看板</a>
-                            </li>
-                            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">考勤查询</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="sidebar-list-item"><a href="#" data-toggle="collapse" data-target="#system"
-                                                 aria-expanded="false" aria-controls="system"
-                                                 class="sidebar-link text-muted"><i
-                        class="o-wireframe-1 mr-3 text-gray"></i><span>系统管理</span></a>
-                    <div id="system" class="collapse">
-                        <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
-                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args.html'"
+                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
                                                              data-pjax v-on:click="sidebarClick($event)"
-                                                             class="sidebar-link text-muted pl-lg-5">参数配置</a>
+                                                             class="sidebar-link text-muted pl-lg-5">考勤看板</a>
                             </li>
-                            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">考勤查询</a>
+                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
+                                                             data-pjax v-on:click="sidebarClick($event)"
+                                                             class="sidebar-link text-muted pl-lg-5">考勤查询</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted"><i
-                        class="o-imac-screen-1 mr-3 text-gray"></i><span>Demo</span></a></li>
-                <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted"><i
-                        class="o-paperwork-1 mr-3 text-gray"></i><span>Demo</span></a></li>
-                <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted"><i
-                        class="o-wireframe-1 mr-3 text-gray"></i><span>Demo</span></a></li>
             </ul>
         </div>
         <div class="page-holder w-100 d-flex flex-wrap">
@@ -187,10 +182,19 @@
 </div>
 <!-- navbar-->
 </body>
-
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-migrate-1.2.1.js"></script>
+<script src="js/jquery.pjax.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/toast.script.js"></script>
+<script src="js/bootstrapValidator.js"></script>
+<script src="js/ajax-util.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-plus.js"></script>
+<script src="js/pageination.js"></script>
 <script>
-    $(document).pjax('[data-pjax] a, a[data-pjax]', '.page-container');
 
+    $(document).pjax('[data-pjax] a, a[data-pjax]', '.page-container');
     var mvm = new Vue({
         el: '#main-container',
         data: {
@@ -201,13 +205,21 @@
         },
         methods: {
             sidebarClick: function (e) {
-                $('.sidebar-link').removeClass('active')
+                $('.sidebar-link').removeClass('active');
                 $(e.srcElement).addClass('active');
+            },
+            collapseMenu: function (e) {
+                if ($(e.srcElement).next().hasClass('show')) {
+                    $(e.srcElement).next().removeClass('show');
+                } else {
+                    $(e.srcElement).next().addClass('show');
+                }
             }
         }
     });
+    var currentPage = sessionStorage.getItem('currentPage');
     $.pjax({
-        url: mvm.applicationContextRootPath + 'pages/home.html',
+        url: currentPage ? currentPage : mvm.applicationContextRootPath + 'pages/home.html',
         container: '.page-container'
     });
 

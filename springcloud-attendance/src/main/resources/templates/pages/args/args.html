@@ -1,0 +1,78 @@
+<div id="subContainer">
+    <section class="py-5">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-6" style="">
+                        <h6 class="text-uppercase mb-0">参数列表</h6>
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;">
+                        <a class="icon text-white bg-green"
+                           :href="applicationContextRootPath + 'pages/args/args_add.html'"
+                           data-pjax style="display: inline-flex;"><i class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped card-text">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>参数名称</th>
+                        <th>代码</th>
+                        <th>参数值</th>
+                        <th>最近一次修改</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in items">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td>{{item.name}}</td>
+                        <td>{{item.code}}</td>
+                        <td>{{item.value}}</td>
+                        <td>{{item.updateAt | formatDate}}</td>
+                        <td>{{item.createdAt | formatDate}}</td>
+                        <td>修改 | 删除</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum" :changge="pageFn" ></pageination>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="/attendance/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/attendance/',
+            pageInfo: {
+                pageNum: 1,
+                total:0,//总页数
+                size:10,//每页显示条目个数不传默认10
+            },
+            items: [{}]
+        },
+        created: function () {
+            this.pagequery();
+        },
+        methods: {
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('/attendance/args', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function(val){
+                this.pageInfo.pageNum=val;
+                this.pagequery();
+            }
+        }
+    });
+</script>

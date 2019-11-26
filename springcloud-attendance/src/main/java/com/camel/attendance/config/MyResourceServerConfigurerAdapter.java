@@ -43,12 +43,11 @@ public class MyResourceServerConfigurerAdapter extends ResourceServerConfigurerA
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .exceptionHandling()
+                .authorizeRequests()
                 .and().authorizeRequests().mvcMatchers( "/", "/index.html", "", "/error.html").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
-                .and().headers().frameOptions().disable()
                 .and()
                 .httpBasic();
     }

@@ -10,18 +10,21 @@
                         <form id="defaultForm" method="post" class="form-horizontal">
                             <div class="form-group has-feedback">
                                 <div class="col-lg-12">
-                                    <input type="text" class="form-control" name="name" placeholder="参数名称" />
+                                    <input type="text" class="form-control" name="name" placeholder="参数名称"
+                                           v-model="args.name"/>
                                 </div>
 
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-12">
-                                    <input type="text" class="form-control" name="value" placeholder="参数值" />
+                                    <input type="text" class="form-control" name="code" placeholder="参数编码"
+                                           v-model="args.code"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-12">
-                                    <input type="text" class="form-control" name="code" placeholder="参数编码" />
+                                    <input type="text" class="form-control" name="value" placeholder="参数值"
+                                           v-model="args.value"/>
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: center;">
@@ -34,6 +37,7 @@
         </div>
     </section>
 </div>
+<script src="/attendance/js/validateIsMain.js"></script>
 <script>
     new Vue({
         el: '#subContainer',
@@ -50,8 +54,20 @@
         },
         methods: {
             save: function () {
-                console.log(this.args);
                 $('#defaultForm').bootstrapValidator('validate');
+                AJAX.POST('/attendance/args', this.args, function (resp) {
+                    $.Toast("成功", resp.msg, "success", {
+                        stack: true,
+                        fullscreen: false,
+                        sticky: false,
+                        rtl: false,
+                    });
+                    $.pjax({
+                        url: mvm.applicationContextRootPath + 'pages/args/args.html',
+                        container: '.page-container'
+                    });
+
+                });
             }
         }
     });
