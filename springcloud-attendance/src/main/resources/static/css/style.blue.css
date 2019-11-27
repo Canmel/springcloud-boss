@@ -4199,7 +4199,7 @@ code {
   border: 1px solid #d1dbe5;
   border-right: 0;
   background: #fff;
-  font-size: 13px;
+  font-size: 15px;
   min-width: 28px;
   height: 28px;
   line-height: 28px;
@@ -4218,7 +4218,7 @@ code {
 }
 
 .disabled {
-  color: #e4e4e4 !important;
+  color: #696969 !important;
   background-color: #fff;
   cursor: not-allowed;
 }
@@ -4228,4 +4228,14 @@ code {
   background-color: #20a0ff;
   color: #fff !important;;
   cursor: default;
+}
+
+.edit_btn_a {
+  color: #aea500 !important;
+  cursor: pointer;
+}
+
+.delete_btn_a {
+  color: #580000 !important;
+  cursor: pointer;
 }

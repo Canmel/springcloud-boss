@@ -53,6 +53,10 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 
 pagehelper:
   helper-dialect: mysql

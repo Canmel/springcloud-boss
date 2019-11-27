@@ -27,7 +27,6 @@ function getQueryString(name) {
 function simpleSuccess(result) {
     //如果成功，则读取后端返回的操作指令
     if (result.code == web_status.SUCCESS) {
-        console.log(result);
         return result;
     }
     //未登录
@@ -53,6 +52,9 @@ __ajax = function(url, data, success, type ,contentType){
         data['access_token'] = access_token;
     }
     if(type == 'delete') {
+        url += '/' + data['id'] + '?access_token=' + access_token;
+    }
+    if(type == 'put') {
         url += '?access_token=' + access_token;
     }
     var config = {
@@ -81,6 +83,10 @@ __ajax = function(url, data, success, type ,contentType){
     //         xhr.setRequestHeader("Authorization", "Basic " + btoa(token));
     //     }
     // }
+   if(type === 'put') {
+        config.dataType = 'json';
+   }
+   console.log(config)
     $.ajax(config)
 };
 
@@ -99,7 +105,7 @@ AJAX = {
         __ajax(url, data, success, "delete");
     },
     PUT:function(url, data, success){
-        __ajax(url, data, success, "put", "application/json");
+        __ajax(url, data, success, "put", 'application/json; charset=UTF-8');
     },
     PATCH: function (url, data, success) {
         __ajax(url, data, success, "patch", "application/json");

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 
+import java.util.Date;
+
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -74,6 +76,7 @@ public class ArgsController extends BaseCommonController {
      */
     @PutMapping
     public Result update(@RequestBody Args entity) {
+        entity.setUpdateAt(new Date());
         return super.update(entity);
     }
 

@@ -3,6 +3,8 @@ package com.camel.attendance.config;
 import com.camel.attendance.interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.HttpPutFormContentFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -41,5 +43,10 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
         InterceptorRegistration registration = registry.addInterceptor(interceptor);
         registration.excludePathPatterns("/error", "/lib/**", "/js/**", "/", "", "/index.html", "/fonts/**", "/pages/**",
                 "/css/**", "/img/**", "/images/**", "/editor-app/**", "/diagram-viewer/**");
+    }
+
+    @Bean
+    public HttpPutFormContentFilter httpPutFormContentFilter() {
+        return new HttpPutFormContentFilter();
     }
 }

@@ -1,16 +1,16 @@
 var pageination='<script type="text/x-template" id="pageination">\n' +
     '    <div class="pageination_align">\n' +
-    '        <div class="pageination" v-if="pageinationTotal">\n' +
-    '            <div @click="pageUp(0)" class="pagination_page" :class="startDisabled?\'disabled\':\'\'">首页</div>\n' +
-    '            <div @click="pageUp(1)" class="pagination_page" :class="startDisabled?\'disabled\':\'\'">上一页</div>\n' +
-    '            <div class="pagination_page" :class="item==pageinationCurrentPage?\'pagination_page_active\':\'\'"\n' +
+    '        <div class="btn-group btn-group-justified" v-if="pageinationTotal">\n' +
+    '            <button @click="pageUp(0)" class="pagination_page btn btn-rounded outline" :class="startDisabled?\'disabled\':\'\'">首页</button>\n' +
+    '            <button @click="pageUp(1)" class="pagination_page btn outline" :class="startDisabled?\'disabled\':\'\'">上一页</button>\n' +
+    '            <button class="pagination_page" :class="item==pageinationCurrentPage?\'pagination_page_active\':\'\'"\n' +
     '                 v-for="item in pageinationLength" @click="jump(item)">\n' +
     '                {{item}}\n' +
-    '            </div>\n' +
-    '            <div @click="pageDown(1)" class="pagination_page" :class="endDisabled?\'disabled\':\'\'">下一页</div>\n' +
-    '            <div @click="pageDown(0)" class="pagination_page pagination_page_right" :class="endDisabled?\'disabled\':\'\'">\n' +
+    '            </button>\n' +
+    '            <button @click="pageDown(1)" class="pagination_page btn outline" :class="endDisabled?\'disabled\':\'\'">下一页</button>\n' +
+    '            <button @click="pageDown(0)" class="pagination_page btn btn-rounded outline" :class="endDisabled?\'disabled\':\'\'">\n' +
     '                尾页\n' +
-    '            </div>\n' +
+    '            </button>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</script>'
