@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.attendance.mapper.SignRecordsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.attendance.model.SignRecords">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+        <result column="type" property="type" />
+        <result column="created_at" property="createdAt" />
+        <result column="coordinate" property="coordinate" />
+        <result column="remark" property="remark" />
+        <result column="determine" property="determine" />
+        <result column="sign_in_time" property="signInTime" />
+        <result column="sign_out_time" property="signOutTime" />
+        <result column="advance_time" property="advanceTime" />
+        <result column="delay_time" property="delayTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, status, type, created_at, coordinate, remark, determine, sign_in_time, sign_out_time, advance_time, delay_time
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List"></include>
+        from
+        sign_records
+    </select>
+</mapper>
