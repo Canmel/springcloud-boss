@@ -6,6 +6,8 @@ import com.camel.core.entity.Result;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -38,4 +40,6 @@ public interface ArgsService extends IService<Args> {
     PageInfo<Args> selectPage(Args entity);
 
     Result save(Args entity, OAuth2Authentication oAuth2Authentication);
+
+    List<Args> selectForMain();
 }

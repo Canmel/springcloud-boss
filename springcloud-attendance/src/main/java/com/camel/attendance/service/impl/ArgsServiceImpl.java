@@ -1,5 +1,7 @@
 package com.camel.attendance.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.attendance.model.Args;
 import com.camel.attendance.mapper.ArgsMapper;
 import com.camel.attendance.service.ArgsService;
@@ -17,32 +19,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
- * 　　　　　　　┃         ┃ 　
+ * 　　　　　　　┃         ┃
  * 　　　　　　　┃    ━    ┃
  * 　　　　　　　┃  >   <  ┃
  * 　　　　　　　┃         ┃
  * 　　　　　　　┃... ⌒ ...┃
  * 　　　　　　　┃         ┃
- *             ┗━┓     ┏━┛
- *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
- *               ┃     ┃   神兽保佑,代码无bug
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 服务实现类>
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┗━━━━┓   @author baily
- *               ┃          ┣┓
- *               ┃          ┏┛  @since 1.0
- *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-11-22
- *                ┗┻┛    ┗┻┛
+ * ┗━┓     ┏━┛
+ * ┃     ┃　Code is far away from bug with the animal protecting
+ * ┃     ┃   神兽保佑,代码无bug
+ * ┃     ┃
+ * ┃     ┃
+ * ┃     ┃        < 服务实现类>
+ * ┃     ┃
+ * ┃     ┗━━━━┓   @author baily
+ * ┃          ┣┓
+ * ┃          ┏┛  @since 1.0
+ * ┗┓┓┏━━━━┳┓┏┛
+ * ┃┫┫    ┃┫┫    @date 2019-11-22
+ * ┗┻┛    ┗┻┛
  */
 @Service
 public class ArgsServiceImpl extends ServiceImpl<ArgsMapper, Args> implements ArgsService {
 
+    public static final String[] MAINARGSKEYS = {"sign_in_time", "sign_out_time", "advance_time", "delay_time", "sign_position_1", "sign_radius"};
+    public static final String CODE_COLUM_NAME = "code";
     @Autowired
     private ArgsMapper mapper;
 
@@ -68,5 +74,12 @@ public class ArgsServiceImpl extends ServiceImpl<ArgsMapper, Args> implements Ar
             return ResultUtil.success("新增成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");
+    }
+
+    @Override
+    public List<Args> selectForMain() {
+        Wrapper wrapper = new EntityWrapper<Args>();
+        wrapper.in(CODE_COLUM_NAME, MAINARGSKEYS);
+        return mapper.selectList(wrapper);
     }
 }

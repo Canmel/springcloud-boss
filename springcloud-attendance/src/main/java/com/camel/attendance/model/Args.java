@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -36,7 +37,13 @@ import java.io.Serializable;
  * @since 1.0
  * @date 2019-11-22
  **/
+@Data
 public class Args extends BasePaginationEntity implements Serializable {
+
+    public static final String SIGN_IN_TIME_CODE = "sign_in_time";
+    public static final String SIGN_OUT_TIME_CODE = "sign_out_time";
+    public static final String DELAY_TIME_CODE = "delay_time";
+    public static final String ADVANCE_TIME_CODE = "advance_time";
 
     private static final long serialVersionUID = 1L;
     /**
@@ -69,95 +76,6 @@ public class Args extends BasePaginationEntity implements Serializable {
 
     @TableField(exist = false)
     private SysUser updator;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Integer getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Integer creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public SysUser getCreator() {
-        return creator;
-    }
-
-    public void setCreator(SysUser creator) {
-        this.creator = creator;
-    }
-
-    public Integer getUpdatorId() {
-        return updatorId;
-    }
-
-    public void setUpdatorId(Integer updatorId) {
-        this.updatorId = updatorId;
-    }
-
-    public SysUser getUpdator() {
-        return updator;
-    }
-
-    public void setUpdator(SysUser updator) {
-        this.updator = updator;
-    }
 
     @Override
     public String toString() {
