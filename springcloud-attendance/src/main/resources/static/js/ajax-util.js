@@ -44,7 +44,10 @@ function simpleSuccess(result) {
 }
 
 //对jquery的ajax方法再次封装
-__ajax = function(url, data, success, type ,contentType){
+__ajax = function(url, data, success, type ,contentType, sync){
+    if(null == sync) {
+        sync = false;
+    }
     success = success||function(data){};
     data = data||{};
     var access_token = sessionStorage.getItem('access_token');
@@ -62,6 +65,7 @@ __ajax = function(url, data, success, type ,contentType){
         type:type,
         dataType:"json",
         data:data,
+        async: sync,
         success:function(result){
             success(simpleSuccess(result));
         },
@@ -92,8 +96,11 @@ __ajax = function(url, data, success, type ,contentType){
 
 //再再次封装
 AJAX = {
-  GET:function(url, data, success){
+    GET:function(url, data, success){
       __ajax(url, data, success, "get");
+    },
+    GET_SYNC:function(url, data, success){
+        __ajax(url, data, success, "get", null, true);
     },
     POST_JSON: function(url, data, success){
         __ajax(url, data, success, "post", "application/json");

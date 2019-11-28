@@ -4,21 +4,27 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.attendance.model.Vacations">
-        <id column="id" property="id" />
-        <result column="year" property="year" />
-        <result column="name" property="name" />
-        <result column="status" property="status" />
+        <id column="id" property="id"/>
+        <result column="year" property="year"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"/>
+        <result column="vacation_day" property="vacationDay"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, year, name, status
+        id, year, name, status, vacation_day
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         vacations
+        <where>
+            <if test="vacationDay != null">
+                year(vacation_day) =  year(#{vacationDay})
+            </if>
+        </where>
     </select>
 </mapper>

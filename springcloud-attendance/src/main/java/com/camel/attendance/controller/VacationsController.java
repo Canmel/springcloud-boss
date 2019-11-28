@@ -1,4 +1,7 @@
 package com.camel.attendance.controller;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.attendance.service.VacationsService;
 import com.camel.attendance.model.Vacations;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,6 +57,19 @@ public class VacationsController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity));
     }
 
+    @GetMapping("/year")
+    public Result year(Vacations entity) {
+        Date date = entity.getVacationDay();
+        if(!ObjectUtils.isEmpty(date)) {
+            Wrapper wrapper = new EntityWrapper<Vacations>();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            wrapper.eq("year(vacation_day)", c.get(Calendar.YEAR));
+            return ResultUtil.success(service.selectList(wrapper));
+        }
+        return ResultUtil.success("");
+    }
+
     /**
     * 获取详情
     */
@@ -64,7 +82,7 @@ public class VacationsController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody Vacations entity) {
+    public Result save(Vacations entity) {
         return super.save(entity);
     }
 
