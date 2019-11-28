@@ -124,8 +124,9 @@
                 <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/vacations/vacations.html'" data-pjax
                                                  class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
                         class="o-table-content-1 mr-3 text-gray"></i><span>假日管理</span></a></li>
-                <li class="sidebar-list-item"><a href="forms.html" class="sidebar-link text-muted"><i
-                        class="o-survey-1 mr-3 text-gray"></i><span>假日管理</span></a></li>
+                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/sign/records.html'" data-pjax
+                                                 class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
+                        class="o-survey-1 mr-3 text-gray"></i><span>考勤记录</span></a></li>
                 <li class="sidebar-list-item"><a href="login.html" class="sidebar-link text-muted"><i
                         class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
 
@@ -146,7 +147,7 @@
                             </li>
                             <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
                                                              data-pjax v-on:click="sidebarClick($event)"
-                                                             class="sidebar-link text-muted pl-lg-5">考勤查询</a>
+                                                             class="sidebar-link text-muted pl-lg-5">考勤记录</a>
                             </li>
                         </ul>
                     </div>

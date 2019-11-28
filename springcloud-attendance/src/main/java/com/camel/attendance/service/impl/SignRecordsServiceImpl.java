@@ -8,6 +8,7 @@ import com.camel.attendance.mapper.SignRecordsMapper;
 import com.camel.attendance.service.ArgsService;
 import com.camel.attendance.service.SignRecordsService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.attendance.utils.ApplicationToolsUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.PaginationUtil;
@@ -56,10 +57,21 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
     public PageInfo<SignRecords> selectPage(SignRecords entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
+        });
+        List<SignRecords> signRecordsList = pageInfo.getList();
+        signRecordsList.forEach(signRecord -> {
+            applicationToolsUtils.allUsers().forEach(sysUser -> {
+                if(sysUser.getUid().equals(signRecord.getUserId())) {
+                    signRecord.setUser(sysUser);
+                }
+            });
         });
         return pageInfo;
     }

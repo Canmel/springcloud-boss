@@ -1,11 +1,13 @@
 package com.camel.attendance.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -49,6 +51,9 @@ public class SignRecords extends BasePaginationEntity implements Serializable {
      * 签入签出人员
      */
     private Integer userId;
+
+    @TableField(exist = false)
+    private SysUser user;
     /**
      * 状态
      */
