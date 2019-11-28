@@ -140,22 +140,23 @@
                 </li>
 
                 <li class="sidebar-list-item">
-                    <a href="#" data-toggle="collapse" aria-expanded="false" aria-controls="pages" data-target="#pages"
+                    <a href="#" data-toggle="collapse" aria-expanded="false" aria-controls="system" data-target="#system"
                        v-on:click="collapseMenu($event)"
-                       class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>考勤管理</span></a>
-                    <div id="pages" class="collapse">
+                       class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>系统管理</span></a>
+                    <div id="system" class="collapse">
                         <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
                             <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
                                                              data-pjax v-on:click="sidebarClick($event)"
-                                                             class="sidebar-link text-muted pl-lg-5">考勤看板</a>
+                                                             class="sidebar-link text-muted pl-lg-5">参数配置</a>
                             </li>
-                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
+                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/vacations/vacations.html'"
                                                              data-pjax v-on:click="sidebarClick($event)"
-                                                             class="sidebar-link text-muted pl-lg-5">考勤查询</a>
+                                                             class="sidebar-link text-muted pl-lg-5">假日配置</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
             </ul>
         </div>
         <div class="page-holder w-100 d-flex flex-wrap">
