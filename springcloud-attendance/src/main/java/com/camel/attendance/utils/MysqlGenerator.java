@@ -49,16 +49,16 @@ public class MysqlGenerator {
         path += "src/main/java";
 
         com.baomidou.mybatisplus.generator.config.GlobalConfig config = new com.baomidou.mybatisplus.generator.config.GlobalConfig();
-        String dbUrl = "jdbc:mysql://47.106.234.117:3306/dw_attendance?useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8";
+        String dbUrl = "jdbc:mysql://127.0.0.1:3306/dw_attendance?useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8";
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDbType(DbType.MYSQL)
                 .setUrl(dbUrl)
                 .setUsername("root")
-                .setPassword("Ldj1654167*")
+                .setPassword("1234")
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"sign_records"});
+        strategyConfig.setInclude(new String[] {"vacations", "vacation_days"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)

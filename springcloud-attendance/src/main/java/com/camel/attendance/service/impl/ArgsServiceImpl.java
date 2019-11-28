@@ -6,6 +6,7 @@ import com.camel.attendance.model.Args;
 import com.camel.attendance.mapper.ArgsMapper;
 import com.camel.attendance.service.ArgsService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.attendance.utils.ApplicationToolsUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
@@ -52,10 +53,24 @@ public class ArgsServiceImpl extends ServiceImpl<ArgsMapper, Args> implements Ar
     @Autowired
     private ArgsMapper mapper;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
     public PageInfo<Args> selectPage(Args entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
+        });
+        List<Args> argsList = pageInfo.getList();
+        argsList.forEach(args -> {
+            applicationToolsUtils.allUsers().forEach(sysUser -> {
+                if(sysUser.getUid().equals(args.getCreatorId())) {
+                    args.setCreator(sysUser);
+                }
+                if(sysUser.getUid().equals(args.getUpdatorId())) {
+                    args.setUpdator(sysUser);
+                }
+            });
         });
         return pageInfo;
     }
