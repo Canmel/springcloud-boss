@@ -48,6 +48,15 @@ public class ArgsController extends BaseCommonController {
     private ArgsService service;
 
     /**
+     * mian页面需要的参数
+     * @return
+     */
+    @GetMapping("/main")
+    public Result home() {
+        return ResultUtil.success(service.selectForMain());
+    }
+
+    /**
      * 分页查询
      */
     @GetMapping
