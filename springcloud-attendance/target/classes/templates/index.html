@@ -15,7 +15,20 @@
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
     <link rel="stylesheet" href="css/toast.style.css"/>
+    <link rel="stylesheet" href="css/BeAlert.css">
     <link rel="shortcut icon" href="/attendance/img/favicon.png"/>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-1.2.1.js"></script>
+    <script src="js/BeAlert.js"></script>
+    <script src="js/jquery.pjax.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/dateRange.js "></script>
+    <script src="js/toast.script.js"></script>
+    <script src="js/bootstrapValidator.js"></script>
+    <script src="js/ajax-util.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-plus.js"></script>
 </head>
 <body>
 <div id="main-container">
@@ -107,12 +120,12 @@
                         class="o-home-1 mr-3 text-gray"></i><span>首页</span></a></li>
                 <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'" data-pjax
                                                  class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
-                        class="o-sales-up-1 mr-3 text-gray"></i><span>考勤看板</span></a></li>
-                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'" data-pjax
+                        class="o-sales-up-1 mr-3 text-gray"></i><span>参数配置</span></a></li>
+                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/vacations/vacations.html'" data-pjax
                                                  class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
-                        class="o-table-content-1 mr-3 text-gray"></i><span>参数配置</span></a></li>
+                        class="o-table-content-1 mr-3 text-gray"></i><span>假日管理</span></a></li>
                 <li class="sidebar-list-item"><a href="forms.html" class="sidebar-link text-muted"><i
-                        class="o-survey-1 mr-3 text-gray"></i><span>Forms</span></a></li>
+                        class="o-survey-1 mr-3 text-gray"></i><span>假日管理</span></a></li>
                 <li class="sidebar-list-item"><a href="login.html" class="sidebar-link text-muted"><i
                         class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
 
@@ -140,22 +153,23 @@
                 </li>
 
                 <li class="sidebar-list-item">
-                    <a href="#" data-toggle="collapse" aria-expanded="false" aria-controls="pages" data-target="#pages"
+                    <a href="#" data-toggle="collapse" aria-expanded="false" aria-controls="system" data-target="#system"
                        v-on:click="collapseMenu($event)"
-                       class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>考勤管理</span></a>
-                    <div id="pages" class="collapse">
+                       class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>系统管理</span></a>
+                    <div id="system" class="collapse">
                         <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
                             <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
                                                              data-pjax v-on:click="sidebarClick($event)"
-                                                             class="sidebar-link text-muted pl-lg-5">考勤看板</a>
+                                                             class="sidebar-link text-muted pl-lg-5">参数配置</a>
                             </li>
-                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/args/args.html'"
+                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/vacations/vacations.html'"
                                                              data-pjax v-on:click="sidebarClick($event)"
-                                                             class="sidebar-link text-muted pl-lg-5">考勤查询</a>
+                                                             class="sidebar-link text-muted pl-lg-5">假日配置</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
             </ul>
         </div>
         <div class="page-holder w-100 d-flex flex-wrap">
@@ -170,27 +184,18 @@
                             <p class="mb-2 mb-md-0"></p>
                         </div>
                         <div class="col-md-6 text-center text-md-right text-gray-400">
-                            <p class="mb-0">Copyright &copy; 2019.Company name All rights reserved.More Templates <a
-                                    href="http://www.jq22.com/" target="_blank" title="jq22">jq22</a></p>
+                            <p class="mb-0">Copyright &copy; 2019.Camel All rights reserved.<a
+                                    href="https://github.com/Canmel" target="_blank" title="Baily">Baily</a></p>
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
-
 </div>
 <!-- navbar-->
 </body>
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery-migrate-1.2.1.js"></script>
-<script src="js/jquery.pjax.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/toast.script.js"></script>
-<script src="js/bootstrapValidator.js"></script>
-<script src="js/ajax-util.js"></script>
-<script src="js/vue.js"></script>
-<script src="js/vue-plus.js"></script>
+
 <script src="js/pageination.js"></script>
 <script>
 

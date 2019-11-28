@@ -22,6 +22,7 @@
                         <th>代码</th>
                         <th>参数值</th>
                         <th>最近一次修改</th>
+                        <th>修改人</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
@@ -33,9 +34,10 @@
                         <td>{{item.code}}</td>
                         <td>{{item.value}}</td>
                         <td>{{item.updateAt | formatDate}}</td>
+                        <td>{{item.updator.username}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td><a class="edit_btn_a" v-on:click="edit(item)"><i>修改</i></a> |
-                            <a class="delete_btn_a" v-on:click="delete(item)"><i>删除</i></a></td>
+                            <a class="delete_btn_a" v-on:click="deleteItem(item)"><i>删除</i></a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -44,6 +46,7 @@
             </div>
         </div>
     </section>
+
 </div>
 
 <script src="/attendance/js/validateIsMain.js"></script>
@@ -82,15 +85,25 @@
                     container: '.page-container'
                 });
             },
-            delete: function (item) {
-                AJAX.DELETE('/attendance/args', item, function (resp) {
-                    $.Toast("成功", resp.msg, "success", {
-                        stack: true,
-                        fullscreen: false,
-                        sticky: false,
-                        rtl: false
-                    });
-                } )
+            deleteItem: function (item) {
+                var that = this;
+                confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.DELETE('/attendance/args', item, function (resp) {
+                            $.Toast("成功", resp.msg, "success", {
+                                stack: true,
+                                fullscreen: false,
+                                sticky: false,
+                                rtl: false
+                            });
+                            that.pagequery();
+                        } )
+
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+
             }
         }
     });

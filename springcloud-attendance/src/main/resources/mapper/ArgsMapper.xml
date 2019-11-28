@@ -25,5 +25,8 @@
          <include refid="Base_Column_List"></include>
         from
         args
+        <where>
+            status = 1
+        </where>
     </select>
 </mapper>

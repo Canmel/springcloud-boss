@@ -4,44 +4,81 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-sm-6" style="">
-                        <h6 class="text-uppercase mb-0">节假日</h6>
+                        <h6 class="text-uppercase mb-0">节假日管理</h6>
                     </div>
                     <div class="col-sm-6" style="text-align: right;">
                         <a class="icon text-white bg-green"
-                           :href="applicationContextRootPath + 'pages/args/args_add.html'"
+                           :href="applicationContextRootPath + 'pages/vacations/vacation_add.html'"
                            data-pjax style="display: inline-flex;"><i class="fa fa-plus"></i></a>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-striped card-text">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>参数名称</th>
-                        <th>代码</th>
-                        <th>参数值</th>
-                        <th>最近一次修改</th>
-                        <th>创建时间</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!--<tr v-for="(item, index) in items">-->
-                        <!--<th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>-->
-                        <!--<td>{{item.name}}</td>-->
-                        <!--<td>{{item.code}}</td>-->
-                        <!--<td>{{item.value}}</td>-->
-                        <!--<td>{{item.updateAt | formatDate}}</td>-->
-                        <!--<td>{{item.createdAt | formatDate}}</td>-->
-                        <!--<td><a class="edit_btn_a" v-on:click="edit(item)"><i>修改</i></a> |-->
-                            <!--<a class="delete_btn_a" v-on:click="delete(item)"><i>删除</i></a></td>-->
-                    <!--</tr>-->
-                    </tbody>
-                </table>
-                <!--<pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"-->
-                             <!--:changge="pageFn"></pageination>-->
+                <div class="aboluo-w-700">
+                    <div class="aboluo-leftdiv">
+                        <div class="aboluo-tools">
+                            <div class="aboluo-calendar-select-year"></div>
+                            <div class="aboluo-calendar-month">
+                                <a class="aboluo-month-a-perv" href="javascript:;">&lt; </a>
+                                <a class="aboluo-month-a-next" href="javascript:;"> &gt;</a>
+                            </div>
+                            <input type="button" class="aboluo-toToday" value="返回今天" />
+                        </div>
+                        <div class="aboluo-rilidiv">
+                            <table class="aboluo-rilitable" cellspacing="0" cellpadding="0" >
+                                <thead class="aboluo-rilithead">
+                                <tr>
+                                    <th>一</td>
+                                    <th>二</td>
+                                    <th>三</td>
+                                    <th>四</td>
+                                    <th>五</td>
+                                    <th style="color:red;">六</td>
+                                    <th style="color:red;">日</td>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="aboluo-rightdiv">
+                        <p class="aboluo-xssj"><p>
+                        <p class="aboluo-currday"></p>
+                        <p class="aboluo-ssjjr"></p>
+                        <p class="aboluo-xsmx"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
 </div>
+
+<script src="/attendance/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/attendance/'
+        },
+        created: function () {
+            this.initCalendar();
+        },
+        methods: {
+            initCalendar: function () {
+                var jjrmodelidlist;  //用于存放从数据库取出的所有节假日的id
+                var jjrmodeltimelist; //用于存放从数据库取出的所有节假日的time
+                var jjrmodelztlist; //用于存放从数据库取出的所有节假日的状态
+
+                createSelectYear();  //创建年份下拉,并给对应事件
+                createMonthSelect();  //创建月份下拉，并给对应事件
+                getjjrszModelByYear(withID("aboluo-yearSelect").value); //从数据库取出已经设置了的节假日的数据，例：休息，上班等
+                //根据年，月，用table绘制日历。 年月变动则 重新绘制
+                createTabledate(parseInt(withID("aboluo-yearSelect").value),parseInt(withID("aboluo-selectmonth").value));
+                //上月下月的a标签给事件
+                leftrightclick();
+                //设置右边显示栏显示内容，显示栏还可以设置节假日的状态等
+                setRigth(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate());
+            }
+        }
+    });
+</script>

@@ -28,6 +28,7 @@
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: center;">
+                                <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
                                 <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
                             </div>
                         </form>
@@ -53,6 +54,9 @@
             this.loadEntity();
         },
         methods: {
+            cancel: function () {
+              this.backToMain();
+            },
             loadEntity: function () {
                 var that = this;
                 var editParam = sessionStorage.getItem('editParams');
@@ -61,22 +65,8 @@
                 });
             },
             save: function () {
+                var that = this;
                 $('#defaultForm').bootstrapValidator('validate');
-
-                // $.ajax({
-                //     type: 'PUT',
-                //     url: '/attendance/args?access_token=119a9f69-c493-4f55-896b-902de80bdc2c',
-                //     contentType: 'application/json; charset=UTF-8',
-                //     dataType: 'json',
-                //     data: JSON.stringify(this.args),
-                //     success: function (resp) {
-                //         console.log(resp)
-                //     },
-                //     error: function (resp) {
-                //         console.log(resp)
-                //     }
-                // })
-
                 AJAX.PUT('/attendance/args', JSON.stringify(this.args), function (resp) {
                     $.Toast("成功", resp.msg, "success", {
                         stack: true,
@@ -84,10 +74,13 @@
                         sticky: false,
                         rtl: false
                     });
-                    $.pjax({
-                        url: mvm.applicationContextRootPath + 'pages/args/args.html',
-                        container: '.page-container'
-                    });
+                    that.backToMain();
+                });
+            },
+            backToMain: function () {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/vacations/vacations.html',
+                    container: '.page-container'
                 });
             }
         }
