@@ -1,4 +1,7 @@
 package com.camel.attendance.controller;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.attendance.service.SignRecordsService;
 import com.camel.attendance.model.SignRecords;
@@ -50,6 +53,25 @@ public class SignRecordsController extends BaseCommonController {
     @GetMapping
     public Result index(SignRecords entity) {
         return ResultUtil.success(service.selectPage(entity));
+    }
+
+    /**
+     * 通过月份查询
+     *  eg: /month/2019-08-01
+     *  取前面7个字符 `2019-08`
+     *  获取当月+前后一个月的打卡记录
+     */
+    @GetMapping("/date/{date}")
+    public Result index(@PathVariable String date) {
+        Wrapper wrapper = new EntityWrapper<SignRecords>();
+        String[] params = date.split("-");
+        if(!ArrayUtils.isEmpty(params)) {
+            wrapper.eq("year(created_at)", date.split("-")[0]);
+        }
+        if(!ArrayUtils.isEmpty(params) && params.length > 1) {
+            wrapper.eq("month(created_at)", date.split("-")[1]);
+        }
+        return ResultUtil.success(service.selectList(wrapper));
     }
 
     /**

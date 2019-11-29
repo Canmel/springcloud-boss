@@ -657,7 +657,7 @@ function aboluoSetrq() {
     var a = szjjr.childNodes[1];
     var access_token = sessionStorage.getItem('access_token');
 
-    console.log(access_token);
+    console.log('------------》', ztid);
     $.ajax({
         type: "POST",
         url: '/attendance/vacations',

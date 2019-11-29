@@ -8,6 +8,7 @@ import com.camel.core.utils.PaginationUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -44,5 +45,13 @@ public class VacationsServiceImpl extends ServiceImpl<VacationsMapper, Vacations
             mapper.list(entity);
         });
         return pageInfo;
+    }
+
+    @Override
+    public boolean insert(Vacations entity) {
+        if(ObjectUtils.isEmpty(entity.getId())) {
+            super.insert(entity);
+        }
+        return super.updateById(entity);
     }
 }

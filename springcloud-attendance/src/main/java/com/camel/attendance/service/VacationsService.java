@@ -34,4 +34,12 @@ public interface VacationsService extends IService<Vacations> {
      @return
      */
     PageInfo<Vacations> selectPage(Vacations entity);
+
+    /**
+     * 新建
+     * @param entity
+     * @return
+     */
+    @Override
+    boolean insert(Vacations entity);
 }
