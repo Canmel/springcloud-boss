@@ -30,10 +30,40 @@
                         <td v-if="item.determine === 2"><span class="badge badge-danger">早退</span></td>
 
                         <td>{{item.createdAt | formatDate}}</td>
-                        <td><a class="edit_btn_a" v-on:click="edit(item)"><i>修改</i></a> |
+                        <td><button data-toggle="modal" data-target="#myModal" class="btn btn-primary"><i>查看详细</i></button> |
                             <a class="delete_btn_a" v-on:click="deleteItem(item)"><i>删除</i></a></td>
                     </tr>
                     </tbody>
+                    <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" class="text-left">
+                        <div role="document" class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 id="exampleModalLabel" class="modal-title">Signin Modal</h4>
+                                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                                    <form>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" placeholder="Email Address" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password" placeholder="Password" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Signin" class="btn btn-primary">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </table>
                 <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                              :changge="pageFn"></pageination>
@@ -72,12 +102,8 @@
                 this.pageInfo.pageNum = val;
                 this.pagequery();
             },
-            edit: function (item) {
+            details: function (item) {
                 sessionStorage.setItem('editParams', item.id);
-                $.pjax({
-                    url: mvm.applicationContextRootPath + 'pages/args/args_edit.html',
-                    container: '.page-container'
-                });
             },
             deleteItem: function (item) {
                 var that = this;

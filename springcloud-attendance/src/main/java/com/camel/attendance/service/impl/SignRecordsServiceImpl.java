@@ -85,7 +85,7 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     }
 
     @Override
-    public Result signIn(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignOutTimeException {
+    public Result signIn(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignInTimeException, NotSignOutTimeException {
         // 获取打卡时间的配置，完成记录， 创建快照
         setArgs(signRecords);
 
@@ -149,7 +149,7 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
                 if ((signOutDate.getTime() + signRecords.getDelayTime() * 60 * 1000) > date.getTime()) {
                     signRecords.setDetermine(SignRecordDetermine.NORMAL.getValue());
                 } else {
-                    throw new NotSignInTimeException();
+                    throw new NotSignOutTimeException();
                 }
             }
         }

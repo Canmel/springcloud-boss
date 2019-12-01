@@ -43,8 +43,26 @@ public interface SignRecordsService extends IService<SignRecords> {
      */
     PageInfo<SignRecords> selectPage(SignRecords entity);
 
+    /**
+     * 签入
+     * @param signRecords
+     * @param auth2Authentication
+     * @return
+     * @throws ParseException
+     * @throws NotSignOutTimeException
+     * @throws NotSignInTimeException
+     */
     Result signIn(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignOutTimeException, NotSignInTimeException;
 
+    /**
+     * 签出
+     * @param signRecords
+     * @param auth2Authentication
+     * @return
+     * @throws ParseException
+     * @throws NotSignOutTimeException
+     * @throws NotSignInTimeException
+     */
     Result signOut(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignOutTimeException, NotSignInTimeException;
 
     List<Map<String, String>> selectByMonth(String ydate, String mdate);
