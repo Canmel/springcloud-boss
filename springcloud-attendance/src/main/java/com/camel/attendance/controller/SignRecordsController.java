@@ -63,15 +63,7 @@ public class SignRecordsController extends BaseCommonController {
      */
     @GetMapping("/date/{date}")
     public Result index(@PathVariable String date) {
-        Wrapper wrapper = new EntityWrapper<SignRecords>();
-        String[] params = date.split("-");
-        if(!ArrayUtils.isEmpty(params)) {
-            wrapper.eq("year(created_at)", date.split("-")[0]);
-        }
-        if(!ArrayUtils.isEmpty(params) && params.length > 1) {
-            wrapper.eq("month(created_at)", date.split("-")[1]);
-        }
-        return ResultUtil.success(service.selectList(wrapper));
+        return ResultUtil.success(service.selectByMonth(date.split("-")[0], date.split("-")[1]));
     }
 
     /**

@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.attendance.utils.ApplicationToolsUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
@@ -27,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -83,7 +85,7 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     }
 
     @Override
-    public Boolean signIn(SignRecords signRecords, OAuth2Authentication auth2Authentication) {
+    public Result signIn(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignOutTimeException {
         // 获取打卡时间的配置，完成记录， 创建快照
         setArgs(signRecords);
 
@@ -91,30 +93,28 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
         signRecords.setUserId(member.getId());
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
         signRecords.setType(SignRecordType.SIGN_IN.getCode());
-        try {
-            determine(signRecords);
-        }catch (Exception ex) {
-            return false;
+        determine(signRecords);
+        if(insert(signRecords)){
+            return ResultUtil.success("考勤成功");
+        }else {
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "未知的错误，请联系管理员");
         }
-
-        return insert(signRecords);
     }
 
     @Override
-    public Boolean signOut(SignRecords signRecords, OAuth2Authentication auth2Authentication) {
+    public Result signOut(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignInTimeException, NotSignOutTimeException {
         // 获取打卡时间的配置，完成记录， 创建快照
         setArgs(signRecords);
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, auth2Authentication.getName());
         signRecords.setUserId(member.getId());
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
         signRecords.setType(SignRecordType.SIGN_OUT.getCode());
-        try {
-            determine(signRecords);
-        }catch (Exception ex) {
-            return false;
+        determine(signRecords);
+        if(insert(signRecords)){
+            return ResultUtil.success("操作成功");
+        }else {
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "未知的错误，请联系管理员");
         }
-
-        return insert(signRecords);
     }
 
     /**
@@ -131,24 +131,24 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
         Date signInDate = dataParser.parse(dateStr + signRecords.getSignInTime());
         Date signOutDate = dataParser.parse(dateStr + signRecords.getSignOutTime());
 
-        if(SignRecordType.SIGN_IN.getValue().equals(signRecords.getType())) {
-            if(date.getTime() > signInDate.getTime()) {
+        if (SignRecordType.SIGN_IN.getValue().equals(signRecords.getType())) {
+            if (date.getTime() > signInDate.getTime()) {
                 signRecords.setDetermine(SignRecordDetermine.DELAY.getValue());
-            }else {
-                if((date.getTime() - signRecords.getAdvanceTime() * 60 * 1000) < date.getTime()){
+            } else {
+                if ((date.getTime() - signRecords.getAdvanceTime() * 60 * 1000) < date.getTime()) {
                     signRecords.setDetermine(SignRecordDetermine.NORMAL.getValue());
-                }else {
+                } else {
                     throw new NotSignInTimeException();
                 }
             }
         }
-        if(SignRecordType.SIGN_OUT.getValue().equals(signRecords.getType())) {
-            if(date.getTime() < signOutDate.getTime()) {
+        if (SignRecordType.SIGN_OUT.getValue().equals(signRecords.getType())) {
+            if (date.getTime() < signOutDate.getTime()) {
                 signRecords.setDetermine(SignRecordDetermine.ADVANCE.getValue());
-            }else {
-                if((signOutDate.getTime() + signRecords.getDelayTime() * 60 * 1000) > date.getTime()){
+            } else {
+                if ((signOutDate.getTime() + signRecords.getDelayTime() * 60 * 1000) > date.getTime()) {
                     signRecords.setDetermine(SignRecordDetermine.NORMAL.getValue());
-                }else {
+                } else {
                     throw new NotSignInTimeException();
                 }
             }
@@ -156,7 +156,7 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
 
     }
 
-    private void setArgs(SignRecords signRecords){
+    private void setArgs(SignRecords signRecords) {
         List<Args> argsList = argsService.selectForMain();
         argsList.forEach(args -> {
             if (Args.SIGN_IN_TIME_CODE.equals(args.getCode())) {
@@ -172,5 +172,10 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
                 signRecords.setDelayTime(Integer.parseInt(args.getValue()));
             }
         });
+    }
+
+    @Override
+    public List<Map<String, String>> selectByMonth(String ydate, String mdate) {
+        return mapper.selectByMonth(ydate, mdate);
     }
 }

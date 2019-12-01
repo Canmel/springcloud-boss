@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+
 /**
  *
  *                 ___====-_  _-====___
@@ -42,16 +44,14 @@ public class SignInController {
     private SignRecordsService signRecordsService;
 
     @PostMapping("/in")
-    public Result signIn(@RequestBody SignRecords signRecords, OAuth2Authentication oAuth2Authentication) {
+    public Result signIn(@RequestBody SignRecords signRecords, OAuth2Authentication oAuth2Authentication) throws ParseException {
         // 新增签入签出记录
-        signRecordsService.signIn(signRecords, oAuth2Authentication);
-        return ResultUtil.success("");
+        return signRecordsService.signIn(signRecords, oAuth2Authentication);
     }
 
     @PostMapping("/out")
-    public Result signOut(@RequestBody SignRecords signRecords, OAuth2Authentication oAuth2Authentication) {
+    public Result signOut(@RequestBody SignRecords signRecords, OAuth2Authentication oAuth2Authentication) throws ParseException {
         // 新增签入签出记录
-        signRecordsService.signOut(signRecords, oAuth2Authentication);
-        return ResultUtil.success("");
+        return signRecordsService.signOut(signRecords, oAuth2Authentication);
     }
 }
