@@ -47,4 +47,11 @@ public interface SignRecordsMapper extends BaseMapper<SignRecords> {
      * @return
      */
     List<SignRecords> selectTotalByMonth(SignRecords signRecords);
+
+    /**
+     * 查询最后一个有效的考勤
+     * @param signRecords
+     * @return
+     */
+    SignRecords selectLastValidRecord(SignRecords signRecords);
 }

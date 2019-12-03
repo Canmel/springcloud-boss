@@ -76,7 +76,6 @@
         from
           sign_records
         <where>
-            status = 1
             <if test="createdAtStr != null and createdAtStr != ''">
                 AND DATE_FORMAT(created_at,'%Y-%m-%d') = #{createdAtStr}
             </if>
@@ -98,6 +97,25 @@
             </if>
             <if test="userId != null">
                 AND user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectLastValidRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        sign_records
+        <where>
+            status = 1
+            <if test="createdAtStr != null and createdAtStr != ''">
+                AND DATE_FORMAT(created_at,'%Y-%m-%d') = #{createdAtStr}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
             </if>
         </where>
     </select>

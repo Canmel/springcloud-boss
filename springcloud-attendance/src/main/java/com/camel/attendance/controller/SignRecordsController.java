@@ -79,8 +79,8 @@ public class SignRecordsController extends BaseCommonController {
      *  获取当月+前后一个月的打卡记录
      */
     @GetMapping("/date/{date}")
-    public Result index(@PathVariable String date) {
-        return ResultUtil.success(service.selectByMonth(date.split("-")[0], date.split("-")[1]));
+    public Result index(@PathVariable String date, OAuth2Authentication oAuth2Authentication) {
+        return ResultUtil.success(service.selectByMonth(date.split("-")[0], date.split("-")[1], oAuth2Authentication));
     }
 
     /**

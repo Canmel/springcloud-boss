@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
@@ -72,6 +73,8 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
+    public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     @Override
     public PageInfo<SignRecords> selectPage(SignRecords entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
@@ -98,11 +101,27 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
         signRecords.setType(SignRecordType.SIGN_IN.getCode());
         determine(signRecords);
-        if (insert(signRecords)) {
+
+        if (doSign(signRecords, member)) {
             return ResultUtil.success("考勤成功");
         } else {
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "未知的错误，请联系管理员");
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean doSign(SignRecords signRecords, Member member) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SignRecords si = new SignRecords(member.getId(), simpleDateFormat.format(new Date()));
+        SignRecords result = mapper.selectLastValidRecord(si);
+        if (!ObjectUtils.isEmpty(result)) {
+            if (SignRecordDetermine.NORMAL.getValue().equals(result.getDetermine())) {
+                return true;
+            }
+            result.setStatus(0);
+            mapper.updateById(result);
+        }
+        return insert(signRecords);
     }
 
     @Override
@@ -114,7 +133,7 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
         signRecords.setType(SignRecordType.SIGN_OUT.getCode());
         determine(signRecords);
-        if (insert(signRecords)) {
+        if (doSign(signRecords, member)) {
             return ResultUtil.success("操作成功");
         } else {
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "未知的错误，请联系管理员");
@@ -128,12 +147,12 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     public void determine(SignRecords signRecords) throws ParseException, NotSignInTimeException, NotSignOutTimeException {
         signRecords.setDetermine(SignRecordDetermine.NORMAL.getValue());
         Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = simpleDateFormat.format(date);
 
         SimpleDateFormat dataParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date signInDate = dataParser.parse(dateStr + signRecords.getSignInTime());
-        Date signOutDate = dataParser.parse(dateStr + signRecords.getSignOutTime());
+        Date signInDate = dataParser.parse(dateStr + " " + signRecords.getSignInTime());
+        Date signOutDate = dataParser.parse(dateStr + " " + signRecords.getSignOutTime());
 
         if (SignRecordType.SIGN_IN.getValue().equals(signRecords.getType())) {
             if (date.getTime() > signInDate.getTime()) {
@@ -179,42 +198,70 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     }
 
     @Override
-    public List<Map<String, Object>> selectByMonth(String ydate, String mdate) {
+    public List<Map<String, Object>> selectByMonth(String ydate, String mdate, OAuth2Authentication oAuth2Authentication) {
+        String month = ydate + "-" + mdate;
+        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
+        SignRecords signRecords = new SignRecords(member.getId(), month);
         List<String> days = getDayByMonth(ydate, mdate);
-        List<Map<String, Object>> resultList = mapper.selectByMonth(ydate, mdate);
         List<Map<String, Object>> result = new ArrayList<>();
+        // 查询这个月的签到情况
+        List<SignRecords> signRecordsList = mapper.selectTotalByMonth(signRecords);
         days.forEach(day -> {
             Map<String, Object> subResult = new HashMap<>(16);
             subResult.put("createdAt", day);
-            resultList.forEach(map -> {
-                if (day.equals(map.get("createdAt"))) {
-                    Object type = map.get("type");
-                    Object successNum = map.get("success_num");
-                    Object createdAtFull = map.get("createdAtFull");
+            signRecordsList.forEach(record -> {
+                if (day.equals(simpleDateFormat.format(record.getCreatedAt()))) {
+                    Integer determineValue = record.getDetermine();
+                    Integer signType = record.getType();
+                    // 签到
+                    if (SignRecordType.SIGN_IN.getValue().equals(signType)) {
+                        if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
+                            subResult.put("sign_in_determine_code", SignRecordDetermine.NORMAL.getValue());
+                            subResult.put("sign_in_determine_text", SignRecordDetermine.NORMAL.getName());
+                        } else if (determineValue.equals(SignRecordDetermine.ADVANCE.getValue())) {
+                            subResult.put("sign_in_determine_code", SignRecordDetermine.ADVANCE.getValue());
+                            subResult.put("sign_in_determine_text", SignRecordDetermine.ADVANCE.getName());
+                        } else if (determineValue.equals(SignRecordDetermine.DELAY.getValue())) {
+                            subResult.put("sign_in_determine_code", SignRecordDetermine.DELAY.getValue());
+                            subResult.put("sign_in_determine_text", SignRecordDetermine.DELAY.getName());
+                        }
 
-                    if (!ObjectUtils.isEmpty(type) && type.equals(0)) {
-                        if (!ObjectUtils.isEmpty(successNum)) {
-                            BigDecimal s = (BigDecimal) successNum;
-                            if (s.intValue() > 0) {
-                                subResult.put("success_sign_in", day);
-                                subResult.put("signIn_createdAtFull", createdAtFull);
-                            }
+                        subResult.put("sign_in_time", record.getCreatedAtStr());
+                    } else {
+                        if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
+                            subResult.put("sign_out_determine_code", SignRecordDetermine.NORMAL.getValue());
+                            subResult.put("sign_out_determine_text", SignRecordDetermine.NORMAL.getName());
+                        } else if (determineValue.equals(SignRecordDetermine.ADVANCE.getValue())) {
+                            subResult.put("sign_out_determine_code", SignRecordDetermine.ADVANCE.getValue());
+                            subResult.put("sign_out_determine_text", SignRecordDetermine.ADVANCE.getName());
+                        } else if (determineValue.equals(SignRecordDetermine.DELAY.getValue())) {
+                            subResult.put("sign_out_determine_code", SignRecordDetermine.DELAY.getValue());
+                            subResult.put("sign_out_determine_text", SignRecordDetermine.DELAY.getName());
                         }
+
+                        subResult.put("sign_out_time", record.getCreatedAtStr());
                     }
-                    if (!ObjectUtils.isEmpty(type) && type.equals(1)) {
-                        if (!ObjectUtils.isEmpty(successNum)) {
-                            BigDecimal s = (BigDecimal) successNum;
-                            if (s.intValue() > 0) {
-                                subResult.put("success_sign_out", day);
-                                subResult.put("signOut_createdAtFull", createdAtFull);
-                            }
-                        }
-                    }
+
+
                 }
             });
             result.add(subResult);
         });
         return result;
+    }
+
+    public void loadSignResult(Map<String, Object> subResult, SignRecords record) {
+        Integer determineValue = record.getDetermine();
+        if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
+            subResult.put("sign_determine_code", SignRecordDetermine.NORMAL.getValue());
+            subResult.put("sign_determine_text", SignRecordDetermine.NORMAL.getName());
+        } else if (determineValue.equals(SignRecordDetermine.ADVANCE.getValue())) {
+            subResult.put("sign_determine_code", SignRecordDetermine.ADVANCE.getValue());
+            subResult.put("sign_determine_text", SignRecordDetermine.ADVANCE.getName());
+        } else if (determineValue.equals(SignRecordDetermine.DELAY.getValue())) {
+            subResult.put("sign_determine_code", SignRecordDetermine.DELAY.getValue());
+            subResult.put("sign_determine_text", SignRecordDetermine.DELAY.getName());
+        }
     }
 
     public static List<String> getDayByMonth(String yearParam, String monthParam) {
@@ -252,7 +299,6 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
 
     @Override
     public List<SignRecords> day(String day, OAuth2Authentication oAuth2Authentication) {
-
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
         SignRecords signRecords = new SignRecords(member.getId(), day);
         return mapper.selectByDay(signRecords);
@@ -334,14 +380,13 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
             if (!SignRecordDetermine.NORMAL.getValue().equals(signDayRecord.getStatus())) {
                 boolean hasSign = false;
                 for (int i = 0; i < signRecordsList.size(); i++) {
-                    if(simpleDateFormat.format(signRecordsList.get(i).getCreatedAt()).equals(signDayRecord.getSignDay())) {
+                    if (simpleDateFormat.format(signRecordsList.get(i).getCreatedAt()).equals(signDayRecord.getSignDay())) {
                         hasSign = true;
                     }
 
 
-
                 }
-                if(!hasSign) {
+                if (!hasSign) {
                     signDayRecord.setStatus(SignRecordDetermine.FORGET.getValue());
                 }
             }

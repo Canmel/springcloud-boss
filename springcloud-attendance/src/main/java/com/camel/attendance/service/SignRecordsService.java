@@ -72,7 +72,7 @@ public interface SignRecordsService extends IService<SignRecords> {
      * @param mdate
      * @return
      */
-    List<Map<String, Object>> selectByMonth(String ydate, String mdate);
+    List<Map<String, Object>> selectByMonth(String ydate, String mdate, OAuth2Authentication oAuth2Authentication);
 
     /**
      * 根据人和天查询当天当人考勤记录
