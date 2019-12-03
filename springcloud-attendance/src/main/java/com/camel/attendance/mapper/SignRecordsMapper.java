@@ -2,6 +2,7 @@ package com.camel.attendance.mapper;
 
 import com.camel.attendance.model.SignRecords;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.camel.attendance.vo.SignRecordTotal;
 import feign.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -31,5 +32,14 @@ public interface SignRecordsMapper extends BaseMapper<SignRecords> {
      * @param mdate
      * @return
      */
-    List<Map<String, String>> selectByMonth(@Param("ydate") String ydate, @Param("mdate") String mdate);
+    List<Map<String, Object>> selectByMonth(@Param("ydate") String ydate, @Param("mdate") String mdate);
+
+    /**
+     * 通过时间和人员选择所有打卡记录
+     * @param signRecords
+     * @return
+     */
+    List<SignRecords> selectByDay(SignRecords signRecords);
+
+    SignRecordTotal selectTotalByMonth(String month);
 }

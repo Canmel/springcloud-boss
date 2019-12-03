@@ -2,6 +2,7 @@ package com.camel.attendance.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.attendance.service.SignRecordsService;
 import com.camel.attendance.model.SignRecords;
@@ -46,6 +47,22 @@ public class SignRecordsController extends BaseCommonController {
 
     @Autowired
     private SignRecordsService service;
+
+    @GetMapping("/total/{month}")
+    public Result total(@PathVariable String month) {
+        service.totalByMonth(month);
+        return ResultUtil.success("");
+    }
+
+    /**
+     * 获取某天的考勤记录
+     * @param day
+     * @return
+     */
+    @GetMapping("/day/{day}")
+    public Result day(@PathVariable String day, OAuth2Authentication oAuth2Authentication){
+        return ResultUtil.success(service.day(day, oAuth2Authentication));
+    }
 
     /**
     * 分页查询

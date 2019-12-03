@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
     <link rel="stylesheet" href="css/toast.style.css"/>
+    <link rel="stylesheet" href="css/style.default.css"/>
     <link rel="stylesheet" href="css/BeAlert.css">
-    <link rel="stylesheet" href="css/_modal.css">
     <link rel="shortcut icon" href="/attendance/img/favicon.png"/>
 
     <script src="js/jquery.min.js"></script>
@@ -28,6 +28,7 @@
     <script src="js/toast.script.js"></script>
     <script src="js/bootstrapValidator.js"></script>
     <script src="js/ajax-util.js"></script>
+    <script src="js/popper.js/umd/popper.min.js"> </script>
     <script src="js/vue.js"></script>
     <script src="js/vue-plus.js"></script>
 </head>
@@ -128,8 +129,9 @@
                 <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/sign/records.html'" data-pjax
                                                  class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
                         class="o-survey-1 mr-3 text-gray"></i><span>考勤记录</span></a></li>
-                <li class="sidebar-list-item"><a href="login.html" class="sidebar-link text-muted"><i
-                        class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
+                <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/leave/leave.html'" data-pjax
+                                                 class="sidebar-link text-muted" v-on:click="sidebarClick($event)"><i
+                        class="o-exit-1 mr-3 text-gray"></i><span>请假管理</span></a></li>
 
             </ul>
             <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">
@@ -149,6 +151,10 @@
                             <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/sign/records.html'"
                                                              data-pjax v-on:click="sidebarClick($event)"
                                                              class="sidebar-link text-muted pl-lg-5">考勤记录</a>
+                            </li>
+                            <li class="sidebar-list-item"><a :href="applicationContextRootPath + 'pages/leave/leave.html'"
+                                                             data-pjax v-on:click="sidebarClick($event)"
+                                                             class="sidebar-link text-muted pl-lg-5">请假管理</a>
                             </li>
                         </ul>
                     </div>

@@ -66,6 +66,12 @@ public class SignRecords extends BasePaginationEntity implements Serializable {
      * 创建时间
      */
     private Date createdAt;
+
+    /**
+     * 时间字符串
+     */
+    @TableField(exist = false)
+    private String createdAtStr;
     /**
      * 坐标
      */
@@ -94,6 +100,14 @@ public class SignRecords extends BasePaginationEntity implements Serializable {
      * 可延迟打卡时间
      */
     private Integer delayTime;
+
+    public SignRecords() {
+    }
+
+    public SignRecords(Integer userId, String createdAtStr) {
+        this.userId = userId;
+        this.createdAtStr = createdAtStr;
+    }
 
     @Override
     public String toString() {

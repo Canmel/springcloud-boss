@@ -8,68 +8,126 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <table class="table table-striped card-text">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>打卡人员</th>
-                        <th>类型</th>
-                        <th>判定</th>
-                        <th>打卡时间</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(item, index) in items">
-                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>{{item.user ? item.user.username : ''}}</td>
-                        <td>{{item.type === 0 ? '签到' : '签退'}}</td>
-                        <td v-if="item.determine === 0"><span class="badge badge-danger">迟到</span></td>
-                        <td v-if="item.determine === 1"><span class="badge badge-green">正常</span></td>
-                        <td v-if="item.determine === 2"><span class="badge badge-danger">早退</span></td>
+            <div class="card-body" style="padding: 0px !important;">
+                <!-- Modal-->
+                <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+                     class="modal fade text-left">
+                    <div role="document" class="modal-dialog">
+                        <div class="modal-content" style="background-color: lightsteelblue;">
+                            <div class="modal-header">
+                                <h4 id="exampleModalLabel" class="modal-title">考勤记录</h4>
+                                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                                        aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <a href="#"
+                                       class="message card px-5 py-3 mb-4 bg-hover-gradient-primary no-anchor-style" style="background-color: powderblue;">
+                                        <div class="row">
+                                            <div class="col-lg-5 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                                <strong class="h5 mb-0">{{details.createdAt | formatDate}}<sup
+                                                        class="smaller text-gray font-weight-normal">（{{details.createdAt | weekDay}}）</sup></strong>
+                                                <h6 class="mb-0">{{details.user ? details.user.username : ''}}</h6>
+                                            </div>
+                                            <div class="col-lg-7 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                                <div class="roundy px-4 py-1 mr-0 mr-lg-3 mt-2 mt-lg-0 text-dark exclode">
+                                                    <span v-if="details.determine === 0" class="badge badge-danger">迟到</span>
+                                                    <span v-if="details.determine === 1" class="badge badge-green">正常</span>
+                                                    <span v-if="details.determine === 2" class="badge badge-danger">早退</span>
+                                                </div>
+                                                <p class="mb-0 mt-3 mt-lg-0">Lorem ipsum dolor sit amet, consectetur
+                                                    adipisicing elit, sed do eiusmod tempor.</p>
+                                            </div>
+                                        </div>
+                                    </a>
 
-                        <td>{{item.createdAt | formatDate}}</td>
-                        <td><button data-toggle="modal" data-target="#myModal" class="btn btn-primary"><i>查看详细</i></button> |
-                            <a class="delete_btn_a" v-on:click="deleteItem(item)"><i>删除</i></a></td>
-                    </tr>
-                    </tbody>
-                    <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" class="text-left">
-                        <div role="document" class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 id="exampleModalLabel" class="modal-title">Signin Modal</h4>
-                                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+
                                 </div>
-                                <div class="modal-body">
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                    <form>
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="email" placeholder="Email Address" class="form-control">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-5 mb-lg-0">
+                                        <div class="card rounded credit-card bg-hover-gradient-blue" style="background-color: peachpuff;">
+                                            <div class="content d-flex flex-column justify-content-between p-4">
+                                                <h1 class="mb-5"><span>当次考勤参照</span></h1>
+                                                <div class="d-flex justify-content-between align-items-end pt-3 row" style="padding-top: 0px !important ;">
+                                                    <div class="font-weight-bold d-block col-md-6">考勤签到时间</div>
+                                                    <div><small class="text-gray col-md-6">{{details.signInTime}}</small></div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-end pt-3 row" style="padding-top: 0px !important;">
+                                                    <div class="font-weight-bold d-block col-md-6">考勤签退时间</div>
+                                                    <div><small class="text-gray col-md-6">{{details.signOutTime}}</small></div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-end pt-3 row" style="padding-top: 0px !important;">
+                                                    <div class="font-weight-bold d-block col-md-6">考勤签到提前时长</div>
+                                                    <div><small class="text-gray col-md-6">{{details.advanceTime}}(分钟)</small></div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-end pt-3 row" style="padding-top: 0px !important;">
+                                                    <div class="font-weight-bold d-block col-md-6">考勤签退延后时长</div>
+                                                    <div><small class="text-gray col-md-6">{{details.delayTime}}(分钟)</small></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Password</label>
-                                            <input type="password" placeholder="Password" class="form-control">
+                                    </div>
+                                    <div class="col-lg-6 mb-5 mb-lg-0">
+                                        <div class="card rounded credit-card bg-hover-gradient-blue" style="background-color: peachpuff;">
+                                            <div class="content d-flex flex-column justify-content-between p-4">
+                                                <h1 class="mb-5"><span>考勤日参考</span></h1>
+                                                <div class="d-flex justify-content-between align-items-end pt-3 row" style="padding-top: 0px !important ;">
+                                                    <div class="font-weight-bold d-block col-md-6">考勤日期</div>
+                                                    <div><small class="text-gray col-md-6">{{details.createdAt | formatDate}}</small></div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-end pt-3 row" style="padding-top: 0px !important;">
+                                                    <div class="font-weight-bold d-block col-md-6">星期</div>
+                                                    <div><small class="text-gray col-md-6">{{details.createdAt | weekDay}}</small></div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-end pt-3 row" style="padding-top: 0px !important;">
+                                                    <div class="font-weight-bold d-block col-md-6">考勤日性质</div>
+                                                    <div><small class="text-gray col-md-6">{{'加班'}}</small></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <input type="submit" value="Signin" class="btn btn-primary">
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
                     </div>
-                </table>
-                <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
-                             :changge="pageFn"></pageination>
+                </div>
             </div>
+            <table class="table table-striped card-text">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>打卡人员</th>
+                    <th>类型</th>
+                    <th>判定</th>
+                    <th>打卡时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, index) in items">
+                    <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                    <td>{{item.user ? item.user.username : ''}}</td>
+                    <td>{{item.type === 0 ? '签到' : '签退'}}</td>
+                    <td v-if="item.determine === 0"><span class="badge badge-danger">迟到</span></td>
+                    <td v-if="item.determine === 1"><span class="badge badge-green">正常</span></td>
+                    <td v-if="item.determine === 2"><span class="badge badge-danger">早退</span></td>
+
+                    <td>{{item.createdAt | formatDate}}</td>
+                    <td><a data-toggle="modal" data-target="#myModal" class="edit_btn_a"
+                           v-on:click="detailsItems(item)">查看详细 </a> |
+                        <a class="delete_btn_a" v-on:click="deleteItem(item)"><i>删除</i></a></td>
+                </tr>
+                </tbody>
+            </table>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
         </div>
-    </section>
+</div>
+</section>
 
 </div>
 
@@ -84,7 +142,8 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            details: {}
         },
         created: function () {
             this.pagequery();
@@ -102,8 +161,8 @@
                 this.pageInfo.pageNum = val;
                 this.pagequery();
             },
-            details: function (item) {
-                sessionStorage.setItem('editParams', item.id);
+            detailsItems: function (item) {
+                this.details = item;
             },
             deleteItem: function (item) {
                 var that = this;
@@ -117,7 +176,7 @@
                                 rtl: false
                             });
                             that.pagequery();
-                        } )
+                        })
 
                     } else {
                         //after click the cancel
@@ -128,15 +187,20 @@
         },
         filters: {
             determineFormate: function (val) {
-                if(val === 0){
+                if (val === 0) {
                     return '';
                 }
-                if(val === 1){
+                if (val === 1) {
                     return '<span class="btn btn-success">正常</span>';
                 }
-                if(val === 2){
+                if (val === 2) {
                     return '<span class="btn btn-danger">早退</span>';
                 }
+            },
+            weekDay: function (date) {
+                var date = new Date(date);
+                var weeks = ['日', '一', '二', '三', '四', '五', '六']
+                return "星期" + weeks[date.getDay()];
             }
         }
     });

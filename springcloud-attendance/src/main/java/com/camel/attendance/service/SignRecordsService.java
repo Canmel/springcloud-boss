@@ -4,6 +4,7 @@ import com.camel.attendance.exceptions.NotSignInTimeException;
 import com.camel.attendance.exceptions.NotSignOutTimeException;
 import com.camel.attendance.model.SignRecords;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.attendance.vo.SignRecordTotal;
 import com.camel.core.entity.Result;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -65,5 +66,21 @@ public interface SignRecordsService extends IService<SignRecords> {
      */
     Result signOut(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignOutTimeException, NotSignInTimeException;
 
-    List<Map<String, String>> selectByMonth(String ydate, String mdate);
+    /**
+     * 获取某个年月的考勤 统计
+     * @param ydate
+     * @param mdate
+     * @return
+     */
+    List<Map<String, Object>> selectByMonth(String ydate, String mdate);
+
+    /**
+     * 根据人和天查询当天当人考勤记录
+     * @param day
+     * @param oAuth2Authentication
+     * @return
+     */
+    List<SignRecords> day(String day, OAuth2Authentication oAuth2Authentication);
+
+    SignRecordTotal totalByMonth(String month);
 }
