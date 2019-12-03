@@ -12,6 +12,7 @@ import com.camel.attendance.service.ArgsService;
 import com.camel.attendance.service.SignRecordsService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.attendance.utils.ApplicationToolsUtils;
+import com.camel.attendance.vo.SignDayRecord;
 import com.camel.attendance.vo.SignRecordTotal;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
@@ -258,9 +259,94 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     }
 
     @Override
-    public SignRecordTotal totalByMonth(String month) {
-//        SignRecordTotal signRecordTotal = mapper.selectTotalByMonth(month);
+    public SignRecordTotal totalByMonth(String month, OAuth2Authentication oAuth2Authentication) {
+        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
+        SignRecords signRecords = new SignRecords(member.getId(), month);
+        List<SignRecords> signRecordsList = mapper.selectTotalByMonth(signRecords);
+        List<String> days = getDayByMonth(month.split("-")[0], month.split("-")[1]);
 
+        List<SignDayRecord> signDayRecordList = getDayNomalRecordsFromRecords(month, signRecordsList);
+        // 判定正常
+        determineDays(signDayRecordList);
+        // 判定异常
+        determineAbnormal(signDayRecordList, signRecordsList);
         return null;
+    }
+
+    /**
+     * 通过考勤记录获取每日记录统计
+     * @param month
+     * @param signRecordsList
+     * @return
+     */
+    public List<SignDayRecord> getDayNomalRecordsFromRecords(String month, List<SignRecords> signRecordsList) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<String> days = getDayByMonth(month.split("-")[0], month.split("-")[1]);
+        List<SignDayRecord> recordsList = new ArrayList<>();
+        days.forEach(day -> {
+            SignDayRecord signDayRecord = new SignDayRecord(day);
+            signRecordsList.forEach(si -> {
+                if (simpleDateFormat.format(si.getCreatedAt()).equals(day)) {
+                    // 签到
+                    if (SignRecordType.SIGN_IN.getValue().equals(si.getType())) {
+                        // 正常
+                        if (SignRecordDetermine.NORMAL.getValue().equals(si.getDetermine())) {
+                            signDayRecord.setSignInDate(format.format(si.getCreatedAt()));
+                        }
+                    }
+                    // 签退
+                    if (SignRecordType.SIGN_OUT.getValue().equals(si.getType())) {
+                        // 正常
+                        if (SignRecordDetermine.NORMAL.getValue().equals(si.getDetermine())) {
+                            signDayRecord.setSignOutDate(format.format(si.getCreatedAt()));
+                        }
+                    }
+                }
+            });
+            recordsList.add(signDayRecord);
+        });
+        return recordsList;
+    }
+
+    /**
+     * 判定每天考勤状态
+     * @param signDayRecords
+     * @return
+     */
+    public List<SignDayRecord> determineDays(List<SignDayRecord> signDayRecords) {
+        signDayRecords.forEach(signDayRecord -> {
+            if (StringUtils.isNotBlank(signDayRecord.getSignInDate()) && StringUtils.isNotBlank(signDayRecord.getSignOutDate())) {
+                signDayRecord.setStatus(SignRecordDetermine.NORMAL.getValue());
+            }
+        });
+
+        return signDayRecords;
+    }
+
+    /**
+     * 判定异常
+     * @return
+     */
+    public List<SignDayRecord> determineAbnormal(List<SignDayRecord> signDayRecords, List<SignRecords> signRecordsList) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd ");
+        signDayRecords.forEach(signDayRecord -> {
+            if (!SignRecordDetermine.NORMAL.getValue().equals(signDayRecord.getStatus())) {
+                boolean hasSign = false;
+                for (int i = 0; i < signRecordsList.size(); i++) {
+                    if(simpleDateFormat.format(signRecordsList.get(i).getCreatedAt()).equals(signDayRecord.getSignDay())) {
+                        hasSign = true;
+                    }
+
+
+
+                }
+                if(!hasSign) {
+                    signDayRecord.setStatus(SignRecordDetermine.FORGET.getValue());
+                }
+            }
+            System.out.println(signDayRecord.toString());
+        });
+        return signDayRecords;
     }
 }

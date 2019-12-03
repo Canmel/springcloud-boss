@@ -26,7 +26,7 @@ import com.baomidou.mybatisplus.enums.IEnum;
  * @date 2019/11/28
  **/
 public enum SignRecordDetermine implements IEnum {
-    DELAY("迟到", 0), NORMAL("正常", 1), ADVANCE("早退", 2);
+    DELAY("迟到", 0), NORMAL("正常", 1), ADVANCE("早退", 2), FORGET("未打卡", 3);
 
     SignRecordDetermine(String name, Integer code) {
         this.code = code;

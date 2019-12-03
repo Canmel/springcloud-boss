@@ -49,8 +49,8 @@ public class SignRecordsController extends BaseCommonController {
     private SignRecordsService service;
 
     @GetMapping("/total/{month}")
-    public Result total(@PathVariable String month) {
-        service.totalByMonth(month);
+    public Result total(@PathVariable String month, OAuth2Authentication oAuth2Authentication) {
+        service.totalByMonth(month, oAuth2Authentication);
         return ResultUtil.success("");
     }
 

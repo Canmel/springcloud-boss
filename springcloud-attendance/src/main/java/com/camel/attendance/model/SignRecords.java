@@ -107,6 +107,7 @@ public class SignRecords extends BasePaginationEntity implements Serializable {
     public SignRecords(Integer userId, String createdAtStr) {
         this.userId = userId;
         this.createdAtStr = createdAtStr;
+        this.setPageSize(0);
     }
 
     @Override

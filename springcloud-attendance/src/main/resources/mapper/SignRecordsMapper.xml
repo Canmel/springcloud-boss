@@ -86,6 +86,19 @@
         </where>
     </select>
 
-    <select id="selectTotalByMonth" resultMap="SignRecordMapper">
+    <select id="selectTotalByMonth" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Base_Column_List"></include>
+        FROM
+          sign_records
+        <where>
+            status = 1
+            <if test="createdAtStr != null and createdAtStr != ''">
+                AND DATE_FORMAT(created_at,'%Y-%m') = #{createdAtStr}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
     </select>
 </mapper>

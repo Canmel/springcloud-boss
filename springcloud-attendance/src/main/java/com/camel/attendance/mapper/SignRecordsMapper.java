@@ -41,5 +41,10 @@ public interface SignRecordsMapper extends BaseMapper<SignRecords> {
      */
     List<SignRecords> selectByDay(SignRecords signRecords);
 
-    SignRecordTotal selectTotalByMonth(String month);
+    /**
+     *
+     * @param signRecords
+     * @return
+     */
+    List<SignRecords> selectTotalByMonth(SignRecords signRecords);
 }

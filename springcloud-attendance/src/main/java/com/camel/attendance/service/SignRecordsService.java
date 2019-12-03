@@ -82,5 +82,11 @@ public interface SignRecordsService extends IService<SignRecords> {
      */
     List<SignRecords> day(String day, OAuth2Authentication oAuth2Authentication);
 
-    SignRecordTotal totalByMonth(String month);
+    /**
+     * 按月查询统计
+     * @param month
+     * @param oAuth2Authentication
+     * @return
+     */
+    SignRecordTotal totalByMonth(String month, OAuth2Authentication oAuth2Authentication);
 }
