@@ -15,10 +15,11 @@
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
 
-    <link rel="shortcut icon" href="img/favicon.ico">
+    <!--<link rel="shortcut icon" href="img/favicon.ico">-->
     <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/jqgrid/ui.jqgrid.css?0820" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
 </head>
 
@@ -61,7 +62,8 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="pages/project/index.html">项目管理</a>
+                            <a class="J_menuItem" :href="applicationContextRootPath + 'pages/project/index.html'"
+                               data-pjax>项目管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="pages/survey/index.html">问卷管理</a>
@@ -304,8 +306,8 @@
                 <!--</ul>-->
             </nav>
         </div>
-        <div class="row J_mainContent" id="content-main">
-            <iframe id="J_iframe" width="100%" height="100%" src="pages/home.html" frameborder="0" data-id="index_v1.html" seamless></iframe>
+        <div class="row J_mainContent page-container" id="content-main">
+
         </div>
     </div>
     <!--右侧部分结束-->
@@ -315,18 +317,57 @@
 <script src="js/jquery.min.js?v=2.1.4"></script>
 <script src="js/jquery.pjax.js"></script>
 <script src="js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Peity -->
+<script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+<!-- jqGrid -->
+<script src="js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
+<script src="js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
 <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="js/plugins/layer/layer.min.js"></script>
 <script src="js/vue.js"></script>
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
 <script src="js/vue-plus.js"></script>
 <!-- 自定义js -->
 <script src="js/hAdmin.js?v=4.1.0"></script>
-<script type="text/javascript" src="js/index.js"></script>
-
 <!-- 第三方插件 -->
 <script src="js/plugins/pace/pace.min.js"></script>
 
+
+<script>
+
+    $(document).pjax('[data-pjax] a, a[data-pjax]', '.page-container');
+    var mvm = new Vue({
+        el: '#wrapper',
+        data: {
+            applicationContextRootPath: '/survey/'
+        },
+        created: function () {
+
+        },
+        methods: {
+            sidebarClick: function (e) {
+                $('.sidebar-link').removeClass('active');
+                $(e.srcElement).addClass('active');
+            },
+            collapseMenu: function (e) {
+                if ($(e.srcElement).next().hasClass('show')) {
+                    $(e.srcElement).next().removeClass('show');
+                } else {
+                    $(e.srcElement).next().addClass('show');
+                }
+            }
+        }
+    });
+    var currentPage = sessionStorage.getItem('currentPage');
+    $.pjax({
+        url: currentPage ? currentPage : mvm.applicationContextRootPath + 'pages/home.html',
+        container: '.page-container'
+    });
+
+</script>
 </body>
 
 </html>
