@@ -18,8 +18,8 @@
         <module name="springcloud-oa-server" />
         <module name="springcloud-redis" />
         <module name="springcloud-sms-server" />
+        <module name="springcloud-survey" />
         <module name="springcloud-system" />
-        <module name="springcloud-verify" />
         <module name="springcloud-zuul-getway" />
       </profile>
     </annotationProcessing>
@@ -29,6 +29,7 @@
       <module name="springcloud-bpm-server" target="1.8" />
       <module name="springcloud-sms-server" target="1.8" />
       <module name="springcloud-system (1)" target="1.8" />
+      <module name="springcloud-verify" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -46,6 +47,7 @@
       <module name="springcloud-oa-server" options="-parameters" />
       <module name="springcloud-redis" options="-parameters" />
       <module name="springcloud-sms-server" options="-parameters" />
+      <module name="springcloud-survey" options="-parameters" />
       <module name="springcloud-system" options="-parameters" />
       <module name="springcloud-system (1)" options="-parameters" />
       <module name="springcloud-verify" options="-parameters" />

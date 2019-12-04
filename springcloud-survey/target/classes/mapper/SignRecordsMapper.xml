@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.SignRecordsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.SignRecords">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
+        <result column="type" property="type"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="created_at_str" property="createdAtStr"/>
+        <result column="coordinate" property="coordinate"/>
+        <result column="remark" property="remark"/>
+        <result column="determine" property="determine"/>
+        <result column="sign_in_time" property="signInTime"/>
+        <result column="sign_out_time" property="signOutTime"/>
+        <result column="advance_time" property="advanceTime"/>
+        <result column="delay_time" property="delayTime"/>
+    </resultMap>
+    
+    <resultMap id="SignRecordMapper" type="com.camel.survey.vo.SignRecordTotal">
+        <result column="month_absence_count" property="monthAbsenceCount"></result>
+        <result column="month_forget_count" property="monthForgetCount"></result>
+        <result column="month_late_count" property="monthLateCount"></result>
+        <result column="month_leave_early_count" property="monthLeaveEarlyCount"></result>
+        <result column="year_annua_leave_count" property="yearAnnualeaveCount"></result>
+        <result column="year_marrying_leave_count" property="yearMarryingLeaveCount"></result>
+        <result column="year_maternity_leave_Count" property="yearMaternityLeaveCount"></result>
+        <result column="year_take_off_count" property="yearTakeOffCount"></result>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, status, type, created_at, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') created_at_str , coordinate, remark, determine, sign_in_time, sign_out_time, advance_time, delay_time
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        sign_records
+    </select>
+
+    <select id="selectByMonth" resultType="hashmap">
+        SELECT
+            sum(case result.determine when 1 then 1 else 0 end) success_num ,
+            result.createdAt,
+            result.created_at_full createdAtFull,
+            result.type
+        FROM
+            (
+                SELECT
+                    determine,
+                    type,
+                    DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') created_at_full,
+                    DATE_FORMAT(created_at, '%Y-%m-%d')createdAt
+                FROM
+                    sign_records
+                WHERE
+                    status = 1
+                    <if test="ydate != null and ydate != ''">
+                      and year(created_at) = #{ydate}
+                    </if>
+                    <if test="mdate != null and mdate != ''">
+                        and month(created_at) = #{mdate}
+                    </if>
+            )result
+        GROUP BY
+            result.createdAt, result.type
+    </select>
+
+    <select id="selectByDay" resultMap="BaseResultMap">
+        select
+          <include refid="Base_Column_List"></include>
+        from
+          sign_records
+        <where>
+            <if test="createdAtStr != null and createdAtStr != ''">
+                AND DATE_FORMAT(created_at,'%Y-%m-%d') = #{createdAtStr}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTotalByMonth" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Base_Column_List"></include>
+        FROM
+          sign_records
+        <where>
+            status = 1
+            <if test="createdAtStr != null and createdAtStr != ''">
+                AND DATE_FORMAT(created_at,'%Y-%m') = #{createdAtStr}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectLastValidRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        sign_records
+        <where>
+            status = 1
+            <if test="createdAtStr != null and createdAtStr != ''">
+                AND DATE_FORMAT(created_at,'%Y-%m-%d') = #{createdAtStr}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+        </where>
+    </select>
+</mapper>

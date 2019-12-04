@@ -1,0 +1,74 @@
+server:
+  port: 10000
+
+spring:
+  application:
+    name: springcloud-survey
+  redis:
+    database: 0
+    host: ${REDIS_HOST}
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  datasource:
+    url: jdbc:mysql://${DATABASE_IP}:3306/dw_attendance?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_IP}:8888/eureka/
+
+attendance:
+  getway:
+    url: ${APPLICATION_GETWAY_URL}
+    port: ${APPLICATION_GETWAY_PORT}
+
+security:
+  oauth2:
+    resource:
+      id: springcloud-survey
+      user-info-uri: http://${APPLICATION_IP}:8080/auth/session/me
+      prefer-token-info: false
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.camel.system.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+
+logging:
+  path: /tmp/log
+  pattern:
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS}=== [%thread]=== %-5level === %logger{50} === %ms%n'
+  level:
+    com:
+      camel:
+        system: DEBUG

@@ -50,7 +50,7 @@ zuul:
       serviceId: springcloud-activiti
     survey:
       path: /survey/**
-      serviceId: springcloud-verify
+      serviceId: springcloud-survey
     attendance:
       path: /attendance/**
       serviceId: springcloud-attendance
