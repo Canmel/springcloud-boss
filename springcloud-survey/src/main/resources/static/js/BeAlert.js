@@ -25,7 +25,6 @@ if (typeof $ === 'function') {
             '</div>',
             overlay: '<div class="BeAlert_overlay"></div>',
             open: function (title, message, callback, o) {
-                alert()
                 var opts = {}, that = this;
                 $.extend(opts, that.defaultConfig, o);
                 $('body').append(that.html).append(that.overlay);

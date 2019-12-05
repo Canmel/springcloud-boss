@@ -45,6 +45,7 @@ function simpleSuccess(result) {
 
 //对jquery的ajax方法再次封装
 __ajax = function(url, data, success, type ,contentType, sync){
+    url =  '/survey/' + url;
     if(null == sync) {
         sync = false;
     }
@@ -70,6 +71,7 @@ __ajax = function(url, data, success, type ,contentType, sync){
             success(simpleSuccess(result));
         },
         error: function (resp) {
+            alert(resp);
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {

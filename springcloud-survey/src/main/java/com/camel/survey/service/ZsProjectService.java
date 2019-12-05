@@ -1,12 +1,11 @@
 package com.camel.survey.service;
 
-import com.baomidou.mybatisplus.service.IService;
-import com.camel.survey.model.Args;
 import com.camel.core.entity.Result;
+import com.camel.survey.model.Args;
+import com.camel.survey.model.ZsProject;
+import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-
-import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -28,16 +27,16 @@ import java.util.List;
  *               ┃          ┣┓
  *               ┃          ┏┛  @since 1.0
  *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-11-22
+ *                ┃┫┫    ┃┫┫    @date 2019-12-04
  *                ┗┻┛    ┗┻┛
  */
-public interface ArgsService extends IService<Args> {
+public interface ZsProjectService extends IService<ZsProject> {
     /**
      分页查询
      @param entity
      @return
      */
-    PageInfo<Args> selectPage(Args entity);
+    PageInfo<ZsProject> selectPage(ZsProject entity);
 
     /**
      * 新建
@@ -45,6 +44,5 @@ public interface ArgsService extends IService<Args> {
      * @param oAuth2Authentication
      * @return
      */
-    Result save(Args entity, OAuth2Authentication oAuth2Authentication);
-
+    Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication);
 }

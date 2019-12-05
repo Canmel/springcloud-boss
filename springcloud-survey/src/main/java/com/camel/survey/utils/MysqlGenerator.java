@@ -40,8 +40,8 @@ import java.util.Map;
  * 　　　　　　　   ┗┻┛     ┗┻┛+ + + +
  */
 public class MysqlGenerator {
-    public static String CODE_FACTORY_OUT_PATH = "./springcloud-attendance/src/main/java/com/camel/attendance";
-    public static String XML_FACTORY_OUT_PATH = "./springcloud-attendance/src/main/resources/";
+    public static String CODE_FACTORY_OUT_PATH = "./springcloud-survey/src/main/java/com/camel/survey";
+    public static String XML_FACTORY_OUT_PATH = "./springcloud-survey/src/main/resources/";
 
     public static void main(String[] args) {
         String path = new MysqlGenerator().getClass().getResource("/").getPath();
@@ -49,7 +49,7 @@ public class MysqlGenerator {
         path += "src/main/java";
 
         com.baomidou.mybatisplus.generator.config.GlobalConfig config = new com.baomidou.mybatisplus.generator.config.GlobalConfig();
-        String dbUrl = "jdbc:mysql://127.0.0.1:3306/dw_attendance?useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8";
+        String dbUrl = "jdbc:mysql://127.0.0.1:3306/dw_survey?useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8";
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDbType(DbType.MYSQL)
                 .setUrl(dbUrl)
@@ -58,7 +58,7 @@ public class MysqlGenerator {
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"vacations", "vacation_days"});
+        strategyConfig.setInclude(new String[] {"zs_project"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
@@ -81,7 +81,7 @@ public class MysqlGenerator {
                 .setStrategy(strategyConfig)
                 .setPackageInfo(
                         new PackageConfig()
-                                .setParent("com.camel.attendance")
+                                .setParent("com.camel.survey")
                                 .setController("controller")
                                 .setEntity("model")
                 ).execute();

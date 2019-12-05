@@ -90,11 +90,4 @@ public class ArgsServiceImpl extends ServiceImpl<ArgsMapper, Args> implements Ar
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");
     }
-
-    @Override
-    public List<Args> selectForMain() {
-        Wrapper wrapper = new EntityWrapper<Args>();
-        wrapper.in(CODE_COLUM_NAME, MAINARGSKEYS);
-        return mapper.selectList(wrapper);
-    }
 }
