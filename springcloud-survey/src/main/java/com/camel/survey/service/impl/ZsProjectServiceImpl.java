@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -80,5 +82,16 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
             return ResultUtil.success("新增成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");
+    }
+
+    @Override
+    public ZsProject selectById(Serializable id) {
+        ZsProject project = mapper.selectById(id);
+        applicationToolsUtils.allUsers().forEach(sysUser -> {
+            if(sysUser.getUid().equals(project.getCreatorId())) {
+                project.setCreator(sysUser);
+            }
+        });
+        return project;
     }
 }

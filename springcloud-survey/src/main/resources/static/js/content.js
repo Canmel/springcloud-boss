@@ -40,6 +40,9 @@
 //     var gohome = '<div class="gohome"><a class="animated bounceInUp" href="index.html?v=4.0" title="返回首页"><i class="fa fa-home"></i></a></div>';
 //     $('body').append(gohome);
 // }
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 
 //animation.css
 function animationHover(element, animation) {
@@ -70,3 +73,10 @@ function animationHover(element, animation) {
 //         })
 //         .disableSelection();
 // };
+
+window.toPage = function(url) {
+    $.pjax({
+        url: mvm.applicationContextRootPath + url,
+        container: '.page-container'
+    });
+}

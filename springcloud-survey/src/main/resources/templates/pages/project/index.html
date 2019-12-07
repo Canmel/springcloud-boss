@@ -35,7 +35,7 @@
                     <tbody>
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>{{item.name}}</td>
+                        <td><span class="click-span" v-on:click="details(item)">{{item.name}}</span></td>
                         <td>{{item.code}}</td>
                         <td>{{item.creator.username}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
@@ -84,10 +84,7 @@
             },
             edit: function (item) {
                 sessionStorage.setItem('editParams', item.id);
-                $.pjax({
-                    url: mvm.applicationContextRootPath + 'pages/project/edit.html',
-                    container: '.page-container'
-                });
+                toPage('pages/project/edit.html');
             },
             deleteItem: function (item) {
                 var that = this;
@@ -103,6 +100,10 @@
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
 
+            },
+            details: function (item) {
+                sessionStorage.setItem('editParams', item.id);
+                toPage('pages/project/details.html')
             }
         }
     });

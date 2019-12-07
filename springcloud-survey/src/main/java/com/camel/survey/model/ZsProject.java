@@ -1,17 +1,18 @@
 package com.camel.survey.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
-
-import java.util.Date;
-
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.survey.enums.ZsProjectStatus;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -48,8 +49,9 @@ public class ZsProject extends BasePaginationEntity implements Serializable {
     private String name;
     private String code;
     private String desc;
+
     @TableLogic
-    private Integer status;
+    private ZsProjectStatus status;
     private Date createdAt;
 
     @TableField(value = "creator")

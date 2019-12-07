@@ -53,12 +53,14 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  #  type-handlers-package: com.camel.oa.enumhandler
-#  type-enums-package: com.camel.survey.enums
+    type-handlers-package: com.camel.survey.enumhandler
+  type-enums-package: com.camel.survey.enums
   global-config:
     logic-delete-value: 0
     logic-not-delete-value: 1
     sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+
+
 
 pagehelper:
   helper-dialect: mysql
@@ -74,3 +76,7 @@ logging:
     com:
       camel:
         system: DEBUG
+
+
+mybatis:
+  type-handlers-package: com.camel.survey.enumhandler

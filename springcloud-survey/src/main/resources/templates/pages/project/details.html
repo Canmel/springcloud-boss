@@ -1,0 +1,262 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div>
+                    <div class="ibox-content profile-content">
+                        <h4>项目名称: <strong>{{zs_project.name}}</strong></h4>
+                        <p>项目编号: {{zs_project.code}}</p>
+                        <h5>
+                            关于我
+                        </h5>
+                        <p>
+                            {{zs_project.desc}}
+                        </p>
+                        <div class="user-button">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-primary btn-sm btn-block"><i
+                                            class="fa fa-envelope"></i> 发送消息
+                                    </button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-default btn-sm btn-block"><i
+                                            class="fa fa-coffee"></i> 赞助
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>问卷列表</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-sm-4" v-for="(item, index) in surveies">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    {{item['name']}}
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link" data-toggle="tooltip" title="编辑!"
+                                           v-on:click="editSurvey(item)">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="close-link" data-toggle="tooltip" title="删除!">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <dd>名称: {{item['name']}}</dd>
+                                    <dd>状态: <span class="badge badge-info">{{item['status'] ? item['status']['name'] : ''}}</span></dd>
+                                    <dd>收集份数: {{item['collectNum']}}</dd>
+                                    <dd>当前份数: {{item['currentNum']}}</dd>
+                                    <dd>创建人: {{item['creator'] ? item['creator']['nickname'] : ''}}</dd>
+                                    <dd>创建时间: {{item['createdAt'] | formatDate}}</dd>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="panel-body center-block text-center">
+                                <span class="glyphicon glyphicon-plus" v-on:click="addSurvey()"
+                                      style="font-size: 150px; cursor: pointer;" aria-hidden="true"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">新建调查问卷</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input type="hidden" v-model="new_survey.id" v-if="edit_mode">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">问卷名称：</label>
+                            <div class="col-sm-8">
+                                <input name="name" class="form-control" type="text" v-model="new_survey.name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">收集份数：</label>
+                            <div class="col-sm-8">
+                                <input name="collect_num" class="form-control" type="text" aria-required="true"
+                                       aria-invalid="true" v-model="new_survey.collectNum">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">收集方式：</label>
+                            <div class="col-sm-8">
+                                <select name="collect_num" aria-required="true"
+                                        aria-invalid="true" class="form-control m-b" name="account"
+                                        v-model="new_survey.collectType">
+                                    <option>短信</option>
+                                    <option value="1">电话</option>
+                                    <option value="2">走访</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="edit_mode">
+                            <label class="col-sm-3 control-label">已收集：</label>
+                            <div class="col-sm-8">
+                                <span> {{new_survey.currentNum}}</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" v-on:click="submitSurvey()">提交更改</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            zs_project: {
+                id: '',
+                name: '',
+                code: '',
+                desc: '',
+                createdAt: '',
+                status: ''
+            },
+            surveies: [],
+            new_survey: {
+                id: '',
+                name: '',
+                projectId: '',
+                collectNum: '',
+                collectType: 1
+            },
+            edit_mode: false
+        },
+        created: function () {
+            this.loadEntity();
+            this.loadProjects();
+        },
+        methods: {
+            loadEntity() {
+                var that = this;
+                AJAX.GET('zsProject/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.zs_project = resp.data;
+                    that.zs_project.status = $.parseJSON(that.zs_project.status);
+                    console.log(that.zs_project)
+                })
+            },
+            loadProjects() {
+                var that = this;
+                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams') + '/projects', {}, function (resp) {
+                    that.surveies = resp.data;
+                })
+            },
+            addSurvey() {
+                this.edit_mode = false;
+                $("#myModal").modal('show');
+                this.resetForm();
+                this.new_survey.collectType = 1;
+            },
+            submitSurvey() {
+                if (!$("#signupForm").valid()) {
+                    return false;
+                }
+                if (this.new_survey.collectNum < this.new_survey.currentNum) {
+                    alert("总收集份数不能小于已收集份数");
+                    return false;
+                }
+                if (this.edit_mode) {
+                    var that = this;
+                    delete this.new_survey.currentNum;
+                    console.log(this.new_survey);
+                    AJAX.PUT('zsSurvey', JSON.stringify(this.new_survey), function (resp) {
+                        toastr.success(resp.msg);
+                        $("#myModal").modal("hide");
+                        that.loadProjects();
+                    });
+                } else {
+                    var that = this;
+                    this.new_survey.projectId = this.zs_project.id;
+                    AJAX.POST('zsSurvey', this.new_survey, function (resp) {
+                        toastr.success(resp.msg);
+                        $("#myModal").modal("hide");
+                        that.loadProjects();
+                    });
+                }
+            },
+            editSurvey(item) {
+                $("#myModal").modal('show');
+                this.edit_mode = true;
+                this.new_survey = {
+                    id: item.id,
+                    name: item.name,
+                    collectNum: item.collectNum,
+                    currentNum: item.currentNum
+                }
+            },
+            resetForm() {
+                this.new_survey = {
+                    id: '',
+                    name: '',
+                    projectId: '',
+                    collectNum: ''
+                }
+            }
+        }
+    });
+
+    $().ready(function () {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                collect_num: "required",
+                name: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 17
+                }
+            },
+            messages: {
+                collect_num: icon + "请输入问卷名称",
+                name: {
+                    required: icon + "请输入需要收集份数",
+                    minlength: icon + "请输入2-17个字",
+                    maxlength: icon + "请输入2-17个字"
+                }
+            }
+        });
+
+        // propose username by combining first- and lastname
+        $("#username").focus(function () {
+            var firstname = $("#firstname").val();
+            var lastname = $("#lastname").val();
+            if (firstname && lastname && !this.value) {
+                this.value = firstname + "." + lastname;
+            }
+        });
+    });
+</script>

@@ -7936,3 +7936,7 @@ body.skin-3 {
     font-size: 0;
     background-color: #131e26;
 }
+.click-span {
+    color: darkseagreen;
+    cursor: pointer;
+}
