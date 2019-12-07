@@ -7940,3 +7940,8 @@ body.skin-3 {
     color: darkseagreen;
     cursor: pointer;
 }
+
+.panel:hover {
+    border: 1px dashed #009203;
+    cursor: pointer;
+}
