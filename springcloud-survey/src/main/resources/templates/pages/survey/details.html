@@ -28,7 +28,7 @@
 
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>元素</h5>
@@ -41,13 +41,13 @@
 
                         <div class="form-group draggable">
                             <div class="col-sm-12">
-                                <label class="col-sm-3 control-label"><span class="editable question-index">1</span>.</label>
+                                <label class="col-sm-3 control-label"><span class="question-index">1</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
                                         class="editable">单选题</span></label>
                             </div>
                             <div class="col-sm-3">
                             </div>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 survey-optins" >
                                 <div>
                                     <label class="radio-inline">
                                         <input type="radio" checked="" value="option1" id="optionsRadios1"
@@ -65,13 +65,13 @@
                         </div>
                         <div class="form-group draggable">
                             <div class="col-sm-12">
-                                <label class="col-sm-3 control-label"><span class="editable question-index">2</span>.</label>
+                                <label class="col-sm-3 control-label"><span class="question-index">2</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
                                         class="editable">多选题</span></label>
                             </div>
                             <div class="col-sm-3">
                             </div>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 survey-optins">
                                 <div>
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value="option1" id="inlineCheckbox1"><span
@@ -93,12 +93,33 @@
 
                             </div>
                         </div>
+
+                        <div class="form-group draggable">
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 control-label"><span class="question-index">3</span>.</label>
+                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
+                                        class="editable">评分题</span></label>
+                            </div>
+                            <div class="col-sm-3 survey-optins" style="text-align: right;">
+
+                            </div>
+                            <div class="col-sm-9 survey-optins">
+
+                                <div option-type="rate">
+                                    <label class="control-label" style=""><span class="editable">评分项</span>:
+                                        <label style="float: right; padding-top: 0px;" class="control-label target-demo function-demo col-sm-6"></label>
+                                    </label>
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+                            </div>
+                        </div>
+
                     </form>
                     <div class="clearfix"></div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>拖拽左侧元素到此区域</h5>
@@ -137,6 +158,27 @@
             applicationContextRootPath: '/survey/'
         },
         methods: {
+            setUpRate(element) {
+                $(element).raty({
+                    number: 5,//多少个星星设置
+                    targetType: 'hint',//类型选择，number是数字值，hint，是设置的数组值
+                    path      : this.applicationContextRootPath + 'img',
+                    hints     : ['差','一般','好','非常好','全五星'],
+                    cancelOff : 'cancel-off.png',
+                    cancelOn  : 'cancel-on.png',
+                    size      : 24,
+                    starHalf  : 'star-half.png',
+                    starOff   : 'star-off.png',
+                    starOn    : 'star-on.png',
+                    cancel    : false,
+                    targetKeep: true,
+                    targetText: '请选择评分',
+
+                    click: function(score, evt) {
+                        alert('ID: ' + $(this).attr('id') + "\nscore: " + score + "\nevent: " + evt.type);
+                    }
+                });
+            },
             setup_draggable() {
                 var that = this;
                 $(".draggable").draggable({
@@ -150,8 +192,10 @@
                     drop: function (event, ui) {
                         $(".empty-form").remove();
                         var $orig = $(ui.draggable);
+
+                        var $el = null;
                         if (!$(ui.draggable).hasClass("dropped")) {
-                            var $el = $orig
+                            $el = $orig
                                 .clone()
                                 .addClass("dropped")
                                 .css({
@@ -177,7 +221,7 @@
                             })
                         } else {
                             if ($(this)[0] != $orig.parent()[0]) {
-                                var $el = $orig
+                                $el = $orig
                                     .clone()
                                     .css({
                                         "position": "static",
@@ -188,9 +232,15 @@
                                 $orig.remove();
                             }
                         }
+                        if($el && $el.find('.function-demo').length > 0) {
+                            that.setUpRate($el.find('.function-demo').get(0));
+                        }
+
+                        console.log($el)
                         that.reBindIndex();
                     }
                 }).sortable({out: function (event, ui) {
+                    console.log('----------->----')
                         that.reBindIndex();
                     }});
 
@@ -285,20 +335,31 @@
                 });
 
                 $(document).on("click", ".add-link", function (ev) {
-                    var newElement = '<div>\n' +
-                        $(this).parent().prev().children().last().html() +
-                        '</div>';
-                    console.log($(this).parent().prev());
-
+                    var $lastEle = $(this).parent().prev().children().last();
+                    var newElement = $lastEle.prop("outerHTML");
+                    if($lastEle.attr("option-type") && $lastEle.attr("option-type") === 'rate') {
+                        newElement = '<div option-type="rate">\n' +
+                            '                                    <label class="control-label" style=""><span class="editable">评分项</span>:\n' +
+                            '                                        <label style="float: right; padding-top: 0px;" class="control-label target-demo function-demo col-sm-6"></label>\n' +
+                            '                                    </label>\n' +
+                            '                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>\n' +
+                            '                                </div>'
+                    }
 
                     $(this).parent().prev().append(newElement);
                     $(this).parent().prev().find(".editable").last().dblclick(function () {
                         that.bindEdit(this);
                     });
+                    console.log($(this).parent().prev().children('.function-demo').last())
+                    that.setUpRate($(this).parent().prev().find('.function-demo').last());
                 });
 
                 $(document).on("click", ".options-delete", function (ev) {
+                    var $optionsArea = $(this).parent().parent().parent();
                     $(this).parent().parent().remove();
+                    if($optionsArea.children().length === 0) {
+                        $optionsArea.parent('.form-group').remove();
+                    }
                 });
             },
             get_modal(content) {

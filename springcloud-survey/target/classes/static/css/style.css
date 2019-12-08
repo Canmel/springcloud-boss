@@ -7945,3 +7945,11 @@ body.skin-3 {
     border: 1px dashed #009203;
     cursor: pointer;
 }
+
+form .options-delete {
+    display: none;
+}
+
+form .survey-optins {
+    display: none;
+}
