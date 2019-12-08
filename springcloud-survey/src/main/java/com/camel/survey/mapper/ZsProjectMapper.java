@@ -22,4 +22,7 @@ public interface ZsProjectMapper extends BaseMapper<ZsProject> {
      * @return
      */
     List<ZsProject> list(ZsProject entity);
+
+    ZsProject selectProjectById(Integer id);
+
 }

@@ -5,6 +5,7 @@
                 <div>
                     <div class="ibox-content profile-content">
                         <h4>项目名称: <strong>{{zs_project.name}}</strong></h4>
+                        <p>项目状态: <span class="badge badge-info">{{zs_project.status ? zs_project.status.name : ''}}</span></p>
                         <p>项目编号: {{zs_project.code}}</p>
                         <h5>
                             关于我
@@ -175,7 +176,7 @@
                 var that = this;
                 AJAX.GET('zsProject/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.zs_project = resp.data;
-                    that.zs_project.status = $.parseJSON(that.zs_project.status);
+                    // that.zs_project.status = $.parseJSON(that.zs_project.status);
                     console.log(that.zs_project)
                 })
             },

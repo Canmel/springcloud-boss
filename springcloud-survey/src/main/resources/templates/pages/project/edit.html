@@ -11,13 +11,15 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">项目编码：</label>
                     <div class="col-sm-8">
-                        <input name="code" class="form-control" type="text" aria-required="true" aria-invalid="false" class="valid" v-model="zs_project.code">
+                        <input name="code" class="form-control" type="text" aria-required="true" aria-invalid="false"
+                               class="valid" v-model="zs_project.code">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">项目描述：</label>
                     <div class="col-sm-8">
-                        <input name="desc" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" v-model="zs_project.desc">
+                        <input name="desc" class="form-control" type="text" aria-required="true" aria-invalid="true"
+                               class="error" v-model="zs_project.desc">
                     </div>
                 </div>
                 <div class="form-group">
@@ -50,7 +52,12 @@
             loadEntity() {
                 var that = this;
                 AJAX.GET('zsProject/' + sessionStorage.getItem('editParams'), {}, function (resp) {
-                    that.zs_project = resp.data;
+                    that.zs_project = {
+                        id: resp.data.id,
+                        name: resp.data.name,
+                        code: resp.data.code,
+                        desc: resp.data.desc
+                    };
                 })
             },
             cancel: function () {
@@ -58,10 +65,11 @@
             },
             save: function () {
                 console.log($("#signupForm").valid());
-                if(!$("#signupForm").valid()){
+                if (!$("#signupForm").valid()) {
                     return false;
                 }
                 var that = this;
+                console.log(JSON.stringify(this.zs_project));
                 AJAX.PUT('zsProject', JSON.stringify(this.zs_project), function (resp) {
                     toastr.success(resp.msg);
                     that.backToMain();

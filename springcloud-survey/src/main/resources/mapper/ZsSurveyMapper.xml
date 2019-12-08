@@ -9,22 +9,25 @@
         <result column="project_id" property="projectId"/>
         <result column="collect_num" property="collectNum"/>
         <result column="current_num" property="currentNum"/>
-        <result column="status" property="status" jdbcType="INTEGER" typeHandler="com.camel.survey.enumhandler.ZsSurveyStatusHandler"/>
+        <result column="status" property="status" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.ZsSurveyStatusHandler"/>
         <result column="created_at" property="createdAt"/>
-        <result column="collect_type" property="collectType" jdbcType="INTEGER" typeHandler="com.camel.survey.enumhandler.ZsSurveyCollectTypiesEnumHandler"/>
+        <result column="collect_type" property="collectType" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.ZsSurveyCollectTypiesEnumHandler"/>
         <result column="creator" property="creatorId"/>
+        <association property="project" column="project_id" select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, project_id, collect_num, current_num, status, created_at, creator, collect_type
+        zs_survey.id, zs_survey.name, zs_survey.project_id, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         from
-        zs_survey
+        zs_survey zs_survey
         <where>
             status = 1
         </where>

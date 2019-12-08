@@ -26,4 +26,12 @@
             status = 1
         </where>
     </select>
+
+    <select id="selectProjectById" resultMap="com.camel.survey.mapper.ZsProjectMapper.BaseResultMap">
+        select
+        id, name, code, status, created_at, creator
+        from
+        zs_project
+        where id = #{id}
+    </select>
 </mapper>

@@ -55,6 +55,13 @@ public class ZsSurvey extends BasePaginationEntity implements Serializable {
      * 名称
      */
     private String name;
+
+    /**
+     * 所属项目
+     */
+    @TableField(exist = false)
+    private ZsProject project;
+
     /**
      * 所属项目ID
      */
