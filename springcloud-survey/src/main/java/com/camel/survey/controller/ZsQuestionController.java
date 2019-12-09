@@ -66,7 +66,7 @@ public class ZsQuestionController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication) {
+    public Result save(@RequestBody ZsQuestionSave zsQuestionSave, OAuth2Authentication oAuth2Authentication) {
 
         return ResultUtil.success("");
     }

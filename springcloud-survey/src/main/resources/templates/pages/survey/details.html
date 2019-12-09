@@ -207,7 +207,17 @@
             applicationContextRootPath: '/survey/',
             survey: {},
             saveData: {
-                zsQuestions: []
+                zsQuestions: [],
+                zsOptions: [
+                    {
+                        id: 1,
+                        name: '张小飞'
+                    },
+                    {
+                        id: 2,
+                        name: '2d小飞'
+                    }
+                ]
             }
         },
         methods: {
@@ -349,7 +359,7 @@
                  * 保存
                  */
                 $("#copy-to-clipboard").on("click", function () {
-
+                    that.saveData.zsQuestions = [];
                     var $fg = $("#surveyArea").find('.form-group');
                     $fg.each(function (index, item) {
                         var surveyJson = {};
@@ -359,11 +369,13 @@
                         surveyJson.surveyId = that.survey.id;
                         that.saveData.zsQuestions.push(surveyJson);
                     });
-                    console.log(that.saveData.zsQuestions);
-                    AJAX.POST_ARRAY('zsQuestion', that.save(), function (resp) {
-                        toastr.success(resp.msg);
-                        that.backToMain();
-                    });
+                    console.log(that.saveData);
+
+                    AJAX.POST_JSON('zsQuestion', that.saveData
+                        , function (resp) {
+                            toastr.success(resp.msg);
+                            // that.backToMain();
+                        });
                     return false;
                 });
 

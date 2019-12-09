@@ -44,14 +44,16 @@ function simpleSuccess(result) {
 }
 
 //对jquery的ajax方法再次封装
-__ajax = function(url, data, success, type ,contentType, sync){
+__ajax = function(url, data, success, type ,contentType, sync, json){
     url =  '/survey/' + url;
     if(null == sync) {
         sync = false;
     }
+
     success = success||function(data){};
     data = data||{};
     var access_token = sessionStorage.getItem('access_token');
+    console.log(access_token);
     if(access_token && url.indexOf('access_token')) {
         data['access_token'] = access_token;
     }
@@ -60,6 +62,9 @@ __ajax = function(url, data, success, type ,contentType, sync){
     }
     if(type == 'put') {
         url += '?access_token=' + access_token;
+    }
+    if(json) {
+        data = JSON.stringify(data);
     }
     var config = {
         url:url,
@@ -105,7 +110,8 @@ AJAX = {
         __ajax(url, data, success, "get", null, true);
     },
     POST_JSON: function(url, data, success){
-        __ajax(url, data, success, "post", "application/json");
+        url = url + '?access_token=' + sessionStorage.getItem("access_token");
+        __ajax(url, data, success, "post", "application/json", false, true);
     },
     POST:function(url, data, success){
         __ajax(url, data, success, "post");

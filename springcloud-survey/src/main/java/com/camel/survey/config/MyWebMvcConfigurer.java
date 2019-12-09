@@ -63,12 +63,12 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
         return new HttpPutFormContentFilter();
     }
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        FastJsonConfig config = new FastJsonConfig();
-        config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
-        FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-        fastJsonHttpMessageConverter.setFastJsonConfig(config);
-        converters.add(fastJsonHttpMessageConverter);
-    }
+//    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        FastJsonConfig config = new FastJsonConfig();
+//        config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
+//        FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+//        fastJsonHttpMessageConverter.setFastJsonConfig(config);
+//        converters.add(fastJsonHttpMessageConverter);
+//    }
 }
