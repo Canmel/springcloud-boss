@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsSurveyStatus implements IEnum {
+public enum ZsSurveyStatus implements MyEnum {
     INVALID(0, "无效"), CREATED(1, "创建");
 
     /**

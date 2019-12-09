@@ -1,12 +1,8 @@
 package com.camel.survey.enums;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONType;
 import com.baomidou.mybatisplus.enums.IEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +32,7 @@ import java.util.Map;
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsProjectStatus implements IEnum {
+public enum ZsProjectStatus implements MyEnum {
     INVALID(0, "无效"), CREATED(1, "创建");
 
     private String name;
@@ -79,4 +75,6 @@ public enum ZsProjectStatus implements IEnum {
         }
         return null;
     }
+
+
 }

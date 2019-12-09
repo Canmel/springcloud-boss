@@ -1,6 +1,10 @@
-package com.camel.survey.vo;
+package com.camel.survey.enums;
 
-import lombok.Data;
+import com.baomidou.mybatisplus.enums.IEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  *
@@ -20,37 +24,24 @@ import lombok.Data;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <当天记录>
+ * <项目状态>
  * @author baily
  * @since 1.0
- * @date 2019/12/3
+ * @date 2019/12/6
  **/
-@Data
-public class SignDayRecord {
-    /**
-     * 状态
-     */
-    private Integer status;
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public interface MyEnum<T> extends IEnum {
 
-    /**
-     * 签到时间
-     */
-    private String signInDate;
-
-    /**
-     * 签退时间
-     */
-    private String signOutDate;
-
-    /**
-     * 考勤日期
-     */
-    private String signDay;
-
-    public SignDayRecord(String signDay) {
-        this.signDay = signDay;
+    static <T> MyEnum valueOfEnum(Class<MyEnum> enumClass, T value) {
+        if (value == null) {
+            return null;
+        }
+        MyEnum[] enums = enumClass.getEnumConstants();
+        Optional<MyEnum> optional = Arrays.asList(enums).stream().filter(baseEnum -> baseEnum.getValue().equals(value)).findAny();
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        throw new RuntimeException("未找到：" + value + "对应的" + enumClass.getName());
     }
 
-    public SignDayRecord() {
-    }
 }

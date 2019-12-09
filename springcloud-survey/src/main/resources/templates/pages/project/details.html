@@ -21,8 +21,8 @@
                                     </button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="button" class="btn btn-default btn-sm btn-block"><i
-                                            class="fa fa-coffee"></i> 赞助
+                                    <button type="button" v-on:click="backToList()" class="btn btn-default btn-sm btn-block"><i
+                                            class="fa fa-mail-reply"></i> 返回列表
                                     </button>
                                 </div>
                             </div>
@@ -41,12 +41,12 @@
 
                     <div class="row">
                         <div class="col-sm-4" v-for="(item, index) in surveies">
-                            <div class="panel panel-primary" v-on:click="showProjectDetails(item)">
+                            <div class="panel panel-primary" v-on:click="showSurveyDetails(item)">
                                 <div class="panel-heading">
                                     {{item['name']}}
                                     <div class="ibox-tools">
                                         <a class="collapse-link" data-toggle="tooltip" title="查看"
-                                           v-on:click="showProjectDetails(item)">
+                                           v-on:click="showSurveyDetails(item)">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <a class="collapse-link" data-toggle="tooltip" title="编辑"
@@ -172,6 +172,9 @@
             this.loadProjects();
         },
         methods: {
+            backToList() {
+                toPage('pages/project/index.html');
+            },
             loadEntity() {
                 var that = this;
                 AJAX.GET('zsProject/' + sessionStorage.getItem('editParams'), {}, function (resp) {
@@ -237,7 +240,8 @@
                     collectNum: ''
                 }
             },
-            showProjectDetails() {
+            showSurveyDetails(item) {
+                sessionStorage.setItem('editParams', item.id);
                 toPage('pages/survey/details.html')
             }
         }

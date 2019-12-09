@@ -1,6 +1,6 @@
 package com.camel.survey.enumhandler;
 
-import com.camel.survey.enums.ZsProjectStatus;
+import com.camel.survey.enums.MyEnum;
 import com.camel.survey.enums.ZsSurveyCollectType;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -36,28 +36,34 @@ import java.sql.SQLException;
  * @date 2019/10/31
  **/
 @MappedJdbcTypes(JdbcType.INTEGER)
-@MappedTypes({ZsProjectStatus.class})
-public class ZsProjectStatusHandler extends BaseTypeHandler<ZsProjectStatus> {
-    @Override
-    public void setNonNullParameter(PreparedStatement preparedStatement, int i, ZsProjectStatus resourceStatus, JdbcType jdbcType) throws SQLException {
-        preparedStatement.setInt(i, resourceStatus.getValue());
+@MappedTypes({MyEnum.class})
+public class MyIntegerToEnumHandler<T> extends BaseTypeHandler<MyEnum<T>> {
+    private final Class<MyEnum> type;
+
+    public MyIntegerToEnumHandler(Class<MyEnum> type) {
+        this.type = type;
     }
 
     @Override
-    public ZsProjectStatus getNullableResult(ResultSet resultSet, String s) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, MyEnum parameter, JdbcType jdbcType) throws SQLException {
+        ps.setInt(i, (Integer) parameter.getValue());
+    }
+
+    @Override
+    public MyEnum getNullableResult(ResultSet resultSet, String s) throws SQLException {
         Integer code = resultSet.getInt(s);
-        return ZsProjectStatus.getEnumByValue(code);
+        return MyEnum.valueOfEnum(type, code);
     }
 
     @Override
-    public ZsProjectStatus getNullableResult(ResultSet resultSet, int i) throws SQLException {
+    public MyEnum getNullableResult(ResultSet resultSet, int i) throws SQLException {
         Integer code = resultSet.getInt(i);
-        return ZsProjectStatus.getEnumByValue(code);
+        return MyEnum.valueOfEnum(type, code);
     }
 
     @Override
-    public ZsProjectStatus getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
+    public MyEnum getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
         int code = callableStatement.getInt(i);
-        return ZsProjectStatus.getEnumByValue(code);
+        return MyEnum.valueOfEnum(type, code);
     }
 }

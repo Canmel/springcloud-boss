@@ -34,7 +34,7 @@ import java.util.Map;
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsSurveyCollectType implements IEnum {
+public enum ZsSurveyCollectType implements MyEnum {
     SMS(0, "短信"), PHONE(1, "电话"), INTERVIEW(2, "走访");
 
     private String name;

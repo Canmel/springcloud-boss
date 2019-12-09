@@ -52,7 +52,7 @@ __ajax = function(url, data, success, type ,contentType, sync){
     success = success||function(data){};
     data = data||{};
     var access_token = sessionStorage.getItem('access_token');
-    if(access_token) {
+    if(access_token && url.indexOf('access_token')) {
         data['access_token'] = access_token;
     }
     if(type == 'delete') {
@@ -75,7 +75,7 @@ __ajax = function(url, data, success, type ,contentType, sync){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
+                // location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
             }
         }
     };
@@ -108,6 +108,11 @@ AJAX = {
         __ajax(url, data, success, "post", "application/json");
     },
     POST:function(url, data, success){
+        __ajax(url, data, success, "post");
+    },
+    POST_ARRAY:function(url, data, success){
+        var access_token = sessionStorage.getItem('access_token');
+        url += '?access_token=' + access_token;
         __ajax(url, data, success, "post");
     },
     DELETE: function(url, data, success){

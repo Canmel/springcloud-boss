@@ -10,10 +10,10 @@
         <result column="collect_num" property="collectNum"/>
         <result column="current_num" property="currentNum"/>
         <result column="status" property="status" jdbcType="INTEGER"
-                typeHandler="com.camel.survey.enumhandler.ZsSurveyStatusHandler"/>
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="collect_type" property="collectType" jdbcType="INTEGER"
-                typeHandler="com.camel.survey.enumhandler.ZsSurveyCollectTypiesEnumHandler"/>
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="creator" property="creatorId"/>
         <association property="project" column="project_id" select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
     </resultMap>

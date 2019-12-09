@@ -23,10 +23,37 @@
         left: 500px;
         z-index: 999;
     }
+
+    dd {
+        margin-left: 1rem;
+    }
 </style>
 
 
 <div id="subContainer" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{{survey.name}}</h5>
+                <div class="ibox-tools">
+                    <a v-on:click=backToListPage() class="btn btn-info btn-xs">返回列表</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 control-label">需收集数:</label>
+                        <label class="col-sm-3 control-label">{{survey.collectNum}}</label>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 control-label">已收集数:</label>
+                        <label class="col-sm-3 control-label">{{survey.currentNum}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-3">
             <div class="ibox float-e-margins">
@@ -39,66 +66,68 @@
                     </div>
                     <form role="form" class="form-horizontal m-t">
 
-                        <div class="form-group draggable">
+                        <div class="form-group draggable" question-type='1'>
                             <div class="col-sm-12">
                                 <label class="col-sm-3 control-label"><span class="question-index">1</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable">单选题</span></label>
+                                        class="editable question-title">单选题</span></label>
                             </div>
                             <div class="col-sm-3">
                             </div>
-                            <div class="col-sm-9 survey-optins" >
+                            <div class="col-sm-9 survey-optins">
                                 <div>
                                     <label class="radio-inline">
                                         <input type="radio" checked="" value="option1" id="optionsRadios1"
-                                               name="optionsRadios"><span class="editable">选项1</span></label>
+                                               name="optionsRadios"><span
+                                            class="editable question-option">选项1</span></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
                                 <div>
                                     <label class="radio-inline">
                                         <input type="radio" value="option2" id="optionsRadios2"
-                                               name="optionsRadios"><span class="editable">选项2</span></label>
+                                               name="optionsRadios"><span
+                                            class="editable question-option">选项2</span></label>
 
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group draggable">
+                        <div class="form-group draggable" question-type='2'>
                             <div class="col-sm-12">
                                 <label class="col-sm-3 control-label"><span class="question-index">2</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable">多选题</span></label>
+                                        class="editable question-title">多选题</span></label>
                             </div>
                             <div class="col-sm-3">
                             </div>
                             <div class="col-sm-9 survey-optins">
                                 <div>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" value="option1" id="inlineCheckbox1"><span
-                                            class="editable">选项1</span></label>
+                                        <input type="checkbox" value="option1"><span
+                                            class="editable question-option">选项1</span></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
                                 <div>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" value="option2" id="inlineCheckbox2"><span
-                                            class="editable">选项2</span></label>
+                                        <input type="checkbox" value="option2"><span
+                                            class="editable question-option">选项2</span></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
                                 <div>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" value="option3" id="inlineCheckbox3"><span
-                                            class="editable">选项3</span></label>
+                                        <input type="checkbox" value="option3"><span
+                                            class="editable question-option">选项3</span></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
 
                             </div>
                         </div>
 
-                        <div class="form-group draggable">
+                        <div class="form-group draggable" question-type='3'>
                             <div class="col-sm-12">
                                 <label class="col-sm-3 control-label"><span class="question-index">3</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable">评分题</span></label>
+                                        class="editable question-title">评分题</span></label>
                             </div>
                             <div class="col-sm-3 survey-optins" style="text-align: right;">
 
@@ -107,26 +136,27 @@
 
                                 <div option-type="rate">
                                     <label class="control-label" style=""><span class="editable">评分项</span>:
-                                        <label style="float: right; padding-top: 0px;" class="control-label target-demo function-demo col-sm-6"></label>
+                                        <label style="float: right; padding-top: 0px;"
+                                               class="control-label target-demo function-demo col-sm-6"></label>
                                     </label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group draggable">
+                        <div class="form-group draggable" question-type='4'>
                             <div class="col-sm-12">
                                 <label class="col-sm-3 control-label"><span class="question-index">4</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable">问答题</span></label>
+                                        class="editable question-title">问答题</span></label>
                             </div>
                             <div class="col-sm-3">
                             </div>
-                            <div class="col-sm-9 survey-optins" >
+                            <div class="col-sm-9 survey-optins">
                                 <div>
                                     <span class="editable">答</span>
                                     <label class="radio-inline">
-                                       <input type="text"
+                                        <input type="text"
                                                name="optionsRadios"></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
@@ -174,26 +204,34 @@
     new Vue({
         el: '#subContainer',
         data: {
-            applicationContextRootPath: '/survey/'
+            applicationContextRootPath: '/survey/',
+            survey: {},
+            saveData: {
+                zsQuestions: []
+            }
         },
         methods: {
+            backToListPage() {
+                sessionStorage.setItem('editParams', this.survey.projectId);
+                toPage('pages/project/details.html')
+            },
             setUpRate(element) {
                 $(element).raty({
                     number: 5,//多少个星星设置
                     targetType: 'hint',//类型选择，number是数字值，hint，是设置的数组值
-                    path      : this.applicationContextRootPath + 'img',
-                    hints     : ['差','一般','好','非常好','全五星'],
-                    cancelOff : 'cancel-off.png',
-                    cancelOn  : 'cancel-on.png',
-                    size      : 24,
-                    starHalf  : 'star-half.png',
-                    starOff   : 'star-off.png',
-                    starOn    : 'star-on.png',
-                    cancel    : false,
+                    path: this.applicationContextRootPath + 'img',
+                    hints: ['差', '一般', '好', '非常好', '全五星'],
+                    cancelOff: 'cancel-off.png',
+                    cancelOn: 'cancel-on.png',
+                    size: 24,
+                    starHalf: 'star-half.png',
+                    starOff: 'star-off.png',
+                    starOn: 'star-on.png',
+                    cancel: false,
                     targetKeep: true,
                     targetText: '请选择评分',
 
-                    click: function(score, evt) {
+                    click: function (score, evt) {
                         alert('ID: ' + $(this).attr('id') + "\nscore: " + score + "\nevent: " + evt.type);
                     }
                 });
@@ -251,27 +289,25 @@
                                 $orig.remove();
                             }
                         }
-                        if($el && $el.find('.function-demo').length > 0) {
+                        if ($el && $el.find('.function-demo').length > 0) {
                             that.setUpRate($el.find('.function-demo').get(0));
                         }
 
-                        console.log($el)
                         that.reBindIndex();
                     }
-                }).sortable({out: function (event, ui) {
-                    console.log('----------->----')
+                }).sortable({
+                    out: function (event, ui) {
                         that.reBindIndex();
-                    }});
+                    }
+                });
 
             },
             reBindIndex() {
                 $('#surveyArea').children().each(function (index, item) {
-                    console.log(item, index);
                     $(item).find('.question-index').text(index + 1)
                 })
             },
             bindEdit(element) {
-                console.log(element);
                 var oldhtml = element.innerHTML;//获得元素之前的内容
                 if (element.firstElementChild && element.firstElementChild.tagName.toUpperCase() === "INPUT") {
                     return;
@@ -281,8 +317,6 @@
                 newobj.value = oldhtml;
                 element.innerHTML = '';　　 //设置元素内容为空
                 element.appendChild(newobj);//添加子元素
-
-
                 newobj.focus();//获得焦点
                 //设置newobj失去焦点的事件
                 newobj.onblur = function () {
@@ -311,23 +345,29 @@
                     }
                 });
 
+                /**
+                 * 保存
+                 */
                 $("#copy-to-clipboard").on("click", function () {
-                    var $copy = $(".form-body").clone().appendTo(document.body);
-                    $copy.find(".tools, :hidden").remove();
-                    $.each(["draggable", "droppable", "sortable", "dropped",
-                        "ui-sortable", "ui-draggable", "ui-droppable", "form-body"], function (i, c) {
-                        $copy.find("." + c).removeClass(c).removeAttr("style");
-                    })
-                    var html = html_beautify($copy.html());
-                    $copy.remove();
 
-                    $modal = this.get_modal(html).modal("show");
-                    $modal.find(".btn").remove();
-                    $modal.find(".modal-title").html("复制HTML代码");
-                    $modal.find(":input:first").select().focus();
-
+                    var $fg = $("#surveyArea").find('.form-group');
+                    $fg.each(function (index, item) {
+                        var surveyJson = {};
+                        surveyJson.orderNum = $(item).find('.question-index').text();
+                        surveyJson.name = $(item).find('.question-title').text();
+                        surveyJson.type = $(item).attr('question-type');
+                        surveyJson.surveyId = that.survey.id;
+                        that.saveData.zsQuestions.push(surveyJson);
+                    });
+                    console.log(that.saveData.zsQuestions);
+                    AJAX.POST_ARRAY('zsQuestion', that.save(), function (resp) {
+                        toastr.success(resp.msg);
+                        that.backToMain();
+                    });
                     return false;
                 });
+
+
                 $(document).on("click", ".edit-link", function (ev) {
                     var $el = $(this).parent().parent();
                     var $el_copy = $el.clone();
@@ -356,27 +396,26 @@
                 $(document).on("click", ".add-link", function (ev) {
                     var $lastEle = $(this).parent().prev().children().last();
                     var newElement = $lastEle.prop("outerHTML");
-                    if($lastEle.attr("option-type") && $lastEle.attr("option-type") === 'rate') {
+                    if ($lastEle.attr("option-type") && $lastEle.attr("option-type") === 'rate') {
                         newElement = '<div option-type="rate">\n' +
-                            '                                    <label class="control-label" style=""><span class="editable">评分项</span>:\n' +
-                            '                                        <label style="float: right; padding-top: 0px;" class="control-label target-demo function-demo col-sm-6"></label>\n' +
-                            '                                    </label>\n' +
-                            '                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>\n' +
-                            '                                </div>'
+                            '<label class="control-label" style=""><span class="editable">评分项</span>:\n' +
+                            '<label style="float: right; padding-top: 0px;" class="control-label target-demo function-demo col-sm-6"></label>\n' +
+                            '</label>\n' +
+                            '<label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>\n' +
+                            '</div>'
                     }
 
                     $(this).parent().prev().append(newElement);
                     $(this).parent().prev().find(".editable").last().dblclick(function () {
                         that.bindEdit(this);
                     });
-                    console.log($(this).parent().prev().children('.function-demo').last())
                     that.setUpRate($(this).parent().prev().find('.function-demo').last());
                 });
 
                 $(document).on("click", ".options-delete", function (ev) {
                     var $optionsArea = $(this).parent().parent().parent();
                     $(this).parent().parent().remove();
-                    if($optionsArea.children().length === 0) {
+                    if ($optionsArea.children().length === 0) {
                         $optionsArea.parent('.form-group').remove();
                     }
                 });
@@ -401,9 +440,22 @@
                 </div>').appendTo(document.body);
 
                 return modal;
+            },
+            loadEntity() {
+                var that = this;
+                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.survey = {
+                        id: resp.data.id,
+                        name: resp.data.name,
+                        currentNum: resp.data.currentNum,
+                        collectNum: resp.data.collectNum,
+                        projectId: resp.data.projectId
+                    };
+                })
             }
         },
         created: function () {
+            this.loadEntity();
         },
         mounted: function () {
             this.setup_draggable();
