@@ -1,12 +1,13 @@
-package com.camel.survey.service;
+package com.camel.survey.service.impl;
 
-import com.camel.core.entity.Result;
-import com.camel.survey.model.ZsProject;
-import com.camel.survey.model.ZsQuestion;
-import com.baomidou.mybatisplus.service.IService;
-import com.camel.survey.vo.ZsQuestionSave;
+import com.camel.survey.model.ZsOption;
+import com.camel.survey.mapper.ZsOptionMapper;
+import com.camel.survey.service.ZsOptionService;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.core.utils.PaginationUtil;
 import com.github.pagehelper.PageInfo;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -22,7 +23,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
  *               ┃     ┃   神兽保佑,代码无bug
  *               ┃     ┃　　　　　　　　　　　
  *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 服务类>
+ *               ┃     ┃        < 服务实现类>
  *               ┃     ┃　　　　　　　　　　　
  *               ┃     ┗━━━━┓   @author baily
  *               ┃          ┣┓
@@ -31,19 +32,17 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
  *                ┃┫┫    ┃┫┫    @date 2019-12-09
  *                ┗┻┛    ┗┻┛
  */
-public interface ZsQuestionService extends IService<ZsQuestion> {
-    /**
-     分页查询
-     @param entity
-     @return
-     */
-    PageInfo<ZsQuestion> selectPage(ZsQuestion entity);
+@Service
+public class ZsOptionServiceImpl extends ServiceImpl<ZsOptionMapper, ZsOption> implements ZsOptionService {
 
-    /**
-     * 新建
-     * @param entity
-     * @param oAuth2Authentication
-     * @return
-     */
-    Result save(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication);
+    @Autowired
+    private ZsOptionMapper mapper;
+
+    @Override
+    public PageInfo<ZsOption> selectPage(ZsOption entity) {
+        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+            mapper.list(entity);
+        });
+        return pageInfo;
+    }
 }

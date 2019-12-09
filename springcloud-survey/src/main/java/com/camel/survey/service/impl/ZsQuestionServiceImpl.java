@@ -1,21 +1,27 @@
 package com.camel.survey.service.impl;
 
+import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.mapper.ZsQuestionMapper;
 import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.service.ZsOptionService;
 import com.camel.survey.service.ZsQuestionService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -47,6 +53,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     private ZsQuestionMapper mapper;
 
     @Autowired
+    private ZsOptionService zsOptionService;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
@@ -58,12 +67,21 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     }
 
     @Override
-    public Result save(ZsQuestion entity, OAuth2Authentication oAuth2Authentication) {
+    public Result save(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication) {
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        entity.setCreatorId(member.getId());
-        if (insert(entity)) {
-            return ResultUtil.success("新增成功");
-        }
-        return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");
+        // 保存问题
+        entity.getZsQuestions().forEach(q -> {
+            q.setCreatorId(member.getId());
+            mapper.insert(q);
+            List<ZsOption> optionList = entity.optionsfilterAndBuildInsertParams(q);
+            // 保存选项
+            if (CollectionUtils.isNotEmpty(optionList)) {
+                zsOptionService.insertBatch(optionList);
+            }
+        });
+        return ResultUtil.success("新增成功");
+
     }
+
+
 }

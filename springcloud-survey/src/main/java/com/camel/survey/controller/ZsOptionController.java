@@ -1,9 +1,7 @@
 package com.camel.survey.controller;
-import com.camel.survey.vo.ZsQuestionSave;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.survey.service.ZsQuestionService;
-import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.service.ZsOptionService;
+import com.camel.survey.model.ZsOption;
 import com.camel.core.controller.BaseCommonController;
 
 import com.baomidou.mybatisplus.service.IService;
@@ -39,18 +37,18 @@ import java.util.List;
  *                ┗┻┛    ┗┻┛
  */
 @RestController
-@RequestMapping("/zsQuestion")
-public class ZsQuestionController extends BaseCommonController {
+@RequestMapping("/zsOption")
+public class ZsOptionController extends BaseCommonController {
 
 
     @Autowired
-    private ZsQuestionService service;
+    private ZsOptionService service;
 
     /**
     * 分页查询
     */
     @GetMapping
-    public Result index(ZsQuestion entity) {
+    public Result index(ZsOption entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
 
@@ -66,15 +64,15 @@ public class ZsQuestionController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody ZsQuestionSave zsQuestionSave, OAuth2Authentication oAuth2Authentication) {
-        return service.save(zsQuestionSave, oAuth2Authentication);
+    public Result save(@RequestBody ZsOption entity) {
+        return super.save(entity);
     }
 
     /**
      * 编辑 更新
      */
     @PutMapping
-    public Result update(@RequestBody ZsQuestion entity) {
+    public Result update(@RequestBody ZsOption entity) {
         return super.update(entity);
     }
 
