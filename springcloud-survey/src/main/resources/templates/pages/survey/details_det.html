@@ -29,32 +29,6 @@
     }
 </style>
 
-<style type="text/css">
-    .star-box {
-        display: inline-block;
-    }
-
-    .star-box label {
-        float: right;
-        color: #999;
-        margin-bottom: 0px;
-    }
-
-    .star-box label::after {
-        content: '★';
-        font-size: 14px;
-        padding: 5px;
-        display: inline-block;
-        line-height: 1;
-    }
-
-    .star-box input:checked ~ label,
-    .star-box label:hover ~ label,
-    .star-box label:hover {
-        color: red;
-    }
-</style>
-
 
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="row">
@@ -222,55 +196,22 @@
                                         class="editable question-title">{{item.name}}</span></label></div>
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-9 survey-optins">
-                                    <div v-for="(option, inx) in loadData.zsOptions"
-                                         v-if="showOption(item, option)">
-                                        <label class="radio-inline"
-                                               v-if="item.type === 1 && showOption(item, option)">
+                                    <div :option-type="item.type === 3" v-for="(option, inx) in loadData.zsOptions">
+                                        <label class="radio-inline" v-if="item.type === 1 && item.id === option.questionId">
                                             <input type="radio" value="option2"
                                                    name="optionsRadios">
                                             <span class="editable question-option">{{option.name}}</span>
                                         </label>
 
-                                        <label class="checkbox-inline"
-                                               v-if="item.type === 2 && showOption(item, option)">
+                                        <label class="checkbox-inline" v-if="item.type === 2 && item.id === option.questionId">
                                             <input type="checkbox" value="option1">
                                             <span class="editable question-option">{{option.name}}</span>
                                         </label>
 
-                                        <label class="checkbox-inline"
-                                               v-if="item.type === 3 && showOption(item, option)">
-                                            <span class="editable question-option">评分项</span>:
-                                            <span class="star-box">
-                                                <input type="radio"
-                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
-                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
-                                                       hidden/>
-                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_5'"></label>
-
-                                                <input type="radio"
-                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
-                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_4'"
-                                                       hidden/>
-                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_4'"></label>
-
-                                                <input type="radio"
-                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
-                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_3'"
-                                                       hidden/>
-                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_3'"></label>
-
-                                                <input type="radio"
-                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
-                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_2'"
-                                                       hidden/>
-                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_2'"></label>
-
-                                                <input type="radio"
-                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
-                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_1'"
-                                                       hidden/>
-                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
-                                            </span>
+                                        <label class="control-label" v-if="item.type === 3 && item.id === option.questionId"><span
+                                                class="editable question-option">评分项</span>:
+                                            <label style="float: right; padding-top: 0px;"
+                                                   class="control-label target-demo function-demo col-sm-6"></label>
                                         </label>
                                         <label class="radio-inline" v-if="item.id === option.questionId">
                                             <span class="fa fa-trash options-delete"></span>
@@ -310,24 +251,7 @@
                 zsOptions: []
             }
         },
-        watch: {
-            loadData(v, oldVal) {
-            }
-        },
-        computed: {
-
-        },
         methods: {
-            showOption(question, option){
-                console.log('--------------------->>>>--------')
-                if(question.orderNum && option.questionOrderNum) {
-                    return question.orderNum === option.questionOrderNum;
-                }
-                if(question.id && option.questionId) {
-                    return question.id === option.questionId;
-                }
-                return false;
-            },
             backToListPage() {
                 toPage('pages/survey/index.html')
             },
@@ -378,25 +302,23 @@
                                     "position": "static",
                                     "left": null,
                                     "right": null
-                                });
-
-                            that.loadData.zsOptions.push({
-                                orderNum: 1,
-                                name: '选项1',
-                                questionOrderNum: that.loadData.zsQuestions.length + 1
-                            });
-                            that.loadData.zsOptions.push({
-                                orderNum: 2,
-                                name: '选项2',
-                                questionOrderNum: that.loadData.zsQuestions.length + 1
-                            });
-                            that.loadData.zsQuestions.push(
-                                {
-                                    orderNum: that.loadData.zsQuestions.length + 1,
-                                    name: '题标题',
-                                    type: Number.parseInt($el.attr('question-type'))
-                                }
-                            );
+                                })
+                                .appendTo(this);
+                            // update id
+                            var id = $orig.find(":input").attr("id");
+                            if (id) {
+                                id = id.split("-").slice(0, -1).join("-") + "-" + (parseInt(id.split("-").slice(-1)[0]) + 1)
+                                $orig.find(":input").attr("id", id);
+                                $orig.find("label").attr("for", id);
+                            }
+                            // tools
+                            $('<p class="tools col-sm-12 col-sm-offset-3">\
+                                <a class="edit-link">编辑HTML<a> | \
+                                <a class="remove-link">移除</a> | \
+                                <a class="add-link">添加</a></p>').appendTo($el);
+                            $($el).find('.editable').dblclick(function ($event) {
+                                that.bindEdit(this);
+                            })
                         } else {
                             if ($(this)[0] != $orig.parent()[0]) {
                                 $el = $orig
@@ -410,12 +332,14 @@
                                 $orig.remove();
                             }
                         }
+                        if ($el && $el.find('.function-demo').length > 0) {
+                            that.setUpRate($el.find('.function-demo').get(0));
+                        }
 
                         that.reBindIndex();
                     }
                 }).sortable({
                     out: function (event, ui) {
-                        console.log(event);
                         that.reBindIndex();
                     }
                 });
@@ -520,10 +444,6 @@
 
                 $(document).on("click", ".remove-link", function (ev) {
                     $(this).parent().parent().remove();
-                });
-
-                $(document).on("dblclick", ".editable", function (ev) {
-                    that.bindEdit(this);
                 });
 
                 $(document).on("click", ".add-link", function (ev) {

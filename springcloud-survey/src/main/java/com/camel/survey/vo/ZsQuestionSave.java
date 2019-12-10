@@ -59,4 +59,12 @@ public class ZsQuestionSave {
         });
         return result;
     }
+
+    public ZsQuestionSave(List<ZsQuestion> zsQuestions, List<ZsOption> zsOptions) {
+        this.zsQuestions = zsQuestions;
+        this.zsOptions = zsOptions;
+    }
+
+    public ZsQuestionSave() {
+    }
 }

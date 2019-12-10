@@ -59,7 +59,7 @@ public class ZsOption extends BasePaginationEntity implements Serializable {
      * 问题序号
      */
     @TableField(exist = false)
-    private Integer QuestionOrderNum;
+    private Integer questionOrderNum;
 
     /**
      * 问题

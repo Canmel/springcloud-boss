@@ -70,7 +70,7 @@ function animationHover(element, animation) {
 //             tolerance: 'pointer',
 //             forcePlaceholderSize: true,
 //             opacity: 0.8,
-//         })
+//         })P
 //         .disableSelection();
 // };
 

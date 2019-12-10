@@ -7,13 +7,18 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsProject;
+import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.mapper.ZsSurveyMapper;
+import com.camel.survey.service.ZsOptionService;
+import com.camel.survey.service.ZsQuestionService;
 import com.camel.survey.service.ZsSurveyService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +27,9 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -55,6 +62,12 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private ZsQuestionService questionService;
+
+    @Autowired
+    private ZsOptionService optionService;
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
@@ -98,7 +111,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     }
 
     @Override
-    public Result selectProjectList(Integer id) {
+    public Result selectListByProjectId(Integer id) {
         Wrapper<ZsSurvey> surveyWrapper = new EntityWrapper<>();
         surveyWrapper.eq("project_id", id);
         List<ZsSurvey> surveys = selectList(surveyWrapper);
@@ -111,5 +124,25 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             });
         });
         return ResultUtil.success(surveys);
+    }
+
+    @Override
+    public Result getQuestionAndOptions(Integer id) {
+        // 查询问题
+        Wrapper<ZsQuestion> zsQuestionWrapper = new EntityWrapper<>();
+        zsQuestionWrapper.eq("survey_id", id);
+        List<ZsQuestion> questionList = questionService.selectList(zsQuestionWrapper);
+        // 获取所有问题ID
+        List<Integer> questionIds = questionList.stream().map(ZsQuestion::getId).collect(Collectors.toList());
+        // 获取所有选项
+        Wrapper<ZsOption> zsOptionWrapper = new EntityWrapper<>();
+        List<ZsOption> optionList = new ArrayList<>();
+        if(questionIds.size() > 0) {
+            zsOptionWrapper.in("question_id", questionIds);
+            optionList = optionService.selectList(zsOptionWrapper);
+        }
+
+        // 包装返回
+        return ResultUtil.success(new ZsQuestionSave(questionList, optionList));
     }
 }

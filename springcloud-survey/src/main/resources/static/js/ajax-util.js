@@ -76,11 +76,10 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
             success(simpleSuccess(result));
         },
         error: function (resp) {
-            alert(resp);
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                // location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
+                location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
             }
         }
     };

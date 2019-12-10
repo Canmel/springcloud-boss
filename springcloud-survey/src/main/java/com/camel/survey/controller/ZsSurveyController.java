@@ -89,7 +89,18 @@ public class ZsSurveyController extends BaseCommonController {
 
     @GetMapping("/{id}/projects")
     public Result projects(@PathVariable Integer id) {
-        return service.selectProjectList(id);
+        return service.selectListByProjectId(id);
+    }
+
+    /**
+     * 获取问卷的所有问题和选项
+     * @param id
+     * @return Result 结果集包含vo.ZsQuestionSave
+     *  ZsQuestionSave中包含question and option
+     */
+    @GetMapping("/questionAndOptions/{id}")
+    public Result loadQuestionAndOptions(@PathVariable Integer id) {
+        return service.getQuestionAndOptions(id);
     }
 
     /**

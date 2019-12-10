@@ -2,28 +2,38 @@
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="signupForm">
+                <input type="hidden" v-model="new_survey.id" v-if="edit_mode">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">项目名称：</label>
+                    <label class="col-sm-3 control-label">问卷名称：</label>
                     <div class="col-sm-8">
-                        <input name="name" class="form-control" type="text" v-model="zs_project.name">
+                        <input name="name" class="form-control" type="text" v-model="new_survey.name">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">项目编码：</label>
+                    <label class="col-sm-3 control-label">收集份数：</label>
                     <div class="col-sm-8">
-                        <input name="code" class="form-control" type="text" aria-required="true" aria-invalid="false" class="valid" v-model="zs_project.code">
+                        <input name="collect_num" class="form-control" type="text" aria-required="true"
+                               aria-invalid="true" v-model="new_survey.collectNum">
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">项目描述：</label>
+                    <label class="col-sm-3 control-label">收集方式：</label>
                     <div class="col-sm-8">
-                        <input name="desc" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" v-model="zs_project.desc">
+                        <select name="collect_type" aria-required="true"
+                                aria-invalid="true" class="form-control m-b" name="account"
+                                v-model="new_survey.collectType">
+                            <option>短信</option>
+                            <option value="1">电话</option>
+                            <option value="2">走访</option>
+                        </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-8 col-sm-offset-3">
-                        <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
-                        <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
+
+                <div class="form-group" v-if="edit_mode">
+                    <label class="col-sm-3 control-label">已收集：</label>
+                    <div class="col-sm-8">
+                        <span> {{new_survey.currentNum}}</span>
                     </div>
                 </div>
             </form>
@@ -36,12 +46,7 @@
         el: '#subContainer',
         data: {
             applicationContextRootPath: '/survey/',
-            zs_project: {
-                id: '',
-                name: '',
-                code: '',
-                desc: ''
-            }
+            new_survey: {}
         },
         created: function () {
             this.loadEntity();
@@ -81,13 +86,13 @@
         $("#signupForm").validate({
             rules: {
                 name: "required",
-                code: "required",
-                desc: "required"
+                collect_num: "required",
+                collect_type: "required"
             },
             messages: {
-                name: icon + "请输入项目名称",
-                code: icon + "请输入项目编号",
-                desc: icon + "请输入描述信息"
+                name: icon + "请输入问卷名称",
+                collect_num: icon + "请输入预计收集份数",
+                collect_type: icon + "请选择收集方式"
             }
         });
 

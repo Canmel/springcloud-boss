@@ -50,5 +50,17 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      */
     Result save(ZsSurvey entity, OAuth2Authentication oAuth2Authentication);
 
-    Result selectProjectList(Integer id);
+    /**
+     * 通过项目id查询列表
+     * @param id    项目ID
+     * @return
+     */
+    Result selectListByProjectId(Integer id);
+
+    /**
+     * 通过问卷ID获取问题与选项
+     * @param id    问卷id
+     * @return
+     */
+    Result getQuestionAndOptions(Integer id);
 }
