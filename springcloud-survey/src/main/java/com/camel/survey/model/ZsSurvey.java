@@ -11,7 +11,9 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
 import com.camel.survey.enums.ZsSurveyCollectType;
+import com.camel.survey.enums.ZsSurveyState;
 import com.camel.survey.enums.ZsSurveyStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -42,6 +44,7 @@ import java.io.Serializable;
  * @date 2019-12-06
  **/
 @Data
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class ZsSurvey extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -78,7 +81,6 @@ public class ZsSurvey extends BasePaginationEntity implements Serializable {
     /**
      * 收集方式
      */
-    @TableField(value = "collect_type")
     private ZsSurveyCollectType collectType;
     /**
      * 状态
@@ -95,6 +97,8 @@ public class ZsSurvey extends BasePaginationEntity implements Serializable {
 
     @TableField(exist = false)
     private SysUser creator;
+
+    private ZsSurveyState state;
 
     @Override
     public String toString() {

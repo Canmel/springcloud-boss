@@ -1,7 +1,7 @@
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>问卷管理</h5>
+            <h5>开放的调查任务</h5>
             <div class="ibox-tools">
                 <!--<a :href="applicationContextRootPath + 'pages/project/add.html'"-->
                    <!--data-pjax class="btn btn-primary btn-xs">新建问卷</a>-->
@@ -39,15 +39,15 @@
                         <td>{{item.name}}</td>
                         <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span></td>
                         <td>
-                            <span class="badge badge-primary" v-if="item.state.value === 1">{{item.state.name}}</span>
-                            <span class="badge badge-danger" v-if="item.state.value === 2">{{item.state.name}}</span>
+                            <span class="badge badge-primary" v-if="item.status ? item.state.value === 1 : false">{{item.state.name}}</span>
+                            <span class="badge badge-danger" v-if="item.status ? item.state.value === 2 : false">{{item.state.name}}</span>
                         </td>
-                        <td>{{item.creator.username}}</td>
+                        <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" v-if="item.state.value === 1" class="btn btn-primary btn-xs">修改</button>
-                            <button type="button" v-on:click="start(item)" v-if="item.state.value === 1" class="btn btn-success btn-xs">开始调查</button>
-                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state.value === 1" class="btn btn-danger btn-xs">删除</button>
+                            <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false" class="btn btn-primary btn-xs">修改</button>
+                            <button type="button" v-on:click="start(item)" v-if="item.state ? item.state.value === 1 : false" class="btn btn-success btn-xs">开始调查</button>
+                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false" class="btn btn-danger btn-xs">删除</button>
                     </tr>
                     </tbody>
                 </table>
@@ -68,9 +68,10 @@
             applicationContextRootPath: '/survey/',
             pageInfo: {
                 name: '',
+                state: 'COLLECTING',
                 pageNum: 1,
                 total: 0,//总页数
-                size: 10//每页显示条目个数不传默认10
+                size: 10,//每页显示条目个数不传默认10
             },
             items: [{}]
         },

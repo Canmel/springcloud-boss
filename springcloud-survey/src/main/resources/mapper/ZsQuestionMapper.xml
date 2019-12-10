@@ -9,7 +9,7 @@
         <result column="order_num" property="orderNum" />
         <result column="survey_id" property="surveyId" />
         <result column="type" property="type" />
-        <result column="status" property="status" />
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="createdAt" property="createdAt" />
         <result column="creator" property="creatorId" />
     </resultMap>
@@ -24,5 +24,13 @@
          <include refid="Base_Column_List"></include>
         from
         zs_question
+    </select>
+
+    <select id="selectQuestionById" resultMap="BaseResultMap">
+        select
+          <include refid="Base_Column_List"></include>
+        from
+        zs_question
+        where id = #{id}
     </select>
 </mapper>

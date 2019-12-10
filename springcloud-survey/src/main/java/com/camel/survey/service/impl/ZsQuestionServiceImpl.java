@@ -1,5 +1,7 @@
 package com.camel.survey.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
@@ -22,6 +24,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -68,6 +71,17 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     @Override
     public Result save(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication) {
+        // 根据问卷ID删除问题以及选项
+        Wrapper zsQuestionWrapper = new EntityWrapper<>();
+        zsQuestionWrapper.eq("survey_id", entity.getSurveyId());
+        List<ZsQuestion> zsQuestions = selectList(zsQuestionWrapper);
+        if(zsQuestions.size() > 0) {
+            Wrapper<ZsOption> optionWrapper = new EntityWrapper<>();
+            List<Integer> qIds = zsQuestions.stream().map(ZsQuestion::getId).collect(Collectors.toList());
+            optionWrapper.in("question_id", qIds);
+            deleteBatchIds(qIds);
+            zsOptionService.delete(optionWrapper);
+        }
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
         // 保存问题
         entity.getZsQuestions().forEach(q -> {
@@ -83,5 +97,13 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     }
 
-
+    @Override
+    public Result update(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication) {
+        List<Integer> qIds = entity.getZsQuestions().stream().map(ZsQuestion::getId).collect(Collectors.toList());
+        List<Integer> oIds = entity.getZsOptions().stream().map(ZsOption::getId).collect(Collectors.toList());
+        deleteBatchIds(qIds);
+        deleteBatchIds(oIds);
+        save(entity, oAuth2Authentication);
+        return ResultUtil.success("修改成功");
+    }
 }

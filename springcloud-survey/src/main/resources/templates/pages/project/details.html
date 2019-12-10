@@ -5,10 +5,10 @@
                 <div>
                     <div class="ibox-content profile-content">
                         <h4>项目名称: <strong>{{zs_project.name}}</strong></h4>
-                        <p>项目状态: <span class="badge badge-info">{{zs_project.status ? zs_project.status.name : ''}}</span></p>
-                        <p>项目编号: {{zs_project.code}}</p>
+                        <p><b style="color: #000000">项目状态: </b><span class="badge badge-info">{{zs_project.status ? zs_project.status.name : ''}}</span></p>
+                        <p><b style="color: #000000">项目编号: </b> {{zs_project.code}}</p>
                         <h5>
-                            关于我
+                            <b style="color: #000000">项目描述:</b>
                         </h5>
                         <p>
                             {{zs_project.desc}}
@@ -41,7 +41,7 @@
 
                     <div class="row">
                         <div class="col-sm-4" v-for="(item, index) in surveies">
-                            <div class="panel panel-primary" v-on:click="showSurveyDetails(item)">
+                            <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     {{item['name']}}
                                     <div class="ibox-tools">
@@ -58,11 +58,12 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body" v-on:click="showSurveyDetails(item)">
                                     <dd>名称: {{item['name']}}</dd>
                                     <dd>状态: <span class="badge badge-info">{{item['status'] ? item['status']['name'] : ''}}</span></dd>
                                     <dd>收集份数: {{item['collectNum']}}</dd>
                                     <dd>当前份数: {{item['currentNum']}}</dd>
+                                    <dd>收集方式: <span class="badge badge-info">{{item.collectType.name}}</span></dd>
                                     <dd>创建人: {{item['creator'] ? item['creator']['nickname'] : ''}}</dd>
                                     <dd>创建时间: {{item['createdAt'] | formatDate}}</dd>
 
@@ -118,7 +119,7 @@
                                 <select name="collect_num" aria-required="true"
                                         aria-invalid="true" class="form-control m-b" name="account"
                                         v-model="new_survey.collectType">
-                                    <option>短信</option>
+                                    <option value="0">短信</option>
                                     <option value="1">电话</option>
                                     <option value="2">走访</option>
                                 </select>
@@ -223,13 +224,15 @@
                 }
             },
             editSurvey(item) {
+                console.log(item);
                 $("#myModal").modal('show');
                 this.edit_mode = true;
                 this.new_survey = {
                     id: item.id,
                     name: item.name,
                     collectNum: item.collectNum,
-                    currentNum: item.currentNum
+                    currentNum: item.currentNum,
+                    collectType: item.collectType.value
                 }
             },
             resetForm() {

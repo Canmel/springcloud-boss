@@ -74,8 +74,8 @@ public class ZsQuestionController extends BaseCommonController {
      * 编辑 更新
      */
     @PutMapping
-    public Result update(@RequestBody ZsQuestion entity) {
-        return super.update(entity);
+    public Result update(@RequestBody ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication) {
+        return service.update(entity, oAuth2Authentication);
     }
 
     /**

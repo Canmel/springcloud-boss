@@ -43,6 +43,8 @@ public class ZsQuestionSave {
      */
     public List<ZsOption> zsOptions;
 
+    public Integer surveyId;
+
     /**
      * 通过问题的序号获取相对应的选项
      * @param zsQuestion

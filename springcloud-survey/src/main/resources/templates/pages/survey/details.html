@@ -272,6 +272,13 @@
                                                 <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
                                             </span>
                                         </label>
+                                        <label class="checkbox-inline"
+                                               v-if="item.type === 4 && showOption(item, option)">
+                                            <span class="editable question-option">答</span>:
+                                            <label class="radio-inline">
+                                                <input type="text"
+                                                       name="optionsRadios"></label>
+                                        </label>
                                         <label class="radio-inline" v-if="item.id === option.questionId">
                                             <span class="fa fa-trash options-delete"></span>
                                         </label>
@@ -303,7 +310,8 @@
             survey: {},
             saveData: {
                 zsQuestions: [],
-                zsOptions: []
+                zsOptions: [],
+                surveyId: 0
             },
             loadData: {
                 zsQuestions: [],
@@ -319,7 +327,6 @@
         },
         methods: {
             showOption(question, option){
-                console.log('--------------------->>>>--------')
                 if(question.orderNum && option.questionOrderNum) {
                     return question.orderNum === option.questionOrderNum;
                 }
@@ -415,7 +422,6 @@
                     }
                 }).sortable({
                     out: function (event, ui) {
-                        console.log(event);
                         that.reBindIndex();
                     }
                 });
@@ -468,6 +474,7 @@
                  * 保存
                  */
                 $("#copy-to-clipboard").on("click", function () {
+                    that.saveData.surveyId = that.survey.id;
                     that.saveData.zsQuestions = [];
                     that.saveData.zsOptions = [];
                     var $fg = $("#surveyArea").find('.form-group');
@@ -590,7 +597,6 @@
                 var that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.loadData = resp.data;
-                    console.log(that.loadData);
                 })
             }
         },

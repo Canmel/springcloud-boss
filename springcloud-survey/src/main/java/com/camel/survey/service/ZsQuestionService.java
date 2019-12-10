@@ -46,4 +46,12 @@ public interface ZsQuestionService extends IService<ZsQuestion> {
      * @return
      */
     Result save(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication);
+
+    /**
+     * 修改更新
+     * @param entity
+     * @param oAuth2Authentication
+     * @return
+     */
+    Result update(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication);
 }

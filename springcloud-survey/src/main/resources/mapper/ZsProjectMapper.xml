@@ -27,7 +27,7 @@
         </where>
     </select>
 
-    <select id="selectProjectById" resultMap="com.camel.survey.mapper.ZsProjectMapper.BaseResultMap">
+    <select id="selectProjectById" resultMap="BaseResultMap">
         select
         id, name, code, status, created_at, creator
         from

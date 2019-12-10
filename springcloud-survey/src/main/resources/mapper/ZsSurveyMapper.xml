@@ -15,12 +15,14 @@
         <result column="collect_type" property="collectType" jdbcType="INTEGER"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="creator" property="creatorId"/>
-        <association property="project" column="project_id" select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
+        <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <association property="project" column="project_id"
+                     select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        zs_survey.id, zs_survey.name, zs_survey.project_id, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type
+        zs_survey.id, zs_survey.name, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -30,6 +32,12 @@
         zs_survey zs_survey
         <where>
             status = 1
+            <if test="name != null and name != ''">
+                AND zs_survey.name like concat('%', #{name}, '%')
+            </if>
+            <if test="state != null" >
+                AND zs_survey.state = #{state.value}
+            </if>
         </where>
     </select>
 </mapper>

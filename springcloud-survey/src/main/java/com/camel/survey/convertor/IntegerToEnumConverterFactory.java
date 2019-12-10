@@ -1,6 +1,6 @@
 package com.camel.survey.convertor;
 
-import com.baomidou.mybatisplus.enums.IEnum;
+import com.camel.survey.enums.MyEnum;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
@@ -31,11 +31,11 @@ import java.util.Map;
  * @since 1.0
  * @date 2019/10/31
  **/
-public class IntegerToEnumConverterFactory implements ConverterFactory<Serializable, IEnum> {
+public class IntegerToEnumConverterFactory implements ConverterFactory<Serializable, MyEnum> {
     private static final Map<Class, Converter> CONVERTER_MAP =  new HashMap<>();
 
     @Override
-    public <T extends IEnum> Converter<Serializable, T> getConverter(Class<T> targetType) {
+    public <T extends MyEnum> Converter<Serializable, T> getConverter(Class<T> targetType) {
         Converter<Serializable, T> converter = CONVERTER_MAP.get(targetType);
         if(converter == null) {
             converter = new IntegerToEnumConverter<>(targetType);
@@ -44,7 +44,7 @@ public class IntegerToEnumConverterFactory implements ConverterFactory<Serializa
         return converter;
     }
 
-    class IntegerToEnumConverter<T extends IEnum> implements Converter<Serializable, T> {
+    class IntegerToEnumConverter<T extends MyEnum> implements Converter<Serializable, T> {
 
         private Map<Serializable, T> enumMap = new HashMap<>();
 

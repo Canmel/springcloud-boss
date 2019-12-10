@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.survey.enums.ZsQuestionStatus;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -65,7 +66,7 @@ public class ZsQuestion extends BasePaginationEntity implements Serializable {
      * 状态
      */
     @TableLogic
-    private Integer status;
+    private ZsQuestionStatus status;
     /**
      * 创建时间
      */
