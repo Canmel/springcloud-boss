@@ -29,6 +29,32 @@
     }
 </style>
 
+<style type="text/css">
+    .star-box {
+        display: inline-block;
+    }
+
+    .star-box label {
+        float: right;
+        color: #999;
+        margin-bottom: 0px;
+    }
+
+    .star-box label::after {
+        content: '★';
+        font-size: 14px;
+        padding: 5px;
+        display: inline-block;
+        line-height: 1;
+    }
+
+    .star-box input:checked ~ label,
+    .star-box label:hover ~ label,
+    .star-box label:hover {
+        color: red;
+    }
+</style>
+
 
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="row">
@@ -36,8 +62,8 @@
             <div class="ibox-title">
                 <h5>{{survey.name}}</h5>
                 <div class="ibox-tools">
-                    <a v-on:click=backToListPage() class="btn btn-info btn-xs">问卷列表</a>
-                    <a v-on:click=backToProjectDetails() class="btn btn-info btn-xs">项目详情</a>
+                    <a v-on:click=backToListPage() class="btn btn-success btn-xs">返回</a>
+                    <!--<a v-on:click=backToProjectDetails() class="btn btn-info btn-xs">项目详情</a>-->
                 </div>
             </div>
             <div class="ibox-content">
@@ -56,137 +82,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-12">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>元素</h5>
-                </div>
-                <div class="ibox-content">
-                    <div class="alert alert-info">
-                        拖拽左侧的元素到右侧区域，即可生成相应的问卷模板
-                    </div>
-                    <form role="form" class="form-horizontal m-t">
-
-                        <div class="form-group draggable" question-type='1'>
-                            <div class="col-sm-12">
-                                <label class="col-sm-3 control-label"><span class="question-index">1</span>.</label>
-                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable question-title">单选题</span></label>
-                            </div>
-                            <div class="col-sm-3">
-                            </div>
-                            <div class="col-sm-9 survey-optins">
-                                <div>
-                                    <label class="radio-inline">
-                                        <input type="radio" checked="" value="option1" id="optionsRadios1"
-                                               name="optionsRadios"><span
-                                            class="editable question-option">选项1</span></label>
-                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
-                                </div>
-                                <div>
-                                    <label class="radio-inline">
-                                        <input type="radio" value="option2" id="optionsRadios2"
-                                               name="optionsRadios"><span
-                                            class="editable question-option">选项2</span></label>
-
-                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group draggable" question-type='2'>
-                            <div class="col-sm-12">
-                                <label class="col-sm-3 control-label"><span class="question-index">2</span>.</label>
-                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable question-title">多选题</span></label>
-                            </div>
-                            <div class="col-sm-3">
-                            </div>
-                            <div class="col-sm-9 survey-optins">
-                                <div>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="option1"><span
-                                            class="editable question-option">选项1</span></label>
-                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
-                                </div>
-                                <div>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="option2"><span
-                                            class="editable question-option">选项2</span></label>
-                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
-                                </div>
-                                <div>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="option3"><span
-                                            class="editable question-option">选项3</span></label>
-                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group draggable" question-type='3'>
-                            <div class="col-sm-12">
-                                <label class="col-sm-3 control-label"><span class="question-index">3</span>.</label>
-                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable question-title">评分题</span></label>
-                            </div>
-                            <div class="col-sm-3 survey-optins" style="text-align: right;">
-
-                            </div>
-                            <div class="col-sm-9 survey-optins">
-
-                                <div option-type="rate">
-                                    <label class="control-label" style=""><span
-                                            class="editable question-option">评分项</span>:
-                                        <label style="float: right; padding-top: 0px;"
-                                               class="control-label target-demo function-demo col-sm-6"></label>
-                                    </label>
-                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group draggable" question-type='4'>
-                            <div class="col-sm-12">
-                                <label class="col-sm-3 control-label"><span class="question-index">4</span>.</label>
-                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
-                                        class="editable question-title">问答题</span></label>
-                            </div>
-                            <div class="col-sm-3">
-                            </div>
-                            <div class="col-sm-9 survey-optins">
-                                <div>
-                                    <span class="editable question-option">答</span>
-                                    <label class="radio-inline">
-                                        <input type="text"
-                                               name="optionsRadios"></label>
-                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-9">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>拖拽左侧元素到此区域</h5>
-                    <div class="ibox-tools">
-                        请选择显示的列数：
-                        <select id="n-columns">
-                            <option value="1">显示1列</option>
-                            <option value="2">显示2列</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="ibox-content" style="height: 500px; overflow-y: scroll;">
                     <div class="row form-body form-horizontal m-t">
                         <div class="col-md-12 droppable sortable" id="surveyArea">
-                            <div :question-type="item.type" class="form-group draggable ui-draggable dropped"
+                            <div :question-type="item.type" class="form-group"
                                  v-for="(item, index) in loadData.zsQuestions"
                                  style="position: static;">
                                 <div class="col-sm-12"><label class="col-sm-3 control-label"><span
@@ -196,39 +97,72 @@
                                         class="editable question-title">{{item.name}}</span></label></div>
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-9 survey-optins">
-                                    <div :option-type="item.type === 3" v-for="(option, inx) in loadData.zsOptions">
-                                        <label class="radio-inline" v-if="item.type === 1 && item.id === option.questionId">
+                                    <div v-for="(option, inx) in loadData.zsOptions"
+                                         v-if="showOption(item, option)">
+                                        <label class="radio-inline"
+                                               v-if="item.type === 1 && showOption(item, option)">
                                             <input type="radio" value="option2"
                                                    name="optionsRadios">
                                             <span class="editable question-option">{{option.name}}</span>
                                         </label>
 
-                                        <label class="checkbox-inline" v-if="item.type === 2 && item.id === option.questionId">
+                                        <label class="checkbox-inline"
+                                               v-if="item.type === 2 && showOption(item, option)">
                                             <input type="checkbox" value="option1">
                                             <span class="editable question-option">{{option.name}}</span>
                                         </label>
 
-                                        <label class="control-label" v-if="item.type === 3 && item.id === option.questionId"><span
-                                                class="editable question-option">评分项</span>:
-                                            <label style="float: right; padding-top: 0px;"
-                                                   class="control-label target-demo function-demo col-sm-6"></label>
+                                        <label class="checkbox-inline"
+                                               v-if="item.type === 3 && showOption(item, option)">
+                                            <span class="editable question-option">评分项</span>:
+                                            <span class="star-box">
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_5'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_4'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_4'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_3'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_3'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_2'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_2'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_1'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
+                                            </span>
                                         </label>
-                                        <label class="radio-inline" v-if="item.id === option.questionId">
-                                            <span class="fa fa-trash options-delete"></span>
+                                        <label class="checkbox-inline"
+                                               v-if="item.type === 4 && showOption(item, option)">
+                                            <span class="editable question-option">答</span>:
+                                            <label class="radio-inline">
+                                                <input type="text"
+                                                       name="optionsRadios"></label>
                                         </label>
                                     </div>
                                 </div>
-                                <p class="tools col-sm-12 col-sm-offset-3"><a class="edit-link">编辑HTML</a><a> | </a><a
-                                        class="remove-link">移除</a> | <a class="add-link">添加</a></p></div>
+                            </div>
                         </div>
                         <div class="col-md-6 droppable sortable" style="display: none;">
                         </div>
                         <div class="col-md-6 droppable sortable" style="display: none;">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-warning" data-clipboard-text="testing" id="copy-to-clipboard">
-                        保存问卷
-                    </button>
                 </div>
             </div>
         </div>
@@ -244,16 +178,31 @@
             survey: {},
             saveData: {
                 zsQuestions: [],
-                zsOptions: []
+                zsOptions: [],
+                surveyId: 0
             },
             loadData: {
                 zsQuestions: [],
                 zsOptions: []
             }
         },
+        watch: {
+            loadData(v, oldVal) {
+            }
+        },
+        computed: {},
         methods: {
+            showOption(question, option) {
+                if (question.orderNum && option.questionOrderNum) {
+                    return question.orderNum === option.questionOrderNum;
+                }
+                if (question.id && option.questionId) {
+                    return question.id === option.questionId;
+                }
+                return false;
+            },
             backToListPage() {
-                toPage('pages/survey/index.html')
+                toPage('pages/task/index.html')
             },
             backToProjectDetails() {
                 sessionStorage.setItem('editParams', this.survey.projectId);
@@ -302,23 +251,25 @@
                                     "position": "static",
                                     "left": null,
                                     "right": null
-                                })
-                                .appendTo(this);
-                            // update id
-                            var id = $orig.find(":input").attr("id");
-                            if (id) {
-                                id = id.split("-").slice(0, -1).join("-") + "-" + (parseInt(id.split("-").slice(-1)[0]) + 1)
-                                $orig.find(":input").attr("id", id);
-                                $orig.find("label").attr("for", id);
-                            }
-                            // tools
-                            $('<p class="tools col-sm-12 col-sm-offset-3">\
-                                <a class="edit-link">编辑HTML<a> | \
-                                <a class="remove-link">移除</a> | \
-                                <a class="add-link">添加</a></p>').appendTo($el);
-                            $($el).find('.editable').dblclick(function ($event) {
-                                that.bindEdit(this);
-                            })
+                                });
+
+                            that.loadData.zsOptions.push({
+                                orderNum: 1,
+                                name: '选项1',
+                                questionOrderNum: that.loadData.zsQuestions.length + 1
+                            });
+                            that.loadData.zsOptions.push({
+                                orderNum: 2,
+                                name: '选项2',
+                                questionOrderNum: that.loadData.zsQuestions.length + 1
+                            });
+                            that.loadData.zsQuestions.push(
+                                {
+                                    orderNum: that.loadData.zsQuestions.length + 1,
+                                    name: '题标题',
+                                    type: Number.parseInt($el.attr('question-type'))
+                                }
+                            );
                         } else {
                             if ($(this)[0] != $orig.parent()[0]) {
                                 $el = $orig
@@ -332,14 +283,7 @@
                                 $orig.remove();
                             }
                         }
-                        if ($el && $el.find('.function-demo').length > 0) {
-                            that.setUpRate($el.find('.function-demo').get(0));
-                        }
 
-                        that.reBindIndex();
-                    }
-                }).sortable({
-                    out: function (event, ui) {
                         that.reBindIndex();
                     }
                 });
@@ -392,6 +336,7 @@
                  * 保存
                  */
                 $("#copy-to-clipboard").on("click", function () {
+                    that.saveData.surveyId = that.survey.id;
                     that.saveData.zsQuestions = [];
                     that.saveData.zsOptions = [];
                     var $fg = $("#surveyArea").find('.form-group');
@@ -444,6 +389,10 @@
 
                 $(document).on("click", ".remove-link", function (ev) {
                     $(this).parent().parent().remove();
+                });
+
+                $(document).on("dblclick", ".editable", function (ev) {
+                    that.bindEdit(this);
                 });
 
                 $(document).on("click", ".add-link", function (ev) {
@@ -510,7 +459,6 @@
                 var that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.loadData = resp.data;
-                    console.log(that.loadData);
                 })
             }
         },

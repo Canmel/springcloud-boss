@@ -104,6 +104,16 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     /**
+     * 开始调查
+     * @param id
+     * @return
+     */
+    @GetMapping("/start/{id}")
+    public Result start(@PathVariable Integer id){
+        return service.start(id);
+    }
+
+    /**
     * 获取service
     */
     @Override

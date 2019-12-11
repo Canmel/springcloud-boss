@@ -279,13 +279,14 @@
                                                 <input type="text"
                                                        name="optionsRadios"></label>
                                         </label>
-                                        <label class="radio-inline" v-if="item.id === option.questionId">
+                                        <label class="radio-inline" v-if="showOption(item, option)">
                                             <span class="fa fa-trash options-delete"></span>
                                         </label>
                                     </div>
                                 </div>
                                 <p class="tools col-sm-12 col-sm-offset-3"><a class="edit-link">编辑HTML</a><a> | </a><a
-                                        class="remove-link">移除</a> | <a class="add-link">添加</a></p></div>
+                                        class="remove-link">移除</a> | <a class="add-link" v-on:click="addItem(item)">添加</a></p>
+                            </div>
                         </div>
                         <div class="col-md-6 droppable sortable" style="display: none;">
                         </div>
@@ -322,15 +323,53 @@
             loadData(v, oldVal) {
             }
         },
-        computed: {
-
-        },
+        computed: {},
         methods: {
-            showOption(question, option){
-                if(question.orderNum && option.questionOrderNum) {
+            addItem(item) {
+                console.log(item.orderNum);
+                var that = this;
+                var count = 1
+                this.loadData.zsOptions.forEach(function (obj, index) {
+                    console.log(obj);
+                    if(that.showOption(item, obj)) {
+                        count ++;
+                    }
+                });
+                if(item.type === 1) {
+                    this.loadData.zsOptions.push({
+                        name: '新选项',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+                if(item.type === 2) {
+                    this.loadData.zsOptions.push({
+                        name: '新选项',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+                if(item.type === 3) {
+                    this.loadData.zsOptions.push({
+                        name: '评分项',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+                if(item.type === 4) {
+                    this.loadData.zsOptions.push({
+                        name: '答',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+
+            },
+            showOption(question, option) {
+                if (question.orderNum && option.questionOrderNum) {
                     return question.orderNum === option.questionOrderNum;
                 }
-                if(question.id && option.questionId) {
+                if (question.id && option.questionId) {
                     return question.id === option.questionId;
                 }
                 return false;
@@ -422,12 +461,14 @@
                     }
                 }).sortable({
                     out: function (event, ui) {
+                        console.log(event, ui);
                         that.reBindIndex();
                     }
                 });
 
             },
             reBindIndex() {
+                console.log(123123)
                 $('#surveyArea').children().each(function (index, item) {
                     $(item).find('.question-index').text(index + 1)
                 })
@@ -533,24 +574,7 @@
                     that.bindEdit(this);
                 });
 
-                $(document).on("click", ".add-link", function (ev) {
-                    var $lastEle = $(this).parent().prev().children().last();
-                    var newElement = $lastEle.prop("outerHTML");
-                    if ($lastEle.attr("option-type") && $lastEle.attr("option-type") === 'rate') {
-                        newElement = '<div option-type="rate">\n' +
-                            '<label class="control-label" style=""><span class="editable">评分项</span>:\n' +
-                            '<label style="float: right; padding-top: 0px;" class="control-label target-demo function-demo col-sm-6"></label>\n' +
-                            '</label>\n' +
-                            '<label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>\n' +
-                            '</div>'
-                    }
 
-                    $(this).parent().prev().append(newElement);
-                    $(this).parent().prev().find(".editable").last().dblclick(function () {
-                        that.bindEdit(this);
-                    });
-                    that.setUpRate($(this).parent().prev().find('.function-demo').last());
-                });
 
                 $(document).on("click", ".options-delete", function (ev) {
                     var $optionsArea = $(this).parent().parent().parent();
@@ -602,12 +626,12 @@
         },
         created: function () {
             this.loadEntity();
-            this.loadQuestions();
         },
         mounted: function () {
             this.setup_draggable();
 
             this.bindEvent();
+            this.loadQuestions();
         }
     });
 

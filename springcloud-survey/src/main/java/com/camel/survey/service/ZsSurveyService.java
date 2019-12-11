@@ -63,4 +63,11 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      * @return
      */
     Result getQuestionAndOptions(Integer id);
+
+    /**
+     * 开始收集
+     * @param id
+     * @return
+     */
+    Result start(Integer id);
 }

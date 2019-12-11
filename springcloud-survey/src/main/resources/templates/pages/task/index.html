@@ -1,7 +1,7 @@
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>开放的调查任务</h5>
+            <h5>任务面板</h5>
             <div class="ibox-tools">
                 <!--<a :href="applicationContextRootPath + 'pages/project/add.html'"-->
                    <!--data-pjax class="btn btn-primary btn-xs">新建问卷</a>-->
@@ -36,7 +36,9 @@
                     <tbody>
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>{{item.name}}</td>
+                        <td>
+                            <span class="click-span" v-on:click="details(item)">{{item.name}}</span>
+                        </td>
                         <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span></td>
                         <td>
                             <span class="badge badge-primary" v-if="item.status ? item.state.value === 1 : false">{{item.state.name}}</span>
@@ -45,9 +47,8 @@
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false" class="btn btn-primary btn-xs">修改</button>
-                            <button type="button" v-on:click="start(item)" v-if="item.state ? item.state.value === 1 : false" class="btn btn-success btn-xs">开始调查</button>
-                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false" class="btn btn-danger btn-xs">删除</button>
+                            <button type="button" v-on:click="signUp(item)" v-if="item.state ? item.state.value === 2 : false" class="btn btn-primary btn-xs">报名参加</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -79,9 +80,6 @@
             this.pagequery();
         },
         methods: {
-            start: function(item){
-                console.log("开始收集", item);
-            },
             projectDetails: function(item) {
                 sessionStorage.setItem('editParams', item.projectId);
                 toPage("pages/project/details.html");
@@ -98,27 +96,12 @@
                 this.pageInfo.pageNum = val;
                 this.pagequery();
             },
-            edit: function (item) {
-                sessionStorage.setItem('editParams', item.id);
-                $.pjax({
-                    url: mvm.applicationContextRootPath + 'pages/survey/details.html',
-                    container: '.page-container'
-                });
+            signUp(item) {
+                console.log(item);
             },
-            deleteItem: function (item) {
-                var that = this;
-                confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
-                    if (isConfirm) {
-                        AJAX.DELETE('zsSurvey', item, function (resp) {
-                            toastr.success(resp.msg);
-                            that.pagequery();
-                        })
-
-                    } else {
-                        alert()
-                    }
-                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
-
+            details: function (item) {
+                sessionStorage.setItem('editParams', item.id);
+                toPage('pages/survey/details_det.html')
             }
         }
     });

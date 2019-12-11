@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.enums.ZsSurveyState;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsProject;
 import com.camel.survey.model.ZsQuestion;
@@ -25,6 +27,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -144,5 +147,19 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
         // 包装返回
         return ResultUtil.success(new ZsQuestionSave(questionList, optionList));
+    }
+
+    @Override
+    public Result start(Integer id) {
+        ZsSurvey survey = mapper.selectById(id);
+        if(!ObjectUtils.isEmpty(survey)) {
+            survey.setState(ZsSurveyState.COLLECTING);
+            if(updateById(survey)) {
+                return ResultUtil.success("问卷已经开始调查");
+            }else {
+                return ResultUtil.error(ResultEnum.RESOURCESNOTFOUND);
+            }
+        }
+        return ResultUtil.error(ResultEnum.RESOURCESNOTFOUND);
     }
 }

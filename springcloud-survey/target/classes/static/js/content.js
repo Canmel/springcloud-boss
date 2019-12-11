@@ -75,6 +75,7 @@ function animationHover(element, animation) {
 // };
 
 window.toPage = function(url) {
+    console.log(sessionStorage.getItem("currentPage"));
     $.pjax({
         url: mvm.applicationContextRootPath + url,
         container: '.page-container'
