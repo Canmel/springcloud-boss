@@ -8,6 +8,7 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.survey.enums.ZsStatus;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -60,6 +61,9 @@ public class Document extends BasePaginationEntity implements Serializable {
      * 文档类型
      */
     private String dtype;
+    /**
+     * 创建时间
+     */
     private Date createdAt;
     /**
      * 创建者
@@ -73,14 +77,13 @@ public class Document extends BasePaginationEntity implements Serializable {
     /**
      * 状态
      */
-    private Integer status;
+    private ZsStatus status;
 
     public Document() {
     }
 
-    public Document(Integer id, Integer status) {
+    public Document(Integer id, ZsStatus status) {
         this.id = id;
-        this.status = status;
     }
 
     public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator) {
@@ -94,7 +97,7 @@ public class Document extends BasePaginationEntity implements Serializable {
         this.creatorId = creator;
     }
 
-    public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator, Integer status) {
+    public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator, ZsStatus status) {
         this.id = id;
         this.dname = dname;
         this.address = address;

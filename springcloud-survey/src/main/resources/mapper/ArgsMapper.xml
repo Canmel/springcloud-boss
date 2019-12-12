@@ -8,7 +8,7 @@
         <result column="name" property="name" />
         <result column="value" property="value" />
         <result column="code" property="code" />
-        <result column="status" property="status" />
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt" />
         <result column="creator" property="creatorId" />
         <result column="update_at" property="updateAt" />

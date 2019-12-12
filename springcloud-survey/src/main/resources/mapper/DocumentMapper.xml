@@ -9,6 +9,8 @@
         <result column="dsize" property="dsize" jdbcType="INTEGER"></result>
         <result column="dtype" property="dtype" jdbcType="VARCHAR"></result>
         <result column="created_at" property="createdAt" jdbcType="DATE"></result>
+        <result column="status" property="status"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"></result>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -31,7 +33,7 @@
         FROM document
         <where>
             document.status = 1
-            <if test="dname">document.dname LIKE concat('%', #{dname} ,'%')</if>
+            <if test="dname">AND document.dname LIKE concat('%', #{dname} ,'%')</if>
         </where>
     </select>
 </mapper>

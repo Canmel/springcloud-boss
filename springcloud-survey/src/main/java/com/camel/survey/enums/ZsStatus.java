@@ -1,12 +1,8 @@
 package com.camel.survey.enums;
 
-import com.baomidou.mybatisplus.enums.IEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
 /**
  *
@@ -26,55 +22,58 @@ import java.util.Map;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <项目状态>
+ * <状态>
  * @author baily
  * @since 1.0
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsProjectStatus implements MyEnum {
+public enum ZsStatus implements MyEnum {
     INVALID(0, "无效"), CREATED(1, "创建");
 
-    private String name;
-    private Integer value;
+    /**
+     * 状态码
+     */
+    private Integer code;
 
-    ZsProjectStatus(Integer value, String name) {
+    /**
+     * 状态名称
+     */
+    private String name;
+
+    ZsStatus(Integer code, String name) {
+        this.code = code;
         this.name = name;
-        this.value = value;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     @Override
-    public Integer getValue() {
-        return value;
+    public Serializable getValue() {
+        return this.code;
     }
 
-    public Map getValueMap() {
-        Map map = new HashMap();
-        map.put("name", this.getName());
-        map.put("value", this.getValue());
-        return map;
-    }
-
-    public static List all() {
-        List list = new ArrayList<>();
-        for (ZsProjectStatus reimbursementStatus : ZsProjectStatus.values()) {
-            list.add(reimbursementStatus.getValueMap());
-        }
-        return list;
-    }
-
-    public static ZsProjectStatus getEnumByValue(Integer value) {
-        for (ZsProjectStatus resourceStatus : ZsProjectStatus.values()) {
-            if (resourceStatus.getValue().equals(value)) {
-                return resourceStatus;
+    public static ZsStatus getEnumByValue(Integer value) {
+        for (ZsStatus enums : ZsStatus.values()) {
+            if (enums.getValue().equals(value)) {
+                return enums;
             }
         }
         return null;
     }
-
-
 }

@@ -7,7 +7,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.config.QiNiuConfig;
-import com.camel.survey.enums.DocumentStatus;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.mapper.DocumentMapper;
 import com.camel.survey.model.Document;
 import com.camel.survey.service.DocumentService;
@@ -210,7 +210,7 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
      */
     @Override
     public Integer delete(Integer id) throws QiniuException {
-        Integer result = mapper.updateById(new Document(id, DocumentStatus.INVALID.getValue()));
+        Integer result = mapper.updateById(new Document(id, ZsStatus.INVALID));
         Document document = mapper.selectById(id);
         this.bucketManager().delete(BUCKET_NAME, document.getAddress());
         return result;

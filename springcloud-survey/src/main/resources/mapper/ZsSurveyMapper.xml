@@ -18,6 +18,9 @@
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <association property="project" column="project_id"
                      select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -35,7 +38,7 @@
             <if test="name != null and name != ''">
                 AND zs_survey.name like concat('%', #{name}, '%')
             </if>
-            <if test="state != null" >
+            <if test="state != null">
                 AND zs_survey.state = #{state.value}
             </if>
         </where>

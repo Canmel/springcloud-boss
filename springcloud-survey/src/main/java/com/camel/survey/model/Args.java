@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.survey.enums.ZsStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -55,7 +56,7 @@ public class Args extends BasePaginationEntity implements Serializable {
     private String code;
 
     @TableLogic
-    private Integer status;
+    private ZsStatus status;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date createdAt;
