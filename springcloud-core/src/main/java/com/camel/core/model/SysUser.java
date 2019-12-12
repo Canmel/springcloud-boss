@@ -136,6 +136,10 @@ public class SysUser extends BasePaginationEntity implements Serializable {
         this.uid = uid;
     }
 
+    public SysUser(Integer uid, String username) {
+        this.uid = uid;
+    }
+
     public SysUser() {
     }
 

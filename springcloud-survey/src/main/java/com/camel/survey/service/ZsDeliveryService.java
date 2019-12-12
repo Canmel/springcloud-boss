@@ -1,8 +1,7 @@
 package com.camel.survey.service;
 
+import com.camel.survey.model.ZsDelivery;
 import com.baomidou.mybatisplus.service.IService;
-import com.camel.core.entity.Result;
-import com.camel.survey.model.ZsExam;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
@@ -20,7 +19,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
  *               ┃     ┃   神兽保佑,代码无bug
  *               ┃     ┃　　　　　　　　　　　
  *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 服务类>
+ *               ┃     ┃        <考核投递记录 服务类>
  *               ┃     ┃　　　　　　　　　　　
  *               ┃     ┗━━━━┓   @author baily
  *               ┃          ┣┓
@@ -29,27 +28,11 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
  *                ┃┫┫    ┃┫┫    @date 2019-12-12
  *                ┗┻┛    ┗┻┛
  */
-public interface ZsExamService extends IService<ZsExam> {
+public interface ZsDeliveryService extends IService<ZsDelivery> {
     /**
      分页查询
      @param entity
      @return
      */
-    PageInfo<ZsExam> selectPage(ZsExam entity);
-
-    /**
-     * 新建
-     * @param entity
-     * @param oAuth2Authentication
-     * @return
-     */
-    Result save(ZsExam entity, OAuth2Authentication oAuth2Authentication);
-
-    /**
-     * 投递
-     * @param oAuth2Authentication
-     * @param id id
-     * @return
-     */
-    Result delivery(Integer id, OAuth2Authentication oAuth2Authentication);
+    PageInfo<ZsDelivery> selectPage(ZsDelivery entity);
 }

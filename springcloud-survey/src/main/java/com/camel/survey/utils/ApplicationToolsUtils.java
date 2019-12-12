@@ -4,6 +4,7 @@ import com.camel.common.entity.Member;
 import com.camel.core.model.SysUser;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.model.ZsSurveyBaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -71,5 +72,11 @@ public class ApplicationToolsUtils {
 
     public Member currentUser(OAuth2Authentication oAuth2Authentication) {
         return (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
+    }
+
+    public void setCurrentUser(ZsSurveyBaseEntity entity, OAuth2Authentication oAuth2Authentication){
+        Member member = currentUser(oAuth2Authentication);
+        entity.setCreatorId(member.getId());
+        entity.setCreator(new SysUser(member.getId(), member.getMemberName()));
     }
 }

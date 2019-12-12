@@ -39,7 +39,7 @@ import java.io.Serializable;
  * @date 2019-12-11
  **/
 @Data
-public class Document extends BasePaginationEntity implements Serializable {
+public class Document extends ZsSurveyBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,23 +61,6 @@ public class Document extends BasePaginationEntity implements Serializable {
      * 文档类型
      */
     private String dtype;
-    /**
-     * 创建时间
-     */
-    private Date createdAt;
-    /**
-     * 创建者
-     */
-    @TableField(exist = false)
-    private SysUser creator;
-
-    @TableField(value = "creator")
-    private Integer creatorId;
-
-    /**
-     * 状态
-     */
-    private ZsStatus status;
 
     public Document() {
     }
@@ -92,9 +75,9 @@ public class Document extends BasePaginationEntity implements Serializable {
         this.address = address;
         this.dsize = dsize;
         this.dtype = dtype;
-        this.createdAt = createdAt;
-        this.creator = new SysUser(creator);
-        this.creatorId = creator;
+        this.setCreatedAt(createdAt);
+        this.setCreator(new SysUser(creator));
+        this.setCreatorId(creator);
     }
 
     public Document(Integer id, String dname, String address, Double dsize, String dtype, Date createdAt, Integer creator, ZsStatus status) {
@@ -103,10 +86,10 @@ public class Document extends BasePaginationEntity implements Serializable {
         this.address = address;
         this.dsize = dsize;
         this.dtype = dtype;
-        this.createdAt = createdAt;
-        this.creator = new SysUser(creator);
-        this.status = status;
-        this.creatorId = creator;
+        this.setCreatedAt(createdAt);
+        this.setCreator(new SysUser(creator));
+        this.setCreatorId(creator);
+        this.setStatus(status);
     }
 
     public Document(String dname, String address, Double dsize, String dtype, Integer creator) {
@@ -114,8 +97,8 @@ public class Document extends BasePaginationEntity implements Serializable {
         this.address = address;
         this.dsize = dsize;
         this.dtype = dtype;
-        this.creator = new SysUser(creator);
-        this.creatorId = creator;
+        this.setCreator(new SysUser(creator));
+        this.setCreatorId(creator);
     }
 
     @Override
@@ -126,8 +109,6 @@ public class Document extends BasePaginationEntity implements Serializable {
                 ", address=" + address +
                 ", dsize=" + dsize +
                 ", dtype=" + dtype +
-                ", createdAt=" + createdAt +
-                ", creator=" + creator +
                 "}";
     }
 }

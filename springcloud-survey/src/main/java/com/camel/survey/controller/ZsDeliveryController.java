@@ -1,8 +1,8 @@
 package com.camel.survey.controller;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.survey.service.ZsExamService;
-import com.camel.survey.model.ZsExam;
+import com.camel.survey.service.ZsDeliveryService;
+import com.camel.survey.model.ZsDelivery;
 import com.camel.core.controller.BaseCommonController;
 
 import com.baomidou.mybatisplus.service.IService;
@@ -28,7 +28,7 @@ import java.util.List;
  *               ┃     ┃   神兽保佑,代码无bug
  *               ┃     ┃　　　　　　　　　　　
  *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 前端控制器>
+ *               ┃     ┃        <考核投递记录 前端控制器>
  *               ┃     ┃　　　　　　　　　　　
  *               ┃     ┗━━━━┓   @author baily
  *               ┃          ┣┓
@@ -38,18 +38,18 @@ import java.util.List;
  *                ┗┻┛    ┗┻┛
  */
 @RestController
-@RequestMapping("/zsExam")
-public class ZsExamController extends BaseCommonController {
+@RequestMapping("/zsDelivery")
+public class ZsDeliveryController extends BaseCommonController {
 
 
     @Autowired
-    private ZsExamService service;
+    private ZsDeliveryService service;
 
     /**
     * 分页查询
     */
     @GetMapping
-    public Result index(ZsExam entity) {
+    public Result index(ZsDelivery entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
 
@@ -65,15 +65,15 @@ public class ZsExamController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
-        return service.save(entity, oAuth2Authentication);
+    public Result save(@RequestBody ZsDelivery entity) {
+        return super.save(entity);
     }
 
     /**
      * 编辑 更新
      */
     @PutMapping
-    public Result update(@RequestBody ZsExam entity) {
+    public Result update(@RequestBody ZsDelivery entity) {
         return super.update(entity);
     }
 
@@ -83,11 +83,6 @@ public class ZsExamController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
-    }
-
-    @GetMapping("/delivery/{id}")
-    public Result delivery(OAuth2Authentication oAuth2Authentication, @PathVariable Integer id) {
-        return service.delivery(id, oAuth2Authentication);
     }
 
     /**

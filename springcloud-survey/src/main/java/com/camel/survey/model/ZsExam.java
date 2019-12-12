@@ -38,7 +38,7 @@ import java.util.Date;
  * @date 2019-12-12
  **/
 @Data
-public class ZsExam extends BasePaginationEntity implements Serializable {
+public class ZsExam extends ZsSurveyBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,31 +53,23 @@ public class ZsExam extends BasePaginationEntity implements Serializable {
     private String name;
 
     /**
-     * 创建人
+     * 描述信息
      */
-    @TableField(value = "creator")
-    private Integer creatorId;
+    private String desc;
 
-    @TableField(exist = false)
-    private SysUser creator;
-    /**
-     * 创建时间
-     */
-    private Date createdAt;
-    /**
-     * 状态
-     */
-    @TableLogic
-    private ZsStatus status;
+    public ZsExam() {
+    }
+
+    public ZsExam(Integer id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
         return "ZsExam{" +
                 ", id=" + id +
                 ", name=" + name +
-                ", creator=" + creator +
-                ", createdAt=" + createdAt +
-                ", status=" + status +
+                ", desc=" + desc +
                 "}";
     }
 }

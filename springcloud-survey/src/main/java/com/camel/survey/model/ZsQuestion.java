@@ -40,7 +40,7 @@ import java.io.Serializable;
  * @date 2019-12-09
  **/
 @Data
-public class ZsQuestion extends BasePaginationEntity implements Serializable {
+public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -65,20 +65,6 @@ public class ZsQuestion extends BasePaginationEntity implements Serializable {
     /**
      * 状态
      */
-    @TableLogic
-    private ZsStatus status;
-    /**
-     * 创建时间
-     */
-    @TableField("createdAt")
-    private Date createdAt;
-
-    @TableField(value = "creator")
-    private Integer creatorId;
-
-    @TableField(exist = false)
-    private SysUser creator;
-
     public ZsQuestion() {
     }
 
@@ -90,9 +76,6 @@ public class ZsQuestion extends BasePaginationEntity implements Serializable {
                 ", orderNum=" + orderNum +
                 ", surveyId=" + surveyId +
                 ", type=" + type +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", creator=" + creator +
                 "}";
     }
 }

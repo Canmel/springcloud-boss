@@ -3,12 +3,13 @@ package com.camel.survey.model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-import com.camel.survey.enums.ZsSurveyCollectType;
-import com.camel.survey.enums.ZsSurveyState;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.camel.core.entity.BasePaginationEntity;
+import com.camel.survey.enums.ZsAches;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -30,14 +31,13 @@ import java.io.Serializable;
  *     ...:::           ::::::::::::'              ``::.
  *    ```` ':.          ':::::::::'                  ::::..
  *                       '.:::::'                    ':'````..
- * < 服务实现类>
+ * <考核投递记录 服务实现类>
  * @author baily
  * @since 1.0
- * @date 2019-12-06
+ * @date 2019-12-12
  **/
 @Data
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
+public class ZsDelivery extends ZsSurveyBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,44 +47,38 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
-     * 名称
+     * 考试ID
      */
-    private String name;
+    private Integer examId;
 
     /**
-     * 所属项目
+     * 考试ID
      */
     @TableField(exist = false)
-    private ZsProject project;
+    private ZsExam exam;
 
     /**
-     * 所属项目ID
+     * 成绩
      */
-    private Integer projectId;
-    /**
-     * 目标收集份数
-     */
-    private Integer collectNum;
-    /**
-     * 已收集份数
-     */
-    private Integer currentNum;
+    private ZsAches ach;
 
-    /**
-     * 收集方式
-     */
-    private ZsSurveyCollectType collectType;
+    @TableField(exist = false)
+    private ZsYesOrNo isDelivery;
 
-    private ZsSurveyState state;
+    public ZsDelivery() {
+    }
+
+    public ZsDelivery(Integer examId) {
+        this.examId = examId;
+        this.setExam(new ZsExam(examId));
+    }
 
     @Override
     public String toString() {
-        return "ZsSurvey{" +
+        return "ZsDelivery{" +
                 ", id=" + id +
-                ", name=" + name +
-                ", projectId=" + projectId +
-                ", collectNum=" + collectNum +
-                ", currentNum=" + currentNum +
+                ", examId=" + examId +
+                ", ach=" + ach +
                 "}";
     }
 }

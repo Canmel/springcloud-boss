@@ -7,6 +7,7 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="creator" property="creatorId"/>
+        <result column="desc" property="desc"/>
         <result column="created_at" property="createdAt"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
@@ -16,7 +17,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, creator, created_at, status
+        id, name, creator, created_at, status, `desc`
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

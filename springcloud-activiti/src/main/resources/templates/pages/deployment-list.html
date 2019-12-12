@@ -75,7 +75,6 @@
                     AJAX.GET("../deployments", null
                         , function (result) {
                             vm.deployments = result['data']['list'];
-                            console.log(123);
                             vm.pages = result['data']['count']%10 === 0 ? Math.floor(result['data']['count'] / 10) : Math.ceil(result['data']['count'] / 10);
                         });
                 },
