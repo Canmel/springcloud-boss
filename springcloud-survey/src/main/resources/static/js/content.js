@@ -74,8 +74,8 @@ function animationHover(element, animation) {
 //         .disableSelection();
 // };
 
-window.toPage = function(url) {
-    console.log(sessionStorage.getItem("currentPage"));
+window.toPage = function(url, params) {
+    sessionStorage.setItem('editParams', params);
     $.pjax({
         url: mvm.applicationContextRootPath + url,
         container: '.page-container'

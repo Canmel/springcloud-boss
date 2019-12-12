@@ -35,7 +35,7 @@ public interface ZsExamService extends IService<ZsExam> {
      @param entity
      @return
      */
-    PageInfo<ZsExam> selectPage(ZsExam entity);
+    PageInfo<ZsExam> selectPage(ZsExam entity, OAuth2Authentication oAuth2Authentication);
 
     /**
      * 新建
@@ -47,6 +47,8 @@ public interface ZsExamService extends IService<ZsExam> {
 
     /**
      * 投递
+     * 如果有投递过，并且投递记录的状态还在投递中，就不允许投递
+     * 没有投递过就可以投递
      * @param oAuth2Authentication
      * @param id id
      * @return

@@ -62,9 +62,6 @@ public class ZsDelivery extends ZsSurveyBaseEntity implements Serializable {
      */
     private ZsAches ach;
 
-    @TableField(exist = false)
-    private ZsYesOrNo isDelivery;
-
     public ZsDelivery() {
     }
 

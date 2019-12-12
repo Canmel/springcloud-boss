@@ -9,6 +9,8 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.enums.ZsAches;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.model.ZsDelivery;
 import com.camel.survey.model.ZsExam;
@@ -21,6 +23,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -61,10 +66,27 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
-    public PageInfo<ZsExam> selectPage(ZsExam entity) {
+    public PageInfo<ZsExam> selectPage(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
+        Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
+        Wrapper<ZsDelivery> wrapper = new EntityWrapper();
+        wrapper.eq("creator", member.getId());
+        wrapper.eq("ach", ZsAches.APPLY.getValue());
+        List<ZsDelivery> deliveries = deliveryService.selectList(wrapper);
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
+
+        List<ZsExam> zsExams = pageInfo.getList();
+        if(!CollectionUtils.isEmpty(pageInfo.getList())) {
+            zsExams.forEach(zsExam -> {
+                zsExam.setIsDelivery(ZsYesOrNo.NO);
+                deliveries.forEach(delivery -> {
+                    if(delivery.getExamId().equals(zsExam.getId())) {
+                        zsExam.setIsDelivery(ZsYesOrNo.YES);
+                    }
+                });
+            });
+        }
         return pageInfo;
     }
 
@@ -83,6 +105,7 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
         Wrapper<ZsDelivery> deliveryWrapper = new EntityWrapper<>();
         deliveryWrapper.eq("id", id);
         deliveryWrapper.eq("creator", member.getId());
+        deliveryWrapper.eq("ach", ZsAches.APPLY.getValue());
         if (deliveryService.selectCount(deliveryWrapper) > 0) {
             return ResultUtil.success("已经报名,无需重复提交");
         }
@@ -94,4 +117,5 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
         }
         return ResultUtil.error(ResultEnum.BAD_REQUEST);
     }
+
 }

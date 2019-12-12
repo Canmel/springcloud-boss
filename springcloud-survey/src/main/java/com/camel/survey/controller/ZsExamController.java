@@ -1,4 +1,5 @@
 package com.camel.survey.controller;
+import com.camel.survey.model.ZsDelivery;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.survey.service.ZsExamService;
@@ -49,8 +50,8 @@ public class ZsExamController extends BaseCommonController {
     * 分页查询
     */
     @GetMapping
-    public Result index(ZsExam entity) {
-        return ResultUtil.success(service.selectPage(entity));
+    public Result index(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
+        return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
 
     /**

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
 import com.camel.survey.enums.ZsStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -30,7 +31,8 @@ public class ZsSurveyBaseEntity extends BasePaginationEntity {
     /**
      * 创建时间
      */
-    @TableField("createdAt")
+    @TableField("created_at")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date createdAt;
 
     public ZsSurveyBaseEntity(Integer pageNum, Integer pageSize, Integer creatorId, SysUser creator, ZsStatus status, Date createdAt) {

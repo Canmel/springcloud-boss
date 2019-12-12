@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -48,6 +50,10 @@ public class ZsDeliveryServiceImpl extends ServiceImpl<ZsDeliveryMapper, ZsDeliv
     public PageInfo<ZsDelivery> selectPage(ZsDelivery entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
+        });
+        List<ZsDelivery> deliveries = pageInfo.getList();
+        deliveries.forEach(zsDelivery -> {
+            zsDelivery.setCreator(applicationToolsUtils.getUser(zsDelivery.getCreatorId()));
         });
         return pageInfo;
     }

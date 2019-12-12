@@ -28,7 +28,7 @@
         <where>
             status = 1
             <if test="name != null and name != ''">
-                AND name lick concat('%', #{name}, '%')
+                AND name like concat('%', #{name}, '%')
             </if>
         </where>
     </select>

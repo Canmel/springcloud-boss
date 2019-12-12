@@ -19,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, order_num, survey_id, type, status, createdAt AS createdAt, creator
+        id, name, order_num, survey_id, type, status, created_at, creator
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

@@ -25,5 +25,14 @@
          <include refid="Base_Column_List"></include>
         from
         zs_delivery
+        <where>
+            status = 1
+            <if test="examId != null">
+                AND exam_id = #{examId}
+            </if>
+            <if test="ach != null">
+                AND ach = #{ach.value}
+            </if>
+        </where>
     </select>
 </mapper>

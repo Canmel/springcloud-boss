@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -56,6 +57,9 @@ public class ZsExam extends ZsSurveyBaseEntity implements Serializable {
      * 描述信息
      */
     private String desc;
+
+    @TableField(exist = false)
+    private ZsYesOrNo isDelivery;
 
     public ZsExam() {
     }

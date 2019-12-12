@@ -4,15 +4,15 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.Args">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="value" property="value" />
-        <result column="code" property="code" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="value" property="value"/>
+        <result column="code" property="code"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="created_at" property="createdAt" />
-        <result column="creator" property="creatorId" />
-        <result column="update_at" property="updateAt" />
-        <result column="updator" property="updatorId" />
+        <result column="created_at" property="createdAt"/>
+        <result column="creator" property="creatorId"/>
+        <result column="update_at" property="updateAt"/>
+        <result column="updator" property="updatorId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -22,11 +22,14 @@
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         args
         <where>
             status = 1
+            <if test="name != null">
+                AND name like concat('%', #{name}, '%')
+            </if>
         </where>
     </select>
 </mapper>
