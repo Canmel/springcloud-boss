@@ -76,7 +76,10 @@ logging:
     com:
       camel:
         system: DEBUG
-
+qiniu:
+  acount:
+    access_key: ${ACCESS_KEY}
+    secret_key: ${SECRET_KEY}
 
 mybatis:
   type-handlers-package: com.camel.survey.enumhandler
