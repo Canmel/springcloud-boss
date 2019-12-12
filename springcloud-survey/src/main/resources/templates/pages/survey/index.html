@@ -43,19 +43,19 @@
                         <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span>
                         </td>
                         <td>
-                            <span class="badge badge-primary" v-if="item.state.value === 1">{{item.state.name}}</span>
-                            <span class="badge badge-danger" v-if="item.state.value === 2">{{item.state.name}}</span>
-                        </td>
-                        <td>{{item.creator.username}}</td>
+                            <span class="badge badge-primary" v-if="item.state ? item.state.value === 1 : false">{{item.state.name}}</span>
+                            <span class="badge badge-danger" v-if="item.state ? item.state.value === 2 : false">{{item.state.name}}</span>
+                        </td>username
+                        <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" v-if="item.state.value === 1"
+                            <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false"
                                     class="btn btn-primary btn-xs">修改
                             </button>
-                            <button type="button" v-on:click="start(item)" v-if="item.state.value === 1"
+                            <button type="button" v-on:click="start(item)" v-if="item.state ? item.state.value === 1 : false"
                                     class="btn btn-success btn-xs">开始调查
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state.value === 1"
+                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false"
                                     class="btn btn-danger btn-xs">删除
                             </button>
                     </tr>
@@ -85,7 +85,7 @@
             items: [{}]
         },
         created: function () {
-            this.pagequery();
+            // this.pagequery();
         },
         methods: {
             start: function (item) {
@@ -101,8 +101,7 @@
 
             },
             projectDetails: function (item) {
-                sessionStorage.setItem('editParams', item.projectId);
-                toPage("pages/project/details.html");
+                toPage("pages/project/details.html", item.projectId);
             },
             pagequery: function () {
                 var that = this;
