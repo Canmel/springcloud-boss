@@ -21,7 +21,7 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
-        <collection property="examList" column="id" select="com.camel.survey.mapper.ZsExamMapper.listByProjectId"></collection>
+        <collection property="examList" column="id" select="com.camel.survey.mapper.ZsExamMapper.listBySurveyId"></collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -45,5 +45,12 @@
         </where>
     </select>
 
-
+    <select id="find" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        FROM
+        <where>
+            id = #{id}
+        </where>
+    </select>
 </mapper>

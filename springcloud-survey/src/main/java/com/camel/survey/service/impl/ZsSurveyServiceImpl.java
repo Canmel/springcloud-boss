@@ -10,12 +10,11 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsSurveyState;
+import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.mapper.ZsSurveyMapper;
-import com.camel.survey.service.RelSurveyExamService;
-import com.camel.survey.service.ZsOptionService;
-import com.camel.survey.service.ZsQuestionService;
-import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.service.*;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -71,6 +70,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Autowired
     private ZsOptionService optionService;
+
+    @Autowired
+    private ZsExamMapper zsExamMapper;
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
@@ -189,9 +191,20 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     }
 
     @Override
-    public Result sign(OAuth2Authentication oAuth2Authentication) {
+    public Result sign(Integer id, OAuth2Authentication oAuth2Authentication) {
         Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
+        List<ZsExam> zsExams = zsExamMapper.listBySurveyId(id);
+        List<ZsExam> userExams = zsExamMapper.listByUserId(member.getId());
 
-        return ResultUtil.success("");
+        if(CollectionUtils.isEmpty(zsExams)) {
+            throw new SourceDataNotValidException("您选择了一条没有限制的问卷，这是一条不正确的数据，请联系管理员");
+        }
+        if(CollectionUtils.isEmpty(userExams)) {
+            return ResultUtil.success("投递失败，您没有获取相关等级权限！");
+        }
+        if(userExams.containsAll(zsExams)) {
+
+        }
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR);
     }
 }

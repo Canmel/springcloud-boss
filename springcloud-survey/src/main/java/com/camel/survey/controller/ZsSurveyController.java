@@ -117,9 +117,9 @@ public class ZsSurveyController extends BaseCommonController {
      * 申请参加
      * @return
      */
-    @GetMapping
-    public Result sign(OAuth2Authentication oAuth2Authentication) {
-        return service.sign(oAuth2Authentication);
+    @GetMapping("/sign/{id}")
+    public Result sign(@PathVariable Integer id, OAuth2Authentication oAuth2Authentication) {
+        return service.sign(id, oAuth2Authentication);
     }
 
 

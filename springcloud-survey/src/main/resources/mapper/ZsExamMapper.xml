@@ -33,7 +33,7 @@
         </where>
     </select>
 
-    <select id="listByProjectId" resultMap="BaseResultMap">
+    <select id="listBySurveyId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         from
@@ -44,4 +44,18 @@
             )
         </where>
     </select>
+
+
+    <select id="listByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_exam
+        <where>
+            id in (
+              select exam_id from zs_delivery where status = 1 and ach = 1 and creator = #{id}
+            )
+        </where>
+    </select>
+
 </mapper>

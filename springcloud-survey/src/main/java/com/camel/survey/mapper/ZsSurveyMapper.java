@@ -22,4 +22,6 @@ public interface ZsSurveyMapper extends BaseMapper<ZsSurvey> {
      * @return
      */
     List<ZsSurvey> list(ZsSurvey entity);
+
+    ZsSurvey find(Integer id);
 }

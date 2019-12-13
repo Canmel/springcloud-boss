@@ -78,5 +78,5 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      * @param oAuth2Authentication
      * @return
      */
-    Result sign(OAuth2Authentication oAuth2Authentication);
+    Result sign(Integer id, OAuth2Authentication oAuth2Authentication);
 }

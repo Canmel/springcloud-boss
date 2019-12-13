@@ -23,5 +23,7 @@ public interface ZsExamMapper extends BaseMapper<ZsExam> {
      */
     List<ZsExam> list(ZsExam entity);
 
-    List<ZsExam> listByProjectId(Integer id);
+    List<ZsExam> listBySurveyId(Integer id);
+
+    List<ZsExam> listByUserId(Integer id);
 }
