@@ -75,7 +75,9 @@ function animationHover(element, animation) {
 // };
 
 window.toPage = function(url, params) {
-    sessionStorage.setItem('editParams', params);
+    if(params) {
+        sessionStorage.setItem('editParams', params);
+    }
     $.pjax({
         url: mvm.applicationContextRootPath + url,
         container: '.page-container'

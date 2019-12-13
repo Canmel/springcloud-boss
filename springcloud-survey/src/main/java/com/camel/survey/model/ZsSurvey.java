@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -76,6 +77,12 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     private ZsSurveyCollectType collectType;
 
     private ZsSurveyState state;
+
+    /**
+     * 所需要通过的考核
+     */
+    @TableField(exist = false)
+    public List<String> exams;
 
     @Override
     public String toString() {

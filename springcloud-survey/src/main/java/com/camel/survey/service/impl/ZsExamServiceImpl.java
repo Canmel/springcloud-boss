@@ -10,6 +10,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsAches;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.model.ZsDelivery;
@@ -118,4 +119,10 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
         return ResultUtil.error(ResultEnum.BAD_REQUEST);
     }
 
+    @Override
+    public Result all() {
+        Wrapper<ZsExam> examWrapper = new EntityWrapper<>();
+        examWrapper.eq("status", ZsStatus.CREATED.getValue());
+        return ResultUtil.success(selectList(examWrapper));
+    }
 }

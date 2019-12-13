@@ -54,4 +54,10 @@ public interface ZsExamService extends IService<ZsExam> {
      * @return
      */
     Result delivery(Integer id, OAuth2Authentication oAuth2Authentication);
+
+    /**
+     * 查询所有考核作为选项
+     * @return
+     */
+    Result all();
 }

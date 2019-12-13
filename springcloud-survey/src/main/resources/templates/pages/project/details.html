@@ -94,7 +94,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">新建调查问卷</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{edit_mode ? '编辑' : '新建'}}调查问卷</h4>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal m-t" id="signupForm">
@@ -126,6 +126,14 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">考核资格：</label>
+                            <div class="col-sm-8">
+                                <select  id="usertype" multiple class="form-control" v-model="new_survey.exams">
+                                    <option :value="item.id + ''" v-for="(item, index) in exams_options" >{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group" v-if="edit_mode">
                             <label class="col-sm-3 control-label">已收集：</label>
                             <div class="col-sm-8">
@@ -164,15 +172,24 @@
                 name: '',
                 projectId: '',
                 collectNum: '',
-                collectType: 1
+                collectType: 1,
+                exams: []
             },
-            edit_mode: false
+            edit_mode: false,
+            exams_options: []
         },
         created: function () {
+            this.loadExam();
             this.loadEntity();
             this.loadProjects();
         },
         methods: {
+            loadExam() {
+                var that = this;
+                AJAX.GET('zsExam/all', {}, function (resp) {
+                    that.exams_options = resp.data;
+                })
+            },
             backToList() {
                 toPage('pages/project/index.html');
             },
@@ -180,8 +197,6 @@
                 var that = this;
                 AJAX.GET('zsProject/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.zs_project = resp.data;
-                    // that.zs_project.status = $.parseJSON(that.zs_project.status);
-                    console.log(that.zs_project)
                 })
             },
             loadProjects() {
@@ -204,6 +219,7 @@
                     alert("总收集份数不能小于已收集份数");
                     return false;
                 }
+                console.log(this.new_survey)
                 if (this.edit_mode) {
                     var that = this;
                     delete this.new_survey.currentNum;
@@ -216,11 +232,12 @@
                 } else {
                     var that = this;
                     this.new_survey.projectId = this.zs_project.id;
-                    AJAX.POST('zsSurvey', this.new_survey, function (resp) {
-                        toastr.success(resp.msg);
-                        $("#myModal").modal("hide");
-                        that.loadProjects();
-                    });
+                    AJAX.POST_JSON('zsSurvey', this.new_survey
+                        , function (resp) {
+                            toastr.success(resp.msg);
+                            $("#myModal").modal("hide");
+                            that.loadProjects();
+                        });
                 }
             },
             editSurvey(item) {
@@ -232,7 +249,8 @@
                     name: item.name,
                     collectNum: item.collectNum,
                     currentNum: item.currentNum,
-                    collectType: item.collectType.value
+                    collectType: item.collectType.value,
+                    exams: item.exams
                 }
             },
             resetForm() {

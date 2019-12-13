@@ -67,7 +67,7 @@ public class ZsSurveyController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
+    public Result save(@RequestBody ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }
 

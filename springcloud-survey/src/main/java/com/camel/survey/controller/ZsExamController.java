@@ -50,7 +50,7 @@ public class ZsExamController extends BaseCommonController {
     * 分页查询
     */
     @GetMapping
-    public Result index(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
+    public Result serviceindex(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
 
@@ -89,6 +89,11 @@ public class ZsExamController extends BaseCommonController {
     @GetMapping("/delivery/{id}")
     public Result delivery(OAuth2Authentication oAuth2Authentication, @PathVariable Integer id) {
         return service.delivery(id, oAuth2Authentication);
+    }
+
+    @GetMapping("/all")
+    public Result all(){
+        return service.all();
     }
 
     /**
