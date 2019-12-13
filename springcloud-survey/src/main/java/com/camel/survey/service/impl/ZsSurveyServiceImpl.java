@@ -75,6 +75,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     private ZsExamMapper zsExamMapper;
 
     @Autowired
+    private ZsSignService zsSignService;
+
+    @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Autowired
@@ -193,6 +196,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Result sign(Integer id, OAuth2Authentication oAuth2Authentication) {
         Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
+        if(isSigned(id, member.getId())) {
+            return ResultUtil.success("您已经投递过了，无需重复提交");
+        }
         List<ZsExam> zsExams = zsExamMapper.listBySurveyId(id);
         List<ZsExam> userExams = zsExamMapper.listByUserId(member.getId());
 
@@ -203,8 +209,20 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             return ResultUtil.success("投递失败，您没有获取相关等级权限！");
         }
         if(userExams.containsAll(zsExams)) {
-
+            if(zsSignService.insert(new ZsSign(id, member.getMemberName(), member.getId()))) {
+                return ResultUtil.success("投递成功");
+            }
+        }else {
+            return ResultUtil.success("投递失败，您没有获取相关等级权限！");
         }
         return ResultUtil.error(ResultEnum.SERVICE_ERROR);
+    }
+
+    public Boolean isSigned(Integer surveyId, Integer userId){
+        Wrapper<ZsSign> signWrapper = new EntityWrapper<>();
+        signWrapper.eq("survey_id", surveyId);
+        signWrapper.eq("status", ZsSurveyState.CREATED);
+        signWrapper.eq("creator", userId);
+        return zsSignService.selectCount(signWrapper) > 0;
     }
 }

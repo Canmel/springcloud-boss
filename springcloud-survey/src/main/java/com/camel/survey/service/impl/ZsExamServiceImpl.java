@@ -104,7 +104,7 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
     public Result delivery(Integer id, OAuth2Authentication oAuth2Authentication) {
         Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
         Wrapper<ZsDelivery> deliveryWrapper = new EntityWrapper<>();
-        deliveryWrapper.eq("id", id);
+        deliveryWrapper.eq("exam_id", id);
         deliveryWrapper.eq("creator", member.getId());
         deliveryWrapper.eq("ach", ZsAches.APPLY.getValue());
         if (deliveryService.selectCount(deliveryWrapper) > 0) {

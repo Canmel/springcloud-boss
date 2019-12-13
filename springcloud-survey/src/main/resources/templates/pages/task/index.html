@@ -128,8 +128,10 @@
                 this.pagequery();
             },
             signUp(item) {
-                AJAX.GET('zsSurvey/sign', {}, function (resp) {
-
+                var that = this;
+                AJAX.GET('zsSurvey/sign/' + item.id, {}, function (resp) {
+                    toastr.success(resp.msg);
+                    that.pagequery();
                 });
             },
             details: function (item) {
