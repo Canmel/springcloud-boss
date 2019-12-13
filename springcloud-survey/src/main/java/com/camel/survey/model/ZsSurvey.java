@@ -3,6 +3,7 @@ package com.camel.survey.model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsSurveyCollectType;
 import com.camel.survey.enums.ZsSurveyState;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -82,7 +83,22 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
      * 所需要通过的考核
      */
     @TableField(exist = false)
-    public List<String> exams;
+    public List<Integer> exams;
+
+    @TableField(exist = false)
+    public List<ZsExam> examList;
+
+    public ZsSurvey(Integer id) {
+        this.id = id;
+    }
+
+    public ZsSurvey() {
+    }
+
+    public ZsSurvey(Integer projectId, ZsStatus status) {
+        this.projectId = projectId;
+        setStatus(status);
+    }
 
     @Override
     public String toString() {

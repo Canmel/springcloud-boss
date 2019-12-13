@@ -32,4 +32,16 @@
             </if>
         </where>
     </select>
+
+    <select id="listByProjectId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_exam
+        <where>
+            status = 1 and id in(
+              select exam_id from rel_survey_exam where status = 1 and survey_id = #{id}
+            )
+        </where>
+    </select>
 </mapper>

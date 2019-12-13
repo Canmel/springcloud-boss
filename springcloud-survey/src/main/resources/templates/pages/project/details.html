@@ -39,7 +39,7 @@
                 </div>
                 <div class="ibox-content">
 
-                    <div class="row">
+                    <div class="row" style="height: 500px; overflow-y: scroll;">
                         <div class="col-sm-4" v-for="(item, index) in surveies">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -130,7 +130,7 @@
                             <label class="col-sm-3 control-label">考核资格：</label>
                             <div class="col-sm-8">
                                 <select  id="usertype" multiple class="form-control" v-model="new_survey.exams">
-                                    <option :value="item.id + ''" v-for="(item, index) in exams_options" >{{item.name}}</option>
+                                    <option :value="item.id" v-for="(item, index) in exams_options" >{{item.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -242,6 +242,12 @@
             },
             editSurvey(item) {
                 console.log(item);
+                item.exams = [];
+                if(item.examList) {
+                    item.examList.forEach(function (d) {
+                        item.exams.push(d.id);
+                    });
+                }
                 $("#myModal").modal('show');
                 this.edit_mode = true;
                 this.new_survey = {

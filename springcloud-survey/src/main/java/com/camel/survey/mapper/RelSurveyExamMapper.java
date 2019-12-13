@@ -1,6 +1,6 @@
 package com.camel.survey.mapper;
 
-import com.camel.survey.model.ZsExam;
+import com.camel.survey.model.RelSurveyExam;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -11,17 +11,15 @@ import java.util.List;
  * </p>
  *
  * @author baily
- * @since 2019-12-12
+ * @since 2019-12-13
  */
 @Repository
-public interface ZsExamMapper extends BaseMapper<ZsExam> {
+public interface RelSurveyExamMapper extends BaseMapper<RelSurveyExam> {
 
     /**
      * 查询列表
      * @param entity
      * @return
      */
-    List<ZsExam> list(ZsExam entity);
-
-    List<ZsExam> listByProjectId(Integer id);
+    List<RelSurveyExam> list(RelSurveyExam entity);
 }
