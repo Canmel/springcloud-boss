@@ -1,15 +1,10 @@
 package com.camel.survey.service;
 
-import com.camel.core.entity.Result;
-import com.camel.core.utils.ResultUtil;
-import com.camel.survey.model.ZsProject;
-import com.camel.survey.model.ZsSurvey;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.entity.Result;
+import com.camel.survey.model.ZsSurvey;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.util.ObjectUtils;
-
-import java.io.Serializable;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -71,5 +66,17 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      */
     Result start(Integer id);
 
+    /**
+     * 重写修改
+     * @param zsSurvey
+     * @return
+     */
     Result update(ZsSurvey zsSurvey);
+
+    /**
+     * 申请报名参加调查问卷
+     * @param oAuth2Authentication
+     * @return
+     */
+    Result sign(OAuth2Authentication oAuth2Authentication);
 }

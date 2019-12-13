@@ -187,4 +187,11 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
         return ResultUtil.success("修改失败");
     }
+
+    @Override
+    public Result sign(OAuth2Authentication oAuth2Authentication) {
+        Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
+
+        return ResultUtil.success("");
+    }
 }
