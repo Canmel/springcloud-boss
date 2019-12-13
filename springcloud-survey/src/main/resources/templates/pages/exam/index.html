@@ -42,7 +42,7 @@
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
                             <button type="button" v-on:click="delivery(item)" v-if="item.isDelivery ? item.isDelivery.value !== 1 : true" class="btn btn-success btn-xs">
-                                投递
+                                申请考核
                             </button>
                             <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs">
                                 修改

@@ -29,7 +29,6 @@
                         <th>所属项目</th>
                         <th>状态</th>
                         <th>创建人</th>
-                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -45,7 +44,6 @@
                             <span class="badge badge-danger" v-if="item.status ? item.state.value === 2 : false">{{item.state.name}}</span>
                         </td>
                         <td>{{item.creator ? item.creator.username : ''}}</td>
-                        <td>{{item.createdAt | formatDate}}</td>
                         <td>
 
                             <span class="fa fa-question-circle" title="这里是提示内容" style="cursor: pointer;" v-on:click="showRequire(item)"></span>

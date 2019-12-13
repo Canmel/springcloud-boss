@@ -88,6 +88,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public List<SysUser> all() {
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
+        // TODO 去除密码项
         return mapper.selectList(userWrapper);
     }
 
