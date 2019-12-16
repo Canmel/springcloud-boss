@@ -1,8 +1,10 @@
 package com.camel.survey.service.impl;
 
 import com.camel.common.entity.Member;
+import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsDelivery;
 import com.camel.survey.mapper.ZsDeliveryMapper;
+import com.camel.survey.model.ZsExam;
 import com.camel.survey.service.ZsDeliveryService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
@@ -56,5 +58,10 @@ public class ZsDeliveryServiceImpl extends ServiceImpl<ZsDeliveryMapper, ZsDeliv
             zsDelivery.setCreator(applicationToolsUtils.getUser(zsDelivery.getCreatorId()));
         });
         return pageInfo;
+    }
+
+    @Override
+    public Result save(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
+        return null;
     }
 }

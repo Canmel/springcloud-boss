@@ -338,30 +338,26 @@
                                                 <th>序号</th>
                                                 <th>联系人</th>
                                                 <th>手机号</th>
-                                                <th>创建时间</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-for="(item, index) in cancats">
+                                            <tr v-for="(item, index) in concats">
                                                 <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                                                <td><span class="click-span"
-                                                          v-on:click="details(item)">{{item.name}}</span></td>
-                                                <td>{{item.code}}</td>
-                                                <td>{{item.creator.username}}</td>
-                                                <td>{{item.createdAt | formatDate}}</td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.phone}}</td>
                                                 <td>
-                                                    <button type="button" v-on:click="edit(item)"
-                                                            class="btn btn-primary btn-xs">修改
-                                                    </button>
-                                                    <button type="button" v-on:click="deleteItem(item)"
+                                                    <button type="button"
                                                             class="btn btn-danger btn-xs">删除
                                                     </button>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
+
                                     </div>
+                                    <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                                                 :changge="pageFn"></pageination>
                                 </div>
                             </div>
                             <div id="tab-2" class="tab-pane">
@@ -379,6 +375,8 @@
                                                 <input name="phone" class="form-control" type="text" v-model="concat.phone">
                                             </div>
                                         </div>
+
+                                        <button type="button" class="btn btn-success" v-on:click="saveConcat()">提交</button>
                                     </form>
                                 </div>
                             </div>
@@ -413,8 +411,9 @@
                 zsQuestions: [],
                 zsOptions: []
             },
-            cancats: [],
+            concats: [],
             pageInfo: {
+                surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -422,7 +421,7 @@
             concat: {
                 name: '',
                 phones: '',
-                surveyId: ''
+                surveyId: sessionStorage.getItem('editParams')
             }
         },
         watch: {
@@ -431,6 +430,31 @@
         },
         computed: {},
         methods: {
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pageQuery();
+            },
+            pageQuery() {
+                var that = this;
+                AJAX.GET('zsConcat', this.pageInfo, function (resp) {
+                    that.concats = resp.data.list;
+                })
+            },
+            saveConcat() {
+                var that = this;
+                if(!$("#signupForm").valid()){
+                    return false;
+                }
+                AJAX.POST('zsConcat', this.concat, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.pageQuery();
+                    that.concat = {
+                        name: '',
+                        phones: '',
+                        surveyId: sessionStorage.getItem('editParams')
+                    };
+                })
+            },
             contacts(survey) {
                 console.log(survey);
                 this.concat.surveyId = survey.id;
@@ -744,6 +768,39 @@
             this.bindEvent();
             this.loadQuestions();
         }
+    });
+
+    $().ready(function () {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                phone: {
+                    required: true,
+                    isMobile: true
+                }
+            },
+            messages: {
+                name: {
+                    required: icon + "请输入联系人"
+                },
+                phone: {
+                    required: icon + "请输入手机号",
+                    isMobile: icon + "请输入有效的手机号"
+                }
+            }
+        });
+
+        // propose username by combining first- and lastname
+        $("#username").focus(function () {
+            var firstname = $("#firstname").val();
+            var lastname = $("#lastname").val();
+            if (firstname && lastname && !this.value) {
+                this.value = firstname + "." + lastname;
+            }
+        });
     });
 
 

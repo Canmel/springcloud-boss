@@ -1,4 +1,5 @@
 package com.camel.survey.controller;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.survey.service.ZsConcatService;
 import com.camel.survey.model.ZsConcat;
@@ -64,8 +65,8 @@ public class ZsConcatController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody ZsConcat entity) {
-        return super.save(entity);
+    public Result save(ZsConcat entity, OAuth2Authentication oAuth2Authentication) {
+        return service.save(entity, oAuth2Authentication);
     }
 
     /**

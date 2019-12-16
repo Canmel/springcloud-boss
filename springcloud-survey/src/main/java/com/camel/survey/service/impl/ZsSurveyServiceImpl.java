@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsQuestionSave;
+import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -81,6 +82,12 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Autowired
     private RelSurveyExamService relSurveyExamService;
+
+    @Autowired
+    private ZsConcatService zsConcatService;
+
+    @Autowired
+    private ZsSmsService zsSmsService;
 
     @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
@@ -172,8 +179,10 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public Result start(Integer id) {
         ZsSurvey survey = mapper.selectById(id);
         if (!ObjectUtils.isEmpty(survey)) {
-            if (ObjectUtils.isEmpty(survey.getCollectType()) && survey.getCollectType().getValue().equals(ZsSurveyCollectType.SMS.getValue())) {
-                sendMessage(id);
+            if (!ObjectUtils.isEmpty(survey.getCollectType()) && survey.getCollectType().getValue().equals(ZsSurveyCollectType.SMS.getValue())) {
+                String content = "我是一个内容试试：";
+                sendMessage(id, content);
+                return null;
             }
             survey.setState(ZsSurveyState.COLLECTING);
             if (updateById(survey)) {
@@ -253,7 +262,14 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
      * 通过问卷ID发短信给相应的用户
      * @param surveyId
      */
-    public void sendMessage(Integer surveyId) {
-
+    public void sendMessage(Integer surveyId, String contxt) {
+        Wrapper<ZsConcat> concatWrapper = new EntityWrapper<>();
+        concatWrapper.eq("survey_id", surveyId);
+        List<ZsConcat> zsConcatList = zsConcatService.selectList(concatWrapper);
+        zsConcatList.forEach(zsConcat -> {
+            zsSmsService.send(new ZsSendSms(zsConcat.getPhone(), contxt));
+        });
     }
+
+
 }
