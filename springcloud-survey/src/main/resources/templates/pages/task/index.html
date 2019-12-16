@@ -27,8 +27,10 @@
                         <th>序号</th>
                         <th>问卷名称</th>
                         <th>所属项目</th>
+                        <th>收集方式</th>
                         <th>状态</th>
                         <th>创建人</th>
+                        <th>是否取得</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -39,15 +41,19 @@
                             <span class="click-span" v-on:click="details(item)">{{item.name}}</span>
                         </td>
                         <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span></td>
+                        <td>{{item.collectType ? item.collectType.name : ''}}</td>
                         <td>
                             <span class="badge badge-primary" v-if="item.status ? item.state.value === 1 : false">{{item.state.name}}</span>
                             <span class="badge badge-danger" v-if="item.status ? item.state.value === 2 : false">{{item.state.name}}</span>
                         </td>
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>
+                            {{item.isApplySuccess ? item.isApplySuccess.name : ''}}
+                        </td>
+                        <td>
 
                             <span class="fa fa-question-circle" title="这里是提示内容" style="cursor: pointer;" v-on:click="showRequire(item)"></span>
-                            <button type="button" v-on:click="signUp(item)" v-if="item.state ? item.state.value === 2 : false" class="btn btn-primary btn-xs">报名参加</button>
+                            <button type="button" v-on:click="signUp(item)" v-if="isShowApply(item)" class="btn btn-primary btn-xs">报名参加</button>
                         </td>
                     </tr>
                     </tbody>
@@ -95,6 +101,7 @@
             pageInfo: {
                 name: '',
                 state: 'COLLECTING',
+                collectType: 'PHONE',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -105,6 +112,12 @@
         created: function () {
         },
         methods: {
+            isShowApply: function(item) {
+                if(item.state && item.isApplySuccess) {
+                    return item.state.value === 2 && item.isApplySuccess.value !== 1;
+                }
+                return false;
+            },
             showRequire: function(item) {
                 this.selectedItem = item;
                 $('#myModal').modal('show');

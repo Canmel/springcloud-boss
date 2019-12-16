@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsSurveyCollectType;
 import com.camel.survey.enums.ZsSurveyState;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -78,6 +79,9 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     private ZsSurveyCollectType collectType;
 
     private ZsSurveyState state;
+
+    @TableField(exist = false)
+    private ZsYesOrNo isApplySuccess;
 
     /**
      * 所需要通过的考核

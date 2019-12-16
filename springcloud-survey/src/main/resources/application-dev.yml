@@ -26,6 +26,11 @@ spring:
     static-path-pattern: /**
   resources:
     static-locations: classpath:/templates/,classpath:/static/
+  activemq:
+    broker-url: tcp://${ACTIVEMQ_HOST}:61616
+    close-timeout: 15s
+    user: admin
+    password: admin
 
 eureka:
   instance:

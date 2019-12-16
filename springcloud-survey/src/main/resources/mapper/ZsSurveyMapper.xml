@@ -42,6 +42,9 @@
             <if test="state != null">
                 AND zs_survey.state = #{state.value}
             </if>
+            <if test="collectType != null">
+                AND zs_survey.collect_type = #{collectType.value}
+            </if>
         </where>
     </select>
 

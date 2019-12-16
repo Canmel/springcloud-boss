@@ -114,19 +114,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">收集方式：</label>
-                            <div class="col-sm-8">
-                                <select name="collect_num" aria-required="true"
-                                        aria-invalid="true" class="form-control m-b" name="account"
-                                        v-model="new_survey.collectType">
-                                    <option value="0">短信</option>
-                                    <option value="1">电话</option>
-                                    <option value="2">走访</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label class="col-sm-3 control-label">考核资格：</label>
                             <div class="col-sm-8">
                                 <select  id="usertype" multiple class="form-control" v-model="new_survey.exams">
@@ -138,6 +125,18 @@
                             <label class="col-sm-3 control-label">已收集：</label>
                             <div class="col-sm-8">
                                 <span> {{new_survey.currentNum}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">收集方式：</label>
+                            <div class="col-sm-8">
+                                <select name="collect_num" aria-required="true"
+                                        aria-invalid="true" class="form-control m-b" name="account"
+                                        v-model="new_survey.collectType">
+                                    <option value="0">短信</option>
+                                    <option value="1">电话</option>
+                                    <option value="2">走访</option>
+                                </select>
                             </div>
                         </div>
                     </form>

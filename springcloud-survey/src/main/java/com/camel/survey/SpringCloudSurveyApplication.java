@@ -51,7 +51,7 @@ public class SpringCloudSurveyApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        LoggerFactory.getLogger(this.getClass()).info("SpringCloud 考勤-系统服务启动完成...");
+        LoggerFactory.getLogger(this.getClass()).info("SpringCloud 智慧调查-系统服务启动完成...");
     }
 
     @Bean

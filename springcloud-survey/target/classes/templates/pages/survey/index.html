@@ -29,6 +29,7 @@
                         <th>问卷名称</th>
                         <th>所属项目</th>
                         <th>状态</th>
+                        <th>收集方式</th>
                         <th>创建人</th>
                         <th>创建时间</th>
                         <th>操作</th>
@@ -45,7 +46,8 @@
                         <td>
                             <span class="badge badge-primary" v-if="item.state ? item.state.value === 1 : false">{{item.state.name}}</span>
                             <span class="badge badge-danger" v-if="item.state ? item.state.value === 2 : false">{{item.state.name}}</span>
-                        </td>username
+                        </td>
+                        <td>{{item.collectType ? item.collectType.name : ''}}</td>
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
@@ -57,6 +59,9 @@
                             </button>
                             <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false"
                                     class="btn btn-danger btn-xs">删除
+                            </button>
+                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"
+                                    class="btn btn-danger btn-xs">查看申请记录
                             </button>
                     </tr>
                     </tbody>
@@ -88,6 +93,16 @@
             // this.pagequery();
         },
         methods: {
+            appliable: function(item) {
+                if(item.collectType && item.state) {
+                    // 电话收集方式 && 已经开始的问卷
+                    return item.collectType.value === 1 && item.state.value === 2;
+                }
+                return false;
+            },
+            applyView: function(item){
+                toPage("pages/survey/applyView.html", item.id);
+            },
             start: function (item) {
                 var that = this;
                 confirm("您确定开始收集该问卷吗?", "", function (isConfirm) {

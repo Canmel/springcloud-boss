@@ -27,5 +27,14 @@
         <include refid="Base_Column_List"></include>
         from
         zs_sign
+        <where>
+            status = 1
+            <if test="surveyId != null">
+                AND survey_id = #{surveyId}
+            </if>
+            <if test="result != null">
+                AND result = #{result.value}
+            </if>
+        </where>
     </select>
 </mapper>

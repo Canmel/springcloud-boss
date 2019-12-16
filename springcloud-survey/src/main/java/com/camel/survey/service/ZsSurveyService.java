@@ -35,7 +35,7 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      @param entity
      @return
      */
-    PageInfo<ZsSurvey> selectPage(ZsSurvey entity);
+    PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication);
 
     /**
      * 新建

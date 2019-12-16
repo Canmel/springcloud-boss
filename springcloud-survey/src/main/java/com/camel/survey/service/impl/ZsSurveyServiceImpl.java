@@ -8,8 +8,7 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
-import com.camel.survey.enums.ZsStatus;
-import com.camel.survey.enums.ZsSurveyState;
+import com.camel.survey.enums.*;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.model.*;
@@ -84,11 +83,11 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     private RelSurveyExamService relSurveyExamService;
 
     @Override
-    public PageInfo<ZsSurvey> selectPage(ZsSurvey entity) {
+    public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
+        Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
-
         List<ZsSurvey> list = pageInfo.getList();
         list.forEach(e -> {
             applicationToolsUtils.allUsers().forEach(sysUser -> {
@@ -96,6 +95,15 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
                     e.setCreator(sysUser);
                 }
             });
+            Wrapper<ZsSign> zsSignWrapper = new EntityWrapper<>();
+            zsSignWrapper.eq("status", ZsStatus.CREATED.getValue());
+            zsSignWrapper.eq("survey_id", e.getId());
+            zsSignWrapper.eq("result", ZsSurveySignResult.SUCCESS.getValue());
+            if (zsSignService.selectCount(zsSignWrapper) > 0) {
+                e.setIsApplySuccess(ZsYesOrNo.YES);
+            } else {
+                e.setIsApplySuccess(ZsYesOrNo.NO);
+            }
         });
         return pageInfo;
     }
@@ -164,6 +172,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public Result start(Integer id) {
         ZsSurvey survey = mapper.selectById(id);
         if (!ObjectUtils.isEmpty(survey)) {
+            if (ObjectUtils.isEmpty(survey.getCollectType()) && survey.getCollectType().getValue().equals(ZsSurveyCollectType.SMS.getValue())) {
+                sendMessage(id);
+            }
             survey.setState(ZsSurveyState.COLLECTING);
             if (updateById(survey)) {
                 return ResultUtil.success("问卷已经开始调查");
@@ -196,33 +207,53 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Result sign(Integer id, OAuth2Authentication oAuth2Authentication) {
         Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
-        if(isSigned(id, member.getId())) {
+        if (isSigned(id, member.getId())) {
             return ResultUtil.success("您已经投递过了，无需重复提交");
+        }
+        if (isSuccess(id, member.getId())) {
+            return ResultUtil.success("您已经投递过了，并且已经审核通过，无需重复提交");
         }
         List<ZsExam> zsExams = zsExamMapper.listBySurveyId(id);
         List<ZsExam> userExams = zsExamMapper.listByUserId(member.getId());
 
-        if(CollectionUtils.isEmpty(zsExams)) {
+        if (CollectionUtils.isEmpty(zsExams)) {
             throw new SourceDataNotValidException("您选择了一条没有限制的问卷，这是一条不正确的数据，请联系管理员");
         }
-        if(CollectionUtils.isEmpty(userExams)) {
+        if (CollectionUtils.isEmpty(userExams)) {
             return ResultUtil.success("投递失败，您没有获取相关等级权限！");
         }
-        if(userExams.containsAll(zsExams)) {
-            if(zsSignService.insert(new ZsSign(id, member.getMemberName(), member.getId()))) {
+        if (userExams.containsAll(zsExams)) {
+            if (zsSignService.insert(new ZsSign(id, member.getMemberName(), member.getId()))) {
                 return ResultUtil.success("投递成功");
             }
-        }else {
+        } else {
             return ResultUtil.success("投递失败，您没有获取相关等级权限！");
         }
         return ResultUtil.error(ResultEnum.SERVICE_ERROR);
     }
 
-    public Boolean isSigned(Integer surveyId, Integer userId){
+    public Boolean isSigned(Integer surveyId, Integer userId) {
         Wrapper<ZsSign> signWrapper = new EntityWrapper<>();
         signWrapper.eq("survey_id", surveyId);
         signWrapper.eq("status", ZsSurveyState.CREATED);
         signWrapper.eq("creator", userId);
         return zsSignService.selectCount(signWrapper) > 0;
+    }
+
+    public Boolean isSuccess(Integer surveyId, Integer userId) {
+        Wrapper<ZsSign> signWrapper = new EntityWrapper<>();
+        signWrapper.eq("survey_id", surveyId);
+        signWrapper.eq("status", ZsSurveyState.CREATED);
+        signWrapper.eq("creator", userId);
+        signWrapper.eq("result", ZsSurveySignResult.SUCCESS.getValue());
+        return zsSignService.selectCount(signWrapper) > 0;
+    }
+
+    /**
+     * 通过问卷ID发短信给相应的用户
+     * @param surveyId
+     */
+    public void sendMessage(Integer surveyId) {
+
     }
 }

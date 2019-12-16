@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsSurveySignResult;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -65,6 +66,9 @@ public class ZsSign extends ZsSurveyBaseEntity implements Serializable {
      * 审批结果
      */
     private ZsSurveySignResult result;
+
+    @TableField(exist = false)
+    private ZsYesOrNo isApply;
 
     public ZsSign(Integer surveyId, String username, Integer creator) {
         this.surveyId = surveyId;
