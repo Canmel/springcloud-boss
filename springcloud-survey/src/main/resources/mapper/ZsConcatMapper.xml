@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsConcatMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsConcat">
+        <id column="id" property="id" />
+        <result column="survey_id" property="surveyId" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="status" property="status" />
+        <result column="creator" property="creator" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, survey_id, name, phone, status, creator, created_at
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List"></include>
+        from
+        zs_concat
+    </select>
+</mapper>
