@@ -28,7 +28,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @since 1.0
  * @date 2019/9/18
  **/
-
 @SpringBootApplication
 @EnableDiscoveryClient
 public class SpringCloudSmsServerApplication implements CommandLineRunner {

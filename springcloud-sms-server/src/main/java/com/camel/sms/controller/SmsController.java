@@ -1,8 +1,10 @@
-package com.camel.survey.vo;
+package com.camel.sms.controller;
 
-import lombok.Data;
-
-import java.io.Serializable;
+import com.gexin.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
@@ -22,30 +24,24 @@ import java.io.Serializable;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <>
+ * <短信>
  * @author baily
  * @since 1.0
  * @date 2019/12/16
  **/
-@Data
-public class ZsSendSms implements Serializable {
+@RestController
+public class SmsController {
 
-    private static final long serialVersionUID = 1L;
+    public static final String TARGET = "target";
+    public static final String CONTENT = "content";
 
-    private String target;
+    public static Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
-    private String content;
-
-    public ZsSendSms(String target, String content) {
-        this.target = target;
-        this.content = content;
-    }
-
-    public ZsSendSms() {
-    }
-
-    @Override
-    public String toString() {
-        return "{target: '" + target +  "', content: '" + content + "'}";
+    @JmsListener(destination = "ActiveMQ.Sms.Topic")
+    public void log(String msg) {
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(msg);
+        logger.info("手机号: " + jsonObject.get(TARGET));
+        logger.info("发送内容: " + jsonObject.get(CONTENT));
+        logger.info(msg);
     }
 }

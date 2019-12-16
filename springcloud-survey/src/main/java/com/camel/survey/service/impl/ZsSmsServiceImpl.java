@@ -38,7 +38,7 @@ public class ZsSmsServiceImpl implements ZsSmsService {
 
     @Override
     public boolean send(ZsSendSms sms) {
-        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Sms.Topic"), sms);
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Sms.Topic"), sms.toString());
         return true;
     }
 }
