@@ -182,6 +182,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             if (!ObjectUtils.isEmpty(survey.getCollectType()) && survey.getCollectType().getValue().equals(ZsSurveyCollectType.SMS.getValue())) {
                 String content = "我是一个内容试试：";
                 sendMessage(id, content);
+                // TODO 在内容中添加一个页面，可以访问问卷
                 return null;
             }
             survey.setState(ZsSurveyState.COLLECTING);
