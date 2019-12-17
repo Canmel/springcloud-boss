@@ -2,20 +2,20 @@ package com.camel.survey.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.*;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.mapper.ZsExamMapper;
-import com.camel.survey.model.*;
 import com.camel.survey.mapper.ZsSurveyMapper;
+import com.camel.survey.model.*;
 import com.camel.survey.service.*;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsQuestionSave;
 import com.camel.survey.vo.ZsSendSms;
@@ -183,7 +183,6 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
                 String content = "我是一个内容试试：";
                 sendMessage(id, content);
                 // TODO 在内容中添加一个页面，可以访问问卷
-                return null;
             }
             survey.setState(ZsSurveyState.COLLECTING);
             if (updateById(survey)) {

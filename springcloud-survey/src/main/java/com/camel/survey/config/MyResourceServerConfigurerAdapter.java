@@ -44,7 +44,7 @@ public class MyResourceServerConfigurerAdapter extends ResourceServerConfigurerA
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .and().authorizeRequests().mvcMatchers( "/", "/index.html", "", "/error.html").permitAll()
+                .and().authorizeRequests().mvcMatchers( "/", "/index.html", "", "/error.html", "/web_survey.html").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
