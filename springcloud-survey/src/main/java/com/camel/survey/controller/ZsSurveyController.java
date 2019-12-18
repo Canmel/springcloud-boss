@@ -40,7 +40,6 @@ import java.util.List;
  *                ┃┫┫    ┃┫┫    @date 2019-12-06
  *                ┗┻┛    ┗┻┛
  */
-@AuthIgnore
 @RestController
 @RequestMapping("/zsSurvey")
 public class ZsSurveyController extends BaseCommonController {
@@ -100,6 +99,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @return Result 结果集包含vo.ZsQuestionSave
      *  ZsQuestionSave中包含question and option
      */
+    @AuthIgnore
     @GetMapping("/questionAndOptions/{id}")
     public Result loadQuestionAndOptions(@PathVariable Integer id) {
         return service.getQuestionAndOptions(id);

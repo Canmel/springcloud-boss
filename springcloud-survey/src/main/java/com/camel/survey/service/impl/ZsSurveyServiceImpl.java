@@ -89,6 +89,10 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Autowired
     private ZsSmsService zsSmsService;
 
+    public static final String SMS_CONTEXT_MODEL="您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
+
+    public static final String SMS_SURVEY_URL = "http://127.0.0.1:8080/survey/web_survey.html";
+
     @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
@@ -172,8 +176,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         ZsSurvey survey = mapper.selectById(id);
         if (!ObjectUtils.isEmpty(survey)) {
             if (!ObjectUtils.isEmpty(survey.getCollectType()) && survey.getCollectType().getValue().equals(ZsSurveyCollectType.SMS.getValue())) {
-                String content = "我是一个内容试试：";
-                sendMessage(id, content);
+                String content = SMS_CONTEXT_MODEL;
+
+                sendMessage(survey, content);
                 // TODO 在内容中添加一个页面，可以访问问卷
             }
             survey.setState(ZsSurveyState.COLLECTING);
@@ -252,15 +257,19 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     /**
      * 通过问卷ID发短信给相应的用户
-     * @param surveyId
+     * @param survey 问卷
      */
-    public void sendMessage(Integer surveyId, String contxt) {
+    public void sendMessage(ZsSurvey survey, String contxt) {
         Wrapper<ZsConcat> concatWrapper = new EntityWrapper<>();
-        concatWrapper.eq("survey_id", surveyId);
+        concatWrapper.eq("survey_id", survey.getId());
         List<ZsConcat> zsConcatList = zsConcatService.selectList(concatWrapper);
-        zsConcatList.forEach(zsConcat -> {
+        for (ZsConcat zsConcat: zsConcatList) {
+            String url = SMS_SURVEY_URL;
+            url = url + "?" + survey.getId() + "=" + zsConcat.getPhone();
+            contxt = contxt.replace("?title?", survey.getName());
+            contxt = contxt.replace("?url?", url);
             zsSmsService.send(new ZsSendSms(zsConcat.getPhone(), contxt));
-        });
+        }
     }
 
     @Override
