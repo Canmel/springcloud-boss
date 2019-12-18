@@ -124,6 +124,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         if(count > 0) {
             return ResultUtil.success("提交成功");
         }
+        ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
+        zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() + 1);
+        surveyService.updateById(zsSurvey);
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         answerService.insert(zsAnswer);
         List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());

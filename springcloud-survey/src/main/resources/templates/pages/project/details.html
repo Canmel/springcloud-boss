@@ -67,9 +67,9 @@
                                     <dd>创建人: {{item['creator'] ? item['creator']['nickname'] : ''}}</dd>
                                     <dd>创建时间: {{item['createdAt'] | formatDate}}</dd>
 
-                                    <small>当前进度： 48%</small>
+                                    <small>当前进度： {{item['collectNum'] ? (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0}}%</small>
                                     <div class="progress progress-mini">
-                                        <div style="width: 48%;" class="progress-bar"></div>
+                                        <div :style="'width: ' + item['collectNum'] ? (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0 + '%;'" class="progress-bar"></div>
                                     </div>
                                 </div>
 

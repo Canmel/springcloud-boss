@@ -41,11 +41,14 @@
                 </div>
                 <div class="ibox-content">
                     <ul class="todo-list m-t small-list ui-sortable">
-                        <li v-for="(item, index) in collectings">
+                        <li v-for="(item, index) in collectings" style="cursor: pointer;"
+                            v-on:click="jumpTo('pages/survey/details_det.html', item.id)">
                             <a href="widgets.html#" class="check-link"><i class="fa fa-square-o"></i> </a>
                             <span class="m-l-xs">{{item.name}}</span>
                             <div>
-                                <small class="label label-primary"><i class="fa fa-clock-o"></i>调查时间: {{item.createdAt | toNow}}</small>
+                                <small class="label label-primary"><i class="fa fa-clock-o"></i>调查时间: {{item.createdAt |
+                                    toNow}}
+                                </small>
                             </div>
                         </li>
                     </ul>
@@ -92,8 +95,8 @@
                     that.collectings = resp.data;
                 });
             },
-            jumpTo(url) {
-                toPage(url);
+            jumpTo(url, param) {
+                toPage(url, param);
             }
         }
     })
