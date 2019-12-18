@@ -81,8 +81,14 @@
         created: function () {
             this.loadTotal();
             this.collecting();
+            this.lineChart();
         },
         methods: {
+            lineChart() {
+                AJAX.GET('home/lineChart', {}, function (resp) {
+                    console.log(resp)
+                })
+            },
             loadTotal() {
                 var that = this;
                 AJAX.GET('home/total', {}, function (resp) {
