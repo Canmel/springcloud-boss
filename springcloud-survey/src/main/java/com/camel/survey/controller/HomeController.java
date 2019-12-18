@@ -2,6 +2,8 @@ package com.camel.survey.controller;
 
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.service.HomeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,22 +34,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/home")
 public class HomeController {
+
+    @Autowired
+    private HomeService homeService;
     /**
      * 统计数据
      * @return
      */
     @GetMapping("/total")
     public Result total() {
-        return ResultUtil.success("");
+        return homeService.total();
     }
 
     /**
      * 调查中的问卷
      * @return
      */
-    @GetMapping("surving")
+    @GetMapping("collecting")
     public Result surving() {
-        return ResultUtil.success("");
+        return homeService.collecting();
     }
 
 }

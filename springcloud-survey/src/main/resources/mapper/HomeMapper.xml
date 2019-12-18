@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.HomeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.vo.ZsHomeTotal">
+        <result column="projet_num" property="projectNum"></result>
+        <result column="collect_num" property="collectNum"></result>
+        <result column="survey_num" property="surveyNum"></result>
+        <result column="target_collect_num" property="targetCollectNum"></result>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, value, code, status, created_at, creator, update_at, updator
+    </sql>
+
+    <select id="total" resultMap="BaseResultMap">
+        SELECT
+            (SELECT count(1) FROM zs_project WHERE status = 1 )AS projet_num,
+            (SELECT count(1) FROM zs_answer WHERE status = 1)AS collect_num,
+            count(1)AS survey_num,
+            SUM(collect_num)AS target_collect_num
+        FROM
+            zs_survey
+        <where>
+            status = 1
+        </where>
+    </select>
+</mapper>

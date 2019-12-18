@@ -1,31 +1,31 @@
 <script src="/survey/js/validateIsMain.js"></script>
-<section class="py-5 wrapper wrapper-content">
+<section class="py-5 wrapper wrapper-content" id="subContainer">
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-9">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <div class="row row-sm text-center">
-                        <div class="col-xs-6">
+                        <div class="col-xs-6" v-on:click="jumpTo('pages/project/index.html')">
                             <div class="panel padder-v item">
-                                <div class="h1 text-info font-thin h1">1</div>
+                                <div class="h1 text-info font-thin h1">{{total.projectNum}}</div>
                                 <span class="text-muted text-xs">项目总数</span>
                             </div>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-6" v-on:click="jumpTo('pages/survey/index.html')">
                             <div class="panel padder-v item bg-info">
-                                <div class="h1 text-fff font-thin h1">6</div>
+                                <div class="h1 text-fff font-thin h1">{{total.surveyNum}}</div>
                                 <span class="text-muted text-xs">问卷总数</span>
                             </div>
                         </div>
                         <div class="col-xs-6">
-                            <div class="panel padder-v item bg-primary">
-                                <div class="h1 text-fff font-thin h1">1490</div>
+                            <div class="panel padder-v item bg-primary" style="cursor: auto">
+                                <div class="h1 text-fff font-thin h1">{{total.collectNum}}</div>
                                 <span class="text-muted text-xs">已收集数</span>
                             </div>
                         </div>
                         <div class="col-xs-6">
-                            <div class="panel padder-v item">
-                                <div class="font-thin h1">20800</div>
+                            <div class="panel padder-v item" style="cursor: auto">
+                                <div class="font-thin h1">{{total.targetCollectNum}}</div>
                                 <span class="text-muted text-xs">共需收集</span>
                             </div>
                         </div>
@@ -34,32 +34,19 @@
             </div>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>调查中</h5>
                 </div>
                 <div class="ibox-content">
                     <ul class="todo-list m-t small-list ui-sortable">
-                        <li>
-                            <a href="widgets.html#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                            <span class="m-l-xs todo-completed">关于杭州市五水共治情况调查信息</span>
-
-                        </li>
-                        <li>
-                            <a href="widgets.html#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                            <span class="m-l-xs  todo-completed">电信诈骗民众知晓情况</span>
-
-                        </li>
-                        <li>
+                        <li v-for="(item, index) in collectings">
                             <a href="widgets.html#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                            <span class="m-l-xs">创建文明城市</span>
-                            <div><small class="label label-primary"><i class="fa fa-clock-o"></i>已开始 1小时</small></div>
-                        </li>
-                        <li>
-                            <a href="widgets.html#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                            <span class="m-l-xs">杭州市垃圾分类知晓情况	</span>
-                            <div><small class="label label-primary"><i class="fa fa-clock-o"></i>已开始 1小时</small></div>
+                            <span class="m-l-xs">{{item.name}}</span>
+                            <div>
+                                <small class="label label-primary"><i class="fa fa-clock-o"></i>调查时间: {{item.createdAt | toNow}}</small>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -68,3 +55,46 @@
     </div>
 </section>
 <!--<script src="/attendance/js/validateIsMain.js"></script>-->
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                name: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10//每页显示条目个数不传默认10
+            },
+            total: {
+                projectNum: 0,
+                surveyNum: 0,
+                collectNum: 0,
+                targetCollectNum: 0
+            },
+            collectings: [],
+            items: [{}]
+        },
+        created: function () {
+            this.loadTotal();
+            this.collecting();
+        },
+        methods: {
+            loadTotal() {
+                var that = this;
+                AJAX.GET('home/total', {}, function (resp) {
+                    that.total = resp.data;
+                })
+            },
+            collecting() {
+                var that = this;
+                AJAX.GET('home/collecting', {}, function (resp) {
+                    that.collectings = resp.data;
+                });
+            },
+            jumpTo(url) {
+                toPage(url);
+            }
+        }
+    })
+</script>

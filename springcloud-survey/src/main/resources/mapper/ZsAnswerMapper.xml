@@ -23,6 +23,9 @@
         zs_answer
         <where>
             status = 1
+            <if test="surveyId != null">
+                and survey_id = #{surveyId}
+            </if>
         </where>
     </select>
 </mapper>
