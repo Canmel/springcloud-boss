@@ -8,6 +8,7 @@ import com.camel.survey.model.ZsSurveyBaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
@@ -78,5 +79,9 @@ public class ApplicationToolsUtils {
         Member member = currentUser(oAuth2Authentication);
         entity.setCreatorId(member.getId());
         entity.setCreator(new SysUser(member.getId(), member.getMemberName()));
+    }
+
+    public Member currentUser() {
+        return currentUser((OAuth2Authentication)SecurityContextHolder.getContext().getAuthentication());
     }
 }

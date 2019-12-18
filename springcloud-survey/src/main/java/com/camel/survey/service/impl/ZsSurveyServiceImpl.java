@@ -23,6 +23,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -89,7 +90,10 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Autowired
     private ZsSmsService zsSmsService;
 
-    public static final String SMS_CONTEXT_MODEL="您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
+    @Autowired
+    private ZsSurveyRecordService surveyRecordService;
+
+    public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
     public static final String SMS_SURVEY_URL = "http://127.0.0.1:8080/survey/web_survey.html";
 
@@ -177,9 +181,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         if (!ObjectUtils.isEmpty(survey)) {
             if (!ObjectUtils.isEmpty(survey.getCollectType()) && survey.getCollectType().getValue().equals(ZsSurveyCollectType.SMS.getValue())) {
                 String content = SMS_CONTEXT_MODEL;
-
                 sendMessage(survey, content);
-                // TODO 在内容中添加一个页面，可以访问问卷
             }
             survey.setState(ZsSurveyState.COLLECTING);
             if (updateById(survey)) {
@@ -263,7 +265,10 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         Wrapper<ZsConcat> concatWrapper = new EntityWrapper<>();
         concatWrapper.eq("survey_id", survey.getId());
         List<ZsConcat> zsConcatList = zsConcatService.selectList(concatWrapper);
-        for (ZsConcat zsConcat: zsConcatList) {
+        for (ZsConcat zsConcat : zsConcatList) {
+            // 发送短信之前先把记录记一下
+            ZsSurveyRecord zsSurveyRecord = new ZsSurveyRecord(zsConcat.getPhone(), survey.getId(), survey.getName(), applicationToolsUtils.currentUser().getId());
+            surveyRecordService.insert(zsSurveyRecord);
             String url = SMS_SURVEY_URL;
             url = url + "?" + survey.getId() + "=" + zsConcat.getPhone();
             contxt = contxt.replace("?title?", survey.getName());

@@ -14,4 +14,6 @@ public interface HomeService {
      * @return
      */
     Result collecting();
+
+    Result lineChart();
 }

@@ -27,4 +27,38 @@
             status = 1
         </where>
     </select>
+
+    <select id="lineChartSurvey" resultType="hashmap">
+        select
+            ymd.date,
+            sum(case zsr.id > 0 when true then 1 else 0 end) surveyNum
+         from (
+            SELECT DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (ac - 1) DAY), '%Y-%m-%d') as date
+        FROM (
+                    SELECT @ai:=@ai+1 as ac from
+                    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) ac1,
+                    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6) ac2,
+                    (SELECT @ai:=0) xc0
+        ) ad
+        ) ymd left join zs_survey_record zsr on ymd.date = DATE_FORMAT(zsr.created_at,'%Y-%m-%d')
+
+        GROUP BY ymd.date;
+    </select>
+
+    <select id="lineChartCollect" resultType="hashmap">
+        select
+            ymd.date,
+            sum(case za.id > 0 when true then 1 else 0 end) surveyNum
+         from (
+            SELECT DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (ac - 1) DAY), '%Y-%m-%d') as date
+        FROM (
+                    SELECT @ai:=@ai+1 as ac from
+                    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) ac1,
+                    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6) ac2,
+                    (SELECT @ai:=0) xc0
+        ) ad
+        ) ymd left join zs_answer za on ymd.date = DATE_FORMAT(za.created_at,'%Y-%m-%d')
+
+        GROUP BY ymd.date;
+    </select>
 </mapper>

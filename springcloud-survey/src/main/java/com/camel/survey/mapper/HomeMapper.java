@@ -6,6 +6,7 @@ import com.camel.survey.vo.ZsHomeTotal;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -23,4 +24,8 @@ public interface HomeMapper {
      * @return
      */
     ZsHomeTotal total();
+
+    List<Map> lineChartSurvey();
+
+    List<Map> lineChartCollect();
 }

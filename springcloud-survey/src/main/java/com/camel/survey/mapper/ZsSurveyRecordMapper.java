@@ -1,29 +1,25 @@
 package com.camel.survey.mapper;
 
-import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.model.ZsSurveyRecord;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * 问卷下发或电话访问等发出记录 Mapper 接口
  * </p>
  *
  * @author baily
- * @since 2019-12-06
+ * @since 2019-12-18
  */
 @Repository
-public interface ZsSurveyMapper extends BaseMapper<ZsSurvey> {
+public interface ZsSurveyRecordMapper extends BaseMapper<ZsSurveyRecord> {
 
     /**
      * 查询列表
      * @param entity
      * @return
      */
-    List<ZsSurvey> list(ZsSurvey entity);
-
-    ZsSurvey find(Integer id);
-
-    ZsSurvey findById(Integer id);
+    List<ZsSurveyRecord> list(ZsSurveyRecord entity);
 }

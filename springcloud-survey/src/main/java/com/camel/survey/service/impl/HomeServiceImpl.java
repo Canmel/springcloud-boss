@@ -11,6 +11,7 @@ import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.HomeService;
 import com.camel.survey.service.ZsProjectService;
 import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.vo.ZsHomeLineChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +64,10 @@ public class HomeServiceImpl implements HomeService {
         zsSurveyWrapper.eq("status", ZsStatus.CREATED.getValue());
         List<ZsSurvey> zsSurveys = surveyService.selectList(zsSurveyWrapper);
         return ResultUtil.success(zsSurveys);
+    }
+
+    @Override
+    public Result lineChart() {
+        return ResultUtil.success(new ZsHomeLineChart(mapper.lineChartSurvey(), mapper.lineChartCollect()));
     }
 }

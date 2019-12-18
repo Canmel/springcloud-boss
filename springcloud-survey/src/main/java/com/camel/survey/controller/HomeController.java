@@ -55,4 +55,9 @@ public class HomeController {
         return homeService.collecting();
     }
 
+    @GetMapping("/lineChart")
+    public Result lineChart(){
+        return homeService.lineChart();
+    }
+
 }
