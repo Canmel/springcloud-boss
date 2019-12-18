@@ -20,6 +20,7 @@
         <module name="springcloud-sms-server" />
         <module name="springcloud-survey" />
         <module name="springcloud-system" />
+        <module name="springcloud-voice" />
         <module name="springcloud-zuul-getway" />
       </profile>
     </annotationProcessing>
@@ -51,6 +52,7 @@
       <module name="springcloud-system" options="-parameters" />
       <module name="springcloud-system (1)" options="-parameters" />
       <module name="springcloud-verify" options="-parameters" />
+      <module name="springcloud-voice" options="-parameters" />
       <module name="springcloud-zuul-getway" options="-parameters" />
     </option>
   </component>

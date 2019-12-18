@@ -21,6 +21,7 @@
         <module>springcloud-sms-server</module>
         <module>springcloud-survey</module>
         <module>springcloud-attendance</module>
+        <module>springcloud-voice</module>
     </modules>
     <packaging>pom</packaging>
     <description>springcloud 通关</description>

@@ -6,8 +6,12 @@ server:
   port: 8888
 
 eureka:
+  server:
+    eviction-interval-timer-in-ms: 15000
   instance:
     hostname: ${APPLICATION_IP}
+    lease-expiration-duration-in-seconds: 15
+    lease-renewal-interval-in-seconds: 10
   client:
     register-with-eureka: false
     fetch-registry: false

@@ -82,40 +82,39 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content" style="height: 500px; overflow-y: scroll;">
-                    <div class="row form-body form-horizontal m-t">
-                        <div class="col-md-12 droppable sortable" id="surveyArea">
-                            <div :question-type="item.type" class="form-group"
-                                 v-for="(item, index) in loadData.zsQuestions"
-                                 style="position: static;">
-                                <div class="col-sm-12"><label class="col-sm-3 control-label"><span
-                                        class="question-index">{{item.orderNum}}</span>.</label> <label
-                                        class="col-sm-9 control-label"
-                                        style="padding-left: 0px; text-align: left;"><span
-                                        class="editable question-title">{{item.name}}</span></label></div>
-                                <div class="col-sm-3"></div>
-                                <div class="col-sm-9 survey-optins">
-                                    <div v-for="(option, inx) in loadData.zsOptions"
-                                         v-if="showOption(item, option)">
-                                        <label class="radio-inline"
-                                               v-if="item.type === 1 && showOption(item, option)">
-                                            <input type="radio" value="option2"
-                                                   name="optionsRadios">
-                                            <span class="editable question-option">{{option.name}}</span>
-                                        </label>
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row form-body form-horizontal m-t">
+                    <div class="col-md-12 droppable sortable" id="surveyArea">
+                        <div :question-type="item.type" class="form-group"
+                             v-for="(item, index) in loadData.zsQuestions"
+                             style="position: static;">
+                            <div class="col-sm-12"><label class="col-sm-3 control-label"><span
+                                    class="question-index">{{item.orderNum}}</span>.</label> <label
+                                    class="col-sm-9 control-label"
+                                    style="padding-left: 0px; text-align: left;"><span
+                                    class="editable question-title">{{item.name}}</span></label></div>
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9 survey-optins">
+                                <div v-for="(option, inx) in loadData.zsOptions"
+                                     v-if="showOption(item, option)">
+                                    <label class="radio-inline"
+                                           v-if="item.type === 1 && showOption(item, option)">
+                                        <input type="radio" value="option2"
+                                               name="optionsRadios">
+                                        <span class="editable question-option">{{option.name}}</span>
+                                    </label>
 
-                                        <label class="checkbox-inline"
-                                               v-if="item.type === 2 && showOption(item, option)">
-                                            <input type="checkbox" value="option1">
-                                            <span class="editable question-option">{{option.name}}</span>
-                                        </label>
+                                    <label class="checkbox-inline"
+                                           v-if="item.type === 2 && showOption(item, option)">
+                                        <input type="checkbox" value="option1">
+                                        <span class="editable question-option">{{option.name}}</span>
+                                    </label>
 
-                                        <label class="checkbox-inline"
-                                               v-if="item.type === 3 && showOption(item, option)">
-                                            <span class="editable question-option">评分项</span>:
-                                            <span class="star-box">
+                                    <label class="checkbox-inline"
+                                           v-if="item.type === 3 && showOption(item, option)">
+                                        <span class="editable question-option">评分项</span>:
+                                        <span class="star-box">
                                                 <input type="radio"
                                                        :name="'star_' + item.orderNum + '_' + option.orderNum"
                                                        :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
@@ -146,23 +145,84 @@
                                                        hidden/>
                                                 <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
                                             </span>
-                                        </label>
-                                        <label class="checkbox-inline"
-                                               v-if="item.type === 4 && showOption(item, option)">
-                                            <span class="editable question-option">答</span>:
-                                            <label class="radio-inline">
-                                                <input type="text"
-                                                       name="optionsRadios"></label>
-                                        </label>
-                                    </div>
+                                    </label>
+                                    <label class="checkbox-inline"
+                                           v-if="item.type === 4 && showOption(item, option)">
+                                        <span class="editable question-option">答</span>:
+                                        <label class="radio-inline">
+                                            <input type="text"
+                                                   name="optionsRadios"></label>
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 droppable sortable" style="display: none;">
-                        </div>
-                        <div class="col-md-6 droppable sortable" style="display: none;">
-                        </div>
                     </div>
+                    <div class="col-md-6 droppable sortable" style="display: none;">
+                    </div>
+                    <div class="col-md-6 droppable sortable" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>已收集到的问卷</h5>
+                <div class="ibox-tools">
+                    <!--<a :href="applicationContextRootPath + 'pages/project/add.html'"-->
+                    <!--data-pjax class="btn btn-primary btn-xs">新建问卷</a>-->
+                </div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>问卷名称</th>
+                                <th>所属项目</th>
+                                <th>状态</th>
+                                <th>收集方式</th>
+                                <th>创建人</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, index) in answers">
+                                <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                <td>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-danger btn-xs">查看申请记录
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                                 :changge="pageFn"></pageination>
                 </div>
             </div>
         </div>
@@ -184,6 +244,13 @@
             loadData: {
                 zsQuestions: [],
                 zsOptions: []
+            },
+            answers: [],
+            pageInfo: {
+                name: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10//每页显示条目个数不传默认10
             }
         },
         watch: {
@@ -192,6 +259,18 @@
         },
         computed: {},
         methods: {
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsSurvey', this.pageInfo, function (resp) {
+                    that.answers = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
             showOption(question, option) {
                 if (question.orderNum && option.questionOrderNum) {
                     return question.orderNum === option.questionOrderNum;
