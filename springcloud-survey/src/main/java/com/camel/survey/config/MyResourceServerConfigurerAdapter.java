@@ -1,5 +1,6 @@
 package com.camel.survey.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,12 +40,16 @@ import javax.servlet.http.HttpServletResponse;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MyResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
 
+    @Autowired
+    private AuthIgnoreConfig authIgnoreConfig;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        String[] urls = authIgnoreConfig.getIgnoreUrls().stream().distinct().toArray(String[]::new);
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .and().authorizeRequests().mvcMatchers( "/", "/index.html", "", "/error.html", "/web_survey.html").permitAll()
+                .and().authorizeRequests().mvcMatchers(urls).permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()

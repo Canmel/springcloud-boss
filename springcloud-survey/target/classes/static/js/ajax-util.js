@@ -13,7 +13,7 @@ web_status = {
 $(function () {
     var access_token = sessionStorage.getItem('access_token');
     if (!access_token) {
-        location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
+        // location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
     }
 });
 
@@ -79,7 +79,7 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
+                // location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
             }
         }
     };
@@ -109,7 +109,10 @@ AJAX = {
         __ajax(url, data, success, "get", null, true);
     },
     POST_JSON: function(url, data, success){
-        url = url + '?access_token=' + sessionStorage.getItem("access_token");
+        if(sessionStorage.getItem("access_token")) {
+            url = url + '?access_token=' + sessionStorage.getItem("access_token");
+        }
+
         __ajax(url, data, success, "post", "application/json", false, true);
     },
     POST:function(url, data, success){

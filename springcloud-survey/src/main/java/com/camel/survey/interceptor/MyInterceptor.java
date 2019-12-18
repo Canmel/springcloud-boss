@@ -73,6 +73,9 @@ public class MyInterceptor implements HandlerInterceptor {
 
     public boolean isNoLogin(HttpServletRequest request) {
         String[] paramStoken = request.getParameterValues(ACCESS_TOKEN);
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) {
+            return false;
+        }
         OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String token = details.getTokenValue();
         return ObjectUtils.isEmpty(paramStoken) && ObjectUtils.isEmpty(details) && ObjectUtils.isEmpty(details.getTokenValue());

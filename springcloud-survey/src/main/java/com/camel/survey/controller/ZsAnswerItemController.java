@@ -1,11 +1,7 @@
 package com.camel.survey.controller;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.camel.survey.annotation.AuthIgnore;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.survey.service.ZsSurveyService;
-import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.service.ZsAnswerItemService;
+import com.camel.survey.model.ZsAnswerItem;
 import com.camel.core.controller.BaseCommonController;
 
 import com.baomidou.mybatisplus.service.IService;
@@ -37,24 +33,23 @@ import java.util.List;
  *               ┃          ┣┓
  *               ┃          ┏┛  @since 1.0
  *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-12-06
+ *                ┃┫┫    ┃┫┫    @date 2019-12-17
  *                ┗┻┛    ┗┻┛
  */
-@AuthIgnore
 @RestController
-@RequestMapping("/zsSurvey")
-public class ZsSurveyController extends BaseCommonController {
+@RequestMapping("/zsAnswerItem")
+public class ZsAnswerItemController extends BaseCommonController {
 
 
     @Autowired
-    private ZsSurveyService service;
+    private ZsAnswerItemService service;
 
     /**
     * 分页查询
     */
     @GetMapping
-    public Result index(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
-        return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
+    public Result index(ZsAnswerItem entity) {
+        return ResultUtil.success(service.selectPage(entity));
     }
 
     /**
@@ -69,16 +64,16 @@ public class ZsSurveyController extends BaseCommonController {
     * 新建保存
     */
     @PostMapping
-    public Result save(@RequestBody ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
-        return service.save(entity, oAuth2Authentication);
+    public Result save(@RequestBody ZsAnswerItem entity) {
+        return super.save(entity);
     }
 
     /**
      * 编辑 更新
      */
     @PutMapping
-    public Result update(@RequestBody ZsSurvey entity) {
-        return service.update(entity);
+    public Result update(@RequestBody ZsAnswerItem entity) {
+        return super.update(entity);
     }
 
     /**
@@ -87,41 +82,6 @@ public class ZsSurveyController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
-    }
-
-    @GetMapping("/{id}/projects")
-    public Result projects(@PathVariable Integer id) {
-        return service.selectListByProjectId(id);
-    }
-
-    /**
-     * 获取问卷的所有问题和选项
-     * @param id
-     * @return Result 结果集包含vo.ZsQuestionSave
-     *  ZsQuestionSave中包含question and option
-     */
-    @GetMapping("/questionAndOptions/{id}")
-    public Result loadQuestionAndOptions(@PathVariable Integer id) {
-        return service.getQuestionAndOptions(id);
-    }
-
-    /**
-     * 开始调查
-     * @param id
-     * @return
-     */
-    @GetMapping("/start/{id}")
-    public Result start(@PathVariable Integer id){
-        return service.start(id);
-    }
-
-    /**
-     * 申请参加
-     * @return
-     */
-    @GetMapping("/sign/{id}")
-    public Result sign(@PathVariable Integer id, OAuth2Authentication oAuth2Authentication) {
-        return service.sign(id, oAuth2Authentication);
     }
 
     /**

@@ -5,16 +5,16 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
-import com.camel.survey.model.ZsOption;
-import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.model.*;
 import com.camel.survey.mapper.ZsQuestionMapper;
-import com.camel.survey.model.ZsSurvey;
-import com.camel.survey.service.ZsOptionService;
-import com.camel.survey.service.ZsQuestionService;
+import com.camel.survey.service.*;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +57,15 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     @Autowired
     private ZsOptionService zsOptionService;
+
+    @Autowired
+    private ZsAnswerService answerService;
+
+    @Autowired
+    private ZsSurveyService surveyService;
+
+    @Autowired
+    private ZsAnswerItemService answerItemService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -105,5 +114,27 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         deleteBatchIds(oIds);
         save(entity, oAuth2Authentication);
         return ResultUtil.success("修改成功");
+    }
+
+    @Override
+    public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
+        Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
+        zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
+        int count = answerService.selectCount(zsAnswerWrapper);
+        if(count > 0) {
+            return ResultUtil.success("提交成功");
+        }
+        ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
+        answerService.insert(zsAnswer);
+        List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());
+        List<Integer> qIds = zsQuestions.stream().map(ZsQuestion::getId).collect(Collectors.toList());
+        List<ZsOption> zsOptions = surveyService.options(qIds);
+
+        List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
+        if(answerItemService.insertBatch(zsAnswerItemList)) {
+            return ResultUtil.success("提交成功");
+        } else {
+            return ResultUtil.error(ResultEnum.SERVICE_ERROR);
+        }
     }
 }

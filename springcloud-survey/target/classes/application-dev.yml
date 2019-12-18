@@ -51,6 +51,14 @@ security:
       id: springcloud-survey
       user-info-uri: http://${APPLICATION_IP}:8080/auth/session/me
       prefer-token-info: false
+    client:
+      ignore-urls:
+        - /
+        - /index.html
+        - /error.html
+        - /web_survey.html
+        - /web_survey
+        -
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml

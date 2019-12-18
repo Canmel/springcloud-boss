@@ -1,13 +1,8 @@
 package com.camel.survey.service;
 
-import com.camel.core.entity.Result;
-import com.camel.survey.model.ZsProject;
-import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.model.ZsAnswerItem;
 import com.baomidou.mybatisplus.service.IService;
-import com.camel.survey.vo.ZsAnswerSave;
-import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -29,37 +24,14 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
  *               ┃          ┣┓
  *               ┃          ┏┛  @since 1.0
  *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-12-09
+ *                ┃┫┫    ┃┫┫    @date 2019-12-17
  *                ┗┻┛    ┗┻┛
  */
-public interface ZsQuestionService extends IService<ZsQuestion> {
+public interface ZsAnswerItemService extends IService<ZsAnswerItem> {
     /**
      分页查询
      @param entity
      @return
      */
-    PageInfo<ZsQuestion> selectPage(ZsQuestion entity);
-
-    /**
-     * 新建
-     * @param entity
-     * @param oAuth2Authentication
-     * @return
-     */
-    Result save(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication);
-
-    /**
-     * 修改更新
-     * @param entity
-     * @param oAuth2Authentication
-     * @return
-     */
-    Result update(ZsQuestionSave entity, OAuth2Authentication oAuth2Authentication);
-
-    /**
-     * 问卷结果保存
-     * @param zsAnswerSave
-     * @return
-     */
-    Result saveAnswer(ZsAnswerSave zsAnswerSave);
+    PageInfo<ZsAnswerItem> selectPage(ZsAnswerItem entity);
 }

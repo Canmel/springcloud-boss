@@ -58,7 +58,7 @@ public class MysqlGenerator {
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"zs_concat"});
+        strategyConfig.setInclude(new String[] {"zs_answer", "zs_answer_item"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)

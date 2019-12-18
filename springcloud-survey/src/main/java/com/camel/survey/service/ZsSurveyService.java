@@ -2,9 +2,13 @@ package com.camel.survey.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.survey.model.ZsOption;
+import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.model.ZsSurvey;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
+import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -79,4 +83,19 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      * @return
      */
     Result sign(Integer id, OAuth2Authentication oAuth2Authentication);
+
+    /**
+     * 通过问卷ID 获取问题
+     * @param surveyId
+     * @return
+     */
+    List<ZsQuestion> questions(Integer surveyId);
+
+    /**
+     * 通过问题id获取选项
+     * @param qIds
+     * @return
+     */
+    List<ZsOption> options(List<Integer> qIds);
+
 }

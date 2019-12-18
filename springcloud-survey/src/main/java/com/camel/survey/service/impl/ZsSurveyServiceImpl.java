@@ -157,20 +157,12 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public Result getQuestionAndOptions(Integer id) {
-        // 查询问题
-        Wrapper<ZsQuestion> zsQuestionWrapper = new EntityWrapper<>();
-        zsQuestionWrapper.eq("survey_id", id);
-        List<ZsQuestion> questionList = questionService.selectList(zsQuestionWrapper);
+
+        List<ZsQuestion> questionList = questions(id);
         // 获取所有问题ID
         List<Integer> questionIds = questionList.stream().map(ZsQuestion::getId).collect(Collectors.toList());
         // 获取所有选项
-        Wrapper<ZsOption> zsOptionWrapper = new EntityWrapper<>();
-        List<ZsOption> optionList = new ArrayList<>();
-        if (questionIds.size() > 0) {
-            zsOptionWrapper.in("question_id", questionIds);
-            optionList = optionService.selectList(zsOptionWrapper);
-        }
-
+        List<ZsOption> optionList = options(questionIds);
         // 包装返回
         return ResultUtil.success(new ZsQuestionSave(questionList, optionList));
     }
@@ -271,5 +263,23 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         });
     }
 
+    @Override
+    public List<ZsQuestion> questions(Integer surveyId) {
+        // 查询问题
+        Wrapper<ZsQuestion> zsQuestionWrapper = new EntityWrapper<>();
+        zsQuestionWrapper.eq("survey_id", surveyId);
+        List<ZsQuestion> questionList = questionService.selectList(zsQuestionWrapper);
+        return questionList;
+    }
 
+    @Override
+    public List<ZsOption> options(List<Integer> qIds) {
+        Wrapper<ZsOption> zsOptionWrapper = new EntityWrapper<>();
+        List<ZsOption> optionList = new ArrayList<>();
+        if (qIds.size() > 0) {
+            zsOptionWrapper.in("question_id", qIds);
+            optionList = optionService.selectList(zsOptionWrapper);
+        }
+        return optionList;
+    }
 }

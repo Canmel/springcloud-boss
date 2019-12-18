@@ -1,4 +1,7 @@
 package com.camel.survey.controller;
+import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.model.ZsAnswer;
+import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsQuestionSave;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -84,6 +88,12 @@ public class ZsQuestionController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
+    }
+
+    @AuthIgnore
+    @PostMapping("/answer")
+    public Result answer(@RequestBody ZsAnswerSave zsAnswerSave, HttpServletRequest request) {
+        return service.saveAnswer(zsAnswerSave);
     }
 
     /**
