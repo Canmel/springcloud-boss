@@ -70,4 +70,9 @@ public class HomeServiceImpl implements HomeService {
     public Result lineChart() {
         return ResultUtil.success(new ZsHomeLineChart(mapper.lineChartSurvey(), mapper.lineChartCollect()));
     }
+
+    @Override
+    public Result pieChart() {
+        return ResultUtil.success(mapper.pieChart());
+    }
 }

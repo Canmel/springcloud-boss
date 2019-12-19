@@ -28,4 +28,6 @@ public interface HomeMapper {
     List<Map> lineChartSurvey();
 
     List<Map> lineChartCollect();
+
+    List<Map> pieChart();
 }

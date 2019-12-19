@@ -15,5 +15,15 @@ public interface HomeService {
      */
     Result collecting();
 
+    /**
+     * 直线图数据
+     * @return
+     */
     Result lineChart();
+
+    /**
+     * 饼图数据
+     * @return
+     */
+    Result pieChart();
 }

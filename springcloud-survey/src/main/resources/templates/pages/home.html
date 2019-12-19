@@ -32,8 +32,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-7" style="padding-right:0;">
-                    开发中。。。
+                <div class="col-sm-7" style="padding-right:0; padding-left: 0;">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="echarts" id="echarts-pie-chart"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -53,7 +57,7 @@
                     <h5>调查中</h5>
                 </div>
                 <div class="ibox-content">
-                    <ul class="todo-list m-t small-list ui-sortable">
+                    <ul class="todo-list m-t small-list ui-sortable" style="min-height: 510px;">
                         <li v-for="(item, index) in collectings" style="cursor: pointer;"
                             v-on:click="jumpTo('pages/survey/details_det.html', item.id)">
                             <a href="widgets.html#" class="check-link"><i class="fa fa-square-o"></i> </a>
@@ -78,6 +82,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             lineEchart: null,
+            pieChart: null,
             pageInfo: {
                 name: '',
                 pageNum: 1,
@@ -95,18 +100,78 @@
             lineChartData: {
                 surveyData: [],
                 collectDatas: []
+            },
+            pieChartData: {
+                sms: 0,
+                phone: 0,
+                interview: 0
             }
         },
         created: function () {
             this.loadTotal();
             this.collecting();
             this.lineChart();
+            this.loadPieChart();
 
         },
         mounted: function() {
-            this.renderEchart()
+            this.renderEchart();
+            this.renderEchartPie();
         },
         methods: {
+            loadPieChart() {
+                var that = this;
+                AJAX.GET('home/pieChart', {}, function (resp) {
+                    var result = resp.data;
+                    result.forEach(function (item) {
+                        if(item.collectType === 0){
+                            that.pieChartData.sms = item.collectNum;
+                        }
+                        if(item.collectType === 1){
+                            that.pieChartData.phone = item.collectNum;
+                        }
+                        if(item.collectType === 2){
+                            that.pieChartData.interview = item.collectNum;
+                        }
+                    })
+                    that.renderEchartPie();
+                });
+            },
+            renderEchartPie(){
+                this.pieChart = echarts.init(document.getElementById("echarts-pie-chart"));
+                var pieoption = {
+                    title : {
+                        text: '收集数据来源',
+                        subtext: '各收集方式获得有效问卷分布',
+                        x:'center'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x : 'left',
+                        data:['短信','电话','走访']
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:'收集方式',
+                            type:'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data:[
+                                {value:this.pieChartData.phone, name:'电话'},
+                                {value:this.pieChartData.sms, name:'短信'},
+                                {value:this.pieChartData.interview, name:'走访'}
+                            ]
+                        }
+                    ]
+                };
+                this.pieChart.setOption(pieoption);
+                $(window).resize(this.pieChart.resize);
+            },
             renderEchart(){
                 this.lineEchart = echarts.init(document.getElementById("echarts-line-chart"));
 
@@ -129,7 +194,7 @@
                                 result += '<span>'+ item[0] +': '+ item.value +'</span><br/>';
 
 
-                            })
+                            });
                             return result;
 
                         }
@@ -165,12 +230,14 @@
                         {
                             name: '发出问卷数量',
                             type: 'line',
+                            symbolSize: 1,
                             smooth:true,
                             data: this.jsonToChartData(this.lineChartData.surveyData),
                         },
                         {
                             name: '收到问卷回复',
                             type: 'line',
+                            symbolSize: 1,
                             smooth:true,
                             data: this.jsonToChartData(this.lineChartData.collectDatas),
                         }

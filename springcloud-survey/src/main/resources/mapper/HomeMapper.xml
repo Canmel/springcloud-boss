@@ -61,4 +61,17 @@
 
         GROUP BY ymd.date;
     </select>
+
+    <select id="pieChart" resultType="hashmap">
+        SELECT
+            survey.collect_type AS collectType,
+            COUNT(1)collectNum
+        FROM
+            zs_answer answer
+        LEFT JOIN zs_survey survey ON survey.id = answer.survey_id
+        WHERE
+            answer. STATUS = 1
+        GROUP BY
+            survey.collect_type
+    </select>
 </mapper>

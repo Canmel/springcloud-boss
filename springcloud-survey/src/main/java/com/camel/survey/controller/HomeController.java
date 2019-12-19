@@ -55,9 +55,18 @@ public class HomeController {
         return homeService.collecting();
     }
 
+    /**
+     * 首页折线图
+     * @return
+     */
     @GetMapping("/lineChart")
     public Result lineChart(){
         return homeService.lineChart();
+    }
+
+    @GetMapping("/pieChart")
+    public Result pieChart() {
+        return homeService.pieChart();
     }
 
 }

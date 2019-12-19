@@ -26,7 +26,9 @@
     <link href="css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
     <link href="css/plugins/webuploader/webuploader.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/demo/webuploader-demo.css">
+
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <!--<link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">-->
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -113,6 +115,11 @@
                             <a class="J_menuItem" :href="applicationContextRootPath + 'pages/profile/index.html'"
                                data-pjax>我的资料</a>
                         </li>
+
+                        <li>
+                            <a class="J_menuItem" :href="applicationContextRootPath + 'pages/wallet/index.html'"
+                               data-pjax>我的钱包</a>
+                        </li>
                     </ul>
                 </li>
 
@@ -161,6 +168,7 @@
 
 <!-- 全局js -->
 <script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/plugins/echarts/echarts-all.js"></script>
 <script src="js/jquery.pjax.js"></script>
 <script src="js/BeAlert.js"></script>
 <script src="js/bootstrap.min.js?v=3.3.6"></script>
@@ -186,6 +194,10 @@
 <script src="js/jquery-ui-1.10.4.min.js"></script>
 <script src="js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="js/plugins/webuploader/webuploader.min.js"></script>
+
+<!-- Morris -->
+<script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
+<script src="js/plugins/morris/morris.js"></script>
 <!-- 自定义js -->
 <script src="js/content.js?v=1.0.0"></script>
 <script src="js/pageination.js"></script>
