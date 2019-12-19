@@ -1,5 +1,6 @@
 <script src="/survey/js/validateIsMain.js"></script>
 <section class="py-5 wrapper wrapper-content" id="subContainer">
+
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
@@ -31,6 +32,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-7" style="padding-right:0;">
+                    开发中。。。
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" style="padding-right:0;">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content" style="border-top:none;">
+                            <div class="echarts" id="echarts-line-chart"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -59,10 +72,12 @@
 </section>
 <!--<script src="/attendance/js/validateIsMain.js"></script>-->
 <script>
+
     var vue = new Vue({
         el: '#subContainer',
         data: {
             applicationContextRootPath: '/survey/',
+            lineEchart: null,
             pageInfo: {
                 name: '',
                 pageNum: 1,
@@ -76,13 +91,119 @@
                 targetCollectNum: 0
             },
             collectings: [],
-            items: [{}]
+            items: [{}],
+            lineChartData: {
+                surveyData: [],
+                collectDatas: []
+            }
         },
         created: function () {
             this.loadTotal();
             this.collecting();
+            this.lineChart();
+
+        },
+        mounted: function() {
+            this.renderEchart()
         },
         methods: {
+            renderEchart(){
+                this.lineEchart = echarts.init(document.getElementById("echarts-line-chart"));
+
+                var lineoption = {
+                    title: {
+                        text: '最近15天发出与收集情况'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function (params, ticket, callback) {
+                            console.log(params, ticket, callback);
+                            var result = '';
+                            var title = '';
+                            title = params[0].name.substr(0,2) + '月'+ params[0].name.substr(2,2) + '日';
+                            console.log(title)
+                            result += '<span>'+ title +'</span>';
+                            result += '<br/>'
+                            params.forEach(function (item) {
+
+                                result += '<span>'+ item[0] +': '+ item.value +'</span><br/>';
+
+
+                            })
+                            return result;
+
+                        }
+                    },
+                    legend: {
+                        data: ['发出问卷数量', '收到问卷回复']
+                    },
+                    grid: {
+                        x: 40,
+                        x2: 40,
+                        y2: 24
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: this.jsonToTitle(),
+                            splitLine: {
+                                show: false
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value} 份'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '发出问卷数量',
+                            type: 'line',
+                            smooth:true,
+                            data: this.jsonToChartData(this.lineChartData.surveyData),
+                        },
+                        {
+                            name: '收到问卷回复',
+                            type: 'line',
+                            smooth:true,
+                            data: this.jsonToChartData(this.lineChartData.collectDatas),
+                        }
+                    ]
+                };
+                this.lineEchart.setOption(lineoption);
+            },
+            jsonToChartData(jsons) {
+                var result = [];
+                jsons.forEach(function (item, index) {
+                    result.push(item.value);
+                });
+                return result;
+            },
+            jsonToTitle() {
+                var result = [];
+                this.lineChartData.surveyData.forEach(function (item, index) {
+                    result.push(item.xkey);
+                });
+                return result;
+            },
+            lineChart() {
+                var that = this;
+                AJAX.GET('home/lineChart', {}, function (resp) {
+                    var result = resp.data;
+                    that.lineChartData.surveyData = result.surveyData;
+                    that.lineChartData.collectDatas = result.collectDatas;
+                    that.renderEchart();
+                })
+            },
+            euroFormatter(v, axis) {
+                return "&yen;" + v.toFixed(axis.tickDecimals);
+            },
             loadTotal() {
                 var that = this;
                 AJAX.GET('home/total', {}, function (resp) {
