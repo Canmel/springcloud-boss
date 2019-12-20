@@ -1,5 +1,8 @@
 package com.camel.survey.service.impl;
 
+import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.entity.Result;
+import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsDelivery;
 import com.camel.survey.model.ZsSign;
 import com.camel.survey.mapper.ZsSignMapper;
@@ -7,10 +10,12 @@ import com.camel.survey.service.ZsSignService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.ZsDynamicView;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,5 +60,22 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
             zsDelivery.setCreator(applicationToolsUtils.getUser(zsDelivery.getCreatorId()));
         });
         return pageInfo;
+    }
+
+    @Override
+    public Result selectByUserId(Integer id) {
+        List<ZsDynamicView>  zsDynamicViews = new ArrayList<>();
+
+        PageInfo pageInfo = PaginationUtil.startPage(new BasePaginationEntity(), () -> {
+            mapper.list(new ZsSign(id));
+        });
+        List<ZsSign> zsSigns = pageInfo.getList();
+
+        zsSigns.forEach(zsSign -> {
+            ZsDynamicView zsDynamicView = new ZsDynamicView(zsSign.getCreatedAt(), zsSign.getUsername(), "参加了 " + zsSign.getSurvey().getName());
+            zsDynamicViews.add(zsDynamicView);
+        });
+
+        return ResultUtil.success(zsDynamicViews);
     }
 }

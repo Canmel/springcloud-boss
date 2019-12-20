@@ -76,6 +76,10 @@ public class ZsSign extends ZsSurveyBaseEntity implements Serializable {
         setCreatorId(creator);
     }
 
+    public ZsSign(Integer userId) {
+        setCreatorId(userId);
+    }
+
     public ZsSign() {
     }
 

@@ -67,6 +67,7 @@
         select
         <include refid="Base_Column_List"></include>
         FROM
+        zs_survey
         <where>
             id = #{id}
         </where>
@@ -76,6 +77,7 @@
         select
         <include refid="Base_Column_List"></include>
         FROM
+        zs_survey
         <where>
             id = #{id}
         </where>

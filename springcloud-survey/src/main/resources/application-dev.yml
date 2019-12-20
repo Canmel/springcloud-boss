@@ -45,6 +45,10 @@ attendance:
     url: ${APPLICATION_GETWAY_URL}
     port: ${APPLICATION_GETWAY_PORT}
 
+survey:
+  price:
+    phone: 1
+
 security:
   oauth2:
     resource:

@@ -15,6 +15,8 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
+        <association property="survey" column="survey_id"
+                     select="com.camel.survey.mapper.ZsSurveyMapper.findById"></association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -34,6 +36,9 @@
             </if>
             <if test="result != null">
                 AND result = #{result.value}
+            </if>
+            <if test="creatorId != null">
+                AND creator = #{creatorId}
             </if>
         </where>
     </select>

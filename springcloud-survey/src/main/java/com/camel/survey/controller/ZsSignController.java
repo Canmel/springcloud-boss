@@ -1,4 +1,6 @@
 package com.camel.survey.controller;
+import com.camel.common.entity.Member;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.survey.service.ZsSignService;
 import com.camel.survey.model.ZsSign;
@@ -44,6 +46,9 @@ public class ZsSignController extends BaseCommonController {
     @Autowired
     private ZsSignService service;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     /**
     * 分页查询
     */
@@ -82,6 +87,12 @@ public class ZsSignController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
+    }
+
+    @GetMapping("/user")
+    public Result getByUserId() {
+        Member member = applicationToolsUtils.currentUser();
+        return service.selectByUserId(member.getId());
     }
 
     /**
