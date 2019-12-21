@@ -53,7 +53,6 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
     success = success||function(data){};
     data = data||{};
     var access_token = sessionStorage.getItem('access_token');
-    console.log(access_token);
     if(access_token && url.indexOf('access_token')) {
         data['access_token'] = access_token;
     }

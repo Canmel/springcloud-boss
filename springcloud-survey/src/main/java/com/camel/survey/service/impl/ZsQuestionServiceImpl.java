@@ -22,6 +22,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -117,6 +118,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     }
 
     @Override
+    @Transactional
     public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
@@ -134,10 +136,21 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<ZsOption> zsOptions = surveyService.options(qIds);
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
+        updateCurrent(zsAnswerItemList);
         if(answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success("提交成功");
         } else {
             return ResultUtil.error(ResultEnum.SERVICE_ERROR);
         }
+    }
+
+    public void updateCurrent(List<ZsAnswerItem> zsAnswerItems) {
+        zsAnswerItems.forEach(item -> {
+            ZsOption zsOption = item.getZsOption();
+            if(zsOption.getConfigration() != null) {
+                zsOption.setCurrent(zsOption.getCurrent() + 1);
+                zsOptionService.updateById(zsOption);
+            }
+        });
     }
 }

@@ -45,6 +45,10 @@
         .star-box label:hover {
             color: red;
         }
+        input[disabled] + label{
+            color:#dedede;
+            opacity:1;
+        }
     </style>
 </head>
 <body>
@@ -64,7 +68,7 @@
                     <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
-                            <input type="radio" :id="'radio_' + item.id + '_' + opt.id" v-on:change="radioChange(opt)"
+                            <input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id" v-on:change="radioChange(opt)"
                                    :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
@@ -169,6 +173,13 @@
             this.loadSurvey();
         },
         methods: {
+            disableOption(opt) {
+                if(opt.configration && opt.current) {
+                    return opt.configration == opt.current;
+                }
+                return false;
+
+            },
             radioChange(opt) {
                 if (opt.target > 0) {
                     this.nextIndex = opt.target;

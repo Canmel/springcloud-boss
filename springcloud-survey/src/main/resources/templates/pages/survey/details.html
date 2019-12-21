@@ -317,11 +317,17 @@
                                         </label>
                                         <label class="radio-inline" v-if="item.type === 1" v-on:click="showToIndexModal($event)">
                                             <span class="fa fa-share-square-o"></span></label>
+                                        <!--{{item}}-->
+                                        <label class="radio-inline configration-label">
+                                            <span class="configration editable">{{option.configration}}</span>
+                                        </label>
                                     </div>
                                 </div>
                                 <p class="tools col-sm-12 col-sm-offset-3"><a class="edit-link">编辑HTML</a><a> | </a><a
                                         class="remove-link">移除</a> | <a class="add-link"
-                                                                        v-on:click="addItem(item)">添加</a></p>
+                                                                        v-on:click="addItem(item)">添加</a> |
+                                    <a class="add-link" v-if="item.type == 1"
+                                       v-on:click="configration(item, $event)">甄选配额</a>
                             </div>
                         </div>
                         <div class="col-md-6 droppable sortable" style="display: none;">
@@ -484,8 +490,10 @@
         },
         computed: {},
         methods: {
-            setMaxSelect(event) {
-                // $(event.srcElement).parent().parent().attr('max-select', );
+            configration(item, event) {
+                if( $(event.srcElement).parent().parent().find('.configration').length === 0) {
+                    $(event.srcElement).parent().parent().find('.configration-label').append('<span class="configration editable">点击修改配额</span>');
+                }
             },
             saveToIndex() {
                 console.log(this.navigat);
@@ -675,7 +683,7 @@
             },
             reBindIndex() {
                 $('#surveyArea').children().each(function (index, item) {
-                    $(item).find('.question-index').text(index + 1)
+                    $(item).find('.question-index').text(index + 1);
                 })
             },
             bindEdit(element) {
@@ -728,8 +736,12 @@
                         var surveyJson = {};
                         surveyJson.orderNum = $(item).find('.question-index').text();
                         surveyJson.name = $(item).find('.question-title').text();
-                        surveyJson.maxSelect = $(item).find('.max-select').text();
-                        surveyJson.minSelect = $(item).find('.min-select').text();
+                        if(parseInt($(item).find('.max-select').text()) > 0) {
+                            surveyJson.maxSelect = $(item).find('.max-select').text();
+                        }
+                        if(parseInt($(item).find('.min-select').text()) > 0) {
+                            surveyJson.minSelect = $(item).find('.min-select').text();
+                        }
                         surveyJson.type = $(item).attr('question-type');
                         surveyJson.surveyId = that.survey.id;
                         that.saveData.zsQuestions.push(surveyJson);
@@ -739,6 +751,7 @@
                             optionJson.questionOrderNum = surveyJson.orderNum;
                             optionJson.name = $(o).text();
                             optionJson.orderNum = i + 1;
+                            optionJson.configration = $(o).parent().parent().find('.configration').text();
                             console.log($(o).parent());
                             optionJson.target = $(o).parent().attr('data-target');
                             that.saveData.zsOptions.push(optionJson);

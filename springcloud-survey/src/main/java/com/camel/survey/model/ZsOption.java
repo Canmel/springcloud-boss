@@ -47,10 +47,12 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
     /**
      * 名称，显示作用
      */
     private String name;
+
     /**
      * 序号
      */
@@ -60,6 +62,16 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
      * 下一个问题序号
      */
     private Integer target;
+
+    /**
+     * 选项配额
+     */
+    private Integer configration;
+
+    /**
+     * 配额当前值
+     */
+    private Integer current;
 
     /**
      * 问题序号

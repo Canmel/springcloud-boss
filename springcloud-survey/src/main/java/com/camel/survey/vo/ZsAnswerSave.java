@@ -72,7 +72,9 @@ public class ZsAnswerSave {
     }
 
     public ZsAnswerItem buildAnswerItem(ZsQuestion question, ZsOption zsOption, Integer answerId, String value) {
-        return new ZsAnswerItem(question.getName(), ObjectUtils.isEmpty(zsOption) ? "" : zsOption.getName(), answerId, value, question.getType(), this.phone);
+        ZsAnswerItem zsAnswerItem = new ZsAnswerItem(question.getName(), ObjectUtils.isEmpty(zsOption) ? "" : zsOption.getName(), answerId, value, question.getType(), this.phone);
+        zsAnswerItem.setZsOption(zsOption);
+        return zsAnswerItem;
     }
 
     public List<ZsAnswerItem> buildAnswerItems(List<ZsQuestion> zsQuestionList, List<ZsOption> optionList, Integer answerId) {
@@ -83,6 +85,7 @@ public class ZsAnswerSave {
             if (!StringUtils.isBlank(itemSave.getName())) {
                 List<String> nameParams = CollectionUtils.arrayToList(itemSave.getName().split("_"));
                 Integer questionId = Integer.parseInt(nameParams.get(1));
+
                 Integer optionId = Integer.parseInt(nameParams.get(2));
                 for (ZsQuestion q : zsQuestionList) {
                     if (questionId.equals(q.getId())) {
@@ -90,12 +93,13 @@ public class ZsAnswerSave {
                     }
                 }
                 for (ZsOption o : optionList) {
-                    if (optionId.equals(o.getId())) {
+                    if(itemSave.getValue().equals(o.getName()) && questionId.equals(o.getQuestionId())){
                         zsOption = o;
                     }
                 }
                 if (!ObjectUtils.isEmpty(zsQuestion) && StringUtils.isNotBlank(itemSave.getValue())) {
                     result.add(buildAnswerItem(zsQuestion, zsOption, answerId, itemSave.getValue()));
+
                 } else {
                     throw new SurveyFormSaveException();
                 }
