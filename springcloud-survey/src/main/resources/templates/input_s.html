@@ -51,7 +51,7 @@
 <div id="container">
     <!-- Top Navigation -->
     <header class="codrops-header">
-        <h1>调查问卷<span>关于xxxx的调查</span></h1>
+        <h1>智慧调查<span>{{survey.name}}</span></h1>
     </header>
     <section>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
@@ -146,6 +146,9 @@
             pageInfo: {
 
             },
+            survey: {
+                name: '',
+            },
             paramsPair: [],
             questions: [],
             options: [],
@@ -224,7 +227,10 @@
                     var result = resp.data;
                     that.questions = result.zsQuestions;
                     that.options = result.zsOptions;
-                } )
+                } );
+                AJAX.GET('zsSurvey/' + this.getParams('surveyId'), {}, function (resp) {
+                    that.survey = resp.data;
+                })
             }
         }
     });
