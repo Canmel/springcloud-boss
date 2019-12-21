@@ -62,6 +62,8 @@ security:
         - /error.html
         - /web_survey.html
         - /web_survey
+        - /input.html
+        - /input_s.html
         -
 
 mybatis-plus:

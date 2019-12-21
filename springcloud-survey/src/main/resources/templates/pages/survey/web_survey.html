@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <title>开始做题</title>
+    <!--手机端需要添加-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--手机端需要添加---->
+    <link rel="stylesheet" href="css/test_rx.css">
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/jQuery.fontFlex.js"></script>
+    <script src="js/ajax-util.js"></script>
+    <script src="js/vue.js"></script>
+    <style type="text/css">
+        .star-box {
+            display: inline-block;
+        }
+
+        .star-box label {
+            float: right;
+            color: #999;
+            margin-bottom: 0px;
+        }
+
+        .star-box label::after {
+            content: '★';
+            font-size: 14px;
+            padding: 5px;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .star-box input:checked ~ label,
+        .star-box label:hover ~ label,
+        .star-box label:hover {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div class="wjdt_title">
+        <h3>问卷调查</h3>
+        <p>获2元话费</p>
+        <img src="img/ls.svg" style="width:3rem; position:absolute; top:1rem; left:1rem; "></div>
+    <div class="dtks_box">
+        <!--题目-->
+        <form id="surveyForm" v-if="!complete">
+            <div class="kcks_title_ts" date-title="2" date-last="0" v-for="(item, index) in questions">
+                <h4 class=" kctm_zzbt">{{item.orderNum}}. {{item.name}}</h4>
+                <ul class="dxt_box">
+                    <div v-for="(opt, i) in options" v-if="item.type === 1 && showOptions(item, opt)">
+                        <li>
+                            <input type="radio" :id="'radio_' + item.id + '_' + opt.id"
+                                   :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
+                            <label :for="'radio_' + item.id + '_' + opt.id">
+                                <span>{{opt.name}}</span>
+                            </label>
+                        </li>
+                    </div>
+
+                    <div v-for="(opt, i) in options" v-if="item.type === 2 && showOptions(item, opt)">
+                        <li>
+                            <input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
+                                   :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
+                            <label :for="'checkbox_' + item.id + '_' + opt.id">
+                                <span>{{opt.name}}</span>
+                            </label>
+                        </li>
+                    </div>
+
+                    <div v-for="(opt, i) in options" v-if="item.type === 3 && showOptions(item, opt)">
+                        <li>
+                            <span>{{opt.name}}</span>
+                            <span class="star-box">
+                            <input type="radio" value="1"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_5'"
+                                   hidden/>
+                            <label :for="'star_' + item.orderNum + '_' + opt.orderNum + '_5'"></label>
+
+                            <input type="radio" value="2"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_4'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_4'"></label>
+
+                            <input type="radio" value="3"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_3'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_3'"></label>
+
+                            <input type="radio" value="4"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_2'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_2'"></label>
+
+                            <input type="radio" value="5"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_1'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_1'"></label>
+                        </span>
+                        </li>
+                    </div>
+
+                    <div v-for="(opt, i) in options" v-if="item.type === 4 && showOptions(item, opt)">
+                        <li>
+                            <span>{{opt.name}}</span>
+                            <input type="text" :name="'answer_' + item.id + '_' + opt.id"
+                                   style="width: 80%; background-color: cornsilk;">
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </form>
+        <div class="kcks_title_ts" v-if="complete">
+            <div class="jgyem_ck">
+                <p style=" text-indent:1.2rem;"><strong>第一步：</strong></p>
+                <p style=" text-indent:1.2rem;">手机接收短信，打开短信中的网页问卷链接</p>
+                <p style=" text-indent:1.2rem;"><strong>第二步：</strong></p>
+                <p style=" text-indent:1.2rem;">填写问卷,并提交； </p>
+                <p style=" text-indent:1.2rem;"><strong>第三步：</strong></p>
+                <p style=" text-indent:1.2rem;">问卷收集完成后统一发放话费 </p>
+            </div>
+        </div>
+    </div>
+
+    <!--结束------------------------------------------>
+
+    <div class="kasj_db_but " v-if="!complete"><a href="javascript:void(0);" class="tj_zuotm" v-on:click="submitQuestion()">提交选择</a>
+    </div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#wrapper',
+        data: {
+            applicationContextRootPath: '/survey/',
+            surveyId: null,
+            complete: false,
+            phone: '',
+            questions: [],
+            options: [],
+            answer: []
+        },
+        created: function () {
+            $('html').fontFlex(20, 40, 16);
+        },
+        mounted: function () {
+            this.loadSurvey();
+        },
+        methods: {
+            radioName(opt) {
+                if (opt.questionId) {
+                    return 'radio_' + opt.questionId;
+                }
+            },
+            showOptions(question, option) {
+                if (option.questionOrderNum) {
+                    return option.questionOrderNum === question.orderNum;
+                }
+                if (option.questionId && question.id) {
+                    return option.questionId === question.id;
+                }
+                return false;
+            },
+            submitQuestion() {
+                var $box = $(".dxt_box");
+                var that = this;
+
+                for (var i = 0; i < $box.length; i++) {
+                    var flag = true;
+                    var $inputs = $($box[i]).find('input');
+                    for (var j = 0; j < $inputs.length; j++) {
+                        $($inputs[j]).attr('type');
+                        if ($($inputs[j]).attr('type') === 'radio' || $($inputs[j]).attr('type') === 'checkbox') {
+                            if ($($inputs[j]).prop('checked')) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if ($($inputs[j]).attr('type') === 'text') {
+                            if ($($inputs[j]).val() !== '') {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (flag) {
+                        alert('请填写完问卷');
+                        break;
+                    }
+
+                }
+                AJAX.POST_JSON('zsQuestion/answer', {
+                    zsAnswerItemSaves: $('#surveyForm').serializeArray(),
+                    surveyId: this.surveyId,
+                    phone: this.phone
+                }, function (resp) {
+                    alert(resp.msg);
+                    that.complete = true;
+                });
+
+            },
+            loadSurvey() {
+                var that = this;
+                var params = location.href.split('?')[1];
+                AJAX.GET('zsSurvey/questionAndOptions/' + params.split('=')[0], {}, function (resp) {
+                    that.questions = resp.data.zsQuestions;
+                    that.options = resp.data.zsOptions;
+                });
+                this.surveyId = params.split('=')[0];
+                this.phone = params.split('=')[1];
+                console.log('问卷ID', params.split('=')[0]);
+                console.log('用户电话', params.split('=')[1]);
+            }
+
+        }
+
+    });
+</script>
+</html>

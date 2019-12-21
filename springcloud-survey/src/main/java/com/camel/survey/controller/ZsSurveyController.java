@@ -59,6 +59,7 @@ public class ZsSurveyController extends BaseCommonController {
     /**
     * 获取详情
     */
+    @AuthIgnore
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id){
         return super.details(id);

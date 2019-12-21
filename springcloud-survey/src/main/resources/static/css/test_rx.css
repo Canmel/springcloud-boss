@@ -1,6 +1,6 @@
 * { margin: 0; padding: 0; }
 body { padding: 0; margin: 0; background: #009ece url(../img/bj.jpg) center top no-repeat; background-size: 100% auto; font-family:"冬青黑体简体中文 W3"; min-width: 320px;
-color: #2f3441; max-width: 750px; }
+color: #2f3441;}
 span, p, ul, li, h1, h2, h3, h4, h5, input { margin: 0; padding: 0; font-weight: normal }
 h2, h3 { font-size: 0.7rem; line-height: 100% }
 ul, li { list-style: none; }

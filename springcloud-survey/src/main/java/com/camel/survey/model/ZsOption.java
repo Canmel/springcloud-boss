@@ -57,6 +57,11 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     private Integer orderNum;
 
     /**
+     * 下一个问题序号
+     */
+    private Integer target;
+
+    /**
      * 问题序号
      */
     @TableField(exist = false)

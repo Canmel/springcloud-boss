@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minimal Form Interface</title>
+    <meta name="description" content="Minimal Form Interface: Simplistic, single input view form" />
+    <meta name="keywords" content="form, minimal, interface, single input, big form, responsive form, transition" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/survey/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/survey/css/demo.css" />
+    <script src="/survey/js/modernizr.custom.js"></script>
+    <script src="/survey/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/survey/js/jQuery.fontFlex.js"></script>
+    <script src="/survey/js/ajax-util.js"></script>
+    <script src="/survey/js/vue.js"></script>
+    <style type="text/css">
+        .star-box {
+            display: inline-block;
+        }
+
+        .star-box label {
+            float: right;
+            color: #999;
+            margin-bottom: 0px;
+        }
+
+        .star-box label::after {
+            content: '★';
+            font-size: 14px;
+            padding: 5px;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .star-box input:checked ~ label,
+        .star-box label:hover ~ label,
+        .star-box label:hover {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <!-- Top Navigation -->
+    <header class="codrops-header">
+        <h1>调查问卷<span>关于xxxx的调查</span></h1>
+    </header>
+    <section>
+        <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
+            <div class="simform-inner">
+
+                <div class="question" v-for="(item, index) in questions">
+                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}}</h4>
+                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 1 && showOptions(item, opt)">
+                        <div>
+                            <input type="radio" :id="'radio_' + item.id + '_' + opt.id"
+                                   :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
+                            <label :for="'radio_' + item.id + '_' + opt.id">
+                                <span>{{opt.name}}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 2 && showOptions(item, opt)">
+                        <div>
+                            <input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
+                                   :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
+                            <label :for="'checkbox_' + item.id + '_' + opt.id">
+                                <span>{{opt.name}}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 3 && showOptions(item, opt)">
+                        <div>
+                            <span>{{opt.name}}</span>
+                            <span class="star-box">
+                            <input type="radio" value="1"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_5'"
+                                   hidden/>
+                            <label :for="'star_' + item.orderNum + '_' + opt.orderNum + '_5'"></label>
+
+                            <input type="radio" value="2"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_4'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_4'"></label>
+
+                            <input type="radio" value="3"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_3'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_3'"></label>
+
+                            <input type="radio" value="4"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_2'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_2'"></label>
+
+                            <input type="radio" value="5"
+                                   :name="'star_' + item.id + '_' + opt.id"
+                                   :id="'star_' + item.id + '_' + opt.id + '_1'"
+                                   hidden/>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_1'"></label>
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 4 && showOptions(item, opt)">
+                        <div>
+                            <span>{{opt.name}}</span>
+                            <input type="text" :name="'answer_' + item.id + '_' + opt.id"
+                                   style="width: 80%; background-color: cornsilk;">
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /simform-inner -->
+        </form><!-- /simform -->
+        <div class="row text-center">
+            <button class="submit btn btn-success" v-on:click="submit()">提交</button>
+        </div>
+    </section>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#container',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+
+            },
+            paramsPair: [],
+            questions: [],
+            options: [],
+            surveyId: null,
+            complete: false,
+            phone: ''
+        },
+        created: function () {
+            this.loadParams();
+            this.loadSurvey();
+        },
+        methods: {
+            submit() {
+                console.log($('#theForm').serializeArray());
+                AJAX.POST_JSON('zsQuestion/answer', {
+                    zsAnswerItemSaves: $('#theForm').serializeArray(),
+                    surveyId: this.getParams('surveyId'),
+                    phone: this.getParams('phone'),
+                    record: this.getParams('record'),
+                    seat: this.getParams('seat')
+                }, function (resp) {
+                    alert(resp.msg);
+                    // that.complete = true;
+                });
+            },
+            radioName(opt) {
+                if (opt.questionId) {
+                    return 'radio_' + opt.questionId;
+                }
+            },
+            showOptions(question, option) {
+                if (option.questionOrderNum) {
+                    return option.questionOrderNum === question.orderNum;
+                }
+                if (option.questionId && question.id) {
+                    return option.questionId === question.id;
+                }
+                return false;
+            },
+            loadParams() {
+              var params = location.href.split("?")[1];
+              var paramsPair = params.split("&");
+              this.paramsPair = paramsPair;
+            },
+            getParams(paramName) {
+                var result = null;
+                this.paramsPair.forEach(function (value) {
+                    if(value.includes(paramName)) {
+                        result = value.split("=")[1]
+                        return
+                    }
+                })
+                return result;
+            },
+            loadSurvey() {
+                var that = this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + this.getParams('surveyId'), {}, function (resp) {
+                    var result = resp.data;
+                    that.questions = result.zsQuestions;
+                    that.options = result.zsOptions;
+                } )
+            }
+        }
+    });
+</script>
+</html>
