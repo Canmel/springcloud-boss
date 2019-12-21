@@ -54,6 +54,11 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     private String name;
 
     /**
+     * 有没有备注
+     */
+    public Boolean hasRemark;
+
+    /**
      * 序号
      */
     private Integer orderNum;

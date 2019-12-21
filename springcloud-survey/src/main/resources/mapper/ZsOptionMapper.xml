@@ -10,6 +10,7 @@
         <result column="question_id" property="questionId"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
+        <result column="has_remark" property="hasRemark"/>
         <result column="target" property="target"/>
         <result column="creator" property="creatorId"/>
         <association property="zsQuestion" column="question_id"
@@ -21,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, order_num, question_id, target, status, created_at, creator
+        id, name, order_num, question_id, has_remark, target, status, created_at, creator
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

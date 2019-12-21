@@ -246,10 +246,12 @@
                                     <label class="col-sm-5 control-label" style="padding-left: 0px; text-align: left;">
                                         <span class="editable question-title">{{item.name}}</span>
                                     </label>
-                                    <label class="col-sm-2 control-label setting" style="padding-left: 0px; text-align: left;" v-if="item.type===2">
+                                    <label class="col-sm-2 control-label setting"
+                                           style="padding-left: 0px; text-align: left;" v-if="item.type===2">
                                         最大选择数：<span class="editable max-select">{{item.maxSelect ? item.maxSelect : '设置'}}</span>
                                     </label>
-                                    <label class="col-sm-2 control-label setting" style="padding-left: 0px; text-align: left;" v-if="item.type===2">
+                                    <label class="col-sm-2 control-label setting"
+                                           style="padding-left: 0px; text-align: left;" v-if="item.type===2">
                                         最小选择数：<span class="editable min-select">{{item.minSelect ? item.minSelect : '设置'}}</span>
                                     </label>
                                 </div>
@@ -315,11 +317,15 @@
                                         <label class="radio-inline" v-if="showOption(item, option)">
                                             <span class="fa fa-trash options-delete"></span>
                                         </label>
-                                        <label class="radio-inline" v-if="item.type === 1" v-on:click="showToIndexModal($event)">
+                                        <label class="radio-inline" v-if="item.type === 1"
+                                               v-on:click="showToIndexModal($event)">
                                             <span class="fa fa-share-square-o"></span></label>
                                         <!--{{item}}-->
                                         <label class="radio-inline configration-label">
                                             <span class="configration editable">{{option.configration}}</span>
+                                        </label>
+                                        <label class="radio-inline">
+                                            <span class="add-remark">添加备注</span>
                                         </label>
                                     </div>
                                 </div>
@@ -398,17 +404,20 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">联系人：</label>
                                             <div class="col-sm-8">
-                                                <input name="name" class="form-control" type="text" v-model="concat.name">
+                                                <input name="name" class="form-control" type="text"
+                                                       v-model="concat.name">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">手机号：</label>
                                             <div class="col-sm-8">
-                                                <input name="phone" class="form-control" type="text" v-model="concat.phone">
+                                                <input name="phone" class="form-control" type="text"
+                                                       v-model="concat.phone">
                                             </div>
                                         </div>
 
-                                        <button type="button" class="btn btn-success" v-on:click="saveConcat()">提交</button>
+                                        <button type="button" class="btn btn-success" v-on:click="saveConcat()">提交
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -426,7 +435,8 @@
         </div><!-- /.modal -->
     </div>
 
-    <div class="modal fade" id="toIndexModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="toIndexModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -479,7 +489,7 @@
                 phones: '',
                 surveyId: sessionStorage.getItem('editParams')
             },
-            navigat:{
+            navigat: {
                 selectedOption: null,
                 nextIndex: null
             }
@@ -491,13 +501,13 @@
         computed: {},
         methods: {
             configration(item, event) {
-                if( $(event.srcElement).parent().parent().find('.configration').length === 0) {
+                if ($(event.srcElement).parent().parent().find('.configration').length === 0) {
                     $(event.srcElement).parent().parent().find('.configration-label').append('<span class="configration editable">点击修改配额</span>');
                 }
             },
             saveToIndex() {
                 console.log(this.navigat);
-                if(parseInt(this.navigat.nextIndex) > 0) {
+                if (parseInt(this.navigat.nextIndex) > 0) {
                     $(this.navigat.selectedOption).attr('data-target', this.navigat.nextIndex);
                     $('#toIndexModal').modal('hide');
                     return true;
@@ -521,7 +531,7 @@
             },
             saveConcat() {
                 var that = this;
-                if(!$("#signupForm").valid()){
+                if (!$("#signupForm").valid()) {
                     return false;
                 }
                 AJAX.POST('zsConcat', this.concat, function (resp) {
@@ -736,10 +746,10 @@
                         var surveyJson = {};
                         surveyJson.orderNum = $(item).find('.question-index').text();
                         surveyJson.name = $(item).find('.question-title').text();
-                        if(parseInt($(item).find('.max-select').text()) > 0) {
+                        if (parseInt($(item).find('.max-select').text()) > 0) {
                             surveyJson.maxSelect = $(item).find('.max-select').text();
                         }
-                        if(parseInt($(item).find('.min-select').text()) > 0) {
+                        if (parseInt($(item).find('.min-select').text()) > 0) {
                             surveyJson.minSelect = $(item).find('.min-select').text();
                         }
                         surveyJson.type = $(item).attr('question-type');
@@ -752,6 +762,9 @@
                             optionJson.name = $(o).text();
                             optionJson.orderNum = i + 1;
                             optionJson.configration = $(o).parent().parent().find('.configration').text();
+                            if ($(o).parent().parent().attr('has-remark')) {
+                                optionJson.hasRemark = $(o).parent().parent().attr('has-remark');
+                            }
                             console.log($(o).parent());
                             optionJson.target = $(o).parent().attr('data-target');
                             that.saveData.zsOptions.push(optionJson);
@@ -767,6 +780,10 @@
                     return false;
                 });
 
+                $(document).on("click", ".add-remark", function (ev) {
+                    $(this).parent().parent().attr('has-remark', true);
+                    $(this).html('已添加');
+                });
 
                 $(document).on("click", ".edit-link", function (ev) {
                     var $el = $(this).parent().parent();

@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -147,10 +148,13 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     public void updateCurrent(List<ZsAnswerItem> zsAnswerItems) {
         zsAnswerItems.forEach(item -> {
             ZsOption zsOption = item.getZsOption();
-            if(zsOption.getConfigration() != null) {
-                zsOption.setCurrent(zsOption.getCurrent() + 1);
-                zsOptionService.updateById(zsOption);
+            if(!ObjectUtils.isEmpty(zsOption)) {
+                if(item.getType() == 1 && zsOption.getConfigration() != null) {
+                    zsOption.setCurrent(zsOption.getCurrent() + 1);
+                    zsOptionService.updateById(zsOption);
+                }
             }
+
         });
     }
 }

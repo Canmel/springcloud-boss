@@ -45,9 +45,10 @@
         .star-box label:hover {
             color: red;
         }
-        input[disabled] + label{
-            color:#dedede;
-            opacity:1;
+
+        input[disabled] + label {
+            color: #dedede;
+            opacity: 1;
         }
     </style>
 </head>
@@ -61,17 +62,20 @@
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
 
-                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
+                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1" :data-type="item.type"
                      :max-select="item.maxSelect" :min-select="item.minSelect">
                     <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
                     <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
-                            <input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id" v-on:change="radioChange(opt)"
+                            <input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
+                                   v-on:change="radioChange(opt)"
                                    :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
+                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
+                                       v-model="opt.name">
                             </label>
                         </div>
                     </div>
@@ -129,8 +133,8 @@
                          v-if="item.type === 4 && showOptions(item, opt)">
                         <div>
                             <span>{{opt.name}}</span>
-                            <input type="text" :name="'answer_' + item.id + '_' + opt.id"
-                                   style="width: 80%; background-color: cornsilk;">
+                            <input type="text" :name="'answer_' + item.id + '_' + opt.id" class="form-control"
+                                   style="display: initial; width: auto;">
                         </div>
                     </div>
                     <div class="row text-center" v-if="!showSubmit">
@@ -173,8 +177,75 @@
             this.loadSurvey();
         },
         methods: {
+            validateForm() {
+                var flag = true;
+                var $questions = $('.simform-inner').find('.question');
+                $questions.each(function (index, item) {
+                    if($(item).css('display') !== 'none') {
+                        var dataType = $(item).attr('data-type');
+                        if(dataType === '1') {
+                            var selected = $(item).find('input:checked');
+                            if(selected.length == 0) {
+                                return flag = false;
+                            }
+                        }
+                        if(dataType === '2') {
+                            var selected = $(item).find('input:checked');
+                            if(selected.length == 0) {
+                                return flag = false;
+                            }
+                        }
+                        if(dataType === '3') {
+                            var selected = $(item).find('input:checked');
+                            if(selected.length == 0) {
+                                return flag = false;
+                            }
+                        }
+                        if(dataType === '4') {
+                            var selected = $(item).find('input');
+                            selected.each(function (index, item) {
+                                if($(item).val() === '') {
+                                    return flag = false;
+                                }
+                            })
+                        }
+                    }
+                });
+                // $questions.each(function (index, item) {
+                //     console.log(index, item);
+                //     var dataType = $(item).attr('data-type');
+                //     if(dataType === '1') {
+                //         var selected = $(item).find('input:checked');
+                //         if(selected.length == 0) {
+                //             return false;
+                //         }
+                //     }
+                //     if(dataType === '2') {
+                //         var selected = $(item).find('input:checked');
+                //         if(selected.length == 0) {
+                //             return false;
+                //         }
+                //     }
+                //     if(dataType === '3') {
+                //         var selected = $(item).find('input:checked');
+                //         if(selected.length == 0) {
+                //             return false;
+                //         }
+                //     }
+                //     if(dataType === '4') {
+                //         var selected = $(item).find('input');
+                //         selected.each(function (index, item) {
+                //             if($(item).val() === '') {
+                //                 return false;
+                //             }
+                //         })
+                //     }
+                //     return true;
+                // })
+                return flag;
+            },
             disableOption(opt) {
-                if(opt.configration && opt.current) {
+                if (opt.configration && opt.current) {
                     return opt.configration == opt.current;
                 }
                 return false;
@@ -217,6 +288,9 @@
                 var $inputs = $(event.srcElement).parents('.question').find('input:checked');
                 question.minSelect = question.minSelect ? question.minSelect : 0;
                 question.maxSelect = question.maxSelect ? question.maxSelect : 0;
+                if (question.minSelect == 0 && question.maxSelect == 0) {
+                    return false;
+                }
                 return $inputs.length < question.minSelect || $inputs.length > question.maxSelect;
 
             },
@@ -247,8 +321,8 @@
 
             },
             submit(question, event) {
-                if (!this.isInputed(question, event)) {
-                    alert('请选择');
+                if (!this.validateForm()) {
+                    alert('请完成表单');
                     return false;
                 }
                 AJAX.POST_JSON('zsQuestion/answer', {

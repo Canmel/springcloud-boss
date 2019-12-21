@@ -3,22 +3,24 @@
 <html lang="en" class="no-js">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Minimal Form Interface</title>
-    <meta name="description" content="Minimal Form Interface: Simplistic, single input view form" />
-    <meta name="keywords" content="form, minimal, interface, single input, big form, responsive form, transition" />
-    <meta name="author" content="Codrops" />
+    <meta name="description" content="Minimal Form Interface: Simplistic, single input view form"/>
+    <meta name="keywords" content="form, minimal, interface, single input, big form, responsive form, transition"/>
+    <meta name="author" content="Codrops"/>
     <link rel="shortcut icon" href="../favicon.ico">
     <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/survey/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/survey/css/demo.css" />
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/survey/css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="/survey/css/demo.css"/>
     <script src="/survey/js/modernizr.custom.js"></script>
     <script src="/survey/js/jquery.min.js?v=2.1.4"></script>
     <script src="/survey/js/jQuery.fontFlex.js"></script>
     <script src="/survey/js/ajax-util.js"></script>
     <script src="/survey/js/vue.js"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
     <style type="text/css">
         .star-box {
             display: inline-block;
@@ -43,23 +45,30 @@
         .star-box label:hover {
             color: red;
         }
+        input[disabled] + label{
+            color:#dedede;
+            opacity:1;
+        }
     </style>
 </head>
 <body>
 <div id="container">
     <!-- Top Navigation -->
     <header class="codrops-header">
-        <h1>调查问卷<span>关于xxxx的调查</span></h1>
+        <h1>智慧调查<span>{{survey.name}}</span></h1>
     </header>
     <section>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
 
-                <div class="question" v-for="(item, index) in questions">
-                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}}</h4>
-                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 1 && showOptions(item, opt)">
+                <div class="question" v-for="(item, index) in questions" :data-type="item.type"
+                     :max-select="item.maxSelect" :min-select="item.minSelect">
+                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
+                    </h4>
+                    <div class="question-option" v-for="(opt, i) in options"
+                         v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
-                            <input type="radio" :id="'radio_' + item.id + '_' + opt.id"
+                            <input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id" v-on:change="radioChange(opt)"
                                    :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
@@ -67,9 +76,10 @@
                         </div>
                     </div>
 
-                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 2 && showOptions(item, opt)">
+                    <div class="question-option" v-for="(opt, i) in options"
+                         v-if="item.type === 2 && showOptions(item, opt)">
                         <div>
-                            <input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
+                            <input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id" v-on:change="checkBoxOutOfBoundsValid(item, $event)"
                                    :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
@@ -77,7 +87,8 @@
                         </div>
                     </div>
 
-                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 3 && showOptions(item, opt)">
+                    <div class="question-option" v-for="(opt, i) in options"
+                         v-if="item.type === 3 && showOptions(item, opt)">
                         <div>
                             <span>{{opt.name}}</span>
                             <span class="star-box">
@@ -114,20 +125,23 @@
                         </div>
                     </div>
 
-                    <div class="question-option" v-for="(opt, i) in options" v-if="item.type === 4 && showOptions(item, opt)">
+                    <div class="question-option" v-for="(opt, i) in options"
+                         v-if="item.type === 4 && showOptions(item, opt)">
                         <div>
                             <span>{{opt.name}}</span>
                             <input type="text" :name="'answer_' + item.id + '_' + opt.id"
                                    style="width: 80%; background-color: cornsilk;">
                         </div>
                     </div>
+
+                </div>
+                <div class="row text-center">
+                    <span class="submit btn btn-success" v-on:click="submit($event)">提交</span>
                 </div>
 
             </div><!-- /simform-inner -->
         </form><!-- /simform -->
-        <div class="row text-center">
-            <button class="submit btn btn-success" v-on:click="submit()">提交</button>
-        </div>
+
     </section>
 </div>
 </body>
@@ -136,33 +150,147 @@
         el: '#container',
         data: {
             applicationContextRootPath: '/survey/',
-            pageInfo: {
-
+            pageInfo: {},
+            survey: {
+                name: '',
             },
             paramsPair: [],
             questions: [],
             options: [],
             surveyId: null,
             complete: false,
-            phone: ''
+            phone: '',
+            current: 1,
+            nextIndex: 1,
+            showSubmit: false
         },
         created: function () {
             this.loadParams();
             this.loadSurvey();
         },
         methods: {
-            submit() {
-                console.log($('#theForm').serializeArray());
-                AJAX.POST_JSON('zsQuestion/answer', {
-                    zsAnswerItemSaves: $('#theForm').serializeArray(),
-                    surveyId: this.getParams('surveyId'),
-                    phone: this.getParams('phone'),
-                    record: this.getParams('record'),
-                    seat: this.getParams('seat')
-                }, function (resp) {
-                    alert(resp.msg);
-                    // that.complete = true;
+            checkBoxOutOfBoundsValid(item, event){
+                console.log($(event.srcElement), item)
+                var checkedNum =  $(event.srcElement).parent().parent().parent().find('input:checked').length;
+                if(item.maxSelect) {
+
+                    if(checkedNum > item.maxSelect) {
+                        $(event.srcElement).prop("checked", false);
+                    }
+                }
+            },
+            disableOption(opt) {
+                if(opt.configration && opt.current) {
+                    return opt.configration == opt.current;
+                }
+                return false;
+
+            },
+            radioChange(opt) {
+                if (opt.target > 0) {
+                    this.nextIndex = opt.target;
+                }
+            },
+            nextQuestion(question, event) {
+                if (!this.isInputed(question, event)) {
+                    return alert('请选择');
+                }
+                if (question.type === 2 && this.isOutOfBounds(question, event)) {
+                    var resultStr = "";
+                    if (question.maxSelect) {
+                        resultStr += '最多只能选择' + question.maxSelect + '条';
+                    }
+                    if (question.minSelect) {
+                        resultStr += '最少选择' + question.minSelect + '条';
+                    }
+                    alert(resultStr);
+                    return;
+                }
+
+                if (this.current === this.nextIndex) {
+                    this.nextIndex += 1
+                }
+                if (this.questions.length <= this.nextIndex) {
+                    this.showSubmit = true;
+                }
+                if (this.questions.length < this.nextIndex) {
+                    return;
+                }
+                this.current = this.nextIndex;
+                this.nextIndex += 1;
+            },
+            isOutOfBounds(question, event) {
+                var $inputs = $(event.srcElement).parents('.question').find('input:checked');
+                question.minSelect = question.minSelect ? question.minSelect : 0;
+                question.maxSelect = question.maxSelect ? question.maxSelect : 0;
+                return $inputs.length < question.minSelect || $inputs.length > question.maxSelect;
+
+            },
+            isInputed(question, event) {
+                console.log($inputs);
+                if (question.type === 1) {
+                    var $inputs = $(event.srcElement).parents('.question').find('input:checked');
+                    return $inputs.length !== 0;
+                }
+                if (question.type === 2) {
+                    var $inputs = $(event.srcElement).parents('.question').find('input:checked');
+                    return $inputs.length !== 0;
+                }
+                if (question.type === 3) {
+                    var $inputs = $(event.srcElement).parents('.question').find('input:checked');
+                    return $inputs.length !== 0;
+                }
+                if (question.type === 4) {
+                    var $inputs = $(event.srcElement).parents('.question').find('input');
+                    var flag = true;
+                    $.each($inputs, function (index, value) {
+                        if ($(value).val() === '') {
+                            flag = false;
+                        }
+                    });
+                    return flag;
+                }
+
+            },
+            validateForm() {
+                var $questions = $('.simform-inner').find('.question');
+                $questions.each(function (index, value) {
+                    console.log(index, value);
+                    var dataType = $(value).attr('data-type');
+                    if(dataType === 1) {
+                        var checked = $(value).find('input:checked');
+                    }
+                    if(dataType === 2) {
+                        var checked = $(value).find('input:checked');
+                        var minSelect = $(value).attr('min-select');
+                        if(minSelect && checked.length < minSelect) {
+                            alert('最少选择' + minSelect + '条');
+                        }
+                    }
+                    if(dataType === 3) {
+                        var checked = $(value).find('input:checked');
+                    }
+                    if(dataType === 4) {
+                        var checked = $(value).find('input:checked');
+                    }
+
                 });
+                return false;
+            },
+            submit(event) {
+                if(!this.validateForm()) {
+                    return false;
+                }
+                // AJAX.POST_JSON('zsQuestion/answer', {
+                //     zsAnswerItemSaves: $('#theForm').serializeArray(),
+                //     surveyId: this.getParams('surveyId'),
+                //     phone: this.getParams('phone'),
+                //     record: this.getParams('record'),
+                //     seat: this.getParams('seat')
+                // }, function (resp) {
+                //     alert(resp.msg);
+                // });
+
             },
             radioName(opt) {
                 if (opt.questionId) {
@@ -179,14 +307,14 @@
                 return false;
             },
             loadParams() {
-              var params = location.href.split("?")[1];
-              var paramsPair = params.split("&");
-              this.paramsPair = paramsPair;
+                var params = location.href.split("?")[1];
+                var paramsPair = params.split("&");
+                this.paramsPair = paramsPair;
             },
             getParams(paramName) {
                 var result = null;
                 this.paramsPair.forEach(function (value) {
-                    if(value.includes(paramName)) {
+                    if (value.includes(paramName)) {
                         result = value.split("=")[1]
                         return
                     }
@@ -199,7 +327,10 @@
                     var result = resp.data;
                     that.questions = result.zsQuestions;
                     that.options = result.zsOptions;
-                } )
+                });
+                AJAX.GET('zsSurvey/' + this.getParams('surveyId'), {}, function (resp) {
+                    that.survey = resp.data;
+                })
             }
         }
     });
