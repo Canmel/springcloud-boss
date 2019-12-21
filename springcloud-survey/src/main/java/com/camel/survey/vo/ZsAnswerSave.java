@@ -54,8 +54,21 @@ public class ZsAnswerSave {
      */
     public String phone;
 
+    /**
+     * 坐席
+     */
+    public String seat;
+
+    /**
+     * 录音位置
+     */
+    public String record;
+
     public ZsAnswer buildAnswer() {
-        return new ZsAnswer(this.surveyId, this.phone);
+        ZsAnswer answer = new ZsAnswer(this.surveyId, this.phone);
+        answer.setSeat(this.seat);
+        answer.setRecord(this.record);
+        return answer;
     }
 
     public ZsAnswerItem buildAnswerItem(ZsQuestion question, ZsOption zsOption, Integer answerId, String value) {

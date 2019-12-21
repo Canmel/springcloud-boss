@@ -4,21 +4,23 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsAnswer">
-        <id column="id" property="id" />
-        <result column="survey_id" property="surveyId" />
+        <id column="id" property="id"/>
+        <result column="survey_id" property="surveyId"/>
+        <result column="record" property="record"/>
+        <result column="seat" property="seat"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="created_at" property="createdAt" />
-        <result column="creator" property="creator" />
+        <result column="created_at" property="createdAt"/>
+        <result column="creator" property="creator"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, survey_id, status, created_at, creator
+        id, survey_id, status, record, seat, created_at, creator
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_answer
         <where>

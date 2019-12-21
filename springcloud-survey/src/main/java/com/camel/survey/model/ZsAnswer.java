@@ -50,6 +50,14 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     private Integer surveyId;
     /**
+     * 坐席号
+     */
+    private String seat;
+    /**
+     * 录音位置
+     */
+    private String record;
+    /**
      * 状态
      */
     private ZsStatus status;

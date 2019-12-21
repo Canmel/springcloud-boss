@@ -27,6 +27,22 @@
     dd {
         margin-left: 1rem;
     }
+
+    .setting {
+        display: none;
+    }
+
+    .ui-draggable:hover .setting {
+        display: inline;
+    }
+
+    .max-select {
+        color: #337ab7;
+    }
+
+    .min-select {
+        color: #337ab7;
+    }
 </style>
 
 <style type="text/css">
@@ -218,17 +234,25 @@
                     </div>
                 </div>
 
-                <div class="ibox-content" style="height: 500px; overflow-x: hidden; overflow-y: scroll;">
+                <div class="ibox-content">
                     <div class="row form-body form-horizontal m-t">
                         <div class="col-md-12 droppable sortable" id="surveyArea">
                             <div :question-type="item.type" class="form-group draggable ui-draggable dropped"
                                  v-for="(item, index) in loadData.zsQuestions"
                                  style="position: static;">
-                                <div class="col-sm-12"><label class="col-sm-3 control-label"><span
-                                        class="question-index">{{item.orderNum}}</span>.</label> <label
-                                        class="col-sm-9 control-label"
-                                        style="padding-left: 0px; text-align: left;"><span
-                                        class="editable question-title">{{item.name}}</span></label></div>
+                                <div class="col-sm-12">
+                                    <label class="col-sm-3 control-label">
+                                        <span class="question-index">{{item.orderNum}}</span>.</label>
+                                    <label class="col-sm-5 control-label" style="padding-left: 0px; text-align: left;">
+                                        <span class="editable question-title">{{item.name}}</span>
+                                    </label>
+                                    <label class="col-sm-2 control-label setting" style="padding-left: 0px; text-align: left;" v-if="item.type===2">
+                                        最大选择数：<span class="editable max-select">{{item.maxSelect ? item.maxSelect : '设置'}}</span>
+                                    </label>
+                                    <label class="col-sm-2 control-label setting" style="padding-left: 0px; text-align: left;" v-if="item.type===2">
+                                        最小选择数：<span class="editable min-select">{{item.minSelect ? item.minSelect : '设置'}}</span>
+                                    </label>
+                                </div>
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-9 survey-optins">
                                     <div v-for="(option, inx) in loadData.zsOptions"
@@ -460,6 +484,9 @@
         },
         computed: {},
         methods: {
+            setMaxSelect(event) {
+                // $(event.srcElement).parent().parent().attr('max-select', );
+            },
             saveToIndex() {
                 console.log(this.navigat);
                 if(parseInt(this.navigat.nextIndex) > 0) {
@@ -647,7 +674,6 @@
 
             },
             reBindIndex() {
-                console.log(123123)
                 $('#surveyArea').children().each(function (index, item) {
                     $(item).find('.question-index').text(index + 1)
                 })
@@ -702,6 +728,8 @@
                         var surveyJson = {};
                         surveyJson.orderNum = $(item).find('.question-index').text();
                         surveyJson.name = $(item).find('.question-title').text();
+                        surveyJson.maxSelect = $(item).find('.max-select').text();
+                        surveyJson.minSelect = $(item).find('.min-select').text();
                         surveyJson.type = $(item).attr('question-type');
                         surveyJson.surveyId = that.survey.id;
                         that.saveData.zsQuestions.push(surveyJson);
@@ -711,6 +739,7 @@
                             optionJson.questionOrderNum = surveyJson.orderNum;
                             optionJson.name = $(o).text();
                             optionJson.orderNum = i + 1;
+                            console.log($(o).parent());
                             optionJson.target = $(o).parent().attr('data-target');
                             that.saveData.zsOptions.push(optionJson);
                         })

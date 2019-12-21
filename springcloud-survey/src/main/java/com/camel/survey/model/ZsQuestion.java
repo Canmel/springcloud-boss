@@ -63,6 +63,14 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
      */
     private Integer type;
     /**
+     * 最小选择数量
+     */
+    private Integer minSelect;
+    /**
+     * 最大选择数量
+     */
+    private Integer maxSelect;
+    /**
      * 状态
      */
     public ZsQuestion() {

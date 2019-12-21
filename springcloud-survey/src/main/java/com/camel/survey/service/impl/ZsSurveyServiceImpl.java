@@ -12,6 +12,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.*;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
@@ -140,6 +141,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         entity.setCreatorId(member.getId());
         if (insert(entity)) {
             List<RelSurveyExam> relSurveyExamList = new ArrayList<>();
+            if(ObjectUtils.isEmpty(entity.getExams())) {
+                throw new SurveyFormSaveException();
+            }
             entity.getExams().forEach(examId -> {
                 relSurveyExamList.add(new RelSurveyExam(examId, entity.getId()));
             });

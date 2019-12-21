@@ -21,7 +21,8 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
-        <collection property="examList" column="id" select="com.camel.survey.mapper.ZsExamMapper.listBySurveyId"></collection>
+        <collection property="examList" column="id"
+                    select="com.camel.survey.mapper.ZsExamMapper.listBySurveyId"></collection>
     </resultMap>
 
     <resultMap id="SimpleResultMap" type="com.camel.survey.model.ZsSurvey">
