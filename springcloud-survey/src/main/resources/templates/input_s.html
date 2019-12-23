@@ -69,7 +69,7 @@
                     <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
-                            <input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
+                            {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
                                    v-on:change="radioChange(opt)"
                                    :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
@@ -83,7 +83,7 @@
                     <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 2 && showOptions(item, opt)">
                         <div>
-                            <input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
+                            {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
                                    :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
@@ -94,7 +94,7 @@
                     <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 3 && showOptions(item, opt)">
                         <div>
-                            <span>{{opt.name}}</span>
+                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
                             <span class="star-box">
                             <input type="radio" value="1"
                                    :name="'star_' + item.id + '_' + opt.id"
@@ -132,7 +132,7 @@
                     <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 4 && showOptions(item, opt)">
                         <div>
-                            <span>{{opt.name}}</span>
+                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
                             <input type="text" :name="'answer_' + item.id + '_' + opt.id" class="form-control"
                                    style="display: initial; width: auto;">
                         </div>
