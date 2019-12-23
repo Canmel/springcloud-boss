@@ -331,10 +331,12 @@
                                                 <label style="padding: 0px 5px;"><span class="fa fa-terminal"
                                                                                        data-toggle="tooltip"
                                                                                        v-on:click="addRemark(question, option)"
+                                                                                       v-if="question.type = 1"
                                                                                        data-placement="top"
                                                                                        title="设置备注"></span></label>
                                                 <label style="padding: 0px 5px;"><span class="fa fa-cogs"
                                                                                        data-toggle="tooltip"
+                                                                                       v-if="question.type == 1 && question.orderNum == 1"
                                                                                        v-on:click="bindPEEdit($event, option)"
                                                                                        data-placement="top"
                                                                                        title="甄选配额"></span></label>
@@ -400,6 +402,22 @@
                                                                hidden/>
                                                         <label :for="'star_' + question.orderNum + '_' + option.orderNum + '_1'"></label>
                                                     </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-9 no-padding-left" v-if="question.type === 4">
+                                        <div class="col-sm-9 no-padding-left">
+                                            <div v-on:dblclick="bindEdit($event, option)"
+                                                 class="option no-padding-left">
+                                                <label class="checkbox-inline no-padding-left">{{option.orderNum}}.</label>
+                                                <label class="checkbox-inline no-padding-left">
+                                                    <span class="editable question-option">{{option.name}}</span>
+                                                    <input type="text"
+                                                           :name="'checkbox_' + question.orderNum + '_' + option.orderNum">
                                                 </label>
                                             </div>
                                         </div>
