@@ -167,6 +167,7 @@
             phone: '',
             current: 1,
             nextIndex: 1,
+            tmpNext:null,
             showSubmit: false
         },
         created: function () {
@@ -219,7 +220,9 @@
             },
             radioChange(opt) {
                 if (opt.target > 0) {
-                    this.nextIndex = opt.target;
+                    this.tmpNext = opt.target;
+                }else {
+                    this.tmpNext = null;
                 }
             },
             nextQuestion(question, event) {
@@ -246,6 +249,9 @@
                 }
                 if (this.questions.length < this.nextIndex) {
                     return;
+                }
+                if(this.tmpNext > this.nextIndex) {
+                    this.nextIndex = this.tmpNext;
                 }
                 this.current = this.nextIndex;
                 this.nextIndex += 1;
