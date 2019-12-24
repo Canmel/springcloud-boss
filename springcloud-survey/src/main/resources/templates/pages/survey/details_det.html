@@ -88,6 +88,8 @@
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">已收到的问卷</a>
                 </li>
+                <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane active">
@@ -104,7 +106,7 @@
                                             class="editable question-title">{{item.name}}</span></label></div>
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-9 survey-optins">
-                                        <div v-for="(option, inx) in loadData.zsOptions"
+                                        <div v-for="(option, inx) in item.options"
                                              v-if="showOption(item, option)">
                                             <label class="radio-inline"
                                                    v-if="item.type === 1 && showOption(item, option)">
@@ -208,6 +210,17 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="tab-3" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <button class="btn btn-primary" v-on:click="exportTotal()">汇总导出</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -226,8 +239,7 @@
                 surveyId: 0
             },
             loadData: {
-                zsQuestions: [],
-                zsOptions: []
+                zsQuestions: []
             },
             answers: [],
             pageInfo: {
@@ -243,6 +255,9 @@
         },
         computed: {},
         methods: {
+            exportTotal() {
+                window.open('/survey/export/survey/total/' + this.survey.projectId + '?access_token=' + sessionStorage.getItem('access_token'));
+            },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
                 this.pagequery();
@@ -291,90 +306,10 @@
                     }
                 });
             },
-            setup_draggable() {
-                var that = this;
-                $(".draggable").draggable({
-                    appendTo: "body",
-                    helper: "clone"
-                });
-                $(".droppable").droppable({
-                    accept: ".draggable",
-                    helper: "clone",
-                    hoverClass: "droppable-active",
-                    drop: function (event, ui) {
-                        $(".empty-form").remove();
-                        var $orig = $(ui.draggable);
-
-                        var $el = null;
-                        if (!$(ui.draggable).hasClass("dropped")) {
-                            $el = $orig
-                                .clone()
-                                .addClass("dropped")
-                                .css({
-                                    "position": "static",
-                                    "left": null,
-                                    "right": null
-                                });
-
-                            that.loadData.zsOptions.push({
-                                orderNum: 1,
-                                name: '选项1',
-                                questionOrderNum: that.loadData.zsQuestions.length + 1
-                            });
-                            that.loadData.zsOptions.push({
-                                orderNum: 2,
-                                name: '选项2',
-                                questionOrderNum: that.loadData.zsQuestions.length + 1
-                            });
-                            that.loadData.zsQuestions.push(
-                                {
-                                    orderNum: that.loadData.zsQuestions.length + 1,
-                                    name: '题标题',
-                                    type: Number.parseInt($el.attr('question-type'))
-                                }
-                            );
-                        } else {
-                            if ($(this)[0] != $orig.parent()[0]) {
-                                $el = $orig
-                                    .clone()
-                                    .css({
-                                        "position": "static",
-                                        "left": null,
-                                        "right": null
-                                    })
-                                    .appendTo(this);
-                                $orig.remove();
-                            }
-                        }
-
-                        that.reBindIndex();
-                    }
-                });
-
-            },
             reBindIndex() {
                 $('#surveyArea').children().each(function (index, item) {
                     $(item).find('.question-index').text(index + 1)
                 })
-            },
-            bindEdit(element) {
-                var oldhtml = element.innerHTML;//获得元素之前的内容
-                if (element.firstElementChild && element.firstElementChild.tagName.toUpperCase() === "INPUT") {
-                    return;
-                }
-                var newobj = document.createElement('input');//创建一个input元素
-                newobj.type = 'text';//为newobj元素添加类型
-                newobj.value = oldhtml;
-                element.innerHTML = '';　　 //设置元素内容为空
-                element.appendChild(newobj);//添加子元素
-                newobj.focus();//获得焦点
-                //设置newobj失去焦点的事件
-                newobj.onblur = function () {
-                    //下面应该判断是否做了修改并使用ajax代码请求服务端将id与修改后的数据提交
-                    // alert(element.id);
-                    //当触发时判断newobj的值是否为空，为空则不修改，并返回oldhtml
-                    element.innerHTML = this.value ? this.value : oldhtml;
-                }
             },
             bindEvent() {
                 var that = this;
@@ -394,83 +329,6 @@
                         $('.form-body .col-md-12').toggle(false);
                     }
                 });
-
-                $(document).on("click", ".edit-link", function (ev) {
-                    var $el = $(this).parent().parent();
-                    var $el_copy = $el.clone();
-
-                    var $edit_btn = $el_copy.find(".edit-link").parent().remove();
-
-                    var $modal = that.get_modal(html_beautify($el_copy.html())).modal("show");
-                    $modal.find(":input:first").focus();
-                    $modal.find(".btn-success").click(function (ev2) {
-                        var html = $modal.find("textarea").val();
-                        if (!html) {
-                            $el.remove();
-                        } else {
-                            $el.html(html);
-                            $edit_btn.appendTo($el);
-                        }
-                        $modal.modal("hide");
-                        return false;
-                    })
-                });
-
-                $(document).on("click", ".remove-link", function (ev) {
-                    $(this).parent().parent().remove();
-                });
-
-                $(document).on("dblclick", ".editable", function (ev) {
-                    that.bindEdit(this);
-                });
-
-                $(document).on("click", ".add-link", function (ev) {
-                    var $lastEle = $(this).parent().prev().children().last();
-                    var newElement = $lastEle.prop("outerHTML");
-                    if ($lastEle.attr("option-type") && $lastEle.attr("option-type") === 'rate') {
-                        newElement = '<div option-type="rate">\n' +
-                            '<label class="control-label" style=""><span class="editable">评分项</span>:\n' +
-                            '<label style="float: right; padding-top: 0px;" class="control-label target-demo function-demo col-sm-6"></label>\n' +
-                            '</label>\n' +
-                            '<label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>\n' +
-                            '</div>'
-                    }
-
-                    $(this).parent().prev().append(newElement);
-                    $(this).parent().prev().find(".editable").last().dblclick(function () {
-                        that.bindEdit(this);
-                    });
-                    that.setUpRate($(this).parent().prev().find('.function-demo').last());
-                });
-
-                $(document).on("click", ".options-delete", function (ev) {
-                    var $optionsArea = $(this).parent().parent().parent();
-                    $(this).parent().parent().remove();
-                    if ($optionsArea.children().length === 0) {
-                        $optionsArea.parent('.form-group').remove();
-                    }
-                });
-            },
-            get_modal(content) {
-                var modal = $('<div class="modal" style="overflow: auto;" tabindex="-1">\
-                <div class="modal-dialog">\
-                    <div class="modal-content">\
-                        <div class="modal-header">\
-                            <a type="button" class="close"\
-                                data-dismiss="modal" aria-hidden="true">&times;</a>\
-                            <h4 class="modal-title">编辑HTML</h4>\
-                        </div>\
-                        <div class="modal-body ui-front">\
-                            <textarea class="form-control" \
-                                style="min-height: 200px; margin-bottom: 10px;\
-                                font-family: Monaco, Fixed">' + content + '</textarea>\
-                            <button class="btn btn-success">更新HTML</button>\
-                        </div>\
-                    </div>\
-                </div>\
-                </div>').appendTo(document.body);
-
-                return modal;
             },
             loadEntity() {
                 var that = this;
@@ -487,7 +345,7 @@
             loadQuestions() {
                 var that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
-                    that.loadData = resp.data;
+                    that.loadData.zsQuestions = resp.data;
                 })
             }
         },
@@ -496,8 +354,6 @@
             this.loadQuestions();
         },
         mounted: function () {
-            this.setup_draggable();
-
             this.bindEvent();
         }
     });

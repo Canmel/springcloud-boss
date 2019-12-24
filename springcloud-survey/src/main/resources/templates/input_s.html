@@ -94,13 +94,13 @@
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
                             <span class="star-box">
-                            <input type="radio" value="1"
+                            <input type="radio" value="5"
                                    :name="'star_' + item.id + '_' + opt.id"
                                    :id="'star_' + item.id + '_' + opt.id + '_5'"
                                    hidden/>
-                            <label :for="'star_' + item.orderNum + '_' + opt.orderNum + '_5'"></label>
+                            <label :for="'star_' + item.id + '_' + opt.id + '_5'"></label>
 
-                            <input type="radio" value="2"
+                            <input type="radio" value="4"
                                    :name="'star_' + item.id + '_' + opt.id"
                                    :id="'star_' + item.id + '_' + opt.id + '_4'"
                                    hidden/>
@@ -112,13 +112,13 @@
                                    hidden/>
                             <label :for="'star_' + item.id + '_' + opt.id + '_3'"></label>
 
-                            <input type="radio" value="4"
+                            <input type="radio" value="2"
                                    :name="'star_' + item.id + '_' + opt.id"
                                    :id="'star_' + item.id + '_' + opt.id + '_2'"
                                    hidden/>
                             <label :for="'star_' + item.id + '_' + opt.id + '_2'"></label>
 
-                            <input type="radio" value="5"
+                            <input type="radio" value="1"
                                    :name="'star_' + item.id + '_' + opt.id"
                                    :id="'star_' + item.id + '_' + opt.id + '_1'"
                                    hidden/>
@@ -338,6 +338,9 @@
                 });
                 AJAX.GET('zsSurvey/' + this.getParams('surveyId'), {}, function (resp) {
                     that.survey = resp.data;
+                    if(resp.data.currentNum === resp.data.collectNum) {
+                        alert("该问卷已经调查完成！");
+                    }
                 });
             }
         }
