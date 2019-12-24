@@ -323,7 +323,11 @@
                                                     <span class="fa fa-flag"></span>
                                                 </label>
                                                 <label class="radio-inline" v-if="option.configration">
-                                                    配额：<span>{{option.configration}}</span>
+                                                    配额:<span>{{option.configration}}</span>
+                                                </label>
+                                                <label class="radio-inline" v-if="option.target"
+                                                       data-toggle="tooltip" data-placement="top" title="已添加备注">
+                                                    下一题:<span>{{option.target}}</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -341,6 +345,12 @@
                                                                                        v-on:click="bindPEEdit($event, option)"
                                                                                        data-placement="top"
                                                                                        title="甄选配额"></span></label>
+                                                <label style="padding: 0px 5px;"><span class="fa fa-arrow-right"
+                                                                                       data-toggle="tooltip"
+                                                                                       v-if="question.type == 1 && question.orderNum == 1"
+                                                                                       v-on:click="bindJumpEdit($event, option)"
+                                                                                       data-placement="top"
+                                                                                       title="跳转"></span></label>
                                             </div>
                                         </div>
 
@@ -759,12 +769,14 @@
                                             orderNum: 1,
                                             name: '选项1',
                                             hasRemark: false,
+                                            target: null,
                                             configration: null, // 选项配额
                                             questionOrderNum: that.loadData.zsQuestions.length + 1
                                         }, {
                                             orderNum: 2,
                                             name: '选项2',
                                             hasRemark: false,
+                                            target: null,
                                             configration: null, // 选项配额
                                             questionOrderNum: that.loadData.zsQuestions.length + 1
                                         }
@@ -783,6 +795,27 @@
                 arr[newIndex].orderNum = arr[oldIndex].orderNum
                 arr[oldIndex].orderNum = order;
                 this.loadData.zsQuestions = arr;
+            },
+            bindJumpEdit(event, obj){
+                var that = this;
+                var element = event.srcElement;
+                if (element.firstElementChild && element.firstElementChild.tagName.toUpperCase() === "INPUT") {
+                    return;
+                }
+                var newobj = document.createElement('input');//创建一个input元素
+                newobj.type = 'text';//为newobj元素添加类型
+                newobj.value = obj.target ? obj.target : null ;
+                // element.innerHTML = '';　　 //设置元素内容为空
+                element.appendChild(newobj);//添加子元素
+                newobj.focus();//获得焦点
+                //设置newobj失去焦点的事件
+                newobj.onblur = function () {
+                    $(newobj).remove()
+                    if(parseInt(this.value) > 0) {
+                        obj.target = parseInt(this.value);
+                    }
+                    console.log(that.loadData.zsQuestions)
+                }
             },
             bindPEEdit(event, obj) {
                 var that = this;
@@ -886,6 +919,7 @@
                                 var opt = {
                                     orderNum: o.orderNum,
                                     name: o.name,
+                                    target: o.target,
                                     hasRemark: o.hasRemark,
                                     configration: o.configration, // 选项配额
                                     questionOrderNum: item.orderNum
