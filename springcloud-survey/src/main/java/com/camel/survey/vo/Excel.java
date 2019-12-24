@@ -2,11 +2,9 @@ package com.camel.survey.vo;
 
 import lombok.Data;
 
-import java.math.BigInteger;
-
 @Data
 public class Excel {
-    private BigInteger id;
+    private Integer id;
     private String order_number;
     private String amount_real;
     private String date_add;
@@ -20,7 +18,7 @@ public class Excel {
 
     }
 
-    public Excel(BigInteger id, String order_number, String amount_real, String date_add, String status_str, String link_man, String mobie, String address, String detailValue) {
+    public Excel(Integer id, String order_number, String amount_real, String date_add, String status_str, String link_man, String mobie, String address, String detailValue) {
         this.id = id;
         this.order_number = order_number;
         this.amount_real = amount_real;

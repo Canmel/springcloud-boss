@@ -1,7 +1,11 @@
 package com.camel.survey.controller;
 
+import com.camel.survey.model.ZsAnswerItem;
+import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.service.*;
 import com.camel.survey.utils.ExportExcelUtils;
 import com.camel.survey.vo.Excel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +44,34 @@ import java.util.List;
 @RestController
 public class ExportController {
 
+    @Autowired
+    private ZsSurveyService zsSurveyService;
+
+    @Autowired
+    private ZsQuestionService zsQuestionService;
+
+    @Autowired
+    private ZsOptionService zsOptionService;
+
+    @Autowired
+    private ZsAnswerItemService zsAnswerItemService;
+
+    @Autowired
+    private ExportService service;
+
     @GetMapping("/survey/total/{id}")
     public void total(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
         String excelName = "订单详情表";
+
+        List<ZsQuestion> zsQuestionList = zsQuestionService.selectBySurveyId(id);
+
 
         String start=request.getParameter("start");
         String end=request.getParameter("end");
         System.out.println("打印的起始日期为："+start+"，打印的结束日期为："+end);
         //得到所有要导出的数据
         List<Excel> orderlist = new ArrayList<>();
+        orderlist.add(new Excel(1, "s","w","d","d","f","c","s","c"));
 
         //获取需要转出的excel表头的map字段
         LinkedHashMap<String, String> fieldMap = new LinkedHashMap<>();
@@ -60,8 +83,7 @@ public class ExportController {
         fieldMap.put("mobie","收货电话");
         fieldMap.put("address","地址");
         fieldMap.put("detailValue","订单详情");
-
         //导出用户相关信息
-        ExportExcelUtils.export(excelName,orderlist,fieldMap,response);
+        ExportExcelUtils.export(service.total(id, orderlist, fieldMap), excelName, response);
     }
 }

@@ -1,5 +1,7 @@
 package com.camel.survey.utils;
 
+import com.camel.survey.exceptions.ExportFillDataException;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import org.apache.poi.hssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +42,7 @@ import java.util.Map;
 public class ExportExcelUtils {
     private static final Logger logger = LoggerFactory.getLogger(ExportExcelUtils.class);
 
-    public static <T> void export(String excelName, List<T> list, LinkedHashMap<String, String> fieldMap, HttpServletResponse response) {
+    public static <T> void export(HSSFWorkbook wb, String excelName, HttpServletResponse response) {
 
         // 设置默认文件名为当前时间：年月日时分秒
         if (excelName == null || excelName == "") {
@@ -49,7 +51,8 @@ public class ExportExcelUtils {
         }
         // 设置response头信息
         response.reset();
-        response.setContentType("application/vnd.ms-excel"); // 改成输出excel文件
+        // 改成输出excel文件
+        response.setContentType("application/vnd.ms-excel");
         try {
             response.setHeader("Content-disposition", "attachment; filename="
                     + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
@@ -58,17 +61,6 @@ public class ExportExcelUtils {
         }
 
         try {
-            //创建一个WorkBook,对应一个Excel文件
-            HSSFWorkbook wb = new HSSFWorkbook();
-            //在Workbook中，创建一个sheet，对应Excel中的工作薄（sheet）
-            HSSFSheet sheet = wb.createSheet(excelName);
-            //创建单元格，并设置值表头 设置表头居中
-            HSSFCellStyle style = wb.createCellStyle();
-            //创建一个居中格式
-            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-            // 填充工作表
-            fillSheet(sheet, list, fieldMap, style);
-
             //将文件输出
             OutputStream ouputStream = response.getOutputStream();
             wb.write(ouputStream);
@@ -78,6 +70,25 @@ public class ExportExcelUtils {
             logger.info("导出Excel失败！");
             logger.error(e.getMessage());
         }
+    }
+
+    public static HSSFWorkbook creatWorkbook(String excelName, List list, LinkedHashMap<String, String> fieldMap) {
+        //创建一个WorkBook,对应一个Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        //在Workbook中，创建一个sheet，对应Excel中的工作薄（sheet）
+        HSSFSheet sheet = wb.createSheet(excelName);
+
+        //创建单元格，并设置值表头 设置表头居中
+        HSSFCellStyle style = wb.createCellStyle();
+        //创建一个居中格式
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        // 填充工作表
+        try {
+            fillSheet(sheet, list, fieldMap, style);
+        }catch (Exception ex) {
+            throw new ExportFillDataException();
+        }
+        return wb;
     }
 
     /**
