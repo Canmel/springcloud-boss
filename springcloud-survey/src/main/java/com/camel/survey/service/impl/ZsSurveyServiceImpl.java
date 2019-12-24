@@ -94,6 +94,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Autowired
     private ZsSurveyRecordService surveyRecordService;
 
+    @Autowired
+    private ZsAnswerItemService answerItemService;
+
     public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
     public static final String SMS_SURVEY_URL = "http://127.0.0.1:8080/survey/web_survey.html";
@@ -169,14 +172,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public Result getQuestionAndOptions(Integer id) {
-
-        List<ZsQuestion> questionList = questions(id);
-        // 获取所有问题ID
-        List<Integer> questionIds = questionList.stream().map(ZsQuestion::getId).collect(Collectors.toList());
-        // 获取所有选项
-        List<ZsOption> optionList = options(questionIds);
-        // 包装返回
-        return ResultUtil.success(new ZsQuestionSave(questionList, optionList));
+        return ResultUtil.success(questionService.selectBySurveyId(id));
     }
 
     @Override
@@ -283,10 +279,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public List<ZsQuestion> questions(Integer surveyId) {
-        // 查询问题
-        Wrapper<ZsQuestion> zsQuestionWrapper = new EntityWrapper<>();
-        zsQuestionWrapper.eq("survey_id", surveyId);
-        List<ZsQuestion> questionList = questionService.selectList(zsQuestionWrapper);
+        List<ZsQuestion> questionList = questionService.selectBySurveyId(surveyId);
         return questionList;
     }
 

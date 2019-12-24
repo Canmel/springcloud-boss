@@ -119,7 +119,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
@@ -129,7 +129,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         }
         ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
         zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() + 1);
+        // 当前已收集数+1
         surveyService.updateById(zsSurvey);
+
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         answerService.insert(zsAnswer);
         List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());
@@ -156,5 +158,10 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             }
 
         });
+    }
+
+    @Override
+    public List<ZsQuestion> selectBySurveyId(Integer id) {
+        return mapper.selectBySurveyId(id);
     }
 }

@@ -48,6 +48,7 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+
     /**
      * 名称，显示作用
      */
@@ -91,6 +92,12 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
 
     @TableField(exist = false)
     private ZsQuestion zsQuestion;
+
+    /**
+     * 是否只读
+     */
+    @TableField(exist = false)
+    private Boolean isReadonly;
 
     @Override
     public String toString() {

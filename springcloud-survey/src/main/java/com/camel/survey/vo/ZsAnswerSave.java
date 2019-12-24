@@ -77,36 +77,40 @@ public class ZsAnswerSave {
         return zsAnswerItem;
     }
 
+    /**
+     * 构建所有回答
+     * @param zsQuestionList    根据问卷所查出来的所有问题
+     * @param optionList        根据问卷所查出来的所有选项
+     * @param answerId          回答答案的主键
+     * @return
+     */
     public List<ZsAnswerItem> buildAnswerItems(List<ZsQuestion> zsQuestionList, List<ZsOption> optionList, Integer answerId) {
         List<ZsAnswerItem> result = new ArrayList<>();
-        zsAnswerItemSaves.forEach(itemSave -> {
-            ZsQuestion zsQuestion = null;
+
+        zsAnswerItemSaves.forEach(answerItem -> {
+            ZsQuestion question = null;
             ZsOption zsOption = null;
-            if (!StringUtils.isBlank(itemSave.getName())) {
-                List<String> nameParams = CollectionUtils.arrayToList(itemSave.getName().split("_"));
-                Integer questionId = Integer.parseInt(nameParams.get(1));
-
-                Integer optionId = Integer.parseInt(nameParams.get(2));
-                for (ZsQuestion q : zsQuestionList) {
-                    if (questionId.equals(q.getId())) {
-                        zsQuestion = q;
-                    }
+            for (ZsQuestion q: zsQuestionList) {
+                if(q.getId().equals(answerItem.getqId())) {
+                    question = q;
                 }
-                for (ZsOption o : optionList) {
-                    if(itemSave.getValue().equals(o.getName()) && questionId.equals(o.getQuestionId())){
-                        zsOption = o;
-                    }
-                }
-                if (!ObjectUtils.isEmpty(zsQuestion) && StringUtils.isNotBlank(itemSave.getValue())) {
-                    result.add(buildAnswerItem(zsQuestion, zsOption, answerId, itemSave.getValue()));
-
-                } else {
-                    throw new SurveyFormSaveException();
-                }
-            } else {
-                throw new SurveyFormSaveException();
             }
+
+            for (ZsOption option: optionList) {
+                if(option.getName().equals(answerItem.getValue()) && option.getQuestionId().equals(answerItem.getqId())){
+                    zsOption = option;
+                }
+            }
+            if(ObjectUtils.isEmpty(zsOption)) {
+                for (ZsOption option: optionList) {
+                    if(option.getHasRemark() && option.getQuestionId().equals(answerItem.getqId())) {
+                        zsOption = option;
+                    }
+                }
+            }
+            result.add(buildAnswerItem(question, zsOption, answerId, answerItem.getValue()));
         });
+
         return result;
     }
 }

@@ -107,6 +107,19 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     /**
+     * 获取问卷的所有问题和选项
+     * 为了问卷
+     * @param id
+     * @return Result 结果集包含vo.ZsQuestionSave
+     *  ZsQuestionSave中包含question and option
+     */
+    @AuthIgnore
+    @GetMapping("/questions/{id}")
+    public Result loadQuestionSurvey(@PathVariable Integer id) {
+        return ResultUtil.success(service.questions(id));
+    }
+
+    /**
      * 开始调查
      * @param id
      * @return

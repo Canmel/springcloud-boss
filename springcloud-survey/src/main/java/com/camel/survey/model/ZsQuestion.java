@@ -13,6 +13,7 @@ import com.camel.survey.enums.ZsStatus;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -70,9 +71,13 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
      * 最大选择数量
      */
     private Integer maxSelect;
+
     /**
-     * 状态
+     * 选项
      */
+    @TableField(exist = false)
+    public List<ZsOption> options;
+
     public ZsQuestion() {
     }
 

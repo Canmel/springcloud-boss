@@ -1,6 +1,8 @@
 package com.camel.survey.vo;
 
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 /**
  *
@@ -34,4 +36,15 @@ public class ZsAnswerItemSave {
     private String name;
 
     private String value;
+
+    public Integer getqId() {
+        String[] nameArr = null;
+        if(StringUtils.isNotBlank(this.name)) {
+            nameArr = this.name.split("_");
+        }
+        if(!ObjectUtils.isEmpty(nameArr) && nameArr.length == 3) {
+            return Integer.parseInt(nameArr[1]);
+        }
+        return qId;
+    }
 }

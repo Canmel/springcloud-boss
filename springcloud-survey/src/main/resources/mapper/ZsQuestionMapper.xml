@@ -17,6 +17,8 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
+        <collection property="options" column="id" jdbcType="INTEGER"
+                    select="com.camel.survey.mapper.ZsOptionMapper.selectByQuestionId"></collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -29,6 +31,20 @@
         <include refid="Base_Column_List"></include>
         from
         zs_question
+        <where>
+            status = 1
+            <if test="surveyId != null">
+                AND survey_id = #{surveyId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBySurveyId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_question
+        where status = 1 and survey_id = #{id}
     </select>
 
     <select id="selectQuestionById" resultMap="BaseResultMap">

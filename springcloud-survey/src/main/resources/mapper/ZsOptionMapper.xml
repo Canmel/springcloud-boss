@@ -12,6 +12,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="has_remark" property="hasRemark"/>
         <result column="target" property="target"/>
+        <result column="configration" property="configration"/>
         <result column="creator" property="creatorId"/>
         <association property="zsQuestion" column="question_id"
                      select="com.camel.survey.mapper.ZsQuestionMapper.selectQuestionById"></association>
@@ -20,9 +21,26 @@
         </association>
     </resultMap>
 
+    <resultMap id="BaseSimpleResultMap" type="com.camel.survey.model.ZsOption">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="question_id" property="questionId"/>
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="has_remark" property="hasRemark"/>
+        <result column="target" property="target"/>
+        <result column="creator" property="creatorId"/>
+        <result column="current" property="current"/>
+        <result column="configration" property="configration"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, order_num, question_id, has_remark, target, status, created_at, creator
+        id, name, order_num, question_id, configration, has_remark, target, status, created_at, creator, current
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -30,5 +48,19 @@
         <include refid="Base_Column_List"></include>
         from
         zs_option
+        <where>
+            status = 1
+        </where>
+    </select>
+
+    <select id="selectByQuestionId" parameterType="integer" resultMap="BaseSimpleResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_option
+        <where>
+            status = 1
+            and question_id = #{questionId, jdbcType=INTEGER}
+        </where>
     </select>
 </mapper>

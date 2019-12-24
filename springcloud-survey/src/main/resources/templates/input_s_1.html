@@ -61,15 +61,16 @@
     <section>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
-                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1">
-                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;" v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
+                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1" :data-type="item.type"
+                     :max-select="item.maxSelect" :min-select="item.minSelect">
+                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
-                    <div class="question-option" v-for="(opt, i) in item.options"
+                    <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
-                                                                  v-on:change="radioChange(opt)"
-                                                                  :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
+                                   v-on:change="radioChange(opt)"
+                                   :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
@@ -78,18 +79,18 @@
                         </div>
                     </div>
 
-                    <div class="question-option" v-for="(opt, i) in item.options"
+                    <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 2 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
-                                                                  :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
+                                   :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
                             </label>
                         </div>
                     </div>
 
-                    <div class="question-option" v-for="(opt, i) in item.options"
+                    <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 3 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
@@ -127,7 +128,7 @@
                         </div>
                     </div>
 
-                    <div class="question-option" v-for="(opt, i) in item.options"
+                    <div class="question-option" v-for="(opt, i) in options"
                          v-if="item.type === 4 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
@@ -144,6 +145,7 @@
                         <span class="submit btn btn-success" v-on:click="submit(item, $event)">提交</span>
                     </div>
                 </div>
+
             </div><!-- /simform-inner -->
         </form><!-- /simform -->
 
@@ -208,6 +210,37 @@
                         }
                     }
                 });
+                // $questions.each(function (index, item) {
+                //     console.log(index, item);
+                //     var dataType = $(item).attr('data-type');
+                //     if(dataType === '1') {
+                //         var selected = $(item).find('input:checked');
+                //         if(selected.length == 0) {
+                //             return false;
+                //         }
+                //     }
+                //     if(dataType === '2') {
+                //         var selected = $(item).find('input:checked');
+                //         if(selected.length == 0) {
+                //             return false;
+                //         }
+                //     }
+                //     if(dataType === '3') {
+                //         var selected = $(item).find('input:checked');
+                //         if(selected.length == 0) {
+                //             return false;
+                //         }
+                //     }
+                //     if(dataType === '4') {
+                //         var selected = $(item).find('input');
+                //         selected.each(function (index, item) {
+                //             if($(item).val() === '') {
+                //                 return false;
+                //             }
+                //         })
+                //     }
+                //     return true;
+                // })
                 return flag;
             },
             disableOption(opt) {
@@ -333,8 +366,9 @@
             },
             loadSurvey() {
                 var that = this;
-                AJAX.GET('zsSurvey/questions/' + this.getParams('surveyId'), {}, function (resp) {
-                    that.questions = resp.data;
+                AJAX.GET('zsSurvey/questionAndOptions/' + this.getParams('surveyId'), {}, function (resp) {
+                    var result = resp.data;
+                    that.questions = result.zsQuestions;
                 });
                 AJAX.GET('zsSurvey/' + this.getParams('surveyId'), {}, function (resp) {
                     that.survey = resp.data;

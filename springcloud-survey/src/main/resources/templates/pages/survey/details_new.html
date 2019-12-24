@@ -80,12 +80,12 @@
         font-size: 20px;
         display: none;
         position: absolute;
-        padding-top: 10px;
         z-index: 999;
     }
 
     .survey-tools span {
         cursor: pointer;
+        padding: 5px 0px;
     }
 
     .ui-draggable:hover .survey-tools {
@@ -318,11 +318,12 @@
                                                     <span class="editable question-option"
                                                           v-on:dblclick="bindEdit($event, option)">{{option.name}}</span>
                                                 </label>
-                                                <label class="radio-inline" v-if="option.hasRemark">
+                                                <label class="radio-inline" v-if="option.hasRemark"
+                                                       data-toggle="tooltip" data-placement="top" title="已添加备注">
                                                     <span class="fa fa-flag"></span>
                                                 </label>
-                                                <label class="radio-inline" v-if="option.boundary">
-                                                    配额：<span>{{option.boundary}}</span>
+                                                <label class="radio-inline" v-if="option.configration">
+                                                    配额：<span>{{option.configration}}</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -428,7 +429,8 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-warning" data-clipboard-text="testing" id="copy-to-clipboard">
+                    <button type="submit" class="btn btn-warning" data-clipboard-text="testing"
+                            v-on:click="saveSurvey()">
                         保存问卷
                     </button>
                 </div>
@@ -591,6 +593,46 @@
         },
         computed: {},
         methods: {
+            saveConcat() {
+                var that = this;
+                if (!$("#signupForm").valid()) {
+                    return false;
+                }
+                AJAX.POST('zsConcat', this.concat, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.pageQuery();
+                    that.concat = {
+                        name: '',
+                        phones: '',
+                        surveyId: sessionStorage.getItem('editParams')
+                    };
+                })
+            },
+            contacts(survey) {
+                this.concat.surveyId = survey.id;
+                $('#myModal').modal('show');
+            },
+            saveSurvey() {
+                console.log(this.loadData.zsQuestions);
+                var questions = [];
+                var options = [];
+                $.each(this.loadData.zsQuestions, function (index, item) {
+                    options = options.concat(item.options);
+                    delete item.options;
+                    questions.push(item);
+                });
+                var that = this;
+                AJAX.POST_JSON('zsQuestion', {
+                    zsQuestions: questions,
+                    zsOptions: options,
+                    surveyId: this.pageInfo.surveyId
+                }, function (resp) {
+                    toastr.success(resp.msg);
+                    sessionStorage.setItem('editParams', that.survey.projectId);
+                    toPage('pages/project/details.html');
+                });
+                return false;
+            },
             loadSurvey() {
                 var that = this;
                 AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
@@ -703,25 +745,27 @@
                                     "left": null,
                                     "right": null
                                 });
+                            console.log(Number.parseInt($el.attr('question-type')));
                             that.loadData.zsQuestions.push(
                                 {
                                     orderNum: that.loadData.zsQuestions.length + 1,
                                     name: '题标题',
                                     type: Number.parseInt($el.attr('question-type')),
-                                    maxSelect: 1,
+                                    surveyId: that.pageInfo.surveyId,
+                                    maxSelect: Number.parseInt($el.attr('question-type')) === 2 ? 2 : 1,
                                     minSelect: 1,
                                     options: [
                                         {
                                             orderNum: 1,
                                             name: '选项1',
                                             hasRemark: false,
-                                            boundary: null, // 选项配额
+                                            configration: null, // 选项配额
                                             questionOrderNum: that.loadData.zsQuestions.length + 1
                                         }, {
                                             orderNum: 2,
                                             name: '选项2',
                                             hasRemark: false,
-                                            boundary: null, // 选项配额
+                                            configration: null, // 选项配额
                                             questionOrderNum: that.loadData.zsQuestions.length + 1
                                         }
                                     ]
@@ -749,14 +793,14 @@
                 }
                 var newobj = document.createElement('input');//创建一个input元素
                 newobj.type = 'text';//为newobj元素添加类型
-                newobj.value = oldhtml;
+                newobj.value = obj.configration;
                 // element.innerHTML = '';　　 //设置元素内容为空
                 element.appendChild(newobj);//添加子元素
                 newobj.focus();//获得焦点
                 //设置newobj失去焦点的事件
                 newobj.onblur = function () {
                     $(newobj).remove()
-                    obj.boundary = parseInt(this.value);
+                    obj.configration = parseInt(this.value);
                 }
             },
             bindEdit(event, obj) {
@@ -826,7 +870,34 @@
             loadQuestions() {
                 var that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
-                    that.loadData = resp.data;
+                    var questions = [];
+                    $.each(resp.data, function (index, item) {
+                        var tmpQ = {
+                            orderNum: item.orderNum,
+                            name: item.name,
+                            type: item.type,
+                            surveyId: item.surveyId,
+                            maxSelect: item.maxSelect,
+                            minSelect: item.minSelect,
+                            options: []
+                        };
+                        $.each(item.options, function (i, o) {
+                            if (o.questionId === item.id) {
+                                var opt = {
+                                    orderNum: o.orderNum,
+                                    name: o.name,
+                                    hasRemark: o.hasRemark,
+                                    configration: o.configration, // 选项配额
+                                    questionOrderNum: item.orderNum
+                                };
+                                tmpQ.options.push(opt);
+                            }
+                        });
+                        questions.push(tmpQ);
+
+                    });
+                    console.log(questions);
+                    that.loadData.zsQuestions = questions;
                 })
             }
         }

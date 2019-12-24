@@ -9,6 +9,8 @@ import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -62,4 +64,9 @@ public interface ZsQuestionService extends IService<ZsQuestion> {
      * @return
      */
     Result saveAnswer(ZsAnswerSave zsAnswerSave);
+
+    /**
+     * 通过问卷ID获取问题
+     */
+    List<ZsQuestion> selectBySurveyId(Integer id);
 }
