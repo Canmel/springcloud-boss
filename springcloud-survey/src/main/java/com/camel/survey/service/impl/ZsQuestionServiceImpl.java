@@ -86,7 +86,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         Wrapper zsQuestionWrapper = new EntityWrapper<>();
         zsQuestionWrapper.eq("survey_id", entity.getSurveyId());
         List<ZsQuestion> zsQuestions = selectList(zsQuestionWrapper);
-        if(zsQuestions.size() > 0) {
+        if (zsQuestions.size() > 0) {
             Wrapper<ZsOption> optionWrapper = new EntityWrapper<>();
             List<Integer> qIds = zsQuestions.stream().map(ZsQuestion::getId).collect(Collectors.toList());
             optionWrapper.in("question_id", qIds);
@@ -124,7 +124,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
         int count = answerService.selectCount(zsAnswerWrapper);
-        if(count > 0) {
+        if (count > 0) {
             return ResultUtil.success("提交成功");
         }
         ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
@@ -140,7 +140,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
         updateCurrent(zsAnswerItemList);
-        if(answerItemService.insertBatch(zsAnswerItemList)) {
+        if (answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success("提交成功");
         } else {
             return ResultUtil.error(ResultEnum.SERVICE_ERROR);
@@ -150,11 +150,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     public void updateCurrent(List<ZsAnswerItem> zsAnswerItems) {
         zsAnswerItems.forEach(item -> {
             ZsOption zsOption = item.getZsOption();
-            if(!ObjectUtils.isEmpty(zsOption)) {
-                if(item.getType() == 1 && zsOption.getConfigration() != null) {
-                    zsOption.setCurrent(zsOption.getCurrent() + 1);
-                    zsOptionService.updateById(zsOption);
-                }
+            if (!ObjectUtils.isEmpty(zsOption)) {
+                zsOption.setCurrent(zsOption.getCurrent() + 1);
+                zsOptionService.updateById(zsOption);
             }
 
         });

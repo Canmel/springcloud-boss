@@ -30,4 +30,14 @@
             </if>
         </where>
     </select>
+
+    <select id="selectRateBySurveyQuestion" resultType="hashmap">
+        select result.option, result.num, result.count, concat((result.num/result.count) * 100, '%') rate
+        from (
+          select ai.option, count(1) num ,
+            (select count(1) from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where ai.question = #{question} and a.survey_id = #{id}) count
+            from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where ai.question = #{question} and a.survey_id = #{id}
+            GROUP BY ai.option
+        ) result
+    </select>
 </mapper>

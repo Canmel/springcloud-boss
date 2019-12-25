@@ -2,6 +2,7 @@ package com.camel.survey.controller;
 
 import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ExportExcelUtils;
 import com.camel.survey.vo.Excel;
@@ -63,7 +64,7 @@ public class ExportController {
     public void total(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
         String excelName = "订单详情表";
 
-        List<ZsQuestion> zsQuestionList = zsQuestionService.selectBySurveyId(id);
+        ZsSurvey survey = zsSurveyService.selectById(id);
 
 
         String start=request.getParameter("start");
@@ -84,6 +85,6 @@ public class ExportController {
         fieldMap.put("address","地址");
         fieldMap.put("detailValue","订单详情");
         //导出用户相关信息
-        ExportExcelUtils.export(service.total(id, orderlist, fieldMap), excelName, response);
+        ExportExcelUtils.export(service.total(id, orderlist, fieldMap), survey.getName(), response);
     }
 }
