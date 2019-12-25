@@ -214,10 +214,101 @@
                 <div id="tab-3" class="tab-pane">
                     <div class="panel-body">
                         <div class="ibox-content">
-
                             <div class="row">
-                                <button class="btn btn-primary" v-on:click="exportTotal()">汇总导出</button>
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h5 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                   href="tabs_panels.html#collapseOne" aria-expanded="false"
+                                                   class="collapsed">汇总导出</a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true"
+                                             style="">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <button class="btn btn-primary" v-on:click="exportTotal()">汇总导出
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                   href="tabs_panels.html#collapseTwo" class="collapsed"
+                                                   aria-expanded="false">问题导出</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false"
+                                             style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <button class="btn btn-primary" v-on:click="exportTotal()">问题导出
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                   href="tabs_panels.html#collapseThree" class="" aria-expanded="true">交叉导出</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false"
+                                             style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">甄选（首选）</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control m-b" v-model="crossForm.firstSelect">
+                                                                <option v-for="(item, index) in loadData.zsQuestions" :value="item" v-if="item.type==1">{{item.name}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" v-if="crossForm.firstSelect">
+                                                        <label class="col-sm-2 control-label">筛选选项</label>
+                                                        <div class="col-sm-10">
+                                                            <div class="checkbox i-checks" v-for="(item, index) in crossForm.firstSelect.options">
+                                                                <label>
+                                                                    <input type="checkbox" :value="item.id" :checked="true" v-model="crossForm.firstOption"><span>{{item.name}}</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" v-if="crossForm.firstSelect">
+                                                        <label class="col-sm-2 control-label">比较问题</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control m-b" v-model="crossForm.secondSelect">
+                                                                <option v-for="(item, index) in loadData.zsQuestions" :value="item" v-if="item.type==1 && item != crossForm.firstSelect">{{item.name}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" v-if="crossForm.secondSelect">
+                                                        <label class="col-sm-2 control-label">筛选选项</label>
+                                                        <div class="col-sm-10">
+                                                            <div class="checkbox i-checks" v-for="(item, index) in crossForm.secondSelect.options">
+                                                                <label>
+                                                                    <input type="checkbox" :value="item.id" :checked="true" v-model="crossForm.secondOption">{{item.name}}</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-primary" v-on:click="exportCross()">交叉导出
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -247,6 +338,12 @@
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10//每页显示条目个数不传默认10
+            },
+            crossForm: {
+                firstSelect: null,
+                secondSelect: null,
+                firstOption: [],
+                secondOption: []
             }
         },
         watch: {
@@ -255,6 +352,17 @@
         },
         computed: {},
         methods: {
+            exportCross() {
+                console.log(this.crossForm);
+
+                window.open('/survey/export/survey/cross?' + $.jsonUrlEncode({
+                    firstSelect: this.crossForm.firstSelect.id,
+                    secondSelect: this.crossForm.secondSelect.id,
+                    firstOption: this.crossForm.firstOption,
+                    secondOption: this.crossForm.secondOption,
+                    access_token: sessionStorage.getItem('access_token')
+                }) );
+            },
             exportTotal() {
                 window.open('/survey/export/survey/total/' + this.survey.projectId + '?access_token=' + sessionStorage.getItem('access_token'));
             },
@@ -357,6 +465,4 @@
             this.bindEvent();
         }
     });
-
-
 </script>

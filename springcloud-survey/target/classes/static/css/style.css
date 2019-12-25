@@ -7941,7 +7941,7 @@ body.skin-3 {
     cursor: pointer;
 }
 
-.panel:hover {
+.panel-primary:hover {
     border: 1px dashed #009203;
     cursor: pointer;
 }

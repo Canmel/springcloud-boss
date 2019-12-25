@@ -1,8 +1,7 @@
-package com.camel.survey.service;
+package com.camel.survey.vo;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import lombok.Data;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -23,11 +22,18 @@ import java.util.List;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <导出>
+ * <交叉的导出>
  * @author baily
  * @since 1.0
- * @date 2019/12/24
+ * @date 2019/12/25
  **/
-public interface ExportService {
-    HSSFWorkbook total(Integer surveyId);
+@Data
+public class ZsCrossExport {
+    private Integer mainId;
+
+    private Integer compareId;
+
+    private List<Integer> mainOptions;
+
+    private List<Integer> compareOptions;
 }

@@ -57,7 +57,7 @@ public class ExportServiceImpl implements ExportService {
     private ZsAnswerMapper zsAnswerMapper;
 
     @Override
-    public HSSFWorkbook total(Integer surveyId, List list, LinkedHashMap<String, String> fieldMap) {
+    public HSSFWorkbook total(Integer surveyId) {
         //创建一个WorkBook,对应一个Excel文件
         HSSFWorkbook wb = new HSSFWorkbook();
         List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(surveyId);
