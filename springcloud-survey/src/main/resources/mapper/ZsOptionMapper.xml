@@ -11,6 +11,7 @@
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="has_remark" property="hasRemark"/>
+        <result column="current" property="current"/>
         <result column="target" property="target"/>
         <result column="configration" property="configration"/>
         <result column="creator" property="creatorId"/>
@@ -61,6 +62,35 @@
         <where>
             status = 1
             and question_id = #{questionId, jdbcType=INTEGER}
+        </where>
+    </select>
+
+    <select id="selectFullByQuestionId" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_option
+        <where>
+            status = 1
+            and question_id = #{questionId, jdbcType=INTEGER}
+        </where>
+    </select>
+
+    <select id="selectBySurveyId" resultMap="BaseResultMap">
+        select
+          o.id, o.name, o.order_num, o.question_id, o.configration, o.has_remark, o.target, o.status, o.created_at, o.creator, o.current as current
+        from zs_option o left join zs_question q on q.id = o.question_id where q.survey_id = #{id} and o.status = 1;
+    </select>
+
+    <select id="selectByQuestionAndName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_option
+        <where>
+            status = 1
+            and question_id = #{questionId, jdbcType=INTEGER}
+            and name = #{name}
         </where>
     </select>
 </mapper>

@@ -27,4 +27,44 @@
             status = 1
         </where>
     </select>
+
+    <select id="selectCrossCount" resultType="hashmap">
+        SELECT
+            count(1) count,
+            (count(1) / (
+                SELECT
+                    count(1)
+                FROM
+                    zs_answer_item
+                WHERE
+                    question = #{qS}
+                AND `option` = #{oS}
+                AND creator IN(
+                    SELECT
+                        ai.creator
+                    FROM
+                        zs_answer_item ai
+                    LEFT JOIN zs_answer a ON a.id = ai.answer_id
+                    WHERE
+                        a.survey_id = #{surveyId}
+                    AND question = #{qF}
+                )
+            ) * 100) AS rate
+        FROM
+            zs_answer_item
+        WHERE
+            question = #{qS}
+        AND `option` = #{oS}
+        AND creator IN(
+            SELECT
+                ai.creator
+            FROM
+                zs_answer_item ai
+            LEFT JOIN zs_answer a ON a.id = ai.answer_id
+            WHERE
+                a.survey_id = #{surveyId}
+            AND question = #{qF}
+            AND ai.`option` = #{oF}
+        )
+    </select>
 </mapper>

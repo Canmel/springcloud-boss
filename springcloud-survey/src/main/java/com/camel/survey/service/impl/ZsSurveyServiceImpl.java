@@ -13,11 +13,14 @@ import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.*;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyFormSaveException;
+import com.camel.survey.exceptions.SurveyNotValidException;
 import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.ZsAnswerItemSave;
+import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsQuestionSave;
 import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
@@ -292,5 +295,37 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             optionList = optionService.selectList(zsOptionWrapper);
         }
         return optionList;
+    }
+
+    @Override
+    public Result valid(ZsAnswerSave zsAnswerSave) {
+        ZsSurvey survey = selectById(zsAnswerSave.getSurveyId());
+        if(survey.isFull()) {
+            throw new SurveyNotValidException("我们的（" + survey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
+        }
+
+        List<ZsAnswerItemSave> zsAnswerItemSaveList = zsAnswerSave.getZsAnswerItemSaves();
+        List<String> tmpValue = new ArrayList<>();
+        zsAnswerItemSaveList.forEach(zsAnswerItemSave -> {
+            tmpValue.add(zsAnswerItemSave.getValue());
+        });
+
+        List<ZsOption> preOptions = optionService.selectBySurveyId(zsAnswerSave.surveyId);
+
+        preOptions.forEach(option -> {
+            // 有配额
+            if(!ObjectUtils.isEmpty(option.getConfigration()) && !ObjectUtils.isEmpty(option.getCurrent())) {
+                zsAnswerItemSaveList.forEach(zsAnswerItemSave -> {
+                    List<String> itemList = CollectionUtils.arrayToList(zsAnswerItemSave.getName().split("_"));
+                    Integer qId = Integer.parseInt(itemList.get(1));
+                    if(zsAnswerItemSave.getValue().equals(option.getName()) && option.getQuestionId().equals(qId)) {
+                        if(option.getCurrent() >= option.getConfigration()) {
+                            throw new SurveyNotValidException("我们（" + zsAnswerItemSave.getValue() + "）的样本调查配额已满，谢谢您的支持！不好意思打扰了，再见。");
+                        }
+                    }
+                });
+            }
+        });
+        return ResultUtil.success("");
     }
 }

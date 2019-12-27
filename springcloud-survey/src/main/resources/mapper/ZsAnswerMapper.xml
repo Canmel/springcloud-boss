@@ -40,4 +40,10 @@
             GROUP BY ai.option
         ) result
     </select>
+
+    <select id="selectCountCross" resultType="hashmap">
+        select count(1) count from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where a.survey_id = 1 and  question = #{question} and `option` = #{option} and ai.creator in (
+          select ai.creator from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where a.survey_id = #{surveyId} and ai.question = #{mainQuestion} and ai.`option` = #{mianOption}
+        )
+    </select>
 </mapper>

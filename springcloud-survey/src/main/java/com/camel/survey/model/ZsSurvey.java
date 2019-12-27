@@ -78,6 +78,8 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
      */
     private ZsSurveyCollectType collectType;
 
+    private String endShow;
+
     private ZsSurveyState state;
 
     @TableField(exist = false)
@@ -102,6 +104,10 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     public ZsSurvey(Integer projectId, ZsStatus status) {
         this.projectId = projectId;
         setStatus(status);
+    }
+
+    public Boolean isFull(){
+        return this.getCurrentNum() >= this.getCollectNum();
     }
 
     @Override

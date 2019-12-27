@@ -9,6 +9,7 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.exceptions.SurveyNotValidException;
 import com.camel.survey.model.*;
 import com.camel.survey.mapper.ZsQuestionMapper;
 import com.camel.survey.service.*;
@@ -24,6 +25,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,11 +125,14 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
+        ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
         int count = answerService.selectCount(zsAnswerWrapper);
         if (count > 0) {
-            return ResultUtil.success("提交成功");
+            return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         }
-        ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
+        if(zsSurvey.isFull()) {
+            throw new SurveyNotValidException("我们的（" + zsSurvey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
+        }
         zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() + 1);
         // 当前已收集数+1
         surveyService.updateById(zsSurvey);
@@ -141,7 +146,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
         updateCurrent(zsAnswerItemList);
         if (answerItemService.insertBatch(zsAnswerItemList)) {
-            return ResultUtil.success("提交成功");
+            return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         } else {
             return ResultUtil.error(ResultEnum.SERVICE_ERROR);
         }

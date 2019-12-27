@@ -2,6 +2,8 @@ package com.camel.survey.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.vo.ZsAnswerSave;
+import com.camel.survey.vo.ZsQuestionSave;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.camel.survey.service.ZsSurveyService;
@@ -136,6 +138,12 @@ public class ZsSurveyController extends BaseCommonController {
     @GetMapping("/sign/{id}")
     public Result sign(@PathVariable Integer id, OAuth2Authentication oAuth2Authentication) {
         return service.sign(id, oAuth2Authentication);
+    }
+
+    @PostMapping("/valid")
+    public Result valid(@RequestBody ZsAnswerSave zsAnswerSave) {
+
+        return service.valid(zsAnswerSave);
     }
 
     /**

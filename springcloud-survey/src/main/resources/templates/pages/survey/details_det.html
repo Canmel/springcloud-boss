@@ -246,7 +246,20 @@
                                              style="height: 0px;">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <button class="btn btn-primary" v-on:click="exportTotal()">问题导出
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">甄选（首选）</label>
+                                                            <div class="col-sm-10">
+                                                                <select class="form-control m-b"
+                                                                        v-model="itemForm.firstSelect">
+                                                                    <option v-for="(item, index) in loadData.zsQuestions"
+                                                                            :value="item" v-if="item.type==1">{{item.name}}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-primary" v-on:click="exportItem()" v-if="itemForm.firstSelect">问题导出
                                                     </button>
                                                 </div>
                                             </div>
@@ -266,17 +279,23 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">甄选（首选）</label>
                                                         <div class="col-sm-10">
-                                                            <select class="form-control m-b" v-model="crossForm.firstSelect">
-                                                                <option v-for="(item, index) in loadData.zsQuestions" :value="item" v-if="item.type==1">{{item.name}}</option>
+                                                            <select class="form-control m-b"
+                                                                    v-model="crossForm.firstSelect">
+                                                                <option v-for="(item, index) in loadData.zsQuestions"
+                                                                        :value="item" v-if="item.type==1">{{item.name}}
+                                                                </option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group" v-if="crossForm.firstSelect">
                                                         <label class="col-sm-2 control-label">筛选选项</label>
                                                         <div class="col-sm-10">
-                                                            <div class="checkbox i-checks" v-for="(item, index) in crossForm.firstSelect.options">
+                                                            <div class="checkbox i-checks"
+                                                                 v-for="(item, index) in crossForm.firstSelect.options">
                                                                 <label>
-                                                                    <input type="checkbox" :value="item.id" :checked="true" v-model="crossForm.firstOption"><span>{{item.name}}</span>
+                                                                    <input type="checkbox" :value="item.id"
+                                                                           :checked="true"
+                                                                           v-model="crossForm.firstOption"><span>{{item.name}}</span>
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -285,17 +304,25 @@
                                                     <div class="form-group" v-if="crossForm.firstSelect">
                                                         <label class="col-sm-2 control-label">比较问题</label>
                                                         <div class="col-sm-10">
-                                                            <select class="form-control m-b" v-model="crossForm.secondSelect">
-                                                                <option v-for="(item, index) in loadData.zsQuestions" :value="item" v-if="item.type==1 && item != crossForm.firstSelect">{{item.name}}</option>
+                                                            <select class="form-control m-b"
+                                                                    v-model="crossForm.secondSelect">
+                                                                <option v-for="(item, index) in loadData.zsQuestions"
+                                                                        :value="item"
+                                                                        v-if="item.type==1 && item != crossForm.firstSelect">
+                                                                    {{item.name}}
+                                                                </option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group" v-if="crossForm.secondSelect">
                                                         <label class="col-sm-2 control-label">筛选选项</label>
                                                         <div class="col-sm-10">
-                                                            <div class="checkbox i-checks" v-for="(item, index) in crossForm.secondSelect.options">
+                                                            <div class="checkbox i-checks"
+                                                                 v-for="(item, index) in crossForm.secondSelect.options">
                                                                 <label>
-                                                                    <input type="checkbox" :value="item.id" :checked="true" v-model="crossForm.secondOption">{{item.name}}</span>
+                                                                    <input type="checkbox" :value="item.id"
+                                                                           :checked="true"
+                                                                           v-model="crossForm.secondOption">{{item.name}}</span>
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -344,6 +371,9 @@
                 secondSelect: null,
                 firstOption: [],
                 secondOption: []
+            },
+            itemForm: {
+                firstSelect: null
             }
         },
         watch: {
@@ -352,19 +382,21 @@
         },
         computed: {},
         methods: {
+            exportItem() {
+                window.open('/survey/export/survey/' + this.itemForm.firstSelect.id + '/items' + '?access_token=' + sessionStorage.getItem('access_token'))
+            },
             exportCross() {
-                console.log(this.crossForm);
-
                 window.open('/survey/export/survey/cross?' + $.jsonUrlEncode({
-                    firstSelect: this.crossForm.firstSelect.id,
-                    secondSelect: this.crossForm.secondSelect.id,
+                    surveyId: this.survey.id,
+                    firstSelect: this.crossForm.firstSelect ? this.crossForm.firstSelect.id : null,
+                    secondSelect: this.crossForm.secondSelect ? this.crossForm.secondSelect.id : null,
                     firstOption: this.crossForm.firstOption,
                     secondOption: this.crossForm.secondOption,
                     access_token: sessionStorage.getItem('access_token')
-                }) );
+                }));
             },
             exportTotal() {
-                window.open('/survey/export/survey/total/' + this.survey.projectId + '?access_token=' + sessionStorage.getItem('access_token'));
+                window.open('/survey/export/survey/total/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;

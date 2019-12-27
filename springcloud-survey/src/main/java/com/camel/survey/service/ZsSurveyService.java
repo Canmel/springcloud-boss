@@ -5,6 +5,8 @@ import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.vo.ZsAnswerSave;
+import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
@@ -97,5 +99,7 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      * @return
      */
     List<ZsOption> options(List<Integer> qIds);
+
+    Result valid(ZsAnswerSave zsAnswerSave);
 
 }
