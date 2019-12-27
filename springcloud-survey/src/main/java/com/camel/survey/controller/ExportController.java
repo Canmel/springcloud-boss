@@ -1,11 +1,9 @@
 package com.camel.survey.controller;
 
-import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ExportExcelUtils;
-import com.camel.survey.vo.Excel;
 import com.camel.survey.vo.ZsCrossExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  *
@@ -70,8 +65,15 @@ public class ExportController {
 
     @GetMapping("/survey/cross")
     public void cross(ZsCrossExport zsCrossExport, HttpServletResponse response) {
-        ZsSurvey survey = zsSurveyService.selectById(1);
-        ExportExcelUtils.export(service.total(1), "测试是不是真的", response);
+        ZsSurvey survey = zsSurveyService.selectById(zsCrossExport.getSurveyId());
+        ExportExcelUtils.export(service.cross(zsCrossExport), "交叉_" + survey.getName(), response);
+    }
+
+    @GetMapping("/survey/{id}/items")
+    public void items(@PathVariable Integer id, HttpServletResponse response) {
+        ZsQuestion question = zsQuestionService.selectById(id);
+        ZsSurvey survey = zsSurveyService.selectById(question.getSurveyId());
+        ExportExcelUtils.export(service.items(survey.getId(), id), "问卷样本统计_" + survey.getName(), response);
     }
 
 }

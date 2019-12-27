@@ -1,9 +1,12 @@
 package com.camel.survey.mapper;
 
-import com.camel.survey.model.ZsAnswerItem;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.camel.survey.model.ZsAnswerItem;
+import feign.Param;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -22,4 +25,6 @@ public interface ZsAnswerItemMapper extends BaseMapper<ZsAnswerItem> {
      * @return
      */
     List<ZsAnswerItem> list(ZsAnswerItem entity);
+
+    Map<String, Object> selectCrossCount(@Param("qF") String qF, @Param("qS") String qS, @Param("oF") String oF, @Param("oS") String oS, @Param("surveyId") Integer surveyId);
 }

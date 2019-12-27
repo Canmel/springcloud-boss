@@ -1,5 +1,6 @@
 package com.camel.survey.service;
 
+import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.util.LinkedHashMap;
@@ -30,4 +31,8 @@ import java.util.List;
  **/
 public interface ExportService {
     HSSFWorkbook total(Integer surveyId);
+
+    HSSFWorkbook cross(ZsCrossExport zsCrossExport);
+
+    HSSFWorkbook items(Integer surveyId, Integer qId);
 }

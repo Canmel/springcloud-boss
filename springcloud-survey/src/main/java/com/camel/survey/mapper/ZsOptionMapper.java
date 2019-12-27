@@ -30,4 +30,8 @@ public interface ZsOptionMapper extends BaseMapper<ZsOption> {
      * @return
      */
     List<ZsOption> selectByQuestionId(@Param("questionId") Integer questionId);
+
+    List<ZsOption> selectFullByQuestionId(@Param("questionId") Integer questionId);
+
+    List<ZsOption> selectBySurveyId(Integer id);
 }

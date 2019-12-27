@@ -9,6 +9,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -44,5 +46,20 @@ public class ZsOptionServiceImpl extends ServiceImpl<ZsOptionMapper, ZsOption> i
             mapper.list(entity);
         });
         return pageInfo;
+    }
+
+    @Override
+    public List<ZsOption> selectByQuestionId(Integer qId) {
+        return mapper.selectByQuestionId(qId);
+    }
+
+    @Override
+    public List<ZsOption> selectFllByQuestionId(Integer qId) {
+        return mapper.selectFullByQuestionId(qId);
+    }
+
+    @Override
+    public List<ZsOption> selectBySurveyId(Integer sId) {
+        return mapper.selectBySurveyId(sId);
     }
 }

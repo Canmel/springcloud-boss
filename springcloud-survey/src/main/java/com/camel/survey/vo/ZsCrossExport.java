@@ -29,11 +29,13 @@ import java.util.List;
  **/
 @Data
 public class ZsCrossExport {
-    private Integer mainId;
+    private Integer firstSelect;
 
-    private Integer compareId;
+    private Integer secondSelect;
 
-    private List<Integer> mainOptions;
+    private List<Integer> firstOption;
 
-    private List<Integer> compareOptions;
+    private List<Integer> secondOption;
+
+    private Integer surveyId;
 }

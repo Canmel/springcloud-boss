@@ -4,6 +4,8 @@ import com.camel.survey.model.ZsOption;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -34,4 +36,25 @@ public interface ZsOptionService extends IService<ZsOption> {
      @return
      */
     PageInfo<ZsOption> selectPage(ZsOption entity);
+
+    /**
+     * 通过问题ID获取所有的选项
+     * @param qId
+     * @return
+     */
+    List<ZsOption> selectByQuestionId(Integer qId);
+
+    /**
+     * 通过问题ID获取所有的选项
+     * @param qId
+     * @return
+     */
+    List<ZsOption> selectFllByQuestionId(Integer qId);
+
+    /**
+     * 选项
+     * @param sId
+     * @return
+     */
+    List<ZsOption> selectBySurveyId(Integer sId);
 }

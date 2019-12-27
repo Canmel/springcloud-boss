@@ -4,6 +4,7 @@ import com.camel.survey.model.ZsAnswer;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import feign.Param;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +27,6 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
     List<ZsAnswer> list(ZsAnswer entity);
 
     List<Map<String, Object>> selectRateBySurveyQuestion(@Param("id") Integer id, @Param("question") String question);
+
+    Map<String, Object> selectCountCross(@Param("question") String question, @Param("option") String option, @Param("mainQuestion") String mainQuestion, @Param("mianOption") String mianOption, @Param("surveyId") Integer surveyId);
 }
