@@ -9,6 +9,7 @@ import com.camel.survey.enums.ZsSurveyState;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -107,7 +108,10 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     }
 
     public Boolean isFull(){
-        return this.getCurrentNum() >= this.getCollectNum();
+        if(!ObjectUtils.isEmpty(this.getCurrentNum()) && !ObjectUtils.isEmpty(this.getCollectNum())) {
+            return this.getCurrentNum() >= this.getCollectNum();
+        }
+        return false;
     }
 
     @Override

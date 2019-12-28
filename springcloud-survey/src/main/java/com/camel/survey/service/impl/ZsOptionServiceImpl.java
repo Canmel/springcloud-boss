@@ -67,4 +67,9 @@ public class ZsOptionServiceImpl extends ServiceImpl<ZsOptionMapper, ZsOption> i
     public ZsOption selectByQuestionAndName(Integer qId, String name) {
         return mapper.selectByQuestionAndName(qId, name);
     }
+
+    @Override
+    public void addOptionCurrent(List<Integer> optionIds) {
+        mapper.addOptionCurrent(optionIds);
+    }
 }

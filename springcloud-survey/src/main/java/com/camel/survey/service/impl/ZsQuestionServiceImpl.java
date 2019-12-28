@@ -142,9 +142,11 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());
         List<Integer> qIds = zsQuestions.stream().map(ZsQuestion::getId).collect(Collectors.toList());
         List<ZsOption> zsOptions = surveyService.options(qIds);
+        List<Integer> oIds = zsOptions.stream().map(ZsOption::getId).collect(Collectors.toList());
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
-        updateCurrent(zsAnswerItemList);
+        // 更新选项当前数量
+        updateCurrent(qIds);
         if (answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         } else {
@@ -152,15 +154,8 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         }
     }
 
-    public void updateCurrent(List<ZsAnswerItem> zsAnswerItems) {
-        zsAnswerItems.forEach(item -> {
-            ZsOption zsOption = item.getZsOption();
-            if (!ObjectUtils.isEmpty(zsOption)) {
-                zsOption.setCurrent(zsOption.getCurrent() + 1);
-                zsOptionService.updateById(zsOption);
-            }
-
-        });
+    public void updateCurrent(List<Integer> optionIds) {
+        zsOptionService.addOptionCurrent(optionIds);
     }
 
     @Override

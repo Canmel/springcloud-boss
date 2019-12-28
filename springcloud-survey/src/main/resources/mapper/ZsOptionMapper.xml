@@ -93,4 +93,12 @@
             and name = #{name}
         </where>
     </select>
+
+    <update id="addOptionCurrent">
+        update zs_option
+        set current = current + 1 where status = 1 and id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

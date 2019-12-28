@@ -59,4 +59,6 @@ public interface ZsOptionService extends IService<ZsOption> {
     List<ZsOption> selectBySurveyId(Integer sId);
 
     ZsOption selectByQuestionAndName(Integer qId, String name);
+
+    void addOptionCurrent(List<Integer> optionIds);
 }

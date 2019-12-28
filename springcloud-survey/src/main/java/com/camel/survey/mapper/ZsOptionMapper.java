@@ -36,4 +36,6 @@ public interface ZsOptionMapper extends BaseMapper<ZsOption> {
     List<ZsOption> selectBySurveyId(Integer id);
 
     ZsOption selectByQuestionAndName(@Param("questionId") Integer questionId, @Param("name") String name);
+
+    int addOptionCurrent(List<Integer> list);
 }

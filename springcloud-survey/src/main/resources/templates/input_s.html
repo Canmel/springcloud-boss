@@ -184,14 +184,7 @@
                 }, function (resp) {
                     if(resp.msg != '') {
                         alert(resp.msg);
-                        var browserName = navigator.appName;
-                        if (browserName == "Netscape") {
-                            window.location.href = "about:blank";                    //关键是这句话
-                            window.close();
-                        } else if (browserName == "Microsoft Internet Explorer") {
-                            window.close();
-                        }
-                        return false;
+                        $("#nextQuestion").hide();
                     }
                     return true;
 
@@ -333,14 +326,7 @@
                     seat: this.getParams('seat')
                 }, function (resp) {
                     alert(resp.msg);
-                    var browserName = navigator.appName;
-                    if (browserName == "Netscape") {
-                        window.location.href = "about:blank";                    //关键是这句话
-                        window.close();
-                    } else if (browserName == "Microsoft Internet Explorer") {
-                        window.opener = null;
-                        window.close();
-                    }
+                    $("#nextQuestion").hide();
                     return false;
                 });
 
