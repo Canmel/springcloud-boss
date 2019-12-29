@@ -61,7 +61,7 @@
     <section>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
-                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1">
+                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1" :data-type="item.type">
                     <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;" v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
                     <div class="question-option" v-for="(opt, i) in item.options"
@@ -69,7 +69,8 @@
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt)"
-                                                                  :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
+                                                                  :name="'radio_' + item.id + '_' + item.id"
+                                                                  :value="opt.id + '_' +  opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"

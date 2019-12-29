@@ -2,15 +2,11 @@ package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
-import com.camel.core.entity.BasePaginationEntity;
-import com.camel.core.model.SysUser;
-import com.camel.survey.enums.ZsStatus;
 import lombok.Data;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -98,6 +94,13 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
      */
     @TableField(exist = false)
     private Boolean isReadonly;
+
+    public Boolean isFull() {
+        if (!ObjectUtils.isEmpty(this.current) && !ObjectUtils.isEmpty(this.configration)) {
+            return this.current > this.configration;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {

@@ -36,4 +36,6 @@ public interface ZsSurveyMapper extends BaseMapper<ZsSurvey> {
      * @return
      */
     ZsSurvey findById(Integer id);
+
+    void updateCurrent(Integer id);
 }

@@ -37,14 +37,36 @@ public class ZsAnswerItemSave {
 
     private String value;
 
+    public String getValue() {
+        String[] nameArr = null;
+        if(StringUtils.isNotBlank(this.value)) {
+            nameArr = this.value.split("_");
+        }
+        if (!ObjectUtils.isEmpty(nameArr) && nameArr.length == 2) {
+            return nameArr[1];
+        }
+        return value;
+    }
+
     public Integer getqId() {
         String[] nameArr = null;
-        if(StringUtils.isNotBlank(this.name)) {
+        if (StringUtils.isNotBlank(this.name)) {
             nameArr = this.name.split("_");
         }
-        if(!ObjectUtils.isEmpty(nameArr) && nameArr.length == 3) {
+        if (!ObjectUtils.isEmpty(nameArr) && nameArr.length == 3) {
             return Integer.parseInt(nameArr[1]);
         }
         return qId;
+    }
+
+    public Integer getOId() {
+        String[] nameArr = null;
+        if (StringUtils.isNotBlank(this.value)) {
+            nameArr = this.value.split("_");
+        }
+        if (!ObjectUtils.isEmpty(nameArr) && nameArr.length == 2) {
+            return Integer.parseInt(nameArr[0]);
+        }
+        return optId;
     }
 }

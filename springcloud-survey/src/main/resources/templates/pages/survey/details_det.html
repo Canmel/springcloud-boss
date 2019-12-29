@@ -108,6 +108,7 @@
                                     <div class="col-sm-9 survey-optins">
                                         <div v-for="(option, inx) in item.options"
                                              v-if="showOption(item, option)">
+                                            <div class="col-sm-9">
                                             <label class="radio-inline"
                                                    v-if="item.type === 1 && showOption(item, option)">
                                                 <input type="radio" value="option2"
@@ -163,7 +164,14 @@
                                                     <input type="text"
                                                            name="optionsRadios"></label>
                                             </label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <span>当前: {{option.current}}</span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span v-if="option.configration">配额: {{option.configration}}</span>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -253,13 +261,15 @@
                                                                 <select class="form-control m-b"
                                                                         v-model="itemForm.firstSelect">
                                                                     <option v-for="(item, index) in loadData.zsQuestions"
-                                                                            :value="item" v-if="item.type==1">{{item.name}}
+                                                                            :value="item" v-if="item.type==1">
+                                                                        {{item.name}}
                                                                     </option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <button class="btn btn-primary" v-on:click="exportItem()" v-if="itemForm.firstSelect">问题导出
+                                                    <button class="btn btn-primary" v-on:click="exportItem()"
+                                                            v-if="itemForm.firstSelect">问题导出
                                                     </button>
                                                 </div>
                                             </div>

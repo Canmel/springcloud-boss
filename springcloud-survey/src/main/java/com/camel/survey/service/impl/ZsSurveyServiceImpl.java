@@ -303,29 +303,19 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         if(survey.isFull()) {
             throw new SurveyNotValidException("我们的（" + survey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
         }
+        List<Integer> optIds = zsAnswerSave.getOptIds();
+        List<ZsOption> zsOptions = optionService.selectBatchIds(optIds);
 
-        List<ZsAnswerItemSave> zsAnswerItemSaveList = zsAnswerSave.getZsAnswerItemSaves();
-        List<String> tmpValue = new ArrayList<>();
-        zsAnswerItemSaveList.forEach(zsAnswerItemSave -> {
-            tmpValue.add(zsAnswerItemSave.getValue());
-        });
-
-        List<ZsOption> preOptions = optionService.selectBySurveyId(zsAnswerSave.surveyId);
-
-        preOptions.forEach(option -> {
-            // 有配额
-            if(!ObjectUtils.isEmpty(option.getConfigration()) && !ObjectUtils.isEmpty(option.getCurrent())) {
-                zsAnswerItemSaveList.forEach(zsAnswerItemSave -> {
-                    List<String> itemList = CollectionUtils.arrayToList(zsAnswerItemSave.getName().split("_"));
-                    Integer qId = Integer.parseInt(itemList.get(1));
-                    if(zsAnswerItemSave.getValue().equals(option.getName()) && option.getQuestionId().equals(qId)) {
-                        if(option.getCurrent() >= option.getConfigration()) {
-                            throw new SurveyNotValidException("我们（" + zsAnswerItemSave.getValue() + "）的样本调查配额已满，谢谢您的支持！不好意思打扰了，再见。");
-                        }
-                    }
-                });
+        zsOptions.forEach(zsOption -> {
+            if(zsOption.isFull() ) {
+               throw new SurveyNotValidException("我们（" + zsOption.getName() + "）的样本调查配额已满，谢谢您的支持！不好意思打扰了，再见。");
             }
         });
         return ResultUtil.success("");
+    }
+
+    @Override
+    public void updateCurrent(Integer id) {
+        mapper.updateCurrent(id);
     }
 }

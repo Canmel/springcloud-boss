@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -123,6 +124,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
+        surveyService.valid(zsAnswerSave);
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
         ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
@@ -133,20 +135,21 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         if(zsSurvey.isFull()) {
             throw new SurveyNotValidException("我们的（" + zsSurvey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
         }
-        zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() + 1);
         // 当前已收集数+1
-        surveyService.updateById(zsSurvey);
+        surveyService.updateCurrent(zsSurvey.getId());
 
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         answerService.insert(zsAnswer);
         List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());
         List<Integer> qIds = zsQuestions.stream().map(ZsQuestion::getId).collect(Collectors.toList());
         List<ZsOption> zsOptions = surveyService.options(qIds);
-        List<Integer> oIds = zsOptions.stream().map(ZsOption::getId).collect(Collectors.toList());
+        List<Integer> oIds = zsAnswerSave.getOptIds();
+
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
+
         // 更新选项当前数量
-        updateCurrent(qIds);
+        updateCurrent(oIds);
         if (answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         } else {

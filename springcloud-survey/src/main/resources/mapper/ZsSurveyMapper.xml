@@ -85,4 +85,8 @@
             id = #{id}
         </where>
     </select>
+
+    <update id="updateCurrent">
+        update zs_survey set current_num = current_num + 1 where id = #{id}
+    </update>
 </mapper>

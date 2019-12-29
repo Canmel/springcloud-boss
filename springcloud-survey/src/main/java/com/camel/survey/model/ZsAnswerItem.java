@@ -48,6 +48,8 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private Integer answerId;
+    private Integer surveyId;
+    private Integer questionId;
     private String question;
     private String value;
     private Integer type;

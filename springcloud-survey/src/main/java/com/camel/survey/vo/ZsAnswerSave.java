@@ -64,6 +64,18 @@ public class ZsAnswerSave {
      */
     public String record;
 
+    /**
+     * 获取选项ID
+     * @return
+     */
+    public List<Integer> getOptIds() {
+        List<Integer> oIds = new ArrayList<>();
+        zsAnswerItemSaves.forEach(zsAnswerItemSave -> {
+            oIds.add(zsAnswerItemSave.getOId());
+        });
+        return oIds;
+    }
+
     public ZsAnswer buildAnswer() {
         ZsAnswer answer = new ZsAnswer(this.surveyId, this.phone);
         answer.setSeat(this.seat);
@@ -73,6 +85,8 @@ public class ZsAnswerSave {
 
     public ZsAnswerItem buildAnswerItem(ZsQuestion question, ZsOption zsOption, Integer answerId, String value) {
         ZsAnswerItem zsAnswerItem = new ZsAnswerItem(question.getName(), ObjectUtils.isEmpty(zsOption) ? "" : zsOption.getName(), answerId, value, question.getType(), this.phone);
+        zsAnswerItem.setSurveyId(surveyId);
+        zsAnswerItem.setQuestionId(question.getId());
         zsAnswerItem.setZsOption(zsOption);
         return zsAnswerItem;
     }

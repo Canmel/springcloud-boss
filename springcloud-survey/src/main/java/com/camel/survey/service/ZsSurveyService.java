@@ -102,4 +102,6 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
 
     Result valid(ZsAnswerSave zsAnswerSave);
 
+    void updateCurrent(Integer id);
+
 }
