@@ -97,7 +97,7 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
 
     public Boolean isFull() {
         if (!ObjectUtils.isEmpty(this.current) && !ObjectUtils.isEmpty(this.configration)) {
-            return this.current > this.configration;
+            return this.current >= this.configration;
         }
         return false;
     }

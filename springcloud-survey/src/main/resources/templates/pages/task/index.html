@@ -114,7 +114,8 @@
         },
         methods: {
             start: function(item) {
-                window.open('/survey/pages/survey/web_survey.html');
+                console.log(item);
+                window.open('/survey/input_s.html?surveyId=' + item.id + '&phone=13722222221&record=2321&seat=121', '_blank');
             },
             isShowStart: function(item) {
                 if(item.state && item.isApplySuccess) {

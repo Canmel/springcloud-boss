@@ -185,7 +185,9 @@
                 }, function (resp) {
                     if(resp.msg != '') {
                         alert(resp.msg);
+                        window.close();
                         $("#nextQuestion").hide();
+
                     }
                     return true;
 
@@ -328,6 +330,7 @@
                 }, function (resp) {
                     alert(resp.msg);
                     $("#nextQuestion").hide();
+                    window.close();
                     return false;
                 });
 
