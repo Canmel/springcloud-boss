@@ -78,7 +78,7 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
+                // location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
             }
         }
     };

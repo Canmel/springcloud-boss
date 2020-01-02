@@ -185,12 +185,10 @@
                 }, function (resp) {
                     if(resp.msg != '') {
                         alert(resp.msg);
-                        window.close();
+                        // window.close();
                         $("#nextQuestion").hide();
-
                     }
                     return true;
-
                 });
             },
             validateForm() {
@@ -330,7 +328,7 @@
                 }, function (resp) {
                     alert(resp.msg);
                     $("#nextQuestion").hide();
-                    window.close();
+                    // window.close();
                     return false;
                 });
 

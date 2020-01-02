@@ -13,6 +13,18 @@
         <result column="creator" property="creator"/>
     </resultMap>
 
+    <resultMap id="BaseFullResultMap" type="com.camel.survey.model.ZsAnswer">
+        <id column="id" property="id"/>
+        <result column="survey_id" property="surveyId"/>
+        <result column="record" property="record"/>
+        <result column="seat" property="seat"/>
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="creator" property="creator"/>
+        <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
+        </collection>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, survey_id, status, record, seat, created_at, creator
@@ -45,5 +57,27 @@
         select count(1) count from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where a.survey_id = 1 and  question = #{question} and `option` = #{option} and ai.creator in (
           select ai.creator from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where a.survey_id = #{surveyId} and ai.question = #{mainQuestion} and ai.`option` = #{mianOption}
         )
+    </select>
+
+    <select id="selectBySurvey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_answer
+        <where>
+            status = 1
+            and survey_id = #{surveyId}
+        </where>
+    </select>
+
+    <select id="details" resultMap="BaseFullResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_answer
+        <where>
+            status = 1
+            and id = #{id}
+        </where>
     </select>
 </mapper>

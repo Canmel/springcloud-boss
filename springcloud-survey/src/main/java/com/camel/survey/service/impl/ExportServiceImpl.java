@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.exceptions.ExportFillDataException;
 import com.camel.survey.mapper.ZsAnswerMapper;
-import com.camel.survey.model.ZsOption;
-import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.model.*;
 import com.camel.survey.service.ExportService;
 import com.camel.survey.service.ZsAnswerItemService;
 import com.camel.survey.service.ZsOptionService;
@@ -23,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,10 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     private ZsAnswerItemService zsAnswerItemService;
 
+    public static final Integer SELECT_STEP = 100;
+
     DecimalFormat df = new DecimalFormat("0.00%");
+    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public HSSFWorkbook items(Integer surveyId, Integer qId) {
@@ -94,6 +97,45 @@ public class ExportServiceImpl implements ExportService {
             }
             row.createCell(options.size() + 1).setCellValue(total);
         }
+        return wb;
+    }
+
+    @Override
+    public HSSFWorkbook answer(Integer surveyId) {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("样本明细");
+        HSSFRow head = sheet.createRow(0);
+        HSSFCellStyle headStyle = createHeadStyle(wb);
+        HSSFCellStyle style = createCellStyle(wb);
+        List<ZsQuestion> questionList = zsQuestionService.selectBySurveyId(surveyId);
+        List<Object> headValues = CollectionUtils.arrayToList(new String[]{"时间", "电话", "坐席"});
+        List<Object> list = new ArrayList<>(headValues);
+        questionList.forEach(opt -> {
+            list.add(opt.getName());
+        });
+        list.add("合计");
+        fillRow(head, headStyle, list);
+        List<Map<String, Object>> result = zsAnswerItemService.selectExport(surveyId);
+        for (int i = 0; i < result.size(); i++) {
+            int cellNum = 0;
+            HSSFRow row = sheet.createRow(1+i);
+            fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("seat"));
+            String opts = (String)result.get(i).get("opts");
+            String[] options = opts.split("@##@");
+
+            String ques = "";
+            ques = (String)result.get(i).get("questions");
+            String[] questions = ques.split("@##@");
+            List<String> qs = CollectionUtils.arrayToList(questions);
+            for (ZsQuestion question: questionList) {
+                if(qs.indexOf(question.getName()) > -1) {
+                    fillCell(row.createCell(cellNum++), style, options[qs.indexOf(question.getName())]);
+                }
+            }
+        }
+
         return wb;
     }
 

@@ -63,6 +63,9 @@
             <if test="collectType != null">
                 AND zs_survey.collect_type = #{collectType.value}
             </if>
+            <if test="projectId != null">
+                AND zs_survey.project_id = #{projectId}
+            </if>
         </where>
     </select>
 

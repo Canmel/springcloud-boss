@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,5 +55,15 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
     public Map<String, Object> selectCrossCount(ZsQuestion qF, ZsQuestion qS, ZsOption oF, ZsOption oS, Integer surveyId) {
 
         return mapper.selectCrossCount(qF.getName(), qS.getName(), oF.getName(), oS.getName(), surveyId);
+    }
+
+    @Override
+    public List<ZsAnswerItem> selectBySurvey(Integer surveyId) {
+        return mapper.selectBySurvey(surveyId);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectExport(Integer id) {
+        return mapper.selectExport(id);
     }
 }

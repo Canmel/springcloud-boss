@@ -45,4 +45,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         });
         return pageInfo;
     }
+
+    @Override
+    public ZsAnswer details(Integer id) {
+        return mapper.details(id);
+    }
 }

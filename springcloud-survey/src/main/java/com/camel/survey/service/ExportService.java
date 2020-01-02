@@ -35,4 +35,6 @@ public interface ExportService {
     HSSFWorkbook cross(ZsCrossExport zsCrossExport);
 
     HSSFWorkbook items(Integer surveyId, Integer qId);
+
+    HSSFWorkbook answer(Integer surveyId);
 }

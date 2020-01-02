@@ -49,8 +49,13 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
     cache: false
+    prefix: classpath:/templates
+    suffix: .html
   mvc:
     static-path-pattern: /**
+    view:
+      prefix: /
+      suffix: .html
   resources:
     static-locations: classpath:/templates/,classpath:/static/
   activemq:
@@ -67,14 +72,12 @@ eureka:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
 
-attendance:
-  getway:
-    url: ${APPLICATION_GETWAY_URL}
-    port: ${APPLICATION_GETWAY_PORT}
-
 survey:
   price:
     phone: 1
+  getway:
+    url: ${APPLICATION_GETWAY_URL}
+    port: ${APPLICATION_GETWAY_PORT}
 
 security:
   oauth2:

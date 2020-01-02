@@ -127,6 +127,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         surveyService.valid(zsAnswerSave);
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
+        zsAnswerWrapper.eq("survey_id", zsAnswerSave.getSurveyId());
         ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
         int count = answerService.selectCount(zsAnswerWrapper);
         if (count > 0) {
@@ -145,9 +146,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<ZsOption> zsOptions = surveyService.options(qIds);
         List<Integer> oIds = zsAnswerSave.getOptIds();
 
-
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
-
         // 更新选项当前数量
         updateCurrent(oIds);
         if (answerItemService.insertBatch(zsAnswerItemList)) {

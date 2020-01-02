@@ -109,23 +109,23 @@
                                         <div v-for="(option, inx) in item.options"
                                              v-if="showOption(item, option)">
                                             <div class="col-sm-9">
-                                            <label class="radio-inline"
-                                                   v-if="item.type === 1 && showOption(item, option)">
-                                                <input type="radio" value="option2"
-                                                       name="optionsRadios">
-                                                <span class="editable question-option">{{option.name}}</span>
-                                            </label>
+                                                <label class="radio-inline"
+                                                       v-if="item.type === 1 && showOption(item, option)">
+                                                    <input type="radio" value="option2"
+                                                           name="optionsRadios">
+                                                    <span class="editable question-option">{{option.name}}</span>
+                                                </label>
 
-                                            <label class="checkbox-inline"
-                                                   v-if="item.type === 2 && showOption(item, option)">
-                                                <input type="checkbox" value="option1">
-                                                <span class="editable question-option">{{option.name}}</span>
-                                            </label>
+                                                <label class="checkbox-inline"
+                                                       v-if="item.type === 2 && showOption(item, option)">
+                                                    <input type="checkbox" value="option1">
+                                                    <span class="editable question-option">{{option.name}}</span>
+                                                </label>
 
-                                            <label class="checkbox-inline"
-                                                   v-if="item.type === 3 && showOption(item, option)">
-                                                <span class="editable question-option">评分项</span>:
-                                                <span class="star-box">
+                                                <label class="checkbox-inline"
+                                                       v-if="item.type === 3 && showOption(item, option)">
+                                                    <span class="editable question-option">评分项</span>:
+                                                    <span class="star-box">
                                                 <input type="radio"
                                                        :name="'star_' + item.orderNum + '_' + option.orderNum"
                                                        :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
@@ -156,14 +156,14 @@
                                                        hidden/>
                                                 <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
                                             </span>
-                                            </label>
-                                            <label class="checkbox-inline"
-                                                   v-if="item.type === 4 && showOption(item, option)">
-                                                <span class="editable question-option">答</span>:
-                                                <label class="radio-inline">
-                                                    <input type="text"
-                                                           name="optionsRadios"></label>
-                                            </label>
+                                                </label>
+                                                <label class="checkbox-inline"
+                                                       v-if="item.type === 4 && showOption(item, option)">
+                                                    <span class="editable question-option">答</span>:
+                                                    <label class="radio-inline">
+                                                        <input type="text"
+                                                               name="optionsRadios"></label>
+                                                </label>
                                             </div>
                                             <div class="col-sm-3">
                                                 <span>当前: {{option.current}}</span>
@@ -194,6 +194,7 @@
                                             <th>序号</th>
                                             <th>收集时间</th>
                                             <th>填写人(手机号)</th>
+                                            <th>坐席号</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
@@ -207,6 +208,12 @@
                                                 <span>{{item.creator}}</span>
                                             </td>
                                             <td>
+                                                <span>{{item.seat}}</span>
+                                            </td>
+                                            <td>
+                                                <button type="button" v-on:click="details(item)"
+                                                        class="btn btn-primary btn-xs">查看
+                                                </button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -343,6 +350,24 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                   href="tabs_panels.html#collapseFour" class="" aria-expanded="true">明细导出</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false"
+                                             style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <button class="btn btn-primary" v-on:click="exportAnswers()">明细导出
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -352,6 +377,33 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">收集样本详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group" v-for="item in selectAnswer.items">
+                            <label class="col-sm-3 control-label">标题:</label>
+                            <div class="col-sm-8">
+                                <span name="name" class="form-control" type="text" style="border: none;">{{item.question}}</span>
+                            </div>
+                            <label class="col-sm-3 control-label">样本:</label>
+                            <div class="col-sm-8">
+                                <span name="name" class="form-control" type="text" style="border: none;">{{item.value}}</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
@@ -359,6 +411,7 @@
     new Vue({
         el: '#subContainer',
         data: {
+            selectAnswer: {},
             applicationContextRootPath: '/survey/',
             survey: {},
             saveData: {
@@ -392,6 +445,17 @@
         },
         computed: {},
         methods: {
+            details(item) {
+                var that = this;
+                $("#myModal").modal('show');
+                AJAX.GET("zsAnswer/" + item.id, {}, function (resp) {
+                    that.selectAnswer = resp.data;
+                    console.log(resp);
+                })
+            },
+            exportAnswers() {
+                window.open('/survey/export/survey/answers/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));
+            },
             exportItem() {
                 window.open('/survey/export/survey/' + this.itemForm.firstSelect.id + '/items' + '?access_token=' + sessionStorage.getItem('access_token'))
             },

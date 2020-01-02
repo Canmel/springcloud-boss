@@ -34,4 +34,11 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
      @return
      */
     PageInfo<ZsAnswer> selectPage(ZsAnswer entity);
+
+    /**
+     * 获取答案详情
+     * @param id
+     * @return
+     */
+    ZsAnswer details(Integer id);
 }

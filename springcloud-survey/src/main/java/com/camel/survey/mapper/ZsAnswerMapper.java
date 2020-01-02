@@ -29,4 +29,8 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
     List<Map<String, Object>> selectRateBySurveyQuestion(@Param("id") Integer id, @Param("question") String question);
 
     Map<String, Object> selectCountCross(@Param("question") String question, @Param("option") String option, @Param("mainQuestion") String mainQuestion, @Param("mianOption") String mianOption, @Param("surveyId") Integer surveyId);
+
+    List<ZsAnswer> selectBySurvey(Integer surveyIds);
+
+    ZsAnswer details(Integer id);
 }

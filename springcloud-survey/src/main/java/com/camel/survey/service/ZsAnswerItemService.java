@@ -6,6 +6,7 @@ import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,4 +41,8 @@ public interface ZsAnswerItemService extends IService<ZsAnswerItem> {
     PageInfo<ZsAnswerItem> selectPage(ZsAnswerItem entity);
 
     Map<String, Object> selectCrossCount(ZsQuestion qF, ZsQuestion qS, ZsOption oF, ZsOption oS, Integer surveyId);
+
+    List<ZsAnswerItem> selectBySurvey(Integer surveyId);
+
+    List<Map<String, Object>> selectExport(Integer id);
 }

@@ -115,7 +115,9 @@
         methods: {
             start: function(item) {
                 console.log(item);
-                window.open('/survey/input_s.html?surveyId=' + item.id + '&phone=13722222221&record=2321&seat=121', '_blank');
+                toPage('pages/task/start.html', item.id);
+                // window.open('/survey/page/' +
+                //     'input?surveyId=' + item.id + '&phone=13722222221&record=2321&seat=121&access_token=' + sessionStorage.getItem('access_token'), '_blank');
             },
             isShowStart: function(item) {
                 if(item.state && item.isApplySuccess) {
