@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: springcloud-sms-server
+  aop:
+    auto: true
+  activemq:
+    broker-url: tcp://${ACTIVEMQ_HOST}:61616
+    close-timeout: 15s
+    user: admin
+    password: admin
+  jms:
+    pub-sub-domain: true # topic时需要注释掉
+
+server:
+  port: ${random.int[10000,19999]}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_IP}:8888/eureka/
+
