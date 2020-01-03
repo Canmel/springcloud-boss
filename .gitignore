@@ -20,3 +20,4 @@ springcloud-system/target/classes/mapper/
 springcloud-system/target/generated-sources/
 /.idea/workspace.xml
 /springcloud-system/target/
+/springcloud-auth-server/target/

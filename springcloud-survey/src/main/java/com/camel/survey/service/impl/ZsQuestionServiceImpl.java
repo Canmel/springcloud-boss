@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.toolkit.CollectionUtils;
@@ -18,9 +19,11 @@ import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +74,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     @Autowired
     private ZsAnswerItemService answerItemService;
+
+    @Autowired
+    private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -136,9 +142,6 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         if(zsSurvey.isFull()) {
             throw new SurveyNotValidException("我们的（" + zsSurvey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
         }
-        // 当前已收集数+1
-        surveyService.updateCurrent(zsSurvey.getId());
-
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         answerService.insert(zsAnswer);
         List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());
@@ -147,8 +150,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<Integer> oIds = zsAnswerSave.getOptIds();
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
-        // 更新选项当前数量
-        updateCurrent(oIds);
+        updateCurrent(zsSurvey.getId(), oIds);
         if (answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         } else {
@@ -158,6 +160,13 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     public void updateCurrent(List<Integer> optionIds) {
         zsOptionService.addOptionCurrent(optionIds);
+    }
+
+    public void updateCurrent(Integer surveyId, List<Integer> optIds) {
+        JSONObject json = new JSONObject();
+        json.put("surveyId", surveyId);
+        json.put("optId", optIds);
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Stock.Reduce.Topic"), json);
     }
 
     @Override

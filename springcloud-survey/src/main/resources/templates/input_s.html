@@ -83,9 +83,9 @@
                          v-if="item.type === 2 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
-                                                                  :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
+                                                                  :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.id + '_' +  opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
-                                <span>{{opt.name}}</span>
+                                <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
                             </label>
                         </div>
                     </div>
