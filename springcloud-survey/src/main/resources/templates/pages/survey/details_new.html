@@ -325,8 +325,8 @@
                                                 <label class="radio-inline" v-if="option.configration">
                                                     配额:<span>{{option.configration}}</span>
                                                 </label>
-                                                <label class="radio-inline" v-if="option.target"
-                                                       data-toggle="tooltip" data-placement="top" title="已添加备注">
+                                                <label class="radio-inline" v-if="option.target != undefined && option.target !== null && option.target !== 0"
+                                                       data-toggle="tooltip" data-placement="top" title="下一题">
                                                     下一题:<span>{{option.target}}</span>
                                                 </label>
                                             </div>
@@ -336,18 +336,16 @@
                                                 <label style="padding: 0px 5px;"><span class="fa fa-terminal"
                                                                                        data-toggle="tooltip"
                                                                                        v-on:click="addRemark(question, option)"
-                                                                                       v-if="question.type = 1"
                                                                                        data-placement="top"
                                                                                        title="设置备注"></span></label>
                                                 <label style="padding: 0px 5px;"><span class="fa fa-cogs"
                                                                                        data-toggle="tooltip"
-                                                                                       v-if="question.type == 1 && question.orderNum == 1"
+                                                                                       v-if="question.orderNum == 1"
                                                                                        v-on:click="bindPEEdit($event, option)"
                                                                                        data-placement="top"
                                                                                        title="甄选配额"></span></label>
                                                 <label style="padding: 0px 5px;"><span class="fa fa-arrow-right"
                                                                                        data-toggle="tooltip"
-                                                                                       v-if="question.type == 1 && question.orderNum == 1"
                                                                                        v-on:click="bindJumpEdit($event, option)"
                                                                                        data-placement="top"
                                                                                        title="跳转"></span></label>
@@ -365,9 +363,20 @@
                                                            :name="'checkbox_' + question.orderNum + '_' + option.orderNum">
                                                     <span class="editable question-option">{{option.name}}</span>
                                                 </label>
+                                                <label class="radio-inline" v-if="option.hasRemark"
+                                                       data-toggle="tooltip" data-placement="top" title="已添加备注">
+                                                    <span class="fa fa-flag"></span>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
+                                            <div class="option-delete">
+                                                <label style="padding: 0px 5px;"><span class="fa fa-terminal"
+                                                                                       data-toggle="tooltip"
+                                                                                       v-on:click="addRemark(question, option)"
+                                                                                       data-placement="top"
+                                                                                       title="设置备注"></span></label>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -603,6 +612,10 @@
         },
         computed: {},
         methods: {
+            isShowNextNum(item) {
+                console.log(item.target);
+                return !isNaN(item.target);
+            },
             saveConcat() {
                 var that = this;
                 if (!$("#signupForm").valid()) {
@@ -811,7 +824,7 @@
                 //设置newobj失去焦点的事件
                 newobj.onblur = function () {
                     $(newobj).remove()
-                    if(parseInt(this.value) > 0) {
+                    if(!isNaN(this.value)) {
                         obj.target = parseInt(this.value);
                     }
                     console.log(that.loadData.zsQuestions)

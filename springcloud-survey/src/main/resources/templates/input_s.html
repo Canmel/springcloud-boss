@@ -69,6 +69,7 @@
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt)"
+                                                                  :dtarget="opt.target"
                                                                   :name="'radio_' + item.id + '_' + item.id"
                                                                   :value="opt.id + '_' +  opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
@@ -83,9 +84,12 @@
                          v-if="item.type === 2 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
+                                                                  v-on:change="radioChange(opt)"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.id + '_' +  opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
+                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
+                                       v-model="opt.name">
                             </label>
                         </div>
                     </div>
@@ -146,6 +150,13 @@
                 </div>
             </div><!-- /simform-inner -->
         </form><!-- /simform -->
+        <div id="end" class="simform" autocomplete="off" style="font-size: 14px; display: none;">
+            <div class="simform-inner">
+                <div class="question">
+                    <h4 class="question-title" style="font-size: 30px;">{{survey.endShow}}</h4>
+                </div>
+            </div>
+        </div>
 
     </section>
 </div>
@@ -158,6 +169,7 @@
             pageInfo: {},
             survey: {
                 name: '',
+                endShow: '问卷结束，感谢您的配合！'
             },
             paramsPair: [],
             questions: [],
@@ -168,7 +180,8 @@
             current: 1,
             nextIndex: 1,
             tmpNext:null,
-            showSubmit: false
+            showSubmit: false,
+            endInfo: '问卷结束，感谢您的配合！'
         },
         created: function () {
             this.loadParams();
@@ -176,6 +189,23 @@
         },
         methods: {
             validSurvey() {
+                var that = this;
+                var $inputs = $('.simform-inner').find('.question :visible').find('input');
+                console.log($inputs);
+                $inputs.each(function (index, item) {
+                    var target = $(item).attr('dtarget');
+                    var ckecked = $(item).is(':checked')
+                    // 选中的项目 target为数字并且小于0
+                    if(ckecked && !isNaN(target) && target < 0) {
+                        $("#theForm").hide();
+                        $("#end").show();
+                    }
+
+                    if(ckecked && !isNaN(target) && target > 1000) {
+                        that.submit();
+                    }
+
+                });
                 AJAX.POST_JSON('zsSurvey/valid', {
                     zsAnswerItemSaves: $('#theForm').serializeArray(),
                     surveyId: this.getParams('surveyId'),
@@ -192,6 +222,7 @@
                 });
             },
             validateForm() {
+                var that = this;
                 var flag = true;
                 var $questions = $('.simform-inner').find('.question');
                 $questions.each(function (index, item) {
@@ -326,8 +357,10 @@
                     record: this.getParams('record'),
                     seat: this.getParams('seat')
                 }, function (resp) {
-                    alert(resp.msg);
-                    $("#nextQuestion").hide();
+                    // alert(resp.msg);
+                    $("#theForm").hide();
+                    $("#end").show();
+                    that.survey.endShow = resp.msg;
                     // window.close();
                     return false;
                 });

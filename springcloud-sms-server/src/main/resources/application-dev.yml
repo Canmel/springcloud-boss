@@ -12,7 +12,7 @@ spring:
     pub-sub-domain: true # topic时需要注释掉
 
 server:
-  port: 9002
+  port: 0
 
 eureka:
   instance:

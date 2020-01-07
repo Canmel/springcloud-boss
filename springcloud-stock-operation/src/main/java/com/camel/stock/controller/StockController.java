@@ -2,8 +2,12 @@ package com.camel.stock.controller;
 
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.stock.service.StockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 
 /**
  *
@@ -30,11 +34,13 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 public class StockController {
-    public static final String QUEUE_NAME = "ActiveMQ.Stock.Topic";
+    public static final String QUEUE_NAME = "ActiveMQ.Stock.Reduce.Topic";
+
+    @Autowired
+    private StockService stockService;
 
     @JmsListener(destination = QUEUE_NAME)
-    public Result push(String msg) {
-        System.out.println(msg);
-        return ResultUtil.success("推送成功", msg);
+    public void reduce(HashMap msg) {
+        stockService.reduce(msg);
     }
 }

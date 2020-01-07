@@ -52,7 +52,7 @@
                             <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs">
                                 删除
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-info btn-xs">
+                            <button type="button" v-on:click="applyRoles(item)" class="btn btn-info btn-xs">
                                 分配角色
                             </button>
                         </td>
@@ -64,6 +64,31 @@
                          :changge="pageFn"></pageination>
 
         </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">报名条件</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <h3>需要完成以下等级获取:</h3>
+                        <!--<div class="form-group" v-for="item in selectedItem.examList">-->
+                            <!--<label class="col-sm-3 control-label">完成：</label>-->
+                            <!--<div class="col-sm-8">-->
+                                <!--<span name="name" class="form-control" type="text">{{item.name}}</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
 
 </div>
@@ -81,9 +106,11 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            allRoles: []
         },
         created: function () {
+            this.loadAllRoles();
         },
         methods: {
             pagequery: function () {
@@ -116,12 +143,14 @@
             edit(item) {
                 toPage('pages/user/edit.html', item.id);
             },
-            viewFile(item) {
-
-                AJAX.GET('document/view/' + item['id'], {}, function (resp) {
-                    window.open(resp['data']);
-                });
-
+            applyRoles() {
+                $("#myModal").modal('show');
+            },
+            loadAllRoles() {
+                var that = this;
+                AJAX.GET('/system/sysRole/all/list', {}, function (resp) {
+                    that.allRoles = resp.data;
+                })
             }
         }
     });
