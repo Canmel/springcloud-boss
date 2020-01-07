@@ -45,7 +45,9 @@ function simpleSuccess(result) {
 
 //对jquery的ajax方法再次封装
 __ajax = function(url, data, success, type ,contentType, sync, json){
-    url =  '/survey/' + url;
+    if(!url.startsWith("/")) {
+        url =  '/survey/' + url;
+    }
     if(null == sync) {
         sync = false;
     }

@@ -1,5 +1,20 @@
 <div id="subContainer" class="wrapper wrapper-content">
-
+    <div class="row">
+        <div class="col-sm-4" style="padding-right: 0px;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content profile-content">
+                    <h4>{{survey.name}}</h4>
+                    <p>预计收集份数: {{survey.collectNum}}</p>
+                    <p>当前收集份数: {{survey.currentNum}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">13</div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="/survey/js/validateIsMain.js"></script>
 <script>
@@ -10,9 +25,20 @@
             pageInfo: {
 
             },
+            survey: {
+                id: sessionStorage.getItem('editParams')
+            }
         },
         created: function () {
+            this.loadSurvey();
         },
-        methods: {}
+        methods: {
+            loadSurvey() {
+                var that = this;
+                AJAX.GET("zsSurvey/" + this.survey.id, {}, function (resp) {
+                    that.survey = resp.data;
+                });
+            }
+        }
     })
 </script>
