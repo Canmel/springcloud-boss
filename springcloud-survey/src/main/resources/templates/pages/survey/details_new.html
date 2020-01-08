@@ -318,6 +318,10 @@
                                                     <span class="editable question-option"
                                                           v-on:dblclick="bindEdit($event, option)">{{option.name}}</span>
                                                 </label>
+                                                <label class="radio-inline" v-if="option.ignoreNum"
+                                                       data-toggle="tooltip" data-placement="top" title="不计配额">
+                                                    <span class="fa fa-battery-0"></span>
+                                                </label>
                                                 <label class="radio-inline" v-if="option.hasRemark"
                                                        data-toggle="tooltip" data-placement="top" title="已添加备注">
                                                     <span class="fa fa-flag"></span>
@@ -349,6 +353,11 @@
                                                                                        v-on:click="bindJumpEdit($event, option)"
                                                                                        data-placement="top"
                                                                                        title="跳转"></span></label>
+                                                <label style="padding: 0px 5px;"><span class="fa fa-battery-0"
+                                                                                       data-toggle="tooltip"
+                                                                                       v-on:click="bindIgnoreNum(question, option)"
+                                                                                       data-placement="top"
+                                                                                       title="不计配额"></span></label>
                                             </div>
                                         </div>
 
@@ -589,7 +598,7 @@
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
-                size: 10,//每页显示条目个数不传默认10
+                size: 10//每页显示条目个数不传默认10
             },
             concat: {
                 name: '',
@@ -665,7 +674,8 @@
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
-                        collectType: resp.data.collectType
+                        collectType: resp.data.collectType,
+                        ignoreNum: resp.data.ignoreNum
                     };
                 })
             },
@@ -678,6 +688,14 @@
                     myoption.hasRemark = false;
                 } else {
                     myoption.hasRemark = true;
+                }
+                console.log(this.loadData.zsQuestions)
+            },
+            bindIgnoreNum(question, myoption) {
+                if (myoption.ignoreNum == true) {
+                    myoption.ignoreNum = false;
+                } else {
+                    myoption.ignoreNum = true;
                 }
                 console.log(this.loadData.zsQuestions)
             },
@@ -783,6 +801,7 @@
                                             name: '选项1',
                                             hasRemark: false,
                                             target: null,
+                                            ignoreNum: false,
                                             configration: null, // 选项配额
                                             questionOrderNum: that.loadData.zsQuestions.length + 1
                                         }, {
@@ -790,6 +809,7 @@
                                             name: '选项2',
                                             hasRemark: false,
                                             target: null,
+                                            ignoreNum: false,
                                             configration: null, // 选项配额
                                             questionOrderNum: that.loadData.zsQuestions.length + 1
                                         }
@@ -934,6 +954,7 @@
                                     name: o.name,
                                     target: o.target,
                                     hasRemark: o.hasRemark,
+                                    ignoreNum: o.ignoreNum,
                                     configration: o.configration, // 选项配额
                                     questionOrderNum: item.orderNum
                                 };

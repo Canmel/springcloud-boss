@@ -12,6 +12,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="has_remark" property="hasRemark"/>
         <result column="current" property="current"/>
+        <result column="ignore_num" property="ignoreNum"/>
         <result column="target" property="target"/>
         <result column="configration" property="configration"/>
         <result column="creator" property="creatorId"/>
@@ -31,6 +32,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="has_remark" property="hasRemark"/>
         <result column="target" property="target"/>
+        <result column="ignore_num" property="ignoreNum"/>
         <result column="creator" property="creatorId"/>
         <result column="current" property="current"/>
         <result column="configration" property="configration"/>
@@ -41,7 +43,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, order_num, question_id, configration, has_remark, target, status, created_at, creator, current
+        id, name, order_num, ignore_num, question_id, configration, has_remark, target, status, created_at, creator, current
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -101,4 +103,11 @@
             #{item}
         </foreach>
     </update>
+
+    <select id="selectIgnoreCount" resultType="integer">
+        select count(1) from zs_option where status = 1 and id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

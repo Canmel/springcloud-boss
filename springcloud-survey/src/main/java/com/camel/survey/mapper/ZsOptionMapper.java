@@ -38,4 +38,6 @@ public interface ZsOptionMapper extends BaseMapper<ZsOption> {
     ZsOption selectByQuestionAndName(@Param("questionId") Integer questionId, @Param("name") String name);
 
     int addOptionCurrent(List<Integer> list);
+
+    int selectIgnoreCount(List<Integer> list);
 }

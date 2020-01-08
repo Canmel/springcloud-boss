@@ -71,6 +71,11 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     private Integer configration;
 
     /**
+     * 不计配额
+     */
+    private Boolean ignoreNum;
+
+    /**
      * 配额当前值
      */
     private Integer current;

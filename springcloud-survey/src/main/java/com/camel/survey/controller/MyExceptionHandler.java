@@ -3,6 +3,7 @@ package com.camel.survey.controller;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.exceptions.SurveyNotValidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -41,12 +42,17 @@ public class MyExceptionHandler {
      * @return
      */
     @ExceptionHandler(SourceDataNotValidException.class)
-    public Result customHandler(SourceDataNotValidException e){
+    public Result customHandler(SourceDataNotValidException e) {
         return ResultUtil.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler(SurveyNotValidException.class)
     public Result surveyNotValid(SurveyNotValidException e) {
+        return ResultUtil.success(e.getMessage());
+    }
+
+    @ExceptionHandler(SurveyFormSaveException.class)
+    public Result surveyFormSaveException(SurveyFormSaveException e) {
         return ResultUtil.success(e.getMessage());
     }
 }

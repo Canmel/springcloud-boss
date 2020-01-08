@@ -72,4 +72,9 @@ public class ZsOptionServiceImpl extends ServiceImpl<ZsOptionMapper, ZsOption> i
     public void addOptionCurrent(List<Integer> optionIds) {
         mapper.addOptionCurrent(optionIds);
     }
+
+    @Override
+    public Boolean contanisIgnore(List<Integer> oIds) {
+        return mapper.selectIgnoreCount(oIds) > 0;
+    }
 }

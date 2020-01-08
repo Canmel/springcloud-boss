@@ -30,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -142,6 +143,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Result save(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
         entity.setCreatorId(member.getId());
