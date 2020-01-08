@@ -85,6 +85,7 @@
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt)"
+                                                                  :dtarget="opt.target"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.id + '_' +  opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
@@ -198,6 +199,7 @@
                     // 选中的项目 target为数字并且小于0
                     if(ckecked && !isNaN(target) && target < 0) {
                         $("#theForm").hide();
+                        that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
                         $("#end").show();
                     }
 

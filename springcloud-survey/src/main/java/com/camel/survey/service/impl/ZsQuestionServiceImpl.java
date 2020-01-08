@@ -142,6 +142,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         if(zsSurvey.isFull()) {
             throw new SurveyNotValidException("我们的（" + zsSurvey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
         }
+        // 当前已收集数+1
+        surveyService.updateCurrent(zsSurvey.getId());
+
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         answerService.insert(zsAnswer);
         List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());
@@ -150,7 +153,8 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<Integer> oIds = zsAnswerSave.getOptIds();
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
-        updateCurrent(zsSurvey.getId(), oIds);
+        // 更新选项当前数量
+        updateCurrent(oIds);
         if (answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         } else {
