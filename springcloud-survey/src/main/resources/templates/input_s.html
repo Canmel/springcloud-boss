@@ -69,7 +69,7 @@
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt)"
-                                                                  :dtarget="opt.target"
+                                                                  :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
                                                                   :name="'radio_' + item.id + '_' + item.id"
                                                                   :value="opt.id + '_' +  opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
@@ -85,7 +85,7 @@
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt)"
-                                                                  :dtarget="opt.target"
+                                                                  :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.id + '_' +  opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
@@ -394,13 +394,16 @@
                         result = value.split("=")[1]
                         return
                     }
-                })
+                });
                 return result;
             },
             loadSurvey() {
                 var that = this;
                 AJAX.GET('zsSurvey/questions/' + this.getParams('surveyId'), {}, function (resp) {
                     that.questions = resp.data;
+                    if(that.questions.length === 1) {
+                        that.showSubmit = true;
+                    }
                 });
                 AJAX.GET('zsSurvey/' + this.getParams('surveyId'), {}, function (resp) {
                     that.survey = resp.data;
