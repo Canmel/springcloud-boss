@@ -58,6 +58,14 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
     }
 
     @Override
+    public List<Map<String, Object>> selectCrossCounts(ZsQuestion qF, ZsQuestion qS, ZsOption os, Integer id) {
+
+        return mapper.selectCrossCounts(qF.getName(), qS.getName(), os.getName(), id);
+    }
+
+
+
+    @Override
     public List<ZsAnswerItem> selectBySurvey(Integer surveyId) {
         return mapper.selectBySurvey(surveyId);
     }

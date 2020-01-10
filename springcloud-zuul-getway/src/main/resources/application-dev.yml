@@ -25,6 +25,7 @@ eureka:
   client:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
+    registry-fetch-interval-seconds: 5
 
 #--------------------Zuul-----------------------
 zuul:

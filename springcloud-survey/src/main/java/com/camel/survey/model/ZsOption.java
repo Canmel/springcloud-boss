@@ -100,6 +100,9 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private Boolean isReadonly;
 
+    @TableField(exist = false)
+    private int count;
+
     public Boolean isFull() {
         if (!ObjectUtils.isEmpty(this.current) && !ObjectUtils.isEmpty(this.configration)) {
             return this.current >= this.configration;

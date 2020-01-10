@@ -69,6 +69,29 @@
         )
     </select>
 
+    <select id="selectCrossCounts" resultType="hashmap">
+        SELECT
+            result.`option`,  count(1) count
+        FROM
+            (
+                SELECT
+                    ai.*, q.order_num
+                FROM
+                    zs_answer_item ai
+                LEFT JOIN zs_question q ON q.id = ai.question_id
+                WHERE
+                    ai.survey_id = #{surveyId} and question = #{qF}
+                AND ai. STATUS = 1 and ai.creator in (
+                    select creator from zs_answer_item where question = #{qS} and `option` = #{oS}
+                )
+            )result
+        GROUP BY
+            result.`option`
+        ORDER BY
+            result.order_num
+
+    </select>
+
     <select id="selectByAnswerId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>

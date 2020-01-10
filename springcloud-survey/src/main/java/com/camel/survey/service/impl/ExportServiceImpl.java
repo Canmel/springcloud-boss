@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -118,19 +119,19 @@ public class ExportServiceImpl implements ExportService {
         List<Map<String, Object>> result = zsAnswerItemService.selectExport(surveyId);
         for (int i = 0; i < result.size(); i++) {
             int cellNum = 0;
-            HSSFRow row = sheet.createRow(1+i);
+            HSSFRow row = sheet.createRow(1 + i);
             fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("seat"));
-            String opts = (String)result.get(i).get("opts");
+            String opts = (String) result.get(i).get("opts");
             String[] options = opts.split("@##@");
 
             String ques = "";
-            ques = (String)result.get(i).get("questions");
+            ques = (String) result.get(i).get("questions");
             String[] questions = ques.split("@##@");
             List<String> qs = CollectionUtils.arrayToList(questions);
-            for (ZsQuestion question: questionList) {
-                if(qs.indexOf(question.getName()) > -1) {
+            for (ZsQuestion question : questionList) {
+                if (qs.indexOf(question.getName()) > -1) {
                     fillCell(row.createCell(cellNum++), style, options[qs.indexOf(question.getName())]);
                 }
             }
@@ -216,6 +217,12 @@ public class ExportServiceImpl implements ExportService {
         return wb;
     }
 
+    public void setDefaultStyle(HSSFRow row, HSSFCellStyle style, Integer colum) {
+        for (int i = 0; i < colum; i++) {
+            row.createCell(i).setCellStyle(style);
+        }
+    }
+
     /**
      * 单一两表交叉导出
      * @param wb
@@ -224,6 +231,7 @@ public class ExportServiceImpl implements ExportService {
         HSSFCellStyle style = createCellStyle(wb);
         ZsQuestion questionF = zsQuestionService.selectById(zsCrossExport.getFirstSelect());
         ZsQuestion questionS = zsQuestionService.selectById(zsCrossExport.getSecondSelect());
+        DecimalFormat decimalFormat = new DecimalFormat(".00");
 
         List<ZsOption> optionListF = getAllOption(zsCrossExport.getFirstOption(), zsCrossExport.getFirstSelect());
         List<ZsOption> optionListS = getAllOption(zsCrossExport.getSecondOption(), zsCrossExport.getSecondSelect());
@@ -233,58 +241,75 @@ public class ExportServiceImpl implements ExportService {
         sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 2 * optionListF.size() + 3));
         List optionStrs = getCrossFeild(optionListF);
         fillRow(sheet.createRow(2), style, optionStrs, 2, true);
-
         HSSFRow rowQ2 = sheet.createRow(3);
         fillCell(rowQ2.createCell(0), createHeadStyle(wb), "Q" + questionS.getOrderNum() + "." + questionS.getName());
         sheet.addMergedRegion(new CellRangeAddress(3, 4, 0, 2 * optionListF.size() + 3));
-        Integer[] s = getVerTotal(questionF, questionS, optionListF, optionListS, zsCrossExport.getSurveyId());
-        Integer demoNum = 0;
-        Integer t = 0;
-        Integer sums = getSum(s);
-        for (int i = 0; i < optionListS.size(); i++) {
-            HSSFRow row = sheet.createRow(5 + i + t);
-            HSSFRow row2 = sheet.createRow(6 + i + t);
-            t++;
-            fillCell(row.createCell(0), style, optionListS.get(i).getName());
-            fillCell(row.createCell(1), style, "");
-            fillCell(row2.createCell(0), style, "");
-            fillCell(row2.createCell(1), style, "");
-            row.getSheet().addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum() + 1, 0, 1));
-            //            横向统计
-            Integer tNum = 0;
-            for (int j = 0; j < optionListF.size(); j++) {
-                Map<String, Object> countMap = zsAnswerItemService.selectCrossCount(questionF, questionS, optionListF.get(j), optionListS.get(i), zsCrossExport.getSurveyId());
-                Integer count = ((Long) countMap.get("count")).intValue();
-                String rate = ObjectUtils.isEmpty(countMap.get("rate")) ? "0" : countMap.get("rate").toString();
-                fillCell(row.createCell(j * 2 + 2), style, count);
-                fillCell(row.createCell(j * 2 + 3), style, rate + "%");
-                fillCell(row2.createCell(j * 2 + 2), style, df.format(count * 0.1 / s[j] * 10));
-                fillCell(row2.createCell(j * 2 + 3), style, "");
-                tNum += count;
+        Long totalNum = 0L;
+        List<HSSFRow> rows = new ArrayList<>();
+        for (ZsOption os : optionListS) {
+            List<Map<String, Object>> results = zsAnswerItemService.selectCrossCounts(questionF, questionS, os, zsCrossExport.getSurveyId());
+            HSSFRow row = sheet.createRow(5 + 2 * optionListS.indexOf(os));
+            HSSFRow rowSpace = sheet.createRow(5 + 2 * optionListS.indexOf(os) + 1);
+            setDefaultStyle(row, style, optionListF.size() * 2 + 4);
+            setDefaultStyle(rowSpace, style, optionListF.size() * 2 + 4);
+            fillCell(row.createCell(0), style, os.getName());
+            Long totalX = 0L;
+            fillCell(row.createCell(0), style, os.getName());
+            for (Map<String, Object> res : results) {
+                for (ZsOption option : optionListF) {
+                    if (option.getName().equals(res.get("option").toString())) {
+                        int index = optionListF.indexOf(option);
+                        if (index > -1) {
+                            fillCell(row.createCell(2 + 2 * index), style, res.get("count").toString());
+                            totalX += (Long) res.get("count");
+                        }
+                        option.setCount(option.getCount() + ((Long) res.get("count")).intValue());
+                    }
+                }
             }
-            fillCell(row.createCell(2 * optionListF.size() + 2), style, tNum);
-            fillCell(row.createCell(2 * optionListF.size() + 3), style, "100%");
-
-            fillCell(row2.createCell(2 * optionListF.size() + 2), style, df.format(tNum * 0.1 / sums * 10));
-            fillCell(row2.createCell(2 * optionListF.size() + 3), style, "");
-            demoNum += tNum;
+            totalNum += totalX;
+            fillCell(row.createCell(2 + 2 * optionListF.size()), style, totalX.toString());
+            fillCell(row.createCell(3 + 2 * optionListF.size()), style, "100%");
+            row.getSheet().addMergedRegion(new CellRangeAddress(row.getRowNum(), rowSpace.getRowNum(), 0, 1));
+            // 合计部分
+            for (Map<String, Object> res : results) {
+                for (ZsOption option : optionListF) {
+                    if (option.getName().equals(res.get("option").toString())) {
+                        int index = optionListF.indexOf(option);
+                        if (index > -1) {
+                            fillCell(row.createCell(2 + 2 * index + 1), style, decimalFormat.format((100 * (Long) res.get("count")) / totalX.floatValue()) + "%");
+                        }
+                    }
+                }
+            }
         }
-        HSSFRow rowTotal = sheet.createRow(5 + t + optionListS.size());
-        List si = CollectionUtils.arrayToList(s);
-        List total = new ArrayList();
-        total.add("合计");
-        total.addAll(si);
-        total.add(demoNum);
-        fillRow(rowTotal, style, total, 2);
-        fillRowStart(rowTotal, style, si, 3, 2);
-        fillCell(rowTotal.createCell(2 * optionListF.size() + 3), style, "100%");
-        HSSFRow total2 = rowTotal.getSheet().createRow(rowTotal.getRowNum() + 1);
-        total2.createCell(0).setCellStyle(style);
-        total2.createCell(1).setCellStyle(style);
-        fillValueStart(total2, style, "100%", optionListF.size(), 2, 2);
-        total2.createCell(2 * optionListF.size() + 2).setCellStyle(style);
-        total2.createCell(2 * optionListF.size() + 3).setCellStyle(style);
-        rowTotal.getSheet().addMergedRegion(new CellRangeAddress(rowTotal.getRowNum(), rowTotal.getRowNum() + 1, 0, 1));
+
+        for (ZsOption os:optionListS) {
+            String st = sheet.getRow(5 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.size()).getStringCellValue();
+            String vt = decimalFormat.format(100 * Float.parseFloat(st) / totalNum.intValue()) + "%";
+            sheet.getRow(6 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.size()).setCellValue(vt);
+            for (ZsOption option : optionListF) {
+                String s = sheet.getRow(5 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.indexOf(option)).getStringCellValue();
+                if(!StringUtils.isEmpty(s)) {
+                    String v = decimalFormat.format(100 * Float.parseFloat(s) / option.getCount()) + "%";
+                    sheet.getRow(6 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.indexOf(option)).setCellValue(v);
+                }
+            }
+        }
+
+        HSSFRow total = sheet.createRow(5 + optionListS.size() * 2);
+        HSSFRow totalPlus = sheet.createRow(6 + optionListS.size() * 2);
+        setDefaultStyle(total, style, optionListF.size() * 2 + 4);
+        setDefaultStyle(totalPlus, style, optionListF.size() * 2 + 4);
+        fillCell(total.createCell(0), style, "合计");
+        for (ZsOption option : optionListF) {
+            fillCell(total.createCell(2 + 2 * optionListF.indexOf(option)), style, option.getCount());
+            String v = decimalFormat.format(100.0 * option.getCount() / totalNum) + "%";
+            fillCell(total.createCell(3 + 2 * optionListF.indexOf(option)), style, v);
+            fillCell(totalPlus.createCell(2 + 2 * optionListF.indexOf(option)), style, "100%");
+        }
+        fillCell(total.createCell(optionListF.size() * 2 + 2), style, totalNum.intValue());
+        total.getSheet().addMergedRegion(new CellRangeAddress(total.getRowNum(), totalPlus.getRowNum(), 0, 1));
 
     }
 
