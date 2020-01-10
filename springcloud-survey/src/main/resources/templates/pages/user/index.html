@@ -77,14 +77,17 @@
                     <form class="form-horizontal m-t" id="signupForm">
                         <h3>可以分配的所有权限:</h3>
                         <div class="row">
-                            <input class="col-sm-4" v-for="(item, index) in allRoles">
-                                <input type="checkbox" name="roleIds" :value="item.id">{{item.remark}}</input>
+                            <div class="col-sm-4" v-for="item in allRoles">
+                                <label>
+                                    <input type="checkbox" name="roleIds" :value="item.roleId" v-model="roleIds"/>
+                                    {{item.remark}}
+                                </label>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" v-on:click="saveRoles()">保存</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -106,7 +109,9 @@
                 size: 10,//每页显示条目个数不传默认10
             },
             items: [{}],
-            allRoles: []
+            allRoles: [],
+            roleIds: [],
+            selected: null
         },
         created: function () {
             this.loadAllRoles();
@@ -132,7 +137,7 @@
                         AJAX.DELETE('/system/sysUser', {id: item.uid}, function (resp) {
                             toastr.success(resp.msg);
                             that.pagequery();
-                        } )
+                        })
 
                     } else {
                         //after click the cancel
@@ -142,14 +147,25 @@
             edit(item) {
                 toPage('pages/user/edit.html', item.id);
             },
-            applyRoles() {
+            applyRoles(item) {
+                this.selected = item;
                 $("#myModal").modal('show');
+
             },
             loadAllRoles() {
                 var that = this;
                 AJAX.GET('/system/sysRole/all/list', {}, function (resp) {
                     that.allRoles = resp.data;
                 })
+            },
+            saveRoles() {
+                AJAX.POST_JSON('/system/sysUser/roles',
+                    {uid: this.selected.uid, roleIds: this.roleIds}
+                    , function (resp) {
+                        toastr.success(resp.msg);
+                        $("#signupForm")[0].reset()
+                        $("#myModal").modal('hide');
+                    })
             }
         }
     });
