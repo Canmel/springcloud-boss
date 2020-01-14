@@ -20,7 +20,7 @@ docker-package:
     script:
     #   - mvn clean package -Dmaven.test.skip=true
       # 在根目录创建一个文件夹来放所有的构建物
-    #   - mkdir -p sartifacts/eurka_service && mkdir -p sartifacts/system_service && mkdir -p sartifacts/auth_service && mkdir -p sartifacts/survey_service && mkdir -p sartifacts/zuul_service
+      - mkdir -p sartifacts/eurka_service && mkdir -p sartifacts/system_service && mkdir -p sartifacts/auth_service && mkdir -p sartifacts/survey_service && mkdir -p sartifacts/zuul_service
     #   - cp -r springcloud-eureka-server/docker_compose.yml springcloud-eureka-server/target/springcloud-eureka-server-*.jar springcloud-eureka-server/Dockerfile springcloud-eureka-server/docker_web_run.sh sartifacts/eurka_service
     #   - cp -r springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile sartifacts/system_service
     #   - cp -r springcloud-auth-server/target/springcloud-auth-server-*.jar springcloud-auth-server/Dockerfile sartifacts/auth_service
