@@ -13,7 +13,7 @@ makejava:
     image: maven:3-jdk-8
     stage: package
     tags:
-      - docker
+      - packager
     script:
       - mvn clean package -Dmaven.test.skip=true
       # 在根目录创建一个文件夹来放所有的构建物
@@ -33,7 +33,7 @@ makejava:
 docker-build:
     stage: build
     tags:
-      - imagebuild
+      - builder
     script:
       - docker build -t $eurka_service ./sartifacts/eurka_service/
       - docker build -t $system_service ./sartifacts/system_service/
