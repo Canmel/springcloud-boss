@@ -8,21 +8,20 @@
     <artifactId>springcloud-boss</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>springcloud-auth-server</module>
-        <module>springcloud-activiti</module>
-        <module>springcloud-oa-server</module>
-        <module>springcloud-common</module>
-        <module>springcloud-system</module>
+        <!--<module>springcloud-auth-server</module>-->
+        <!--<module>springcloud-activiti</module>-->
+        <!--<module>springcloud-oa-server</module>-->
+        <!--<module>springcloud-common</module>-->
+        <!--<module>springcloud-system</module>-->
         <module>springcloud-eureka-server</module>
-        <module>springcloud-zuul-getway</module>
-        <module>springcloud-core</module>
-        <module>springcloud-redis</module>
-        <module>springcloud-feign</module>
-        <module>springcloud-sms-server</module>
-        <module>springcloud-survey</module>
-        <module>springcloud-attendance</module>
-        <module>springcloud-voice</module>
-        <module>springcloud-stock-operation</module>
+        <!--<module>springcloud-zuul-getway</module>-->
+        <!--<module>springcloud-core</module>-->
+        <!--<module>springcloud-redis</module>-->
+        <!--<module>springcloud-feign</module>-->
+        <!--<module>springcloud-sms-server</module>-->
+        <!--<module>springcloud-survey</module>-->
+        <!--<module>springcloud-attendance</module>-->
+        <!--<module>springcloud-stock-operation</module>-->
     </modules>
     <packaging>pom</packaging>
     <description>springcloud 通关</description>
