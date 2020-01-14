@@ -1,0 +1,7 @@
+stages:
+  - package 
+  
+pakage_step:
+  stage: package
+  script:
+    - echo env
