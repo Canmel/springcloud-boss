@@ -57,4 +57,4 @@ docker-deploy:
       - pwd
       - ls
       - whoami
-    #   - docker-compose -f ./sartifacts/eurka_service/docker_compose.yml up -d
+      - cd springcloud-eureka-server && docker-compose up -d && ../
