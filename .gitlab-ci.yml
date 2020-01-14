@@ -1,5 +1,6 @@
 stages:
     - deploy
+    
 variables:
     eurka_service: 192.168.0.180:5000/boss/eurka_service:latest
     system_service: 192.168.0.180:5000/boss/system_service:latest
