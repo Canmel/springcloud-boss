@@ -4,5 +4,6 @@ stages:
 pakage_step:
   stage: package
   script:
-    - echo env
+    - pwd
+    - echo ${hostname}
     - echo "-----------"
