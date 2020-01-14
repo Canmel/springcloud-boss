@@ -21,7 +21,6 @@
         <module>springcloud-sms-server</module>
         <module>springcloud-survey</module>
         <module>springcloud-attendance</module>
-        <module>springcloud-voice</module>
         <module>springcloud-stock-operation</module>
     </modules>
     <packaging>pom</packaging>
