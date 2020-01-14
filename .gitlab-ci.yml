@@ -15,15 +15,14 @@ makejava:
     tags:
       - packager
     script:
-      # - mvn clean package -Dmaven.test.skip=true
+      - mvn clean package -Dmaven.test.skip=true
       # 在根目录创建一个文件夹来放所有的构建物
       - mkdir -p sartifacts/eurka_service && mkdir -p sartifacts/system_service && mkdir -p sartifacts/auth_service && mkdir -p sartifacts/survey_service && mkdir -p sartifacts/zuul_service
       - cp -r springcloud-eureka-server/target/springcloud-eureka-server-*.jar springcloud-eureka-server/Dockerfile sartifacts/eurka_service
-      - cp -r springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile sartifacts/system_service
-      - cp -r springcloud-auth-server/target/springcloud-auth-server-*.jar springcloud-auth-server/Dockerfile sartifacts/auth_service
-      - cp -r springcloud-survey/target/springcloud-survey-*.jar springcloud-survey/Dockerfile sartifacts/survey_service
-      - cp -r springcloud-zuul-getway/target/springcloud-zuul-getway-*.jar springcloud-zuul-getway/Dockerfile sartifacts/zuul_service
-      - cp  test-webapp-app/target/app.war test-webapp-app/Dockerfile sartifacts/test-webapp-app
+    #   - cp -r springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile sartifacts/system_service
+    #   - cp -r springcloud-auth-server/target/springcloud-auth-server-*.jar springcloud-auth-server/Dockerfile sartifacts/auth_service
+    #   - cp -r springcloud-survey/target/springcloud-survey-*.jar springcloud-survey/Dockerfile sartifacts/survey_service
+    #   - cp -r springcloud-zuul-getway/target/springcloud-zuul-getway-*.jar springcloud-zuul-getway/Dockerfile sartifacts/zuul_service
       - du -h --max-depth=1 sartifacts
     artifacts:
       name:  "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
@@ -37,11 +36,11 @@ docker-build:
     script:
       - docker build -t $eurka_service ./sartifacts/eurka_service/
       - docker push $eurka_service
-      - docker build -t $system_service ./sartifacts/system_service/
-      - docker push $system_service
-      - docker build -t $auth_service ./sartifacts/auth_service/
-      - docker push $auth_service
-      - docker build -t $survey_service ./sartifacts/survey_service/
-      - docker push $survey_service
-      - docker build -t $zuul_service ./sartifacts/zuul_service/
-      - docker push $zuul_service
+    #   - docker build -t $system_service ./sartifacts/system_service/
+    #   - docker push $system_service
+    #   - docker build -t $auth_service ./sartifacts/auth_service/
+    #   - docker push $auth_service
+    #   - docker build -t $survey_service ./sartifacts/survey_service/
+    #   - docker push $survey_service
+    #   - docker build -t $zuul_service ./sartifacts/zuul_service/
+    #   - docker push $zuul_service
