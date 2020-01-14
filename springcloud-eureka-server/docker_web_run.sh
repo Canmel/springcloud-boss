@@ -27,6 +27,7 @@ if [ "$RUN_CONTEXT" = "dev" ]; then
     #echo `bundle exec rails s -b 0.0.0.0 -p 3000`
     #passenger start --environment development --port 3000
     echo pwd
+    ll
     nohup java -jar /root/app/target/restful-1.0-SNAPSHOT.jar &
     /bin/bash
 #预发布环境
