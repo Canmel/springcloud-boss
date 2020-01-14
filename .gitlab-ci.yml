@@ -21,8 +21,8 @@ makejava:
       - cp -r springcloud-eureka-server/target/springcloud-eureka-server-*.jar springcloud-eureka-server/Dockerfile sartifacts/eurka_service
       - cp -r springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile sartifacts/system_service
       - cp -r springcloud-auth-server/target/springcloud-auth-server-*.jar springcloud-auth-server/Dockerfile sartifacts/auth_service
-      - cp -r springcloud-survey/target/springcloud-auth-server-*.jar springcloud-survey/Dockerfile sartifacts/survey_service
-      - cp -r springcloud-zuul-getway/target/springcloud-auth-server-*.jar springcloud-zuul-getway/Dockerfile sartifacts/zuul_service
+      - cp -r springcloud-survey/target/springcloud-survey-*.jar springcloud-survey/Dockerfile sartifacts/survey_service
+      - cp -r springcloud-zuul-getway/target/springcloud-zuul-getway-*.jar springcloud-zuul-getway/Dockerfile sartifacts/zuul_service
       - cp  test-webapp-app/target/app.war test-webapp-app/Dockerfile sartifacts/test-webapp-app
       - du -h --max-depth=1 sartifacts
     artifacts:
