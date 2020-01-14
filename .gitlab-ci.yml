@@ -1,6 +1,6 @@
 stages:
-    - package
-    - build
+    # - package
+    # - build
     - deploy
 variables:
     eurka_service: 192.168.0.180:5000/boss/eurka_service:latest
@@ -53,4 +53,5 @@ docker-deploy:
     script:
       - pwd
       - ls
+      - whoami
       - docker-compose -f ./sartifacts/eurka_service/docker_compose.yml up -d
