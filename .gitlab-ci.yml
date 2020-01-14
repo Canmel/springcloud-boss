@@ -36,7 +36,12 @@ docker-build:
       - builder
     script:
       - docker build -t $eurka_service ./sartifacts/eurka_service/
+      - docker push $eurka_service
       - docker build -t $system_service ./sartifacts/system_service/
+      - docker push $system_service
       - docker build -t $auth_service ./sartifacts/auth_service/
+      - docker push $auth_service
       - docker build -t $survey_service ./sartifacts/survey_service/
+      - docker push $survey_service
       - docker build -t $zuul_service ./sartifacts/zuul_service/
+      - docker push $zuul_service
