@@ -51,4 +51,6 @@ docker-deploy:
     tags:
       - deployer
     script:
+      - pwd
+      - ll
       - docker-compose -f ./sartifacts/eurka_service/docker_compose.yml up -d
