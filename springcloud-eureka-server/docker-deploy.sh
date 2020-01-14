@@ -1,0 +1,1 @@
+docker run -dit -p 8888:8888 192.168.0.180:5000/boss/eurka_service:latest
