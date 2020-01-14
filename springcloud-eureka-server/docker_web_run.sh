@@ -28,8 +28,7 @@ if [ "$RUN_CONTEXT" = "dev" ]; then
     #passenger start --environment development --port 3000
     pwd
     ll
-    nohup java -jar springcloud-eureka-server-1.0-SNAPSHOT.jar &
-    /bin/bash
+    nohup java -jar springcloud-eureka-server-1.0-SNAPSHOT.jar
 #预发布环境
 elif [ "$RUN_CONTEXT" = "pre_prod" ]; then
     echo "root:POloXM1980!@&" | chpasswd
