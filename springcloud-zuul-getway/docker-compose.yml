@@ -3,6 +3,7 @@ web:
   container_name: zuul
   ports:
     - '22'
+    - '8080:8080'
   privileged: true
   restart: always
   tty: true
