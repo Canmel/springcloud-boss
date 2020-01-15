@@ -16,3 +16,8 @@ web:
     ACTIVEMQ_HOST: 192.168.0.180
     EUREKA_INSTANCE_IP: 192.168.0.180
     REDIS_HOST: 192.168.0.180
+  networks:
+    - survey-net
+networks:
+  survey-net:
+    external: true
