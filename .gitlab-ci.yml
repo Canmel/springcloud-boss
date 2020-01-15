@@ -7,6 +7,4 @@ docker-deploy:
       - deployer
     script:
       - pwd
-      - ls
-      - echo $PWD
-      - docker-compose up -d
+      - cd springcloud-eureka-server && docker-compose up -d
