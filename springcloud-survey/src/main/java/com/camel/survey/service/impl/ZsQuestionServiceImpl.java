@@ -148,10 +148,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
 
         if (!zsOptionService.contanisIgnore(oIds)) {
-            // 更新选项当前数量
-            updateCurrent(oIds);
-            // 当前已收集数+1
-            surveyService.updateCurrent(zsSurvey.getId());
+            updateCurrent(zsSurvey.getId(), oIds);
         }
         if (answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
