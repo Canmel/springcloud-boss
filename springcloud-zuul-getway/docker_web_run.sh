@@ -8,7 +8,7 @@ if [ -z $RUN_CONTEXT ]; then
 fi
 
 #使设置的环境变量即时生效
-source ~/.bashrc
+# source ~/.bashrc
 
 #开发环境
 if [ "$RUN_CONTEXT" = "dev" ]; then
@@ -27,7 +27,7 @@ if [ "$RUN_CONTEXT" = "dev" ]; then
     #echo `bundle exec rails s -b 0.0.0.0 -p 3000`
     #passenger start --environment development --port 3000
     echo pwd
-    nohup java -jar /root/app/target/restful-1.0-SNAPSHOT.jar &
+    nohup java -jar springcloud-zuul-getway-1.0-SNAPSHOT.jar &
     /bin/bash
 #预发布环境
 elif [ "$RUN_CONTEXT" = "pre_prod" ]; then
