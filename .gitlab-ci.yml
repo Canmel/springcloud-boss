@@ -7,4 +7,5 @@ docker-deploy:
       - deployer
     script:
       - pwd
+      - ll
       - docker-compose up -d
