@@ -25,7 +25,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
-    registry-fetch-interval-seconds: 5
 
 #--------------------Zuul-----------------------
 zuul:
@@ -52,11 +51,9 @@ zuul:
     survey:
       path: /survey/**
       serviceId: springcloud-survey
-      sensitiveHeaders: "*"
     attendance:
       path: /attendance/**
       serviceId: springcloud-attendance
-      sensitiveHeaders: "*"
   retryable: false
   ignored-services: "*"
   host:
