@@ -54,13 +54,15 @@ zuul:
     attendance:
       path: /attendance/**
       serviceId: springcloud-attendance
-  retryable: false
+  retryable: true
   ignored-services: "*"
   host:
     connect-timeout-millis: 60000
     socket-timeout-millis: 60000
   add-proxy-headers: true
-
+  ribbon-isolation-strategy: semaphore
+  semaphore:
+    max-semaphores: 100
 
 #---------------------OAuth2---------------------
 security:
