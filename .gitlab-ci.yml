@@ -6,4 +6,5 @@ docker-deploy:
     tags:
       - deployer
     script:
+      - pwd
       - docker-compose up -d
