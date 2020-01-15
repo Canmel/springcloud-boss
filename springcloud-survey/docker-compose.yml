@@ -2,7 +2,7 @@ web:
   image: 192.168.0.180:5000/boss/survey_service:latest
   container_name: survey
   ports:
-  - '22'
+    - '22'
   privileged: true
   restart: always
   tty: true
