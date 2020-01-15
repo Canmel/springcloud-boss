@@ -8,7 +8,7 @@ if [ -z $RUN_CONTEXT ]; then
 fi
 
 #使设置的环境变量即时生效
-source /root/.bashrc
+# source /root/.bashrc
 
 #开发环境
 if [ "$RUN_CONTEXT" = "dev" ]; then
