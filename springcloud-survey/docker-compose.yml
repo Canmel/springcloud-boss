@@ -21,6 +21,3 @@ web:
     SECRET_KEY: pBd3_ZsNh1jfb4DhGo6cn1OHHLpW2k7Qd1PEY1R3
   networks:
     - survey-net
-networks:
-  survey-net:
-    external: true
