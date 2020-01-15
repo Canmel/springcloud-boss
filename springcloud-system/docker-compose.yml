@@ -6,3 +6,12 @@ web:
   privileged: true
   restart: always
   tty: true
+  environment:
+    APPLICATION_IP: 192.168.0.180
+    DATABASE_IP: 192.168.0.180
+    DATABASE_PORT: 3306
+    DATABASE_USER: root
+    DATABASE_PASSWORD: 1234
+    ACTIVEMQ_HOST: 192.168.0.180
+    EUREKA_INSTANCE_IP: 192.168.0.180
+    REDIS_HOST: 192.168.0.180
