@@ -8,5 +8,5 @@ docker-deploy:
     script:
       - pwd
       - ls
-      - env
+      - echo $PWD
       - docker-compose up -d
