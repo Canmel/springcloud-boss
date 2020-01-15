@@ -26,9 +26,8 @@ if [ "$RUN_CONTEXT" = "dev" ]; then
     #启动rails
     #echo `bundle exec rails s -b 0.0.0.0 -p 3000`
     #passenger start --environment development --port 3000
-    pwd
-    ll
-    nohup java -jar springcloud-eureka-server-1.0-SNAPSHOT.jar
+    nohup java -jar springcloud-eureka-server-1.0-SNAPSHOT.jar &
+    /bin/bash
 #预发布环境
 elif [ "$RUN_CONTEXT" = "pre_prod" ]; then
     echo "root:POloXM1980!@&" | chpasswd
