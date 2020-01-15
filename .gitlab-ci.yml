@@ -4,6 +4,7 @@ stages:
 docker-deploy:
     stage: deploy
     tags:
-      - builder
+      - deployer
     script:
-      - docker-compose up -d
+      - pwd
+      - cd springcloud-eureka-server && docker-compose up -d
