@@ -48,6 +48,7 @@ docker-build:
 #    - docker push $survey_service
 #    - docker build -t $zuul_service ./sartifacts/zuul_service/
 #    - docker push $zuul_service
+    - docker rmi `docker images | grep  "<none>" | awk '{print $3}'`
 
 docker-deploy:
     stage: deploy
