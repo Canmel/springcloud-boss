@@ -1,11 +1,18 @@
-web:
-  image: 192.168.0.180:5000/boss/eurka_service:latest
-  container_name: eureka
-  ports:
-    - '22'
-    - '8888:8888'
-  privileged: true
-  restart: always
-  tty: true
-  environment:
-    APPLICATION_IP: 192.168.0.180
+version: "3"
+services:
+  web:
+    image: 192.168.0.180:5000/boss/eurka_service:latest
+    container_name: eureka
+    ports:
+      - '22'
+      - '8888:8888'
+    privileged: true
+    restart: always
+    tty: true
+    environment:
+      APPLICATION_IP: 192.168.0.180
+    networks:
+      - survey-net
+networks:
+  survey-net:
+    external: true
