@@ -124,15 +124,15 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("seat"));
             String opts = (String) result.get(i).get("opts");
-            String[] options = opts.split("@##@");
+            String[] options = opts.split("@##@", -1);
 
             String ques = "";
             ques = (String) result.get(i).get("questions");
-            String[] questions = ques.split("@##@");
+            String[] questions = ques.split("@##@", -1);
             List<String> qs = CollectionUtils.arrayToList(questions);
             for (ZsQuestion question : questionList) {
                 if (qs.indexOf(question.getName()) > -1) {
-                    fillCell(row.createCell(cellNum++), style, options[qs.indexOf(question.getName())]);
+                    fillCell(row.createCell(questionList.indexOf(question) + 3), style, options[qs.indexOf(question.getName())]);
                 }
             }
         }
