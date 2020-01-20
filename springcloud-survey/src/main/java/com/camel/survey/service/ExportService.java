@@ -34,4 +34,6 @@ public interface ExportService {
     HSSFWorkbook items(Integer surveyId, Integer qId);
 
     HSSFWorkbook answer(Integer surveyId);
+
+    HSSFWorkbook seat(Integer id);
 }

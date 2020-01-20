@@ -103,6 +103,28 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
+    public HSSFWorkbook seat(Integer id) {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("坐席收集样本统计");
+        HSSFCellStyle headStyle = createHeadStyle(wb);
+        HSSFCellStyle style = createCellStyle(wb);
+        List<Object> v = new ArrayList<>();
+        v.add("坐席");
+        v.add("问题");
+        v.add("样本");
+        fillRow(sheet.createRow(0), headStyle, v);
+        List<Map<String, Object>> result = zsAnswerItemService.selectSeatTotal(id);
+        for (Map<String, Object> map: result) {
+            List<Object> rowValue = new ArrayList<>();
+            rowValue.add(map.get("seat"));
+            rowValue.add(map.get("questionNum"));
+            rowValue.add(map.get("surveyNum"));
+            fillRow(sheet.createRow(result.indexOf(map) + 1), style, rowValue);
+        }
+        return wb;
+    }
+
+    @Override
     public HSSFWorkbook answer(Integer surveyId) {
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet("样本明细");
@@ -433,8 +455,11 @@ public class ExportServiceImpl implements ExportService {
             if (value instanceof Integer) {
                 fillCell(row.createCell(index++), style, (Integer) value);
             }
-            if (value instanceof String) {
+            else if (value instanceof String) {
                 fillCell(row.createCell(index++), style, (String) value);
+            }
+            else {
+                fillCell(row.createCell(index++), style, value.toString());
             }
         }
     }

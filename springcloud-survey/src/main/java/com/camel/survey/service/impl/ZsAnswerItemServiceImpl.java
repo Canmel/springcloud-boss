@@ -73,4 +73,9 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
     public List<Map<String, Object>> selectExport(Integer id) {
         return mapper.selectExport(id);
     }
+
+    @Override
+    public List<Map<String, Object>> selectSeatTotal(Integer id) {
+        return mapper.selectSeatTotal(id);
+    }
 }

@@ -36,4 +36,6 @@ public interface ZsAnswerItemMapper extends BaseMapper<ZsAnswerItem> {
     List<ZsAnswerItem> selectBySurvey(Integer id);
 
     List<Map<String, Object>> selectExport(Integer id);
+
+    List<Map<String, Object>> selectSeatTotal(Integer id);
 }

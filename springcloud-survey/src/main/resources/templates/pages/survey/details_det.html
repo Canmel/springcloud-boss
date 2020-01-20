@@ -368,6 +368,24 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                   href="tabs_panels.html#collapseFive" class="" aria-expanded="true">坐席明细</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseFive" class="panel-collapse collapse" aria-expanded="false"
+                                             style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <button class="btn btn-primary" v-on:click="exportSeatAnswers()">坐席明细
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -452,6 +470,9 @@
                     that.selectAnswer = resp.data;
                     console.log(resp);
                 })
+            },
+            exportSeatAnswers() {
+                window.open('/survey/export/survey/seat/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));
             },
             exportAnswers() {
                 window.open('/survey/export/survey/answers/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));
