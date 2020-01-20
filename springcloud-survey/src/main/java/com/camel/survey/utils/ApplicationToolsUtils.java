@@ -11,8 +11,10 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +44,7 @@ import java.util.List;
 public class ApplicationToolsUtils {
     private final static ApplicationToolsUtils INSTANCE = new ApplicationToolsUtils();
 
-    public static SysUser result = null;
+    public static SysUser result = new SysUser();
 
     public ApplicationToolsUtils() {
     }
@@ -58,7 +60,10 @@ public class ApplicationToolsUtils {
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
         byte[] cu = (byte[]) operations.get("ALL_SYS_USERS");
         List<SysUser> userList = (List<SysUser>) SerizlizeUtil.unserizlize(cu);
-        return userList;
+        if(CollectionUtils.isEmpty(userList)) {
+            return userList;
+        }
+        return new ArrayList<SysUser>();
     }
 
     public SysUser getUser(Integer uid) {
