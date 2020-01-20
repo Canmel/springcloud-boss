@@ -1,17 +1,14 @@
 package com.camel.survey.controller;
 
-import com.camel.survey.model.Args;
-import com.camel.survey.service.ArgsService;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.core.controller.BaseCommonController;
-
 import com.baomidou.mybatisplus.service.IService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.model.Args;
+import com.camel.survey.service.ArgsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 

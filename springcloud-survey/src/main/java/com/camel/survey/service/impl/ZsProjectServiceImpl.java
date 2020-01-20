@@ -1,16 +1,15 @@
 package com.camel.survey.service.impl;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
-import com.camel.survey.model.ZsProject;
 import com.camel.survey.mapper.ZsProjectMapper;
+import com.camel.survey.model.ZsProject;
 import com.camel.survey.service.ZsProjectService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
         List<ZsProject> projectList = pageInfo.getList();
         projectList.forEach(project -> {
             applicationToolsUtils.allUsers().forEach(sysUser -> {
-                if(sysUser.getUid().equals(project.getCreatorId())) {
+                if (sysUser.getUid().equals(project.getCreatorId())) {
                     project.setCreator(sysUser);
                 }
             });
@@ -88,7 +87,7 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
     public ZsProject selectById(Serializable id) {
         ZsProject project = mapper.selectById(id);
         applicationToolsUtils.allUsers().forEach(sysUser -> {
-            if(sysUser.getUid().equals(project.getCreatorId())) {
+            if (sysUser.getUid().equals(project.getCreatorId())) {
                 project.setCreator(sysUser);
             }
         });

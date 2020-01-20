@@ -60,9 +60,7 @@ import java.util.List;
 @Service
 public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> implements DocumentService {
 
-    public static final String UPLOAD_DOCUMENT_PATH = "document/";
     public static final String BUCKET_NAME_URL = "http://image.meedesidy.top";
-//    public static final String BUCKET_NAME_URL = "http://pz8qw3bd6.bkt.clouddn.com";
     public static final String BUCKET_NAME = "c7-oss-store";
 
     @Autowired

@@ -1,18 +1,16 @@
 package com.camel.survey.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.camel.survey.model.Args;
-import com.camel.survey.mapper.ArgsMapper;
-import com.camel.survey.service.ArgsService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.mapper.ArgsMapper;
+import com.camel.survey.model.Args;
+import com.camel.survey.service.ArgsService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -64,10 +62,10 @@ public class ArgsServiceImpl extends ServiceImpl<ArgsMapper, Args> implements Ar
         List<Args> argsList = pageInfo.getList();
         argsList.forEach(args -> {
             applicationToolsUtils.allUsers().forEach(sysUser -> {
-                if(sysUser.getUid().equals(args.getCreatorId())) {
+                if (sysUser.getUid().equals(args.getCreatorId())) {
                     args.setCreator(sysUser);
                 }
-                if(sysUser.getUid().equals(args.getUpdatorId())) {
+                if (sysUser.getUid().equals(args.getUpdatorId())) {
                     args.setUpdator(sysUser);
                 }
             });

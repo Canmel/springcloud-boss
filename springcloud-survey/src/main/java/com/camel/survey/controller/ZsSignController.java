@@ -1,19 +1,15 @@
 package com.camel.survey.controller;
-import com.camel.common.entity.Member;
-import com.camel.survey.utils.ApplicationToolsUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.survey.service.ZsSignService;
-import com.camel.survey.model.ZsSign;
-import com.camel.core.controller.BaseCommonController;
 
 import com.baomidou.mybatisplus.service.IService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.camel.common.entity.Member;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
-
-import java.util.List;
+import com.camel.survey.model.ZsSign;
+import com.camel.survey.service.ZsSignService;
+import com.camel.survey.utils.ApplicationToolsUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -50,24 +46,24 @@ public class ZsSignController extends BaseCommonController {
     private ApplicationToolsUtils applicationToolsUtils;
 
     /**
-    * 分页查询
-    */
+     * 分页查询
+     */
     @GetMapping
     public Result index(ZsSign entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
 
     /**
-    * 获取详情
-    */
+     * 获取详情
+     */
     @GetMapping("/{id}")
-    public Result details(@PathVariable Integer id){
+    public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
 
     /**
-    * 新建保存
-    */
+     * 新建保存
+     */
     @PostMapping
     public Result save(@RequestBody ZsSign entity) {
         return super.save(entity);
@@ -82,8 +78,8 @@ public class ZsSignController extends BaseCommonController {
     }
 
     /**
-    * 删除
-    */
+     * 删除
+     */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
@@ -96,16 +92,16 @@ public class ZsSignController extends BaseCommonController {
     }
 
     /**
-    * 获取service
-    */
+     * 获取service
+     */
     @Override
     public IService getiService() {
-       return service;
+        return service;
     }
 
     /**
-    * 获取模块名称
-    */
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "";

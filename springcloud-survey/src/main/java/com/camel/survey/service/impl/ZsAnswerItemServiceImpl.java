@@ -1,12 +1,12 @@
 package com.camel.survey.service.impl;
 
-import com.camel.survey.model.ZsAnswerItem;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.mapper.ZsAnswerItemMapper;
+import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.service.ZsAnswerItemService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.camel.core.utils.PaginationUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,6 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
 
         return mapper.selectCrossCounts(qF.getName(), qS.getName(), os.getName(), id);
     }
-
 
 
     @Override

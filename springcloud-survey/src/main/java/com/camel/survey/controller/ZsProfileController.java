@@ -1,7 +1,6 @@
 package com.camel.survey.controller;
 
 import com.camel.common.entity.Member;
-import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -42,7 +41,7 @@ public class ZsProfileController {
     private ApplicationToolsUtils applicationToolsUtils;
 
     @GetMapping
-    public Result index(OAuth2Authentication oAuth2Authentication){
+    public Result index(OAuth2Authentication oAuth2Authentication) {
         Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
         return ResultUtil.success(applicationToolsUtils.getUser(member.getId()));
     }

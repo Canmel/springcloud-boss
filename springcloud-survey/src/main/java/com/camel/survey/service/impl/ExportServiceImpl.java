@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.exceptions.ExportFillDataException;
 import com.camel.survey.mapper.ZsAnswerMapper;
-import com.camel.survey.model.*;
+import com.camel.survey.model.ZsOption;
+import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.service.ExportService;
 import com.camel.survey.service.ZsAnswerItemService;
 import com.camel.survey.service.ZsOptionService;
@@ -284,13 +285,13 @@ public class ExportServiceImpl implements ExportService {
             }
         }
 
-        for (ZsOption os:optionListS) {
+        for (ZsOption os : optionListS) {
             String st = sheet.getRow(5 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.size()).getStringCellValue();
             String vt = decimalFormat.format(100 * Float.parseFloat(st) / totalNum.intValue()) + "%";
             sheet.getRow(6 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.size()).setCellValue(vt);
             for (ZsOption option : optionListF) {
                 String s = sheet.getRow(5 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.indexOf(option)).getStringCellValue();
-                if(!StringUtils.isEmpty(s)) {
+                if (!StringUtils.isEmpty(s)) {
                     String v = decimalFormat.format(100 * Float.parseFloat(s) / option.getCount()) + "%";
                     sheet.getRow(6 + 2 * optionListS.indexOf(os)).getCell(2 + 2 * optionListF.indexOf(option)).setCellValue(v);
                 }

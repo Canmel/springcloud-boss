@@ -1,23 +1,19 @@
 package com.camel.survey.controller;
-import com.camel.survey.annotation.AuthIgnore;
-import com.camel.survey.model.ZsAnswer;
-import com.camel.survey.vo.ZsAnswerSave;
-import com.camel.survey.vo.ZsQuestionSave;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.survey.service.ZsQuestionService;
-import com.camel.survey.model.ZsQuestion;
-import com.camel.core.controller.BaseCommonController;
 
 import com.baomidou.mybatisplus.service.IService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.service.ZsQuestionService;
+import com.camel.survey.vo.ZsAnswerSave;
+import com.camel.survey.vo.ZsQuestionSave;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -51,24 +47,24 @@ public class ZsQuestionController extends BaseCommonController {
     private ZsQuestionService service;
 
     /**
-    * 分页查询
-    */
+     * 分页查询
+     */
     @GetMapping
     public Result index(ZsQuestion entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
 
     /**
-    * 获取详情
-    */
+     * 获取详情
+     */
     @GetMapping("/{id}")
-    public Result details(@PathVariable Integer id){
+    public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
 
     /**
-    * 新建保存
-    */
+     * 新建保存
+     */
     @PostMapping
     public Result save(@RequestBody ZsQuestionSave zsQuestionSave, OAuth2Authentication oAuth2Authentication) {
         return service.save(zsQuestionSave, oAuth2Authentication);
@@ -83,8 +79,8 @@ public class ZsQuestionController extends BaseCommonController {
     }
 
     /**
-    * 删除
-    */
+     * 删除
+     */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
@@ -97,16 +93,16 @@ public class ZsQuestionController extends BaseCommonController {
     }
 
     /**
-    * 获取service
-    */
+     * 获取service
+     */
     @Override
     public IService getiService() {
-       return service;
+        return service;
     }
 
     /**
-    * 获取模块名称
-    */
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "";

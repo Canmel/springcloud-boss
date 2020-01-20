@@ -19,15 +19,12 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
-import com.camel.survey.vo.ZsAnswerItemSave;
 import com.camel.survey.vo.ZsAnswerSave;
-import com.camel.survey.vo.ZsQuestionSave;
 import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +34,6 @@ import org.springframework.util.ObjectUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -149,7 +145,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         entity.setCreatorId(member.getId());
         if (insert(entity)) {
             List<RelSurveyExam> relSurveyExamList = new ArrayList<>();
-            if(ObjectUtils.isEmpty(entity.getExams())) {
+            if (ObjectUtils.isEmpty(entity.getExams())) {
                 throw new SurveyFormSaveException();
             }
             entity.getExams().forEach(examId -> {
@@ -302,15 +298,15 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Result valid(ZsAnswerSave zsAnswerSave) {
         ZsSurvey survey = selectById(zsAnswerSave.getSurveyId());
-        if(survey.isFull()) {
+        if (survey.isFull()) {
             throw new SurveyNotValidException("我们的（" + survey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
         }
         List<Integer> optIds = zsAnswerSave.getOptIds();
         List<ZsOption> zsOptions = optionService.selectBatchIds(optIds);
 
         zsOptions.forEach(zsOption -> {
-            if(zsOption.isFull() ) {
-               throw new SurveyNotValidException("我们（" + zsOption.getName() + "）的样本调查配额已满，谢谢您的支持！不好意思打扰了，再见。");
+            if (zsOption.isFull()) {
+                throw new SurveyNotValidException("我们（" + zsOption.getName() + "）的样本调查配额已满，谢谢您的支持！不好意思打扰了，再见。");
             }
         });
         return ResultUtil.success("");

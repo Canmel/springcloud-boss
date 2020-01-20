@@ -1,7 +1,6 @@
 package com.camel.survey.controller;
 
 import com.camel.core.entity.Result;
-import com.camel.core.utils.ResultUtil;
 import com.camel.survey.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +36,7 @@ public class HomeController {
 
     @Autowired
     private HomeService homeService;
+
     /**
      * 统计数据
      * @return
@@ -60,7 +60,7 @@ public class HomeController {
      * @return
      */
     @GetMapping("/lineChart")
-    public Result lineChart(){
+    public Result lineChart() {
         return homeService.lineChart();
     }
 

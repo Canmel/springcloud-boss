@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.Principal;
 
 /**
@@ -105,7 +108,7 @@ public class DocumentController extends BaseCommonController {
         response = setHeader(response, document.getDname());
         OutputStream output;
         String url = service.url(id);
-        byte[] downloadFileByte= downloadFile(url);
+        byte[] downloadFileByte = downloadFile(url);
         output = response.getOutputStream();
         output.write(downloadFileByte);
         output.flush();
@@ -146,7 +149,7 @@ public class DocumentController extends BaseCommonController {
     /**
      * 通过请求地址下载文件
      * @param downloadUrl 七牛下载文件地址
-     * @return  文件字节数据
+     * @return 文件字节数据
      */
     private byte[] downloadFile(String downloadUrl) {
         OkHttpClient client = new OkHttpClient();
@@ -154,13 +157,13 @@ public class DocumentController extends BaseCommonController {
         Response response = null;
         try {
             response = client.newCall(request).execute();
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ResponseBody body = response.body();
                 InputStream is = body.byteStream();
                 return IOUtils.toByteArray(is);
             }
             return null;
-        }catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return null;

@@ -1,14 +1,13 @@
 package com.camel.survey.service.impl;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.entity.Result;
-import com.camel.core.utils.ResultUtil;
-import com.camel.survey.model.ZsDelivery;
-import com.camel.survey.model.ZsSign;
-import com.camel.survey.mapper.ZsSignMapper;
-import com.camel.survey.service.ZsSignService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.core.utils.ResultUtil;
+import com.camel.survey.mapper.ZsSignMapper;
+import com.camel.survey.model.ZsSign;
+import com.camel.survey.service.ZsSignService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsDynamicView;
 import com.github.pagehelper.PageInfo;
@@ -64,7 +63,7 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
 
     @Override
     public Result selectByUserId(Integer id) {
-        List<ZsDynamicView>  zsDynamicViews = new ArrayList<>();
+        List<ZsDynamicView> zsDynamicViews = new ArrayList<>();
 
         PageInfo pageInfo = PaginationUtil.startPage(new BasePaginationEntity(), () -> {
             mapper.list(new ZsSign(id));

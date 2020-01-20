@@ -1,18 +1,14 @@
 package com.camel.survey.controller;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.camel.survey.service.ZsProjectService;
-import com.camel.survey.model.ZsProject;
-import com.camel.core.controller.BaseCommonController;
 
 import com.baomidou.mybatisplus.service.IService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
-
-import java.util.List;
+import com.camel.survey.model.ZsProject;
+import com.camel.survey.service.ZsProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -46,18 +42,18 @@ public class ZsProjectController extends BaseCommonController {
     private ZsProjectService service;
 
     /**
-    * 分页查询
-    */
+     * 分页查询
+     */
     @GetMapping
     public Result index(ZsProject entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
 
     /**
-    * 获取详情
-    */
+     * 获取详情
+     */
     @GetMapping("/{id}")
-    public Result details(@PathVariable Integer id){
+    public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
 
@@ -78,24 +74,24 @@ public class ZsProjectController extends BaseCommonController {
     }
 
     /**
-    * 删除
-    */
+     * 删除
+     */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
     /**
-    * 获取service
-    */
+     * 获取service
+     */
     @Override
     public IService getiService() {
-       return service;
+        return service;
     }
 
     /**
-    * 获取模块名称
-    */
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "";

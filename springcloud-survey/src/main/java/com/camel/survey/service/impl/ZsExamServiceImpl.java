@@ -78,11 +78,11 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
         });
 
         List<ZsExam> zsExams = pageInfo.getList();
-        if(!CollectionUtils.isEmpty(pageInfo.getList())) {
+        if (!CollectionUtils.isEmpty(pageInfo.getList())) {
             zsExams.forEach(zsExam -> {
                 zsExam.setIsDelivery(ZsYesOrNo.NO);
                 deliveries.forEach(delivery -> {
-                    if(delivery.getExamId().equals(zsExam.getId())) {
+                    if (delivery.getExamId().equals(zsExam.getId())) {
                         zsExam.setIsDelivery(ZsYesOrNo.YES);
                     }
                 });
