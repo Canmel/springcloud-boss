@@ -67,9 +67,9 @@ docker-deploy:
     script:
       - pwd
 #      - cd springcloud-eureka-server && docker-compose up -d && cd .. && pwd
-#      - cd springcloud-system && docker-compose up -d && cd .. && pwd
+      - cd springcloud-system && docker-compose up -d && cd .. && pwd
 #      - cd springcloud-auth-server && docker-compose up -d && cd .. && pwd
-      - cd springcloud-survey && docker-compose up -d && cd .. && pwd
+#      - cd springcloud-survey && docker-compose up -d && cd .. && pwd
 #      - cd springcloud-stock-operation && docker-compose up -d && cd .. && pwd
       - cd springcloud-zuul-getway && docker-compose up -d && cd .. && pwd
       - docker rmi `docker images | grep  "<none>" | awk '{print $3}'`
