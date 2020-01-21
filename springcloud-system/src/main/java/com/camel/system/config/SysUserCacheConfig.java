@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -47,7 +48,7 @@ public class SysUserCacheConfig {
         List<SysUser> sysUserList = sysUserService.all();
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
         byte[] su = SerizlizeUtil.serialize(sysUserList);
-        operations.set("ALL_SYS_USERS", su);
+        operations.set("ALL_SYS_USERS", su, 9999, TimeUnit.DAYS);
     }
 
 }
