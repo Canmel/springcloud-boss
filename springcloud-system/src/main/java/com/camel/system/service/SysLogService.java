@@ -9,7 +9,7 @@ import com.github.pagehelper.PageInfo;
  服务类
  </p>
  @author ${author}
- @since 2019-05-09 */
+@since 2019-05-09 */
 public interface SysLogService extends IService<SysLog> {
     /**
      * 分页查询

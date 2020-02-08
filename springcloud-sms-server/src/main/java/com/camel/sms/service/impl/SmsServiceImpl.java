@@ -1,6 +1,7 @@
 package com.camel.sms.service.impl;
 
 import com.camel.sms.service.SmsService;
+import com.camel.sms.utils.LhzxHttpClientUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,7 +31,8 @@ import org.springframework.stereotype.Service;
 public class SmsServiceImpl implements SmsService {
     @Override
     public boolean send(String target, String content) {
-        // TODO 暂时就使用阿里短信服务
+        LhzxHttpClientUtil client = LhzxHttpClientUtil.getInstance();
+        client.send(target, content);
         return false;
     }
 }

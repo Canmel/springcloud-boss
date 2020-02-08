@@ -63,7 +63,8 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
         });
         List<ZsProject> projectList = pageInfo.getList();
         projectList.forEach(project -> {
-            applicationToolsUtils.allUsers().forEach(sysUser -> {
+            List<SysUser> users = applicationToolsUtils.allUsers();
+            users.forEach(sysUser -> {
                 if (sysUser.getUid().equals(project.getCreatorId())) {
                     project.setCreator(sysUser);
                 }

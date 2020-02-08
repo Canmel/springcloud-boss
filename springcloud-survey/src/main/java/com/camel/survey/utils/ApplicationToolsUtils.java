@@ -1,10 +1,13 @@
 package com.camel.survey.utils;
 
 import com.camel.common.entity.Member;
+import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import com.camel.survey.model.ZsSurveyBaseEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -12,10 +15,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -56,14 +63,32 @@ public class ApplicationToolsUtils {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private SpringCloudSystemFeignClient springCloudSystemFeignClient;
+
     public List<SysUser> allUsers() {
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
+        List<SysUser> userList = new ArrayList<>();
+        List<SysUser> r = new ArrayList<>();
         byte[] cu = (byte[]) operations.get("ALL_SYS_USERS");
-        List<SysUser> userList = (List<SysUser>) SerizlizeUtil.unserizlize(cu);
-        if(CollectionUtils.isEmpty(userList)) {
-            return userList;
+        if(ObjectUtils.isEmpty(cu)) {
+            Result result = springCloudSystemFeignClient.allUser();
+            if(!ObjectUtils.isEmpty(result)) {
+                userList = (List<SysUser>) result.getData();
+                ObjectMapper mapper = new ObjectMapper();
+                for (Object user: userList) {
+                    SysUser sysUser = mapper.convertValue(user, SysUser.class);
+                    if (user.getClass().equals(LinkedHashMap.class)) {
+                        r.add(sysUser);
+                    }
+                }
+                byte[] su = com.camel.common.utils.SerizlizeUtil.serialize(r);
+                operations.set("ALL_SYS_USERS", su, 9999, TimeUnit.DAYS);
+            }
+        } else {
+            r = (List<SysUser>) com.camel.common.utils.SerizlizeUtil.unserizlize(cu);
         }
-        return new ArrayList<SysUser>();
+        return r;
     }
 
     public SysUser getUser(Integer uid) {
