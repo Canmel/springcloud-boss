@@ -124,7 +124,7 @@ public class LhzxHttpClientUtil {
                 ",\"content\":\"" + content + "\"}";
 
         System.out.println(req);
-        String ret = instance.sendPostRequest(req, "http://115.239.134.217/smsservice/httpservices/capService");
+        String ret = instance.sendPostRequest(req, "http://220.191.235.35/smsservice/httpservices/capService");
         System.out.println(ret);
         return ret;
     }

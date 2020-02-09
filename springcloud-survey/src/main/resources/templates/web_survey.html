@@ -47,10 +47,10 @@
     <div class="dtks_box">
         <!--题目-->
         <form id="surveyForm" v-if="!complete">
-            <div class="kcks_title_ts" date-title="2" date-last="0" v-for="(item, index) in questions">
+            <div class="kcks_title_ts" date-title="2" date-last="0" v-for="(item, index) in questions" v-show="showCurrent(item)">
                 <h4 class=" kctm_zzbt">{{item.orderNum}}. {{item.name}}</h4>
                 <ul class="dxt_box">
-                    <div v-for="(opt, i) in options" v-if="item.type === 1 && showOptions(item, opt)">
+                    <div v-for="(opt, i) in item.options" v-if="item.type === 1 && showOptions(item, opt)">
                         <li>
                             <input type="radio" :id="'radio_' + item.id + '_' + opt.id"
                                    :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
@@ -60,7 +60,7 @@
                         </li>
                     </div>
 
-                    <div v-for="(opt, i) in options" v-if="item.type === 2 && showOptions(item, opt)">
+                    <div v-for="(opt, i) in item.options" v-if="item.type === 2 && showOptions(item, opt)">
                         <li>
                             <input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
                                    :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
@@ -70,7 +70,7 @@
                         </li>
                     </div>
 
-                    <div v-for="(opt, i) in options" v-if="item.type === 3 && showOptions(item, opt)">
+                    <div v-for="(opt, i) in item.options" v-if="item.type === 3 && showOptions(item, opt)">
                         <li>
                             <span>{{opt.name}}</span>
                             <span class="star-box">
@@ -107,7 +107,7 @@
                         </li>
                     </div>
 
-                    <div v-for="(opt, i) in options" v-if="item.type === 4 && showOptions(item, opt)">
+                    <div v-for="(opt, i) in item.options" v-if="item.type === 4 && showOptions(item, opt)">
                         <li>
                             <span>{{opt.name}}</span>
                             <input type="text" :name="'answer_' + item.id + '_' + opt.id"
@@ -131,7 +131,9 @@
 
     <!--结束------------------------------------------>
 
-    <div class="kasj_db_but " v-if="!complete"><a href="javascript:void(0);" class="tj_zuotm" v-on:click="submitQuestion()">提交选择</a>
+    <div class="kasj_db_but " v-if="!complete">
+        <a href="javascript:void(0);" class="tj_zuotm" v-on:click="nextQuestion()">下一题</a>
+        <a href="javascript:void(0);" class="tj_zuotm" v-on:click="submitQuestion()">提交选择</a>
     </div>
 </div>
 </body>
@@ -142,6 +144,7 @@
             applicationContextRootPath: '/survey/',
             surveyId: null,
             complete: false,
+            currentIndex: 1,
             phone: '',
             questions: [],
             options: [],
@@ -154,6 +157,12 @@
             this.loadSurvey();
         },
         methods: {
+            nextQuestion() {
+                this.currentIndex++;
+            },
+            showCurrent(question){
+                return question.orderNum === this.currentIndex
+            },
             radioName(opt) {
                 if (opt.questionId) {
                     return 'radio_' + opt.questionId;
@@ -210,8 +219,7 @@
                 var that = this;
                 var params = location.href.split('?')[1];
                 AJAX.GET('zsSurvey/questionAndOptions/' + params.split('=')[0], {}, function (resp) {
-                    that.questions = resp.data.zsQuestions;
-                    that.options = resp.data.zsOptions;
+                    that.questions = resp.data;
                 });
                 this.surveyId = params.split('=')[0];
                 this.phone = params.split('=')[1];
