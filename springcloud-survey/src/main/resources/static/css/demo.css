@@ -177,11 +177,21 @@ section.related {
 		display: none;
 	}
 }
-
-.question-title {
-	padding: 1% 20% 1% 20%;
+@media screen and (max-width: 600px) {
+	.question-title {
+		padding: 1% 5% 1% 5%;
+	}
+	.question-option {
+		padding: 0.5% 5% 1% 5%;
+	}
 }
 
-.question-option {
-	padding: 0.5% 20% 1% 20%;
+@media screen and (min-width: 600px) {
+	.question-title {
+		padding: 1% 20% 1% 20%;
+	}
+	.question-option {
+		padding: 0.5% 20% 1% 20%;
+	}
 }
+

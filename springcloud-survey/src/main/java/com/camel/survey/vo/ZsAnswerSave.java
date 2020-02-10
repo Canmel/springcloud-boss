@@ -78,7 +78,7 @@ public class ZsAnswerSave {
 
     public ZsAnswer buildAnswer() {
         ZsAnswer answer = new ZsAnswer(this.surveyId, this.phone);
-        answer.setSeat(this.seat);
+        answer.setSeat(ObjectUtils.isEmpty(this.seat) ? "0" : this.seat);
         answer.setRecord(this.record);
         return answer;
     }

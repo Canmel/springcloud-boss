@@ -41,8 +41,7 @@
 <body>
 <div id="wrapper">
     <div class="wjdt_title">
-        <h3>问卷调查</h3>
-        <p>获2元话费</p>
+        <h4>{{survey.name}}</h4>
         <img src="img/ls.svg" style="width:3rem; position:absolute; top:1rem; left:1rem; "></div>
     <div class="dtks_box">
         <!--题目-->
@@ -53,9 +52,12 @@
                     <div v-for="(opt, i) in item.options" v-if="item.type === 1 && showOptions(item, opt)">
                         <li>
                             <input type="radio" :id="'radio_' + item.id + '_' + opt.id"
+                                   v-on:change="radioChange(opt)"
                                    :name="'radio_' + item.id + '_' + item.id" :value="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
+                                <input class="form-control" v-if="opt.hasRemark" style="border-radius: 5px;"
+                                       v-model="opt.name">
                             </label>
                         </li>
                     </div>
@@ -63,9 +65,12 @@
                     <div v-for="(opt, i) in item.options" v-if="item.type === 2 && showOptions(item, opt)">
                         <li>
                             <input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
+                                   v-on:change="checkboxChange(opt)"
                                    :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
+                                <input class="form-control" v-if="opt.hasRemark" style="border-radius: 5px;"
+                                       v-model="opt.name">
                             </label>
                         </li>
                     </div>
@@ -124,7 +129,7 @@
                 <p style=" text-indent:1.2rem;"><strong>第二步：</strong></p>
                 <p style=" text-indent:1.2rem;">填写问卷,并提交； </p>
                 <p style=" text-indent:1.2rem;"><strong>第三步：</strong></p>
-                <p style=" text-indent:1.2rem;">问卷收集完成后统一发放话费 </p>
+                <p style=" text-indent:1.2rem;">问卷收集完成后统一发放话费红包 </p>
             </div>
         </div>
     </div>
@@ -132,8 +137,8 @@
     <!--结束------------------------------------------>
 
     <div class="kasj_db_but " v-if="!complete">
-        <a href="javascript:void(0);" class="tj_zuotm" v-on:click="nextQuestion()">下一题</a>
-        <a href="javascript:void(0);" class="tj_zuotm" v-on:click="submitQuestion()">提交选择</a>
+        <a href="javascript:void(0);" class="tj_zuotm" v-if="!showSubmit" v-on:click="nextQuestion($event)">下一题</a>
+        <a href="javascript:void(0);" class="tj_zuotm" v-if="showSubmit" v-on:click="submitQuestion()">提交选择</a>
     </div>
 </div>
 </body>
@@ -145,10 +150,14 @@
             surveyId: null,
             complete: false,
             currentIndex: 1,
+            currentQuestion: {},
             phone: '',
             questions: [],
             options: [],
-            answer: []
+            answer: [],
+            survey: {},
+            tmpNext:null,
+            showSubmit: false
         },
         created: function () {
             $('html').fontFlex(20, 40, 16);
@@ -157,11 +166,93 @@
             this.loadSurvey();
         },
         methods: {
-            nextQuestion() {
-                this.currentIndex++;
+            radioChange(opt) {
+                if(opt.target) {
+                    this.tmpNext = opt.target;
+                }
+            },
+            checkboxChange(opt) {
+                if(opt.target) {
+                    this.tmpNext = opt.target;
+                }
+            },
+            nextQuestion(event) {
+                if (!this.isInputed(this.currentQuestion, event)) {
+                    return alert('请选择');
+                }
+                if(this.currentQuestion.type === 2 && this.isOutOfBounds(this.currentQuestion)) {
+                    var resultStr = "";
+                    if (question.maxSelect) {
+                        resultStr += '最多只能选择' + question.maxSelect + '条';
+                    }
+                    if (question.minSelect) {
+                        resultStr += '最少选择' + question.minSelect + '条';
+                    }
+                    alert(resultStr);
+                    return;
+                }else{
+                    if(this.tmpNext && this.tmpNext !== this.currentIndex) {
+                        this.currentIndex = this.tmpNext;
+                    } else {
+                        this.currentIndex++;
+                    }
+                }
+                if(this.isLastQuestion()) {
+                    this.showSubmit = true;
+                }
+            },
+            isLastQuestion() {
+                for (var i = 0; i < this.questions.length; i++) {
+                    var question = this.questions[i];
+                    if(question.orderNum === this.currentIndex + 1) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+            isOutOfBounds(question) {
+                var $inputs = $('#surveyForm').find('.dxt_box :visible').find('input:checked');
+                question.minSelect = question.minSelect ? question.minSelect : 0;
+                question.maxSelect = question.maxSelect ? question.maxSelect : 0;
+                if (question.minSelect == 0 && question.maxSelect == 0) {
+                    return false;
+                }
+                return $inputs.length < question.minSelect || $inputs.length > question.maxSelect;
+
+            },
+            isInputed(question, event) {
+                var $inputs = $('#surveyForm').find('.dxt_box :visible').find('input:checked');
+                console.log($inputs);
+                if (question.type === 1) {
+                    var $inputs = $('#surveyForm').find('.dxt_box :visible').find('input:checked');
+                    return $inputs.length !== 0;
+                }
+                if (question.type === 2) {
+                    var $inputs = $('#surveyForm').find('.dxt_box :visible').find('input:checked');
+                    return $inputs.length !== 0;
+                }
+                if (question.type === 3) {
+                    var $inputs = $('#surveyForm').find('.dxt_box :visible').find('input:checked');
+                    return $inputs.length !== 0;
+                }
+                if (question.type === 4) {
+                    var $inputs = $('#surveyForm').find('.dxt_box :visible').find('input');
+                    var flag = true;
+                    $.each($inputs, function (index, value) {
+                        if ($(value).val() === '') {
+                            flag = false;
+                        }
+                    });
+                    return flag;
+                }
+
             },
             showCurrent(question){
-                return question.orderNum === this.currentIndex
+                if(question.orderNum === this.currentIndex) {
+                    this.currentQuestion = question;
+                    return true;
+                }
+                return false;
             },
             radioName(opt) {
                 if (opt.questionId) {
@@ -178,32 +269,10 @@
                 return false;
             },
             submitQuestion() {
-                var $box = $(".dxt_box");
                 var that = this;
 
-                for (var i = 0; i < $box.length; i++) {
-                    var flag = true;
-                    var $inputs = $($box[i]).find('input');
-                    for (var j = 0; j < $inputs.length; j++) {
-                        $($inputs[j]).attr('type');
-                        if ($($inputs[j]).attr('type') === 'radio' || $($inputs[j]).attr('type') === 'checkbox') {
-                            if ($($inputs[j]).prop('checked')) {
-                                flag = false;
-                                break;
-                            }
-                        }
-                        if ($($inputs[j]).attr('type') === 'text') {
-                            if ($($inputs[j]).val() !== '') {
-                                flag = false;
-                                break;
-                            }
-                        }
-                    }
-                    if (flag) {
-                        alert('请填写完问卷');
-                        break;
-                    }
-
+                if (!this.isInputed(this.currentQuestion, event)) {
+                    return alert('请选择');
                 }
                 AJAX.POST_JSON('zsQuestion/answer', {
                     zsAnswerItemSaves: $('#surveyForm').serializeArray(),
@@ -218,7 +287,10 @@
             loadSurvey() {
                 var that = this;
                 var params = location.href.split('?')[1];
-                AJAX.GET('zsSurvey/questionAndOptions/' + params.split('=')[0], {}, function (resp) {
+                AJAX.GET('zsSurvey/' + params.split('=')[0], {}, function (resp) {
+                    that.survey = resp.data;
+                });
+                AJAX.GET('zsSurvey/questions/' + params.split('=')[0], {}, function (resp) {
                     that.questions = resp.data;
                 });
                 this.surveyId = params.split('=')[0];
