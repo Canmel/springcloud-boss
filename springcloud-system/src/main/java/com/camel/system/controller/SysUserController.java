@@ -9,6 +9,7 @@ import com.camel.redis.entity.RedisUser;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.system.annotation.Log;
 import com.camel.core.model.SysUser;
+import com.camel.system.config.SysUserCacheConfig;
 import com.camel.system.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -50,6 +51,9 @@ public class SysUserController extends BaseCommonController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private SysUserCacheConfig sysUserCacheConfig;
+
     @Log(moduleName = "用户", option = "查询列表")
     @GetMapping
     public Result index(SysUser sysUser) {
@@ -71,7 +75,9 @@ public class SysUserController extends BaseCommonController {
 
     @PutMapping
     public Result update(@RequestBody SysUser sysUser) {
-        return super.update(sysUser);
+        Result result = super.update(sysUser);
+        sysUserCacheConfig.initSysUsers();
+        return result;
     }
 
     @DeleteMapping("/{id}")

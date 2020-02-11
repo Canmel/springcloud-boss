@@ -32,7 +32,7 @@ import java.util.Map;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ZsSurveyState implements MyEnum {
-    INVALID(0, "无效"), CREATED(1, "创建"),COLLECTING(2, "开始收集");
+    INVALID(0, "无效"), CREATED(1, "创建"), COLLECTING(2, "开始收集"), COMPLETED(3, "完成"), CLOSED(4, "关闭");
 
     private String name;
     private Integer value;

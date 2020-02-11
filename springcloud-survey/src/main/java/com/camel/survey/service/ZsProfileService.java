@@ -1,11 +1,6 @@
-package com.camel.survey.service.impl;
+package com.camel.survey.service;
 
-import com.camel.survey.service.ZsSmsService;
-import com.camel.survey.vo.ZsSendSms;
-import org.apache.activemq.command.ActiveMQTopic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsMessagingTemplate;
-import org.springframework.stereotype.Service;
+import java.util.Map;
 
 /**
  *
@@ -25,20 +20,16 @@ import org.springframework.stereotype.Service;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <发短信>
+ * <个人信息>
  * @author baily
  * @since 1.0
- * @date 2019/12/16
+ * @date 2020/2/11
  **/
-@Service
-public class ZsSmsServiceImpl implements ZsSmsService {
-
-    @Autowired
-    private JmsMessagingTemplate jmsMessagingTemplate;
-
-    @Override
-    public boolean send(ZsSendSms sms) {
-        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Sms.Survey.Topic"), sms.toString());
-        return true;
-    }
+public interface ZsProfileService {
+    /**
+     * 通过用户ID获取用户统计
+     * @param uid
+     * @return
+     */
+    Map total(Integer uid);
 }

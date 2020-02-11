@@ -63,6 +63,7 @@
                 <h5>{{survey.name}}</h5>
                 <div class="ibox-tools">
                     <a v-on:click=backToListPage() class="btn btn-success btn-xs">返回</a>
+                    <a v-on:click=closeSurvey(survey) v-if="survey.state === 2" class="btn btn-danger btn-xs">关闭</a>
                     <!--<a v-on:click=backToProjectDetails() class="btn btn-info btn-xs">项目详情</a>-->
                 </div>
             </div>
@@ -463,6 +464,17 @@
         },
         computed: {},
         methods: {
+            closeSurvey(survey) {
+                confirm("您确定要关闭该问卷吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.PUT('zsSurvey/close/' + survey.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
             details(item) {
                 var that = this;
                 $("#myModal").modal('show');
@@ -573,7 +585,8 @@
                         name: resp.data.name,
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
-                        projectId: resp.data.projectId
+                        projectId: resp.data.projectId,
+                        state: resp.data.state ? resp.data.state.value : null
                     };
                 })
             },

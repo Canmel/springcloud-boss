@@ -276,8 +276,13 @@
                 }
             },
             showSurveyDetails(item) {
-                sessionStorage.setItem('editParams', item.id);
-                toPage('pages/survey/details_new.html')
+                if(item.state && item.state.value === 2) {
+                    sessionStorage.setItem('editParams', item.id);
+                    toPage('pages/survey/details_det.html')
+                }else {
+                    sessionStorage.setItem('editParams', item.id);
+                    toPage('pages/survey/details_new.html')
+                }
             }
         }
     });

@@ -86,6 +86,14 @@ public class ZsSurveyController extends BaseCommonController {
         return super.delete(id);
     }
 
+    @PutMapping("/close/{id}")
+    public Result close(@PathVariable Integer id){
+        ZsSurvey survey = service.selectById(id);
+        survey.setState(ZsSurveyState.CLOSED);
+        service.updateById(survey);
+        return ResultUtil.success("问卷 " + survey.getName() + " 已经关闭！");
+    }
+
     @GetMapping("/{id}/projects")
     public Result projects(@PathVariable Integer id) {
         return service.selectListByProjectId(id);

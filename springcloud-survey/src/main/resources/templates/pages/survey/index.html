@@ -44,8 +44,7 @@
                         <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span>
                         </td>
                         <td>
-                            <span class="badge badge-primary" v-if="item.state ? item.state.value === 1 : false">{{item.state.name}}</span>
-                            <span class="badge badge-danger" v-if="item.state ? item.state.value === 2 : false">{{item.state.name}}</span>
+                            <span class="badge badge" v-if="item.state">{{item.state.name}}</span>
                         </td>
                         <td>{{item.collectType ? item.collectType.name : ''}}</td>
                         <td>{{item.creator ? item.creator.username : ''}}</td>
@@ -146,8 +145,6 @@
                             that.pagequery();
                         })
 
-                    } else {
-                        alert()
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
             },

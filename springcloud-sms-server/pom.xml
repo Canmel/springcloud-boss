@@ -52,10 +52,18 @@
             </exclusions>
         </dependency>
 
+        <!--推送-->
         <dependency>
             <groupId>com.gexin.platform</groupId>
             <artifactId>gexin-rp-sdk-http</artifactId>
             <version>4.1.0.5</version>
+        </dependency>
+
+        <!--短信-->
+        <dependency>
+            <groupId>com.github.qcloudsms</groupId>
+            <artifactId>qcloudsms</artifactId>
+            <version>1.0.6</version>
         </dependency>
     </dependencies>
 

@@ -42,7 +42,7 @@ public class SmsController {
     @Autowired
     private SmsService smsService;
 
-    @JmsListener(destination = "ActiveMQ.Sms.Topic")
+    @JmsListener(destination = "ActiveMQ.Sms.Survey.Topic")
     public void log(String msg) {
         JSONObject jsonObject = (JSONObject) JSONObject.parse(msg);
         logger.info("手机号: " + jsonObject.get(TARGET));
