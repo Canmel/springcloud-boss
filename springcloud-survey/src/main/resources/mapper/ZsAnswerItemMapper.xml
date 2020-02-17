@@ -110,7 +110,7 @@
     </select>
 
     <select id="selectExport" resultType="hashmap">
-        select a.seat,a.creator,a.created_at,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`option` SEPARATOR '@##@') opts from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id;
+        select a.seat,a.creator,a.created_at,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`value` SEPARATOR '@##@') opts from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id;
     </select>
 
     <select id="selectSeatTotal" resultType="hashmap">

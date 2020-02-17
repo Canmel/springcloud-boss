@@ -54,6 +54,61 @@
         color: red;
     }
 </style>
+<script type="text/javascript">
+    /**
+     * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
+     */
+    websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
+    agentno = '801';//座席号码
+    password = 'svdata123';//座席密码
+    exten = '801';//座席分机
+    pstnnumber = '88312345';//外线号码
+    popupUrl = 'http://www.baidu.com'//来电弹屏地址;
+
+    var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
+    var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
+    var sipPort = '7067';//软电话注册端口，不启用内置软电话可以不配置
+    var extenPwd = 'svdata123';//分机密码，不启用内置软电话可以不配置
+    var autoAnswer = 'yes';//是否自动接听电话，只有启用内置软电话才生效
+
+    //注册WebSocket服务
+    if ('WebSocket' in window) {
+        websocket = new WebSocket(websocketUrl);
+    } else {
+        alert('当前浏览器不支持WebSocket通信，座席功能将不能使用！')
+    }
+
+    websocket.onerror = function () {
+        ("error");
+    };
+
+    websocket.onmessage = function () {
+        try {
+            var jsonStr = JSON.parse(event.data);
+            onEvent(jsonStr.type, jsonStr.status, jsonStr.method, jsonStr.retCode, jsonStr);
+        } catch (e) {
+            return false;
+        }
+    }
+
+    websocket.onclose = function () {
+        setMessageInnerHTML("close");
+    }
+
+    //离开或刷新页面
+    window.onbeforeunload = function () {
+        //return '确认要退出页面吗?';
+        if (websocket != null) {
+            method = "signout";
+            send();
+            websocket.close();
+        }
+        if (useWebrtc == "yes") {
+            sipUnRegister();
+        }
+    }
+
+</script>
 
 
 <div id="subContainer" class="wrapper wrapper-content">
@@ -97,10 +152,97 @@
                         <div class="ibox-content">
                             <div class="row">
                                 <div class="panel-group" id="accordion">
-                                    <div>1</div>
-                                    <div>2</div>
-                                    <div>3</div>
-                                    <div>4</div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="contact-box">
+                                                <a href="profile.html">
+                                                    <div class="col-sm-4">
+                                                        <div class="text-center">
+                                                            <img alt="image" class="img-circle m-t-xs img-responsive"
+                                                                 :src="profile.avatar">
+                                                            <div class="m-t-xs font-bold"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <div class="col-sm-8"><a href="##">
+                                                    <h3><strong>{{profile.username}}</strong></h3>
+                                                    <p><i class="fa fa-map-marker"></i> {{profile.address}}</p>
+                                                </a>
+                                                    <label><a href="profile.html"/>
+                                                        E-mail:{{profile.email}}<br>
+                                                        <abbr title="Phone">Tel:</abbr> {{profile.mobile}}<br>
+                                                        <abbr title="坐席号">坐席号:</abbr> 801<br>
+                                                        <abbr title="分机号">分机号:</abbr> 801<br>
+                                                        <div id="connecting"><abbr title="服务器">服务器:</abbr> <span class="text-danger" >正在连接...</span><br></div>
+                                                        <div id="connected" style="display: none;"><abbr title="服务器">服务器:</abbr> <span class="text-success" >已连接</span><br></div>
+                                                        <div id="notsignin"><abbr title="服务器">坐席状态:</abbr> <span class="text-danger" >未签入</span><br></div>
+                                                        <div id="signin" style="display: none;"><abbr title="服务器">坐席状态:</abbr> <span class="text-success" >已签入</span><br></div>
+                                                    </label>
+
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="contact-box">
+                                                <div class="col-sm-8">
+                                                    <label>
+                                                        <div
+                                                             style="border: currentColor; height: 200px; padding-top: 1px; padding-left: 10px; display: block;">
+                                                            <input id="pstnnumber" type="hidden" value="52595810">
+                                                            <input id="signStatus" type="hidden" value="0">
+                                                            <button class="btn btn-rounded btn-primary" id="signInOrOut" onClick="signInOrOut()"
+                                                               href="javascript:void(0)" iconcls="icon2-signin" plain="true">签入</button>
+                                                            <button class="btn btn-rounded btn-primary" id="allStatus" style="display: none;" href="javascript:void(0)"
+                                                               iconcls="icon2-edit" plain="true" menu="#setStatus">状态</button>
+                                                            <button class="btn btn-rounded btn-primary" id="calloutInternal"  style="display: none;" onClick="calloutInternal()"
+                                                               href="javascript:void(0)"
+                                                               iconcls="icon2-internal-call" plain="true">内呼</button>
+                                                            <button class="btn btn-rounded btn-primary" id="calloutExternal" style="display: none;" onClick="calloutExternal()"
+                                                               href="javascript:void(0)" iconcls="icon2-external-call" plain="true">外呼</button>
+                                                            <button class="btn btn-rounded btn-primary" id="hangUp" onClick="hangUp()" style="display: none;"
+                                                               href="javascript:void(0)" iconcls="icon2-hangup"
+                                                               plain="true">挂机</button>
+                                                            <button class="btn btn-rounded btn-primary" id="evaluate" onClick="customerEvaluate()" style="display: none;"
+                                                               href="javascript:void(0)" iconcls="icon2-grade"
+                                                               plain="true">评分</button>
+                                                            <button class="btn btn-rounded btn-primary" id="hold" onClick="hold()" style="display: none;"
+                                                               href="javascript:void(0)" iconcls="icon2-pause"
+                                                               plain="true">保持</button>
+                                                            <button class="btn btn-rounded btn-primary" id="unHold" onClick="unHold()" style="display: none;"
+                                                               href="javascript:void(0)" iconcls="icon2-play"
+                                                               plain="true">解除保持</button>
+                                                            <button class="btn btn-rounded btn-primary" id="transfer" onClick="transfer()" style="display: none;"
+                                                               href="javascript:void(0)" iconcls="icon2-transfer" plain="true">转接</button>
+                                                            <button class="btn btn-rounded btn-primary" id="threeway" onClick="threeway()" style="display: none;"
+                                                               href="javascript:void(0)" iconcls="icon2-threeway" plain="true">三方</button>
+                                                        </div>
+                                                    </label>
+
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <span id="state-div"
+                                          style="padding-top: 5px; padding-left: 10px; font-family: Tahoma,Verdana,微软雅黑,新宋体; font-size: 12px; float: right;">
+                                        <table bordercolor="#b0c4de" style="border-collapse: collapse;"
+                                               border="1">
+                                        <tbody>
+                                          <tr>
+                                            <td>欢迎: 801</td>
+                                            <td>座席号：<span id="agentNumberShow">801</span></td>
+                                          </tr>
+                                          <tr>
+                                            <td>分机号：<span id="agentExtenShow">801</span></td>
+                                            <td>座席状态：<span id="seat_state">未签入</span></td>
+                                          </tr>
+                                        </tbody>
+                                        </table>
+                                    </span>
+
+
                                 </div>
                             </div>
 
@@ -276,7 +418,7 @@
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
 <script>
-    new Vue({
+    $cti = new Vue({
         el: '#subContainer',
         data: {
             selectAnswer: {},
@@ -305,13 +447,36 @@
             },
             itemForm: {
                 firstSelect: null
-            }
+            },
+            cti: {
+                status: 0,
+                server: 0
+            },
+            socketServer: 0,
+            profile: {}
         },
         watch: {
             loadData(v, oldVal) {
+            },
+            ctiserver(v, oldVal) {
+
+                if (v === 1) {
+                    $("#connecting").hide();
+                    $("#connected").show();
+                }
+                if (v === 0) {
+                    $("#connecting").show();
+                    $("#connected").hide();
+                }
+
             }
         },
-        computed: {},
+        computed: {
+            ctiserver() {
+                console.log(this.cti.server);
+                return this.cti.server;
+            }
+        },
         methods: {
             details(item) {
                 var that = this;
@@ -410,14 +575,49 @@
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.loadData.zsQuestions = resp.data;
                 })
+            },
+            loadMe() {
+                var that = this;
+                AJAX.GET('profile', {}, function (resp) {
+                    that.profile = resp.data;
+                });
             }
         },
         created: function () {
             this.loadEntity();
             this.loadQuestions();
+            this.loadMe();
+            $ctiserver = this;
+            websocket.onopen = function (event) {
+                console.log(event)
+                $ctiserver.cti.server = 1
+            }
         },
         mounted: function () {
             this.bindEvent();
+        }
+    });
+
+    $step = $("#wizard").steps({
+        preloadContent: false,
+        labels: {
+            cancel: "取消",
+            current: "当前步骤：",
+            pagination: "分页",
+            finish: "呼叫",
+            next: "签入",
+            previous: "签出",
+            loading: "加载中 ..."
+        },
+        onStepChanging: function (event, currentIndex, newIndex) {
+            try {
+                signInOrOut();
+            } catch (e) {
+                console.log(e)
+                return false;
+            }
+            return true;
+
         }
     });
 </script>
