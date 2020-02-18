@@ -138,7 +138,7 @@
 		sipCall("call-audio");
 		//stopRingbackTone();
         //stopRingTone();
-		$("#msg_dial").hide();
+		// $("#msg_dial").hide();
 	}
 
 	//挂断
@@ -147,7 +147,6 @@
             tsk_utils_log_info("Terminating the call......");
             oSipSessionCall.hangup({ events_listener: { events: '*', listener: onSipEventSession } });
         }
-		$("#msg_dial").hide();
     }
 	
 	function startRingTone() {
@@ -226,8 +225,18 @@
 						//txtRegStatus.innerHTML = "<b>" + "来电：" +sRemoteNumber+ "</b>";
 
 						//来电自动接听
-						if(autoAnswer=="yes")sipAnswer();
-						else $("#msg_dial").show();
+						if(autoAnswer=="yes"){
+							sipAnswer();
+						} else {
+							confirm("来电通知", "", function (isConfirm) {
+								if (isConfirm) {
+									sipAnswer();
+
+								} else {
+									sipHangUp();
+								}
+							}, {confirmButtonText: '接听', cancelButtonText: '挂断', width: 400});
+						}
 
 						tsk_utils_log_info("===SipEventStack=Answer|Reject");
 						tsk_utils_log_info("===SipEventStack=Incoming call from [" + sRemoteNumber + "]");

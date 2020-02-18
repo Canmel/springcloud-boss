@@ -1,5 +1,5 @@
 <SCRIPT src="js/SIPml-api.js?svn=250" type="text/javascript"></SCRIPT>
-<SCRIPT src="js/webrtc-1.0.js" type="text/javascript"></SCRIPT>
+<script src="/survey/js/cti/webrtc-1.0.js"></script>
 <style>
     .droppable-active {
         background-color: #ffe !important;
@@ -187,10 +187,10 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="contact-box">
-                                                <div class="col-sm-8">
+                                                <div>
                                                     <label>
                                                         <div
-                                                             style="border: currentColor; height: 200px; padding-top: 1px; padding-left: 10px; display: block;">
+                                                             style="border: currentColor; height: auto; padding-top: 1px; padding-left: 10px; display: block;">
                                                             <input id="pstnnumber" type="hidden" value="52595810">
                                                             <input id="signStatus" type="hidden" value="0">
                                                             <button class="btn btn-rounded btn-primary" id="signInOrOut" onClick="signInOrOut()"
@@ -200,7 +200,7 @@
                                                             <button class="btn btn-rounded btn-primary" id="calloutInternal"  style="display: none;" onClick="calloutInternal()"
                                                                href="javascript:void(0)"
                                                                iconcls="icon2-internal-call" plain="true">内呼</button>
-                                                            <button class="btn btn-rounded btn-primary" id="calloutExternal" style="display: none;" onClick="calloutExternal()"
+                                                            <button class="btn btn-rounded btn-primary" id="calloutExternal" style="display: none;" v-on:click="calloutExternalModal()"
                                                                href="javascript:void(0)" iconcls="icon2-external-call" plain="true">外呼</button>
                                                             <button class="btn btn-rounded btn-primary" id="hangUp" onClick="hangUp()" style="display: none;"
                                                                href="javascript:void(0)" iconcls="icon2-hangup"
@@ -226,28 +226,8 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <span id="state-div"
-                                          style="padding-top: 5px; padding-left: 10px; font-family: Tahoma,Verdana,微软雅黑,新宋体; font-size: 12px; float: right;">
-                                        <table bordercolor="#b0c4de" style="border-collapse: collapse;"
-                                               border="1">
-                                        <tbody>
-                                          <tr>
-                                            <td>欢迎: 801</td>
-                                            <td>座席号：<span id="agentNumberShow">801</span></td>
-                                          </tr>
-                                          <tr>
-                                            <td>分机号：<span id="agentExtenShow">801</span></td>
-                                            <td>座席状态：<span id="seat_state">未签入</span></td>
-                                          </tr>
-                                        </tbody>
-                                        </table>
-                                    </span>
-
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -416,6 +396,37 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+
+
+    <div class="modal fade" id="myPhoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myPhoneModallLabel">外呼</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">电话:</label>
+                            <div class="col-sm-9">
+                                <input name="phone" id="phoneNum" class="form-control" type="text" style="height: auto;" value="018357162602">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="calloutExternal()">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- Audios -->
+    <audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"> </audio>
+    <audio id="ringtone" loop src="/survey/sounds/ringtone.wav"> </audio>
+    <audio id="ringbacktone" loop src="/survey/sounds/ringbacktone.wav"> </audio>
+    <audio id="dtmfTone" src="/survey/sounds/dtmf.wav"> </audio>
 </div>
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
@@ -480,6 +491,9 @@
             }
         },
         methods: {
+            calloutExternalModal() {
+                $("#myPhoneModal").modal("show");
+            },
             details(item) {
                 var that = this;
                 $("#myModal").modal('show');

@@ -9,7 +9,7 @@
 // ================== DEBUG CODE =============== //
 var __b_release_mode = false;
 var tag_hdr = document.getElementsByTagName('head')[0];
-['js/cti/SIPml.js', 'js/ctisrc/tinySIP/src/tsip_api.js'].forEach(function (file) {
+['js/SIPml.js', 'js/src/tinySIP/src/tsip_api.js'].forEach(function (file) {
     var tag_script = document.createElement('script');
     tag_script.setAttribute('type', 'text/javascript');
     tag_script.setAttribute('src', file + "?svn=241");
