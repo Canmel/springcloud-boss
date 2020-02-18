@@ -7958,3 +7958,10 @@ form .survey-optins {
 #surveyArea .ui-draggable:hover {
     border: 1px dashed #009203;
 }
+
+.my-loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 9999;
+}

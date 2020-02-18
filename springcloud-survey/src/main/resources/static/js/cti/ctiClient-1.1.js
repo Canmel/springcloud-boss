@@ -299,6 +299,7 @@
   	}
   	
   	function send(){
+		 $(".my-loading").show();
   		var message = "{'method':'"+method+"','agentno':'"+agentno+"','password':'"+password+"','exten':'"+exten+"','agentstatus':'"+agentstatus+"','pstnnumber':'"+pstnnumber+"','callee':'"+callee+"'}";
   		websocket.send(message);
   	}
@@ -409,6 +410,7 @@
 	
 	//响应事件 
 	function onEvent(eventType,state,methodType,code,jsonStr){
+  		$(".my-loading").hide();
 		var seatState = $('#seat_state');
 		var signInOrOut = $('#signInOrOut');
 		var signInOrOutHtml = signInOrOut.html();
