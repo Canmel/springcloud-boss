@@ -272,7 +272,7 @@
 
     $(document).ajaxError(function (e, xhr, opt) {
         if (xhr.status == 401) {
-            location.href = 'http://' + window.location.host + '/login?redirect_url=/details.html/';
+            // location.href = 'http://' + window.location.host + '/login?redirect_url=/survey/';
         }
     });
     $(document).ajaxStart(function (XMLHttpRequest) {

@@ -29,9 +29,7 @@
     dd {
         margin-left: 1rem;
     }
-</style>
 
-<style type="text/css">
     .star-box {
         display: inline-block;
     }
@@ -56,63 +54,6 @@
         color: red;
     }
 </style>
-<script type="text/javascript">
-    /**
-     * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
-     */
-    websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
-    agentno = '801';//座席号码
-    password = 'svdata123';//座席密码
-    exten = '801';//座席分机
-    pstnnumber = '88312345';//外线号码
-    popupUrl = 'http://www.baidu.com'//来电弹屏地址;
-
-    var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
-    var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
-    var sipPort = '7067';//软电话注册端口，不启用内置软电话可以不配置
-    var extenPwd = 'svdata123';//分机密码，不启用内置软电话可以不配置
-    var autoAnswer = 'yes';//是否自动接听电话，只有启用内置软电话才生效
-
-    //注册WebSocket服务
-    if ('WebSocket' in window) {
-        websocket = new WebSocket(websocketUrl);
-    } else {
-        alert('当前浏览器不支持WebSocket通信，座席功能将不能使用！')
-    }
-
-    websocket.onerror = function () {
-        ("error");
-    };
-
-    websocket.onmessage = function () {
-        try {
-            var jsonStr = JSON.parse(event.data);
-            onEvent(jsonStr.type, jsonStr.status, jsonStr.method, jsonStr.retCode, jsonStr);
-        } catch (e) {
-            return false;
-        }
-    }
-
-    websocket.onclose = function () {
-        setMessageInnerHTML("close");
-    }
-
-    //离开或刷新页面
-    window.onbeforeunload = function () {
-        //return '确认要退出页面吗?';
-        if (websocket != null) {
-            method = "signout";
-            send();
-            websocket.close();
-        }
-        if (useWebrtc == "yes") {
-            sipUnRegister();
-        }
-    }
-
-</script>
-
-
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="row">
         <div class="ibox float-e-margins">
@@ -173,12 +114,17 @@
                                                     <label><a href="profile.html"/>
                                                         E-mail:{{profile.email}}<br>
                                                         <abbr title="Phone">Tel:</abbr> {{profile.mobile}}<br>
-                                                        <abbr title="坐席号">坐席号:</abbr> 801<br>
-                                                        <abbr title="分机号">分机号:</abbr> 801<br>
-                                                        <div id="connecting"><abbr title="服务器">服务器:</abbr> <span class="text-danger" >正在连接...</span><br></div>
-                                                        <div id="connected" style="display: none;"><abbr title="服务器">服务器:</abbr> <span class="text-success" >已连接</span><br></div>
-                                                        <div id="notsignin"><abbr title="服务器">坐席状态:</abbr> <span class="text-danger" >未签入</span><br></div>
-                                                        <div id="signin" style="display: none;"><abbr title="服务器">坐席状态:</abbr> <span class="text-success" >已签入</span><br></div>
+                                                        <abbr title="坐席号">坐席号:</abbr> {{connectInfo.seatNum ? connectInfo.seatNum : "正在获取..."}}<br>
+                                                        <abbr title="分机号">分机号:</abbr> {{connectInfo.seatNum ? connectInfo.seatNum : "正在获取..."}}<br>
+                                                        <div id="connecting"><abbr title="服务器">服务器:</abbr> <span
+                                                                class="text-danger">正在连接...</span><br></div>
+                                                        <div id="connected" style="display: none;"><abbr title="服务器">服务器:</abbr>
+                                                            <span class="text-success">已连接</span><br></div>
+                                                        <div id="notsignin"><abbr title="服务器">坐席状态:</abbr> <span
+                                                                class="text-danger">未签入</span><br></div>
+                                                        <div id="signin" style="display: none;"><abbr
+                                                                title="服务器">坐席状态:</abbr> <span
+                                                                class="text-success">已签入</span><br></div>
                                                     </label>
 
                                                 </div>
@@ -190,34 +136,61 @@
                                                 <div>
                                                     <label>
                                                         <div
-                                                             style="border: currentColor; height: auto; padding-top: 1px; padding-left: 10px; display: block;">
+                                                                style="border: currentColor; height: auto; padding-top: 1px; padding-left: 10px; display: block;">
                                                             <input id="pstnnumber" type="hidden" value="52595810">
                                                             <input id="signStatus" type="hidden" value="0">
-                                                            <button class="btn btn-rounded btn-primary" id="signInOrOut" onClick="signInOrOut()"
-                                                               href="javascript:void(0)" iconcls="icon2-signin" plain="true">签入</button>
-                                                            <button class="btn btn-rounded btn-primary" id="allStatus" style="display: none;" href="javascript:void(0)"
-                                                               iconcls="icon2-edit" plain="true" menu="#setStatus">状态</button>
-                                                            <button class="btn btn-rounded btn-primary" id="calloutInternal"  style="display: none;" onClick="calloutInternal()"
-                                                               href="javascript:void(0)"
-                                                               iconcls="icon2-internal-call" plain="true">内呼</button>
-                                                            <button class="btn btn-rounded btn-primary" id="calloutExternal" style="display: none;" v-on:click="calloutExternalModal()"
-                                                               href="javascript:void(0)" iconcls="icon2-external-call" plain="true">外呼</button>
-                                                            <button class="btn btn-rounded btn-primary" id="hangUp" onClick="hangUp()" style="display: none;"
-                                                               href="javascript:void(0)" iconcls="icon2-hangup"
-                                                               plain="true">挂机</button>
-                                                            <button class="btn btn-rounded btn-primary" id="evaluate" onClick="customerEvaluate()" style="display: none;"
-                                                               href="javascript:void(0)" iconcls="icon2-grade"
-                                                               plain="true">评分</button>
-                                                            <button class="btn btn-rounded btn-primary" id="hold" onClick="hold()" style="display: none;"
-                                                               href="javascript:void(0)" iconcls="icon2-pause"
-                                                               plain="true">保持</button>
-                                                            <button class="btn btn-rounded btn-primary" id="unHold" onClick="unHold()" style="display: none;"
-                                                               href="javascript:void(0)" iconcls="icon2-play"
-                                                               plain="true">解除保持</button>
-                                                            <button class="btn btn-rounded btn-primary" id="transfer" onClick="transfer()" style="display: none;"
-                                                               href="javascript:void(0)" iconcls="icon2-transfer" plain="true">转接</button>
-                                                            <button class="btn btn-rounded btn-primary" id="threeway" onClick="threeway()" style="display: none;"
-                                                               href="javascript:void(0)" iconcls="icon2-threeway" plain="true">三方</button>
+                                                            <button class="btn btn-rounded btn-primary" id="signInOrOut"
+                                                                    onClick="signInOrOut()"
+                                                                    href="javascript:void(0)" iconcls="icon2-signin"
+                                                                    plain="true">签入
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="allStatus"
+                                                                    style="display: none;" href="javascript:void(0)"
+                                                                    iconcls="icon2-edit" plain="true" menu="#setStatus">
+                                                                状态
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary"
+                                                                    id="calloutInternal" style="display: none;"
+                                                                    onClick="calloutInternal()"
+                                                                    href="javascript:void(0)"
+                                                                    iconcls="icon2-internal-call" plain="true">内呼
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary"
+                                                                    id="calloutExternal" style="display: none;"
+                                                                    v-on:click="calloutExternalModal()"
+                                                                    href="javascript:void(0)"
+                                                                    iconcls="icon2-external-call" plain="true">外呼
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="hangUp"
+                                                                    onClick="hangUp()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-hangup"
+                                                                    plain="true">挂机
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="evaluate"
+                                                                    onClick="customerEvaluate()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-grade"
+                                                                    plain="true">评分
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="hold"
+                                                                    onClick="hold()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-pause"
+                                                                    plain="true">保持
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="unHold"
+                                                                    onClick="unHold()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-play"
+                                                                    plain="true">解除保持
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="transfer"
+                                                                    onClick="transfer()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-transfer"
+                                                                    plain="true">转接
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="threeway"
+                                                                    onClick="threeway()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-threeway"
+                                                                    plain="true">三方
+                                                            </button>
                                                         </div>
                                                     </label>
 
@@ -398,7 +371,8 @@
     </div>
 
 
-    <div class="modal fade" id="myPhoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myPhoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -410,7 +384,8 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">电话:</label>
                             <div class="col-sm-9">
-                                <input name="phone" id="phoneNum" class="form-control" type="text" style="height: auto;" value="018357162602">
+                                <input name="phone" id="phoneNum" class="form-control" type="text" style="height: auto;"
+                                       value="018357162602">
                             </div>
                         </div>
                     </form>
@@ -423,13 +398,39 @@
     </div>
 
     <!-- Audios -->
-    <audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"> </audio>
-    <audio id="ringtone" loop src="/survey/sounds/ringtone.wav"> </audio>
-    <audio id="ringbacktone" loop src="/survey/sounds/ringbacktone.wav"> </audio>
-    <audio id="dtmfTone" src="/survey/sounds/dtmf.wav"> </audio>
+    <audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"></audio>
+    <audio id="ringtone" loop src="/survey/sounds/ringtone.wav"></audio>
+    <audio id="ringbacktone" loop src="/survey/sounds/ringbacktone.wav"></audio>
+    <audio id="dtmfTone" src="/survey/sounds/dtmf.wav"></audio>
 </div>
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
+<script type="text/javascript">
+    console.log('script')
+    /**
+     * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
+     */
+    websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
+    agentno = '';//座席号码
+    password = '';//座席密码
+    exten = '';//座席分机
+    pstnnumber = '88312345';//外线号码
+    popupUrl = 'http://127.0.0.1:8080/survey/input_s.html?surveyId=3&phone=13700000001&seat=100000'//来电弹屏地址;
+
+    var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
+    var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
+    var sipPort = '7067';//软电话注册端口，不启用内置软电话可以不配置
+    var extenPwd = 'svdata123';//分机密码，不启用内置软电话可以不配置
+    var autoAnswer = 'no';//是否自动接听电话，只有启用内置软电话才生效
+
+    //注册WebSocket服务
+    if ('WebSocket' in window) {
+        websocket = new WebSocket(websocketUrl);
+    } else {
+        alert('当前浏览器不支持WebSocket通信，座席功能将不能使用！')
+    }
+
+</script>
 <script>
     $cti = new Vue({
         el: '#subContainer',
@@ -464,6 +465,11 @@
             cti: {
                 status: 0,
                 server: 0
+            },
+            connectInfo: {
+                seatNum: null,
+                exten: null,
+                password: ''
             },
             socketServer: 0,
             profile: {}
@@ -597,9 +603,22 @@
                 AJAX.GET('profile', {}, function (resp) {
                     that.profile = resp.data;
                 });
+            },
+            loadConnectInfo() {
+                let that = this;
+                AJAX.GET_SYNC("zsSeat/current", {}, function (resp) {
+                    window.agentno = resp.data.seatNum;
+                    window.exten = resp.data.seatNum;
+                    window.password = resp.data.password;
+                    that.connectInfo.seatNum = window.agentno;
+                    that.connectInfo.exten = window.exten;
+                    that.connectInfo.password = window.password;
+                });
             }
         },
         created: function () {
+            this.loadConnectInfo();
+
             this.loadEntity();
             this.loadQuestions();
             this.loadMe();
@@ -608,9 +627,40 @@
                 console.log(event)
                 $ctiserver.cti.server = 1
             }
+            websocket.onerror = function () {
+                ("error");
+            };
+
+            websocket.onmessage = function () {
+                try {
+                    var jsonStr = JSON.parse(event.data);
+                    onEvent(jsonStr.type, jsonStr.status, jsonStr.method, jsonStr.retCode, jsonStr);
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            websocket.onclose = function () {
+                setMessageInnerHTML("close");
+            }
+            //离开或刷新页面
+            window.onbeforeunload = function () {
+                //return '确认要退出页面吗?';
+                if (websocket != null) {
+                    method = "signout";
+                    send();
+                    websocket.close();
+                }
+                if (useWebrtc == "yes") {
+                    sipUnRegister();
+                }
+            }
         },
         mounted: function () {
             this.bindEvent();
+        },
+        beforeCreate: function () {
+            console.log('beforeCreate');
         }
     });
 

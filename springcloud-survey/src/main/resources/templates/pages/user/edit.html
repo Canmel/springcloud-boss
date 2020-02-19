@@ -3,15 +3,45 @@
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="signupForm">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">考试名称：</label>
+                    <label class="col-sm-3 control-label">用户姓名<span class="text-danger">*</span>：</label>
                     <div class="col-sm-8">
-                        <input id="name" name="name" class="form-control" type="text" v-model="args.name">
+                        <input id="username" name="username" class="form-control" type="text" v-model="user.username">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">考试内容：</label>
+                    <label class="col-sm-3 control-label">登录密码<span class="text-danger">*</span>：</label>
                     <div class="col-sm-8">
-                        <textarea id="code" name="desc" class="form-control" type="text" aria-required="true" aria-invalid="false" class="valid" v-model="args.desc"></textarea>
+                        <input id="password" name="password" class="form-control" type="password" v-model="user.password"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户昵称<span class="text-danger">*</span>：</label>
+                    <div class="col-sm-8">
+                        <input id="nickname" name="nickname" class="form-control" type="text" v-model="user.nickname"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">登录邮箱<span class="text-danger">*</span>：</label>
+                    <div class="col-sm-8">
+                        <input id="email" name="email" class="form-control" type="text" v-model="user.email"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">手机号码<span class="text-danger">*</span>：</label>
+                    <div class="col-sm-8">
+                        <input id="mobile" name="mobile" class="form-control" type="text" v-model="user.mobile"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">所属部门<span class="text-danger">*</span>：</label>
+                    <div class="col-sm-8">
+                        <input id="orgName" name="orgName" class="form-control" type="text" v-model="user.orgName"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">备注：</label>
+                    <div class="col-sm-8">
+                        <input id="remark" name="remark" class="form-control" type="text" v-model="user.remark"></input>
                     </div>
                 </div>
                 <div class="form-group">
@@ -30,9 +60,14 @@
         el: '#subContainer',
         data: {
             applicationContextRootPath: '/survey/',
-            args: {
-                name: '',
-                desc: ''
+            user: {
+                username: '',
+                password: '',
+                nickname: '',
+                email: '',
+                mobile: '',
+                orgName: '',
+                remark: ''
             }
         },
         created: function () {
@@ -40,12 +75,17 @@
         },
         methods: {
             loadEntity() {
-                var that = this;
-                AJAX.GET('zsExam/' + sessionStorage.getItem('editParams'), {}, function (resp) {
-                    that.args = {
-                        id: resp.data.id,
-                        name: resp.data.name,
-                        desc: resp.data.desc
+                let that = this;
+                AJAX.GET('/system/sysUser/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.user = {
+                        uid: resp.data.uid,
+                        username: resp.data.username,
+                        password: resp.data.password,
+                        nickname: resp.data.nickname,
+                        email: resp.data.email,
+                        mobile: resp.data.mobile,
+                        orgName: resp.data.orgName,
+                        remark: resp.data.remark,
                     };
                 });
             },
@@ -56,15 +96,15 @@
                 if(!$("#signupForm").valid()){
                     return false;
                 }
-                var that = this;
-                AJAX.PUT('zsExam', JSON.stringify(this.args), function (resp) {
+                let that = this;
+                AJAX.PUT('/system/sysUser', JSON.stringify(this.user), function (resp) {
                     toastr.success(resp.msg);
                     that.backToMain();
                 });
             },
             backToMain: function () {
                 $.pjax({
-                    url: mvm.applicationContextRootPath + 'pages/exam/index.html',
+                    url: mvm.applicationContextRootPath + 'pages/user/index.html',
                     container: '.page-container'
                 });
             }
@@ -75,12 +115,56 @@
         var icon = "<i class='fa fa-times-circle'></i> ";
         $("#signupForm").validate({
             rules: {
-                name: "required",
-                desc: "required"
+                username: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 24
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 24
+                },
+                nickname: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 24
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                mobile: {
+                    required: true,
+                    isMobile: true
+                },
+                orgName: "required"
             },
             messages: {
-                name: icon + "请输入你的姓",
-                desc: icon + "请输入您的名字"
+                username: {
+                    required: icon + "请输入用户名",
+                    minlength: jQuery.validator.format("用户名至少需填写{0}个字符"),
+                    maxlength: jQuery.validator.format("用户名最多填写{0}个字符")
+                },
+                password: {
+                    required: icon + "请输入您的密码",
+                    minlength: jQuery.validator.format("用户名至少需填写{0}个字符"),
+                    maxlength: jQuery.validator.format("用户名最多填写{0}个字符")
+                },
+                nickname: {
+                    required: icon + "请输入昵称",
+                    minlength: jQuery.validator.format("用户名至少需填写{0}个字符"),
+                    maxlength: jQuery.validator.format("用户名最多填写{0}个字符")
+                },
+                email: {
+                    required: icon + "请输入邮箱",
+                    email: "无效的邮箱"
+                },
+                mobile: {
+                    required: icon + "请输入手机号码",
+                    isMobile: "无效的手机号码"
+                },
+                orgName: icon + "请输入部门名称"
             }
         });
 
