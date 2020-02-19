@@ -59,7 +59,7 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @PostMapping
-    public Result save(@RequestBody SysMenu sysMenu) {
+    public Result save(SysMenu sysMenu) {
         return super.save(sysMenu);
     }
 
