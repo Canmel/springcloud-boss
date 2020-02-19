@@ -1,0 +1,115 @@
+<div class="container dashboard">
+    <div class="row models">
+        <div class="span3">
+            <h4>流程实例</h4>
+            <div class="sidebar">
+                <ul class="col-nav span3">
+                    <li><a href="#bookmarks" data-toggle="collapse" class="accordion-toggle"><span
+                            class="label label-inverse pull-right">3 </span>功能菜单</a></li>
+                    <li id="bookmarks" class="collapse">
+                        <ul>
+                            <li><a href="#"> <i class="pull-right icon-plane"></i>开发中...</a><a href="#"> <i
+                                    class="pull-right icon-fire"></i>开发中...</a><a href="#"> <i
+                                    class="pull-right icon-comment"></i>开发中...</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="span9">
+            <h4 class="header">工作流程实例</h4>
+            <div id="d3" style="width: 100%; margin-top: -30px"></div>
+            <br/>
+            <div class="row-fluid">
+                <table class="table table-striped sortable">
+                    <thead>
+                    <tr>
+                        <th>实例ID</th>
+                        <th>流程名称</th>
+                        <th>流程定义KEY</th>
+                        <th>流程版本</th>
+                        <th>业务KEY</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in models">
+                        <td>{{item.id}}</td>
+                        <td>{{item.definitionName}}</td>
+                        <td>{{item.definitionKey}}</td>
+                        <td>{{item.definitionVersion}}</td>
+                        <td>{{item.businessKey }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="page" class="text-center">
+                <navigation :pages="pages" :current.sync="pageNo" @navpage="msgListView"></navigation>
+                <p>当前是第<span v-text="pageNo"></span>页</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+            el: '.models',
+            data: {
+                applicationContextRootPath: '/acti',
+                models: [],
+                deployments: [],
+                accessToken: '',
+                pageNo: 1,
+                pages: 5
+            },
+            filters: {
+                dateformat: function (val, formate) {
+                    var date = new Date(val);
+                    return date.format(formate);
+                }
+            },
+            methods: {
+                msgListView(curPage) {
+                    //根据当前页获取数据
+                    this.pageNo = curPage;
+                    this.loadInstance();
+                },
+                loadInstance: function () {
+                    AJAX.GET("../instance", {page: this.pageNo}
+                        , function (result) {
+                            vm.models = result['data']['list'];
+                            console.log(123);
+                            vm.pages = result['data']['count']%10 < 1 ? Math.floor(result['data']['count'] / 10) : Math.ceil(result['data']['count'] / 10);
+                        });
+                },
+                saveCookie: function () {
+                    var token = sessionStorage.getItem('access_token');
+                    if (token) {
+                        $.cookie('access_token', token);
+                    }
+                },
+                deleteItem: function (id) {
+                    AJAX.DELETE(this.applicationContextRootPath + '/models/' + id, null, function (resp) {
+                        toastr.success(resp['msg'], '操作成功');
+                        vm.loadInstance();
+                    });
+                },
+                deploymentItem: function (id) {
+                    AJAX.POST(this.applicationContextRootPath + '/models/' + id + '/deployment', null, function (resp) {
+                        toastr.success(resp['msg'], '操作成功');
+                    });
+                },
+                newModel: function (id) {
+                    AJAX.POST(this.applicationContextRootPath + '/models/newModel', null, function (resp) {
+                        location.href = resp['data'] + '&access_token=' + sessionStorage.getItem('access_token');
+                    });
+                }
+            },
+            created: function () {
+                this.accessToken = sessionStorage.getItem('access_token');
+                this.saveCookie();
+                this.loadInstance();
+
+            }
+        })
+    ;
+</script>

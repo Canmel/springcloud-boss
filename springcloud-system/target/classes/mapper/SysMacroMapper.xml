@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.system.mapper.SysMacroMapper">
+    <resultMap id="BaseResultMap" type="com.camel.core.model.SysMacro">
+        <id column="macro_id" property="macroId" javaType="INTEGER"></id>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"></result>
+        <result column="code" property="code" jdbcType="VARCHAR"></result>
+        <result column="name" property="name" jdbcType="VARCHAR"></result>
+        <result column="value" property="value" jdbcType="VARCHAR"></result>
+        <result column="status" property="macroStatus" jdbcType="INTEGER" javaType="com.camel.core.enums.MacroStatus"
+                typeHandler="com.camel.core.config.BaseEnumTypeHandler"></result>
+        <result column="status" property="status" jdbcType="INTEGER"></result>
+        <result column="type" property="type" jdbcType="INTEGER"></result>
+        <result column="order_num" property="orderNum" jdbcType="INTEGER"></result>
+        <result column="remark" property="remark" jdbcType="VARCHAR"></result>
+        <result column="gmt_create" property="gmtCreate" jdbcType="VARCHAR"></result>
+        <result column="gmt_modified" property="gmtModified" jdbcType="VARCHAR"></result>
+        <result column="deletable" property="deletable" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <sql id="BASE_SQL">
+        sys_macro.macro_id,
+        sys_macro.parent_id,
+        sys_macro.`code`,
+        sys_macro.`name`,
+        sys_macro.`value`,
+        sys_macro.`status`,
+        sys_macro.type,
+        sys_macro.order_num,
+        sys_macro.remark,
+        sys_macro.gmt_create,
+        sys_macro.gmt_modified,
+        sys_macro.deletable
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BASE_SQL"></include>
+        FROM
+        sys_macro
+    </select>
+</mapper>

@@ -1,0 +1,49 @@
+server:
+  port: 9999
+
+boss:
+  getway:
+    url: ${APPLICATION_GETWAY_URL}
+    port: 76213
+
+spring:
+  application:
+    name: springcloud-activiti
+  datasource:
+    url: jdbc:mysql://${DATABASE_IP}/dw_activiti?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    druid:
+      # 初始化时连接数
+      initial-size: 5
+      # 最大连接数
+      max-active: 50
+      # 最小空闲连接数
+      min-idle: 5
+      # 连接最大等待时间
+      max-wait: 60000
+      # 是否缓存（PsCatch）
+      pool-prepared-statements: true
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_IP}:8888/eureka/
+
+security:
+  oauth2:
+    resource:
+      id: springcloud-activiti
+      user-info-uri: http://${APPLICATION_IP}:${AUTH_PORT}/auth/session/me
+      prefer-token-info: false
+

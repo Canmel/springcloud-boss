@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsQuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsQuestion">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="survey_id" property="surveyId"/>
+        <result column="max_select" property="maxSelect"/>
+        <result column="min_select" property="minSelect"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="createdAt" property="createdAt"/>
+        <result column="creator" property="creatorId"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+        <collection property="options" column="id" jdbcType="INTEGER"
+                    select="com.camel.survey.mapper.ZsOptionMapper.selectByQuestionId"></collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, order_num, survey_id, type, max_select, min_select, status, created_at, creator
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_question
+        <where>
+            status = 1
+            <if test="surveyId != null">
+                AND survey_id = #{surveyId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBySurveyId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_question
+        where status = 1 and survey_id = #{id}
+    </select>
+
+    <select id="selectQuestionById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_question
+        where id = #{id}
+    </select>
+</mapper>

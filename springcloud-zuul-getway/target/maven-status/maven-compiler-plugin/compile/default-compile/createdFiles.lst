@@ -1,0 +1,4 @@
+com\camel\gateway\SpringCloudZuulApplication.class
+com\camel\gateway\controller\SessionController.class
+com\camel\gateway\config\web\WebMvcConfigurer.class
+com\camel\gateway\config\SecurityConfig.class

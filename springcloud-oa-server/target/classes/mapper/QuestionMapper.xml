@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.oa.mapper.QuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.oa.model.Question">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="type" property="type"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.QuestionStatusEnumHandler"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.enumhandler.QuestionTyiesEnumHandler"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        question.id, question.title, question.`type`, question.created_at, question.creator, question.status
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        question
+        <where>
+            question.status != 0
+        </where>
+    </select>
+</mapper>

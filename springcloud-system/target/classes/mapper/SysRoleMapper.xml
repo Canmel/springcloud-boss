@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.system.mapper.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="com.camel.core.model.SysRole">
+        <id column="role_id" property="roleId" jdbcType="INTEGER"></id>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"></result>
+        <result column="role_sign" property="roleSign" jdbcType="VARCHAR"></result>
+        <result column="remark" property="remark" jdbcType="VARCHAR"></result>
+        <result column="gmt_create" property="gmtCreate" jdbcType="DATE"></result>
+        <result column="gmt_modifiled" property="gmtModifiled" jdbcType="DATE"></result>
+        <result column="status" property="status" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <sql id="BASE_SQL">
+        sys_role.role_id,
+        sys_role.role_name,
+        sys_role.role_sign,
+        sys_role.remark,
+        sys_role.gmt_create,
+        sys_role.gmt_modifiled,
+        sys_role.`status`
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+            <include refid="BASE_SQL"></include>
+            FROM
+            sys_role
+        <where>
+          <if test="roleName != null and roleName != ''">sys_role.role_name like CONCAT('%',#{roleName} ,'%')</if>
+          <if test="status != null">AND sys_role.`status` = #{status}</if>
+        </where>
+        order by sys_role.role_id
+    </select>
+</mapper>

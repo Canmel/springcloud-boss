@@ -1,0 +1,27 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.camel.survey.config.AuthIgnoreConfig",
+      "name": "security.oauth2.client",
+      "type": "com.camel.survey.config.AuthIgnoreConfig"
+    },
+    {
+      "sourceType": "com.camel.survey.config.SurveyPriceConfig",
+      "name": "survey.price",
+      "type": "com.camel.survey.config.SurveyPriceConfig"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.camel.survey.config.AuthIgnoreConfig",
+      "name": "security.oauth2.client.ignore-urls",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "sourceType": "com.camel.survey.config.SurveyPriceConfig",
+      "name": "survey.price.phone",
+      "type": "java.lang.Integer"
+    }
+  ]
+}

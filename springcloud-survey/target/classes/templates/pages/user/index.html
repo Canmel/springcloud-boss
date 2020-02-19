@@ -1,0 +1,221 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>用户管理</h5>
+            <div class="ibox-tools">
+                <div class="ibox-tools">
+                    <a :href="applicationContextRootPath + 'pages/user/add.html'"
+                       data-pjax class="btn btn-primary btn-xs">创建用户</a>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
+                               v-model="pageInfo.dname"> <span
+                            class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户名</th>
+                        <th>坐标地</th>
+                        <th>昵称</th>
+                        <th>邮箱</th>
+                        <th>电话</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in items">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td>{{item.username}}</td>
+                        <td>{{item.address}}</td>
+                        <td>{{item.nickname}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.mobile}}</td>
+<!--                        <td>{{item.gmtCreate | formatDate}}</td>-->
+                        <td>
+                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs">
+                                编辑
+                            </button>
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs">
+                                删除
+                            </button>
+                            <button type="button" v-on:click="applyRoles(item)" class="btn btn-info btn-xs">
+                                分配角色
+                            </button>
+                            <button type="button" v-on:click="seatModal(item)" class="btn btn-warning btn-xs">
+                                分配坐席
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">分配角色</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <h3>可以分配的所有权限:</h3>
+                        <div class="row">
+                            <div class="col-sm-4" v-for="item in allRoles">
+                                <label>
+                                    <input type="checkbox" name="roleIds" :value="item.roleId" v-model="roleIds"/>
+                                    {{item.remark}}
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" v-on:click="saveRoles()">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="seatModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="seatModalLabel">分配坐席</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="seatForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">坐席号：</label>
+                            <div class="col-sm-8">
+                                <input name="seatNum" class="form-control" type="text" v-model="seat.seatNum"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">坐席密码：</label>
+                            <div class="col-sm-8">
+                                <input name="password" class="form-control" type="text" v-model="seat.password"></input>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" v-on:click="saveSeat()">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                username: '',
+                state: 'COLLECTING',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
+            items: [{}],
+            allRoles: [],
+            roleIds: [],
+            selected: null,
+            seat: {
+                uid: null,
+                seatNum: null,
+                password: ''
+            }
+        },
+        created: function () {
+            this.loadAllRoles();
+        },
+        methods: {
+            seatModal: function(item) {
+                this.seat.uid=item.uid;
+                $("#seatModal").modal("show");
+            },
+            saveSeat() {
+                AJAX.POST("zsSeat", this.seat, function (resp) {
+                    $("#seatModal").modal("hide");
+                    $("#seatForm")[0].reset()
+                    toastr.success(resp.msg);
+                })
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            deleteItem(item) {
+                var that = this;
+                confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        console.log(item);
+                        AJAX.DELETE('/system/sysUser', {id: item.uid}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            edit(item) {
+                toPage('pages/user/edit.html', item.uid);
+            },
+            applyRoles(item) {
+                this.selected = item;
+                $("#myModal").modal('show');
+
+            },
+            loadAllRoles() {
+                var that = this;
+                AJAX.GET('/system/sysRole/all/list', {}, function (resp) {
+                    that.allRoles = resp.data;
+                })
+            },
+            saveRoles() {
+                AJAX.POST_JSON('/system/sysUser/roles',
+                    {uid: this.selected.uid, roleIds: this.roleIds}
+                    , function (resp) {
+                        toastr.success(resp.msg);
+                        $("#signupForm")[0].reset()
+                        $("#myModal").modal('hide');
+                    })
+            }
+        }
+    });
+</script>

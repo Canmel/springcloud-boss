@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.oa.mapper.DocumentMapper">
+    <resultMap id="BaseResultMap" type="com.camel.oa.model.Document">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="dname" property="dname" jdbcType="VARCHAR"></result>
+        <result column="address" property="address" jdbcType="VARCHAR"></result>
+        <result column="dsize" property="dsize" jdbcType="INTEGER"></result>
+        <result column="dtype" property="dtype" jdbcType="VARCHAR"></result>
+        <result column="created_at" property="createdAt" jdbcType="DATE"></result>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+    </resultMap>
+
+    <sql id="BASE_SQL">
+        document.id,
+        document.dname,
+        document.address,
+        document.dsize,
+        document.dtype,
+        document.created_at,
+        document.creator,
+        document.status
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BASE_SQL"></include>
+        FROM document
+        <where>
+            document.status = 1
+            <if test="dname">document.dname LIKE concat('%', #{dname} ,'%')</if>
+        </where>
+    </select>
+</mapper>

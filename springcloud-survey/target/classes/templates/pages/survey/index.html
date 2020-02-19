@@ -1,0 +1,157 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>问卷管理</h5>
+            <div class="ibox-tools">
+                <!--<a :href="applicationContextRootPath + 'pages/project/add.html'"-->
+                <!--data-pjax class="btn btn-primary btn-xs">新建问卷</a>-->
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
+                               v-model="pageInfo.name"> <span
+                            class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>问卷名称</th>
+                        <th>所属项目</th>
+                        <th>状态</th>
+                        <th>收集方式</th>
+                        <th>创建人</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in items">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td>
+                            <span class="click-span" v-on:click="details(item)">{{item.name}}</span>
+                        </td>
+                        <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge" v-if="item.state">{{item.state.name}}</span>
+                        </td>
+                        <td>{{item.collectType ? item.collectType.name : ''}}</td>
+                        <td>{{item.creator ? item.creator.username : ''}}</td>
+                        <td>{{item.createdAt | formatDate}}</td>
+                        <td>
+                            <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false"
+                                    class="btn btn-primary btn-xs">修改
+                            </button>
+                            <button type="button" v-on:click="start(item)" v-if="item.state ? item.state.value === 1 : false"
+                                    class="btn btn-success btn-xs">开始调查
+                            </button>
+                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false"
+                                    class="btn btn-danger btn-xs">删除
+                            </button>
+                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"
+                                    class="btn btn-danger btn-xs">查看申请记录
+                            </button>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                name: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10//每页显示条目个数不传默认10
+            },
+            items: [{}]
+        },
+        created: function () {
+            // this.pagequery();
+        },
+        methods: {
+            appliable: function(item) {
+                if(item.collectType && item.state) {
+                    // 电话收集方式 && 已经开始的问卷
+                    return item.collectType.value === 1 && item.state.value === 2;
+                }
+                return false;
+            },
+            applyView: function(item){
+                toPage("pages/survey/applyView.html", item.id);
+            },
+            start: function (item) {
+                var that = this;
+                confirm("您确定开始收集该问卷吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET('zsSurvey/start/' + item.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        });
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+
+            },
+            projectDetails: function (item) {
+                toPage("pages/project/details.html", item.projectId);
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsSurvey', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            edit: function (item) {
+                sessionStorage.setItem('editParams', item.id);
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/survey/details.html',
+                    container: '.page-container'
+                });
+            },
+            deleteItem: function (item) {
+                var that = this;
+                confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.DELETE('zsSurvey', item, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            details: function (item) {
+                sessionStorage.setItem('editParams', item.id);
+                toPage('pages/survey/details_det.html')
+            }
+        }
+    });
+</script>

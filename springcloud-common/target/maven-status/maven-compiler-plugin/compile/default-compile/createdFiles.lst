@@ -1,0 +1,11 @@
+com\camel\common\enums\ResultEnum.class
+com\camel\common\utils\SerizlizeUtil.class
+com\camel\common\entity\Role.class
+com\camel\common\enumeration\ResultCode.class
+com\camel\common\utils\Result.class
+com\camel\common\entity\Member.class
+com\camel\common\enums\BaseEnum.class
+com\camel\common\enums\ProcessStatus.class
+com\camel\common\utils\IoUtils.class
+com\camel\common\entity\Permission.class
+com\camel\common\entity\Result.class

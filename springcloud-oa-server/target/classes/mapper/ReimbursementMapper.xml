@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.oa.mapper.ReimbursementMapper">
+    <resultMap id="BaseResultMap" type="com.camel.oa.model.Reimbursement">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="name" property="name" jdbcType="VARCHAR"></result>
+        <result column="amount" property="amount" jdbcType="DOUBLE"></result>
+        <result column="creator" property="creator" jdbcType="INTEGER"></result>
+        <result column="status" property="status" jdbcType="INTEGER"></result>
+        <result column="is_del" property="isDel" jdbcType="INTEGER"></result>
+        <result column="description" property="description" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT reimbursement.id,
+            reimbursement.`name`,
+            reimbursement.amount,
+            reimbursement.creator,
+            reimbursement.`status`,
+            reimbursement.is_del,
+            reimbursement.description
+        FROM reimbursement
+        <where>
+            <if test="name != null and name != ''">AND reimbursement.`name` LIKE CONCAT('%', #{name} , '%')</if>
+        </where>
+        ORDER BY reimbursement.id DESC
+
+    </select>
+</mapper>

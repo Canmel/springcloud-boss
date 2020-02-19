@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsAnswerItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsAnswerItem">
+        <id column="id" property="id" />
+        <result column="question" property="question" />
+        <result column="value" property="value" />
+        <result column="type" property="type" />
+        <result column="answer_id" property="answerId"/>
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt" />
+        <result column="creator" property="creator" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, question, value, type, status, created_at, creator, `option`, answer_id
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List"></include>
+        from
+        zs_answer_item
+        <where>
+            status = 1
+        </where>
+    </select>
+
+    <select id="selectCrossCount" resultType="hashmap">
+        SELECT
+            count(1) count,
+            (count(1) / (
+                SELECT
+                    count(1)
+                FROM
+                    zs_answer_item
+                WHERE
+                    question = #{qS}
+                AND `option` = #{oS}
+                AND creator IN(
+                    SELECT
+                        ai.creator
+                    FROM
+                        zs_answer_item ai
+                    LEFT JOIN zs_answer a ON a.id = ai.answer_id
+                    WHERE
+                        a.survey_id = #{surveyId}
+                    AND question = #{qF}
+                )
+            ) * 100) AS rate
+        FROM
+            zs_answer_item
+        WHERE
+            question = #{qS}
+        AND `option` = #{oS}
+        AND creator IN(
+            SELECT
+                ai.creator
+            FROM
+                zs_answer_item ai
+            LEFT JOIN zs_answer a ON a.id = ai.answer_id
+            WHERE
+                a.survey_id = #{surveyId}
+            AND question = #{qF}
+            AND ai.`option` = #{oF}
+        )
+    </select>
+
+    <select id="selectCrossCounts" resultType="hashmap">
+        SELECT
+            result.`option`,  count(1) count
+        FROM
+            (
+                SELECT
+                    ai.*, q.order_num
+                FROM
+                    zs_answer_item ai
+                LEFT JOIN zs_question q ON q.id = ai.question_id
+                WHERE
+                    ai.survey_id = #{surveyId} and question = #{qF}
+                AND ai. STATUS = 1 and ai.creator in (
+                    select creator from zs_answer_item where question = #{qS} and `option` = #{oS}
+                )
+            )result
+        GROUP BY
+            result.`option`
+        ORDER BY
+            result.order_num
+
+    </select>
+
+    <select id="selectByAnswerId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_answer_item
+        <where>
+            status = 1
+            and answer_id = #{id}
+        </where>
+    </select>
+
+    <select id="selectBySurvey" resultMap="BaseResultMap">
+        select
+        ai.id, ai.question, ai.value, ai.type, ai.status, ai.created_at, ai.creator, ai.`option`, ai.answer_id
+         from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where a.survey_id = #{id}
+    </select>
+
+    <select id="selectExport" resultType="hashmap">
+        select a.seat,a.creator,a.created_at,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`value` SEPARATOR '@##@') opts from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id;
+    </select>
+
+    <select id="selectSeatTotal" resultType="hashmap">
+        select a.seat, count(1) questionNum, COUNT(DISTINCT a.id) surveyNum from zs_answer_item ai left join zs_answer a on ai.answer_id = a.id where a.survey_id = #{id} group by a.seat
+    </select>
+</mapper>

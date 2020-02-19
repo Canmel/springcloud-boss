@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.oa.mapper.ZsProjectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.oa.model.ZsProject">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="amount" property="amount"/>
+        <result column="business" property="business"/>
+        <result column="manager" property="managerId"/>
+        <result column="status" property="status" typeHandler="com.camel.oa.enumhandler.ZsProjectStatusEnumHandler"/>
+        <result column="level" property="level" typeHandler="com.camel.oa.enumhandler.ZsProjectLevelsEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="type" property="type" typeHandler="com.camel.oa.enumhandler.ZsProjectTypiesEnumHandler"/>
+        <result column="industry_type" property="industryType"
+                typeHandler="com.camel.oa.enumhandler.ZsProjectIndustryTypiesEnumHandler"/>
+        <result column="place" property="place"/>
+        <result column="confirm_at" property="confirmAt"/>
+        <result column="start_at" property="startAt"/>
+        <result column="area_size" property="areaSize"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        zs_project.id,
+        zs_project.name,
+        zs_project.code,
+        zs_project.amount,
+        zs_project.business,
+        zs_project.manager,
+        zs_project.level,
+        zs_project.type,
+        zs_project.place,
+        zs_project.confirm_at,
+        zs_project.start_at,
+        zs_project.area_size,
+        zs_project.status,
+        zs_project.creator,
+        zs_project.created_at,
+        zs_project.industry_type
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_project
+        <where>
+            zs_project.`status` != 0
+            <if test="name != null and name != ''">AND zs_project.`name` LIKE CONCAT('%', #{name} , '%')</if>
+        </where>
+    </select>
+</mapper>

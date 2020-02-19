@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/menu/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/menu/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/menu/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/menu/index.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="jdbc:mysql://localhost:3306/dw_survey?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=GMT%2B8" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="jdbc:mysql://localhost:3306/dw_survey?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=GMT%2B8" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="jdbc:mysql://localhost:3306/dw_survey?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=GMT%2B8" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="dw_survey: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="jdbc:mysql://localhost:3306/dw_survey?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=GMT%2B8" type="feb32156:DbDataSourceImpl" />
+        <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JRebelWorkspace">
+    <option name="jrebelEnabledAutocompile" value="true" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="D:/tools/apache-maven-3.5.3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1W4BW8HkJWsIyZp0PL2EhQGWNot" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="sqlite&#10;mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/menu" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="com.zeroturnaround.javarebel.idea.plugin.settings.JRebelSettingsComponent" />
+  </component>
+  <component name="RebelAgentSelection">
+    <selection>jxr</selection>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\springcloud-survey\src\main\resources\templates\pages\menu" />
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\springcloud-survey\src\main\resources\static\js\cti" />
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\springcloud-survey\src\main\resources\templates" />
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\springcloud-survey\src\main\resources\static\pages\task\js" />
+      <recent name="C:\Users\Administrator\IdeaProjects\springcloud-boss\springcloud-survey\src\main\resources\static\img" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="Application" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.MysqlGenerator">
+    <configuration name="MysqlGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.camel.survey.utils.MysqlGenerator" />
+      <module name="springcloud-survey" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.camel.survey.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudActivitiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-activiti" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.SpringCloudActivitiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudAttendanceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-attendance" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.attendance.SpringCloudAttendanceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudAuthServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-auth-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.auth.SpringCloudAuthServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudEurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-eureka-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.eureka.server.SpringCloudEurekaServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudOaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-oa-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.oa.SpringCloudOaServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudSmsServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-sms-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.sms.SpringCloudSmsServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudStockApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="springcloud-stock-operation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.camel.stock.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.stock.SpringCloudStockApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudSurveyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-survey" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.survey.SpringCloudSurveyApplication" />
+      <option name="HIDE_BANNER" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-system" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.system.SpringCloudSystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringCloudZuulApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-zuul-getway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.gateway.SpringCloudZuulApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.MysqlGenerator" />
+      <item itemvalue="Spring Boot.SpringCloudZuulApplication" />
+      <item itemvalue="Spring Boot.SpringCloudSurveyApplication" />
+      <item itemvalue="Spring Boot.SpringCloudEurekaServerApplication" />
+      <item itemvalue="Spring Boot.SpringCloudOaServerApplication" />
+      <item itemvalue="Spring Boot.SpringCloudSmsServerApplication" />
+      <item itemvalue="Spring Boot.SpringCloudAttendanceApplication" />
+      <item itemvalue="Spring Boot.SpringCloudAuthServerApplication" />
+      <item itemvalue="Spring Boot.SpringCloudActivitiApplication" />
+      <item itemvalue="Spring Boot.SpringCloudSystemApplication" />
+      <item itemvalue="Spring Boot.SpringCloudStockApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MysqlGenerator" />
+        <item itemvalue="Spring Boot.SpringCloudStockApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <option name="contentProportion" value="0.3430736" />
+          <treeState>
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Application" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Running" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Not Started" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+            </expand>
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="" />
+      <created>1578399015962</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578399015962</updated>
+      <workItem from="1578399017969" duration="1500000" />
+      <workItem from="1578400531199" duration="145000" />
+      <workItem from="1578400688382" duration="273000" />
+      <workItem from="1578400972609" duration="753000" />
+      <workItem from="1578401782327" duration="264000" />
+      <workItem from="1578402061274" duration="6776000" />
+      <workItem from="1578494466059" duration="876000" />
+      <workItem from="1579445461070" duration="2379000" />
+      <workItem from="1579449575267" duration="251000" />
+      <workItem from="1579449839343" duration="99000" />
+      <workItem from="1579449949650" duration="2999000" />
+      <workItem from="1579452961312" duration="247000" />
+      <workItem from="1579453219994" duration="63000" />
+      <workItem from="1579453295419" duration="1141000" />
+      <workItem from="1579454447744" duration="723000" />
+      <workItem from="1579455182478" duration="1323000" />
+      <workItem from="1579616140541" duration="2151000" />
+      <workItem from="1579618310032" duration="408000" />
+      <workItem from="1579618760035" duration="1031000" />
+      <workItem from="1581910300547" duration="23229000" />
+      <workItem from="1581942443026" duration="10912000" />
+      <workItem from="1582007007260" duration="8869000" />
+      <workItem from="1582038951949" duration="1890000" />
+      <workItem from="1582040886939" duration="5171000" />
+      <workItem from="1582095107061" duration="9945000" />
+      <workItem from="1582123307803" duration="6594000" />
+    </task>
+    <task id="LOCAL-00001" summary="11">
+      <created>1581944273961</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1581944273961</updated>
+    </task>
+    <task id="LOCAL-00002" summary="11">
+      <created>1582007584474</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1582007584474</updated>
+    </task>
+    <task id="LOCAL-00003" summary="sockect 设置一个加载中。。。">
+      <created>1582010009991</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1582010009991</updated>
+    </task>
+    <task id="LOCAL-00004" summary="配置用户坐席">
+      <created>1582105706357</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1582105706357</updated>
+    </task>
+    <task id="LOCAL-00005" summary="c菜单创建">
+      <created>1582130294948</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1582130294948</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="11" />
+    <MESSAGE value="sockect 设置一个加载中。。。" />
+    <MESSAGE value="配置用户坐席" />
+    <MESSAGE value="c菜单创建" />
+    <option name="LAST_COMMIT_MESSAGE" value="c菜单创建" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="179" key="#Project_Structure" timestamp="1579450857708">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="179" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1579450857708" />
+    <state x="414" y="175" width="1174" height="689" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581950251386">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="175" width="1174" height="689" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581950251386" />
+    <state x="765" y="230" key="#com.intellij.ide.util.MemberChooser" timestamp="1582045776565">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="230" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582045776565" />
+    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1582130293760">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582130293760" />
+    <state width="507" height="466" key="DebuggerActiveHint" timestamp="1582100507921">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="507" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1582100507921" />
+    <state x="184" y="92" key="DiffContextDialog" timestamp="1581944133700">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="184" y="92" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581944133700" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1581933112255">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1581933112255" />
+    <state width="1213" height="355" key="GridCell.Tab.0.bottom" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="355" key="GridCell.Tab.0.center" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="355" key="GridCell.Tab.0.left" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="355" key="GridCell.Tab.0.right" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="355" key="GridCell.Tab.1.bottom" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="355" key="GridCell.Tab.1.center" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="355" key="GridCell.Tab.1.left" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="355" key="GridCell.Tab.1.right" timestamp="1582130316577">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="355" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582130316577" />
+    <state width="1213" height="201" key="GridCell.Tab.2.bottom" timestamp="1582108004727">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="201" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582108004727" />
+    <state width="1213" height="201" key="GridCell.Tab.2.center" timestamp="1582108004727">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="201" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582108004727" />
+    <state width="1213" height="201" key="GridCell.Tab.2.left" timestamp="1582108004727">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="201" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582108004727" />
+    <state width="1213" height="201" key="GridCell.Tab.2.right" timestamp="1582108004727">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1213" height="201" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582108004727" />
+    <state x="531" y="182" key="Registry" timestamp="1581942123464">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="531" y="182" key="Registry/0.0.1920.1040@0.0.1920.1040" timestamp="1581942123464" />
+    <state x="551" y="231" key="RollbackChangesDialog" timestamp="1581943626600">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="551" y="231" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581943626600" />
+    <state x="461" y="162" key="SettingsEditor" timestamp="1582099165450">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582099165450" />
+    <state width="544" height="540" key="SwitcherDM" timestamp="1582130544175">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="544" height="540" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1582130544175" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1582130296066">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1582130296066" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1581930657003">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581930657003" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1581930445104">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581930445104" />
+    <state x="599" y="254" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1581944153895">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="599" y="254" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581944153895" />
+    <state x="752" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581912376724">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="752" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1581912376724" />
+    <state x="686" y="140" width="858" height="900" key="find.popup" timestamp="1582130481801">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="686" y="140" width="858" height="900" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582130481801" />
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog" timestamp="1581919758021">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581919758021" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1582129183353">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582129183353" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1582125950782">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582125950782" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/service/impl/ArgsServiceImpl.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="applicationToolsUtils.currentUser()" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
