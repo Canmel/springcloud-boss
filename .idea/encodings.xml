@@ -3,19 +3,32 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-activiti" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-activiti/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-attendance" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-attendance/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-auth-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-auth-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-eureka-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-feign" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-feign/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-oa-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-redis" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-redis/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-sms-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-sms-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-stock-operation" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-stock-operation/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-survey" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-survey/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-system" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/springcloud-voice" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-system/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-zuul-getway" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java" charset="UTF-8" />
   </component>
 </project>

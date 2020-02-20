@@ -46,7 +46,8 @@
     <div class="dtks_box">
         <!--题目-->
         <form id="surveyForm" v-if="!complete">
-            <div class="kcks_title_ts" date-title="2" date-last="0" v-for="(item, index) in questions" v-show="showCurrent(item)">
+            <div class="kcks_title_ts" date-title="2" date-last="0" v-for="(item, index) in questions"
+                 v-show="showCurrent(item)">
                 <h4 class=" kctm_zzbt">{{item.orderNum}}. {{item.name}}</h4>
                 <ul class="dxt_box">
                     <div v-for="(opt, i) in item.options" v-if="item.type === 1 && showOptions(item, opt)">
@@ -156,7 +157,7 @@
             options: [],
             answer: [],
             survey: {},
-            tmpNext:null,
+            tmpNext: null,
             showSubmit: false
         },
         created: function () {
@@ -167,12 +168,12 @@
         },
         methods: {
             radioChange(opt) {
-                if(opt.target) {
+                if (opt.target) {
                     this.tmpNext = opt.target;
                 }
             },
             checkboxChange(opt) {
-                if(opt.target) {
+                if (opt.target) {
                     this.tmpNext = opt.target;
                 }
             },
@@ -180,7 +181,7 @@
                 if (!this.isInputed(this.currentQuestion, event)) {
                     return alert('请选择');
                 }
-                if(this.currentQuestion.type === 2 && this.isOutOfBounds(this.currentQuestion)) {
+                if (this.currentQuestion.type === 2 && this.isOutOfBounds(this.currentQuestion)) {
                     var resultStr = "";
                     if (question.maxSelect) {
                         resultStr += '最多只能选择' + question.maxSelect + '条';
@@ -190,21 +191,21 @@
                     }
                     alert(resultStr);
                     return;
-                }else{
-                    if(this.tmpNext && this.tmpNext !== this.currentIndex) {
+                } else {
+                    if (this.tmpNext && this.tmpNext !== this.currentIndex) {
                         this.currentIndex = this.tmpNext;
                     } else {
                         this.currentIndex++;
                     }
                 }
-                if(this.isLastQuestion()) {
+                if (this.isLastQuestion()) {
                     this.showSubmit = true;
                 }
             },
             isLastQuestion() {
                 for (var i = 0; i < this.questions.length; i++) {
                     var question = this.questions[i];
-                    if(question.orderNum === this.currentIndex + 1) {
+                    if (question.orderNum === this.currentIndex + 1) {
                         return false;
                     }
                 }
@@ -247,8 +248,8 @@
                 }
 
             },
-            showCurrent(question){
-                if(question.orderNum === this.currentIndex) {
+            showCurrent(question) {
+                if (question.orderNum === this.currentIndex) {
                     this.currentQuestion = question;
                     return true;
                 }
@@ -285,16 +286,22 @@
 
             },
             loadSurvey() {
-                var that = this;
-                var params = location.href.split('?')[1];
-                AJAX.GET('zsSurvey/' + params.split('=')[0], {}, function (resp) {
+                let that = this;
+                let params = location.href.split('?')[1];
+                let surveyParams = params.split("&");
+                for (let i = 0; i < surveyParams.length; i++) {
+                    if (surveyParams[i].indexOf("surveyId") > -1) {
+                        this.surveyId = surveyParams[i].split("=")[1]
+                    }
+                }
+                console.log(123)
+                // let surveyId = surveyParam.split("=");
+                AJAX.GET('zsSurvey/' + this.surveyId, {}, function (resp) {
                     that.survey = resp.data;
                 });
-                AJAX.GET('zsSurvey/questions/' + params.split('=')[0], {}, function (resp) {
+                AJAX.GET('zsSurvey/questions/' + this.surveyId, {}, function (resp) {
                     that.questions = resp.data;
                 });
-                this.surveyId = params.split('=')[0];
-                this.phone = params.split('=')[1];
                 console.log('问卷ID', params.split('=')[0]);
                 console.log('用户电话', params.split('=')[1]);
             }
