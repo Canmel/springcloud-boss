@@ -12,5 +12,6 @@
 /springcloud-sms-server/target/
 /springcloud-auth-server/target/
 /springcloud-zuul-getway/target/
+/springcloud-eureka-server/target/
 /.idea/workspace.xml
 
