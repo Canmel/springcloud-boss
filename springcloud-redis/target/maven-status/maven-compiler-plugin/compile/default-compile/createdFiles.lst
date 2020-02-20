@@ -1,5 +1,0 @@
-com/camel/redis/entity/RedisUser.class
-com/camel/redis/exceptions/RedisServiceNotFoundException.class
-com/camel/redis/RedisApplication.class
-com/camel/redis/utils/SessionContextUtils.class
-com/camel/redis/utils/SerizlizeUtil.class

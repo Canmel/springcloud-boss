@@ -1,4 +1,0 @@
-com\camel\stock\service\StockService.class
-com\camel\stock\SpringCloudStockApplication.class
-com\camel\stock\service\impl\StockServiceImpl.class
-com\camel\stock\controller\StockController.class

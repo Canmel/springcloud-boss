@@ -6,19 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="springcloud-system" />
+        <module name="springcloud-oa-server" />
         <module name="springcloud-auth-server" />
         <module name="springcloud-eureka-server" />
         <module name="springcloud-core" />
+        <module name="springcloud-sms-server" />
         <module name="springcloud-activiti" />
-        <module name="springcloud-oa-server" />
         <module name="springcloud-zuul-getway" />
         <module name="springcloud-common" />
-        <module name="springcloud-sms-server" />
+        <module name="springcloud-redis" />
         <module name="springcloud-survey" />
         <module name="springcloud-attendance" />
         <module name="springcloud-stock-operation" />
-        <module name="springcloud-redis" />
         <module name="spring-boot-activiti" />
         <module name="springcloud-feign" />
       </profile>
@@ -28,6 +27,7 @@
       <module name="spring-boot-activiti" target="1.8" />
       <module name="springcloud-bpm" target="1.8" />
       <module name="springcloud-bpm-server" target="1.8" />
+      <module name="springcloud-system" target="1.8" />
       <module name="springcloud-system (1)" target="1.8" />
       <module name="springcloud-verify" target="1.8" />
       <module name="springcloud-voice" target="1.8" />
