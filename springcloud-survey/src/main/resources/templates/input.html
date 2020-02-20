@@ -211,9 +211,8 @@
                 AJAX.POST_JSON('zsSurvey/valid', {
                     zsAnswerItemSaves: $('#theForm').serializeArray(),
                     surveyId: this.getParams('surveyId'),
-                    phone: this.getParams('phone'),
-                    record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    phone: this.phone,
+                    seat: this.phone
                 }, function (resp) {
                     if(resp.msg != '') {
                         alert(resp.msg);
@@ -355,9 +354,8 @@
                 AJAX.POST_JSON('zsQuestion/answer', {
                     zsAnswerItemSaves: $('#theForm').serializeArray(),
                     surveyId: this.getParams('surveyId'),
-                    phone: this.getParams('phone'),
-                    record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    phone: this.phone,
+                    seat: this.phone
                 }, function (resp) {
                     // alert(resp.msg);
                     $("#theForm").hide();
@@ -391,8 +389,8 @@
                 var result = null;
                 this.paramsPair.forEach(function (value) {
                     if (value.includes(paramName)) {
-                        result = value.split("=")[1]
-                        return
+                        result = value.split("=")[1];
+                        return;
                     }
                 });
                 return result;
