@@ -156,6 +156,15 @@
                 <div class="question">
                     <h4 class="question-title" style="font-size: 30px;">{{survey.endShow}}</h4>
                 </div>
+                <div class="question-option row">
+                    <div style="width: 25%; display: inline-block; text-align: right;"><label>您的手机号：</label></div>
+                    <div style="width: 70%; display: inline-block; text-align: right;">
+                        <input class="form-control" id="phone" v-model="phone">
+                    </div>
+                </div>
+                <div class="row text-center" v-if="showSubmit">
+                    <span class="submit btn btn-success" v-on:click="submitPhone(item, $event)">提交</span>
+                </div>
             </div>
         </div>
 

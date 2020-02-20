@@ -79,7 +79,11 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
      */
     private ZsSurveyCollectType collectType;
 
+    @TableField(value = "end_show")
     private String endShow;
+
+    @TableField(value = "collect_phone")
+    private Integer collectPhone;
 
     private ZsSurveyState state;
 
