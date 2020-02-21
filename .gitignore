@@ -7,11 +7,15 @@
 /springcloud-zuul-getway/springcloud-zuul-getway.iml
 /springcloud-core/target/
 /springcloud-common/target/
+/springcloud-redis/target/
+/springcloud-survey/target/
 /springcloud-system/target/
 /springcloud-activiti/target/
 /springcloud-sms-server/target/
+/springcloud-attendance/target/
 /springcloud-auth-server/target/
 /springcloud-zuul-getway/target/
 /springcloud-eureka-server/target/
+/springcloud-stock-operation/target/
 /.idea/workspace.xml
 

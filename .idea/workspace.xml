@@ -2,11 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/model/ZsSurvey.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/model/ZsSurvey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/input.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/input.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/project/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/project/details.html" afterDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-common/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-attendance/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-activiti/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-auth-server/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-core/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-feign/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-eureka-server/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-redis/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-oa-server/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-stock-operation/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-sms-server/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-survey/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-system/target/" />
+    <ignored path="$PROJECT_DIR$/springcloud-zuul-getway/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,6 +66,49 @@
     </expand>
     <select />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-841277697">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="gitignore" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Git file" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="gitignore" value="13" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Git file" value="13" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="64">
+              <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -60,8 +119,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
   <component name="JRebelWorkspace">
     <option name="jrebelEnabledAutocompile" value="true" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -70,7 +142,47 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/editor-app/libs/es5-shim-15.3.4.5/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="873" />
+  </component>
   <component name="ProjectId" id="1W4BW8HkJWsIyZp0PL2EhQGWNot" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-activiti" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-survey" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -86,6 +198,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1582250702829" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/springcloud-system/pom.xml" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -110,6 +223,16 @@
         <option value="Application" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
+    </option>
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
     </option>
   </component>
   <component name="RunManager" selected="Application.MysqlGenerator">
@@ -207,7 +330,6 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.MysqlGenerator" />
       <item itemvalue="Spring Boot.SpringCloudZuulApplication" />
       <item itemvalue="Spring Boot.SpringCloudSurveyApplication" />
       <item itemvalue="Spring Boot.SpringCloudEurekaServerApplication" />
@@ -217,6 +339,7 @@
       <item itemvalue="Spring Boot.SpringCloudAuthServerApplication" />
       <item itemvalue="Spring Boot.SpringCloudActivitiApplication" />
       <item itemvalue="Spring Boot.SpringCloudSystemApplication" />
+      <item itemvalue="Application.MysqlGenerator" />
       <item itemvalue="Spring Boot.SpringCloudStockApplication" />
     </list>
     <recent_temporary>
@@ -297,6 +420,7 @@
       <workItem from="1582194786601" duration="1105000" />
       <workItem from="1582197475523" duration="2634000" />
       <workItem from="1582208395631" duration="5535000" />
+      <workItem from="1582250515457" duration="188000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1581944273961</created>
@@ -371,8 +495,55 @@
     <option name="localTasksCounter" value="11" />
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="188000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="JRebel" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="UI Designer" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Capture Tool" />
+      <window_info id="Designer" />
+      <window_info id="Web" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Spring" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Problems" />
+      <window_info anchor="bottom" id="Java Enterprise" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" visible="true" weight="0.3290653" />
+      <window_info anchor="bottom" id="JRebel Console" side_tool="true" />
+      <window_info anchor="bottom" id="Run Dashboard" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Maven Projects" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Bean Validation" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="11" />
@@ -518,6 +689,7 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/service/impl/ArgsServiceImpl.java</url>
           <line>63</line>
+          <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
@@ -527,5 +699,14 @@
         <watch expression="applicationToolsUtils.currentUser()" language="JAVA" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
