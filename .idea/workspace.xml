@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/19259847-7e35-4907-90db-78f870c1e81b.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/19259847-7e35-4907-90db-78f870c1e81b.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/input.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/input.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,23 +55,6 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>survey</find>
-      <find>submit</find>
-      <find>$(&quot;#theForm&quot;).hide();</find>
-      <find>submit(</find>
-      <find>question-title</find>
-      <find>#000</find>
-      <find>#337ab7</find>
-      <find>end</find>
-      <find>container</find>
-      <find>下一</find>
-      <find>收集号码</find>
-      <find>question-option</find>
-      <find>submitPhone</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -86,11 +67,6 @@
         <option name="mavenHome" value="D:/tools/apache-maven-3.5.3" />
       </MavenGeneralSettings>
     </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="873" />
   </component>
   <component name="ProjectId" id="1W4BW8HkJWsIyZp0PL2EhQGWNot" />
   <component name="ProjectViewState">
@@ -322,7 +298,7 @@
       <workItem from="1582197475523" duration="2634000" />
       <workItem from="1582208395631" duration="5535000" />
       <workItem from="1582250515457" duration="11229000" />
-      <workItem from="1582301575337" duration="990000" />
+      <workItem from="1582301575337" duration="1992000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1581944273961</created>
@@ -401,7 +377,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582250723059</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="删除多余文件">
+      <created>1582308440739</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1582308440739</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -428,10 +411,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="230" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582045776565" />
-    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1582209031020">
+    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1582308439740">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582209031020" />
+    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582308439740" />
     <state width="507" height="466" key="DebuggerActiveHint" timestamp="1582100507921">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -492,6 +475,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1213" height="201" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582108004727" />
+    <state x="669" y="236" key="MultipleFileMergeDialog" timestamp="1582308459161">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="669" y="236" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582308459161" />
     <state x="531" y="182" key="Registry" timestamp="1581942123464">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -504,10 +491,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582197787811" />
-    <state width="544" height="540" key="SwitcherDM" timestamp="1582213872384">
+    <state width="544" height="540" key="SwitcherDM" timestamp="1582308626065">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="544" height="540" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1582213872384" />
+    <state width="544" height="540" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1582308626065" />
     <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1582209043870">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -528,14 +515,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="752" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1581912376724" />
-    <state x="686" y="140" width="858" height="900" key="find.popup" timestamp="1582213061102">
+    <state x="686" y="140" width="858" height="900" key="find.popup" timestamp="1582309081303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="686" y="140" width="858" height="900" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582213061102" />
-    <state x="648" y="311" key="git4idea.merge.GitPullDialog" timestamp="1582308381317">
+    <state x="686" y="140" width="858" height="900" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582309081303" />
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog" timestamp="1582308450020">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="648" y="311" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582308381317" />
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582308450020" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1582129183353">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

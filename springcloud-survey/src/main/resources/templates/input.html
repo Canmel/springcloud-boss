@@ -58,12 +58,14 @@
         }
 
         #lottery table {
-            background-color: yellow;
+            background-color: #da5e54;
         }
 
         #lottery table td {
             position: relative;
             width: 30%;
+            height: 100px;
+            border: 2px solid #ffe600;
             text-align: center;
             color: #333;
             font-index: -999
@@ -97,43 +99,7 @@
     </header>
 
     <section>
-        <div id="lottery">
-            <table border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td class="lottery-unit lottery-unit-0">
-                        <span>100元话费</span>
-                        <div class="mask"></div>
-                    </td>
-                    <td class="lottery-unit lottery-unit-1"><img src="img/cj/gift1.jpg">
-                        <div class="mask"></div>
-                    </td>
-                    <td class="lottery-unit lottery-unit-2"><img src="img/cj/gift2.jpg">
-                        <div class="mask"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="lottery-unit lottery-unit-7"><img src="img/cj/gift7.jpg">
-                        <div class="mask"></div>
-                    </td>
-                    <td class="lottery-unit xxx" v-on:click="cjclick($event)"><img src="img/cj/lottery1.jpg"></td>
-                    <td class="lottery-unit lottery-unit-3"><img src="img/cj/gift3.jpg">
-                        <div class="mask"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="lottery-unit lottery-unit-6"><img src="img/cj/gift6.jpg">
-                        <div class="mask"></div>
-                    </td>
-                    <td class="lottery-unit lottery-unit-5"><img src="img/cj/gift5.jpg">
-                        <div class="mask"></div>
-                    </td>
-                    <td class="lottery-unit lottery-unit-4"><img src="img/cj/gift4.jpg">
-                        <div class="mask"></div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;display: none;">
+        <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
@@ -257,6 +223,42 @@
                 <div class="question">
                     <h4 class="question-title" style="font-size: 30px;">{{survey.endShow}}</h4>
                 </div>
+            </div>
+            <div id="lottery">
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="lottery-unit lottery-unit-0">
+                            <span>100元话费</span>
+                            <div class="mask"></div>
+                        </td>
+                        <td class="lottery-unit lottery-unit-1"><span>10元话费</span>
+                            <div class="mask"></div>
+                        </td>
+                        <td class="lottery-unit lottery-unit-2"><span>感谢参与</span>
+                            <div class="mask"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lottery-unit lottery-unit-7"><span>10元话费</span>
+                            <div class="mask"></div>
+                        </td>
+                        <td class="lottery-unit xxx" v-on:click="cjclick($event)"><img src="img/cj/lottery1.jpg"></td>
+                        <td class="lottery-unit lottery-unit-3"><span>3元微信红包</span>
+                            <div class="mask"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lottery-unit lottery-unit-6"><span>谢谢惠顾</span>
+                            <div class="mask"></div>
+                        </td>
+                        <td class="lottery-unit lottery-unit-5"><span>2元话费</span>
+                            <div class="mask"></div>
+                        </td>
+                        <td class="lottery-unit lottery-unit-4"><span>祝君好运</span>
+                            <div class="mask"></div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </section>
