@@ -142,10 +142,21 @@
                         <div class="form-group" v-if="parseInt(new_survey.collectType) === 0">
                             <label class="col-sm-3 control-label">收集号码：</label>
                             <div class="col-sm-8">
-                                <select name="collect_num" aria-required="true"
+                                <select name="collectPhone" aria-required="true"
                                         aria-invalid="true" class="form-control m-b"
                                         v-model="new_survey.collectPhone">
                                     <option value="1">需要</option>
+                                    <option value="0">不需要</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" v-if="parseInt(new_survey.collectType) === 0">
+                            <label class="col-sm-3 control-label">奖励方式：</label>
+                            <div class="col-sm-8">
+                                <select name="collect_num" aria-required="true"
+                                        aria-invalid="true" class="form-control m-b"
+                                        v-model="new_survey.collectPhone">
+                                    <option value="1">话费红包</option>
                                     <option value="0">不需要</option>
                                 </select>
                             </div>

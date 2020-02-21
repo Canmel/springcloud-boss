@@ -31,7 +31,7 @@ body {
 	font-size: 100%;
 	line-height: 1.25;
 	font-family: 'Lato', Arial, sans-serif;
-	background-color: #000;
+	/*background-color: #000;*/
 }
 
 a {
@@ -48,7 +48,7 @@ a:hover, a:focus {
 	margin: 0 auto;
 	padding: 3em 1em;
 	text-align: center;
-	color: rgba(255, 255, 255, 0.85);
+	color: #555
 }
 
 .codrops-header h1 {
@@ -112,7 +112,7 @@ a:hover, a:focus {
 section {
 	padding: 5em 2em 10em;
 	background-color: #fff;
-	color: black;
+	color: #555;
 }
 
 section.related {
@@ -183,6 +183,12 @@ section.related {
 	}
 	.question-option {
 		padding: 0.5% 5% 1% 5%;
+		border: 1px solid #2860903d;
+		margin-bottom: 4px;
+		border-radius: 3px;
+	}
+	.end-show {
+		font-size: 18px;
 	}
 }
 
@@ -192,6 +198,9 @@ section.related {
 	}
 	.question-option {
 		padding: 0.5% 20% 1% 20%;
+	}
+	.end-show {
+		font-size: 30px;
 	}
 }
 
