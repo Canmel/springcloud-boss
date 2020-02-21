@@ -50,6 +50,43 @@
             color: #dedede;
             opacity: 1;
         }
+
+        #lottery {
+            width: 100%;
+            margin: 0px auto;
+            border: 4px solid #ba1809;
+        }
+
+        #lottery table {
+            background-color: yellow;
+        }
+
+        #lottery table td {
+            position: relative;
+            width: 30%;
+            text-align: center;
+            color: #333;
+            font-index: -999
+        }
+
+        #lottery table td img {
+            display: block;
+            width: 100%;
+        }
+
+        #lottery table td.active .mask {
+            display: block;
+        }
+
+        .mask {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(252, 211, 4, 0.5);
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -58,8 +95,45 @@
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
     </header>
+
     <section>
-        <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
+        <div id="lottery">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="lottery-unit lottery-unit-0">
+                        <span>100元话费</span>
+                        <div class="mask"></div>
+                    </td>
+                    <td class="lottery-unit lottery-unit-1"><img src="img/cj/gift1.jpg">
+                        <div class="mask"></div>
+                    </td>
+                    <td class="lottery-unit lottery-unit-2"><img src="img/cj/gift2.jpg">
+                        <div class="mask"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="lottery-unit lottery-unit-7"><img src="img/cj/gift7.jpg">
+                        <div class="mask"></div>
+                    </td>
+                    <td class="lottery-unit xxx" v-on:click="cjclick($event)"><img src="img/cj/lottery1.jpg"></td>
+                    <td class="lottery-unit lottery-unit-3"><img src="img/cj/gift3.jpg">
+                        <div class="mask"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="lottery-unit lottery-unit-6"><img src="img/cj/gift6.jpg">
+                        <div class="mask"></div>
+                    </td>
+                    <td class="lottery-unit lottery-unit-5"><img src="img/cj/gift5.jpg">
+                        <div class="mask"></div>
+                    </td>
+                    <td class="lottery-unit lottery-unit-4"><img src="img/cj/gift4.jpg">
+                        <div class="mask"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;display: none;">
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
@@ -172,7 +246,8 @@
                 </div>
                 <div class="row text-center" v-if="showSubmit">
                     <span class="btn btn-primary"
-                          style="padding: 10px; cursor: pointer; width: 92%; font-size: 16px;" v-on:click="submitPhone()">提交</span>
+                          style="padding: 10px; cursor: pointer; width: 92%; font-size: 16px;"
+                          v-on:click="submitPhone()">提交</span>
                 </div>
             </div>
         </div>
@@ -210,7 +285,16 @@
             nextIndex: 1,
             tmpNext: null,
             showSubmit: false,
-            endInfo: '问卷结束，感谢您的配合！'
+            endInfo: '问卷结束，感谢您的配合！',
+            place: 0, //请求后指定停留在某个位置
+            click: false, //默认值为false可抽奖，防止重复点击
+            index: -1, //当前转动到哪个位置，起点位置
+            count: 0, //总共有多少个位置
+            timer: 0, //setTimeout的ID，用clearTimeout清除
+            speed: 20, //初始转动速度
+            times: 0, //转动次数
+            cycle: 50, //转动基本次数：即至少需要转动多少次再进入抽奖环节
+            prize: -1, //中奖位置
         },
         created: function () {
             this.loadParams();
@@ -228,6 +312,127 @@
             }
         },
         methods: {
+            cjclick(event) {
+                console.log(event)
+                event.preventDefault();
+                this.init('lottery');
+                if (this.click) { //click控制一次抽奖过程中不能重复点击抽奖按钮，后面的点击不响应
+                    return false;
+                } else {
+                    this.getLottery();
+                    return false;
+                }
+            },
+            init: function(id) {
+                if ($("#" + id).find(".lottery-unit").length > 0) {
+                    $lottery = $("#" + id);
+                    $units = $lottery.find(".lottery-unit");
+                    this.obj = $lottery;
+                    this.count = $units.length;
+                    $lottery.find(".lottery-unit-" + this.index).addClass("active");
+                };
+            },
+            roll: function() {
+                var index = this.index,
+                    count = this.count,
+                    lottery = this.obj;
+                $(lottery).find(".lottery-unit-" + index).removeClass("active");
+                index += 1;
+                if (index > count - 1) {
+                    index = 0;
+                };
+                $(lottery).find(".lottery-unit-" + index).addClass("active");
+                this.index = index;
+                return false;
+            },
+            stop: function() {
+                this.times += 1;
+                this.roll(); //转动过程调用的是lottery的roll方法，这里是第一次调用初始化
+                if (this.times > this.cycle + 10 && this.prize == this.index) {
+                    clearTimeout(this.timer);
+                    this.prize = -1;
+                    this.times = 0;
+                    this.click = false;
+                    //可以在这个位置写上中奖弹框，这个是转盘停止时触发事件
+                    console.log('您抽中了第' + this.place + '个奖品');
+                } else {
+                    if (this.times < this.cycle) {
+                        this.speed -= 10;
+                    } else if (this.times == this.cycle) {
+                        // this.place = 3; //案例中奖物品通过一个随机数生成
+                        this.prize = this.place;
+                        // this.prize = this.place;  //这个可以通过ajax请求回来的数据赋值给this.place
+                    } else {
+                        if (this.times > this.cycle + 10 && ((this.prize == 0 && this.index == 7) || this.prize == this.index + 1)) {
+                            this.speed += 110;
+                        } else {
+                            this.speed += 20;
+                        }
+                    }
+                    if (this.speed < 40) {
+                        this.speed = 40;
+                    };
+                    this.timer = setTimeout(this.stop, this.speed); //循环调用
+                }
+                return false;
+            },
+            getLottery: function() {
+                this.place = 4
+                //ajax请求中奖接口，本案例注释便于案例正常展示效果，实际中可参考注释的代码
+                // $.ajax({
+                //     url: '/activity/this',//中奖接口
+                //     type: 'POST',
+                //     dataType: 'json',
+                //     data: {
+                //         'activityCategory': 'POINT_SHOP'//提交字段
+                //     }
+                // })
+                // .done(function(data) {
+                //     if (data.returnCode == 0) {//登录后的操作
+
+                //         switch (data.prize) {//请求返回的抽中奖品字段
+                //             case 'POINT_SHOP_INTEREST_COUPON_2': //0.2加息券
+                //                 this.place = 7;//当前奖品所在九宫格位置
+                //                 break;
+                //             case 'POINT_SHOP_RED_ENVELOPE_10': //10元投资红包
+                //                 this.place = 0;//当前奖品所在九宫格位置
+                //                 break;
+                //             case 'POINT_SHOP_POINT_500': //500积分
+                //                 this.place = 1;//当前奖品所在九宫格位置
+                //                 break;
+                //             case 'POINT_SHOP_PHONE_CHARGE_10': //10元话费
+                //                 this.place = 5;//当前奖品所在九宫格位置
+                //                 break;
+                //             case 'OINT_SHOP_JD_100': //100元京东卡
+                //                 this.place = 2;//当前奖品所在九宫格位置
+                //                 break;
+                //             case 'POINT_SHOP_POINT_3000': //3000积分
+                //                 this.place = 6;//当前奖品所在九宫格位置
+                //                 break;
+                //             case 'POINT_SHOP_INTEREST_COUPON_5': //0.5加息券
+                //                 this.place = 4;//当前奖品所在九宫格位置
+                //                 break;
+                //             case 'POINT_SHOP_RED_ENVELOPE_50': //50元投资红包
+                //                 this.place = 3;//当前奖品所在九宫格位置
+                //                 break;
+                //         }
+                this.speed = 100;
+                this.stop(); //转圈过程不响应click事件，会将click置为false
+                this.click = true; //一次抽奖完成后，设置click为true，可继续抽奖
+                //     } else if (data.returnCode == 1) {//没有抽奖机会
+                //         alert('没有抽奖机会');
+                //     } else if (data.returnCode == 2) {//未登录
+                //         location.href='/login';
+                //     } else if (data.returnCode == 3) {//不在活动时间范围内！
+                //         alert('不在活动时间内');
+                //     } else if (data.returnCode == 4) {//实名认证
+                //         alert('未实名认证');
+                //     }
+                // })
+                // .fail(function() {
+                //     alert('请求失败，请重试！');
+                // });
+            },
             submitPhone() {
                 if (!(/^1[3456789]\d{9}$/.test(this.phone))) {
                     alert("手机号码有误，请重填");
