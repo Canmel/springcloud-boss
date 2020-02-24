@@ -139,6 +139,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">视频监控：</label>
+                            <div class="col-sm-8">
+                                <select name="collect_num" aria-required="true"
+                                        aria-invalid="true" class="form-control m-b"
+                                        v-model="new_survey.monit">
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group" v-if="parseInt(new_survey.collectType) === 0">
                             <label class="col-sm-3 control-label">收集号码：</label>
                             <div class="col-sm-8">
@@ -203,7 +214,8 @@
                 collectType: 1,
                 exams: [],
                 endShow: '',
-                collectPhone: '0'
+                collectPhone: '0',
+                monit: '0'
             },
             edit_mode: false,
             exams_options: []
@@ -245,7 +257,8 @@
                     collectNum: '',
                     collectType: 1,
                     exams: [],
-                    endShow: ''
+                    endShow: '',
+                    monit: 0
                 };
                 this.new_survey.collectType = '1';
             },
@@ -295,7 +308,8 @@
                     currentNum: item.currentNum,
                     collectType: item.collectType.value,
                     exams: item.exams,
-                    endShow: item.endShow
+                    endShow: item.endShow,
+                    monit: 0
                 }
             },
             resetForm() {
@@ -303,7 +317,8 @@
                     id: '',
                     name: '',
                     projectId: '',
-                    collectNum: ''
+                    collectNum: '',
+                    monit: 0
                 }
             },
             showSurveyDetails(item) {

@@ -3,6 +3,7 @@ package com.camel.survey.service;
 import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsSeat;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.survey.model.ZsSign;
 
 /**
  * <p>
@@ -14,4 +15,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ZsSeatService extends IService<ZsSeat> {
     ZsSeat selectByUid(Integer id);
+
+    ZsSeat selectLastByUser(Integer id);
 }

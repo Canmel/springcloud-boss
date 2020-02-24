@@ -1,5 +1,7 @@
-<SCRIPT src="js/SIPml-api.js?svn=250" type="text/javascript"></SCRIPT>
+<script src="js/SIPml-api.js?svn=250" type="text/javascript"></script>
 <script src="/survey/js/cti/webrtc-1.0.js"></script>
+<script src="/survey/js/common.js"></script>
+
 <style>
     .droppable-active {
         background-color: #ffe !important;
@@ -54,6 +56,26 @@
         color: red;
     }
 </style>
+<style>
+    .bg-f2 {
+        background-color: #f8f9fa;
+    }
+
+    video {
+        width: 320px;
+        height: auto;
+    }
+
+    .videoRow {
+        margin-top: 30px;
+    }
+
+    #previewLabel {
+        display: block;
+        position: absolute;
+    }
+</style>
+
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="row">
         <div class="ibox float-e-margins">
@@ -197,10 +219,28 @@
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
+                                            <div class="contact-box">
+                                                <div class="col-sm">
+                                                    <button type="button" v-on:click="openRoom()" class="btn btn-primary btn-sm">打开摄像头</button>
+                                                    <button type="button" v-on:click="leaveRoom()" class="btn btn-secondary btn-sm">退出</button>
+                                                </div>
+                                            </div>
+                                            <div class="contact-box" id="previewContext" style="display: none;">
+                                                <div class="col-sm">
+                                                    <label id="previewLabel" class="text-white"></label>
+                                                    <video id="previewVideo" autoplay muted playsinline></video>
+                                                </div>
+                                                <div class="col-sm remoteVideo">
+                                                     <video  autoplay muted playsinline></video>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -472,7 +512,19 @@
                 password: ''
             },
             socketServer: 0,
-            profile: {}
+            profile: {},
+            zg: null,
+            config: {
+                "appid": 2696647174,    // 必填，应用id，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "idName": new Date().getTime() + '',    // 必填，用户自定义id，全局唯一
+                "nickName": 'u' + new Date().getTime(),    // 必填，用户自定义昵称
+                "server": "wss://webliveroom-test.zego.im/ws",    // 必填，接入服务器地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "logLevel": 0,    //日志级别，debug:0,info:1,warn:2,error:3,report:99,disable:100（数字越大，日志越少），建议选择 1
+                "logUrl": "",    // 必填，logServer 地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "remoteLogLevel": 0,    // 上传日志最低级别，建议跟 logLevel 一致
+                "testEnvironment": true, // 是否开启测试环境，默认为正式环境
+                "audienceCreateRoom": false //是否允许观众创建房间
+            }
         },
         watch: {
             loadData(v, oldVal) {
@@ -588,8 +640,15 @@
                         name: resp.data.name,
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
-                        projectId: resp.data.projectId
+                        projectId: resp.data.projectId,
+                        monit: resp.data.monit
                     };
+
+                    // 判定是否需要视频监控
+                    if(that.survey.monit.value === 1) {
+                        // that.initZg();
+                    }
+
                 })
             },
             loadQuestions() {
@@ -614,12 +673,26 @@
                     that.connectInfo.exten = window.exten;
                     that.connectInfo.password = window.password;
                 });
+            },
+            initZg() {
+
+            },
+            openRoom() {
+                $('#previewContext').show();
+                $('#signalUrl').val() && zg.setCustomSignalUrl($('#signalUrl').val())
+                zg.setUserStateUpdate(true);
+                openRoom(this.connectInfo.seatNum + '', 1);
+            },
+            leaveRoom() {
+                $('#previewContext').hide();
+                leaveRoom();
             }
         },
         created: function () {
-            this.loadConnectInfo();
-
+            this.initZg();
             this.loadEntity();
+            console.log(123);
+            this.loadConnectInfo();
             this.loadQuestions();
             this.loadMe();
             $ctiserver = this;
@@ -642,7 +715,8 @@
 
             websocket.onclose = function () {
                 setMessageInnerHTML("close");
-            }
+            };
+
             //离开或刷新页面
             window.onbeforeunload = function () {
                 //return '确认要退出页面吗?';
@@ -654,13 +728,18 @@
                 if (useWebrtc == "yes") {
                     sipUnRegister();
                 }
-            }
+            };
+            // openRoom('809', 1);
+
         },
         mounted: function () {
             this.bindEvent();
         },
         beforeCreate: function () {
             console.log('beforeCreate');
+        },
+        beforeDestroy: function () {
+            alert(123);
         }
     });
 

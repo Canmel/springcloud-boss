@@ -91,6 +91,8 @@
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
                 </li>
+                <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">正在收集</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane active">
@@ -393,6 +395,50 @@
                         </div>
                     </div>
                 </div>
+                <div id="tab-4" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>用户名</th>
+                                            <th>昵称</th>
+                                            <th>电话</th>
+                                            <th>电话</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(item, index) in monitors">
+                                            <th scope="row">{{index + 1}}</th>
+                                            <td>
+                                                <span>{{item.username}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.nickname}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.mobile}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.mobile}}</span>
+                                            </td>
+                                            <td>
+                                                <button type="button" v-on:click="showMonit(item)" v-if="survey.monit.value === 1"
+                                                        class="btn btn-primary btn-xs">查看
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -419,6 +465,25 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="myVideoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myVideoModalLabel">访员现场视频</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm remoteVideo">
+                        <!-- <video  autoplay muted playsinline></video> -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="leaveRoom">关闭</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -456,7 +521,9 @@
             },
             itemForm: {
                 firstSelect: null
-            }
+            },
+            monitors: [],
+            currentSeat: {}
         },
         watch: {
             loadData(v, oldVal) {
@@ -464,6 +531,19 @@
         },
         computed: {},
         methods: {
+            initZg() {
+                bindEvent();
+                openRoom('808', 2);
+            },
+            showMonit(item) {
+                let that = this;
+                AJAX.GET('monitor/user?uid=' + item.uid, {} ,function (resp) {
+                    console.log(resp);
+                    that.currentSeat = resp.data;
+                    $("#myVideoModal").modal('show');
+                    that.initZg();
+                })
+            },
             closeSurvey(survey) {
                 confirm("您确定要关闭该问卷吗?", "", function (isConfirm) {
                     if (isConfirm) {
@@ -578,11 +658,12 @@
                 });
             },
             loadEntity() {
-                var that = this;
+                let that = this;
                 AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.survey = {
                         id: resp.data.id,
                         name: resp.data.name,
+                        monit: resp.data.monit,
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
@@ -591,15 +672,23 @@
                 })
             },
             loadQuestions() {
-                var that = this;
+                let that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.loadData.zsQuestions = resp.data;
+                })
+            },
+            loadMonitors() {
+                let that = this;
+                AJAX.GET('monitor/all?surveyId=' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.monitors = resp.data;
+                    console.log(resp.data);
                 })
             }
         },
         created: function () {
             this.loadEntity();
             this.loadQuestions();
+            this.loadMonitors();
         },
         mounted: function () {
             this.bindEvent();

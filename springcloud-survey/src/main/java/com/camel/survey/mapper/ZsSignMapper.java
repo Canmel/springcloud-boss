@@ -22,4 +22,8 @@ public interface ZsSignMapper extends BaseMapper<ZsSign> {
      * @return
      */
     List<ZsSign> list(ZsSign entity);
+
+    List<ZsSign> allInSurvey(Integer id);
+
+    ZsSign selectLastByUser(Integer id);
 }

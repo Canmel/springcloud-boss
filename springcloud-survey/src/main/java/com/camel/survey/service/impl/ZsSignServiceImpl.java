@@ -77,4 +77,14 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
 
         return ResultUtil.success(zsDynamicViews);
     }
+
+    @Override
+    public ZsSign selectLastByUser(Integer id) {
+        return mapper.selectLastByUser(id);
+    }
+
+    @Override
+    public List<ZsSign> allInSurvey(Integer id) {
+        return mapper.allInSurvey(id);
+    }
 }
