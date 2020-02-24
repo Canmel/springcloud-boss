@@ -492,7 +492,7 @@
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
 <script>
-    new Vue({
+    currentVue = new Vue({
         el: '#subContainer',
         data: {
             selectAnswer: {},
@@ -692,6 +692,9 @@
         },
         mounted: function () {
             this.bindEvent();
+        },
+        beforeDestroy: function () {
+            leaveRoom();
         }
     });
 </script>

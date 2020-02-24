@@ -472,7 +472,7 @@
 
 </script>
 <script>
-    $cti = new Vue({
+    currentVue = new Vue({
         el: '#subContainer',
         data: {
             selectAnswer: {},
@@ -739,7 +739,7 @@
             console.log('beforeCreate');
         },
         beforeDestroy: function () {
-            alert(123);
+            leaveRoom();
         }
     });
 

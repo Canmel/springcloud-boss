@@ -417,8 +417,11 @@ function leaveRoom() {
     useLocalStreamList = [];
     $('.remoteVideo').html('');
     $('.chatBox-content-demo').html('');
-    $('.chat-message-num').text(0)
-    zg.logout();
+    $('.chat-message-num').text(0);
+    if(zg) {
+        zg.logout();
+    }
+
 }
 
 
