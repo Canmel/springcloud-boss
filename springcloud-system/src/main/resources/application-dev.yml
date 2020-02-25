@@ -74,7 +74,7 @@ security:
   oauth2:
     resource:
       id: springcloud-system
-      user-info-uri: https://diaocha.svdata.cn/auth/session/me
+      user-info-uri: http:///192.168.0.180:7070/session/me
       prefer-token-info: false
 
 mybatis-plus:
