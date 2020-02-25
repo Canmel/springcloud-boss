@@ -1,5 +1,9 @@
 server:
   port: 0
+  ssl:
+    key-store: classpath: 2002644_diacha.svdata.cn.pfx
+    key-store-password: 2J7H2V8N
+    key-store-type: PKCS12
 
 spring:
   application:
