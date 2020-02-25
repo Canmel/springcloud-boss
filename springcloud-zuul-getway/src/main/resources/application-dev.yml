@@ -1,6 +1,10 @@
 #--------------------server---------------------
 server:
   port: 8080
+  ssl:
+    key-store: classpath:2001678_diaocha.svdata.cn.pfx
+    key-store-password: dT06JOL1
+    key-store-type: PKCS12
 
 #--------------------spring---------------------
 spring:
