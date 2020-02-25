@@ -13,7 +13,7 @@ web_status = {
 $(function () {
     var access_token = sessionStorage.getItem('access_token');
     if (!access_token) {
-        location.href = 'http://' + window.location.host + '/login?redirect_url=/attendance/';
+        // location.href = 'https://' + window.location.host + '/login?redirect_url=/attendance/';
     }
 });
 
@@ -73,7 +73,7 @@ __ajax = function(url, data, success, type ,contentType, sync){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                location.href = 'http://' + window.location.host + '/login?redirect_url=/attendance/';
+                // location.href = 'http://' + window.location.host + '/login?redirect_url=/attendance/';
             }
         }
     };

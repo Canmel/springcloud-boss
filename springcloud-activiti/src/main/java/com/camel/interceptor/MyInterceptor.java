@@ -60,7 +60,7 @@ public class MyInterceptor implements HandlerInterceptor {
             if (isAjaxRequest(request)) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
             } else {
-                response.sendRedirect("http://" + getWayUrl + getWayPort + "/login?redirect_url=acti/index.html");
+                response.sendRedirect("https://" + getWayUrl + getWayPort + "/login?redirect_url=acti/index.html");
 
             }
             return false;
