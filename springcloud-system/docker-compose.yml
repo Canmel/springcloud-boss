@@ -9,7 +9,7 @@ services:
     restart: always
     tty: true
     environment:
-      APPLICATION_IP: 192.168.0.180
+      APPLICATION_IP: 122.226.162.133
       DATABASE_IP: 192.168.0.180
       DATABASE_PORT: 3306
       DATABASE_USER: root
