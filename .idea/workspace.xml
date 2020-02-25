@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/common.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/validateIsMain.js" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/validateIsMain.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -81,7 +77,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="5" />
-          <entry key="html" value="1427" />
+          <entry key="html" value="1458" />
           <entry key="java" value="792" />
           <entry key="js" value="392" />
           <entry key="txt" value="8" />
@@ -91,7 +87,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="5" />
-          <entry key="HTML" value="1427" />
+          <entry key="HTML" value="1458" />
           <entry key="JAVA" value="792" />
           <entry key="JavaScript" value="392" />
           <entry key="PLAIN_TEXT" value="8" />
@@ -104,7 +100,7 @@
           <entry key="css" value="1" />
           <entry key="html" value="17" />
           <entry key="java" value="42" />
-          <entry key="js" value="16" />
+          <entry key="js" value="17" />
           <entry key="xml" value="9" />
         </counts>
       </usages-collector>
@@ -113,7 +109,7 @@
           <entry key="CSS" value="1" />
           <entry key="HTML" value="17" />
           <entry key="JAVA" value="42" />
-          <entry key="JavaScript" value="16" />
+          <entry key="JavaScript" value="17" />
           <entry key="XML" value="9" />
         </counts>
       </usages-collector>
@@ -122,10 +118,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="81" column="53" lean-forward="true" selection-start-line="81" selection-start-column="53" selection-end-line="81" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="742" column="9" lean-forward="true" selection-start-line="740" selection-start-column="8" selection-end-line="742" selection-end-column="9" />
+            <state relative-caret-position="152">
+              <caret line="221" column="88" selection-start-line="221" selection-start-column="88" selection-end-line="221" selection-end-column="88" />
               <folding>
                 <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
               </folding>
@@ -133,11 +138,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3125">
-              <caret line="697" column="9" selection-start-line="697" selection-start-column="9" selection-end-line="697" selection-end-column="9" />
+            <state relative-caret-position="185">
+              <caret line="501" column="32" lean-forward="true" selection-start-line="501" selection-start-column="32" selection-end-line="501" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -201,15 +206,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/jZego-rtc.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret column="32553" lean-forward="true" selection-start-column="32553" selection-end-column="32554" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -267,7 +263,6 @@
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/model/ZsSurvey.java" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/cti/ctiClient-1.1.js" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/model/ZsMonitor.java" />
-        <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/service/impl/ZsSurveyServiceImpl.java" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/utils/ApplicationToolsUtils.java" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/service/ZsSignService.java" />
@@ -283,8 +278,9 @@
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/common.js" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/index.html" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/index.html" />
-        <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html" />
+        <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js" />
+        <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html" />
       </list>
     </option>
   </component>
@@ -442,6 +438,16 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-survey" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -522,7 +528,7 @@
     <property name="SearchEverywhereHistoryKey" value="desc.&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/static/js/desc.js&#10;validateIsMain.js&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/static/js/validateIsMain.js&#10;details_det.html&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html&#10;start&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/templates/pages/task/start.html&#10;css/demo.css&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/static/css/demo.css" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1582558675037" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1582593869620" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/springcloud-system/pom.xml" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -749,7 +755,7 @@
       <workItem from="1582208395631" duration="5535000" />
       <workItem from="1582250515457" duration="11229000" />
       <workItem from="1582301575337" duration="1992000" />
-      <workItem from="1582507419017" duration="39918000" />
+      <workItem from="1582507419017" duration="41438000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1581944273961</created>
@@ -842,11 +848,18 @@
       <option name="project" value="LOCAL" />
       <updated>1582557132377</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="访员直播">
+      <created>1582558788103</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1582558788103</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39969000" />
+    <option name="totallyTimeSpent" value="41489000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -1242,13 +1255,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="75" column="33" lean-forward="true" selection-start-line="75" selection-start-column="33" selection-end-line="75" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/model/ZsSurvey.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
@@ -1483,20 +1489,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html">
+    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="742" column="9" lean-forward="true" selection-start-line="740" selection-start-column="8" selection-end-line="742" selection-end-column="9" />
-          <folding>
-            <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="185">
+          <caret line="501" column="32" lean-forward="true" selection-start-line="501" selection-start-column="32" selection-end-line="501" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html">
+    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3125">
-          <caret line="697" column="9" selection-start-line="697" selection-start-column="9" selection-end-line="697" selection-end-column="9" />
+        <state relative-caret-position="243">
+          <caret line="81" column="53" lean-forward="true" selection-start-line="81" selection-start-column="53" selection-end-line="81" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="221" column="88" selection-start-line="221" selection-start-column="88" selection-end-line="221" selection-end-column="88" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

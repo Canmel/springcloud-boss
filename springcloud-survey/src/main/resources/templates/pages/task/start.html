@@ -219,7 +219,7 @@
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
-                                            <div class="contact-box">
+                                            <div class="contact-box" v-if="survey.monit.value === 1">
                                                 <div class="col-sm">
                                                     <button type="button" v-on:click="openRoom()" class="btn btn-primary btn-sm">打开摄像头</button>
                                                     <button type="button" v-on:click="leaveRoom()" class="btn btn-secondary btn-sm">退出</button>
