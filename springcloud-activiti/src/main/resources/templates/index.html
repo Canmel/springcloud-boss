@@ -116,8 +116,8 @@
                 }
             },
             logout: function () {
-                AJAX.DELETE('https://' + window.location.host + ':8080/auth/session/exit', null, function (resp) {
-                    location.href = 'https://' + window.location.host + ':8080/login?redirect_url=/acti/index.html';
+                AJAX.DELETE('http://' + window.location.host + ':8080/auth/session/exit', null, function (resp) {
+                    location.href = 'http://' + window.location.host + ':8080/login?redirect_url=/acti/index.html';
                 });
             }
         },

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitlab-ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.gitlab-ci.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/java/com/camel/interceptor/MyInterceptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/ajax-util.js" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-activiti/src/main/resources/static/js/ajax-util.js" afterDir="false" />
@@ -12,6 +13,8 @@
       <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-zuul-getway/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/2001678_diaocha.svdata.cn.pfx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -89,9 +92,9 @@
           <entry key="html" value="2318" />
           <entry key="java" value="817" />
           <entry key="js" value="396" />
-          <entry key="txt" value="22" />
+          <entry key="txt" value="45" />
           <entry key="xml" value="84" />
-          <entry key="yml" value="82" />
+          <entry key="yml" value="124" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -100,43 +103,70 @@
           <entry key="HTML" value="2318" />
           <entry key="JAVA" value="817" />
           <entry key="JavaScript" value="396" />
-          <entry key="PLAIN_TEXT" value="22" />
+          <entry key="PLAIN_TEXT" value="45" />
           <entry key="SQL" value="6" />
           <entry key="XML" value="78" />
-          <entry key="YAML" value="82" />
+          <entry key="YAML" value="124" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="1" />
           <entry key="html" value="20" />
-          <entry key="java" value="54" />
+          <entry key="java" value="55" />
           <entry key="js" value="19" />
           <entry key="rnc" value="1" />
+          <entry key="sh" value="1" />
           <entry key="xml" value="9" />
-          <entry key="yml" value="17" />
+          <entry key="yml" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="1" />
           <entry key="HTML" value="20" />
-          <entry key="JAVA" value="54" />
+          <entry key="JAVA" value="55" />
           <entry key="JavaScript" value="19" />
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="RNG Compact" value="1" />
           <entry key="XML" value="9" />
-          <entry key="YAML" value="17" />
+          <entry key="YAML" value="19" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1140">
-              <caret line="76" column="51" selection-start-line="76" selection-start-column="47" selection-end-line="76" selection-end-column="51" />
+            <state relative-caret-position="256">
+              <caret line="76" column="74" lean-forward="true" selection-start-line="76" selection-start-column="21" selection-end-line="76" selection-end-column="74" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitlab-ci.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="141">
+              <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/docker_web_run.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-15" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/docker-compose.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="158">
+              <caret line="12" column="20" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -144,15 +174,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-system/docker-compose.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-23" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/SpringCloudZuulApplication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+            <state relative-caret-position="120">
+              <caret line="8" column="19" lean-forward="true" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -160,26 +183,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/oauth/boot/spring-security-oauth2-autoconfigure/2.0.0.RELEASE/spring-security-oauth2-autoconfigure-2.0.0.RELEASE-sources.jar!/org/springframework/boot/autoconfigure/security/oauth2/resource/UserInfoTokenServices.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="155" column="1" lean-forward="true" selection-start-line="155" selection-start-column="1" selection-end-line="155" selection-end-column="1" />
+            <state relative-caret-position="314">
+              <caret line="150" column="68" lean-forward="true" selection-start-line="150" selection-start-column="68" selection-end-line="150" selection-end-column="68" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/SpringCloudSurveyApplication.java">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/web/client/RestOperations.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="46" column="13" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/application-dev.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" selection-start-line="2" selection-end-line="2" />
+            <state relative-caret-position="127">
+              <caret line="89" column="26" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -198,15 +212,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application.yml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="263">
-              <caret line="76" column="45" selection-start-line="76" selection-start-column="31" selection-end-line="76" selection-end-column="45" />
+              <caret line="72" column="45" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -232,7 +241,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pjax</find>
       <find>logout</find>
       <find>zg.logout();</find>
       <find>leaveRoom();</find>
@@ -262,6 +270,7 @@
       <find>DATABASE_PORT</find>
       <find>7070</find>
       <find>auth/session/me</find>
+      <find>sess</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -295,7 +304,6 @@
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/common.js" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/index.html" />
-        <option value="$PROJECT_DIR$/.gitlab-ci.yml" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/index.html" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html" />
         <option value="$PROJECT_DIR$/springcloud-zuul-getway/src/main/java/com/camel/gateway/config/HttpsConfig.java" />
@@ -304,8 +312,11 @@
         <option value="$PROJECT_DIR$/springcloud-activiti/src/main/resources/templates/index.html" />
         <option value="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/ajax-util.js" />
         <option value="$PROJECT_DIR$/springcloud-auth-server/src/main/resources/application-dev.yml" />
-        <option value="$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml" />
         <option value="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml" />
+        <option value="$PROJECT_DIR$/.gitlab-ci.yml" />
+        <option value="$PROJECT_DIR$/springcloud-zuul-getway/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/springcloud-system/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml" />
       </list>
     </option>
   </component>
@@ -357,71 +368,7 @@
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-system" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="system" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
               <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-boss" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-zuul-getway" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-boss" type="b2602c69:ProjectViewProjectNode" />
@@ -478,7 +425,7 @@
     <property name="SearchEverywhereHistoryKey" value="UserInfoTokenServices&#9;FILE&#9;jar:///Users/baily/.m2/repository/org/springframework/security/oauth/boot/spring-security-oauth2-autoconfigure/2.0.0.RELEASE/spring-security-oauth2-autoconfigure-2.0.0.RELEASE-sources.jar!/org/springframework/boot/autoconfigure/security/oauth2/resource/UserInfoTokenServices.java&#10;desc.&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/static/js/desc.js&#10;validateIsMain.js&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/static/js/validateIsMain.js&#10;details_det.html&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/templates/pages/survey/details_det.html&#10;start&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/templates/pages/task/start.html&#10;css/demo.css&#9;FILE&#9;file:///Users/baily/code/springcloud_oauth2.0/springcloud-boss/springcloud-survey/src/main/resources/static/css/demo.css" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1582619105946" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1582624315511" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/springcloud-system/pom.xml" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -710,7 +657,7 @@
       <workItem from="1582301575337" duration="1992000" />
       <workItem from="1582507419017" duration="42789000" />
       <workItem from="1582597058806" duration="17337000" />
-      <workItem from="1582616784369" duration="2235000" />
+      <workItem from="1582616784369" duration="7500000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1581944273961</created>
@@ -852,16 +799,66 @@
       <option name="project" value="LOCAL" />
       <updated>1582611326828</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="试试https">
+      <created>1582619159232</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1582619159232</updated>
+    </task>
+    <task id="LOCAL-00022" summary="试试https">
+      <created>1582619574927</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1582619574927</updated>
+    </task>
+    <task id="LOCAL-00023" summary="试试https">
+      <created>1582619624325</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1582619624325</updated>
+    </task>
+    <task id="LOCAL-00024" summary="试试https">
+      <created>1582620344916</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1582620344916</updated>
+    </task>
+    <task id="LOCAL-00025" summary="试试https">
+      <created>1582621584285</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1582621584285</updated>
+    </task>
+    <task id="LOCAL-00026" summary="试试https">
+      <created>1582622518979</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1582622518979</updated>
+    </task>
+    <task id="LOCAL-00027" summary="试试https">
+      <created>1582623437913</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1582623437913</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62412000" />
+    <option name="totallyTimeSpent" value="67677000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49752474" visible="true" weight="0.25679544" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49752474" visible="true" weight="0.25679544" />
       <window_info id="Structure" order="1" sideWeight="0.50247526" side_tool="true" weight="0.24964234" />
       <window_info id="Designer" order="2" />
       <window_info id="JRebel" order="3" side_tool="true" />
@@ -883,11 +880,11 @@
       <window_info anchor="bottom" id="Problems" order="10" />
       <window_info anchor="bottom" id="Java Enterprise" order="11" />
       <window_info anchor="bottom" id="Database Changes" order="12" sideWeight="0.49928468" weight="0.3290653" />
-      <window_info anchor="bottom" id="Version Control" order="13" weight="0.3290653" />
+      <window_info anchor="bottom" id="Version Control" order="13" visible="true" weight="0.3290653" />
       <window_info anchor="bottom" id="JRebel Executor" order="14" />
       <window_info anchor="bottom" id="JRebel Console" order="15" sideWeight="0.50143063" side_tool="true" weight="0.48271447" />
       <window_info anchor="bottom" id="Messages" order="16" sideWeight="0.48569384" weight="0.3290653" />
-      <window_info active="true" anchor="bottom" id="Run Dashboard" order="17" sideWeight="0.4985694" visible="true" weight="0.47887325" />
+      <window_info anchor="bottom" id="Run Dashboard" order="17" sideWeight="0.4985694" weight="0.47887325" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -903,6 +900,16 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -915,7 +922,8 @@
     <MESSAGE value="访员直播" />
     <MESSAGE value="https" />
     <MESSAGE value="访员可以直播" />
-    <option name="LAST_COMMIT_MESSAGE" value="访员可以直播" />
+    <MESSAGE value="试试https" />
+    <option name="LAST_COMMIT_MESSAGE" value="试试https" />
   </component>
   <component name="WindowStateProjectService">
     <state x="552" y="179" key="#Project_Structure" timestamp="1579450857708">
@@ -1107,27 +1115,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/utils/ApplicationToolsUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="99" column="11" lean-forward="true" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/service/impl/ZsSurveyServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="222" column="43" selection-start-line="222" selection-start-column="43" selection-end-line="222" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/plugins/webuploader/webuploader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="2127" column="46" selection-start-line="2127" selection-start-column="46" selection-end-line="2127" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/java/com/camel/survey/model/ZsMonitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
@@ -1266,13 +1253,6 @@
     <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/args/add.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitlab-ci.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="57" column="31" selection-start-line="57" selection-start-column="31" selection-end-line="57" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/jZego-rtc.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -1384,15 +1364,10 @@
     <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-system/docker-compose.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-23" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="263">
-          <caret line="76" column="45" selection-start-line="76" selection-start-column="31" selection-end-line="76" selection-end-column="45" />
+          <caret line="72" column="45" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -1400,13 +1375,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-747">
           <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/oauth/boot/spring-security-oauth2-autoconfigure/2.0.0.RELEASE/spring-security-oauth2-autoconfigure-2.0.0.RELEASE-sources.jar!/org/springframework/boot/autoconfigure/security/oauth2/resource/UserInfoTokenServices.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="155" column="1" lean-forward="true" selection-start-line="155" selection-start-column="1" selection-end-line="155" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1421,10 +1389,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/docker_web_run.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-15" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul-getway/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-system/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="19" lean-forward="true" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.6.RELEASE/spring-web-5.0.6.RELEASE-sources.jar!/org/springframework/web/client/RestOperations.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="89" column="26" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/oauth/boot/spring-security-oauth2-autoconfigure/2.0.0.RELEASE/spring-security-oauth2-autoconfigure-2.0.0.RELEASE-sources.jar!/org/springframework/boot/autoconfigure/security/oauth2/resource/UserInfoTokenServices.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="150" column="68" lean-forward="true" selection-start-line="150" selection-start-column="68" selection-end-line="150" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-system/src/main/resources/application-dev.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="76" column="51" selection-start-line="76" selection-start-column="47" selection-end-line="76" selection-end-column="51" />
+        <state relative-caret-position="256">
+          <caret line="76" column="74" lean-forward="true" selection-start-line="76" selection-start-column="21" selection-end-line="76" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitlab-ci.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
         </state>
       </provider>
     </entry>

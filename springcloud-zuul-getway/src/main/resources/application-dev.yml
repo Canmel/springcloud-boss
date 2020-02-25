@@ -1,10 +1,6 @@
 #--------------------server---------------------
 server:
   port: 8080
-  ssl:
-    key-store: classpath:2001678_diaocha.svdata.cn.pfx
-    key-store-password: dT06JOL1
-    key-store-type: PKCS12
 
 #--------------------spring---------------------
 spring:
@@ -70,11 +66,11 @@ zuul:
 security:
   oauth2:
     client:
-      access-token-uri: https://${APPLICATION_IP}:${server.port}/auth/oauth/token
-      user-authorization-uri: https://${APPLICATION_IP}:${server.port}/auth/oauth/authorize
+      access-token-uri: http://${APPLICATION_IP}:${server.port}/auth/oauth/token
+      user-authorization-uri: http://${APPLICATION_IP}:${server.port}/auth/oauth/authorize
       client-id: web
     resource:
-      user-info-uri: https://${APPLICATION_IP}:${server.port}/auth/session/me
+      user-info-uri:  http://${APPLICATION_IP}:${server.port}/auth/session/me
       prefer-token-info: false
 
 #----------------------超时配置-------------------
