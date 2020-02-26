@@ -680,7 +680,7 @@
                 this.zg = new ZegoClient();
                 this.zg.onPublishStateUpdate = function (type, streamid, error) {
                     if (type == 0) {
-                        alert(' 推流成功  success');
+                        console.log(' 推流成功  success');
                     } else if (type == 2) {
                         console.info(' publish  retry');
                     } else {
@@ -730,16 +730,15 @@
                     $.get(this.otherConfig.token, {app_id: this.config.appid, id_name: this.config.idName, cgi_token: this.otherConfig.cgi_token},
                         function (token) {
                             if (!token) {
-                                alert('get token failed')
+                                alert('获取token失败')
                             } else {
-                                console.log('gettoken success');
+                                console.log('获取token成功');
                                 startLogin(roomId, token, type)
                             }
                         }, 'text');
 
                 } else {//get token  前端开发绕过后端，临时获取token方式，需要填写appSign
                     let now = new Date().getTime();
-                    console.log(123123)
                     $.get('https://sig-wstoken.zego.im:8282/tokenverify',
                         {
                             app_id: this.config.appid,
@@ -751,7 +750,7 @@
                         function (token) {
                             token = /token:(.+)/.exec(token) && /token:(.+)/.exec(token)[1] && /token:(.+)/.exec(token)[1].replace(' ', '');
                             if (!token) {
-                                alert('get token failed')
+                                alert('获取token失败')
                             } else {
                                 console.log('登录准备：获取token', '成功获取TOKEN值');
                                 that.startLogin(roomId, token)
