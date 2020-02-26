@@ -21,6 +21,8 @@
         <result column="org_name" property="orgName" jdbcType="VARCHAR"></result>
         <result column="address" property="address" jdbcType="VARCHAR"></result>
         <result column="remark" property="remark" jdbcType="VARCHAR"></result>
+        <collection property="roleIds" fetchType="eager" column="uid"
+                    select="findRoleIdsByUserId"></collection>
     </resultMap>
 
     <sql id="BASE_SQL">
@@ -44,6 +46,10 @@
         sys_user.address,
         sys_user.remark
     </sql>
+
+    <select id="findRoleIdsByUserId" resultType="integer">
+        select role_id from sys_user_role where user_id = #{uid}
+    </select>
 
     <select id="list" resultMap="BaseResultMap" parameterType="com.camel.core.model.SysUser">
         SELECT
