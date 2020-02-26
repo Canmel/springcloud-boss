@@ -55,7 +55,6 @@
     }
 </style>
 
-
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="row">
         <div class="ibox float-e-margins">
@@ -479,7 +478,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="col-sm remoteVideo">
-                        <!-- <video  autoplay muted playsinline></video> -->
+                         <!--<video  autoplay muted playsinline></video>-->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -523,7 +522,29 @@
                 firstSelect: null
             },
             monitors: [],
-            currentSeat: {}
+            currentSeat: {},
+            zg: null,
+            config: {
+                "appid": 2696647174,    // 必填，应用id，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "idName": new Date().getTime() + '',    // 必填，用户自定义id，全局唯一
+                "nickName": 'u' + new Date().getTime(),    // 必填，用户自定义昵称
+                "server": "wss://webliveroom-test.zego.im/ws",    // 必填，接入服务器地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "logLevel": 0,    //日志级别，debug:0,info:1,warn:2,error:3,report:99,disable:100（数字越大，日志越少），建议选择 1
+                "logUrl": "",    // 必填，logServer 地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "remoteLogLevel": 0,    // 上传日志最低级别，建议跟 logLevel 一致
+                "testEnvironment": true, // 是否开启测试环境，默认为正式环境
+                "audienceCreateRoom": false //是否允许观众创建房间
+            },
+            otherConfig: {
+                cgi_token: '',
+                roomlist: '',
+                signal: '',
+                token: "https://wsliveroom-demo.zego.im:8282/token"
+            },
+            previewVideo: null,
+            isPreviewed: false,
+            useLocalStreamList: [],
+            appSigin: '0x2e,0x80,0x69,0xdb,0x19,0x1a,0xbd,0x14,0x99,0xea,0xa4,0x5a,0xf8,0xcc,0x6f,0xfc,0x2f,0x83,0x4a,0x01,0x43,0x1c,0x5d,0xc5,0x4c,0x28,0x28,0x59,0xa6,0x2d,0x53,0x2b'
         },
         watch: {
             loadData(v, oldVal) {
@@ -532,8 +553,229 @@
         computed: {},
         methods: {
             initZg() {
-                bindEvent();
-                openRoom('808', 2);
+                this.zg = new ZegoClient();
+                this.zg.setUserStateUpdate(true);
+                this.configZg();
+                this.zg.onPlayStateUpdate = function (type, streamid, error) {
+                    if (type == 0) {
+                        console.info('播放成功');
+                    } else if (type == 2) {
+                        console.info('play retry');
+                    } else {
+
+                        console.error("play error " + error.msg);
+
+                        var _msg = error.msg;
+                        if (error.msg.indexOf('server session closed, reason: ') > -1) {
+                            var code = error.msg.replace('server session closed, reason: ', '');
+                            if (code == 21) {
+                                _msg = '音频编解码不支持(opus)';
+                            } else if (code == 22) {
+                                _msg = '视频编解码不支持(H264)'
+                            } else if (code == 20) {
+                                _msg = 'sdp 解释错误';
+                            }
+                        }
+                        alert('拉流失败,reason = ' + _msg);
+                    }
+                }
+            },
+            configZg() {
+                this.zg.config(this.config)
+            },
+            openRoom() {
+                if(!this.currentSeat.seatNum) {
+                    alert('所选访员无坐席，暂无视频信息')
+                    return;
+                }
+                this.previewVideo = $('#previewVideo')[0];
+                this.open(this.currentSeat.seatNum);
+            },
+            leaveRoom() {
+                $('#previewContext').hide();
+                this.leave();
+            },
+            open(roomId) {
+                let that = this;
+                //get token   生产环境下获取token方式
+                if (!this.appSigin) {
+                    $.get(this.otherConfig.token, {app_id: this.config.appid, id_name: this.config.idName, cgi_token: this.otherConfig.cgi_token},
+                        function (token) {
+                            if (!token) {
+                                alert('get token failed')
+                            } else {
+                                console.log('gettoken success');
+                                that.startLogin(roomId, token, 2)
+                            }
+                        }, 'text');
+
+                } else {//get token  前端开发绕过后端，临时获取token方式，需要填写appSign
+                    let now = new Date().getTime();
+                    $.get('https://sig-wstoken.zego.im:8282/tokenverify',
+                        {
+                            app_id: this.config.appid,
+                            id_name: this.config.idName,
+                            app_secret: this.appSigin,
+                            nonce: now,
+                            expired: Math.floor(now / 1000 + 30 * 60)
+                        },
+                        function (token) {
+                            token = /token:(.+)/.exec(token) && /token:(.+)/.exec(token)[1] && /token:(.+)/.exec(token)[1].replace(' ', '');
+                            if (!token) {
+                                alert('get token failed')
+                            } else {
+                                console.log('登录准备：获取token', '成功获取TOKEN值');
+                                that.startLogin(roomId, token)
+                            }
+                        });
+                }
+            },
+            startLogin(roomId, token) {
+                let that = this;
+                this.zg.login(roomId, 2, token, function (streamList) {
+                    console.log('登录操作', '登录成功。。。');
+                    console.log(streamList, '<<----------')
+                    that.loginSuccess(streamList, 2);
+                }, function (err) {
+                    that.loginFailed(err);
+                })
+            },
+            leave() {
+                console.info('即将离开直播间...');
+
+                if (this.isPreviewed) {
+                    this.zg.stopPreview(this.previewVideo);
+                    this.zg.stopPublishingStream(this.config.idName);
+                    this.isPreviewed = false;
+                }
+
+                for (var i = 0; i < this.useLocalStreamList.length; i++) {
+                    this.zg.stopPlayingStream(this.useLocalStreamList[i].stream_id);
+                }
+
+                this.useLocalStreamList = [];
+                $('.remoteVideo').html('');
+                $('.chatBox-content-demo').html('');
+                $('.chat-message-num').text(0);
+                this.zg.logout();
+            },
+            loginSuccess(streamList, type) {
+                console.log(streamList)
+                var maxNumber = ($('#maxPullNamber') && $('#maxPullNamber').val()) || 4
+
+                //限制房间最多人数，原因：视频软解码消耗cpu，浏览器之间能支撑的个数会有差异，太多会卡顿
+                if (streamList.length >= maxNumber) {
+                    alert('房间太拥挤，换一个吧！');
+                    this.leave();
+                    return;
+                }
+                if ($('#streamID').val()) {
+                    this.useLocalStreamList = [{
+                        anchor_id_name: 'custom',
+                        stream_id: $('#streamID').val(),
+                        anchor_nick_name: 'custom'
+                    }, ...streamList];
+                } else {
+                    this.useLocalStreamList = streamList;
+                }
+                if(type === 2 && this.useLocalStreamList.length === 0) {
+                    alert('当前访员不在视频直播');
+                }
+                $('.remoteVideo').html('');
+                $('#memberList').html('');
+                for (var index = 0; index < this.useLocalStreamList.length; index++) {
+                    $('.remoteVideo').append($('<video  autoplay muted playsinline controls></video>'));
+                    $('#memberList').append('<option value="' + this.useLocalStreamList[index].anchor_id_name + '">' + this.useLocalStreamList[index].anchor_nick_name + '</option>');
+                    this.play(this.useLocalStreamList[index].stream_id, $('.remoteVideo video:eq(' + index + ')')[0]);
+                }
+                loginRoom = true;
+                //开始预览本地视频
+                type === 1 && this.doPreviewPublish();
+            },
+            play (streamId, video) {
+                var playVideoCodeType = $('#videoPlayCodeType').val()
+                var result = this.zg.startPlayingStream(streamId, video, null, {videoDecodeType: playVideoCodeType ? playVideoCodeType : 'H264'});
+
+                video.muted = false;
+                if (!result) {
+                    alert('哎呀，播放失败啦');
+                    video.style = 'display:none';
+                    console.error("play " + el.nativeElement.id + " return " + result);
+
+                }
+            },
+            loginFailed(err){
+                alert('登录失败')
+            },
+            doPreviewPublish() {
+                $("#previewContext").show();
+                let that = this;
+                let quality = ($('#videoQuality') && $('#videoQuality').val()) || 2;
+                let previewConfig = {
+                    "audio": $('#audioList').val() === '0' ? false : true,
+                    "audioInput": $('#audioList').val() || null,
+                    "video": $('#videoList').val() === '0' ? false : true,
+                    "videoInput": $('#videoList').val() || null,
+                    "videoQuality": quality * 1,
+                    "horizontal": true,
+                    "externalCapture": false,
+                    "externalMediaStream": null
+                };
+                previewConfig = $.extend(previewConfig, this.config);
+                console.log('previewConfig', previewConfig);
+                let result = this.zg.startPreview(this.previewVideo, previewConfig, function () {
+                    console.log('preview success');
+                    that.isPreviewed = true;
+                    $('#previewLabel').html(that.config.nickName);
+                    that.publish();
+                    //部分浏览器会有初次调用摄像头后才能拿到音频和视频设备label的情况，
+                    if (!$('#videoList').val() && $('#videoList').val() == 0) {
+                        that.enumDevices();
+                    }
+                }, function (err) {
+                    alert(JSON.stringify(err));
+                    console.error('preview failed', err);
+                });
+
+                if (!result) alert('预览失败！')
+            },
+            publish() {
+                let videoCodeType = $('#videoCodeType').val();
+                this.zg.startPublishingStream(this.config.idName, this.previewVideo, null, {videoDecodeType: videoCodeType ? videoCodeType : 'H264'});
+            },
+            enumDevices() {
+                var audioInputList = [], videoInputList = [];
+                zg.enumDevices(deviceInfo => {
+                    console.log('enumDevices' + JSON.stringify(deviceInfo));
+                    if (deviceInfo.microphones) {
+                        for (var i = 0; i < deviceInfo.microphones.length; i++) {
+
+                            if (!deviceInfo.microphones[i].label) {
+                                deviceInfo.microphones[i].label = 'microphone' + i;
+                            }
+                            audioInputList.push(' <option value="' + deviceInfo.microphones[i].deviceId + '">' + deviceInfo.microphones[i].label + '</option>');
+                            console.log("microphone: " + deviceInfo.microphones[i].label);
+                        }
+                    }
+
+                    if (deviceInfo.cameras) {
+                        for (var i = 0; i < deviceInfo.cameras.length; i++) {
+                            if (!deviceInfo.cameras[i].label) {
+                                deviceInfo.cameras[i].label = 'camera' + i;
+                            }
+                            videoInputList.push('<option value="' + deviceInfo.cameras[i].deviceId + '">' + deviceInfo.cameras[i].label + '</option>');
+                            console.log("camera: " + deviceInfo.cameras[i].label);
+                        }
+                    }
+
+                    audioInputList.push(' <option value="0">禁止</option>');
+                    videoInputList.push('<option value="0">禁止</option>');
+
+                    $('#audioList').html(audioInputList.join(''));
+                    $('#videoList').html(videoInputList.join(''));
+                }, function (error) {
+                    console.error("enum device error: " + error);
+                });
             },
             showMonit(item) {
                 let that = this;
@@ -541,7 +783,7 @@
                     console.log(resp);
                     that.currentSeat = resp.data;
                     $("#myVideoModal").modal('show');
-                    that.initZg();
+                    that.openRoom();
                 })
             },
             closeSurvey(survey) {
@@ -688,7 +930,9 @@
         created: function () {
             this.loadEntity();
             this.loadQuestions();
+            this.initZg();
             this.loadMonitors();
+
         },
         mounted: function () {
             this.bindEvent();

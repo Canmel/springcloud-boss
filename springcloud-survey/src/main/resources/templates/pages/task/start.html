@@ -651,12 +651,6 @@
                         projectId: resp.data.projectId,
                         monit: resp.data.monit
                     };
-
-                    // 判定是否需要视频监控
-                    if(that.survey.monit.value === 1) {
-                        // that.initZg();
-                    }
-
                 })
             },
             loadQuestions() {
@@ -684,8 +678,35 @@
             },
             initZg() {
                 this.zg = new ZegoClient();
+                this.zg.onPublishStateUpdate = function (type, streamid, error) {
+                    if (type == 0) {
+                        alert(' 推流成功  success');
+                    } else if (type == 2) {
+                        console.info(' publish  retry');
+                    } else {
+                        console.error('publish error ' + error.msg);
+                        var _msg = error.msg;
+                        if (error.msg.indexOf('server session closed, reason: ') > -1) {
+                            var code = error.msg.replace('server session closed, reason: ', '');
+                            if (code == 21) {
+                                _msg = '音频编解码不支持(opus)';
+                            } else if (code == 22) {
+                                _msg = '视频编解码不支持(H264)'
+                            } else if (code == 20) {
+                                _msg = 'sdp 解释错误';
+                            }
+                        }
+                        alert('推流失败,reason = ' + _msg);
+
+                    }
+
+                },
                 this.zg.setUserStateUpdate(true);
                 this.configZg();
+                // enumDevices();
+
+                // 监听sdk回掉
+                // this.listen();
             },
             configZg() {
                 this.zg.config(this.config)
@@ -841,40 +862,20 @@
                 let videoCodeType = $('#videoCodeType').val();
                 this.zg.startPublishingStream(this.config.idName, this.previewVideo, null, {videoDecodeType: videoCodeType ? videoCodeType : 'H264'});
             },
-            enumDevices() {
-                var audioInputList = [], videoInputList = [];
-                zg.enumDevices(deviceInfo => {
-                    console.log('enumDevices' + JSON.stringify(deviceInfo));
-                    if (deviceInfo.microphones) {
-                        for (var i = 0; i < deviceInfo.microphones.length; i++) {
 
-                            if (!deviceInfo.microphones[i].label) {
-                                deviceInfo.microphones[i].label = 'microphone' + i;
-                            }
-                            audioInputList.push(' <option value="' + deviceInfo.microphones[i].deviceId + '">' + deviceInfo.microphones[i].label + '</option>');
-                            console.log("microphone: " + deviceInfo.microphones[i].label);
-                        }
-                    }
+            listen() {
 
-                    if (deviceInfo.cameras) {
-                        for (var i = 0; i < deviceInfo.cameras.length; i++) {
-                            if (!deviceInfo.cameras[i].label) {
-                                deviceInfo.cameras[i].label = 'camera' + i;
-                            }
-                            videoInputList.push('<option value="' + deviceInfo.cameras[i].deviceId + '">' + deviceInfo.cameras[i].label + '</option>');
-                            console.log("camera: " + deviceInfo.cameras[i].label);
-                        }
-                    }
 
-                    audioInputList.push(' <option value="0">禁止</option>');
-                    videoInputList.push('<option value="0">禁止</option>');
+                // for (var key in _config) {
+                //     this.zg[key] = _config[key]
+                // }
 
-                    $('#audioList').html(audioInputList.join(''));
-                    $('#videoList').html(videoInputList.join(''));
-                }, function (error) {
-                    console.error("enum device error: " + error);
-                });
+                if (typeof listenChild === 'function') {
+                    listenChild();
+                }
+
             }
+
         },
         created: function () {
             this.initZg();
