@@ -160,6 +160,8 @@
     <!--console.log('Hello world');-->
 <!--</script>-->
 <script src="js/jZego-rtc.js"></script>
+<script src="js/common.js"></script>
+
 
 <script>
     currentVue = null;
@@ -227,6 +229,10 @@
             $(this).parent().find('button').click();
         }
     });
+
+    $(document).on('pjax:start', function () {
+    })
+
 </script>
 </body>
 

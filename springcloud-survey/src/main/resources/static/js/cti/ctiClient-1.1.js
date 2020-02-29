@@ -466,21 +466,21 @@
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
-					var url=popupUrl+"?phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
 					window.open (url,'来电弹屏') 
 				}
 			}else if(methodType=="manual_callout_agent_ring"){//呼出弹屏
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
-					var url=popupUrl+"?phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
 					window.open (url,'呼出弹屏') 
 				}
 			}else if(methodType=="blind_transfer_ring"){//转接弹屏
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
-					var url=popupUrl+"?phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
 					window.open (url,'转接弹屏') 
 				}
 			}else if(methodType=="get_agentgroup_list"){//获取座席组列表
