@@ -215,7 +215,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public Result sign(Integer id, OAuth2Authentication oAuth2Authentication) {
-        Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
+        Member member = applicationToolsUtils.currentUser();
         if (isSigned(id, member.getId())) {
             return ResultUtil.success("您已经投递过了，无需重复提交");
         }

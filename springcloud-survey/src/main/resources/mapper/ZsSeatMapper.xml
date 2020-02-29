@@ -20,4 +20,11 @@
         from
         zs_seat
     </select>
+
+    <select id="selectLastByUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_seat
+    </select>
 </mapper>

@@ -5,6 +5,9 @@
     <file type="web" url="file://$PROJECT_DIR$/springcloud-auth-server" />
     <file type="web" url="file://$PROJECT_DIR$/springcloud-system" />
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="JSX" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>

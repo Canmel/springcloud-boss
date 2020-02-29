@@ -5,6 +5,8 @@ import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsSign;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -42,4 +44,8 @@ public interface ZsSignService extends IService<ZsSign> {
      * @return
      */
     Result selectByUserId(Integer id);
+
+    ZsSign selectLastByUser(Integer id);
+
+    List<ZsSign> allInSurvey(Integer id);
 }

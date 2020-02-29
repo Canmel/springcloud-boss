@@ -42,4 +42,33 @@
             </if>
         </where>
     </select>
+
+    <select id="allInSurvey" resultMap="BaseResultMap">
+        select
+          DISTINCT creator, id, username, status, created_at, result, survey_id
+        from
+        zs_sign
+        <where>
+            status = 1 AND
+            survey_id = #{id}
+        </where>
+        group by survey_id
+    </select>
+
+    <select id="selectLastByUser" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            zs_sign
+        WHERE
+            created_at =(
+                SELECT
+                    MAX(created_at)
+                FROM
+                    zs_sign
+                WHERE
+                    creator = #{id}
+            )
+        AND creator = #{id}
+    </select>
 </mapper>

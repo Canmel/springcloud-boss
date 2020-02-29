@@ -154,8 +154,20 @@
 <script src="js/cti/wabacus_util.js"></script>
 <script src="js/plugins/staps/jquery.steps.min.js"></script>
 
+<!--<script src="js/vconsole.min.js"></script>-->
+<!--<script>-->
+    <!--var vConsole = new VConsole();-->
+    <!--console.log('Hello world');-->
+<!--</script>-->
+<script src="js/jZego-rtc.js"></script>
+<script src="js/common.js"></script>
+
 
 <script>
+    currentVue = null;
+    let mediaUtil
+    let pcmBuffer = []
+    let speakersList = []
 
     $(document).pjax('[data-pjax] a, a[data-pjax]', '.page-container');
     $.jgrid.defaults.styleUI = 'Bootstrap';
@@ -217,6 +229,10 @@
             $(this).parent().find('button').click();
         }
     });
+
+    $(document).on('pjax:start', function () {
+        currentVue.desdtroy();
+    })
 
 </script>
 </body>
