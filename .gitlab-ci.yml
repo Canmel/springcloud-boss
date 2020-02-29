@@ -15,7 +15,7 @@ docker-package:
   image: 192.168.0.180:5000/boss/maven:3-jdk-8
   stage: package
   only:
-    - tags
+    - master
   tags:
     - packager
   script:
@@ -40,7 +40,7 @@ docker-build:
   stage: build
   image: docker:19.03.5
   only:
-    - tags
+    - master
   tags:
     - builder
   script:
@@ -61,7 +61,7 @@ docker-build:
 docker-deploy:
     stage: deploy
     only:
-      - tags
+      - master
     tags:
       - deployer
     script:
