@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
+    <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="删除多余文件">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/cti/ctiClient-1.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/static/js/cti/ctiClient-1.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-survey/src/main/resources/templates/pages/task/start.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,6 +209,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SpringcloudInterviewerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-interviewer" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.camel.interviewer.SpringcloudInterviewerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.MysqlGenerator" />
       <item itemvalue="Spring Boot.SpringCloudZuulApplication" />
@@ -216,10 +224,11 @@
       <item itemvalue="Spring Boot.SpringCloudOaServerApplication" />
       <item itemvalue="Spring Boot.SpringCloudSmsServerApplication" />
       <item itemvalue="Spring Boot.SpringCloudAttendanceApplication" />
-      <item itemvalue="Spring Boot.SpringCloudAuthServerApplication" />
       <item itemvalue="Spring Boot.SpringCloudActivitiApplication" />
+      <item itemvalue="Spring Boot.SpringCloudAuthServerApplication" />
       <item itemvalue="Spring Boot.SpringCloudSystemApplication" />
       <item itemvalue="Spring Boot.SpringCloudStockApplication" />
+      <item itemvalue="Spring Boot.SpringcloudInterviewerApplication" />
     </list>
     <recent_temporary>
       <list>
@@ -297,7 +306,9 @@
       <workItem from="1582250515457" duration="11229000" />
       <workItem from="1582301575337" duration="1992000" />
       <workItem from="1582465418150" duration="1280000" />
-      <workItem from="1582963725641" duration="465000" />
+      <workItem from="1582963725641" duration="7843000" />
+      <workItem from="1583033243059" duration="549000" />
+      <workItem from="1583033800147" duration="20000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1581944273961</created>
@@ -383,7 +394,28 @@
       <option name="project" value="LOCAL" />
       <updated>1582308440739</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="删除多余文件">
+      <created>1582964220016</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1582964220017</updated>
+    </task>
+    <task id="LOCAL-00014" summary="删除多余文件">
+      <created>1582966275610</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1582966275610</updated>
+    </task>
+    <task id="LOCAL-00015" summary="删除多余文件">
+      <created>1582968446500</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1582968446500</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -410,10 +442,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="230" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582045776565" />
-    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1582308439740">
+    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1582968445408">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582308439740" />
+    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582968445408" />
     <state width="507" height="466" key="DebuggerActiveHint" timestamp="1582100507921">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -426,38 +458,38 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582197756618" />
-    <state width="1213" height="355" key="GridCell.Tab.0.bottom" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.0.bottom" timestamp="1582976520994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
-    <state width="1213" height="355" key="GridCell.Tab.0.center" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520994" />
+    <state width="1213" height="355" key="GridCell.Tab.0.center" timestamp="1582976520993">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
-    <state width="1213" height="355" key="GridCell.Tab.0.left" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520993" />
+    <state width="1213" height="355" key="GridCell.Tab.0.left" timestamp="1582976520993">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
-    <state width="1213" height="355" key="GridCell.Tab.0.right" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520993" />
+    <state width="1213" height="355" key="GridCell.Tab.0.right" timestamp="1582976520994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
-    <state width="1213" height="355" key="GridCell.Tab.1.bottom" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520994" />
+    <state width="1213" height="355" key="GridCell.Tab.1.bottom" timestamp="1582976520994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
-    <state width="1213" height="355" key="GridCell.Tab.1.center" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520994" />
+    <state width="1213" height="355" key="GridCell.Tab.1.center" timestamp="1582976520994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
-    <state width="1213" height="355" key="GridCell.Tab.1.left" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520994" />
+    <state width="1213" height="355" key="GridCell.Tab.1.left" timestamp="1582976520994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
-    <state width="1213" height="355" key="GridCell.Tab.1.right" timestamp="1582301615266">
+    <state width="1213" height="355" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520994" />
+    <state width="1213" height="355" key="GridCell.Tab.1.right" timestamp="1582976520994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1213" height="355" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582301615266" />
+    <state width="1213" height="355" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582976520994" />
     <state width="1213" height="201" key="GridCell.Tab.2.bottom" timestamp="1582108004727">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -474,10 +506,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1213" height="201" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582108004727" />
-    <state x="669" y="236" key="MultipleFileMergeDialog" timestamp="1582308459161">
+    <state x="669" y="236" key="MultipleFileMergeDialog" timestamp="1582964444229">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="669" y="236" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582308459161" />
+    <state x="669" y="236" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582964444229" />
     <state x="600" y="218" key="NewModule_or_Project.wizard" timestamp="1582465493339">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -494,18 +526,18 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582197787811" />
-    <state width="544" height="540" key="SwitcherDM" timestamp="1582964159139">
+    <state width="544" height="540" key="SwitcherDM" timestamp="1583033656173">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="544" height="540" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1582964159139" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1582209043870">
+    <state width="544" height="540" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1583033656173" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1582968450034">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1582209043870" />
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1582134482511">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1582968450034" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1582970099028">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582134482511" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582970099028" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1581930445104">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -518,22 +550,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="752" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1581912376724" />
-    <state x="686" y="140" width="858" height="900" key="find.popup" timestamp="1582964189787">
+    <state x="686" y="140" width="858" height="900" key="find.popup" timestamp="1582968303633">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="686" y="140" width="858" height="900" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582964189787" />
-    <state x="648" y="311" key="git4idea.merge.GitPullDialog" timestamp="1582308450020">
+    <state x="686" y="140" width="858" height="900" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582968303633" />
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog" timestamp="1582976508358">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="648" y="311" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582308450020" />
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582976508358" />
+    <state x="334" y="130" key="new project wizard" timestamp="1583033516634">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="334" y="130" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1583033516634" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1582129183353">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582129183353" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1582200143707">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1582966028029">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582200143707" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582966028029" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
