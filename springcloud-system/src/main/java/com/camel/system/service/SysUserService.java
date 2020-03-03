@@ -1,6 +1,7 @@
 package com.camel.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.github.pagehelper.PageInfo;
 
@@ -56,4 +57,6 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     List<SysUser> byRole(Integer id);
+
+    Result interviewer(SysUser sysUser);
 }

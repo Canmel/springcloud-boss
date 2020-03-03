@@ -54,6 +54,10 @@ zuul:
     attendance:
       path: /attendance/**
       serviceId: springcloud-attendance
+    interviewer:
+      path: /viewer/**
+      serviceId: springcloud-interviewer
+      sensitiveHeaders: "*"
   retryable: true
   ignored-services: "*"
   host:

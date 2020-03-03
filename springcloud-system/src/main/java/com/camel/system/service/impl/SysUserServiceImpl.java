@@ -3,7 +3,11 @@ package com.camel.system.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.core.entity.Result;
+import com.camel.core.model.SysRole;
 import com.camel.core.utils.MyCollectionUtils;
+import com.camel.core.utils.ResultUtil;
+import com.camel.system.mapper.SysRoleMapper;
 import com.camel.system.mapper.SysUserMapper;
 import com.camel.system.mapper.SysUserRoleMapper;
 import com.camel.core.model.SysUser;
@@ -39,6 +43,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysRoleService roleService;
+
+    @Autowired
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public PageInfo<SysUser> pageQuery(SysUser entity) {
@@ -95,5 +102,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public List<SysUser> byRole(Integer id) {
         return mapper.byRole(id);
+    }
+
+    @Override
+    public Result interviewer(SysUser sysUser) {
+        Integer id = mapper.insert(sysUser);
+        SysRole role = sysRoleMapper.selectOne(SysRole.interviewer());
+        SysUserRole userRole = new SysUserRole();
+        userRole.setUserId(id);
+        userRole.setRoleId(role.getRoleId());
+        userRoleMapper.insert(userRole);
+        return ResultUtil.success("新增访员成功");
     }
 }

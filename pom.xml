@@ -22,6 +22,7 @@
         <module>springcloud-survey</module>
         <module>springcloud-attendance</module>
         <module>springcloud-stock-operation</module>
+        <module>springcloud-interviewer</module>
     </modules>
     <packaging>pom</packaging>
     <description>springcloud 通关</description>
