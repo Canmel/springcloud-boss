@@ -136,7 +136,6 @@
             applicationContextRootPath: '/survey/',
             pageInfo: {
                 username: '',
-                state: 'COLLECTING',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -198,6 +197,7 @@
             },
             applyRoles(item) {
                 this.selected = item;
+                this.roleIds = this.roleIds.concat(item.roleIds)
                 $("#myModal").modal('show');
 
             },

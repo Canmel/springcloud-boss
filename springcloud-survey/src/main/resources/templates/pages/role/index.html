@@ -1,7 +1,7 @@
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>用户角色</h5>
+            <h5>角色管理</h5>
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a :href="applicationContextRootPath + 'pages/role/add.html'"
@@ -42,6 +42,9 @@
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs">
                                 编辑
                             </button>
+                            <button type="button" v-on:click="applyMenu(item)" class="btn btn-info btn-xs">
+                                分配菜单
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -51,6 +54,32 @@
                          :changge="pageFn"></pageination>
 
         </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">分配菜单</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <h3>可以分配的所有菜单:</h3>
+                        <div class="row">
+                            <div class="col-sm-4" v-for="item in allMenus">
+                                <label>
+                                    <input type="checkbox" name="menuIds" :value="item.menuId" v-model="menuIds"/>
+                                    {{item.name}}
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" v-on:click="saveMenus()">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
 
 </div>
@@ -68,11 +97,34 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            allMenus: [],
+            menuIds: []
         },
         created: function () {
+            this.getMenus();
         },
         methods: {
+            saveMenus() {
+                AJAX.POST_JSON('/system/sysRole/menus',
+                    {roleId: this.selected.roleId, menuIds: this.menuIds}
+                    , function (resp) {
+                        toastr.success(resp.msg);
+                        $("#myModal").modal('hide');
+                    })
+            },
+            getMenus() {
+                let that = this;
+                AJAX.GET('/system/sysMenu/all/list', {}, function (resp) {
+                    that.allMenus = resp.data;
+                });
+            },
+            applyMenu(item) {
+                this.menuIds = [];
+                this.selected = item;
+                this.menuIds = this.menuIds.concat(item.menuIds)
+                $('#myModal').modal('show');
+            },
             pagequery: function () {
                 var that = this;
                 AJAX.GET('/system/sysRole', this.pageInfo, function (resp) {

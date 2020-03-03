@@ -9,6 +9,8 @@
         <result column="gmt_create" property="gmtCreate" jdbcType="DATE"></result>
         <result column="gmt_modifiled" property="gmtModifiled" jdbcType="DATE"></result>
         <result column="status" property="status" jdbcType="VARCHAR"></result>
+        <collection property="menuIds" fetchType="eager" column="role_id"
+                    select="findMenuIdsByRoleId"></collection>
     </resultMap>
 
     <sql id="BASE_SQL">
@@ -31,5 +33,9 @@
           <if test="status != null">AND sys_role.`status` = #{status}</if>
         </where>
         order by sys_role.role_id
+    </select>
+
+    <select id="findMenuIdsByRoleId" resultType="integer">
+        select menu_id from sys_role_menu where role_id = #{role_id}
     </select>
 </mapper>
