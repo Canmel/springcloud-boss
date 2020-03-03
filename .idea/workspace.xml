@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="" />
+    <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -314,7 +316,7 @@
       <workItem from="1582963725641" duration="7843000" />
       <workItem from="1583033243059" duration="549000" />
       <workItem from="1583033800147" duration="8837000" />
-      <workItem from="1583236198824" duration="6628000" />
+      <workItem from="1583236198824" duration="6915000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1581944273961</created>
@@ -435,7 +437,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583243784298</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="删除多余文件">
+      <created>1583244157036</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1583244157036</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -466,10 +475,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="454" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583044388906" />
-    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1583244136285">
+    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1583244378613">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1583244136285" />
+    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1583244378613" />
     <state width="507" height="466" key="DebuggerActiveHint" timestamp="1582100507921">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -530,10 +539,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1213" height="355" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1583058938042" />
-    <state x="669" y="236" key="MultipleFileMergeDialog" timestamp="1583244111380">
+    <state x="669" y="236" key="MultipleFileMergeDialog" timestamp="1583244364716">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="669" y="236" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583244111380" />
+    <state x="669" y="236" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583244364716" />
     <state x="600" y="218" key="NewModule_or_Project.wizard" timestamp="1582465493339">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -578,10 +587,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="691" y="140" width="858" height="900" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1583242242376" />
-    <state x="648" y="311" key="git4idea.merge.GitPullDialog" timestamp="1583244104924">
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog" timestamp="1583244357397">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="648" y="311" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583244104924" />
+    <state x="648" y="311" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583244357397" />
     <state x="334" y="130" key="new project wizard" timestamp="1583033516634">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
