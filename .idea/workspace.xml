@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitlab-ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.gitlab-ci.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -316,7 +317,7 @@
       <workItem from="1582963725641" duration="7843000" />
       <workItem from="1583033243059" duration="549000" />
       <workItem from="1583033800147" duration="8837000" />
-      <workItem from="1583236198824" duration="6915000" />
+      <workItem from="1583236198824" duration="7036000" />
     </task>
     <task id="LOCAL-00001" summary="11">
       <created>1581944273961</created>
@@ -444,7 +445,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583244157036</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="删除多余文件">
+      <created>1583244425928</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1583244425928</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,10 +483,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="454" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583044388906" />
-    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1583244378613">
+    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1583244424860">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1583244378613" />
+    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1583244424860" />
     <state width="507" height="466" key="DebuggerActiveHint" timestamp="1582100507921">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -563,10 +571,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="544" height="540" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1583242300234" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1583244049579">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1583244438707">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1583244049579" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1583244438707" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1582970099028">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
