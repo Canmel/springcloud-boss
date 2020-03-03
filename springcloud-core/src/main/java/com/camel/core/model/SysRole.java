@@ -38,6 +38,8 @@ public class SysRole extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static String INTERVIEWER = "interviewer";
+
     /**
      * 角色ID 主键
      */
@@ -94,5 +96,11 @@ public class SysRole extends BasePaginationEntity implements Serializable {
                 ", gmtModifiled=" + gmtModifiled +
                 ", status=" + status +
                 "}";
+    }
+
+    public static SysRole interviewer() {
+        SysRole sysRole = new SysRole();
+        sysRole.setRoleSign(INTERVIEWER);
+        return sysRole;
     }
 }

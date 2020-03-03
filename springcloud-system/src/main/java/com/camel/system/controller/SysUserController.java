@@ -65,6 +65,11 @@ public class SysUserController extends BaseCommonController {
         return super.save(sysUser);
     }
 
+    @PostMapping("/interviewer")
+    public Result interviewer(@RequestBody SysUser sysUser) {
+        return service.interviewer(sysUser);
+    }
+
     @GetMapping("/{id}")
     public Result save(@PathVariable(required = true) Integer id) {
         Result result = super.details(id);

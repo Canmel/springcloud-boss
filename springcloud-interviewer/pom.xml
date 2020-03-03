@@ -9,6 +9,7 @@
     </parent>
     <groupId>com.camel.interviewer</groupId>
     <artifactId>springcloud-interviewer</artifactId>
+    <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>springcloud-interviewer</name>
     <description>interviewer</description>
@@ -78,7 +79,11 @@
             <artifactId>springcloud-redis</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.camel.springcloud</groupId>
+            <artifactId>springcloud-feign</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
