@@ -1,8 +1,14 @@
 package com.camel.interviewer.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPObject;
+import com.camel.core.entity.Result;
+import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
+import com.camel.interviewer.config.WxConstants;
 import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.service.WxSubscibeService;
+import com.camel.interviewer.utils.HttpUtils;
 import com.camel.interviewer.utils.MessageUtil;
 import com.camel.interviewer.utils.XmlUtil;
 import org.dom4j.DocumentException;
@@ -11,22 +17,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/")
 public class WeixinStartController {
 
+    public static final String USERID_URL = "https://api.weixin.qq.com/sns/jscode2session";
+    public static final String APPID = "wx86580ae3b1e6c709";
+    public static final String APPSECRET = "3ec6840ff3590880ece2eba2367289e0";
+
     public static final String SIGNATURE = "signature";
     public static final String TIMESTAMP = "timestamp";
     public static final String NONCE = "nonce";
     public static final String ECHOSTR = "echostr";
+    public static final String AUTHORIZATION_CODE = "authorization_code";
+
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @Autowired
     private WxSubscibeService wxSubscibeService;
@@ -76,7 +93,27 @@ public class WeixinStartController {
                 out.close();
             }
         }
+    }
 
-
+    @AuthIgnore
+    @GetMapping("getUserInfo")
+    private Object getUserInfo(String code) {
+        Map<String, String> params = new HashMap<>();
+        params.put("appid", APPID);
+        params.put("js_code", code);
+        params.put("secret", APPSECRET);
+        params.put("grant_type", AUTHORIZATION_CODE);
+        params.put("scope", "snsapi_base");
+        Object result = null;
+        try {
+            String responseBody = HttpUtils.httpPostMethod(USERID_URL, params);
+            if (responseBody != null) {
+                JSONObject tokenBody = JSONObject.parseObject(responseBody);
+                result = tokenBody;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
