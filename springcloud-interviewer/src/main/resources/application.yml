@@ -100,4 +100,3 @@ logging:
   level:
     com:
       camel:
-        system: DEBUG

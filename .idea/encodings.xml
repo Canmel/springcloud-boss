@@ -16,7 +16,7 @@
     <file url="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-feign" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-feign/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/springcloud-interviewer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-interviewer" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-oa-server" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-redis" charset="UTF-8" />
