@@ -78,7 +78,7 @@ security:
       prefer-token-info: false
     client:
       ignore-urls:
-        - /start
+        - /profile.html
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
@@ -105,4 +105,4 @@ logging:
     file: '%d{yyyy-MM-dd HH:mm:ss.SSS}=== [%thread]=== %-5level === %logger{50} === %ms%n'
   level:
     com:
-      camel:
+      camel: DEBUG
