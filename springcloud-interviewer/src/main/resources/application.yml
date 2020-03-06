@@ -15,7 +15,7 @@ spring:
         max-idle: 8
         min-idle: 0
   datasource:
-    url: jdbc:mysql://${DATABASE_IP}:${DATABASE_PORT}/dw_oauth2?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://${DATABASE_IP}:${DATABASE_PORT}/dw_interviewer?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -73,7 +73,7 @@ eureka:
 security:
   oauth2:
     resource:
-      id: springcloud-system
+      id: springcloud-interviewer
       user-info-uri: http://${APPLICATION_IP}:${AUTH_PORT}/auth/session/me
       prefer-token-info: false
     client:
@@ -82,10 +82,16 @@ security:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.camel.system.model
+  type-aliases-package: com.camel.interviewer.model
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    type-handlers-package: com.camel.interviewer.enumhandler
+  type-enums-package: com.camel.interviewer.enums
+  global-config:
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 
 pagehelper:
   helper-dialect: mysql

@@ -1,7 +1,7 @@
 version: "3"
 services:
   web:
-    image: 192.168.0.180:5000/boss/viewer:latest
+    image: 192.168.0.180:5000/boss/viewer_service:latest
     container_name: viewer
     ports:
       - '22'

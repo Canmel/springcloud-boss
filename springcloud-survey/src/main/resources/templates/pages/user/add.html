@@ -11,13 +11,15 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">登录密码<span class="text-danger">*</span>：</label>
                     <div class="col-sm-8">
-                        <input id="password" name="password" class="form-control" type="password" v-model="user.password"></input>
+                        <input id="password" name="password" class="form-control" type="password"
+                               v-model="user.password"></input>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">用户昵称<span class="text-danger">*</span>：</label>
                     <div class="col-sm-8">
-                        <input id="nickname" name="nickname" class="form-control" type="text" v-model="user.nickname"></input>
+                        <input id="nickname" name="nickname" class="form-control" type="text"
+                               v-model="user.nickname"></input>
                     </div>
                 </div>
                 <div class="form-group">
@@ -35,7 +37,8 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">所属部门<span class="text-danger">*</span>：</label>
                     <div class="col-sm-8">
-                        <input id="orgName" name="orgName" class="form-control" type="text" v-model="user.orgName"></input>
+                        <input id="orgName" name="orgName" class="form-control" type="text"
+                               v-model="user.orgName"></input>
                     </div>
                 </div>
                 <div class="form-group">
@@ -77,11 +80,11 @@
                 this.backToMain();
             },
             save: function () {
-                if(!$("#signupForm").valid()){
+                if (!$("#signupForm").valid()) {
                     return false;
                 }
                 var that = this;
-                AJAX.PUT('zsExam', JSON.stringify(this.args), function (resp) {
+                AJAX.POST_JSON('/system/sysUser', this.user, function (resp) {
                     toastr.success(resp.msg);
                     that.backToMain();
                 });

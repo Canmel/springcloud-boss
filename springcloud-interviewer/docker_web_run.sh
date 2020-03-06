@@ -26,7 +26,7 @@ if [ "$RUN_CONTEXT" = "dev" ]; then
     #启动rails
     #echo `bundle exec rails s -b 0.0.0.0 -p 3000`
     #passenger start --environment development --port 3000
-    nohup java -jar springcloud-interviewer-1.0-SNAPSHOT.jar &
+    nohup java -jar springcloud-interviewer-0.0.1-SNAPSHOT.jar &
     /bin/bash
 #预发布环境
 elif [ "$RUN_CONTEXT" = "pre_prod" ]; then
