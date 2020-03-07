@@ -92,15 +92,15 @@
         return null;
     }
 
-    if(getQueryString("code")) {
-        alert(getQueryString("code"))
+    if (getQueryString("code")) {
+        alert(getQueryString("code"));
 
         wx.request({
             url: 'https://diaocha.svdata.cn/viewer/getUserInfo?code=' + getQueryString("code"),
             header: {
                 'content-type': 'application/json' // 默认值
             },
-            success: function(resp) {
+            success: function (resp) {
                 alert(resp['openid']);
                 $("#js_input1").text(resp['openid'])
             },
