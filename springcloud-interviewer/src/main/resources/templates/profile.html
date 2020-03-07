@@ -93,7 +93,7 @@
     }
 
     if(getQueryString("code")) {
-        alert("code")
+        alert(getQueryString("code"))
         $.ajax({
             url: '/viewer/getUserInfo?code=' + getQueryString("code"),
             type: 'GET',
