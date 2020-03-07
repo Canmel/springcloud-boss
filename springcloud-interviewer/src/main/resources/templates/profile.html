@@ -93,12 +93,14 @@
     }
 
     if(getQueryString("code")) {
+        alert("code")
         $.ajax({
             url: '/viewer/getUserInfo?code=' + getQueryString("code"),
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             async: false,
             success: function (resp) {
+                alert(resp['openid']);
                 $("#js_input1").text(resp['openid'])
             }
         });
