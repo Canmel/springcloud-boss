@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
     <link rel="stylesheet" href="/viewer/wx/css/weui.css">
     <link rel="stylesheet" href="/viewer/wx/css/example.css"/>
-    <script src="/viewer/wx/js/jquery.js"></script>
-    <script src="/viewer/wx/js/jweixin-1.6.0.js"></script>
+    <script src="/viewer/wx/css/jquery.js"></script>
+    <script src="/viewer/wx/css/jweixin-1.6.0.js"></script>
 </head>
 <body>
 <div class="container" id="container">
@@ -95,6 +95,7 @@
     window.onload = function () {
         if (getQueryString("code")) {
             alert(getQueryString("code"));
+
             $.ajax({
                 url: '/viewer/getUserInfo?code=' + getQueryString("code"),
                 type: 'GET',
