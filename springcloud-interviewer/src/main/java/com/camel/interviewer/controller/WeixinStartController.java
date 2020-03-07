@@ -108,11 +108,13 @@ public class WeixinStartController {
             String responseBody = HttpUtils.httpGetMethod(USERID_URL, params);
             if (responseBody != null) {
                 JSONObject tokenBody = JSONObject.parseObject(responseBody);
+                System.out.println(tokenBody.toJSONString());
                 result = tokenBody;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("-----");
         return result;
     }
 }
