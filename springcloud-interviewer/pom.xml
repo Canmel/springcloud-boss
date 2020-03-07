@@ -127,6 +127,27 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+            <scope>true</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>  
+            <groupId>net.sf.json-lib</groupId>  
+            <artifactId>json-lib</artifactId>  
+            <version>2.2.3</version>  
+            <classifier>jdk15</classifier><!-- 指定jdk版本 -->  
+        </dependency>
+        <dependency>
+            <groupId>org.jeewxframework.boot</groupId>
+            <artifactId>jeewx-boot-start-core</artifactId>
+            <version>1.0.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -134,6 +155,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
         </plugins>
     </build>

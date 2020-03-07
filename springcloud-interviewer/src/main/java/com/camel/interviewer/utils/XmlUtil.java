@@ -46,4 +46,6 @@ public class XmlUtil {
 		xstream.alias("xml", textMessage.getClass());
 		return xstream.toXML(textMessage);
 	}
+
+
 }

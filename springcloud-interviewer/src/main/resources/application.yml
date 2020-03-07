@@ -59,6 +59,16 @@ spring:
     close-timeout: 15s
     user: admin
     password: admin
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
 #  jms:
 #    pub-sub-domain: true
 
@@ -78,7 +88,9 @@ security:
       prefer-token-info: false
     client:
       ignore-urls:
+        - /start
         - /profile.html
+        - /wx/**
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
@@ -105,4 +117,5 @@ logging:
     file: '%d{yyyy-MM-dd HH:mm:ss.SSS}=== [%thread]=== %-5level === %logger{50} === %ms%n'
   level:
     com:
-      camel: DEBUG
+      camel:
+        interviewer: DEBUG

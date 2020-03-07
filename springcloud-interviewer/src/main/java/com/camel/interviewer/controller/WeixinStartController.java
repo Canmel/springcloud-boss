@@ -31,9 +31,9 @@ import java.util.Map;
 @RequestMapping("/")
 public class WeixinStartController {
 
-    public static final String USERID_URL = "https://api.weixin.qq.com/sns/jscode2session";
-    public static final String APPID = "wx86580ae3b1e6c709";
-    public static final String APPSECRET = "3ec6840ff3590880ece2eba2367289e0";
+    public static final String USERID_URL = "https://api.weixin.qq.com/sns/oauth2/access_token";
+    public static final String APPID = "wx40d4fe2c2c03a2f3";
+    public static final String APPSECRET = "c5f6da5b695d372321c9a46b792ec8f0";
 
     public static final String SIGNATURE = "signature";
     public static final String TIMESTAMP = "timestamp";
@@ -100,13 +100,12 @@ public class WeixinStartController {
     private Object getUserInfo(String code) {
         Map<String, String> params = new HashMap<>();
         params.put("appid", APPID);
-        params.put("js_code", code);
+        params.put("code", code);
         params.put("secret", APPSECRET);
         params.put("grant_type", AUTHORIZATION_CODE);
-        params.put("scope", "snsapi_base");
         Object result = null;
         try {
-            String responseBody = HttpUtils.httpPostMethod(USERID_URL, params);
+            String responseBody = HttpUtils.httpGetMethod(USERID_URL, params);
             if (responseBody != null) {
                 JSONObject tokenBody = JSONObject.parseObject(responseBody);
                 result = tokenBody;
