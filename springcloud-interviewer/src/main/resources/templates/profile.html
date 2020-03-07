@@ -102,6 +102,9 @@
             success: function (resp) {
                 alert(resp['openid']);
                 $("#js_input1").text(resp['openid'])
+            },
+            error: function (err) {
+                alert(err)
             }
         });
     }
