@@ -25,8 +25,8 @@ import java.util.UUID;
 @RequestMapping("/view")
 @Controller
 public class WeixinViewController {
-    public static final String APPID_VALUE = "wx40d4fe2c2c03a2f3";
-    public static final String APPSECRET_VALUE = "c5f6da5b695d372321c9a46b792ec8f0";
+    public static final String APPID_VALUE = "wx0a2efc77aac2a84b";
+    public static final String APPSECRET_VALUE = "a0eb49319937944512d1fcf65b3216c0";
     public static final String APPID_KEY = "appId";
     public static final String APPSECRET_KEY = "appsecret";
     public static final String TIMESTAM_KEY = "timestamp";
