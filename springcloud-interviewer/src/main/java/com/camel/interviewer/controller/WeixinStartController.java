@@ -32,8 +32,8 @@ import java.util.Map;
 public class WeixinStartController {
 
     public static final String USERID_URL = "https://api.weixin.qq.com/sns/oauth2/access_token";
-    public static final String APPID = "wx40d4fe2c2c03a2f3";
-    public static final String APPSECRET = "c5f6da5b695d372321c9a46b792ec8f0";
+    public static final String APPID = "wx0a2efc77aac2a84b";
+    public static final String APPSECRET = "a0eb49319937944512d1fcf65b3216c0";
 
     public static final String SIGNATURE = "signature";
     public static final String TIMESTAMP = "timestamp";
