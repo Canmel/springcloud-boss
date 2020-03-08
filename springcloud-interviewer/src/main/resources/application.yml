@@ -2,6 +2,11 @@ server:
   port: 0
 
 spring:
+  devtools:
+    restart:
+      enabled: true
+  freemarker:
+    cache: false
   application:
     name: springcloud-interviewer
   redis:
@@ -89,7 +94,9 @@ security:
     client:
       ignore-urls:
         - /start
+        - /h5/index.html
         - /profile.html
+        - /h5/**
         - /wx/**
 
 mybatis-plus:
@@ -119,3 +126,9 @@ logging:
     com:
       camel:
         interviewer: DEBUG
+
+wx:
+  account:
+    appid: wx40d4fe2c2c03a2f3
+    appsecret: c5f6da5b695d372321c9a46b792ec8f0
+

@@ -2,43 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <title>完善资料</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
     <link rel="stylesheet" href="/viewer/wx/css/weui.css">
     <link rel="stylesheet" href="/viewer/wx/css/example.css"/>
-    <script src="/viewer/wx/css/jquery.js"></script>
-    <script src="/viewer/wx/css/jweixin-1.6.0.js"></script>
+    <link rel="stylesheet" href="/viewer/wx/css/jquery-weui.css">
+    <link rel="stylesheet" href="/viewer/wx/css/demos.css">
+    <script src="/viewer/wx/js/jquery.js"></script>
+    <script src="/viewer/wx/js/jweixin-1.6.0.js"></script>
+    <script src="/viewer/wx/js/vue.js"></script>
 </head>
 <body>
 <div class="container" id="container">
-    <div class="page form_page js_show">
+    <div class="page form_page js_show" id="wrapper">
         <div class="weui-form">
             <div class="weui-form__text-area">
-                <h2 class="weui-form__title">表单结构</h2>
-                <div class="weui-form__desc">展示表单页面的信息结构样式, 分别由头部区域/控件区域/提示区域/操作区域和底部信息区域组成。</div>
+                <h2 class="weui-form__title">用户信息完善</h2>
+                <div class="weui-form__desc">请完善你的个人信息，完成后就可以开始你的调查之路</div>
             </div>
             <div class="weui-form__control-area">
                 <div class="weui-cells__group weui-cells__group_form">
-                    <div class="weui-cells__title">表单组标题</div>
+                    <div class="weui-cells__title">基本信息</div>
                     <div class="weui-cells weui-cells_form">
-                        <div class="weui-cell weui-cell_active">
-                            <div class="weui-cell__hd"><label class="weui-label">微信ID</label></div>
+                        <div class="weui-cell">
+                            <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
                             <div class="weui-cell__bd">
-                                <input id="js_input1" class="weui-input" placeholder="填写本人微信号">
+                                <input class="weui-input" type="text" placeholder="请输入你的真实姓名">
                             </div>
                         </div>
-                        <div class="weui-cell weui-cell_active">
-                            <div class="weui-cell__hd"><label class="weui-label">昵称</label></div>
+                        <div class="weui-cell weui-cell_select weui-cell_select-after">
+                            <div class="weui-cell__hd">
+                                <label class="weui-label">性别</label>
+                            </div>
                             <div class="weui-cell__bd">
-                                <input id="js_input2" class="weui-input" placeholder="填写本人微信号的昵称">
+                                <select class="weui-select">
+                                    <option value="0">女</option>
+                                    <option value="1">男</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="weui-cell weui-cell_active">
-                            <div class="weui-cell__hd"><label class="weui-label">联系电话</label></div>
+                        <div class="weui-cell weui-cell_warn">
+                            <div class="weui-cell__hd"><label for="" class="weui-label">身份证号</label></div>
                             <div class="weui-cell__bd">
-                                <input id="js_input3" class="weui-input" placeholder="填写绑定的电话号码" type="number"
-                                       pattern="[0-9]*">
+                                <input class="weui-input" type="text" pattern="/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/" placeholder="请输入身份证号">
+                            </div>
+                            <div class="weui-cell__ft">
+                                <i class="weui-icon-warn"></i>
+                            </div>
+                        </div>
+                        <div class="weui-cell">
+                            <div class="weui-cell__hd"><label class="weui-label">学校</label></div>
+                            <div class="weui-cell__bd">
+                                <input class="weui-input" type="text" placeholder="请输入你的学校">
+                            </div>
+                        </div>
+                        <div class="weui-cell weui-cell_vcode">
+                            <div class="weui-cell__hd">
+                                <label class="weui-label">手机号</label>
+                            </div>
+                            <div class="weui-cell__bd">
+                                <input class="weui-input" type="number" placeholder="请输入手机号">
+                            </div>
+                            <div class="weui-cell__ft">
+                                <button class="weui-vcode-btn">获取验证码</button>
+                            </div>
+                        </div>
+                        <div class="weui-cell weui-cell_vcode">
+                            <div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
+                            <div class="weui-cell__bd">
+                                <input class="weui-input" type="number" placeholder="请输入验证码">
                             </div>
                         </div>
                     </div>
@@ -50,7 +82,7 @@
                 </p>
             </div>
             <div class="weui-form__opr-area">
-                <a class="weui-btn weui-btn_primary weui-btn_disabled" href="javascript:" id="showTooltips">确定</a>
+                <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">确定</a>
             </div>
             <div class="weui-form__tips-area">
                 <p class="weui-form__tips">
@@ -75,57 +107,83 @@
         </div>
 
         <div class="page__ft j_bottom">
-            <a href="javascript:home()"><img src="https://weui.io/images/icon_footer_link.png"></a>
+            <!--             准备来一个logo-->
+            <!--            <a href="javascript:home()"><img src="https://weui.io/images/icon_footer_link.png"></a>-->
         </div>
     </div>
 
 </div>
+<script src="/viewer/wx/js/jquery-2.1.4.js"></script>
+<script src="/viewer/wx/js/fastclick.js"></script>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="/viewer/wx/js/jquery-weui.js"></script>
 </body>
 
 <script type="application/javascript">
-    function getQueryString(name) {
-        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-            return unescape(r[2]);
-        }
-        return null;
-    }
+    new Vue(
+        {
+            el: '#wrapper',
+            data: {
 
-    window.onload = function () {
-        if (getQueryString("code")) {
-            alert(getQueryString("code"));
-
-            $.ajax({
-                url: '/viewer/getUserInfo?code=' + getQueryString("code"),
-                type: 'GET',
-                async: false,
-                success: function (resp) {
-                    alert(resp['openid']);
-                    $("#js_input1").text(resp['openid'])
+            },
+            created: function () {
+                this.initUserInfo();
+            },
+            methods: {
+                getQueryString(name) {
+                    let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+                    let r = window.location.search.substr(1).match(reg);
+                    if (r != null) {
+                        return unescape(r[2]);
+                    }
+                    return null;
                 },
-                error: function (err) {
-                    alert(err)
+                initUserInfo() {
+                    if (this.getQueryString("code")){
+                        $.ajax({
+                            url: '/viewer/getUserInfo?code=' + this.getQueryString("code"),
+                            type: 'GET',
+                            async: false,
+                            success: function (resp) {
+                                alert(resp['openid']);
+                                $("#js_input1").text(resp['openid'])
+                            },
+                            error: function (err) {
+                                alert(err)
+                            }
+                        });
+                    }
                 }
-            });
-            wx.request({
-                url: 'https://diaocha.svdata.cn/viewer/getUserInfo?code=' + getQueryString("code"),
-                header: {
-                    'content-type': 'application/json' // 默认值
-                },
-                success: function (resp) {
-                    alert(resp['openid']);
-                    $("#js_input1").text(resp['openid'])
-                },
-                fail: function () {
-                    alert("失败");
-                },
-                complete: function () {
-                    alert("完成");
-                }
-            });
+            }
         }
-    }
+    );
+    // window.onload = function () {
+        // if (getQueryString("code")) {
+        //     alert(getQueryString("code"));
+
+
+            // wx.request({
+            //     url: 'https://diaocha.svdata.cn/viewer/getUserInfo?code=' + getQueryString("code"),
+            //     header: {
+            //         'content-type': 'application/json' // 默认值
+            //     },
+            //     success: function (resp) {
+            //         alert(resp['openid']);
+            //         $("#js_input1").text(resp['openid'])
+            //     },
+            //     fail: function () {
+            //         alert("失败");
+            //     },
+            //     complete: function () {
+            //         alert("完成");
+            //     }
+            // });
+    //     }
+    // }
 
 </script>
 </html>

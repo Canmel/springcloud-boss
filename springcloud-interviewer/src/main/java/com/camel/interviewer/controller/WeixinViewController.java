@@ -1,6 +1,7 @@
 package com.camel.interviewer.controller;
 
 import com.camel.interviewer.annotation.AuthIgnore;
+import com.camel.interviewer.config.WxConstants;
 import com.camel.interviewer.utils.JsapiTicketUtil;
 import com.camel.interviewer.utils.SHA1;
 import com.camel.interviewer.utils.WxCommonsUtils;
@@ -11,6 +12,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,9 @@ import java.util.UUID;
 @RequestMapping("/view")
 @Controller
 public class WeixinViewController {
-    public static final String APPID_VALUE = "wx0a2efc77aac2a84b";
-    public static final String APPSECRET_VALUE = "a0eb49319937944512d1fcf65b3216c0";
+    @Autowired
+    private WxConstants wxConstants;
+
     public static final String APPID_KEY = "appId";
     public static final String APPSECRET_KEY = "appsecret";
     public static final String TIMESTAM_KEY = "timestamp";
@@ -37,19 +40,8 @@ public class WeixinViewController {
 
     @AuthIgnore
     @GetMapping("/profile")
-    public String profile(ModelMap map, HttpServletRequest request) {
-        String timestamp = WxCommonsUtils.getInstance().timeStamp();
-        String nonceStr = WxCommonsUtils.getInstance().getRandomStr();
-        String token = WxTokenUtil.getInstance().getTocken(APPID_VALUE, APPSECRET_VALUE);
-        Map<String, String> ticketMap = JsapiTicketUtil.getInstance().JsapiTicket(token);
-        String str = "jsapi_ticket="+ticketMap.get("ticket")+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+"http://l27512n380.wicp.vip/viewer/profile";
-        String signature = SHA1.encode(str);
-        Map<String, String> wxConfig = new HashMap<>();
-        wxConfig.put(APPID_KEY, APPID_VALUE);
-        wxConfig.put(TIMESTAM_KEY, timestamp);
-        wxConfig.put(NONCESTR_KEY, nonceStr);
-        wxConfig.put(SIGNATURE_KEY, signature);
-        map.put("wxConfig",wxConfig);
+    public String profile() {
+        System.out.println("------");
         return "profile";
     }
 }

@@ -32,9 +32,6 @@ import java.util.Map;
 public class WeixinStartController {
 
     public static final String USERID_URL = "https://api.weixin.qq.com/sns/oauth2/access_token";
-    public static final String APPID = "wx0a2efc77aac2a84b";
-    public static final String APPSECRET = "a0eb49319937944512d1fcf65b3216c0";
-
     public static final String SIGNATURE = "signature";
     public static final String TIMESTAMP = "timestamp";
     public static final String NONCE = "nonce";
@@ -44,6 +41,9 @@ public class WeixinStartController {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private WxConstants wxConstants;
 
     @Autowired
     private WxSubscibeService wxSubscibeService;
@@ -99,9 +99,9 @@ public class WeixinStartController {
     @GetMapping("getUserInfo")
     private Object getUserInfo(String code) {
         Map<String, String> params = new HashMap<>();
-        params.put("appid", APPID);
+        params.put("appid", wxConstants.getAppid());
         params.put("code", code);
-        params.put("secret", APPSECRET);
+        params.put("secret", wxConstants.getAppsecret());
         params.put("grant_type", AUTHORIZATION_CODE);
         Object result = null;
         try {
@@ -114,7 +114,6 @@ public class WeixinStartController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("-----");
         return result;
     }
 }
