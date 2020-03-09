@@ -1,0 +1,43 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.camel.interviewer.config.AuthIgnoreConfig",
+      "name": "security.oauth2.client",
+      "type": "com.camel.interviewer.config.AuthIgnoreConfig"
+    },
+    {
+      "sourceType": "com.camel.interviewer.config.WxConstants",
+      "name": "wx.account",
+      "type": "com.camel.interviewer.config.WxConstants"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.camel.interviewer.config.AuthIgnoreConfig",
+      "name": "security.oauth2.client.ignore-urls",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "sourceType": "com.camel.interviewer.config.WxConstants",
+      "defaultValue": "wx40d4fe2c2c03a2f3",
+      "name": "wx.account.appid",
+      "description": "测试账号",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.camel.interviewer.config.WxConstants",
+      "defaultValue": "c5f6da5b695d372321c9a46b792ec8f0",
+      "name": "wx.account.appsecret",
+      "description": "测试账号密钥",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.camel.interviewer.config.WxConstants",
+      "defaultValue": "2fd59a5d.ngrok.io",
+      "name": "wx.account.j-s-s-a-v-e-d-o-m-a-i-n",
+      "description": "js安全域名\n 不带http:\/\/ 或者https:\/\/ 以及项目名称",
+      "type": "java.lang.String"
+    }
+  ]
+}

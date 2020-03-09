@@ -58,7 +58,7 @@ public class MysqlGenerator {
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"wx_subscibe"});
+        strategyConfig.setInclude(new String[] {"wx_user"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
