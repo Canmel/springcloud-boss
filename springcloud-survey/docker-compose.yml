@@ -21,7 +21,7 @@ services:
       APPLICATION_GETWAY_PORT: 8080
       ACCESS_KEY: WumouqpqbGE4kHu_ygFlEfOtUAWw4m_YQcOTzAAX
       SECRET_KEY: pBd3_ZsNh1jfb4DhGo6cn1OHHLpW2k7Qd1PEY1R3
-      AUTH_PORT: 8080
+      AUTH_PORT: 4200
     networks:
     - survey-net
 networks:
