@@ -19,3 +19,5 @@
 /springcloud-stock-operation/target/
 
 /springcloud-interviewer/target/
+/.idea/
+/springcloud-interviewer/target/classes/
