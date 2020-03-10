@@ -12,8 +12,9 @@ import com.jfinal.wxaapp.WxaConfig;
 import com.jfinal.wxaapp.WxaConfigKit;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class WeixinConfig extends JFinalConfig {
+
     @Override
     public void configConstant(Constants me) {
         PropKit.use("a_little_config.txt");
