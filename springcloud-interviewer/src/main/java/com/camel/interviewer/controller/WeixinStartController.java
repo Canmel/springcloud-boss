@@ -7,7 +7,9 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.config.WxConstants;
 import com.camel.interviewer.model.WxSubscibe;
+import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WxSubscibeService;
+import com.camel.interviewer.service.WxUserService;
 import com.camel.interviewer.utils.HttpUtils;
 import com.camel.interviewer.utils.MessageUtil;
 import com.camel.interviewer.utils.XmlUtil;
@@ -47,6 +49,9 @@ public class WeixinStartController {
 
     @Autowired
     private WxSubscibeService wxSubscibeService;
+
+    @Autowired
+    private WxUserService wxUserService;
 
     @AuthIgnore
     @GetMapping
@@ -97,23 +102,23 @@ public class WeixinStartController {
 
     @AuthIgnore
     @GetMapping("getUserInfo")
-    private Object getUserInfo(String code) {
+    private Result getUserInfo(String code) {
         Map<String, String> params = new HashMap<>();
         params.put("appid", wxConstants.getAppid());
         params.put("code", code);
         params.put("secret", wxConstants.getAppsecret());
         params.put("grant_type", AUTHORIZATION_CODE);
-        Object result = null;
+        JSONObject tokenBody = null;
         try {
             String responseBody = HttpUtils.httpGetMethod(USERID_URL, params);
             if (responseBody != null) {
-                JSONObject tokenBody = JSONObject.parseObject(responseBody);
+                tokenBody = JSONObject.parseObject(responseBody);
                 System.out.println(tokenBody.toJSONString());
-                result = tokenBody;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
+        WxUser wxUser = wxUserService.selectByOpenid(tokenBody.getString("openid"));
+        return ResultUtil.success(wxUser);
     }
 }

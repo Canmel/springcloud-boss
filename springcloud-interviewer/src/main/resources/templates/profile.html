@@ -31,7 +31,8 @@
                             <div class="weui-cell">
                                 <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" type="text" placeholder="请输入你的真实姓名" v-model="userinfo.username" minlength="2" required>
+                                    <input class="weui-input" type="text" placeholder="请输入你的真实姓名"
+                                           v-model="userinfo.username" minlength="2" required>
                                 </div>
                             </div>
                             <div class="weui-cell weui-cell_select weui-cell_select-after">
@@ -50,7 +51,8 @@
                                     <label class="weui-label">邮箱</label>
                                 </div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" v-model="userinfo.email" type="email" name="email" required/>
+                                    <input class="weui-input" placeholder="请输入你的邮箱" v-model="userinfo.email"
+                                           type="email" name="email" required/>
                                 </div>
                             </div>
                             <div class="weui-cell">
@@ -64,7 +66,8 @@
                             <div class="weui-cell">
                                 <div class="weui-cell__hd"><label class="weui-label">学校</label></div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" type="text" placeholder="请输入你的学校" v-model="userinfo.school" name="school" required>
+                                    <input class="weui-input" type="text" placeholder="请输入你的学校"
+                                           v-model="userinfo.school" name="school" required>
                                 </div>
                             </div>
                             <div class="weui-cell">
@@ -72,7 +75,8 @@
                                     <label class="weui-label">手机号</label>
                                 </div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" type="number" placeholder="请输入手机号" v-model="userinfo.phone" name="phone" required>
+                                    <input class="weui-input" type="number" placeholder="请输入手机号"
+                                           v-model="userinfo.phone" name="phone" required>
                                 </div>
                                 <div class="weui-cell__ft">
                                     <span class="weui-vcode-btn" @click="sendValidateCode">获取验证码</span>
@@ -81,30 +85,21 @@
                             <div class="weui-cell">
                                 <div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" type="number" placeholder="请输入验证码" name="validCode" required>
+                                    <input class="weui-input" type="number" placeholder="请输入验证码" name="validCode" v-model="userinfo.validCode"
+                                           required>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="weui-form__tips-area">
-                <p class="weui-form__tips">
-                    表单页提示，居中对齐
-                </p>
-            </div>
             <div class="weui-form__opr-area">
-                <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips" v-on:click="submit">确定</a>
-            </div>
-            <div class="weui-form__tips-area">
-                <p class="weui-form__tips">
-                    表单页提示，居中对齐
-                </p>
+                <a class="weui-btn weui-btn_primary" :class="submitActive ? '' : 'weui-btn_disabled'" href="javascript:" id="showTooltips" v-on:click="submit">确定</a>
             </div>
             <div class="weui-form__extra-area">
                 <div class="weui-footer">
                     <p class="weui-footer__links">
-                        <a href="javascript:" class="weui-footer__link">底部链接文本</a>
+                        <a href="javascript:" class="weui-footer__link">赛炜调查提供技术支持</a>
                     </p>
                     <p class="weui-footer__text">Copyright © 2008-2019 weui.io</p>
                 </div>
@@ -131,6 +126,7 @@
     });
 </script>
 <script src="/viewer/wx/js/jquery-weui.js"></script>
+<script src="/viewer/wx/js/ajax-util.js"></script>
 </body>
 
 <script type="application/javascript">
@@ -141,6 +137,7 @@
             el: '#wrapper',
             data: {
                 userinfo: {
+                    id: '',
                     openid: '',
                     username: '',
                     idNum: '',
@@ -148,36 +145,42 @@
                     phone: '',
                     sex: '0',
                     validCode: ''
-                }
+                },
+                submitActive: true
             },
             created: function () {
                 this.initUserInfo();
-
             },
             methods: {
                 sendValidateCode() {
-                    console.log(1231233)
-                    if(this.userinfo.phone) {
+                    if (this.userinfo.phone) {
                         $.ajax({
-                            url: '/viewer/valid/sned/' + this.userinfo.phone,
+                            url: '/viewer/valid/send?phone=' + this.userinfo.phone,
                             type: 'get',
                             success: function (resp) {
-                                if(resp.code === '200') {
-                                    $.toast("操作成功", function() {
-                                        console.log(resp.msg);
+                                if (resp.code === 200) {
+                                    $.toast(resp.msg, function () {
                                     });
-                                }else {
-                                    $.toast("操作成功","cancel", function() {
-                                        console.log('close');
+                                } else {
+                                    $.toast(resp.msg, "cancel", function () {
                                     });
                                 }
 
                             }
                         });
+                    } else {
+                        $.toast("请输入正确的手机号", "cancel", function (toast) {});
                     }
                 },
                 submit() {
-                    console.log($("#userinfoForm").valid());
+                    let that = this;
+                    if($("#userinfoForm").valid() && this.submitActive){
+                        AJAX.POST_JSON("wxUser", this.userinfo, function (resp) {
+                            $.toast(resp.msg, function () {
+                                that.submitActive = false;
+                            })
+                        });
+                    }
                 },
                 getQueryString(name) {
                     let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -195,12 +198,14 @@
                             type: 'GET',
                             async: false,
                             success: function (resp) {
-                                that.openid = resp['openid'];
+                                that.userinfo = resp.data;
+                                that.submitActive = that.userinfo.id === ''
                             },
                             error: function (err) {
-                                alert(err)
                             }
                         });
+                    } else {
+                        $.toast("未获取到用户信息", "cancel", function (toast) {});
                     }
                 }
             }

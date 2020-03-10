@@ -3,6 +3,7 @@ package com.camel.interviewer.controller;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -21,10 +23,11 @@ import com.camel.core.controller.BaseCommonController;
  * @author baily
  * @since 2020-03-09
  */
-@Controller
+@RestController
 @RequestMapping("/wxUser")
 public class WxUserController extends BaseCommonController {
 
+    @AuthIgnore
     @PostMapping
     private Result save(@RequestBody WxUser wxUser) {
         return super.save(wxUser);

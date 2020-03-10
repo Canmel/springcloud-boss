@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface WxUserService extends IService<WxUser> {
 
+    WxUser selectByOpenid(String openid);
 }

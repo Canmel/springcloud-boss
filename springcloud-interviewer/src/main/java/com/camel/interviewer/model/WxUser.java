@@ -66,6 +66,13 @@ public class WxUser extends BasePaginationEntity {
     @TableLogic
     private ZsStatus status;
 
+    public WxUser(String openid) {
+        this.openid = openid;
+    }
+
+    public WxUser() {
+    }
+
     @Override
     public String toString() {
         return "WxUser{" +

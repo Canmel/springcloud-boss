@@ -3,9 +3,9 @@ package com.camel.interviewer.controller;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
+import com.camel.interviewer.annotation.AuthIgnore;
 import org.apache.http.util.TextUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,13 +15,14 @@ import java.util.Random;
 @RequestMapping("/valid")
 public class WxValidController {
 
-    @GetMapping("/code/send/{id}")
-    public Result smsCode(@PathVariable String phone) {
-        if(isMobileNO(phone)) {
-            String.format("%04d",new Random().nextInt(9999));
+    @AuthIgnore
+    @GetMapping("/send")
+    public Result smsCode(String phone) {
+        if (isMobileNO(phone)) {
+            System.out.println("验证码为:  " + String.format("%04d", new Random().nextInt(9999)));;
             return ResultUtil.success("验证码已发送到手机");
         }
-        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(),"手机号不正确");
+        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "手机号不正确");
     }
 
     public static boolean isMobileNO(String mobiles) {
@@ -34,6 +35,6 @@ public class WxValidController {
     }
 
     public static String randomCode() {
-        return ""+Math.random();
+        return "" + Math.random();
     }
 }
