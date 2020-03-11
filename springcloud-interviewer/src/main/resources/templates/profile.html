@@ -105,14 +105,6 @@
                 </div>
             </div>
         </div>
-        <div id="js_toast" style="display: none;">
-            <div class="weui-mask_transparent"></div>
-            <div class="weui-toast">
-                <i class="weui-icon-success-no-circle weui-icon_toast"></i>
-                <p class="weui-toast__content">已完成</p>
-            </div>
-        </div>
-
         <div class="page__ft j_bottom">
             <!--             准备来一个logo-->
             <!--            <a href="javascript:home()"><img src="https://weui.io/images/icon_footer_link.png"></a>-->
@@ -199,7 +191,7 @@
                             async: false,
                             success: function (resp) {
                                 that.userinfo = resp.data;
-                                that.submitActive = that.userinfo.id === ''
+                                console.log(that.userinfo);
                             },
                             error: function (err) {
                             }
