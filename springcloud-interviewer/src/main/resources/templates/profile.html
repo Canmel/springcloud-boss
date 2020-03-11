@@ -167,11 +167,19 @@
                 submit() {
                     let that = this;
                     if($("#userinfoForm").valid() && this.submitActive){
-                        AJAX.POST_JSON("wxUser", this.userinfo, function (resp) {
-                            $.toast(resp.msg, function () {
-                                that.submitActive = false;
-                            })
-                        });
+                        if(this.userinfo.id) {
+                            AJAX.PUT("wxUser", this.userinfo, function (resp) {
+                                $.toast(resp.msg, function () {
+                                    that.submitActive = false;
+                                })
+                            });
+                        }else{
+                            AJAX.POST_JSON("wxUser", this.userinfo, function (resp) {
+                                $.toast(resp.msg, function () {
+                                    that.submitActive = false;
+                                })
+                            });
+                        }
                     }
                 },
                 getQueryString(name) {
@@ -190,7 +198,9 @@
                             type: 'GET',
                             async: false,
                             success: function (resp) {
-                                that.userinfo = resp.data;
+                                if(resp.data) {
+                                    that.userinfo = resp.data;
+                                }
                                 console.log(that.userinfo);
                             },
                             error: function (err) {

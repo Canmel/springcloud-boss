@@ -7,13 +7,10 @@ import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -31,6 +28,12 @@ public class WxUserController extends BaseCommonController {
     @PostMapping
     private Result save(@RequestBody WxUser wxUser) {
         return super.save(wxUser);
+    }
+
+    @AuthIgnore
+    @PutMapping
+    private Result update(@RequestBody WxUser wxUser) {
+        return super.update(wxUser);
     }
 
     @Autowired
