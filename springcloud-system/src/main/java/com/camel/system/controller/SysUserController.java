@@ -1,6 +1,8 @@
 package com.camel.system.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
@@ -142,6 +144,10 @@ public class SysUserController extends BaseCommonController {
             service.insert(sysUser);
             return;
         }
+        Wrapper<SysUser> userWrapper = new EntityWrapper<>();
+        userWrapper.eq("id_num", sysUser.getIdNum());
+        SysUser current = service.selectOne(userWrapper);
+        sysUser.setUid(current.getUid());
         service.updateById(sysUser);
     }
 
