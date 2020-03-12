@@ -50,4 +50,13 @@ public class SmsController {
         logger.info(msg);
         smsService.send((String) jsonObject.get(TARGET), (String) jsonObject.get(CONTENT));
     }
+
+    @JmsListener(destination = "ActiveMQ.Sms.Valid.Topic")
+    public void validCode(String msg) {
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(msg);
+        logger.info("手机号: " + jsonObject.get(TARGET));
+        logger.info("发送内容: " + jsonObject.get(CONTENT));
+        logger.info(msg);
+        smsService.send((String) jsonObject.get(TARGET), (String) jsonObject.get(CONTENT));
+    }
 }

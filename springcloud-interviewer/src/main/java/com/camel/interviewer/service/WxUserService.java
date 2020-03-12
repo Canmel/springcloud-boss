@@ -1,5 +1,6 @@
 package com.camel.interviewer.service;
 
+import com.camel.core.model.SysUser;
 import com.camel.interviewer.model.WxUser;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -14,4 +15,6 @@ import com.baomidou.mybatisplus.service.IService;
 public interface WxUserService extends IService<WxUser> {
 
     WxUser selectByOpenid(String openid);
+
+    void updateSystem(SysUser sysUser);
 }

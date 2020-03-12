@@ -24,6 +24,11 @@ public class SpringCloudBpmApprovalFallback implements FallbackFactory<SpringClo
             public Result interviewerSave(SysUser sysUser) {
                 return null;
             }
+
+            @Override
+            public Result newNormal(SysUser sysUser) {
+                return null;
+            }
         };
     }
 }

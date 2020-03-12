@@ -14,6 +14,8 @@ import com.camel.system.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -129,6 +131,18 @@ public class SysUserController extends BaseCommonController {
     public Result avatar(@RequestBody SysUser sysUser) {
         super.update(sysUser);
         return ResultUtil.success("修改用户头像成功");
+    }
+
+    public static final String QUEUE_NAME = "ActiveMQ.System.New.User";
+
+    @JmsListener(destination = QUEUE_NAME)
+    public void newNormalUser(SysUser sysUser) {
+        System.out.println(sysUser);
+        if(ObjectUtils.isEmpty(sysUser.getUid())) {
+            service.insert(sysUser);
+            return;
+        }
+        service.updateById(sysUser);
     }
 
     @Override

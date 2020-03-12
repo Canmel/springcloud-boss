@@ -1,14 +1,11 @@
 package com.camel.sms.utils;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -47,89 +44,85 @@ public class LhzxHttpClientUtil {
         return instance;
     }
 
-    /**
-     * 返回客户进行POST方式调用的结果
-     *
-     * @param jsonRequestString json格式的字符串
-     * @param restServiceURL    服务地址
-     * @return String  json格式返回
-     */
-    private String sendPostRequest(String jsonRequestString, String restServiceURL) {
-        URL targetUrl = null;
-        String jsonResponseStr = null;
+    public static String request(String httpUrl, String httpArg) {
+        BufferedReader reader = null;
+        String result = null;
+        StringBuffer sbf = new StringBuffer();
+        httpUrl = httpUrl + "?" + httpArg;
+
         try {
-            targetUrl = new URL(restServiceURL);
-            HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
-            httpConnection.setDoInput(true);
-            httpConnection.setDoOutput(true);
-            httpConnection.setUseCaches(false);
-
-            httpConnection.setRequestMethod("POST");
-            String ContentType = "application/json;charset=UTF-8";
-            httpConnection.setRequestProperty("Content-Type", ContentType);
-
-            OutputStream outputStream = httpConnection.getOutputStream();
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(outputStream, "utf-8"));
-            out.println(jsonRequestString);
-            out.close();
-
-            if (httpConnection.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + httpConnection.getResponseCode());
+            URL url = new URL(httpUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            InputStream is = connection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String strRead = reader.readLine();
+            if (strRead != null) {
+                sbf.append(strRead);
+                while ((strRead = reader.readLine()) != null) {
+                    sbf.append("\n");
+                    sbf.append(strRead);
+                }
             }
-            // Get response data.
-            InputStreamReader bf = new InputStreamReader(httpConnection.getInputStream(), "utf-8");
-            String result = "";
-            int b = 0;
-            while ((b = bf.read()) != -1) {
-                result += (char) b;
-            }
-
-            httpConnection.disconnect();
-
-            jsonResponseStr = new String(result);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonResponseStr;
-    }
-
-    private String encoderByMd5(String str) {
-        try {
-            // 确定计算方法
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            BASE64Encoder base64en = new BASE64Encoder();
-            // 加密后的字符串
-            return base64en.encode(md5.digest(str.getBytes("UTF-8")));
+            reader.close();
+            result = sbf.toString();
         } catch (Exception e) {
-            return "";
+            e.printStackTrace();
         }
+        return result;
     }
 
-    public String send(String target, String content) {
-        DateFormat formater = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        String user = "tztjxx";
-        String siid = "TZSTJJXXC";
-        String secretKey = "TZtjxx88";
-        long currenttime = System.currentTimeMillis();
-        String timeStamp = formater.format(currenttime);
-        String transactionID = timeStamp;
-        String streamingNo = siid + transactionID;
-        String authenticator = encoderByMd5(timeStamp + transactionID + streamingNo + secretKey);
-        String mobile = target;
-        String req = "{\"siid\":\"" + siid + "\",\"user\":\"" + user + "\", \"streamingNo\":\"" + streamingNo + "\"" +
-                ",\"timeStamp\":\"" + timeStamp + "\",\"transactionID\":\"" + transactionID + "\"" +
-                ",\"authenticator\":\"" + authenticator + "\",\"mobile\":\"" + mobile + "\"" +
-                ",\"content\":\"" + content + "\"}";
+    public static String md5(String plainText) {
+        StringBuffer buf = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(plainText.getBytes());
+            byte b[] = md.digest();
+            int i;
+            buf = new StringBuffer("");
+            for (int offset = 0; offset < b.length; offset++) {
+                i = b[offset];
+                if (i < 0)
+                    i += 256;
+                if (i < 16)
+                    buf.append("0");
+                buf.append(Integer.toHexString(i));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return buf.toString();
+    }
 
-        System.out.println(req);
-        String ret = instance.sendPostRequest(req, "http://220.191.235.35/smsservice/httpservices/capService");
-        System.out.println(ret);
-        return ret;
+    public static String encodeUrlString(String str, String charset) {
+        String strret = null;
+        if (str == null)
+            return str;
+        try {
+            strret = java.net.URLEncoder.encode(str, charset);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return strret;
     }
 
     public static void main(String[] args) {
-        LhzxHttpClientUtil.getInstance().send("18357162602", "asjbiuasdgagiguiig");
+        String testUsername = "ucount"; //在短信宝注册的用户名
+        String testPassword = "lxg730124"; //在短信宝注册的密码
+        String testPhone = "18656381223";
+        String testContent = "【禾田遇】您的验证码为1232，在15分钟内有效。"; // 注意测试时，也请带上公司简称或网站签名，发送正规内容短信。千万不要发送无意义的内容：例如 测一下、您好。否则可能会收不到
+
+        String httpUrl = "http://api.smsbao.com/sms";
+
+        StringBuffer httpArg = new StringBuffer();
+        httpArg.append("u=").append(testUsername).append("&");
+        httpArg.append("p=").append(LhzxHttpClientUtil.md5(testPassword)).append("&");
+        httpArg.append("m=").append(testPhone).append("&");
+        httpArg.append("c=").append(LhzxHttpClientUtil.encodeUrlString(testContent, "UTF-8"));
+
+        String result = LhzxHttpClientUtil.request(httpUrl, httpArg.toString());
+        System.out.println(result);
     }
 }

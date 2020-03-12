@@ -123,6 +123,11 @@ public class SysUser extends BasePaginationEntity implements Serializable {
      */
     private String avatar;
 
+    /**
+     * 身份证号
+     */
+    private String idNum;
+
     @TableField(exist = false)
     private List roleIds;
 
@@ -141,6 +146,16 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     }
 
     public SysUser() {
+    }
+
+    public SysUser(Integer uid, String username, String password, String nickname, String email, String mobile, String idNum) {
+        this.uid = uid;
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.mobile = mobile;
+        this.idNum = idNum;
     }
 
     @Override

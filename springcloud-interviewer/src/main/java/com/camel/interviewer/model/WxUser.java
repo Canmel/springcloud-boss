@@ -1,5 +1,6 @@
 package com.camel.interviewer.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
@@ -65,6 +66,9 @@ public class WxUser extends BasePaginationEntity {
      */
     @TableLogic
     private ZsStatus status;
+
+    @TableField(exist = false)
+    private String validCode;
 
     public WxUser(String openid) {
         this.openid = openid;

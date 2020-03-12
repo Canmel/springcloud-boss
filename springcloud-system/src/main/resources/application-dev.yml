@@ -59,6 +59,8 @@ spring:
     close-timeout: 15s
     user: admin
     password: admin
+    packages:
+      trust-all: true
 #  jms:
 #    pub-sub-domain: true
 

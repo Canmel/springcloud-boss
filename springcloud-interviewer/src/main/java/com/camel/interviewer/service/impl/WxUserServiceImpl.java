@@ -1,5 +1,7 @@
 package com.camel.interviewer.service.impl;
 
+import com.camel.core.model.SysUser;
+import com.camel.interviewer.feign.SpringCloudSystemFeignClient;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.mapper.WxUserMapper;
 import com.camel.interviewer.service.WxUserService;
@@ -21,9 +23,17 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     @Autowired
     private WxUserMapper wxUserMapper;
 
+    @Autowired
+    private SpringCloudSystemFeignClient springCloudSystemFeignClient;
+
     @Override
     public WxUser selectByOpenid(String openid) {
         WxUser wxUser = wxUserMapper.selectOne(new WxUser(openid));
         return ObjectUtils.isEmpty(wxUser) ? new WxUser(openid) : wxUser;
+    }
+
+    @Override
+    public void updateSystem(SysUser sysUser) {
+        springCloudSystemFeignClient.newNormal(sysUser);
     }
 }

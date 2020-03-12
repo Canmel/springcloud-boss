@@ -64,6 +64,9 @@ spring:
     close-timeout: 15s
     user: admin
     password: admin
+    packages:
+      trusted:
+        - com.camel.core.model.SysUser
   resources:
     static-locations: classpath:/templates/,classpath:/static/
   thymeleaf:

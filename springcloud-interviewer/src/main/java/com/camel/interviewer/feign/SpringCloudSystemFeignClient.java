@@ -42,4 +42,7 @@ public interface SpringCloudSystemFeignClient {
      */
     @RequestMapping(value = "/sysUser/interviewer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     Result interviewerSave(SysUser sysUser);
+
+    @RequestMapping(value = "/sysUser/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    Result newNormal(SysUser sysUser);
 }

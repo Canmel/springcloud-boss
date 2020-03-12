@@ -31,16 +31,16 @@ function simpleSuccess(result) {
     }
     //未登录
     if (result.status == web_status.NO_LOGIN) {
-        alert("您还未登陆！");
+        // alert("您还未登陆！");
         // window.location.href =
         //     "http://127.0.0.1:8081/login.html?backToUrl="+encodeURIComponent(btoa(window.location.href));
     }else{
         //其他错误情况，直接弹出提示框
         if(result.msg!=null){
-            alert(result.msg);
+            // alert(result.msg);
         }
     }
-    return null;
+    return result;
 }
 
 //对jquery的ajax方法再次封装
@@ -60,9 +60,6 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
     }
     if(type == 'delete') {
         url += '/' + data['id'] + '?access_token=' + access_token;
-    }
-    if(type == 'put') {
-        url += '?access_token=' + access_token;
     }
     if(json) {
         data = JSON.stringify(data);
@@ -127,7 +124,7 @@ AJAX = {
         __ajax(url, data, success, "delete");
     },
     PUT:function(url, data, success){
-        __ajax(url, data, success, "put", 'application/json; charset=UTF-8');
+        __ajax(url, data, success, "put", 'application/json; charset=UTF-8', false, true);
     },
     PATCH: function (url, data, success) {
         __ajax(url, data, success, "patch", "application/json");

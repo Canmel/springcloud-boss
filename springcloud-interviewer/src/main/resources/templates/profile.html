@@ -79,7 +79,7 @@
                                            v-model="userinfo.phone" name="phone" required>
                                 </div>
                                 <div class="weui-cell__ft">
-                                    <span class="weui-vcode-btn" @click="sendValidateCode">获取验证码</span>
+                                    <span class="weui-vcode-btn" :class="submitActive ? '' : 'weui-btn_disabled'" @click="sendValidateCode">获取验证码<span v-if="!submitActive">({{countNum}})</span></span>
                                 </div>
                             </div>
                             <div class="weui-cell">
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div class="weui-form__opr-area">
-                <a class="weui-btn weui-btn_primary" :class="submitActive ? '' : 'weui-btn_disabled'" href="javascript:" id="showTooltips" v-on:click="submit">确定</a>
+                <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips" v-on:click="submit">确定</a>
             </div>
             <div class="weui-form__extra-area">
                 <div class="weui-footer">
@@ -138,14 +138,32 @@
                     sex: '0',
                     validCode: ''
                 },
-                submitActive: true
+                submitActive: true,
+                countNum: 60,
+                counter: null
             },
             created: function () {
                 this.initUserInfo();
             },
             methods: {
+                clearCount() {
+                    window.clearInterval(this.counter);
+                },
                 sendValidateCode() {
+                    if(!this.submitActive) {
+                        return;
+                    }
+                    let that = this;
                     if (this.userinfo.phone) {
+                        this.counter = window.setInterval(function () {
+                            that.countNum--;
+                            if(that.countNum === 0) {
+                                that.countNum = 60;
+                                that.clearCount();
+                                that.submitActive = true;
+                            }
+                        },1000);
+                        this.submitActive = false;
                         $.ajax({
                             url: '/viewer/valid/send?phone=' + this.userinfo.phone,
                             type: 'get',
@@ -166,17 +184,16 @@
                 },
                 submit() {
                     let that = this;
-                    if($("#userinfoForm").valid() && this.submitActive){
+                    if($("#userinfoForm").valid()){
                         if(this.userinfo.id) {
                             AJAX.PUT("wxUser", this.userinfo, function (resp) {
                                 $.toast(resp.msg, function () {
-                                    that.submitActive = false;
                                 })
                             });
                         }else{
                             AJAX.POST_JSON("wxUser", this.userinfo, function (resp) {
+                                that.userinfo = resp.data;
                                 $.toast(resp.msg, function () {
-                                    that.submitActive = false;
                                 })
                             });
                         }

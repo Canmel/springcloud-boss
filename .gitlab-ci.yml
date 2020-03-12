@@ -10,6 +10,7 @@ variables:
   survey_service: 192.168.0.180:5000/boss/survey_service:latest
   stock_service: 192.168.0.180:5000/boss/stock_service:latest
   viewer_service: 192.168.0.180:5000/boss/viewer_service:latest
+  sms_service: 192.168.0.180:5000/boss/sms_service:latest
   zuul_service: 192.168.0.180:5000/boss/zuul_service:latest
 
 docker-package:
@@ -29,6 +30,7 @@ docker-package:
     #    - cp -r springcloud-survey/docker-compose.yml springcloud-survey/target/springcloud-survey-*.jar springcloud-survey/Dockerfile springcloud-survey/docker_web_run.sh sartifacts/survey_service
     #    - cp -r springcloud-stock-operation/docker-compose.yml springcloud-stock-operation/target/springcloud-stock-operation-*.jar springcloud-stock-operation/Dockerfile springcloud-stock-operation/docker_web_run.sh sartifacts/stock_service
     - cp -r springcloud-interviewer/docker-compose.yml springcloud-interviewer/target/springcloud-interviewer-*.jar springcloud-interviewer/Dockerfile springcloud-interviewer/docker_web_run.sh sartifacts/viewer_service
+    - cp -r springcloud-sms-server/docker-compose.yml springcloud-sms-server/target/springcloud-sms-server-*.jar springcloud-sms-server/Dockerfile springcloud-sms-server/docker_web_run.sh sartifacts/sms_service
     #    - cp -r springcloud-zuul-getway/docker-compose.yml springcloud-zuul-getway/target/springcloud-zuul-getway-*.jar springcloud-zuul-getway/Dockerfile springcloud-zuul-getway/docker_web_run.sh sartifacts/zuul_service
     - du -h --max-depth=1 sartifacts
   artifacts:
@@ -58,6 +60,8 @@ docker-build:
     #    - docker push $stock_service
     - docker build -t $viewer_service ./sartifacts/viewer_service/
     - docker push $viewer_service
+    - docker build -t $sms_service ./sartifacts/sms_service/
+    - docker push $sms_service
     #    - docker build -t $zuul_service ./sartifacts/zuul_service/
     #    - docker push $zuul_service
 
@@ -76,5 +80,6 @@ docker-deploy:
     #      - cd springcloud-survey && docker-compose up -d && cd .. && pwd
     #      - cd springcloud-stock-operation && docker-compose up -d && cd .. && pwd
     - cd springcloud-interviewer && docker-compose up -d && cd .. && pwd
+    - cd springcloud-sms-server && docker-compose up -d && cd .. && pwd
     #      - cd springcloud-zuul-getway && docker-compose up -d && cd .. && pwd
     - docker rmi `docker images | grep  "<none>" | awk '{print $3}'`
