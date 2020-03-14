@@ -80,7 +80,7 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                // location.href = '/login?redirect_url=/survey/';
+                location.href = '/login?redirect_url=/survey/';
             }
         }
     };
@@ -103,6 +103,12 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
 
 //再再次封装
 AJAX = {
+    UPLOAD: function(url, data, success) {
+        if(sessionStorage.getItem("access_token")) {
+            url = url + '?access_token=' + sessionStorage.getItem("access_token");
+        }
+        __ajax(url, data, success, "post", "multipart/form-data; charset=utf-8;", false, false);
+    },
     GET:function(url, data, success){
       __ajax(url, data, success, "get");
     },

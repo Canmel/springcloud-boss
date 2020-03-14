@@ -51,14 +51,14 @@
                                     <label class="weui-label">邮箱</label>
                                 </div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" placeholder="请输入你的邮箱" v-model="userinfo.email"
+                                    <input class="weui-input" placeholder="请输入你的邮箱" v-model="userinfo.email" v-bind:disabled="isEdit"
                                            type="email" name="email" required/>
                                 </div>
                             </div>
                             <div class="weui-cell">
                                 <div class="weui-cell__hd"><label class="weui-label">身份证号</label></div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" type="text" name="idNum" required
+                                    <input class="weui-input" type="text" name="idNum" required v-bind:disabled="isEdit"
                                            pattern="/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/"
                                            placeholder="请输入身份证号" v-model="userinfo.idNum">
                                 </div>
@@ -141,7 +141,8 @@
                 },
                 submitActive: true,
                 countNum: 60,
-                counter: null
+                counter: null,
+                isEdit: false
             },
             created: function () {
                 this.initUserInfo();
@@ -176,7 +177,6 @@
                                     $.toast(resp.msg, "cancel", function () {
                                     });
                                 }
-
                             }
                         });
                     } else {
@@ -210,7 +210,7 @@
                 },
                 initUserInfo() {
                     let that = this;
-                    if (this.getQueryString("code")) {
+                    if (this.getQueryString("code") || true) {
                         $.ajax({
                             url: '/viewer/getUserInfo?code=' + this.getQueryString("code"),
                             type: 'GET',
@@ -226,8 +226,10 @@
                                     that.userinfo.phone = user.phone;
                                     that.userinfo.email = user.email;
                                     that.userinfo.sex = user.sex;
+                                    if(that.userinfo.id) {
+                                        that.isEdit = true;
+                                    }
                                 }
-                                console.log(that.userinfo);
                             },
                             error: function (err) {
                             }

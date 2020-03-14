@@ -46,7 +46,15 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         menuWrapper.eq(menuType.getColumn(), menuType.getCode());
         menuWrapper.eq(MenuStatus.NORMAL.getColumn(), MenuStatus.NORMAL.getCode());
         if(!ObjectUtils.isEmpty(principal)) {
-            menuWrapper.in("url", getAuthoritiesCollection(principal));
+            List<String> userAuth = getAuthoritiesCollection(principal);
+            if(userAuth.size() > 0) {
+                menuWrapper.in("url", userAuth);
+            }else {
+                return new ArrayList<>();
+            }
+
+        }else {
+            return new ArrayList<>();
         }
         return mapper.selectList(menuWrapper);
     }
