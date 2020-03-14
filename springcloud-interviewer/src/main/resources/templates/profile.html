@@ -136,6 +136,7 @@
                     school: '',
                     phone: '',
                     sex: '0',
+                    email: '',
                     validCode: ''
                 },
                 submitActive: true,
@@ -216,7 +217,15 @@
                             async: false,
                             success: function (resp) {
                                 if(resp.data) {
-                                    that.userinfo = resp.data;
+                                    let user = resp.data;
+                                    that.userinfo.id = user.id;
+                                    that.userinfo.openid = user.openid;
+                                    that.userinfo.username = user.username;
+                                    that.userinfo.idNum = user.idNum;
+                                    that.userinfo.school = user.school;
+                                    that.userinfo.phone = user.phone;
+                                    that.userinfo.email = user.email;
+                                    that.userinfo.sex = user.sex;
                                 }
                                 console.log(that.userinfo);
                             },

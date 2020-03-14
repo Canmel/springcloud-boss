@@ -9,6 +9,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import com.camel.sms.enums.SmsStatus;
+import org.apache.commons.lang.StringUtils;
 import sun.misc.BASE64Encoder;
 
 /**
@@ -124,5 +126,15 @@ public class LhzxHttpClientUtil {
 
         String result = LhzxHttpClientUtil.request(httpUrl, httpArg.toString());
         System.out.println(result);
+    }
+
+    public static SmsStatus getSendStatus(String code) {
+        SmsStatus[] ss = SmsStatus.values();
+        for (SmsStatus s: ss) {
+            if(StringUtils.equals(code, s.getCode())) {
+                return s;
+            }
+        }
+        return SmsStatus.UNKOWNE;
     }
 }

@@ -1,5 +1,6 @@
 package com.camel.sms.service.impl;
 
+import com.camel.sms.enums.SmsStatus;
 import com.camel.sms.service.SmsService;
 import com.camel.sms.utils.LhzxHttpClientUtil;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,8 @@ public class SmsServiceImpl implements SmsService {
         httpArg.append("c=").append(LhzxHttpClientUtil.encodeUrlString(content, "UTF-8"));
 
         String result = LhzxHttpClientUtil.request(httpUrl, httpArg.toString());
-        System.out.println(result);
+        SmsStatus smsStatus = LhzxHttpClientUtil.getSendStatus(result);
+        System.out.println(smsStatus.getText());
         return true;
     }
 
