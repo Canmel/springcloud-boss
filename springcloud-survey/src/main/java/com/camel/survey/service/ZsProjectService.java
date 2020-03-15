@@ -6,6 +6,8 @@ import com.camel.survey.model.ZsProject;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -44,4 +46,6 @@ public interface ZsProjectService extends IService<ZsProject> {
      * @return
      */
     Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication);
+
+    ZsProject getByNameFromList(String pname, List<ZsProject> projects);
 }

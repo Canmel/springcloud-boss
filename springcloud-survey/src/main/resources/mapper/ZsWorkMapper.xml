@@ -7,6 +7,7 @@
         <id column="id" property="id" />
         <result column="project_id" property="projectId" />
         <result column="pname" property="pname" />
+        <result column="uname" property="uname" />
         <result column="ptime" property="ptime" />
         <result column="work_date" property="workDate" />
         <result column="phone" property="phone" />
@@ -32,7 +33,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, project_id, pname, ptime, work_date, phone, id_num, job_number, try_num, succss_num, invalid_num, valid_num, success_rate, start_time, end_time, eat_time, work_hours, benchmark, base_salary, royalty, meals, salary, gain, gain_time
+        id, project_id, pname, uname, ptime, work_date, phone, id_num, job_number, try_num, succss_num, invalid_num, valid_num, success_rate, start_time, end_time, eat_time, work_hours, benchmark, base_salary, royalty, meals, salary, gain, gain_time
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -40,5 +41,10 @@
          <include refid="Base_Column_List"></include>
         from
         zs_work
+        <where>
+            <if test="uname != null and uname != ''">
+                uname like concat('%', #{uname}, '%')
+            </if>
+        </where>
     </select>
 </mapper>

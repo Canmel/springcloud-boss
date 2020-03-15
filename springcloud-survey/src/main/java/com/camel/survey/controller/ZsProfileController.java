@@ -1,18 +1,15 @@
 package com.camel.survey.controller;
 
-import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.service.ZsProfileService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.filter.ApplicationContextHeaderFilter;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sun.security.krb5.internal.AuthContext;
 
 /**
  *
@@ -49,13 +46,13 @@ public class ZsProfileController {
 
     @GetMapping
     public Result index(OAuth2Authentication oAuth2Authentication) {
-        Member member = applicationToolsUtils.currentUser();
-        return ResultUtil.success(applicationToolsUtils.getUser(member.getId()));
+        SysUser member = applicationToolsUtils.currentUser();
+        return ResultUtil.success(applicationToolsUtils.getUser(member.getUid()));
     }
 
     @GetMapping("/total")
     public Result total(){
-        Member member = ApplicationToolsUtils.getInstance().currentUser();
-        return ResultUtil.success(service.total(member.getId()));
+        SysUser member = ApplicationToolsUtils.getInstance().currentUser();
+        return ResultUtil.success(service.total(member.getUid()));
     }
 }

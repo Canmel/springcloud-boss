@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -132,9 +134,12 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     private List roleIds;
 
     @TableField(exist = false)
+    @JsonIgnore
     private List<SysRole> sysRoles;
 
     @TableField(exist = false)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnore
     private SysUser sysUser;
 
     public SysUser(Integer uid) {

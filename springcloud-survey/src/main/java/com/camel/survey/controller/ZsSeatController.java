@@ -4,6 +4,7 @@ package com.camel.survey.controller;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ApplicationUtils;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsSeat;
@@ -45,8 +46,8 @@ public class ZsSeatController extends BaseCommonController {
 
     @GetMapping("/current")
     public Result current() {
-        Member member = applicationUtils.currentUser();
-        return ResultUtil.success(service.selectByUid(member.getId()));
+        SysUser member = applicationUtils.currentUser();
+        return ResultUtil.success(service.selectByUid(member.getUid()));
     }
 
     @Override

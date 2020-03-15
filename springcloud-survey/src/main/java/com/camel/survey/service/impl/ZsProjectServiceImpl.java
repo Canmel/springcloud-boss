@@ -94,4 +94,14 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
         });
         return project;
     }
+
+    @Override
+    public ZsProject getByNameFromList(String pname, List<ZsProject> projects) {
+        for (ZsProject project: projects) {
+            if(project.getName().equals(pname)) {
+                return project;
+            }
+        }
+        return null;
+    }
 }

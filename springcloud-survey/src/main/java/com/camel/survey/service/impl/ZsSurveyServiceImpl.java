@@ -103,7 +103,6 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
-        Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
@@ -215,15 +214,15 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public Result sign(Integer id, OAuth2Authentication oAuth2Authentication) {
-        Member member = applicationToolsUtils.currentUser();
-        if (isSigned(id, member.getId())) {
+        SysUser member = applicationToolsUtils.currentUser();
+        if (isSigned(id, member.getUid())) {
             return ResultUtil.success("您已经投递过了，无需重复提交");
         }
-        if (isSuccess(id, member.getId())) {
+        if (isSuccess(id, member.getUid())) {
             return ResultUtil.success("您已经投递过了，并且已经审核通过，无需重复提交");
         }
         List<ZsExam> zsExams = zsExamMapper.listBySurveyId(id);
-        List<ZsExam> userExams = zsExamMapper.listByUserId(member.getId());
+        List<ZsExam> userExams = zsExamMapper.listByUserId(member.getUid());
 
         if (CollectionUtils.isEmpty(zsExams)) {
             throw new SourceDataNotValidException("您选择了一条没有限制的问卷，这是一条不正确的数据，请联系管理员");
@@ -232,7 +231,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             return ResultUtil.success("投递失败，您没有获取相关等级权限！");
         }
         if (userExams.containsAll(zsExams)) {
-            if (zsSignService.insert(new ZsSign(id, member.getMemberName(), member.getId()))) {
+            if (zsSignService.insert(new ZsSign(id, member.getUsername(), member.getUid()))) {
                 return ResultUtil.success("投递成功");
             }
         } else {
@@ -268,7 +267,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         List<ZsConcat> zsConcatList = zsConcatService.selectList(concatWrapper);
         for (ZsConcat zsConcat : zsConcatList) {
             // 发送短信之前先把记录记一下
-            ZsSurveyRecord zsSurveyRecord = new ZsSurveyRecord(zsConcat.getPhone(), survey.getId(), survey.getName(), applicationToolsUtils.currentUser().getId());
+            ZsSurveyRecord zsSurveyRecord = new ZsSurveyRecord(zsConcat.getPhone(), survey.getId(), survey.getName(), applicationToolsUtils.currentUser().getUid());
             surveyRecordService.insert(zsSurveyRecord);
             String url = SMS_SURVEY_URL;
             url = url + "?" + survey.getId() + "=" + zsConcat.getPhone();
@@ -315,5 +314,15 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public void updateCurrent(Integer id) {
         mapper.updateCurrent(id);
+    }
+
+    @Override
+    public ZsSurvey getByNameFromList(String name, List<ZsSurvey> surveys) {
+        for (ZsSurvey zsSurvey: surveys) {
+            if(zsSurvey.getName().equals(name)) {
+                return zsSurvey;
+            }
+        }
+        return null;
     }
 }

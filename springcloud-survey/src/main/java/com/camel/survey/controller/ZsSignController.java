@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.common.entity.Member;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsSign;
 import com.camel.survey.service.ZsSignService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -86,9 +90,9 @@ public class ZsSignController extends BaseCommonController {
     }
 
     @GetMapping("/user")
-    public Result getByUserId() {
-        Member member = applicationToolsUtils.currentUser();
-        return service.selectByUserId(member.getId());
+    public Result getByUserId(Principal principal) {
+        SysUser member = applicationToolsUtils.currentUser();
+        return service.selectByUserId(member.getUid());
     }
 
     /**

@@ -103,4 +103,6 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
 
     void updateCurrent(Integer id);
 
+    ZsSurvey getByNameFromList(String name, List<ZsSurvey> surveys);
+
 }

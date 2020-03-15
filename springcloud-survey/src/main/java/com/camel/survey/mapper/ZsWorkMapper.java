@@ -1,7 +1,10 @@
 package com.camel.survey.mapper;
 
+import com.camel.survey.model.ZsSign;
 import com.camel.survey.model.ZsWork;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,10 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2020-03-14
  */
 public interface ZsWorkMapper extends BaseMapper<ZsWork> {
-
+    /**
+     * 查询列表
+     * @param entity
+     * @return
+     */
+    List<ZsSign> list(ZsWork entity);
 }

@@ -69,6 +69,13 @@
         </where>
     </select>
 
+    <select id="all" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_survey zs_survey
+    </select>
+
     <select id="find" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>

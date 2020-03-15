@@ -68,9 +68,9 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
 
     @Override
     public PageInfo<ZsExam> selectPage(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
-        Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
+        SysUser member = applicationToolsUtils.currentUser(oAuth2Authentication);
         Wrapper<ZsDelivery> wrapper = new EntityWrapper();
-        wrapper.eq("creator", member.getId());
+        wrapper.eq("creator", member.getUid());
         wrapper.eq("ach", ZsAches.APPLY.getValue());
         List<ZsDelivery> deliveries = deliveryService.selectList(wrapper);
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
@@ -102,17 +102,17 @@ public class ZsExamServiceImpl extends ServiceImpl<ZsExamMapper, ZsExam> impleme
 
     @Override
     public Result delivery(Integer id, OAuth2Authentication oAuth2Authentication) {
-        Member member = applicationToolsUtils.currentUser(oAuth2Authentication);
+        SysUser member = applicationToolsUtils.currentUser(oAuth2Authentication);
         Wrapper<ZsDelivery> deliveryWrapper = new EntityWrapper<>();
         deliveryWrapper.eq("exam_id", id);
-        deliveryWrapper.eq("creator", member.getId());
+        deliveryWrapper.eq("creator", member.getUid());
         deliveryWrapper.eq("ach", ZsAches.APPLY.getValue());
         if (deliveryService.selectCount(deliveryWrapper) > 0) {
             return ResultUtil.success("已经报名,无需重复提交");
         }
         ZsDelivery delivery = new ZsDelivery(id);
-        delivery.setCreator(new SysUser(member.getId()));
-        delivery.setCreatorId(member.getId());
+        delivery.setCreator(new SysUser(member.getUid()));
+        delivery.setCreatorId(member.getUid());
         if (deliveryService.insert(delivery)) {
             return ResultUtil.success("新增成功");
         }

@@ -112,6 +112,11 @@ public class SysUser implements Serializable {
      */
     private String avatar;
 
+    /**
+     * 身份证号码
+     */
+    private String idNum;
+
     private List<SysRole> sysRoles;
 
     @Override

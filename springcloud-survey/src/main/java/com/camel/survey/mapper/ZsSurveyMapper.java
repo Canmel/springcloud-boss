@@ -24,6 +24,12 @@ public interface ZsSurveyMapper extends BaseMapper<ZsSurvey> {
     List<ZsSurvey> list(ZsSurvey entity);
 
     /**
+     * 查询列表
+     * @return
+     */
+    List<ZsSurvey> all();
+
+    /**
      * 查询文件
      * @param id
      * @return

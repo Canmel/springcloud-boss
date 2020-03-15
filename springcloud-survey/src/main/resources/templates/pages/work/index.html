@@ -1,7 +1,7 @@
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>任务面板</h5>
+            <h5>工作记录</h5>
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a v-on:click="importData"
@@ -17,7 +17,8 @@
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input" v-model="pageInfo.name"> <span
+                        <input type="text" placeholder="请输入姓名" class="input-sm form-control search-input"
+                               v-model="pageInfo.uname"> <span
                             class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
                     </div>
@@ -29,9 +30,13 @@
                     <thead>
                     <tr>
                         <th>序号</th>
+                        <th>姓名</th>
+                        <th>日期</th>
                         <th>问卷名称</th>
-                        <th>所属项目</th>
-                        <th>收集方式</th>
+                        <th>接触量</th>
+                        <th>成功量</th>
+                        <th>成功率</th>
+                        <th>薪资</th>
                         <th>状态</th>
                         <th>操作</th>
                     </tr>
@@ -39,17 +44,16 @@
                     <tbody>
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td><span>{{item.uname}}</span></td>
+                        <td><span>{{item.workDate | formatOnlyDate}}</span></td>
+                        <td><span>{{item.pname}}</span></td>
+                        <td><span>{{item.tryNum}}</span></td>
+                        <td><span>{{item.succssNum}}</span></td>
+                        <td><span>{{Number.parseFloat(item.successRate).toFixed(2) + "%"}}</span></td>
+                        <td><span>{{item.salary}}</span></td>
                         <td>
-                            <span class="click-span" v-on:click="details(item)">{{item.name}}</span>
-                        </td>
-                        <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span></td>
-                        <td>{{item.collectType ? item.collectType.name : ''}}</td>
-                        <td>
-                            <span class="badge badge-primary" v-if="item.status ? item.state.value === 1 : false">{{item.state.name}}</span>
-                            <span class="badge badge-danger" v-if="item.status ? item.state.value === 2 : false">{{item.state.name}}</span>
-                        </td>
-                        <td>
-                            <button type="button"  class="btn btn-primary btn-xs">报名参加</button>
+                            <span v-if="item.gain === 0">未提取</span>
+                            <span v-if="item.gain === 1">已提取</span>
                         </td>
                     </tr>
                     </tbody>
@@ -69,11 +73,13 @@
                     <h4 class="modal-title" id="myModalLabel">报名条件</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal m-t" id="signupForm" action ="survey/upload" method=post enctype="multipart/form-data">
+                    <form class="form-horizontal m-t" id="signupForm" action="survey/upload" method=post
+                          enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">完成：</label>
                             <div class="col-sm-8">
-                                <input type="file" name="file" class="form-control" id="fileSelector" multiple="multiplt" v-on:change="toSubmit" style="display: none;">
+                                <input type="file" name="file" class="form-control" id="fileSelector"
+                                       multiple="multiplt" v-on:change="toSubmit" style="display: none;">
                                 <a class="btn btn-success" v-on:click="selectFile">选择文件</a>
                             </div>
                         </div>
@@ -95,9 +101,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
-                name: '',
-                state: 'COLLECTING',
-                collectType: 'PHONE',
+                uname: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -116,9 +120,10 @@
                 $("#myModal").modal("show");
             },
             toSubmit(v) {
+                let that = this;
                 let formData = new FormData($('#signupForm')[0]);
                 let url = "/survey/zsWork/upload";
-                if(sessionStorage.getItem("access_token")) {
+                if (sessionStorage.getItem("access_token")) {
                     url = url + '?access_token=' + sessionStorage.getItem("access_token");
                 }
                 $.ajax({
@@ -128,16 +133,19 @@
                     cache: false,
                     processData: false,
                     contentType: false,
-                }).success(function (data) {
-                    alert(data);
+                }).success(function (resp) {
+                    alert(resp.msg);
+                    $("#myModal").modal("hide");
+                    that.pageQuery();
                 }).error(function () {
                     alert("上传失败");
+                    $("#myModal").modal("hide");
                 });
 
             },
             pagequery: function () {
                 var that = this;
-                AJAX.GET('zsSurvey', this.pageInfo, function (resp) {
+                AJAX.GET('zsWork', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;

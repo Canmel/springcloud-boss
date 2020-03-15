@@ -14,9 +14,9 @@ import com.camel.survey.service.ZsQuestionService;
 import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTTablePartStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -498,35 +498,35 @@ public class ExportServiceImpl implements ExportService {
     HSSFCellStyle createHeadStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(CellStyle.BORDER_THIN);
-        style.setBorderLeft(CellStyle.BORDER_THIN);
-        style.setBorderRight(CellStyle.BORDER_THIN);
-        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
         return style;
     }
 
     HSSFCellStyle createTitleStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(CellStyle.BORDER_THIN);
-        style.setBorderLeft(CellStyle.BORDER_THIN);
-        style.setBorderRight(CellStyle.BORDER_THIN);
-        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
         style.setFillForegroundColor(HSSFColor.LIME.index);
-        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return style;
     }
 
     HSSFCellStyle createCellStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
-        style.setBorderBottom(CellStyle.BORDER_THIN);
-        style.setBorderLeft(CellStyle.BORDER_THIN);
-        style.setBorderRight(CellStyle.BORDER_THIN);
-        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 

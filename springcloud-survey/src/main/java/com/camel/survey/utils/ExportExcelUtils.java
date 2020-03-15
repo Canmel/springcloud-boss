@@ -3,6 +3,7 @@ package com.camel.survey.utils;
 import com.camel.survey.exceptions.ExportFillDataException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class ExportExcelUtils {
         //创建单元格，并设置值表头 设置表头居中
         HSSFCellStyle style = wb.createCellStyle();
         //创建一个居中格式
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         // 填充工作表
         try {
             fillSheet(sheet, list, fieldMap, style);
