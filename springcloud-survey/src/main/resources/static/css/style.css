@@ -7911,6 +7911,12 @@ body.skin-3 {
     padding-top: 15px;
     padding-bottom: 15px;
 }
+
+.padding-line {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .item{
     position: relative;
 }

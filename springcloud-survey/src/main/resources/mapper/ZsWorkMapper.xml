@@ -42,8 +42,12 @@
         from
         zs_work
         <where>
+            1 = 1
             <if test="uname != null and uname != ''">
-                uname like concat('%', #{uname}, '%')
+                AND uname like concat('%', #{uname}, '%')
+            </if>
+            <if test="idNum != null and idNum != ''">
+                AND id_num = #{idNum}
             </if>
         </where>
     </select>
