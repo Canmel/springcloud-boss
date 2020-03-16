@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.camel.survey.annotation.ExcelAnnotation;
+import com.camel.survey.exceptions.ExcelImportException;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -35,7 +36,7 @@ public class ExcelUtil {
         try {
             inputStream = file.getInputStream();
         } catch (IOException e) {
-            throw new RuntimeException("文件读取异常");
+            throw new ExcelImportException("文件读取异常");
         }
 
         // 根据excel文件版本获取工作簿
@@ -44,7 +45,7 @@ public class ExcelUtil {
         } else if (file.getOriginalFilename().endsWith(".xlsx")) {
             wookbook = xlsx(inputStream);
         } else {
-            throw new RuntimeException("非excel文件");
+            throw new ExcelImportException("非excel文件");
         }
 
         // 得到一个工作表
@@ -102,7 +103,7 @@ public class ExcelUtil {
                 e1.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException("excel文件内容出错");
+                throw new ExcelImportException("excel文件内容出错");
             }
         }
         try {

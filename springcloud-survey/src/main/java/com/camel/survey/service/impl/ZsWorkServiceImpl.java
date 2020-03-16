@@ -1,7 +1,13 @@
 package com.camel.survey.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.core.utils.ResultUtil;
+import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.mapper.ZsProjectMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.mapper.ZsWorkMapper;
@@ -16,9 +22,11 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -41,7 +49,7 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     private ZsSurveyService zsSurveyService;
 
     @Override
-    public boolean importExcel(MultipartFile file) {
+    public Result importExcel(MultipartFile file) {
         try {
             List<ZsWork> works = ExcelUtil.readExcelObject(file, ZsWork.class);
             List<ZsSurvey> zsSurveyList =  surveyMapper.all();
@@ -51,11 +59,16 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
                     work.setProjectId(zsSurvey.getProjectId());
                 }
             }
-            return insertBatch(works);
-        } catch (Exception e) {
+
+            if(deleteByPlaceAndDate(works) && insertBatch(works)) {
+                return ResultUtil.success("数据导入成功");
+            }
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "导入失败");
+        } catch (ExcelImportException e){
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), e.getMessage());
+        }catch (Exception e) {
             e.printStackTrace();
-            System.out.println("导入时发生错误");
-            return false;
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "导入时发生错误");
         }
     }
 
@@ -65,5 +78,23 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
             mapper.list(entity);
         });
         return pageInfo;
+    }
+
+    /**
+     * 根据当日和地点 删除之前导入的数据
+     * @return
+     */
+    private boolean deleteByPlaceAndDate(List<ZsWork> works) {
+        if(CollectionUtils.isEmpty(works)) {
+            return true;
+        }
+        Wrapper<ZsWork> workWrapper = new EntityWrapper<>();
+        SimpleDateFormat sf = new SimpleDateFormat("YYYY-MM-dd");
+        workWrapper.eq("place", works.get(0).getPlace());
+        workWrapper.eq("work_date", sf.format(works.get(0).getWorkDate()));
+        if(mapper.selectCount(workWrapper) > 0) {
+            return mapper.delete(workWrapper) > 0;
+        }
+        return true;
     }
 }

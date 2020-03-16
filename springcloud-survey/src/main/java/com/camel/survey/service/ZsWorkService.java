@@ -1,6 +1,7 @@
 package com.camel.survey.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsWork;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface ZsWorkService extends IService<ZsWork> {
 
-    boolean importExcel(MultipartFile file);
+    Result importExcel(MultipartFile file);
 
     PageInfo<ZsWork> selectPage(ZsWork zsWork, OAuth2Authentication oAuth2Authentication);
 }

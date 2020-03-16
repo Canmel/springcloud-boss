@@ -1,10 +1,12 @@
 package com.camel.survey.model;
 
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.annotation.ExcelAnnotation;
+import com.camel.survey.enums.ZsStatus;
 import lombok.Data;
 
 /**
@@ -133,6 +135,18 @@ public class ZsWork extends BasePaginationEntity {
      */
     @ExcelAnnotation(columnIndex = 23, columnName = "薪水")
     private Double salary;
+
+    /**
+     * 地点
+     */
+    @ExcelAnnotation(columnIndex = 29, columnName = "地点")
+    private String place;
+
+    /**
+     * 状态
+     */
+    @TableLogic
+    private ZsStatus status;
     /**
      * 是否获取,从工作薪酬提出到余额
      */
