@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -76,7 +77,16 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private List<ZsAnswerItem> items;
 
+    /**
+     * 是否有效
+     */
+    private ZsYesOrNo valid;
+
     public ZsAnswer() {
+    }
+
+    public ZsAnswer(Integer id) {
+        this.id = id;
     }
 
     public ZsAnswer(Integer surveyId, String creator) {

@@ -197,6 +197,7 @@
                                             <th>收集时间</th>
                                             <th>填写人(手机号)</th>
                                             <th>坐席号</th>
+                                            <th>有效</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
@@ -213,8 +214,18 @@
                                                 <span>{{item.seat}}</span>
                                             </td>
                                             <td>
+                                                <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
+                                                <span class="label-success label" v-if="!item.valid || item.valid && item.valid.code === 1">是</span>
+                                            </td>
+                                            <td>
                                                 <button type="button" v-on:click="details(item)"
                                                         class="btn btn-primary btn-xs">查看
+                                                </button>
+                                                <button type="button" v-on:click="deleteItem(item)"
+                                                        class="btn btn-danger btn-xs">删除
+                                                </button>
+                                                <button type="button" v-on:click="invalidItem(item)"
+                                                        class="btn btn-restore btn-xs">更改状态
                                                 </button>
                                             </td>
                                         </tr>
@@ -382,7 +393,8 @@
                                              style="height: 0px;">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <button class="btn btn-primary" v-on:click="exportSeatAnswers()">坐席明细
+                                                    <button class="btn btn-primary" v-on:click="exportSeatAnswers()">
+                                                        坐席明细
                                                     </button>
                                                 </div>
                                             </div>
@@ -406,7 +418,6 @@
                                             <th>用户名</th>
                                             <th>昵称</th>
                                             <th>电话</th>
-                                            <th>电话</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
@@ -423,10 +434,8 @@
                                                 <span>{{item.mobile}}</span>
                                             </td>
                                             <td>
-                                                <span>{{item.mobile}}</span>
-                                            </td>
-                                            <td>
-                                                <button type="button" v-on:click="showMonit(item)" v-if="survey.monit.value === 1"
+                                                <button type="button" v-on:click="showMonit(item)"
+                                                        v-if="survey.monit.value === 1"
                                                         class="btn btn-primary btn-xs">查看
                                                 </button>
                                             </td>
@@ -457,7 +466,8 @@
                             </div>
                             <label class="col-sm-3 control-label">样本:</label>
                             <div class="col-sm-8">
-                                <span name="name" class="form-control" type="text" style="border: none;">{{item.value}}</span>
+                                <span name="name" class="form-control" type="text"
+                                      style="border: none;">{{item.value}}</span>
                             </div>
                         </div>
                     </form>
@@ -469,7 +479,8 @@
         </div><!-- /.modal -->
     </div>
 
-    <div class="modal fade" id="myVideoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myVideoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -478,7 +489,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="col-sm remoteVideo">
-                         <!--<video  autoplay muted playsinline></video>-->
+                        <!--<video  autoplay muted playsinline></video>-->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -584,7 +595,7 @@
                 this.zg.config(this.config)
             },
             openRoom() {
-                if(!this.currentSeat.seatNum) {
+                if (!this.currentSeat.seatNum) {
                     alert('所选访员无坐席，暂无视频信息')
                     return;
                 }
@@ -599,7 +610,11 @@
                 let that = this;
                 //get token   生产环境下获取token方式
                 if (!this.appSigin) {
-                    $.get(this.otherConfig.token, {app_id: this.config.appid, id_name: this.config.idName, cgi_token: this.otherConfig.cgi_token},
+                    $.get(this.otherConfig.token, {
+                            app_id: this.config.appid,
+                            id_name: this.config.idName,
+                            cgi_token: this.otherConfig.cgi_token
+                        },
                         function (token) {
                             if (!token) {
                                 alert('get token failed')
@@ -678,7 +693,7 @@
                 } else {
                     this.useLocalStreamList = streamList;
                 }
-                if(type === 2 && this.useLocalStreamList.length === 0) {
+                if (type === 2 && this.useLocalStreamList.length === 0) {
                     alert('当前访员不在视频直播');
                 }
                 $('.remoteVideo').html('');
@@ -692,7 +707,7 @@
                 //开始预览本地视频
                 type === 1 && this.doPreviewPublish();
             },
-            play (streamId, video) {
+            play(streamId, video) {
                 var playVideoCodeType = $('#videoPlayCodeType').val()
                 var result = this.zg.startPlayingStream(streamId, video, null, {videoDecodeType: playVideoCodeType ? playVideoCodeType : 'H264'});
 
@@ -704,7 +719,7 @@
 
                 }
             },
-            loginFailed(err){
+            loginFailed(err) {
                 alert('登录失败')
             },
             doPreviewPublish() {
@@ -779,7 +794,7 @@
             },
             showMonit(item) {
                 let that = this;
-                AJAX.GET('monitor/user?uid=' + item.uid, {} ,function (resp) {
+                AJAX.GET('monitor/user?uid=' + item.uid, {}, function (resp) {
                     console.log(resp);
                     that.currentSeat = resp.data;
                     $("#myVideoModal").modal('show');
@@ -804,6 +819,31 @@
                     that.selectAnswer = resp.data;
                     console.log(resp);
                 })
+            },
+            deleteItem(item) {
+                let that = this;
+                confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        console.log(item)
+                        AJAX.DELETE("zsAnswer", item, function (res) {
+                            toastr.success(res.msg);
+                            that.pagequery();
+                        })
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            invalidItem(item) {
+                let that = this;
+                confirm("您确定要将这条数据的状态更改吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET("zsAnswer/invalid/" + item.id, {}, function (res) {
+                            toastr.success(res.msg);
+                            that.pagequery();
+                            that.loadEntity();
+                        });
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+
             },
             exportSeatAnswers() {
                 window.open('/survey/export/survey/seat/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));

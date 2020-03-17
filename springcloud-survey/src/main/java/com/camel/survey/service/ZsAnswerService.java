@@ -1,6 +1,7 @@
 package com.camel.survey.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsAnswer;
 import com.github.pagehelper.PageInfo;
 
@@ -41,4 +42,8 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
      * @return
      */
     ZsAnswer details(Integer id);
+
+    Result invalid(Integer id);
+
+    Result deleteAnswer(Integer id);
 }

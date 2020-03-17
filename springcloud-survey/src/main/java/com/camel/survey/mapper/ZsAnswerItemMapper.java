@@ -38,4 +38,6 @@ public interface ZsAnswerItemMapper extends BaseMapper<ZsAnswerItem> {
     List<Map<String, Object>> selectExport(Integer id);
 
     List<Map<String, Object>> selectSeatTotal(Integer id);
+
+    int chageInvalidByAnswer(Integer id, Integer valid);
 }

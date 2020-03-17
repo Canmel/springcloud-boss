@@ -12,11 +12,12 @@
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt" />
         <result column="creator" property="creator" />
+        <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, question, value, type, status, created_at, creator, `option`, answer_id
+        id, question, value, type, status, created_at, creator, `option`, answer_id, valid
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -116,4 +117,8 @@
     <select id="selectSeatTotal" resultType="hashmap">
         select a.seat, count(1) questionNum, COUNT(DISTINCT a.id) surveyNum from zs_answer_item ai left join zs_answer a on ai.answer_id = a.id where a.survey_id = #{id} group by a.seat
     </select>
+
+    <update id="chageInvalidByAnswer">
+        update zs_answer_item set valid = #{valid} where answer_id = #{id}
+    </update>
 </mapper>

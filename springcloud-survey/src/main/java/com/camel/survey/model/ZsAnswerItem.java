@@ -8,6 +8,7 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -57,6 +58,10 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
     private Date createdAt;
     private String creator;
     private String option;
+    /**
+     * 是否有效
+     */
+    private ZsYesOrNo valid;
 
     /**
      * 选项

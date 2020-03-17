@@ -21,13 +21,14 @@
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="creator" property="creator"/>
+        <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
         </collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, survey_id, status, record, seat, created_at, creator
+        id, survey_id, status, record, seat, created_at, creator, valid
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

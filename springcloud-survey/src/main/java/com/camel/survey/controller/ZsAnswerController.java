@@ -77,7 +77,13 @@ public class ZsAnswerController extends BaseCommonController {
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
+        service.deleteAnswer(id);
         return super.delete(id);
+    }
+
+    @GetMapping("/invalid/{id}")
+    public Result invalid(@PathVariable Integer id) {
+        return service.invalid(id);
     }
 
     /**
