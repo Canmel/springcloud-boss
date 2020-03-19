@@ -2,21 +2,23 @@ package com.camel.survey.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.camel.survey.enums.ZsStatus;
-import com.camel.survey.exceptions.ExportFillDataException;
 import com.camel.survey.mapper.ZsAnswerMapper;
+import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.service.ExportService;
 import com.camel.survey.service.ZsAnswerItemService;
 import com.camel.survey.service.ZsOptionService;
 import com.camel.survey.service.ZsQuestionService;
+import com.camel.survey.utils.ExcelUtil;
+import com.camel.survey.vo.Excel;
 import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.openxmlformats.schemas.drawingml.x2006.main.CTTablePartStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -30,27 +32,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- *                 ___====-_  _-====___
- *           _--^^^#####//      \\#####^^^--_
- *        _-^##########// (    ) \\##########^-_
- *       -############//  |\^^/|  \\############-
- *     _/############//   (@::@)   \\############\_
- *    /#############((     \\//     ))#############\
- *   -###############\\    (oo)    //###############-
- *  -#################\\  / VV \  //#################-
+ * ___====-_  _-====___
+ * _--^^^#####//      \\#####^^^--_
+ * _-^##########// (    ) \\##########^-_
+ * -############//  |\^^/|  \\############-
+ * _/############//   (@::@)   \\############\_
+ * /#############((     \\//     ))#############\
+ * -###############\\    (oo)    //###############-
+ * -#################\\  / VV \  //#################-
  * -###################\\/      \//###################-
- *_#/|##########/\######(   /\   )######/\##########|\#_
- *|/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
- *`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
- *   `   `  `      `   / | |  | | \   '      '  '   '
- *                    (  | |  | |  )
- *                   __\ | |  | | /__
- *                  (vvv(VVV)(VVV)vvv)
+ * _#/|##########/\######(   /\   )######/\##########|\#_
+ * |/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+ * `  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+ * `   `  `      `   / | |  | | \   '      '  '   '
+ * (  | |  | |  )
+ * __\ | |  | | /__
+ * (vvv(VVV)(VVV)vvv)
  * <导出>
+ *
  * @author baily
- * @since 1.0
  * @date 2019/12/24
+ * @since 1.0
  **/
 @Service
 public class ExportServiceImpl implements ExportService {
@@ -67,6 +69,8 @@ public class ExportServiceImpl implements ExportService {
     private ZsAnswerItemService zsAnswerItemService;
 
     public static final Integer SELECT_STEP = 100;
+
+    public static Logger logger = LoggerFactory.getLogger(ExportService.class);
 
     DecimalFormat df = new DecimalFormat("0.00%");
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -114,7 +118,7 @@ public class ExportServiceImpl implements ExportService {
         v.add("样本");
         fillRow(sheet.createRow(0), headStyle, v);
         List<Map<String, Object>> result = zsAnswerItemService.selectSeatTotal(id);
-        for (Map<String, Object> map: result) {
+        for (Map<String, Object> map : result) {
             List<Object> rowValue = new ArrayList<>();
             rowValue.add(map.get("seat"));
             rowValue.add(map.get("questionNum"));
@@ -166,62 +170,86 @@ public class ExportServiceImpl implements ExportService {
     @Override
     public HSSFWorkbook total(Integer surveyId) {
         //创建一个WorkBook,对应一个Excel文件
-        HSSFWorkbook wb = new HSSFWorkbook();
         List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(surveyId);
+        HSSFWorkbook wb = new HSSFWorkbook();
         questions.forEach(question -> {
-            HSSFCellStyle style = createCellStyle(wb);
-            Wrapper<ZsOption> optionWrapper = new EntityWrapper<>();
-            optionWrapper.eq("question_id", question.getId());
-            optionWrapper.eq("status", ZsStatus.CREATED.getValue());
-            List<ZsOption> optionList = zsOptionService.selectList(optionWrapper);
-            List<Map<String, Object>> answers = selectRateBySurveyQuestion(surveyId, question.getName());
-            Integer count = 0;
+            logger.info("开始第" + questions.indexOf(question) + "个表的数据导出");
+            logger.info("组装表头信息");
+            HSSFSheet sheet = wb.createSheet(ExcelUtil.sheetName(question.getName(), questions.indexOf(question)));
+            ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question)), sheet);
+            ExcelUtil.creatTotalHead(sheet, 20);
+            logger.info("查询数据");
+//            zsAnswerItemService.selectCount()
+            List<ZsOption> options = zsOptionService.selectBySurveyId(surveyId);
 
-            HSSFSheet sheet = wb.createSheet("Q" + question.getOrderNum());
-            sheet.autoSizeColumn(0);
-            sheet.autoSizeColumn(1);
-            sheet.autoSizeColumn(2);
-            sheet.autoSizeColumn(3);
-            //创建单元格，并设置值表头 设置表头居中
-            try {
-                // 填充工作表
-                HSSFRow row = sheet.createRow(0);
-                HSSFCell cell = row.createCell(0);
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
-                fillCell(cell, createHeadStyle(wb), "Q" + question.getOrderNum() + "." + question.getName());
-                HSSFRow rowTitle = sheet.createRow(1);
-                fillCell(rowTitle.createCell(0), createTitleStyle(wb), "");
-                fillCell(rowTitle.createCell(1), createTitleStyle(wb), "选项");
-                fillCell(rowTitle.createCell(2), createTitleStyle(wb), "个数");
-                fillCell(rowTitle.createCell(3), createTitleStyle(wb), "百分比");
-
-                for (int i = 0; i < optionList.size(); i++) {
-                    Integer cellIndex = 0;
-                    HSSFRow optionRow = sheet.createRow(2 + i);
-                    fillCell(optionRow.createCell(cellIndex++), style, i + 1);
-                    fillCell(optionRow.createCell(cellIndex++), style, optionList.get(i).getName());
-                    for (Map<String, Object> answer : answers) {
-                        if (count == 0) {
-                            count = Integer.parseInt(answer.get("count").toString());
-                        }
-                        if (answer.get("option").equals(optionList.get(i).getName())) {
-                            String num = answer.get("num").toString();
-                            fillCell(optionRow.createCell(cellIndex++), style, Integer.parseInt(num));
-                            fillCell(optionRow.createCell(cellIndex), style, (String) answer.get("rate"));
-                        }
-                    }
-                    if (cellIndex < 3) {
-                        fillCell(optionRow.createCell(cellIndex++), style, 0);
-                        fillCell(optionRow.createCell(cellIndex), style, 0);
-                    }
+            int rowNum = 21;
+            for (ZsOption option : options) {
+                if(!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
+                    HSSFRow row = sheet.createRow(rowNum++);
+                    ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
                 }
-                HSSFRow row6 = sheet.createRow(optionList.size() + 2);
-                fillRow(sheet.createRow(optionList.size() + 2), style, CollectionUtils.arrayToList(new String[]{"合计", "", count.toString(), "100%"}));
-
-            } catch (Exception ex) {
-                throw new ExportFillDataException();
             }
+
+
         });
+        System.out.println(ExcelUtil.class);
+
+
+//        List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(surveyId);
+//        questions.forEach(question -> {
+//            HSSFCellStyle style = createCellStyle(wb);
+//            Wrapper<ZsOption> optionWrapper = new EntityWrapper<>();
+//            optionWrapper.eq("question_id", question.getId());
+//            optionWrapper.eq("status", ZsStatus.CREATED.getValue());
+//            List<ZsOption> optionList = zsOptionService.selectList(optionWrapper);
+//            List<Map<String, Object>> answers = selectRateBySurveyQuestion(surveyId, question.getName());
+//            Integer count = 0;
+//
+//            HSSFSheet sheet = wb.createSheet("Q" + question.getOrderNum());
+//            sheet.autoSizeColumn(0);
+//            sheet.autoSizeColumn(1);
+//            sheet.autoSizeColumn(2);
+//            sheet.autoSizeColumn(3);
+//            //创建单元格，并设置值表头 设置表头居中
+//            try {
+//                // 填充工作表
+//                HSSFRow row = sheet.createRow(0);
+//                HSSFCell cell = row.createCell(0);
+//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
+//                fillCell(cell, createHeadStyle(wb), "Q" + question.getOrderNum() + "." + question.getName());
+//                HSSFRow rowTitle = sheet.createRow(1);
+//                fillCell(rowTitle.createCell(0), createTitleStyle(wb), "");
+//                fillCell(rowTitle.createCell(1), createTitleStyle(wb), "选项");
+//                fillCell(rowTitle.createCell(2), createTitleStyle(wb), "个数");
+//                fillCell(rowTitle.createCell(3), createTitleStyle(wb), "百分比");
+//
+//                for (int i = 0; i < optionList.size(); i++) {
+//                    Integer cellIndex = 0;
+//                    HSSFRow optionRow = sheet.createRow(2 + i);
+//                    fillCell(optionRow.createCell(cellIndex++), style, i + 1);
+//                    fillCell(optionRow.createCell(cellIndex++), style, optionList.get(i).getName());
+//                    for (Map<String, Object> answer : answers) {
+//                        if (count == 0) {
+//                            count = Integer.parseInt(answer.get("count").toString());
+//                        }
+//                        if (answer.get("option").equals(optionList.get(i).getName())) {
+//                            String num = answer.get("num").toString();
+//                            fillCell(optionRow.createCell(cellIndex++), style, Integer.parseInt(num));
+//                            fillCell(optionRow.createCell(cellIndex), style, (String) answer.get("rate"));
+//                        }
+//                    }
+//                    if (cellIndex < 3) {
+//                        fillCell(optionRow.createCell(cellIndex++), style, 0);
+//                        fillCell(optionRow.createCell(cellIndex), style, 0);
+//                    }
+//                }
+//                HSSFRow row6 = sheet.createRow(optionList.size() + 2);
+//                fillRow(sheet.createRow(optionList.size() + 2), style, CollectionUtils.arrayToList(new String[]{"合计", "", count.toString(), "100%"}));
+//
+//            } catch (Exception ex) {
+//                throw new ExportFillDataException();
+//            }
+//        });
         return wb;
     }
 
@@ -248,6 +276,7 @@ public class ExportServiceImpl implements ExportService {
 
     /**
      * 单一两表交叉导出
+     *
      * @param wb
      */
     public void crossSingle(HSSFWorkbook wb, ZsCrossExport zsCrossExport) {
@@ -395,6 +424,7 @@ public class ExportServiceImpl implements ExportService {
 
     /**
      * 获取列表标题
+     *
      * @param options
      * @return
      */
@@ -410,6 +440,7 @@ public class ExportServiceImpl implements ExportService {
 
     /**
      * 多表交叉导出
+     *
      * @param wb
      */
     public void crossMuilty(HSSFWorkbook wb, ZsCrossExport crossExport) {
@@ -428,6 +459,7 @@ public class ExportServiceImpl implements ExportService {
 
     /**
      * 通过选项id 或者 问题id获取选项
+     *
      * @param optionIds
      * @param questionId
      * @return
@@ -454,11 +486,9 @@ public class ExportServiceImpl implements ExportService {
         for (Object value : values) {
             if (value instanceof Integer) {
                 fillCell(row.createCell(index++), style, (Integer) value);
-            }
-            else if (value instanceof String) {
+            } else if (value instanceof String) {
                 fillCell(row.createCell(index++), style, (String) value);
-            }
-            else {
+            } else {
                 fillCell(row.createCell(index++), style, value.toString());
             }
         }
@@ -545,5 +575,14 @@ public class ExportServiceImpl implements ExportService {
 
     List<Map<String, Object>> selectRateBySurveyQuestion(Integer id, String question) {
         return zsAnswerMapper.selectRateBySurveyQuestion(id, question);
+    }
+
+    public Integer selectAnswerItemCount(Integer surveyId, Integer qId, String option) {
+        Wrapper<ZsAnswerItem> answerItemWrapper = new EntityWrapper<>();
+        answerItemWrapper.eq("survey_id", surveyId);
+        answerItemWrapper.eq("question_id", qId);
+        answerItemWrapper.eq("`option`", option);
+        answerItemWrapper.groupBy("`option`");
+        return zsAnswerItemService.selectCount(answerItemWrapper);
     }
 }
