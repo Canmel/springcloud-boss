@@ -1,108 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="修改">
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/config/DeviceConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/controller/ApiController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/controller/DDeviceController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/controller/DRecordController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/controller/WxUserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/enumhandler/MyIntegerToEnumHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/enums/MyEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/enums/ZsStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/mapper/DDeviceMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/mapper/DRecordMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/mapper/WxUserMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/mapper/xml/DRecordMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/model/DDevice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/model/DRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/model/WxUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/service/DDeviceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/service/DRecordService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/service/WxUserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/service/impl/DDeviceServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/service/impl/DRecordServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/service/impl/WxUserServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/java/com/camel/control/util/MysqlGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/mapper/DDeviceMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/mapper/DRecordMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/templates/profile.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/templates/template-controller.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/templates/template-mapper.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/templates/template-mapper.xml.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/templates/template-model.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/templates/template-service-impl.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/templates/template-service.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/META-INF/springcloud-access-control.kotlin_module" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/application-dev.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/application-prod.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/application-test.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/SpringCloudAccessControlApplication.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/config/DeviceConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/controller/ApiController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/controller/DDeviceController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/controller/DRecordController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/controller/WxUserController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/enumhandler/MyIntegerToEnumHandler.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/enums/MyEnum.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/enums/ZsStatus.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/mapper/DDeviceMapper.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/mapper/DRecordMapper.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/mapper/WxUserMapper.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/model/DDevice.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/model/DRecord.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/model/WxUser.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/service/DDeviceService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/service/DRecordService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/service/WxUserService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/service/impl/DDeviceServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/service/impl/DRecordServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/service/impl/WxUserServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator$4.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator$5.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator$6.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator$7.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/com/camel/control/util/MysqlGenerator.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/mapper/DDeviceMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/mapper/DRecordMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/mapper/WxUserMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/templates/profile.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/templates/template-controller.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/templates/template-mapper.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/templates/template-mapper.xml.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/templates/template-model.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/templates/template-service-impl.java.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springcloud-access-control/target/classes/templates/template-service.java.vm" afterDir="false" />
+    <list default="true" id="366d0815-a123-48b4-a436-377e10e83021" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-access-control/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-access-control/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-access-control/springcloud-access-control.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/src/main/java/com/camel/interviewer/mapper/xml/WxSubscibeMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/src/main/java/com/camel/interviewer/mapper/xml/WxUserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-access-control/src/main/resources/mapper/WxUserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/META-INF/spring-configuration-metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/META-INF/spring-configuration-metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/config/WeixinConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/config/WeixinConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/controller/WeixinStartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/controller/WeixinStartController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/controller/WeixinViewController.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/controller/WeixinViewController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/controller/WxUserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/controller/WxUserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/feign/SpringCloudSystemFeignClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/feign/SpringCloudSystemFeignClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/feign/fallback/SpringCloudBpmApprovalFallback$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/feign/fallback/SpringCloudBpmApprovalFallback$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/model/WxUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/model/WxUser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/service/WxUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/service/WxUserService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/service/impl/WxUserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/service/impl/WxUserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/utils/TestUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/com/camel/interviewer/utils/TestUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/static/wx/css/demos.css" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/static/wx/css/demos.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-interviewer/target/classes/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-interviewer/target/classes/templates/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-zuul-getway/src/main/resources/application-dev.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -504,14 +405,7 @@
       <workItem from="1584442700328" duration="10997000" />
       <workItem from="1584530299344" duration="2089000" />
       <workItem from="1584625443330" duration="8294000" />
-      <workItem from="1584700870365" duration="12851000" />
-    </task>
-    <task id="LOCAL-00031" summary="重来">
-      <created>1582632754197</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1582632754197</updated>
+      <workItem from="1584700870365" duration="12938000" />
     </task>
     <task id="LOCAL-00032" summary="重来">
       <created>1582633763524</created>
@@ -849,7 +743,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584633892995</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="修改">
+      <created>1584719446093</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1584719446094</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -889,9 +790,9 @@
     <MESSAGE value="个人钱包" />
     <MESSAGE value="更新survey" />
     <MESSAGE value="添加可无效状态" />
-    <MESSAGE value="修改" />
     <MESSAGE value="合计的部分导出代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="合计的部分导出代码" />
+    <MESSAGE value="修改" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改" />
   </component>
   <component name="WindowStateProjectService">
     <state x="552" y="179" key="#Project_Structure" timestamp="1583924842423">
@@ -906,10 +807,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="230" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1584718619296" />
-    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1584633891438">
+    <state x="447" y="114" key="CommitChangelistDialog2" timestamp="1584719444351">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1584633891438" />
+    <state x="447" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1584719444351" />
     <state width="507" height="466" key="DebuggerActiveHint" timestamp="1584718976588">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -994,10 +895,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="544" height="540" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1584718778971" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1584633897822">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1584719452151">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1584633897822" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1584719452151" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1583502404134">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
