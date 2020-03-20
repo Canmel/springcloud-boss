@@ -34,6 +34,11 @@
     },
     {
       "sourceType": "com.camel.interviewer.config.WxConstants",
+      "name": "wx.account.j-s-s-a-v-e-d-o-m-a-i-n",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.camel.interviewer.config.WxConstants",
       "defaultValue": "2fd59a5d.ngrok.io",
       "name": "wx.account.j-s-s-a-v-e-d-o-m-a-i-n",
       "description": "js安全域名\n 不带http:\/\/ 或者https:\/\/ 以及项目名称",

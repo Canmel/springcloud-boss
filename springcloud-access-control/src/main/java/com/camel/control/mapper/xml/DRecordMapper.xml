@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.control.mapper.DRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.control.model.DRecord">
+        <id column="id" property="id" />
+        <result column="id_number" property="idNumber" />
+        <result column="sex" property="sex" />
+        <result column="name" property="name" />
+        <result column="avatar" property="avatar" />
+        <result column="birthday" property="birthday" />
+        <result column="nation" property="nation" />
+        <result column="address" property="address" />
+        <result column="signOffice" property="signOffice" />
+        <result column="legalDate" property="legalDate" />
+        <result column="result" property="result" />
+        <result column="similarDegree" property="similarDegree" />
+        <result column="idcardImage" property="idcardImage" />
+        <result column="deviceNumber" property="deviceNumber" />
+        <result column="authTime" property="authTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, id_number, sex, name, avatar, birthday, nation, address, signOffice AS signOffice, legalDate AS legalDate, result, similarDegree AS similarDegree, idcardImage AS idcardImage, deviceNumber AS deviceNumber, authTime AS authTime
+    </sql>
+
+</mapper>

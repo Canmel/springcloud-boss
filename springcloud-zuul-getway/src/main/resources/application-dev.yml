@@ -58,6 +58,10 @@ zuul:
       path: /viewer/**
       serviceId: springcloud-interviewer
       sensitiveHeaders: "*"
+    control:
+      path: /control/**
+      serviceId: springcloud-access-control
+      sensitiveHeaders: "*"
   retryable: true
   ignored-services: "*"
   host:

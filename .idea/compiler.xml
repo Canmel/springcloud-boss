@@ -17,6 +17,7 @@
         <module name="springcloud-common" />
         <module name="springcloud-sms-server" />
         <module name="springcloud-survey" />
+        <module name="springcloud-access-control" />
         <module name="springcloud-attendance" />
         <module name="springcloud-stock-operation" />
         <module name="springcloud-redis" />
@@ -37,6 +38,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="sms" options="-parameters" />
+      <module name="springcloud-access-control" options="-parameters" />
       <module name="springcloud-activiti" options="-parameters" />
       <module name="springcloud-attendance" options="-parameters" />
       <module name="springcloud-auth-server" options="-parameters" />

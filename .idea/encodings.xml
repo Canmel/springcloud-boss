@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-access-control/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-activiti" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-activiti/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-attendance" charset="UTF-8" />
@@ -17,6 +18,7 @@
     <file url="file://$PROJECT_DIR$/springcloud-feign" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-feign/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-interviewer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-interviewer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-oa-server" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-oa-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-redis" charset="UTF-8" />
