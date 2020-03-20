@@ -352,7 +352,7 @@
                     alert('请完成表单');
                     return false;
                 }
-                if (question.type === 2 && this.isOutOfBounds(question, event)) {
+                if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
                     var resultStr = "";
                     if (question.maxSelect) {
                         resultStr += '最多只能选择' + question.maxSelect + '条';
