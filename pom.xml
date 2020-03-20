@@ -23,6 +23,7 @@
         <module>springcloud-attendance</module>
         <module>springcloud-stock-operation</module>
         <module>springcloud-interviewer</module>
+        <module>springcloud-access-control</module>
     </modules>
     <packaging>pom</packaging>
     <description>springcloud 通关</description>
