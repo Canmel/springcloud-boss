@@ -4,24 +4,25 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsCashApply">
-        <id column="id" property="id" />
-        <result column="uid" property="uid" />
-        <result column="uname" property="uname" />
-        <result column="amount" property="amount" />
-        <result column="created_at" property="createdAt" />
-        <result column="exam_by" property="examBy" />
-        <result column="exam_at" property="examAt" />
-        <result column="works" property="works" />
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="uname" property="uname"/>
+        <result column="amount" property="amount"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="exam_by" property="examBy"/>
+        <result column="exam_at" property="examAt"/>
+        <result column="works" property="works"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, uname, amount, created_at, exam_by, exam_at, works
+        id, uid, uname, amount, created_at, exam_by, exam_at, works, status
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_cash_apply
     </select>

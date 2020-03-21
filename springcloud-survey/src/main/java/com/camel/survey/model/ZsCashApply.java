@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.survey.enums.ZsApply;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -13,6 +17,7 @@ import com.camel.core.entity.BasePaginationEntity;
  * @author baily
  * @since 2020-03-21
  */
+@Data
 public class ZsCashApply extends BasePaginationEntity {
 
     private static final long serialVersionUID = 1L;
@@ -49,72 +54,11 @@ public class ZsCashApply extends BasePaginationEntity {
     /**
      * 涉及到的工作记录ID，备查
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String works;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUid() {
-        return uid;
-    }
-
-    public void setUid(Integer uid) {
-        this.uid = uid;
-    }
-
-    public String getUname() {
-        return uname;
-    }
-
-    public void setUname(String uname) {
-        this.uname = uname;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Integer getExamBy() {
-        return examBy;
-    }
-
-    public void setExamBy(Integer examBy) {
-        this.examBy = examBy;
-    }
-
-    public Date getExamAt() {
-        return examAt;
-    }
-
-    public void setExamAt(Date examAt) {
-        this.examAt = examAt;
-    }
-
-    public String getWorks() {
-        return works;
-    }
-
-    public void setWorks(String works) {
-        this.works = works;
-    }
+    private ZsApply status;
 
     @Override
     public String toString() {

@@ -3,10 +3,12 @@ package com.camel.survey.controller;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsCashApply;
 import com.camel.survey.service.ZsCashApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,6 +34,11 @@ public class ZsCashApplyController extends BaseCommonController {
     @PostMapping
     public Result save(ZsCashApply apply) {
         return service.apply(apply);
+    }
+
+    @GetMapping
+    public Result index(ZsCashApply apply) {
+        return ResultUtil.success(service.selectPage(apply));
     }
 
     @Override

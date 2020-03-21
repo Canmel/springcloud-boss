@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsGain;
 import com.camel.survey.model.ZsCashApply;
@@ -14,6 +15,7 @@ import com.camel.survey.service.ZsCashApplyService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,5 +71,13 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
         }else{
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "发起申请失败！");
         }
+    }
+
+    @Override
+    public PageInfo<ZsCashApply> selectPage(ZsCashApply entity) {
+        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+            mapper.list(entity);
+        });
+        return pageInfo;
     }
 }

@@ -3,6 +3,7 @@ package com.camel.survey.service;
 import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsCashApply;
 import com.baomidou.mybatisplus.service.IService;
+import com.github.pagehelper.PageInfo;
 
 /**
  * <p>
@@ -15,4 +16,6 @@ import com.baomidou.mybatisplus.service.IService;
 public interface ZsCashApplyService extends IService<ZsCashApply> {
 
     Result apply(ZsCashApply apply);
+
+    PageInfo<ZsCashApply> selectPage(ZsCashApply apply);
 }
