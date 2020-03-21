@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import lombok.Data;
+import org.springframework.util.ObjectUtils;
 
 /**
  * <p>
@@ -13,6 +15,7 @@ import com.camel.core.entity.BasePaginationEntity;
  * @author baily
  * @since 2020-03-20
  */
+@Data
 public class DDevice extends BasePaginationEntity {
 
     private static final long serialVersionUID = 1L;
@@ -80,132 +83,37 @@ public class DDevice extends BasePaginationEntity {
      */
     private String cardRecordSubUrl;
 
-
-    public Integer getId() {
-        return id;
+    public DDevice() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDeviceNumber() {
-        return deviceNumber;
-    }
-
-    public void setDeviceNumber(String deviceNumber) {
+    public DDevice(String deviceNumber) {
         this.deviceNumber = deviceNumber;
     }
 
-    public String getDeviceIp() {
-        return deviceIp;
+    public boolean isOnline() {
+        if(ObjectUtils.isEmpty(this.updateAt)) {
+            return false;
+        }
+        long timeDistance = this.updateAt.getTime() - new Date().getTime();
+        return timeDistance < 40 * 1000;
     }
 
-    public void setDeviceIp(String deviceIp) {
+    public DDevice(Integer id, String deviceNumber, String deviceIp, Date createdAt, Date updateAt, String deviceName, Integer thresholdValue, String adminAccount, String adminPwd, Integer ttsModel, String passStr, String failedStr, String deviceReportBaseUrl, String deviceReportSubUrl, String cardRecordBaseUrl, String cardRecordSubUrl) {
+        this.id = id;
+        this.deviceNumber = deviceNumber;
         this.deviceIp = deviceIp;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
-    }
-
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
-    }
-
-    public Integer getThresholdValue() {
-        return thresholdValue;
-    }
-
-    public void setThresholdValue(Integer thresholdValue) {
         this.thresholdValue = thresholdValue;
-    }
-
-    public String getAdminAccount() {
-        return adminAccount;
-    }
-
-    public void setAdminAccount(String adminAccount) {
         this.adminAccount = adminAccount;
-    }
-
-    public String getAdminPwd() {
-        return adminPwd;
-    }
-
-    public void setAdminPwd(String adminPwd) {
         this.adminPwd = adminPwd;
-    }
-
-    public Integer getTtsModel() {
-        return ttsModel;
-    }
-
-    public void setTtsModel(Integer ttsModel) {
         this.ttsModel = ttsModel;
-    }
-
-    public String getPassStr() {
-        return passStr;
-    }
-
-    public void setPassStr(String passStr) {
         this.passStr = passStr;
-    }
-
-    public String getFailedStr() {
-        return failedStr;
-    }
-
-    public void setFailedStr(String failedStr) {
         this.failedStr = failedStr;
-    }
-
-    public String getDeviceReportBaseUrl() {
-        return deviceReportBaseUrl;
-    }
-
-    public void setDeviceReportBaseUrl(String deviceReportBaseUrl) {
         this.deviceReportBaseUrl = deviceReportBaseUrl;
-    }
-
-    public String getDeviceReportSubUrl() {
-        return deviceReportSubUrl;
-    }
-
-    public void setDeviceReportSubUrl(String deviceReportSubUrl) {
         this.deviceReportSubUrl = deviceReportSubUrl;
-    }
-
-    public String getCardRecordBaseUrl() {
-        return cardRecordBaseUrl;
-    }
-
-    public void setCardRecordBaseUrl(String cardRecordBaseUrl) {
         this.cardRecordBaseUrl = cardRecordBaseUrl;
-    }
-
-    public String getCardRecordSubUrl() {
-        return cardRecordSubUrl;
-    }
-
-    public void setCardRecordSubUrl(String cardRecordSubUrl) {
         this.cardRecordSubUrl = cardRecordSubUrl;
     }
 

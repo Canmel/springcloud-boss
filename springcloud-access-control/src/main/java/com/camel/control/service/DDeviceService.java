@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2020-03-20
  */
 public interface DDeviceService extends IService<DDevice> {
-
+    Boolean save(DDevice device);
 }

@@ -1,5 +1,6 @@
 package com.camel.control.config;
 
+import com.camel.control.model.DDevice;
 import lombok.Data;
 
 import java.util.UUID;
@@ -125,6 +126,21 @@ public class DeviceConfig {
         this.deviceReportSubUrl = DEVICEREPORTSUBURL;
         this.cardRecordBaseUrl = CARD_RECORD_BASE_URL;
         this.cardRecordSubUrl = CARD_RECORD_SUB_URL;
+    }
+
+    public static DDevice newDevice(DDevice device, DeviceConfig deviceConfig) {
+        device.setDeviceName(deviceConfig.getDeviceTitle());
+        device.setThresholdValue(deviceConfig.getThresholdValue());
+        device.setAdminAccount(deviceConfig.getAdminAccount());
+        device.setAdminPwd(deviceConfig.getAdminPwd());
+        device.setTtsModel(deviceConfig.getTtsModel());
+        device.setPassStr(deviceConfig.getPassStr());
+        device.setFailedStr(deviceConfig.getFailedStr());
+        device.setDeviceReportBaseUrl(deviceConfig.getDeviceReportBaseUrl());
+        device.setDeviceReportSubUrl(deviceConfig.getDeviceReportSubUrl());
+        device.setCardRecordBaseUrl(deviceConfig.getCardRecordBaseUrl());
+        device.setCardRecordSubUrl(deviceConfig.getCardRecordSubUrl());
+        return device;
     }
 
     public DeviceConfig(String deviceTitle) {

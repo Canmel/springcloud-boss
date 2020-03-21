@@ -24,7 +24,12 @@ public class WeixinViewController {
     @AuthIgnore
     @GetMapping("/profile")
     public String profile() {
-        System.out.println("------");
         return "profile";
+    }
+
+    @AuthIgnore
+    @GetMapping("/salary")
+    public String salary() {
+        return "salary";
     }
 }

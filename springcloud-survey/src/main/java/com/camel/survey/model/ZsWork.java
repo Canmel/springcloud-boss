@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.enums.ZsStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -48,6 +49,7 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @ExcelAnnotation(columnIndex = 2, columnName = "日期")
     private Date workDate;
     /**
@@ -155,6 +157,14 @@ public class ZsWork extends BasePaginationEntity {
      * 获取时间，从工作薪酬提出到余额
      */
     private Date gainTime;
+
+    public ZsWork(Integer id, Integer gain) {
+        this.id = id;
+        this.gain = gain;
+    }
+
+    public ZsWork() {
+    }
 
     @Override
     public String toString() {

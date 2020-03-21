@@ -187,7 +187,11 @@ public class ExcelUtil {
     public static String sheetName(String name, Integer qIndex) {
         StringBuffer stringBuffer = new StringBuffer("Q");
         stringBuffer.append(qIndex).append(".").append(name);
-        return stringBuffer.toString();
+        String result = stringBuffer.toString();
+        if(result.indexOf("?") > -1) {
+            result = result.replace("?", "？");
+        }
+        return result;
     }
 
     /**

@@ -109,10 +109,6 @@ public class WeixinStartController {
         params.put("secret", wxConstants.getAppsecret());
         params.put("grant_type", AUTHORIZATION_CODE);
         JSONObject tokenBody = null;
-        System.out.println("APPID: " + wxConstants.getAppid());
-        System.out.println("SECRET: " + wxConstants.getAppsecret());
-        System.out.println("CODE: " + code);
-
         try {
             String responseBody = HttpUtils.httpGetMethod(USERID_URL, params);
             if (responseBody != null) {

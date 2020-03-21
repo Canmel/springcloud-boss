@@ -175,7 +175,7 @@ public class ExportServiceImpl implements ExportService {
         questions.forEach(question -> {
             logger.info("开始第" + questions.indexOf(question) + "个表的数据导出");
             logger.info("组装表头信息");
-            HSSFSheet sheet = wb.createSheet(ExcelUtil.sheetName(question.getName(), questions.indexOf(question)));
+            HSSFSheet sheet = wb.createSheet(ExcelUtil.sheetName(question.getName(), question.getOrderNum()));
             ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question)), sheet);
             ExcelUtil.creatTotalHead(sheet, 20);
             logger.info("查询数据");

@@ -5,6 +5,9 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -14,6 +17,7 @@ import com.camel.core.entity.BasePaginationEntity;
  * @author baily
  * @since 2020-03-20
  */
+@Data
 public class DRecord extends BasePaginationEntity {
 
     private static final long serialVersionUID = 1L;
@@ -54,12 +58,10 @@ public class DRecord extends BasePaginationEntity {
     /**
      * 签发机关
      */
-    @TableField("signOffice")
     private String signOffice;
     /**
      * 有效日期
      */
-    @TableField("legalDate")
     private String legalDate;
     /**
      * 认证结果： 0：未通过，1：通过
@@ -68,144 +70,26 @@ public class DRecord extends BasePaginationEntity {
     /**
      * 对比相似度，如0.989
      */
-    @TableField("similarDegree")
     private String similarDegree;
     /**
      * 身份证图片（base64格式）
      */
-    @TableField("idcardImage")
     private String idcardImage;
     /**
      * 设备Number
      */
-    @TableField("deviceNumber")
     private String deviceNumber;
     /**
      * 认证时间
      */
-    @TableField("authTime")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date authTime;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getIdNumber() {
-        return idNumber;
-    }
-
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getNation() {
-        return nation;
-    }
-
-    public void setNation(String nation) {
-        this.nation = nation;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getSignOffice() {
-        return signOffice;
-    }
-
-    public void setSignOffice(String signOffice) {
-        this.signOffice = signOffice;
-    }
-
-    public String getLegalDate() {
-        return legalDate;
-    }
-
-    public void setLegalDate(String legalDate) {
-        this.legalDate = legalDate;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public String getSimilarDegree() {
-        return similarDegree;
-    }
-
-    public void setSimilarDegree(String similarDegree) {
-        this.similarDegree = similarDegree;
-    }
-
-    public String getIdcardImage() {
-        return idcardImage;
-    }
-
-    public void setIdcardImage(String idcardImage) {
-        this.idcardImage = idcardImage;
-    }
-
-    public String getDeviceNumber() {
-        return deviceNumber;
-    }
-
-    public void setDeviceNumber(String deviceNumber) {
-        this.deviceNumber = deviceNumber;
-    }
-
-    public Date getAuthTime() {
-        return authTime;
-    }
-
-    public void setAuthTime(Date authTime) {
-        this.authTime = authTime;
-    }
+    /**
+     * 创建时间
+     */
+    private Date createdAt;
 
     @Override
     public String toString() {

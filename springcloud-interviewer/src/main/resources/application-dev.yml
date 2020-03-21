@@ -99,6 +99,7 @@ security:
         - /start
         - /h5/index.html
         - /profile.html
+        - /salary.html
         - /h5/**
         - /wx/**
 

@@ -187,7 +187,7 @@
                                                 </td>
                                                 <td class="client-status">
                                                     <span class="label label-danger" v-if="item.gain === 1">已支取</span>
-                                                    <a class="label label-success" v-if="item.gain === 0">支取</a>
+                                                    <a class="label label-success" v-on:click="draw(item)" v-if="item.gain === 0">支取</a>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -246,6 +246,9 @@
             this.loadWorks();
         },
         methods: {
+            draw(item) {
+                console.log(item)
+            },
             loadMe() {
                 var that = this;
                 AJAX.GET('profile', {}, function (resp) {

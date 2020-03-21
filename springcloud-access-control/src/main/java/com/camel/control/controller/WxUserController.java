@@ -2,6 +2,13 @@ package com.camel.control.controller;
 
 
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.control.config.DeviceConfig;
+import com.camel.control.model.DDevice;
+import com.camel.core.entity.Result;
+import com.camel.core.utils.ResultUtil;
+import lombok.Data;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -19,6 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/wxUser")
 public class WxUserController extends BaseCommonController {
+
+    @PostMapping(value = "/valid", produces = "application/json;charset=UTF-8")
+    public Result addDevice(@RequestBody DDevice device) {
+
+        return ResultUtil.success("success");
+    }
+
+    @Data
+    public class ValidResult {
+        private String personnelType;
+    }
+
     @Override
     public IService getiService() {
         return null;

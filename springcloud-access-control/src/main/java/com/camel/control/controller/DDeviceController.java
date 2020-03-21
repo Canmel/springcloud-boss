@@ -8,13 +8,10 @@ import com.camel.control.service.DDeviceService;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
@@ -30,22 +27,15 @@ import java.util.UUID;
 @RequestMapping("/device")
 public class DDeviceController extends BaseCommonController {
 
-    /**
-     * 识别率阀值
-     */
-    public static final Integer THRESHOLDVALUE = 80;
-
-    public static final String DEVICEREPORTBASEURL="http://192.168.1.7:8080/";
-
-    public static final String DEVICEREPORTSUBURL = "control/device/add";
-
-
-
-    @PostMapping("/add")
-    public Result addDevice(String deviceNumber, String deviceIp) {
-
-        return ResultUtil.success("success", new DeviceConfig());
+    @PostMapping(value = "/add", produces = "application/json;charset=UTF-8")
+    public Result addDevice(@RequestBody DDevice device) {
+        DeviceConfig config = new DeviceConfig();
+        DDevice dDevice = DeviceConfig.newDevice(device, config);
+        service.save(device);
+        return ResultUtil.success("success", dDevice);
     }
+
+
 
     @Autowired
     private DDeviceService service;
