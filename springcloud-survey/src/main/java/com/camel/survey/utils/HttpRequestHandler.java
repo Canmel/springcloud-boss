@@ -60,13 +60,13 @@ public class HttpRequestHandler
         NoSuchAlgorithmException, KeyManagementException
     {
         // 拼接证书的路径
-        KeyStore keyStore = KeyStores.getInstance("PKCS12", path, transfer.map());
+        KeyStore keyStore = KeyStores.getInstance("PKCS12", "", transfer.map());
 
+        ClassPathResource classPathResource = new ClassPathResource("apiclient_cert.p12");
         // 加载本地的证书进行https加密传输
-        FileInputStream instream = new FileInputStream(new File(path));
         try
         {
-            keyStore.load(instream, transfer.getMchid().toCharArray()); // 加载证书密码，默认为商户ID
+            keyStore.load(classPathResource.getInputStream(), transfer.getMchid().toCharArray()); // 加载证书密码，默认为商户ID
         }
         catch (CertificateException e)
         {
@@ -76,11 +76,6 @@ public class HttpRequestHandler
         {
             e.printStackTrace();
         }
-        finally
-        {
-            instream.close();
-        }
-
         // Trust own CA and all self-signed certs
         SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore,
             transfer.getMchid().toCharArray()).build();
@@ -116,9 +111,6 @@ public class HttpRequestHandler
         throws IOException, KeyStoreException, UnrecoverableKeyException,
         NoSuchAlgorithmException, KeyManagementException
     {
-        ClassPathResource classPathResource = new ClassPathResource("apiclient_cert.p12");
-        path = classPathResource.getFile().getPath();
-        System.out.println(path);
         // 加载证书
         initCert(path, model);
 

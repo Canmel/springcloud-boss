@@ -105,17 +105,21 @@
                 console.log(item);
             },
             pass(item) {
+                let that = this;
                 confirm("您确定要通过" + item.uname + item.amount + '元的提现申请吗？', "", function (d) {
                     if (d) {
                         AJAX.GET("zsCashApply/pass/" + item.id, {}, function (resp) {
+                            that.pageQuery();
                             toastr.success(resp.msg);
                         })
                     }
                 })
             },
             reject(item) {
+                let that = this;
                 confirm("您确定要驳回" + item.uname + item.amount + '元的提现申请吗？', "", function (d) {
                     AJAX.GET("zsCashApply/reject" + item.id, {}, function (resp) {
+                        that.pageQuery();
                         toastr.success(resp.msg);
                     })
                 })
