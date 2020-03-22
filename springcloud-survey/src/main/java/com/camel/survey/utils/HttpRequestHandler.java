@@ -28,6 +28,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 public class HttpRequestHandler
 {
@@ -115,8 +116,8 @@ public class HttpRequestHandler
         throws IOException, KeyStoreException, UnrecoverableKeyException,
         NoSuchAlgorithmException, KeyManagementException
     {
-        LoggerFactory.getLogger(HttpRequestHandler.class).info(ClassLoader.getSystemResource(path).getPath());
-        path = ClassLoader.getSystemResource(path).getPath();
+        ClassPathResource classPathResource = new ClassPathResource("apiclient_cert.p12");
+        path = classPathResource.getFile().getPath();
         System.out.println(path);
         // 加载证书
         initCert(path, model);
