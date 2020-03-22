@@ -48,10 +48,10 @@
                             <span v-if="item.status && item.status.code === 3" class="badge badge-danger">{{item.status ? item.status.name : '未知'}}</span>
                         </td>
                         <td>
-                            <button type="button" v-on:click="pass(item)" class="btn btn-success btn-xs">
+                            <button type="button" v-on:click="pass(item)" class="btn btn-success btn-xs" v-if="item.status && item.status.code === 0">
                                 通过
                             </button>
-                            <button type="button" v-on:click="reject(item)" class="btn btn-danger btn-xs">
+                            <button type="button" v-on:click="reject(item)" class="btn btn-danger btn-xs" v-if="item.status && item.status.code === 0">
                                 驳回
                             </button>
                         </td>
@@ -109,7 +109,7 @@
                 confirm("您确定要通过" + item.uname + item.amount + '元的提现申请吗？', "", function (d) {
                     if (d) {
                         AJAX.GET("zsCashApply/pass/" + item.id, {}, function (resp) {
-                            that.pageQuery();
+                            that.pagequery();
                             toastr.success(resp.msg);
                         })
                     }
@@ -118,8 +118,8 @@
             reject(item) {
                 let that = this;
                 confirm("您确定要驳回" + item.uname + item.amount + '元的提现申请吗？', "", function (d) {
-                    AJAX.GET("zsCashApply/reject" + item.id, {}, function (resp) {
-                        that.pageQuery();
+                    AJAX.GET("zsCashApply/reject/" + item.id, {}, function (resp) {
+                        that.pagequery();
                         toastr.success(resp.msg);
                     })
                 })

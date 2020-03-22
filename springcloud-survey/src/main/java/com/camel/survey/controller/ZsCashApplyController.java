@@ -34,7 +34,7 @@ public class ZsCashApplyController extends BaseCommonController {
 
     @GetMapping("/reject/{id}")
     public Result reject(@PathVariable Integer id) {
-        return ResultUtil.success("驳回成功");
+        return service.reject(id);
     }
 
     @AuthIgnore

@@ -95,6 +95,9 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
     @Override
     public Result pass(Integer id) {
         ZsCashApply cashApply = mapper.selectById(id);
+        if(!cashApply.getStatus().equals(ZsApply.NORMAL)) {
+            return ResultUtil.success("提交数据重复或您选择的数据不在审核状态");
+        }
         String appkey = wxConstants.getAppkey();// 微信商户秘钥, 根据实际情况填写
         String certPath = "apiclient_cert.p12";// 微信商户证书路径, 根据实际情况填写
 
@@ -119,6 +122,7 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
     public Result reject(Integer id) {
         ZsCashApply apply = selectById(id);
         apply.setStatus(ZsApply.FAILD);
+        mapper.updateById(apply);
         return ResultUtil.success("驳回申请成功");
     }
 }
