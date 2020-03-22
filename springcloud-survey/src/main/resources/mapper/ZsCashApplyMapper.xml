@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsCashApply">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>
+        <result column="openid" property="openid"/>
         <result column="uname" property="uname"/>
         <result column="amount" property="amount"/>
         <result column="created_at" property="createdAt"/>
@@ -17,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, uname, amount, created_at, exam_by, exam_at, works, status
+        id, uid, openid, uname, amount, created_at, exam_by, exam_at, works, status
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

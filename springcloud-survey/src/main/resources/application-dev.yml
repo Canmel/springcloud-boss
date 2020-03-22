@@ -132,3 +132,11 @@ qiniu:
 
 mybatis:
   type-handlers-package: com.camel.survey.enumhandler
+
+wx:
+  account:
+    appid: wx0a2efc77aac2a84b
+    appsecret: a0eb49319937944512d1fcf65b3216c0
+    appkey: d4ahjqulmuvuzyna2lj00nv1a40ww54u
+    mchid: 1511764991
+    mchname: 赛炜大数据服务有限公司

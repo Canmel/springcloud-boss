@@ -83,7 +83,7 @@
                     work_ids.push(item.id)
                 });
                 console.log(work_ids);
-                AJAX.POST("/survey/zsCashApply", {uid: this.userinfo.id, uname: this.userinfo.username, works: work_ids.join(",")},function (res) {
+                AJAX.POST("/survey/zsCashApply", {uid: this.userinfo.id, openid: this.userinfo.openid, uname: this.userinfo.username, works: work_ids.join(",")},function (res) {
                     if(res.code === 200) {
                         $.toast(res.msg);
                     } else {

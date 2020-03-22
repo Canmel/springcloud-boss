@@ -18,4 +18,8 @@ public interface ZsCashApplyService extends IService<ZsCashApply> {
     Result apply(ZsCashApply apply);
 
     PageInfo<ZsCashApply> selectPage(ZsCashApply apply);
+
+    Result pass(Integer id);
+
+    Result reject(Integer id);
 }

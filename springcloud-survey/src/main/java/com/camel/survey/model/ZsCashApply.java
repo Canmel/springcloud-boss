@@ -31,6 +31,11 @@ public class ZsCashApply extends BasePaginationEntity {
      * 用户ID
      */
     private Integer uid;
+
+    /**
+     * openid
+     */
+    private String openid;
     /**
      * 用户名
      */
@@ -72,5 +77,9 @@ public class ZsCashApply extends BasePaginationEntity {
         ", examAt=" + examAt +
         ", works=" + works +
         "}";
+    }
+
+    public String buildDesc() {
+        return this.uname + this.createdAt + "的提现申请";
     }
 }

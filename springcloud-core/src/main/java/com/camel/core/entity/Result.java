@@ -19,4 +19,14 @@ public class Result {
 
     public Result() {
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                ", success=" + success +
+                '}';
+    }
 }

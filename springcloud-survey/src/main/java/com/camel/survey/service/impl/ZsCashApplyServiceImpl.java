@@ -7,6 +7,8 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.config.WxConstants;
+import com.camel.survey.enums.ZsApply;
 import com.camel.survey.enums.ZsGain;
 import com.camel.survey.model.ZsCashApply;
 import com.camel.survey.mapper.ZsCashApplyMapper;
@@ -15,14 +17,18 @@ import com.camel.survey.service.ZsCashApplyService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.WechatpayUtil;
+import com.camel.survey.vo.TransfersDto;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -35,6 +41,8 @@ import java.util.List;
 @Service
 public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCashApply> implements ZsCashApplyService {
 
+    public static final String MCH_NAME = "赛炜大数据服务有限公司";
+
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
@@ -43,6 +51,9 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
 
     @Autowired
     private ZsWorkService zsWorkService;
+
+    @Autowired
+    private WxConstants wxConstants;
 
     @Override
     @Transactional
@@ -79,5 +90,33 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
             mapper.list(entity);
         });
         return pageInfo;
+    }
+
+    @Override
+    public Result pass(Integer id) {
+        ZsCashApply cashApply = mapper.selectById(id);
+        String appkey = wxConstants.getAppkey();// 微信商户秘钥, 根据实际情况填写
+        String certPath = "apiclient_cert.p12";// 微信商户证书路径, 根据实际情况填写
+
+        TransfersDto model = new TransfersDto();// 微信接口请求参数, 根据实际情况填写
+        model.setMch_appid(wxConstants.getAppid()); // 申请商户号的appid或商户号绑定的appid
+        model.setMchid(wxConstants.getMchid()); // 商户号
+        model.setMch_name(wxConstants.getMchname()); // 商户名称
+        model.setOpenid(cashApply.getOpenid()); // 商户appid下，某用户的openid
+        model.setAmount(cashApply.getAmount()); // 企业付款金额，这里单位为元
+        model.setDesc(cashApply.buildDesc());
+
+        cashApply.setStatus(ZsApply.SUCESS);
+        mapper.updateById(cashApply);
+        Result iResult = WechatpayUtil.doTransfers(appkey, certPath, model);
+        LoggerFactory.getLogger(this.getClass()).info(iResult.toString());
+        return iResult;
+    }
+
+    @Override
+    public Result reject(Integer id) {
+        ZsCashApply apply = selectById(id);
+        apply.setStatus(ZsApply.FAILD);
+        return ResultUtil.success("驳回申请成功");
     }
 }

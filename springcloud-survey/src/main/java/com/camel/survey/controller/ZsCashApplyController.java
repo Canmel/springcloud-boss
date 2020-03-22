@@ -8,13 +8,10 @@ import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsCashApply;
 import com.camel.survey.service.ZsCashApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -29,6 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class ZsCashApplyController extends BaseCommonController {
     @Autowired
     private ZsCashApplyService service;
+
+    @GetMapping("/pass/{id}")
+    public Result pass(@PathVariable Integer id) {
+        return service.pass(id);
+    }
+
+    @GetMapping("/reject/{id}")
+    public Result reject(@PathVariable Integer id) {
+        return ResultUtil.success("驳回成功");
+    }
 
     @AuthIgnore
     @PostMapping
