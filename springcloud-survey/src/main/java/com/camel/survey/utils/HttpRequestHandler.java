@@ -62,9 +62,7 @@ public class HttpRequestHandler
         KeyStore keyStore = KeyStores.getInstance("PKCS12", path, transfer.map());
 
         // 加载本地的证书进行https加密传输
-        System.out.println(ClassLoader.getSystemResource(path).getPath());
-        LoggerFactory.getLogger(HttpRequestHandler.class).info(ClassLoader.getSystemResource(path).getPath());
-        FileInputStream instream = new FileInputStream(new File(ClassLoader.getSystemResource(path).getPath()));
+        FileInputStream instream = new FileInputStream(new File(path));
         try
         {
             keyStore.load(instream, transfer.getMchid().toCharArray()); // 加载证书密码，默认为商户ID
@@ -117,6 +115,9 @@ public class HttpRequestHandler
         throws IOException, KeyStoreException, UnrecoverableKeyException,
         NoSuchAlgorithmException, KeyManagementException
     {
+        LoggerFactory.getLogger(HttpRequestHandler.class).info(ClassLoader.getSystemResource(path).getPath());
+        path = ClassLoader.getSystemResource(path).getPath();
+        System.out.println(path);
         // 加载证书
         initCert(path, model);
 

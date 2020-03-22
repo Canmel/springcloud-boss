@@ -107,8 +107,10 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
         model.setDesc(cashApply.buildDesc());
 
         cashApply.setStatus(ZsApply.SUCESS);
-        mapper.updateById(cashApply);
         Result iResult = WechatpayUtil.doTransfers(appkey, certPath, model);
+        if(iResult.isSuccess()) {
+            mapper.updateById(cashApply);
+        }
         LoggerFactory.getLogger(this.getClass()).info(iResult.toString());
         return iResult;
     }
