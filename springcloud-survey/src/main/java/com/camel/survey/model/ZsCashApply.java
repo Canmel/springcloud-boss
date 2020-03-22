@@ -1,6 +1,8 @@
 package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
@@ -80,6 +82,7 @@ public class ZsCashApply extends BasePaginationEntity {
     }
 
     public String buildDesc() {
-        return this.uname + this.createdAt + "的提现申请";
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return this.uname + "在" + sf.format(this.createdAt) + "发起的提现申请";
     }
 }

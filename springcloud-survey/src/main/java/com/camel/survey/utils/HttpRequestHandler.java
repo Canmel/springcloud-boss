@@ -27,6 +27,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.LoggerFactory;
 
 public class HttpRequestHandler
 {
@@ -61,6 +62,8 @@ public class HttpRequestHandler
         KeyStore keyStore = KeyStores.getInstance("PKCS12", path, transfer.map());
 
         // 加载本地的证书进行https加密传输
+        System.out.println(ClassLoader.getSystemResource(path).getPath());
+        LoggerFactory.getLogger(HttpRequestHandler.class).info(ClassLoader.getSystemResource(path).getPath());
         FileInputStream instream = new FileInputStream(new File(ClassLoader.getSystemResource(path).getPath()));
         try
         {
