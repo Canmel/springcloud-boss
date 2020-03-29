@@ -44,6 +44,8 @@ public interface ZsAnswerItemService extends IService<ZsAnswerItem> {
 
     List<ZsAnswerItem> selectBySurvey(Integer surveyId);
 
+    List<ZsAnswerItem> selectBySurvey(Integer surveyId, Integer limit);
+
     List<Map<String, Object>> selectExport(Integer id);
 
     List<Map<String, Object>> selectCrossCounts(ZsQuestion qF, ZsQuestion qS, ZsOption os, Integer id);

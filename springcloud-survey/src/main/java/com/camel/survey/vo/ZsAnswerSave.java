@@ -117,7 +117,7 @@ public class ZsAnswerSave {
             }
             if(ObjectUtils.isEmpty(zsOption)) {
                 for (ZsOption option: optionList) {
-                    if(option.getHasRemark() && option.getQuestionId().equals(answerItem.getqId()) && option.getId().equals(Integer.parseInt(answerItem.getName().split("_")[2]))) {
+                    if(option.getHasRemark() && option.getQuestionId().equals(answerItem.getqId()) && option.getId().equals(answerItem.getOId())) {
                         zsOption = option;
                     }
                 }

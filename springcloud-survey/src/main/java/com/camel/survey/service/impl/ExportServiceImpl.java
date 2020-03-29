@@ -3,6 +3,7 @@ package com.camel.survey.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.mapper.ZsAnswerMapper;
+import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
@@ -136,34 +137,61 @@ public class ExportServiceImpl implements ExportService {
         HSSFCellStyle headStyle = createHeadStyle(wb);
         HSSFCellStyle style = createCellStyle(wb);
         List<ZsQuestion> questionList = zsQuestionService.selectBySurveyId(surveyId);
-        List<Object> headValues = CollectionUtils.arrayToList(new String[]{"时间", "电话", "坐席"});
-        List<Object> list = new ArrayList<>(headValues);
-        questionList.forEach(opt -> {
-            list.add(opt.getName());
+        List<Object> headValues = new ArrayList<>();
+        headValues.add("时间");
+        headValues.add("电话");
+        headValues.add("坐席");
+        List<String> titleQList = new ArrayList<>();
+        questionList.forEach(que -> {
+            if (que.getType().equals(2)) {
+                for (int i = 0; i < que.getOptions().size(); i++) {
+                    titleQList.add(que.getName() + "_" + que.getOptions().get(i).getName());
+                }
+            } else {
+                titleQList.add(que.getName());
+            }
         });
-        list.add("合计");
-        fillRow(head, headStyle, list);
+        headValues.addAll(titleQList);
+        headValues.add("合计");
+
+        fillRow(head, headStyle, headValues);
         List<Map<String, Object>> result = zsAnswerItemService.selectExport(surveyId);
+
+
         for (int i = 0; i < result.size(); i++) {
             int cellNum = 0;
             HSSFRow row = sheet.createRow(1 + i);
             fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("seat"));
-            String opts = (String) result.get(i).get("opts");
-            String[] options = opts.split("@##@", -1);
+            String answers = (String) result.get(i).get("answers");
+            String[] answersArray = answers.split("@##@", -1);
+
+            String options = (String) result.get(i).get("options");
+            String[] optionsArray = options.split("@##@", -1);
+            List<String> optionList = CollectionUtils.arrayToList(optionsArray);
 
             String ques = "";
             ques = (String) result.get(i).get("questions");
             String[] questions = ques.split("@##@", -1);
             List<String> qs = CollectionUtils.arrayToList(questions);
-            for (ZsQuestion question : questionList) {
-                if (qs.indexOf(question.getName()) > -1) {
-                    fillCell(row.createCell(questionList.indexOf(question) + 3), style, options[qs.indexOf(question.getName())]);
+            for (int index = 0; index < titleQList.size(); index++) {
+                for (int j = 0; j < questions.length; j++) {
+                    if(titleQList.get(index).indexOf(questions[j]) > -1) {
+                        if(titleQList.get(index).equals(questions[j])) { // 如果包含并且相等。直接输出
+                            fillCell(row.createCell(3 + index), style, answersArray[j]);
+                            break;
+                        } else {
+                            String title = titleQList.get(index);
+                            String option = title.split("_")[1];
+                            if(optionList.indexOf(option) > -1) {
+                                fillCell(row.createCell(3 + index), style, answersArray[optionList.indexOf(option)]);
+                            }
+                        }
+                    }
                 }
             }
         }
-
         return wb;
     }
 
@@ -184,7 +212,7 @@ public class ExportServiceImpl implements ExportService {
 
             int rowNum = 21;
             for (ZsOption option : options) {
-                if(!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
+                if (!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
                     HSSFRow row = sheet.createRow(rowNum++);
                     ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
                 }

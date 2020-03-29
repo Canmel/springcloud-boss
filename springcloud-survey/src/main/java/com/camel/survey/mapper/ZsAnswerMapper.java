@@ -33,4 +33,6 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
     List<ZsAnswer> selectBySurvey(Integer surveyIds);
 
     ZsAnswer details(Integer id);
+
+    List<ZsAnswer> selectDetailsBySurveyId(Integer id, Integer rowNum);
 }

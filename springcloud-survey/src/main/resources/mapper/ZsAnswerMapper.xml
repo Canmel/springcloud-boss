@@ -81,4 +81,13 @@
             and id = #{id}
         </where>
     </select>
+
+    <select id="selectDetailsBySurveyId" resultMap="BaseFullResultMap">
+        select
+            <include refid="Base_Column_List"></include>
+        from zs_answer
+        where
+            survey_id = #{id}
+        limit #{rowNum}, 200
+    </select>
 </mapper>

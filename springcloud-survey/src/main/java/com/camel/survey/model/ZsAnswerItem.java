@@ -71,6 +71,9 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     public ZsOption zsOption;
 
+    @TableField(exist = false)
+    public String seat;
+
     public ZsAnswerItem() {
     }
 

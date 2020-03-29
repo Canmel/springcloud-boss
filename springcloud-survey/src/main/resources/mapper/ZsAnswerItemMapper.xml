@@ -4,15 +4,16 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsAnswerItem">
-        <id column="id" property="id" />
-        <result column="question" property="question" />
-        <result column="value" property="value" />
-        <result column="type" property="type" />
+        <id column="id" property="id"/>
+        <result column="question" property="question"/>
+        <result column="value" property="value"/>
+        <result column="type" property="type"/>
         <result column="answer_id" property="answerId"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="created_at" property="createdAt" />
-        <result column="creator" property="creator" />
+        <result column="created_at" property="createdAt"/>
+        <result column="creator" property="creator"/>
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="seat" property="seat"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -22,7 +23,7 @@
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_answer_item
         <where>
@@ -110,8 +111,14 @@
          from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where a.survey_id = #{id}
     </select>
 
+    <select id="selectBySurveyLimit" resultMap="BaseResultMap">
+        select
+        ai.id, ai.question, ai.value, ai.type, ai.status, ai.created_at, ai.creator, ai.`option`, ai.answer_id, a.seat
+         from zs_answer_item ai left join zs_answer a on a.id = ai.answer_id where a.survey_id = #{id} limit #{limit}, 200
+    </select>
+
     <select id="selectExport" resultType="hashmap">
-        select a.seat,a.creator,a.created_at,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`value` SEPARATOR '@##@') opts from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id;
+        select a.seat,a.creator,a.created_at,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers, GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id
     </select>
 
     <select id="selectSeatTotal" resultType="hashmap">

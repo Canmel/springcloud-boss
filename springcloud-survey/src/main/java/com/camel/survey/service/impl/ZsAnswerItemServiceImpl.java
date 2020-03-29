@@ -70,6 +70,11 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
     }
 
     @Override
+    public List<ZsAnswerItem> selectBySurvey(Integer surveyId, Integer limit) {
+        return mapper.selectBySurveyLimit(surveyId, limit);
+    }
+
+    @Override
     public List<Map<String, Object>> selectExport(Integer id) {
         return mapper.selectExport(id);
     }
