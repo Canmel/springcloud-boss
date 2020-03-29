@@ -2,6 +2,7 @@ package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.enums.ZsStatus;
@@ -63,6 +64,7 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     /**
      * 状态
      */
+    @TableLogic
     private ZsStatus status;
     /**
      * 创建时间

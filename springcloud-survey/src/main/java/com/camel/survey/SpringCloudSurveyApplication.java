@@ -61,7 +61,6 @@ public class SpringCloudSurveyApplication implements CommandLineRunner {
             @Override
             public void customize(Context context) {
                 if (context.getManager() instanceof StandardManager) {
-                    // print local path name
                     System.out.println(((StandardManager) context.getManager()).getPathname());
                 }
             }

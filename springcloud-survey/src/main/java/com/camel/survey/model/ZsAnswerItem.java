@@ -1,6 +1,7 @@
 package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.util.Date;
@@ -54,6 +55,7 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
     private String question;
     private String value;
     private Integer type;
+    @TableLogic
     private ZsStatus status;
     private Date createdAt;
     private String creator;

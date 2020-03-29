@@ -34,13 +34,20 @@ import java.util.HashMap;
  **/
 @RestController
 public class StockController {
-    public static final String QUEUE_NAME = "ActiveMQ.Stock.Reduce.Topic";
+    public static final String REDUCE_QUEUE_NAME = "ActiveMQ.Stock.Reduce.Topic";
+
+    public static final String ADD_QUEUE_NAME = "ActiveMQ.Stock.Add.Topic";
 
     @Autowired
     private StockService stockService;
 
-    @JmsListener(destination = QUEUE_NAME)
+    @JmsListener(destination = REDUCE_QUEUE_NAME)
     public void reduce(HashMap msg) {
         stockService.reduce(msg);
+    }
+
+    @JmsListener(destination = ADD_QUEUE_NAME)
+    public void add(HashMap msg) {
+        stockService.add(msg);
     }
 }

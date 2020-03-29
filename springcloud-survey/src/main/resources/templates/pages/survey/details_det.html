@@ -828,6 +828,8 @@
                         AJAX.DELETE("zsAnswer", item, function (res) {
                             toastr.success(res.msg);
                             that.pagequery();
+                            that.loadEntity();
+                            that.loadQuestions();
                         })
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});

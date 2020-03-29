@@ -31,7 +31,7 @@ public interface ZsAnswerItemMapper extends BaseMapper<ZsAnswerItem> {
 
     List<Map<String, Object>> selectCrossCounts(@Param("qF") String qF, @Param("qS") String qS, @Param("oS") String oS, @Param("surveyId") Integer surveyId);
 
-    ZsAnswerItem selectByAnswerId(Integer id);
+    List<ZsAnswerItem> selectByAnswerId(Integer id);
 
     List<ZsAnswerItem> selectBySurvey(Integer id);
 
