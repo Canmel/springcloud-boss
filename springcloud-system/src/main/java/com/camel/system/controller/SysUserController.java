@@ -4,14 +4,19 @@ package com.camel.system.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.common.entity.Role;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysRole;
+import com.camel.core.model.SysUserRole;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.entity.RedisUser;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.system.annotation.Log;
 import com.camel.core.model.SysUser;
 import com.camel.system.config.SysUserCacheConfig;
+import com.camel.system.service.SysRoleService;
+import com.camel.system.service.SysUserRoleService;
 import com.camel.system.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -54,6 +59,12 @@ public class SysUserController extends BaseCommonController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private SysUserRoleService userRoleService;
+
+    @Autowired
+    private SysRoleService roleService;
 
     @Autowired
     private SysUserCacheConfig sysUserCacheConfig;
@@ -142,6 +153,11 @@ public class SysUserController extends BaseCommonController {
         System.out.println(sysUser);
         if(ObjectUtils.isEmpty(sysUser.getUid())) {
             service.insert(sysUser);
+            Wrapper<SysRole> roleWrapper = new EntityWrapper<>();
+            roleWrapper.eq("role_name", "interviewer");
+            SysRole role = roleService.selectOne(roleWrapper);
+            SysUserRole sysUserRole = new SysUserRole(sysUser.getUid(), role.getRoleId());
+            userRoleService.insert(sysUserRole);
             return;
         }
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
