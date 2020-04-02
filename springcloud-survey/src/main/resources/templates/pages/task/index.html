@@ -4,7 +4,7 @@
             <h5>任务面板</h5>
             <div class="ibox-tools">
                 <!--<a :href="applicationContextRootPath + 'pages/project/add.html'"-->
-                   <!--data-pjax class="btn btn-primary btn-xs">新建问卷</a>-->
+                <!--data-pjax class="btn btn-primary btn-xs">新建问卷</a>-->
             </div>
         </div>
         <div class="ibox-content">
@@ -13,7 +13,8 @@
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input" v-model="pageInfo.name"> <span
+                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
+                               v-model="pageInfo.name"> <span
                             class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
                     </div>
@@ -38,9 +39,9 @@
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
                         <td>
-                            <span class="click-span" v-on:click="details(item)">{{item.name}}</span>
+                            <span class="click-span">{{item.name}}</span>
                         </td>
-                        <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span></td>
+                        <td><span class="click-span">{{item.project ? item.project.name : ''}}</span></td>
                         <td>{{item.collectType ? item.collectType.name : ''}}</td>
                         <td>
                             <span class="badge badge-primary" v-if="item.status ? item.state.value === 1 : false">{{item.state.name}}</span>
@@ -52,9 +53,14 @@
                         </td>
                         <td>
 
-                            <span class="fa fa-question-circle" title="这里是提示内容" style="cursor: pointer;" v-on:click="showRequire(item)"></span>
-                            <button type="button" v-on:click="signUp(item)" v-if="isShowApply(item)" class="btn btn-primary btn-xs">报名参加</button>
-                            <button type="button" v-on:click="start(item)" v-if="isShowStart(item)" class="btn btn-primary btn-xs">开始</button>
+                            <span class="fa fa-question-circle" title="这里是提示内容" style="cursor: pointer;"
+                                  v-on:click="showRequire(item)"></span>
+                            <button type="button" v-on:click="signUp(item)" v-if="isShowApply(item)"
+                                    class="btn btn-primary btn-xs">报名参加
+                            </button>
+                            <button type="button" v-on:click="start(item)" v-if="isShowStart(item)"
+                                    class="btn btn-primary btn-xs">开始
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -85,7 +91,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="leaveRoom()">关闭</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="leaveRoom()">关闭
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -116,28 +123,28 @@
             leaveRoom() {
                 leaveRoom();
             },
-            start: function(item) {
+            start: function (item) {
                 console.log(item);
                 toPage('pages/task/start.html', item.id);
                 // window.open('/survey/page/' +
                 //     'input?surveyId=' + item.id + '&phone=13722222221&record=2321&seat=121&access_token=' + sessionStorage.getItem('access_token'), '_blank');
             },
-            isShowStart: function(item) {
-                if(item.state && item.isApplySuccess) {
+            isShowStart: function (item) {
+                if (item.state && item.isApplySuccess) {
                     return item.state.value === 2 && item.isApplySuccess.value === 1;
                 }
             },
-            isShowApply: function(item) {
-                if(item.state && item.isApplySuccess) {
+            isShowApply: function (item) {
+                if (item.state && item.isApplySuccess) {
                     return item.state.value === 2 && item.isApplySuccess.value !== 1;
                 }
                 return false;
             },
-            showRequire: function(item) {
+            showRequire: function (item) {
                 this.selectedItem = item;
                 $('#myModal').modal('show');
             },
-            projectDetails: function(item) {
+            projectDetails: function (item) {
                 sessionStorage.setItem('editParams', item.projectId);
                 toPage("pages/project/details.html");
             },

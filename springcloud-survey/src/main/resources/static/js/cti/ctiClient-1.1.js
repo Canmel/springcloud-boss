@@ -463,25 +463,26 @@
 					setMonitorbarStatus(eventAgentNo,state);
 				}
 			}else if(methodType=="common_callin_bridge_ring"){//呼入弹屏
+				console.log("呼入弹屏")
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
 					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
-					window.open (url,'来电弹屏') 
+					window.openUrl = url;
 				}
 			}else if(methodType=="manual_callout_agent_ring"){//呼出弹屏
+				console.log("外呼弹屏")
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
 					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
-					window.open (url,'呼出弹屏') 
+					window.openUrl = url;
 				}
-			}else if(methodType=="blind_transfer_ring"){//转接弹屏
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
 					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
-					window.open (url,'转接弹屏') 
+					window.openUrl = url;
 				}
 			}else if(methodType=="get_agentgroup_list"){//获取座席组列表
 				var agentGroupNames = jsonStr.agentgroupname;
