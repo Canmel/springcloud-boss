@@ -842,6 +842,7 @@
             websocket.onmessage = function () {
                 try {
                     var jsonStr = JSON.parse(event.data);
+                    console.log("------------------------" , jsonStr);
                     onEvent(jsonStr.type, jsonStr.status, jsonStr.method, jsonStr.retCode, jsonStr);
                 } catch (e) {
                     return false;
