@@ -65,7 +65,7 @@ public class DocumentController extends BaseCommonController {
     /**
      * 获取分页列表
      * @param document
-     * @return
+     * @returnsdf
      */
     @GetMapping
     public Result index(Document document) {
