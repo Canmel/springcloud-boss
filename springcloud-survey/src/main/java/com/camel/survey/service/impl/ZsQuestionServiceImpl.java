@@ -109,7 +109,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
                 zsOptionService.insertBatch(optionList);
             }
         });
-        return ResultUtil.success("新增成功");
+        return ResultUtil.success("保存成功");
 
     }
 
