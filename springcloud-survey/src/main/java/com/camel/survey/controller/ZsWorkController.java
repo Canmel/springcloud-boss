@@ -15,10 +15,13 @@ import com.camel.survey.model.ZsWork;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.security.RolesAllowed;
 
 /**
  * <p>
@@ -38,6 +41,7 @@ public class ZsWorkController extends BaseCommonController {
     private ApplicationToolsUtils applicationUtils;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
