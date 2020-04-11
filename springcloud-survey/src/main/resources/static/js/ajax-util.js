@@ -7,6 +7,7 @@ web_status = {
     SUCCESS : 200,
     FAIL : 500,
     NO_LOGIN : 401,
+    NO_AUTHENTICATE: 403,
     NO_PRIVILEGE : "004"
 };
 
@@ -81,6 +82,9 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
                 location.href = '/login?redirect_url=/survey/';
+            }
+            if(resp.status === web_status.NO_AUTHENTICATE) {
+                toastr.error(resp.responseJSON.error_description)
             }
         }
     };

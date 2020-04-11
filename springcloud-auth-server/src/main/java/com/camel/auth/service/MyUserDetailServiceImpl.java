@@ -76,7 +76,7 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
         boolean accountNonLocked = true;
         for (SysRole role : sysUser.getSysRoles()) {
             //角色必须是ROLE_开头，可以在数据库中设置
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getRoleName());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + role.getRoleName().toUpperCase());
             grantedAuthorities.add(grantedAuthority);
             //获取权限
             for (SysMenu menu : role.getSysMenus()) {

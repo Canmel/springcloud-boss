@@ -103,6 +103,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
+        SysUser user = applicationToolsUtils.currentUser();
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
@@ -116,6 +117,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             Wrapper<ZsSign> zsSignWrapper = new EntityWrapper<>();
             zsSignWrapper.eq("status", ZsStatus.CREATED.getValue());
             zsSignWrapper.eq("survey_id", e.getId());
+            zsSignWrapper.eq("creator", user.getUid());
             zsSignWrapper.eq("result", ZsSurveySignResult.SUCCESS.getValue());
             if (zsSignService.selectCount(zsSignWrapper) > 0) {
                 e.setIsApplySuccess(ZsYesOrNo.YES);

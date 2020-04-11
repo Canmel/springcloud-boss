@@ -89,6 +89,7 @@ public class ApplicationToolsUtils {
     }
 
     public SysUser getUser(Integer uid) {
+        result = null;
         allUsers().forEach(user -> {
             if (user.getUid().equals(uid)) {
                 result = user;
