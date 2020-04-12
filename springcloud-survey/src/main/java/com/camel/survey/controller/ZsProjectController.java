@@ -55,6 +55,7 @@ public class ZsProjectController extends BaseCommonController {
      * 获取详情
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -72,6 +73,7 @@ public class ZsProjectController extends BaseCommonController {
      * 编辑 更新
      */
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsProject entity) {
         return super.update(entity);
     }
@@ -80,6 +82,7 @@ public class ZsProjectController extends BaseCommonController {
      * 删除
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }

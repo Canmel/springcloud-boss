@@ -50,6 +50,7 @@ public class ZsSurveyController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result index(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
@@ -59,6 +60,7 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @AuthIgnore
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }

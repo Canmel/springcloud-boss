@@ -55,6 +55,7 @@ public class ZsExamController extends BaseCommonController {
      * 获取详情
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -72,6 +73,7 @@ public class ZsExamController extends BaseCommonController {
      * 编辑 更新
      */
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsExam entity) {
         return super.update(entity);
     }
@@ -80,16 +82,19 @@ public class ZsExamController extends BaseCommonController {
      * 删除
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
     @GetMapping("/delivery/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delivery(OAuth2Authentication oAuth2Authentication, @PathVariable Integer id) {
         return service.delivery(id, oAuth2Authentication);
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result all() {
         return service.all();
     }
