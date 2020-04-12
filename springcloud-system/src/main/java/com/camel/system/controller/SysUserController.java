@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,11 +72,13 @@ public class SysUserController extends BaseCommonController {
 
     @Log(moduleName = "用户", option = "查询列表")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(SysUser sysUser) {
         return ResultUtil.success(service.pageQuery(sysUser));
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(@RequestBody SysUser sysUser) {
         return super.save(sysUser);
     }

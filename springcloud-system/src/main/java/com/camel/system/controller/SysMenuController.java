@@ -12,6 +12,7 @@ import com.camel.core.enums.MenuType;
 import com.camel.core.model.SysMenu;
 import com.camel.system.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,7 @@ public class SysMenuController extends BaseCommonController {
     private SysMenuService service;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(SysMenu sysMenu) {
         sysMenu.setStatus(MenuStatus.NORMAL.getCode().toString());
         return ResultUtil.success(service.selectPage(sysMenu));
@@ -59,6 +61,7 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(SysMenu sysMenu) {
         return super.save(sysMenu);
     }

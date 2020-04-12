@@ -64,6 +64,7 @@ public class ZsWorkController extends BaseCommonController {
     }
 
     @PostMapping("/upload")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result upLoad(@RequestParam MultipartFile file) {
         service.importExcel(file);
         return ResultUtil.success("上传成功");

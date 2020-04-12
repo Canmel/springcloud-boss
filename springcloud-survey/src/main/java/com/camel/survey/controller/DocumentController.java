@@ -14,6 +14,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +64,7 @@ public class DocumentController extends BaseCommonController {
      * @returnsdf
      */
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(Document document) {
         return ResultUtil.success(service.selectPage(document));
     }
@@ -73,6 +75,7 @@ public class DocumentController extends BaseCommonController {
      * @return
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result upload(@RequestParam("file") MultipartFile file, Principal principal) {
         OAuth2Authentication authentication = (OAuth2Authentication) principal;
         return ResultUtil.success(service.save(file, authentication));
