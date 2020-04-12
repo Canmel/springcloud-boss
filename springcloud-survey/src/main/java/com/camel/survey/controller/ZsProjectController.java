@@ -58,7 +58,6 @@ public class ZsProjectController extends BaseCommonController {
      * @return
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsProject entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -91,7 +90,6 @@ public class ZsProjectController extends BaseCommonController {
      * @param entity
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication) {
         entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return service.save(entity, oAuth2Authentication);

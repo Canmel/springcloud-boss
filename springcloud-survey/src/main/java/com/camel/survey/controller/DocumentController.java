@@ -68,7 +68,6 @@ public class DocumentController extends BaseCommonController {
      * @returnsdf
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(Document document) {
         return ResultUtil.success(service.selectPage(document));
     }
@@ -79,7 +78,6 @@ public class DocumentController extends BaseCommonController {
      * @return
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result upload(@RequestParam("file") MultipartFile file, Principal principal) {
         OAuth2Authentication authentication = (OAuth2Authentication) principal;
         if(service.save(file, authentication) > 0) {
@@ -94,7 +92,6 @@ public class DocumentController extends BaseCommonController {
      * @return 获取下载地址
      */
     @GetMapping("/view/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result view(@PathVariable Integer id) {
         try {
             return ResultUtil.success((Object) service.url(id));

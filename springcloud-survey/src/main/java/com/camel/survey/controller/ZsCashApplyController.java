@@ -52,7 +52,6 @@ public class ZsCashApplyController extends BaseCommonController {
      */
     @AuthIgnore
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsCashApply apply) {
         return service.apply(apply);
     }
@@ -63,7 +62,6 @@ public class ZsCashApplyController extends BaseCommonController {
      * @return
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsCashApply apply) {
         return ResultUtil.success(service.selectPage(apply));
     }
