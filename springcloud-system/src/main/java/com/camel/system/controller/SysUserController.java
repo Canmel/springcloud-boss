@@ -72,13 +72,11 @@ public class SysUserController extends BaseCommonController {
 
     @Log(moduleName = "用户", option = "查询列表")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(SysUser sysUser) {
         return ResultUtil.success(service.pageQuery(sysUser));
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(@RequestBody SysUser sysUser) {
         return super.save(sysUser);
     }
@@ -89,7 +87,6 @@ public class SysUserController extends BaseCommonController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(@PathVariable(required = true) Integer id) {
         Result result = super.details(id);
         SysUser user = (SysUser) result.getData();
@@ -131,7 +128,6 @@ public class SysUserController extends BaseCommonController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result all(SysUser user){
         return ResultUtil.success(service.all());
     }
@@ -141,7 +137,6 @@ public class SysUserController extends BaseCommonController {
      * @return
      */
     @GetMapping("/role/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result byRole(@PathVariable String id){
         return ResultUtil.success(service.byRole(Integer.parseInt(id)));
     }

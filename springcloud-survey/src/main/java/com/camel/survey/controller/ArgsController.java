@@ -49,7 +49,6 @@ public class ArgsController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(Args entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -66,7 +65,6 @@ public class ArgsController extends BaseCommonController {
      * 新建保存
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(Args entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }

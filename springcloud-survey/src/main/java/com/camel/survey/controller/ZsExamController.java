@@ -46,7 +46,6 @@ public class ZsExamController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result serviceindex(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
@@ -63,7 +62,6 @@ public class ZsExamController extends BaseCommonController {
      * 新建保存
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }
