@@ -57,6 +57,7 @@ public class ArgsController extends BaseCommonController {
      * @return
      */
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(Args entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -87,6 +88,7 @@ public class ArgsController extends BaseCommonController {
      * @param oAuth2Authentication
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(Args entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }

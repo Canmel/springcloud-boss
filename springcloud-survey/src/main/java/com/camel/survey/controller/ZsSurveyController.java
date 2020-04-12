@@ -123,6 +123,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @param oAuth2Authentication
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(@RequestBody ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return service.save(entity, oAuth2Authentication);
@@ -133,6 +134,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @param entity
      */
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsSurvey entity) {
         return service.update(entity);
     }
@@ -142,6 +144,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @param id
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }

@@ -177,6 +177,7 @@ public class ZsWorkController extends BaseCommonController {
      */
     @GetMapping("/cash")
     @AuthIgnore
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result current(String idNum, String uname) {
         Wrapper<ZsWork> zsWorkWrapper = new EntityWrapper<>();
         zsWorkWrapper.eq("uname", uname);
@@ -192,6 +193,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param file
      */
     @PostMapping("/upload")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result upLoad(@RequestParam MultipartFile file) {
         return service.importExcel(file);
     }
@@ -203,6 +205,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param oAuth2Authentication
      */
     @GetMapping("/current")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result current(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         SysUser sysUser = applicationUtils.currentUser();
         if (ObjectUtils.isEmpty(sysUser.getUid()) || ObjectUtils.isEmpty(sysUser.getUsername())) {
