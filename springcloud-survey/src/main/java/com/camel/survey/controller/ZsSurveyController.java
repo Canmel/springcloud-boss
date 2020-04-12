@@ -91,6 +91,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @return
      */
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result index(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
@@ -113,6 +114,7 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @AuthIgnore
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }

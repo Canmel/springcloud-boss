@@ -110,6 +110,7 @@ public class DocumentController extends BaseCommonController {
      * @throws Exception
      */
     @GetMapping("/download/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public void download(@PathVariable Integer id, HttpServletResponse response) throws Exception {
         Document document = service.selectById(id);
         if (ObjectUtils.isEmpty(document)) {
@@ -132,10 +133,12 @@ public class DocumentController extends BaseCommonController {
      * @return
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) throws QiniuException {
         return super.delete(id);
     }
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result url(@PathVariable("id") Integer id) throws FileNotFoundException {
         return ResultUtil.success((Object) service.url(id));
     }

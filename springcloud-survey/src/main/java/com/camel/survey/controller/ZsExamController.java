@@ -59,6 +59,7 @@ public class ZsExamController extends BaseCommonController {
      * @return
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -78,6 +79,7 @@ public class ZsExamController extends BaseCommonController {
      * @param entity
      */
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsExam entity) {
         return super.update(entity);
     }
@@ -87,6 +89,7 @@ public class ZsExamController extends BaseCommonController {
      * @param id
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
@@ -97,6 +100,7 @@ public class ZsExamController extends BaseCommonController {
      * @param id
      */
     @GetMapping("/delivery/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delivery(OAuth2Authentication oAuth2Authentication, @PathVariable Integer id) {
         return service.delivery(id, oAuth2Authentication);
     }
@@ -106,6 +110,7 @@ public class ZsExamController extends BaseCommonController {
      * @return
      */
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result all() {
         return service.all();
     }

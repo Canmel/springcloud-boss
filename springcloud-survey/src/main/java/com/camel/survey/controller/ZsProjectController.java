@@ -81,6 +81,7 @@ public class ZsProjectController extends BaseCommonController {
      * @return
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -103,6 +104,7 @@ public class ZsProjectController extends BaseCommonController {
      * @param entity
      */
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsProject entity) {
         return super.update(entity);
     }
@@ -113,6 +115,7 @@ public class ZsProjectController extends BaseCommonController {
      * @param id
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
