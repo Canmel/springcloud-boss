@@ -55,11 +55,13 @@ public class SysRoleController extends BaseCommonController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(SysRole sysUser){
         return ResultUtil.success(service.pageQuery(sysUser));
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(@RequestBody SysRole sysRole){
         return super.save(sysRole);
     }

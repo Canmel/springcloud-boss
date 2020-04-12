@@ -67,6 +67,7 @@ public class ZsSurveyController extends BaseCommonController {
      * 新建保存
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(@RequestBody ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }
@@ -75,6 +76,7 @@ public class ZsSurveyController extends BaseCommonController {
      * 编辑 更新
      */
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsSurvey entity) {
         return service.update(entity);
     }
@@ -83,6 +85,7 @@ public class ZsSurveyController extends BaseCommonController {
      * 删除
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }

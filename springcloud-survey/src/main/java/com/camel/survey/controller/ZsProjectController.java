@@ -46,6 +46,7 @@ public class ZsProjectController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsProject entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -62,6 +63,7 @@ public class ZsProjectController extends BaseCommonController {
      * 新建保存
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }
