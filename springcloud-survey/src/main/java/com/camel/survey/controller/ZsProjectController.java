@@ -9,6 +9,7 @@ import com.camel.survey.service.ZsProjectService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,6 +58,7 @@ public class ZsProjectController extends BaseCommonController {
      * @return
      */
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsProject entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -89,6 +91,7 @@ public class ZsProjectController extends BaseCommonController {
      * @param entity
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication) {
         entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return service.save(entity, oAuth2Authentication);

@@ -20,6 +20,7 @@ import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.FileTransfer;
 import com.camel.survey.vo.ZsAnswerSave;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -122,6 +123,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @param oAuth2Authentication
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(@RequestBody ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return service.save(entity, oAuth2Authentication);
@@ -132,6 +134,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @param entity
      */
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsSurvey entity) {
         return service.update(entity);
     }
@@ -141,6 +144,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @param id
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
