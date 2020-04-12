@@ -8,6 +8,7 @@ import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsCashApply;
 import com.camel.survey.service.ZsCashApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -39,11 +40,13 @@ public class ZsCashApplyController extends BaseCommonController {
 
     @AuthIgnore
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsCashApply apply) {
         return service.apply(apply);
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsCashApply apply) {
         return ResultUtil.success(service.selectPage(apply));
     }

@@ -11,6 +11,7 @@ import com.camel.core.enums.RoleStatus;
 import com.camel.core.model.SysRole;
 import com.camel.system.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -54,11 +55,13 @@ public class SysRoleController extends BaseCommonController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(SysRole sysUser){
         return ResultUtil.success(service.pageQuery(sysUser));
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(@RequestBody SysRole sysRole){
         return super.save(sysRole);
     }
