@@ -29,17 +29,20 @@ public class ZsCashApplyController extends BaseCommonController {
     private ZsCashApplyService service;
 
     @GetMapping("/pass/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result pass(@PathVariable Integer id) {
         return service.pass(id);
     }
 
     @GetMapping("/reject/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result reject(@PathVariable Integer id) {
         return service.reject(id);
     }
 
     @AuthIgnore
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsCashApply apply) {
         return service.apply(apply);
     }

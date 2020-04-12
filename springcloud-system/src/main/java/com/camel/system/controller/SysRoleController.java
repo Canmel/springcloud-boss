@@ -62,7 +62,7 @@ public class SysRoleController extends BaseCommonController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
-    public Result save(@RequestBody SysRole sysRole){
+    public Result save(SysRole sysRole){
         return super.save(sysRole);
     }
 

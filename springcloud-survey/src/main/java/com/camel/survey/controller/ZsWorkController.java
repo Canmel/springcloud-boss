@@ -55,6 +55,7 @@ public class ZsWorkController extends BaseCommonController {
      */
     @GetMapping("/cash")
     @AuthIgnore
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result current(String idNum, String uname) {
         Wrapper<ZsWork> zsWorkWrapper = new EntityWrapper<>();
         zsWorkWrapper.eq("uname", uname);
@@ -71,6 +72,7 @@ public class ZsWorkController extends BaseCommonController {
     }
 
     @GetMapping("/current")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result current(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         SysUser sysUser = applicationUtils.currentUser();
         if(ObjectUtils.isEmpty(sysUser.getUid()) || ObjectUtils.isEmpty(sysUser.getUsername())) {

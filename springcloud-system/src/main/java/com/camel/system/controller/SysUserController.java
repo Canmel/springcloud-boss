@@ -89,6 +89,7 @@ public class SysUserController extends BaseCommonController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(@PathVariable(required = true) Integer id) {
         Result result = super.details(id);
         SysUser user = (SysUser) result.getData();
@@ -130,6 +131,7 @@ public class SysUserController extends BaseCommonController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result all(SysUser user){
         return ResultUtil.success(service.all());
     }
@@ -139,6 +141,7 @@ public class SysUserController extends BaseCommonController {
      * @return
      */
     @GetMapping("/role/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result byRole(@PathVariable String id){
         return ResultUtil.success(service.byRole(Integer.parseInt(id)));
     }
