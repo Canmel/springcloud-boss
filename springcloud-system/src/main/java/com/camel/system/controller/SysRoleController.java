@@ -67,11 +67,13 @@ public class SysRoleController extends BaseCommonController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result update(@RequestBody SysRole sysRole){
         return super.update(sysRole);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result detail(@PathVariable(required = true) Integer id){
         Result result = super.details(id);
         SysRole role = (SysRole) result.getData();
@@ -80,6 +82,7 @@ public class SysRoleController extends BaseCommonController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result delete(@PathVariable(required = true) Integer id){
         if(service.delete(id)){
             return ResultUtil.deleteSuccess(getMouduleName());
@@ -89,11 +92,13 @@ public class SysRoleController extends BaseCommonController {
     }
 
     @GetMapping("/valid/{name}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result nameValid(@PathVariable String name, Integer id){
         return ResultUtil.success(service.exist(name, id));
     }
 
     @GetMapping("/all/list")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result all(){
         Wrapper<SysRole> roleWrapper = new EntityWrapper<>();
         roleWrapper.eq("status", RoleStatus.NORMAL.getValue());
@@ -101,6 +106,7 @@ public class SysRoleController extends BaseCommonController {
     }
 
     @PostMapping("/menus")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result addRole(@RequestBody SysRole role) {
         if (service.addMenus(role)) {
             return ResultUtil.success("修改角色菜单成功");

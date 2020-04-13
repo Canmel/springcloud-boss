@@ -10,6 +10,7 @@ import com.camel.survey.model.ZsSign;
 import com.camel.survey.service.ZsSignService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +54,7 @@ public class ZsSignController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
+
     public Result index(ZsSign entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -90,6 +92,7 @@ public class ZsSignController extends BaseCommonController {
     }
 
     @GetMapping("/user")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result getByUserId(Principal principal) {
         SysUser member = applicationToolsUtils.currentUser();
         return service.selectByUserId(member.getUid());

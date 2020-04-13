@@ -72,24 +72,25 @@ public class SysUserController extends BaseCommonController {
 
     @Log(moduleName = "用户", option = "查询列表")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result index(SysUser sysUser) {
         return ResultUtil.success(service.pageQuery(sysUser));
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result save(@RequestBody SysUser sysUser) {
         return super.save(sysUser);
     }
 
     @PostMapping("/interviewer")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result interviewer(@RequestBody SysUser sysUser) {
         return service.interviewer(sysUser);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result save(@PathVariable(required = true) Integer id) {
         Result result = super.details(id);
         SysUser user = (SysUser) result.getData();
@@ -98,6 +99,7 @@ public class SysUserController extends BaseCommonController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result update(@RequestBody SysUser sysUser) {
         Result result = super.update(sysUser);
         sysUserCacheConfig.initSysUsers();
@@ -105,16 +107,19 @@ public class SysUserController extends BaseCommonController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result delete(@PathVariable(required = true) Integer id) {
         return ResultUtil.success(super.delete(id));
     }
 
     @GetMapping("/valid/{name}")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result nameValid(@PathVariable String name, Integer id) {
         return ResultUtil.success(service.exist(name, id));
     }
 
     @PostMapping("/roles")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result addRole(@RequestBody SysUser user) {
         if (service.addRoles(user)) {
             return ResultUtil.success("修改用户角色成功");
@@ -123,6 +128,7 @@ public class SysUserController extends BaseCommonController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result me() {
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
         byte[] cu = (byte[]) operations.get("CURRENT_USER");
@@ -131,7 +137,7 @@ public class SysUserController extends BaseCommonController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result all(SysUser user){
         return ResultUtil.success(service.all());
     }
@@ -141,12 +147,13 @@ public class SysUserController extends BaseCommonController {
      * @return
      */
     @GetMapping("/role/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result byRole(@PathVariable String id){
         return ResultUtil.success(service.byRole(Integer.parseInt(id)));
     }
 
     @PutMapping("/avatar")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result avatar(@RequestBody SysUser sysUser) {
         super.update(sysUser);
         return ResultUtil.success("修改用户头像成功");

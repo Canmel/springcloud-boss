@@ -60,7 +60,7 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @AuthIgnore
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -93,6 +93,7 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     @PutMapping("/close/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result close(@PathVariable Integer id){
         ZsSurvey survey = service.selectById(id);
         survey.setState(ZsSurveyState.CLOSED);
@@ -101,6 +102,7 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     @GetMapping("/{id}/projects")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result projects(@PathVariable Integer id) {
         return service.selectListByProjectId(id);
     }
@@ -113,6 +115,7 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @AuthIgnore
     @GetMapping("/questionAndOptions/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result loadQuestionAndOptions(@PathVariable Integer id) {
         return service.getQuestionAndOptions(id);
     }
@@ -126,6 +129,7 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @AuthIgnore
     @GetMapping("/questions/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result loadQuestionSurvey(@PathVariable Integer id) {
         ZsSurvey survey = service.selectById(id);
         if(!survey.getState().equals(ZsSurveyState.COLLECTING)) {
@@ -140,6 +144,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @return
      */
     @GetMapping("/start/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result start(@PathVariable Integer id) {
         return service.start(id);
     }
@@ -149,6 +154,7 @@ public class ZsSurveyController extends BaseCommonController {
      * @return
      */
     @GetMapping("/sign/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result sign(@PathVariable Integer id, OAuth2Authentication oAuth2Authentication) {
         return service.sign(id, oAuth2Authentication);
     }
