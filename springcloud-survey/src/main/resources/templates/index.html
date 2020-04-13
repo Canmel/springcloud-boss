@@ -92,7 +92,7 @@
     <!--右侧部分开始-->
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="row border-bottom">
-            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;">
                 <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-info " href="#"><i
                         class="fa fa-bars"></i> </a>
                     <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
@@ -101,6 +101,22 @@
                                    id="top-search">
                         </div>
                     </form>
+                </div>
+<!--                <div class="ibox-tools">-->
+<!--                    <div class="ibox-tools">-->
+<!--                        <a :href="applicationContextRootPath + 'pages/menu/add.html'"-->
+<!--                           data-pjax class="btn btn-primary btn-xs">登出</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ibox-tools">-->
+<!--                    <div class="ibox-tools">-->
+<!--                        <a :href="applicationContextRootPath + 'pages/menu/add.html'"-->
+<!--                           data-pjax class="btn btn-primary btn-xs">修改密码</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div style="float: right;margin-right: 1%;margin-top: 0.5%;">
+                    <button type="button" class="btn btn-sm btn-primary" v-on:click="logout()"> 登出</button>
+                    <button type="button" class="btn btn-sm btn-primary" v-on:click="editPwd()"> 修改密码</button>
                 </div>
             </nav>
         </div>
@@ -167,6 +183,7 @@
     let mediaUtil
     let pcmBuffer = []
     let speakersList = []
+    var username='';
 
     $(document).pjax('[data-pjax] a, a[data-pjax]', '.page-container');
     $.jgrid.defaults.styleUI = 'Bootstrap';
@@ -204,9 +221,27 @@
                 } else {
                     $(e.srcElement).next().addClass('show');
                 }
-            }
+            },
+            logout: function(){
+                confirm("您确定要登出吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        sessionStorage.clear();
+                        window.location.href = "/login?redirect_url=/survey/";
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+
+            },
+            editPwd: function () {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/editPwd.html',
+                    container: '.page-container'
+                });
+            },
         }
     });
+
     var currentPage = sessionStorage.getItem('currentPage');
     $.pjax({
         url: currentPage ? currentPage : mvm.applicationContextRootPath + 'pages/home.html',
