@@ -177,7 +177,6 @@ public class ZsWorkController extends BaseCommonController {
      */
     @GetMapping("/cash")
     @AuthIgnore
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result current(String idNum, String uname) {
         Wrapper<ZsWork> zsWorkWrapper = new EntityWrapper<>();
         zsWorkWrapper.eq("uname", uname);
