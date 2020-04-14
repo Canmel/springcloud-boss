@@ -49,32 +49,27 @@ public class SysMenuController extends BaseCommonController {
     private SysMenuService service;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(SysMenu sysMenu) {
         sysMenu.setStatus(MenuStatus.NORMAL.getCode().toString());
         return ResultUtil.success(service.selectPage(sysMenu));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result detail(@PathVariable Integer id) {
         return super.details(id);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(SysMenu sysMenu) {
         return super.save(sysMenu);
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result update(@RequestBody SysMenu sysMenu) {
         return super.update(sysMenu);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result delete(@PathVariable Integer id) {
         if (service.delete(id)) {
             return ResultUtil.deleteSuccess(getMouduleName());
@@ -84,7 +79,6 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @GetMapping("/tops")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result tops(SysMenu sysMenu, Principal principal) {
         if(!ObjectUtils.isEmpty(sysMenu.getParentId()) && sysMenu.getParentId() != 1) {
             principal = null;
@@ -93,25 +87,21 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @GetMapping("/subs")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result subs(SysMenu sysMenu, Principal principal) {
         return ResultUtil.success(service.subs(principal));
     }
 
     @GetMapping("/typies")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result typies() {
         return ResultUtil.success(MenuType.all());
     }
 
     @GetMapping("/valid/{name}")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result nameValid(@PathVariable String name, Integer id) {
         return ResultUtil.success(service.exist(name, id));
     }
 
     @GetMapping("/all/list")
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result all(){
         Wrapper<SysMenu> menuWrapper = new EntityWrapper<>();
         menuWrapper.eq("status", MenuStatus.NORMAL.getValue());
