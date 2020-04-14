@@ -179,11 +179,14 @@
         data: {
             applicationContextRootPath: '/survey/',
             tops: [],
-            subs: []
+            subs: [],
+            master: [],//用于存储权限数组
+            user: {username:'',phone:'',userid:'',password:''},//存储username查取其参与考试
         },
         created: function () {
             this.loadTops();
             this.loadSuns();
+            this.loadMaster();
         },
         methods: {
             loadTops: function() {
@@ -196,6 +199,18 @@
                 let that = this;
                 AJAX.GET("/system/sysMenu/subs", {}, function (resp) {
                     that.subs = resp.data;
+                });
+            },
+            loadMaster: function() {
+                let that = this;
+                AJAX.GET("/auth/session/info", {}, function (resp) {
+                    that.master = resp.data.authorities;
+                    that.user.username = resp.data.principal.sysUser.username;
+                    that.user.phone = resp.data.principal.sysUser.mobile;
+                    that.user.userid = resp.data.principal.sysUser.uid;
+                    that.user.password = resp.data.principal.sysUser.password;
+                    sessionStorage.setItem('user',JSON.stringify(that.user));
+                    sessionStorage.setItem('master',that.master);
                 });
             },
             sidebarClick: function (e) {
