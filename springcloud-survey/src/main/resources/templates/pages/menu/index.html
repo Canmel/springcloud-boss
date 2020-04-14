@@ -94,7 +94,6 @@
                 toPage('pages/menu/edit.html', item.menuId);
             },
             viewFile(item) {
-
                 AJAX.GET('document/view/' + item['id'], {}, function (resp) {
                     window.open(resp['data']);
                 });

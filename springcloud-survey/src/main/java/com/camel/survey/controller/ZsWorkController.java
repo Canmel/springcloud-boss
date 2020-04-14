@@ -41,7 +41,6 @@ public class ZsWorkController extends BaseCommonController {
     private ApplicationToolsUtils applicationUtils;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
@@ -64,14 +63,12 @@ public class ZsWorkController extends BaseCommonController {
     }
 
     @PostMapping("/upload")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result upLoad(@RequestParam MultipartFile file) {
         service.importExcel(file);
         return ResultUtil.success("上传成功");
     }
 
     @GetMapping("/current")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result current(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         SysUser sysUser = applicationUtils.currentUser();
         if(ObjectUtils.isEmpty(sysUser.getUid()) || ObjectUtils.isEmpty(sysUser.getUsername())) {

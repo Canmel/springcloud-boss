@@ -11,6 +11,7 @@ import com.camel.survey.model.ZsSeat;
 import com.camel.survey.service.ZsSeatService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 

@@ -102,18 +102,6 @@
                         </div>
                     </form>
                 </div>
-<!--                <div class="ibox-tools">-->
-<!--                    <div class="ibox-tools">-->
-<!--                        <a :href="applicationContextRootPath + 'pages/menu/add.html'"-->
-<!--                           data-pjax class="btn btn-primary btn-xs">登出</a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="ibox-tools">-->
-<!--                    <div class="ibox-tools">-->
-<!--                        <a :href="applicationContextRootPath + 'pages/menu/add.html'"-->
-<!--                           data-pjax class="btn btn-primary btn-xs">修改密码</a>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div style="float: right;margin-right: 1%;margin-top: 0.5%;">
                     <button type="button" class="btn btn-sm btn-primary" v-on:click="logout()"> 登出</button>
                     <button type="button" class="btn btn-sm btn-primary" v-on:click="editPwd()"> 修改密码</button>
@@ -183,7 +171,6 @@
     let mediaUtil
     let pcmBuffer = []
     let speakersList = []
-    var username='';
 
     $(document).pjax('[data-pjax] a, a[data-pjax]', '.page-container');
     $.jgrid.defaults.styleUI = 'Bootstrap';
@@ -241,7 +228,6 @@
             },
         }
     });
-
     var currentPage = sessionStorage.getItem('currentPage');
     $.pjax({
         url: currentPage ? currentPage : mvm.applicationContextRootPath + 'pages/home.html',

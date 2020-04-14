@@ -54,7 +54,6 @@ public class ZsSignController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
-
     public Result index(ZsSign entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -92,7 +91,6 @@ public class ZsSignController extends BaseCommonController {
     }
 
     @GetMapping("/user")
-    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result getByUserId(Principal principal) {
         SysUser member = applicationToolsUtils.currentUser();
         return service.selectByUserId(member.getUid());

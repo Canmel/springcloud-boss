@@ -68,6 +68,7 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result update(@RequestBody SysMenu sysMenu) {
         return super.update(sysMenu);
     }
@@ -83,6 +84,7 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @GetMapping("/tops")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result tops(SysMenu sysMenu, Principal principal) {
         if(!ObjectUtils.isEmpty(sysMenu.getParentId()) && sysMenu.getParentId() != 1) {
             principal = null;
@@ -91,6 +93,7 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @GetMapping("/subs")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result subs(SysMenu sysMenu, Principal principal) {
         return ResultUtil.success(service.subs(principal));
     }
