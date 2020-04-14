@@ -48,7 +48,7 @@ public class ZsExamController extends BaseCommonController {
      * @return
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'INTERVIEWER')")
     public Result serviceindex(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
@@ -59,7 +59,7 @@ public class ZsExamController extends BaseCommonController {
      * @return
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'INTERVIEWER')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -69,7 +69,7 @@ public class ZsExamController extends BaseCommonController {
      * @param entity
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result save(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }
@@ -79,7 +79,7 @@ public class ZsExamController extends BaseCommonController {
      * @param entity
      */
     @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result update(@RequestBody ZsExam entity) {
         return super.update(entity);
     }
@@ -89,7 +89,7 @@ public class ZsExamController extends BaseCommonController {
      * @param id
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
@@ -100,7 +100,7 @@ public class ZsExamController extends BaseCommonController {
      * @param id
      */
     @GetMapping("/delivery/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'INTERVIEWER')")
     public Result delivery(OAuth2Authentication oAuth2Authentication, @PathVariable Integer id) {
         return service.delivery(id, oAuth2Authentication);
     }
@@ -110,7 +110,7 @@ public class ZsExamController extends BaseCommonController {
      * @return
      */
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result all() {
         return service.all();
     }
