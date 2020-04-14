@@ -60,7 +60,6 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @AuthIgnore
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','INTERVIEWER')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
