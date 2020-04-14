@@ -31,6 +31,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             role: {
+                roleId:'',
                 roleName: '',
                 remark: ''
             }
@@ -43,6 +44,7 @@
                 let that = this;
                 AJAX.GET('/system/sysRole/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.role = {
+                        roleId: resp.data.roleId,
                         roleName: resp.data.roleName,
                         remark: resp.data.remark
                     };
