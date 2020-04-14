@@ -140,8 +140,12 @@
             signUp(item) {
                 console.log(item);
             },
-            edit(item) {
-                toPage('pages/role/edit.html', item.id);
+            edit: function (item) {
+                sessionStorage.setItem('editParams', item.roleId);
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/role/edit.html',
+                    container: '.page-container'
+                });
             },
             viewFile(item) {
 
