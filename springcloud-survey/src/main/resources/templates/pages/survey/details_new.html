@@ -124,6 +124,22 @@
 														</span>
                                         </div>
                                     </div>
+
+                                    <div class="col-sm-11" v-if="question.type === 3">
+                                        <div class="radio">
+                                            <label>{{zsoption.name}}</label>
+                                            <span style="float: right;">
+															<span class="label label-success"
+                                                                  v-on:click="upOption($event, zsoption)">
+																<p class="fa fa-arrow-up"></p>
+															</span>
+															<span class="label label-primary"
+                                                                  v-on:click="downOption($event, zsoption)">
+																<p class="fa fa-arrow-down"></p>
+															</span>
+														</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row no-margins" style="background-color: bisque;">
                                     <label class="col-sm-2 control-label" style="padding-right: 0;">
@@ -140,7 +156,7 @@
 
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-success"  v-on:click="save()">保存</button>
+                            <button class="btn btn-success" v-on:click="save()">保存</button>
                         </div>
                     </div>
                 </div>
@@ -573,7 +589,19 @@
                     minSelect: 1,
                     maxSelect: 2
                 };
+                let tmpOptions = [
+                    {
+                        name: '选项',
+                        type: '3',
+                        orderNum: 1,
+                        hasRemark: false,
+                        ignoreNum: false,
+                        questionOrderNum: question.orderNum
+
+                    }
+                ];
                 this.questions.push(question);
+                this.zsoptions = this.zsoptions.concat(tmpOptions);
             },
             hideModal(id) {
                 $('#' + id).modal('hide');

@@ -1,18 +1,5 @@
 package com.camel.survey.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-
-import javax.net.ssl.SSLContext;
-
 import com.camel.survey.vo.TransfersDto;
 import org.apache.commons.cli.oss.KeyStores;
 import org.apache.http.HttpEntity;
@@ -27,8 +14,13 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.security.*;
+import java.security.cert.CertificateException;
 
 public class HttpRequestHandler
 {
