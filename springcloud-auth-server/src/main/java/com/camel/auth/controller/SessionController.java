@@ -1,8 +1,9 @@
 package com.camel.auth.controller;
 
 import com.camel.auth.config.oauth.RedisTokenStore;
-import com.camel.common.entity.Result;
+import com.camel.common.utils.Result;
 import com.camel.common.enumeration.ResultCode;
+import com.camel.common.enums.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,9 +51,14 @@ public class SessionController {
         return principal;
     }
 
+    @GetMapping("/info")
+    public Result info(Principal principal) {
+        return new Result(ResultEnum.SUCCESS.getCode(), "操作成功", principal, true);
+    }
+
     @DeleteMapping(value = "/exit")
-    public Result revokeToken(String access_token) {
-        Result result = new Result();
+    public com.camel.common.entity.Result revokeToken(String access_token) {
+        com.camel.common.entity.Result result = new com.camel.common.entity.Result();
         if (consumerTokenServices.revokeToken(access_token)) {
             result.setCode(ResultCode.SUCCESS.getCode());
             result.setMessage("注销成功");

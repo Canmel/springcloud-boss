@@ -49,7 +49,6 @@ public class SysMenuController extends BaseCommonController {
     private SysMenuService service;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result index(SysMenu sysMenu) {
         sysMenu.setStatus(MenuStatus.NORMAL.getCode().toString());
         return ResultUtil.success(service.selectPage(sysMenu));
@@ -61,7 +60,6 @@ public class SysMenuController extends BaseCommonController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result save(SysMenu sysMenu) {
         return super.save(sysMenu);
     }

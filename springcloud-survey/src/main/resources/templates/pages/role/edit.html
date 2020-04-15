@@ -31,6 +31,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             role: {
+                roleId:'',
                 roleName: '',
                 remark: ''
             }
@@ -40,7 +41,7 @@
         },
         methods: {
             loadEntity() {
-                var that = this;
+                let that = this;
                 AJAX.GET('/system/sysRole/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.role = {
                         roleId: resp.data.roleId,
@@ -56,7 +57,7 @@
                 if(!$("#signupForm").valid()){
                     return false;
                 }
-                var that = this;
+                let that = this;
                 AJAX.PUT('/system/sysRole', JSON.stringify(this.role), function (resp) {
                     toastr.success(resp.msg);
                     that.backToMain();
