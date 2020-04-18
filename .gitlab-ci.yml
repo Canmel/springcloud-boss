@@ -19,7 +19,6 @@ docker-package:
   stage: package
   only:
     - master
-    - preprod
   tags:
     - packager
   script:
