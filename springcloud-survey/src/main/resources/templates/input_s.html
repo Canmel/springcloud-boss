@@ -61,14 +61,17 @@
     <section>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
-                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1" :data-type="item.type">
-                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;" v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
+                <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
+                     :data-type="item.type">
+                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;"
+                                                                                       v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
-                            {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio" :id="'radio_' + item.id + '_' + opt.id"
-                                                                  v-on:change="radioChange(opt)"
+                            {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio"
+                                                                  :id="'radio_' + item.id + '_' + opt.id"
+                                                                  v-on:change="radioChange(opt, $event, item.type)"
                                                                   :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
                                                                   :name="'radio_' + item.id + '_' + item.id"
                                                                   :value="opt.id + '_' +  opt.name">
@@ -83,10 +86,12 @@
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 2 && showOptions(item, opt)">
                         <div>
-                            {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox" :id="'checkbox_' + item.id + '_' + opt.id"
-                                                                  v-on:change="radioChange(opt)"
+                            {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox"
+                                                                  :id="'checkbox_' + item.id + '_' + opt.id"
+                                                                  v-on:change="radioChange(opt, $event, item.type)"
                                                                   :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
-                                                                  :name="'checkbox_' + item.id + '_' + opt.id" :value="opt.id + '_' +  opt.name">
+                                                                  :name="'checkbox_' + item.id + '_' + opt.id"
+                                                                  :value="opt.id + '_' +  opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
@@ -180,7 +185,8 @@
             phone: '',
             current: 1,
             nextIndex: 1,
-            tmpNext:null,
+            tmpNext: [],
+            tmpNextRadio: null,
             showSubmit: false,
             endInfo: '问卷结束，感谢您的配合！'
         },
@@ -197,13 +203,13 @@
                     var target = $(item).attr('dtarget');
                     var ckecked = $(item).is(':checked')
                     // 选中的项目 target为数字并且小于0
-                    if(ckecked && !isNaN(target) && target < 0) {
+                    if (ckecked && !isNaN(target) && target < 0) {
                         $("#theForm").hide();
                         that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
                         $("#end").show();
                     }
 
-                    if(ckecked && !isNaN(target) && target > 1000) {
+                    if (ckecked && !isNaN(target) && target > 1000) {
                         that.submit();
                     }
 
@@ -215,7 +221,7 @@
                     record: this.getParams('record'),
                     seat: this.getParams('seat')
                 }, function (resp) {
-                    if(resp.msg != '') {
+                    if (resp.msg != '') {
                         alert(resp.msg);
                         // window.close();
                         $("#nextQuestion").hide();
@@ -228,30 +234,30 @@
                 var flag = true;
                 var $questions = $('.simform-inner').find('.question');
                 $questions.each(function (index, item) {
-                    if($(item).css('display') !== 'none') {
+                    if ($(item).css('display') !== 'none') {
                         var dataType = $(item).attr('data-type');
-                        if(dataType === '1') {
+                        if (dataType === '1') {
                             var selected = $(item).find('input:checked');
-                            if(selected.length == 0) {
+                            if (selected.length == 0) {
                                 return flag = false;
                             }
                         }
-                        if(dataType === '2') {
+                        if (dataType === '2') {
                             var selected = $(item).find('input:checked');
-                            if(selected.length == 0) {
+                            if (selected.length == 0) {
                                 return flag = false;
                             }
                         }
-                        if(dataType === '3') {
+                        if (dataType === '3') {
                             var selected = $(item).find('input:checked');
-                            if(selected.length == 0) {
+                            if (selected.length == 0) {
                                 return flag = false;
                             }
                         }
-                        if(dataType === '4') {
+                        if (dataType === '4') {
                             var selected = $(item).find('input');
                             selected.each(function (index, item) {
-                                if($(item).val() === '') {
+                                if ($(item).val() === '') {
                                     return flag = false;
                                 }
                             })
@@ -262,17 +268,33 @@
             },
             disableOption(opt) {
                 if (opt.configration && opt.current) {
-                    console.log(opt.configration , opt.current)
+                    console.log(opt.configration, opt.current)
                     return opt.configration <= opt.current;
                 }
                 return false;
 
             },
-            radioChange(opt) {
+            radioChange(opt, event, type) {
+                // 判断类型
+                if(type === 2) {
+                    return this.checkboxChanged(opt, event);
+                }
                 if (opt.target > 0) {
-                    this.tmpNext = opt.target;
-                }else {
-                    this.tmpNext = null;
+                    this.tmpNextRadio = opt.target;
+                } else {
+                    this.tmpNextRadio = null;
+                }
+            },
+            checkboxChanged(opt, event) {
+                if (opt.target > 0) {
+                    if (event.target.checked) {
+                        this.tmpNext.push(opt.target);
+                        this.tmpNext.sort(function (a1, a2) {
+                            return a1-a2;
+                        })
+                    } else {
+                        this.tmpNext.splice(this.tmpNext.indexOf(opt.target), 1);
+                    }
                 }
             },
             nextQuestion(question, event) {
@@ -301,11 +323,27 @@
                 if (this.questions.length < this.nextIndex) {
                     return;
                 }
-                if(this.tmpNext > this.nextIndex) {
-                    this.nextIndex = this.tmpNext;
+                let nextQIndex = this.getNextIndex(question);
+                if (nextQIndex > 0) {
+                    this.nextIndex = nextQIndex;
                 }
                 this.current = this.nextIndex;
                 this.nextIndex += 1;
+            },
+            getNextIndex(question) {
+                if(question.type === 1 && this.tmpNextRadio) {
+                    let nextIndex = this.tmpNextRadio;
+                    this.tmpNextRadio = null;
+                    return nextIndex;
+                }else{
+                    if (this.tmpNext.length > 0) {
+                        let nextIndex = this.tmpNext[0];
+                        this.tmpNext.splice(0, 1);
+                        return nextIndex;
+                    }
+                }
+
+                return 0;
             },
             isOutOfBounds(question, event) {
                 var $inputs = $(event.srcElement).parents('.question').find('input:checked');
@@ -344,13 +382,26 @@
 
             },
             closeWin() {
-                window.opener=null;window.top.open('','_self','');window.close(this);
+                window.opener = null;
+                window.top.open('', '_self', '');
+                window.close(this);
             },
             submit(question, event) {
                 var that = this;
                 if (!this.validateForm()) {
                     alert('请完成表单');
                     return false;
+                }
+                if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
+                    var resultStr = "";
+                    if (question.maxSelect) {
+                        resultStr += '最多只能选择' + question.maxSelect + '条';
+                    }
+                    if (question.minSelect) {
+                        resultStr += '最少选择' + question.minSelect + '条';
+                    }
+                    alert(resultStr);
+                    return;
                 }
                 AJAX.POST_JSON('zsQuestion/answer', {
                     zsAnswerItemSaves: $('#theForm').serializeArray(),
@@ -401,14 +452,14 @@
                 var that = this;
                 AJAX.GET('zsSurvey/questions/' + this.getParams('surveyId'), {}, function (resp) {
                     that.questions = resp.data;
-                    if(that.questions.length === 1) {
+                    if (that.questions.length === 1) {
                         that.showSubmit = true;
                     }
                 });
                 AJAX.GET('zsSurvey/' + this.getParams('surveyId'), {}, function (resp) {
                     that.survey = resp.data;
                     document.title = that.survey.name;
-                    if(resp.data.currentNum >= resp.data.collectNum) {
+                    if (resp.data.currentNum >= resp.data.collectNum) {
                         alert("该问卷已经调查完成！");
                         $("#nextQuestion").hide();
                     }
