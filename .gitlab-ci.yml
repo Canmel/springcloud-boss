@@ -20,6 +20,7 @@ docker-package:
   only:
     - master
     - preprod
+    - ldj
   tags:
     - packager
   script:
