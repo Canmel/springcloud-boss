@@ -21,3 +21,5 @@
 /springcloud-interviewer/target/classes/
 /springcloud-access-control/target/
 /.idea/
+/springcloud-survey/springcloud-survey.iml
+/springcloud-eureka-server/springcloud-eureka-server.iml
