@@ -48,8 +48,6 @@ docker-package:
   stage: package
   only:
     - master
-    - preprod
-    - ldj
   tags:
     - packager
   script:
