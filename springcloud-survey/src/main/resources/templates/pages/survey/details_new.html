@@ -72,7 +72,7 @@
                                      v-on:click="questionNameClickHandler(question)">
                                     <label class="col-sm-1 control-label">{{index + 1}}.</label>
                                     <div class="col-sm-11 form-control-static">
-                                        <p class="label">{{question.name}} {{question.orderNum}}</p>
+                                        <p class="label">{{question.name}}</p>
 
                                         <span style="float: right;">
 														<span class="label label-success"
@@ -446,6 +446,7 @@
                 this.showModal('optionModal');
             },
             up(e, question) {
+                console.log(question);
                 let currentIndex = this.questions.indexOf(question);
                 e.stopPropagation();
                 if (currentIndex == 0) {
@@ -460,6 +461,7 @@
                 this.updateOption(question, true);
             },
             down(e, question) {
+                console.log(question);
                 let currentIndex = this.questions.indexOf(question);
                 e.stopPropagation();
                 if (currentIndex == this.questions.length - 1) {
@@ -481,6 +483,7 @@
                         } else if (this.zsoptions[i].questionOrderNum == (question.orderNum + 1)) {
                             this.zsoptions[i].questionOrderNum -= 1;
                         }
+                        this.$set(this.zsoptions, i, this.zsoptions[i]);
                     }
                 } else {
                     for (let i = 0; i < this.zsoptions.length; i++) {
@@ -489,9 +492,10 @@
                         } else if (this.zsoptions[i].questionOrderNum == question.orderNum - 1) {
                             this.zsoptions[i].questionOrderNum += 1;
                         }
+                        this.$set(this.zsoptions, i, this.zsoptions[i]);
                     }
                 }
-                this.$set(this.zsoptions, i, this.zsoptions[i]);
+
             },
             questionNameClickHandler(question) {
                 this.selectedQuestion = question;
