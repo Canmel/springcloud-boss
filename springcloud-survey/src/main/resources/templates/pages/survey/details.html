@@ -257,7 +257,7 @@
                                 </div>
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-9 survey-optins">
-                                    <div v-for="(option, inx) in loadData.zsOptions"
+                                    <div v-for="(option, inx) in item.options"
                                          v-if="showOption(item, option)">
                                         <label class="radio-inline" :data-target="option.target"
                                                v-if="item.type === 1 && showOption(item, option)">
@@ -475,7 +475,7 @@
             },
             loadData: {
                 zsQuestions: [],
-                zsOptions: []
+                zsOptions: [],
             },
             concats: [],
             pageInfo: {
@@ -544,6 +544,7 @@
                     };
                 })
             },
+            //显示联系人
             contacts(survey) {
                 console.log(survey);
                 this.concat.surveyId = survey.id;
@@ -638,7 +639,6 @@
                     drop: function (event, ui) {
                         $(".empty-form").remove();
                         var $orig = $(ui.draggable);
-
                         var $el = null;
                         if (!$(ui.draggable).hasClass("dropped")) {
                             $el = $orig
@@ -738,6 +738,7 @@
                  * 保存
                  */
                 $("#copy-to-clipboard").on("click", function () {
+                    console.log(that.saveData);
                     that.saveData.surveyId = that.survey.id;
                     that.saveData.zsQuestions = [];
                     that.saveData.zsOptions = [];
@@ -860,7 +861,9 @@
             loadQuestions() {
                 var that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
-                    that.loadData = resp.data;
+                    that.loadData.zsQuestions = resp.data;
+                    that.loadData.zsOptions = resp.data[0].zsOptions;
+                    console.log(that.loadData.zsOptions)
                 })
             }
         },
