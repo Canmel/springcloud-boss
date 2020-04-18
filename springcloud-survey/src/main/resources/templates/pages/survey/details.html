@@ -1,0 +1,912 @@
+<style>
+    .droppable-active {
+        background-color: #ffe !important;
+    }
+
+    .tools a {
+        cursor: pointer;
+        font-size: 80%;
+    }
+
+    .form-body .col-md-6,
+    .form-body .col-md-12 {
+        min-height: 400px;
+    }
+
+    .draggable {
+        cursor: move;
+    }
+
+    .re-edit-input {
+        position: absolute;
+        top: 300px;
+        left: 500px;
+        z-index: 999;
+    }
+
+    dd {
+        margin-left: 1rem;
+    }
+
+    .setting {
+        display: none;
+    }
+
+    .ui-draggable:hover .setting {
+        display: inline;
+    }
+
+    .max-select {
+        color: #337ab7;
+    }
+
+    .min-select {
+        color: #337ab7;
+    }
+</style>
+
+<style type="text/css">
+    .star-box {
+        display: inline-block;
+    }
+
+    .star-box label {
+        float: right;
+        color: #999;
+        margin-bottom: 0px;
+    }
+
+    .star-box label::after {
+        content: '★';
+        font-size: 14px;
+        padding: 5px;
+        display: inline-block;
+        line-height: 1;
+    }
+
+    .star-box input:checked ~ label,
+    .star-box label:hover ~ label,
+    .star-box label:hover {
+        color: red;
+    }
+</style>
+
+
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{{survey.name}}</h5>
+                <div class="ibox-tools">
+                    <a v-on:click=backToListPage() class="btn btn-info btn-xs">问卷列表</a>
+                    <a v-on:click=backToProjectDetails() class="btn btn-info btn-xs">项目详情</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-sm-3 control-label">需收集数:</label>
+                        <label class="col-sm-3 control-label">{{survey.collectNum}}</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label class="col-sm-3 control-label">收集方式:</label>
+                        <label class="col-sm-3 control-label">{{survey.collectType ? survey.collectType.name :
+                            ''}}</label>
+                        <a v-on:click=contacts(survey)
+                           v-if="survey.collectType ? survey.collectType.value !== 2 : false"
+                           class="btn btn-info btn-xs">联系人</a>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label class="col-sm-3 control-label">已收集数:</label>
+                        <label class="col-sm-3 control-label">{{survey.currentNum}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>元素</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="alert alert-info">
+                        拖拽左侧的元素到右侧区域，即可生成相应的问卷模板
+                    </div>
+                    <form role="form" class="form-horizontal m-t">
+
+                        <div class="form-group draggable" question-type='1'>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 control-label"><span class="question-index">1</span>.</label>
+                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
+                                        class="editable question-title">单选题</span></label>
+                            </div>
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-9 survey-optins">
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" checked="" value="option1" id="optionsRadios1"
+                                               name="optionsRadios"><span
+                                            class="editable question-option">选项1</span></label>
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" value="option2" id="optionsRadios2"
+                                               name="optionsRadios"><span
+                                            class="editable question-option">选项2</span></label>
+
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group draggable" question-type='2'>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 control-label"><span class="question-index">2</span>.</label>
+                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
+                                        class="editable question-title">多选题</span></label>
+                            </div>
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-9 survey-optins">
+                                <div>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="option1"><span
+                                            class="editable question-option">选项1</span></label>
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+                                <div>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="option2"><span
+                                            class="editable question-option">选项2</span></label>
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+                                <div>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="option3"><span
+                                            class="editable question-option">选项3</span></label>
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group draggable" question-type='3'>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 control-label"><span class="question-index">3</span>.</label>
+                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
+                                        class="editable question-title">评分题</span></label>
+                            </div>
+                            <div class="col-sm-3 survey-optins" style="text-align: right;">
+
+                            </div>
+                            <div class="col-sm-9 survey-optins">
+
+                                <div option-type="rate">
+                                    <label class="control-label" style=""><span
+                                            class="editable question-option">评分项</span>:
+                                        <label style="float: right; padding-top: 0px;"
+                                               class="control-label target-demo function-demo col-sm-6"></label>
+                                    </label>
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group draggable" question-type='4'>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 control-label"><span class="question-index">4</span>.</label>
+                                <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
+                                        class="editable question-title">问答题</span></label>
+                            </div>
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-9 survey-optins">
+                                <div>
+                                    <span class="editable question-option">答</span>
+                                    <label class="radio-inline">
+                                        <input type="text"
+                                               name="optionsRadios"></label>
+                                    <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>拖拽左侧元素到此区域</h5>
+                    <div class="ibox-tools">
+                        请选择显示的列数：
+                        <select id="n-columns">
+                            <option value="1">显示1列</option>
+                            <option value="2">显示2列</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="ibox-content">
+                    <div class="row form-body form-horizontal m-t">
+                        <div class="col-md-12 droppable sortable" id="surveyArea">
+                            <div :question-type="item.type" class="form-group draggable ui-draggable dropped"
+                                 v-for="(item, index) in loadData.zsQuestions"
+                                 style="position: static;">
+                                <div class="col-sm-12">
+                                    <label class="col-sm-3 control-label">
+                                        <span class="question-index">{{item.orderNum}}</span>.</label>
+                                    <label class="col-sm-5 control-label" style="padding-left: 0px; text-align: left;">
+                                        <span class="editable question-title">{{item.name}}</span>
+                                    </label>
+                                    <label class="col-sm-2 control-label setting"
+                                           style="padding-left: 0px; text-align: left;" v-if="item.type===2">
+                                        最大选择数：<span class="editable max-select">{{item.maxSelect ? item.maxSelect : '设置'}}</span>
+                                    </label>
+                                    <label class="col-sm-2 control-label setting"
+                                           style="padding-left: 0px; text-align: left;" v-if="item.type===2">
+                                        最小选择数：<span class="editable min-select">{{item.minSelect ? item.minSelect : '设置'}}</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 survey-optins">
+                                    <div v-for="(option, inx) in loadData.zsOptions"
+                                         v-if="showOption(item, option)">
+                                        <label class="radio-inline" :data-target="option.target"
+                                               v-if="item.type === 1 && showOption(item, option)">
+                                            <input type="radio" value="option2"
+                                                   name="optionsRadios">
+                                            <span class="editable question-option">{{option.name}}</span>
+                                        </label>
+
+                                        <label class="checkbox-inline"
+                                               v-if="item.type === 2 && showOption(item, option)">
+                                            <input type="checkbox" value="option1">
+                                            <span class="editable question-option">{{option.name}}</span>
+                                        </label>
+
+                                        <label class="checkbox-inline"
+                                               v-if="item.type === 3 && showOption(item, option)">
+                                            <span class="editable question-option">评分项</span>:
+                                            <span class="star-box">
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_5'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_4'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_4'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_3'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_3'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_2'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_2'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_1'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
+                                            </span>
+                                        </label>
+                                        <label class="checkbox-inline"
+                                               v-if="item.type === 4 && showOption(item, option)">
+                                            <span class="editable question-option">答</span>:
+                                            <label class="radio-inline">
+                                                <input type="text"
+                                                       name="optionsRadios"></label>
+                                        </label>
+                                        <label class="radio-inline" v-if="showOption(item, option)">
+                                            <span class="fa fa-trash options-delete"></span>
+                                        </label>
+                                        <label class="radio-inline" v-if="item.type === 1"
+                                               v-on:click="showToIndexModal($event)">
+                                            <span class="fa fa-share-square-o"></span></label>
+                                        <!--{{item}}-->
+                                        <label class="radio-inline configration-label">
+                                            <span class="configration editable">{{option.configration}}</span>
+                                        </label>
+                                        <label class="radio-inline">
+                                            <span class="add-remark">添加备注</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <p class="tools col-sm-12 col-sm-offset-3"><a class="edit-link">编辑HTML</a><a> | </a><a
+                                        class="remove-link">移除</a> | <a class="add-link"
+                                                                        v-on:click="addItem(item)">添加</a> |
+                                    <a class="add-link" v-if="item.type == 1"
+                                       v-on:click="configration(item, $event)">甄选配额</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 droppable sortable" style="display: none;">
+                        </div>
+                        <div class="col-md-6 droppable sortable" style="display: none;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning" data-clipboard-text="testing" id="copy-to-clipboard">
+                        保存问卷
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">问卷联系人</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 联系人</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">新建</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">导入</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>联系人</th>
+                                                <th>手机号</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(item, index) in concats">
+                                                <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.phone}}</td>
+                                                <td>
+                                                    <button type="button"
+                                                            class="btn btn-danger btn-xs">删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                                                 :changge="pageFn"></pageination>
+                                </div>
+                            </div>
+                            <div id="tab-2" class="tab-pane">
+                                <div class="panel-body">
+                                    <form class="form-horizontal m-t" id="signupForm">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">联系人：</label>
+                                            <div class="col-sm-8">
+                                                <input name="name" class="form-control" type="text"
+                                                       v-model="concat.name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">手机号：</label>
+                                            <div class="col-sm-8">
+                                                <input name="phone" class="form-control" type="text"
+                                                       v-model="concat.phone">
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-success" v-on:click="saveConcat()">提交
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="tab-3" class="tab-pane">
+                                <div class="panel-body">
+                                    导入
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="toIndexModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myToIndexModalLabel">跳题</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">下一题：</label>
+                            <div class="col-sm-6">
+                                <input name="name" class="form-control" type="text" v-model="navigat.nextIndex">
+                            </div>
+                            <div class="col-sm-3">
+                                <button class="btn btn-primary" v-on:click="saveToIndex()">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            survey: {},
+            saveData: {
+                zsQuestions: [],
+                zsOptions: [],
+                surveyId: 0
+            },
+            loadData: {
+                zsQuestions: [],
+                zsOptions: []
+            },
+            concats: [],
+            pageInfo: {
+                surveyId: sessionStorage.getItem('editParams'),
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
+            concat: {
+                name: '',
+                phones: '',
+                surveyId: sessionStorage.getItem('editParams')
+            },
+            navigat: {
+                selectedOption: null,
+                nextIndex: null
+            }
+        },
+        watch: {
+            loadData(v, oldVal) {
+            }
+        },
+        computed: {},
+        methods: {
+            configration(item, event) {
+                if ($(event.srcElement).parent().parent().find('.configration').length === 0) {
+                    $(event.srcElement).parent().parent().find('.configration-label').append('<span class="configration editable">点击修改配额</span>');
+                }
+            },
+            saveToIndex() {
+                console.log(this.navigat);
+                if (parseInt(this.navigat.nextIndex) > 0) {
+                    $(this.navigat.selectedOption).attr('data-target', this.navigat.nextIndex);
+                    $('#toIndexModal').modal('hide');
+                    return true;
+                }
+                alert('输入的题目序号不合法');
+            },
+            showToIndexModal(event) {
+                console.log(event);
+                this.navigat.selectedOption = $(event.srcElement).parent().parent().children(':first')
+                $('#toIndexModal').modal('show');
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pageQuery();
+            },
+            pageQuery() {
+                var that = this;
+                AJAX.GET('zsConcat', this.pageInfo, function (resp) {
+                    that.concats = resp.data.list;
+                })
+            },
+            saveConcat() {
+                var that = this;
+                if (!$("#signupForm").valid()) {
+                    return false;
+                }
+                AJAX.POST('zsConcat', this.concat, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.pageQuery();
+                    that.concat = {
+                        name: '',
+                        phones: '',
+                        surveyId: sessionStorage.getItem('editParams')
+                    };
+                })
+            },
+            contacts(survey) {
+                console.log(survey);
+                this.concat.surveyId = survey.id;
+                $('#myModal').modal('show');
+            },
+            addItem(item) {
+                console.log(item.orderNum);
+                var that = this;
+                var count = 1
+                this.loadData.zsOptions.forEach(function (obj, index) {
+                    console.log(obj);
+                    if (that.showOption(item, obj)) {
+                        count++;
+                    }
+                });
+                if (item.type === 1) {
+                    this.loadData.zsOptions.push({
+                        name: '新选项',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+                if (item.type === 2) {
+                    this.loadData.zsOptions.push({
+                        name: '新选项',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+                if (item.type === 3) {
+                    this.loadData.zsOptions.push({
+                        name: '评分项',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+                if (item.type === 4) {
+                    this.loadData.zsOptions.push({
+                        name: '答',
+                        questionOrderNum: item.orderNum,
+                        orderNum: count
+                    })
+                }
+
+            },
+            showOption(question, option) {
+                if (question.orderNum && option.questionOrderNum) {
+                    return question.orderNum === option.questionOrderNum;
+                }
+                if (question.id && option.questionId) {
+                    return question.id === option.questionId;
+                }
+                return false;
+            },
+            backToListPage() {
+                toPage('pages/survey/index.html')
+            },
+            backToProjectDetails() {
+                sessionStorage.setItem('editParams', this.survey.projectId);
+                toPage('pages/project/details.html')
+            },
+            setUpRate(element) {
+                $(element).raty({
+                    number: 5,//多少个星星设置
+                    targetType: 'hint',//类型选择，number是数字值，hint，是设置的数组值
+                    path: this.applicationContextRootPath + 'img',
+                    hints: ['差', '一般', '好', '非常好', '全五星'],
+                    cancelOff: 'cancel-off.png',
+                    cancelOn: 'cancel-on.png',
+                    size: 24,
+                    starHalf: 'star-half.png',
+                    starOff: 'star-off.png',
+                    starOn: 'star-on.png',
+                    cancel: false,
+                    targetKeep: true,
+                    targetText: '请选择评分',
+                    click: function (score, evt) {
+                        alert('ID: ' + $(this).attr('id') + "\nscore: " + score + "\nevent: " + evt.type);
+                    }
+                });
+            },
+            setup_draggable() {
+                var that = this;
+                $(".draggable").draggable({
+                    appendTo: "body",
+                    helper: "clone"
+                });
+                $(".droppable").droppable({
+                    accept: ".draggable",
+                    helper: "clone",
+                    hoverClass: "droppable-active",
+                    drop: function (event, ui) {
+                        $(".empty-form").remove();
+                        var $orig = $(ui.draggable);
+
+                        var $el = null;
+                        if (!$(ui.draggable).hasClass("dropped")) {
+                            $el = $orig
+                                .clone()
+                                .addClass("dropped")
+                                .css({
+                                    "position": "static",
+                                    "left": null,
+                                    "right": null
+                                });
+
+                            that.loadData.zsOptions.push({
+                                orderNum: 1,
+                                name: '选项1',
+                                questionOrderNum: that.loadData.zsQuestions.length + 1
+                            });
+                            that.loadData.zsOptions.push({
+                                orderNum: 2,
+                                name: '选项2',
+                                questionOrderNum: that.loadData.zsQuestions.length + 1
+                            });
+                            that.loadData.zsQuestions.push(
+                                {
+                                    orderNum: that.loadData.zsQuestions.length + 1,
+                                    name: '题标题',
+                                    type: Number.parseInt($el.attr('question-type'))
+                                }
+                            );
+                        } else {
+                            if ($(this)[0] != $orig.parent()[0]) {
+                                $el = $orig
+                                    .clone()
+                                    .css({
+                                        "position": "static",
+                                        "left": null,
+                                        "right": null
+                                    })
+                                    .appendTo(this);
+                                $orig.remove();
+                            }
+                        }
+
+                        that.reBindIndex();
+                    }
+                }).sortable({
+                    out: function (event, ui) {
+                        console.log(event, ui);
+                        that.reBindIndex();
+                    }
+                });
+
+            },
+            reBindIndex() {
+                $('#surveyArea').children().each(function (index, item) {
+                    $(item).find('.question-index').text(index + 1);
+                })
+            },
+            bindEdit(element) {
+                var oldhtml = element.innerHTML;//获得元素之前的内容
+                if (element.firstElementChild && element.firstElementChild.tagName.toUpperCase() === "INPUT") {
+                    return;
+                }
+                var newobj = document.createElement('input');//创建一个input元素
+                newobj.type = 'text';//为newobj元素添加类型
+                newobj.value = oldhtml;
+                element.innerHTML = '';　　 //设置元素内容为空
+                element.appendChild(newobj);//添加子元素
+                newobj.focus();//获得焦点
+                //设置newobj失去焦点的事件
+                newobj.onblur = function () {
+                    //下面应该判断是否做了修改并使用ajax代码请求服务端将id与修改后的数据提交
+                    // alert(element.id);
+                    //当触发时判断newobj的值是否为空，为空则不修改，并返回oldhtml
+                    element.innerHTML = this.value ? this.value : oldhtml;
+                }
+            },
+            bindEvent() {
+                var that = this;
+                $("#n-columns").on("change", function () {
+                    var v = $(this).val();
+                    if (v === "1") {
+                        var $col = $('.form-body .col-md-12').toggle(true);
+                        $('.form-body .col-md-6 .draggable').each(function (i, el) {
+                            $(this).remove().appendTo($col);
+                        })
+                        $('.form-body .col-md-6').toggle(false);
+                    } else {
+                        var $col = $('.form-body .col-md-6').toggle(true);
+                        $(".form-body .col-md-12 .draggable").each(function (i, el) {
+                            $(this).remove().appendTo(i % 2 ? $col[1] : $col[0]);
+                        });
+                        $('.form-body .col-md-12').toggle(false);
+                    }
+                });
+
+                /**
+                 * 保存
+                 */
+                $("#copy-to-clipboard").on("click", function () {
+                    that.saveData.surveyId = that.survey.id;
+                    that.saveData.zsQuestions = [];
+                    that.saveData.zsOptions = [];
+                    var $fg = $("#surveyArea").find('.form-group');
+                    $fg.each(function (index, item) {
+                        var surveyJson = {};
+                        surveyJson.orderNum = $(item).find('.question-index').text();
+                        surveyJson.name = $(item).find('.question-title').text();
+                        if (parseInt($(item).find('.max-select').text()) > 0) {
+                            surveyJson.maxSelect = $(item).find('.max-select').text();
+                        }
+                        if (parseInt($(item).find('.min-select').text()) > 0) {
+                            surveyJson.minSelect = $(item).find('.min-select').text();
+                        }
+                        surveyJson.type = $(item).attr('question-type');
+                        surveyJson.surveyId = that.survey.id;
+                        that.saveData.zsQuestions.push(surveyJson);
+                        var $options = $(item).find('.question-option');
+                        $options.each(function (i, o) {
+                            var optionJson = {};
+                            optionJson.questionOrderNum = surveyJson.orderNum;
+                            optionJson.name = $(o).text();
+                            optionJson.orderNum = i + 1;
+                            optionJson.configration = $(o).parent().parent().find('.configration').text();
+                            if ($(o).parent().parent().attr('has-remark')) {
+                                optionJson.hasRemark = $(o).parent().parent().attr('has-remark');
+                            }
+                            console.log($(o).parent());
+                            optionJson.target = $(o).parent().attr('data-target');
+                            that.saveData.zsOptions.push(optionJson);
+                        })
+                    });
+                    console.log(that.saveData);
+                    AJAX.POST_JSON('zsQuestion', that.saveData
+                        , function (resp) {
+                            toastr.success(resp.msg);
+                            sessionStorage.setItem('editParams', that.survey.projectId);
+                            toPage('pages/project/details.html');
+                        });
+                    return false;
+                });
+
+                $(document).on("click", ".add-remark", function (ev) {
+                    $(this).parent().parent().attr('has-remark', true);
+                    $(this).html('已添加');
+                });
+
+                $(document).on("click", ".edit-link", function (ev) {
+                    var $el = $(this).parent().parent();
+                    var $el_copy = $el.clone();
+
+                    var $edit_btn = $el_copy.find(".edit-link").parent().remove();
+
+                    var $modal = that.get_modal(html_beautify($el_copy.html())).modal("show");
+                    $modal.find(":input:first").focus();
+                    $modal.find(".btn-success").click(function (ev2) {
+                        var html = $modal.find("textarea").val();
+                        if (!html) {
+                            $el.remove();
+                        } else {
+                            $el.html(html);
+                            $edit_btn.appendTo($el);
+                        }
+                        $modal.modal("hide");
+                        return false;
+                    })
+                });
+
+                $(document).on("click", ".remove-link", function (ev) {
+                    $(this).parent().parent().remove();
+                });
+
+                $(document).on("dblclick", ".editable", function (ev) {
+                    that.bindEdit(this);
+                });
+
+
+                $(document).on("click", ".options-delete", function (ev) {
+                    var $optionsArea = $(this).parent().parent().parent();
+                    $(this).parent().parent().remove();
+                    if ($optionsArea.children().length === 0) {
+                        $optionsArea.parent('.form-group').remove();
+                    }
+                });
+            },
+            get_modal(content) {
+                var modal = $('<div class="modal" style="overflow: auto;" tabindex="-1">\
+                <div class="modal-dialog">\
+                    <div class="modal-content">\
+                        <div class="modal-header">\
+                            <a type="button" class="close"\
+                                data-dismiss="modal" aria-hidden="true">&times;</a>\
+                            <h4 class="modal-title">编辑HTML</h4>\
+                        </div>\
+                        <div class="modal-body ui-front">\
+                            <textarea class="form-control" \
+                                style="min-height: 200px; margin-bottom: 10px;\
+                                font-family: Monaco, Fixed">' + content + '</textarea>\
+                            <button class="btn btn-success">更新HTML</button>\
+                        </div>\
+                    </div>\
+                </div>\
+                </div>').appendTo(document.body);
+
+                return modal;
+            },
+            loadEntity() {
+                var that = this;
+                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.survey = {
+                        id: resp.data.id,
+                        name: resp.data.name,
+                        currentNum: resp.data.currentNum,
+                        collectNum: resp.data.collectNum,
+                        projectId: resp.data.projectId,
+                        collectType: resp.data.collectType
+                    };
+                })
+            },
+            loadQuestions() {
+                var that = this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.loadData = resp.data;
+                })
+            }
+        },
+        created: function () {
+            this.loadEntity();
+        },
+        mounted: function () {
+            this.setup_draggable();
+
+            this.bindEvent();
+            this.loadQuestions();
+        }
+    });
+
+    $().ready(function () {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                phone: {
+                    required: true,
+                    isMobile: true
+                }
+            },
+            messages: {
+                name: {
+                    required: icon + "请输入联系人"
+                },
+                phone: {
+                    required: icon + "请输入手机号",
+                    isMobile: icon + "请输入有效的手机号"
+                }
+            }
+        });
+
+        // propose username by combining first- and lastname
+        $("#username").focus(function () {
+            var firstname = $("#firstname").val();
+            var lastname = $("#lastname").val();
+            if (firstname && lastname && !this.value) {
+                this.value = firstname + "." + lastname;
+            }
+        });
+    });
+
+
+</script>

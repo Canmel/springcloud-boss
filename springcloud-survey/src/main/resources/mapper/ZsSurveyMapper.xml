@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsSurveyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsSurvey">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="project_id" property="projectId"/>
+        <result column="collect_num" property="collectNum"/>
+        <result column="current_num" property="currentNum"/>
+        <result column="status" property="status" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="end_show" property="endShow"/>
+        <result column="collect_type" property="collectType" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="creator" property="creatorId"/>
+        <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <association property="project" column="project_id"
+                     select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+        <collection property="examList" column="id"
+                    select="com.camel.survey.mapper.ZsExamMapper.listBySurveyId"></collection>
+    </resultMap>
+
+    <resultMap id="SimpleResultMap" type="com.camel.survey.model.ZsSurvey">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="project_id" property="projectId"/>
+        <result column="collect_num" property="collectNum"/>
+        <result column="current_num" property="currentNum"/>
+        <result column="end_show" property="endShow"/>
+        <result column="status" property="status" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="collect_type" property="collectType" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="creator" property="creatorId"/>
+        <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        zs_survey.id, zs_survey.name, end_show, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_survey zs_survey
+        <where>
+            status = 1
+            <if test="name != null and name != ''">
+                AND zs_survey.name like concat('%', #{name}, '%')
+            </if>
+            <if test="state != null">
+                AND zs_survey.state = #{state.value}
+            </if>
+            <if test="collectType != null">
+                AND zs_survey.collect_type = #{collectType.value}
+            </if>
+            <if test="projectId != null">
+                AND zs_survey.project_id = #{projectId}
+            </if>
+        </where>
+    </select>
+
+    <select id="all" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_survey zs_survey
+    </select>
+
+    <select id="find" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        FROM
+        zs_survey
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <select id="findById" resultMap="SimpleResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        FROM
+        zs_survey
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <update id="updateCurrent">
+        update zs_survey set current_num = current_num + 1 where id = #{id}
+    </update>
+</mapper>

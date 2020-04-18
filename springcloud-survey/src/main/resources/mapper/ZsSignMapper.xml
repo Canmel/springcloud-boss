@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsSignMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsSign">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="status" property="status"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="result" property="result" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="creator" property="creatorId"/>
+        <result column="survey_id" property="surveyId"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+        <association property="survey" column="survey_id"
+                     select="com.camel.survey.mapper.ZsSurveyMapper.findById"></association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, status, creator, created_at, result, survey_id
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_sign
+        <where>
+            status = 1
+            <if test="surveyId != null">
+                AND survey_id = #{surveyId}
+            </if>
+            <if test="result != null">
+                AND result = #{result.value}
+            </if>
+            <if test="creatorId != null">
+                AND creator = #{creatorId}
+            </if>
+        </where>
+    </select>
+
+    <select id="allInSurvey" resultMap="BaseResultMap">
+        select
+          DISTINCT creator, id, username, status, created_at, result, survey_id
+        from
+        zs_sign
+        <where>
+            status = 1 AND
+            survey_id = #{id}
+        </where>
+        group by survey_id
+    </select>
+
+    <select id="selectLastByUser" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            zs_sign
+        WHERE
+            created_at =(
+                SELECT
+                    MAX(created_at)
+                FROM
+                    zs_sign
+                WHERE
+                    creator = #{id}
+            )
+        AND creator = #{id}
+    </select>
+</mapper>

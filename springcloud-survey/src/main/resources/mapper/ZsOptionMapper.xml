@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsOptionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsOption">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="question_id" property="questionId"/>
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="has_remark" property="hasRemark"/>
+        <result column="current" property="current"/>
+        <result column="ignore_num" property="ignoreNum"/>
+        <result column="target" property="target"/>
+        <result column="configration" property="configration"/>
+        <result column="creator" property="creatorId"/>
+        <association property="zsQuestion" column="question_id"
+                     select="com.camel.survey.mapper.ZsQuestionMapper.selectQuestionById"></association>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+    </resultMap>
+
+    <resultMap id="BaseSimpleResultMap" type="com.camel.survey.model.ZsOption">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="question_id" property="questionId"/>
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="has_remark" property="hasRemark"/>
+        <result column="target" property="target"/>
+        <result column="ignore_num" property="ignoreNum"/>
+        <result column="creator" property="creatorId"/>
+        <result column="current" property="current"/>
+        <result column="configration" property="configration"/>
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, order_num, ignore_num, question_id, configration, has_remark, target, status, created_at, creator, current
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_option
+        <where>
+            status = 1
+        </where>
+    </select>
+
+    <select id="selectByQuestionId" parameterType="integer" resultMap="BaseSimpleResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_option
+        <where>
+            status = 1
+            and question_id = #{questionId, jdbcType=INTEGER}
+        </where>
+    </select>
+
+    <select id="selectFullByQuestionId" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_option
+        <where>
+            status = 1
+            and question_id = #{questionId, jdbcType=INTEGER}
+        </where>
+    </select>
+
+    <select id="selectBySurveyId" resultMap="BaseResultMap">
+        select
+          o.id, o.name, o.order_num, o.question_id, o.configration, o.has_remark, o.target, o.status, o.created_at, o.creator, o.current as current
+        from zs_option o left join zs_question q on q.id = o.question_id where q.survey_id = #{id} and o.status = 1;
+    </select>
+
+    <select id="selectByQuestionAndName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_option
+        <where>
+            status = 1
+            and question_id = #{questionId, jdbcType=INTEGER}
+            and name = #{name}
+        </where>
+    </select>
+
+    <update id="addOptionCurrent">
+        update zs_option
+        set current = current + 1 where status = 1 and id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectIgnoreCount" resultType="integer">
+        select count(1) from zs_option where status = 1 and ignore_num = 1 and id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

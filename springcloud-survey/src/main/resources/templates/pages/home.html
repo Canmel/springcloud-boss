@@ -1,0 +1,291 @@
+<script src="/survey/js/validateIsMain.js"></script>
+<section class="py-5 wrapper wrapper-content" id="subContainer">
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="row row-sm text-center">
+                        <div class="col-xs-6" v-on:click="jumpTo('pages/project/index.html')">
+                            <div class="panel padder-v item">
+                                <div class="h1 text-info font-thin h1">{{total.projectNum}}</div>
+                                <span class="text-muted text-xs">项目总数</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" v-on:click="jumpTo('pages/survey/index.html')">
+                            <div class="panel padder-v item bg-info">
+                                <div class="h1 text-fff font-thin h1">{{total.surveyNum}}</div>
+                                <span class="text-muted text-xs">问卷总数</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="panel padder-v item bg-primary" style="cursor: auto">
+                                <div class="h1 text-fff font-thin h1">{{total.collectNum}}</div>
+                                <span class="text-muted text-xs">已收集数</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="panel padder-v item" style="cursor: auto">
+                                <div class="font-thin h1">{{total.targetCollectNum}}</div>
+                                <span class="text-muted text-xs">共需收集</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7" style="padding-right:0; padding-left: 0;">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="echarts" id="echarts-pie-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" style="padding-right:0;">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content" style="border-top:none;">
+                            <div class="echarts" id="echarts-line-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>调查中</h5>
+                </div>
+                <div class="ibox-content">
+                    <ul class="todo-list m-t small-list ui-sortable" style="min-height: 510px;">
+                        <li v-for="(item, index) in collectings" style="cursor: pointer;"
+                            v-on:click="jumpTo('pages/survey/details_det.html', item.id)">
+                            <a href="widgets.html#" class="check-link"><i class="fa fa-square-o"></i> </a>
+                            <span class="m-l-xs">{{item.name}}</span>
+                            <div>
+                                <small class="label label-primary"><i class="fa fa-clock-o"></i>调查时间: {{item.createdAt |
+                                    toNow}}
+                                </small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--<script src="/attendance/js/validateIsMain.js"></script>-->
+<script>
+
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            lineEchart: null,
+            pieChart: null,
+            pageInfo: {
+                name: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10//每页显示条目个数不传默认10
+            },
+            total: {
+                projectNum: 0,
+                surveyNum: 0,
+                collectNum: 0,
+                targetCollectNum: 0
+            },
+            collectings: [],
+            items: [{}],
+            lineChartData: {
+                surveyData: [],
+                collectDatas: []
+            },
+            pieChartData: {
+                sms: 0,
+                phone: 0,
+                interview: 0
+            }
+        },
+        created: function () {
+            this.loadTotal();
+            this.collecting();
+            this.lineChart();
+            this.loadPieChart();
+
+        },
+        mounted: function() {
+            this.renderEchart();
+            this.renderEchartPie();
+        },
+        methods: {
+            loadPieChart() {
+                var that = this;
+                AJAX.GET('home/pieChart', {}, function (resp) {
+                    var result = resp.data;
+                    result.forEach(function (item) {
+                        if(item.collectType === 0){
+                            that.pieChartData.sms = item.collectNum;
+                        }
+                        if(item.collectType === 1){
+                            that.pieChartData.phone = item.collectNum;
+                        }
+                        if(item.collectType === 2){
+                            that.pieChartData.interview = item.collectNum;
+                        }
+                    })
+                    that.renderEchartPie();
+                });
+            },
+            renderEchartPie(){
+                this.pieChart = echarts.init(document.getElementById("echarts-pie-chart"));
+                var pieoption = {
+                    title : {
+                        text: '收集数据来源',
+                        subtext: '各收集方式获得有效问卷分布',
+                        x:'center'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x : 'left',
+                        data:['短信','电话','走访']
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:'收集方式',
+                            type:'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data:[
+                                {value:this.pieChartData.phone, name:'电话'},
+                                {value:this.pieChartData.sms, name:'短信'},
+                                {value:this.pieChartData.interview, name:'走访'}
+                            ]
+                        }
+                    ]
+                };
+                this.pieChart.setOption(pieoption);
+                $(window).resize(this.pieChart.resize);
+            },
+            renderEchart(){
+                this.lineEchart = echarts.init(document.getElementById("echarts-line-chart"));
+
+                var lineoption = {
+                    title: {
+                        text: '最近15天发出与收集情况'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function (params, ticket, callback) {
+                            console.log(params, ticket, callback);
+                            var result = '';
+                            var title = '';
+                            title = params[0].name.substr(0,2) + '月'+ params[0].name.substr(2,2) + '日';
+                            console.log(title)
+                            result += '<span>'+ title +'</span>';
+                            result += '<br/>'
+                            params.forEach(function (item) {
+
+                                result += '<span>'+ item[0] +': '+ item.value +'</span><br/>';
+
+
+                            });
+                            return result;
+
+                        }
+                    },
+                    legend: {
+                        data: ['发出问卷数量', '收到问卷回复']
+                    },
+                    grid: {
+                        x: 40,
+                        x2: 40,
+                        y2: 24
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: this.jsonToTitle(),
+                            splitLine: {
+                                show: false
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value} 份'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '发出问卷数量',
+                            type: 'line',
+                            symbolSize: 1,
+                            smooth:true,
+                            data: this.jsonToChartData(this.lineChartData.surveyData),
+                        },
+                        {
+                            name: '收到问卷回复',
+                            type: 'line',
+                            symbolSize: 1,
+                            smooth:true,
+                            data: this.jsonToChartData(this.lineChartData.collectDatas),
+                        }
+                    ]
+                };
+                this.lineEchart.setOption(lineoption);
+            },
+            jsonToChartData(jsons) {
+                var result = [];
+                jsons.forEach(function (item, index) {
+                    result.push(item.value);
+                });
+                return result;
+            },
+            jsonToTitle() {
+                var result = [];
+                this.lineChartData.surveyData.forEach(function (item, index) {
+                    result.push(item.xkey);
+                });
+                return result;
+            },
+            lineChart() {
+                var that = this;
+                AJAX.GET('home/lineChart', {}, function (resp) {
+                    var result = resp.data;
+                    that.lineChartData.surveyData = result.surveyData;
+                    that.lineChartData.collectDatas = result.collectDatas;
+                    that.renderEchart();
+                })
+            },
+            euroFormatter(v, axis) {
+                return "&yen;" + v.toFixed(axis.tickDecimals);
+            },
+            loadTotal() {
+                var that = this;
+                AJAX.GET('home/total', {}, function (resp) {
+                    that.total = resp.data;
+                })
+            },
+            collecting() {
+                var that = this;
+                AJAX.GET('home/collecting', {}, function (resp) {
+                    that.collectings = resp.data;
+                });
+            },
+            jumpTo(url, param) {
+                toPage(url, param);
+            }
+        }
+    })
+</script>

@@ -1,0 +1,769 @@
+<script src="js/SIPml-api.js?svn=250" type="text/javascript"></script>
+<script src="/survey/js/cti/webrtc-1.0.js"></script>
+<script src="/survey/js/common.js"></script>
+
+<style>
+    .droppable-active {
+        background-color: #ffe !important;
+    }
+
+    .tools a {
+        cursor: pointer;
+        font-size: 80%;
+    }
+
+    .form-body .col-md-6,
+    .form-body .col-md-12 {
+        min-height: 400px;
+    }
+
+    .draggable {
+        cursor: move;
+    }
+
+    .re-edit-input {
+        position: absolute;
+        top: 300px;
+        left: 500px;
+        z-index: 999;
+    }
+
+    dd {
+        margin-left: 1rem;
+    }
+
+    .star-box {
+        display: inline-block;
+    }
+
+    .star-box label {
+        float: right;
+        color: #999;
+        margin-bottom: 0px;
+    }
+
+    .star-box label::after {
+        content: '★';
+        font-size: 14px;
+        padding: 5px;
+        display: inline-block;
+        line-height: 1;
+    }
+
+    .star-box input:checked ~ label,
+    .star-box label:hover ~ label,
+    .star-box label:hover {
+        color: red;
+    }
+</style>
+<style>
+    .bg-f2 {
+        background-color: #f8f9fa;
+    }
+
+    video {
+        width: 320px;
+        height: auto;
+    }
+
+    .videoRow {
+        margin-top: 30px;
+    }
+
+    #previewLabel {
+        display: block;
+        position: absolute;
+    }
+</style>
+
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{{survey.name}}</h5>
+                <div class="ibox-tools">
+                    <a v-on:click=backToListPage() class="btn btn-success btn-xs">返回</a>
+                    <!--<a v-on:click=backToProjectDetails() class="btn btn-info btn-xs">项目详情</a>-->
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 control-label">需收集数:</label>
+                        <label class="col-sm-3 control-label">{{survey.collectNum}}</label>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 control-label">已收集数:</label>
+                        <label class="col-sm-3 control-label">{{survey.currentNum}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="tabs-container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-3" aria-expanded="true">开始调查</a>
+                </li>
+                <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="false"> 问卷预览</a>
+                </li>
+                <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">已收到的问卷</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-3" class="tab-pane active">
+                    <div class="panel-body">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="panel-group" id="accordion">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="contact-box">
+                                                <a href="profile.html">
+                                                    <div class="col-sm-4">
+                                                        <div class="text-center">
+                                                            <img alt="image" class="img-circle m-t-xs img-responsive"
+                                                                 :src="profile.avatar">
+                                                            <div class="m-t-xs font-bold"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <div class="col-sm-8"><a href="##">
+                                                    <h3><strong>{{profile.username}}</strong></h3>
+                                                    <p><i class="fa fa-map-marker"></i> {{profile.address}}</p>
+                                                </a>
+                                                    <label><a href="profile.html"/>
+                                                        E-mail:{{profile.email}}<br>
+                                                        <abbr title="Phone">Tel:</abbr> {{profile.mobile}}<br>
+                                                        <abbr title="坐席号">坐席号:</abbr> {{connectInfo.seatNum ? connectInfo.seatNum : "正在获取..."}}<br>
+                                                        <abbr title="分机号">分机号:</abbr> {{connectInfo.seatNum ? connectInfo.seatNum : "正在获取..."}}<br>
+                                                        <div id="connecting"><abbr title="服务器">服务器:</abbr> <span
+                                                                class="text-danger">正在连接...</span><br></div>
+                                                        <div id="connected" style="display: none;"><abbr title="服务器">服务器:</abbr>
+                                                            <span class="text-success">已连接</span><br></div>
+                                                        <div id="notsignin"><abbr title="服务器">坐席状态:</abbr> <span
+                                                                class="text-danger">未签入</span><br></div>
+                                                        <div id="signin" style="display: none;"><abbr
+                                                                title="服务器">坐席状态:</abbr> <span
+                                                                class="text-success">已签入</span><br></div>
+                                                    </label>
+
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="contact-box">
+                                                <div>
+                                                    <label>
+                                                        <div
+                                                                style="border: currentColor; height: auto; padding-top: 1px; padding-left: 10px; display: block;">
+                                                            <input id="pstnnumber" type="hidden" value="52595810">
+                                                            <input id="signStatus" type="hidden" value="0">
+                                                            <button class="btn btn-rounded btn-primary" id="signInOrOut"
+                                                                    onClick="signInOrOut()"
+                                                                    href="javascript:void(0)" iconcls="icon2-signin"
+                                                                    plain="true">签入
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="allStatus"
+                                                                    style="display: none;" href="javascript:void(0)"
+                                                                    iconcls="icon2-edit" plain="true" menu="#setStatus">
+                                                                状态
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary"
+                                                                    id="calloutInternal" style="display: none;"
+                                                                    onClick="calloutInternal()"
+                                                                    href="javascript:void(0)"
+                                                                    iconcls="icon2-internal-call" plain="true">内呼
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary"
+                                                                    id="calloutExternal" style="display: none;"
+                                                                    v-on:click="calloutExternalModal()"
+                                                                    href="javascript:void(0)"
+                                                                    iconcls="icon2-external-call" plain="true">外呼
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="hangUp"
+                                                                    onClick="hangUp()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-hangup"
+                                                                    plain="true">挂机
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="evaluate"
+                                                                    onClick="customerEvaluate()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-grade"
+                                                                    plain="true">评分
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="hold"
+                                                                    onClick="hold()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-pause"
+                                                                    plain="true">保持
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="unHold"
+                                                                    onClick="unHold()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-play"
+                                                                    plain="true">解除保持
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="transfer"
+                                                                    onClick="transfer()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-transfer"
+                                                                    plain="true">转接
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="threeway"
+                                                                    onClick="threeway()" style="display: none;"
+                                                                    href="javascript:void(0)" iconcls="icon2-threeway"
+                                                                    plain="true">三方
+                                                            </button>
+                                                        </div>
+                                                    </label>
+
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="contact-box">
+                                                <div class="col-sm">
+                                                    <button type="button" v-on:click="openRoom()" class="btn btn-primary btn-sm">打开摄像头</button>
+                                                    <button type="button" v-on:click="leaveRoom()" class="btn btn-secondary btn-sm">退出</button>
+                                                </div>
+                                            </div>
+                                            <div class="contact-box" id="previewContext" style="display: none;">
+                                                <div class="col-sm">
+                                                    <label id="previewLabel" class="text-white"></label>
+                                                    <video id="previewVideo" autoplay muted playsinline></video>
+                                                </div>
+                                                <div class="col-sm remoteVideo">
+                                                     <video  autoplay muted playsinline></video>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-1" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="row form-body form-horizontal m-t">
+                            <div class="col-md-12 droppable sortable" id="surveyArea">
+                                <div :question-type="item.type" class="form-group"
+                                     v-for="(item, index) in loadData.zsQuestions"
+                                     style="position: static;">
+                                    <div class="col-sm-12"><label class="col-sm-3 control-label"><span
+                                            class="question-index">{{item.orderNum}}</span>.</label> <label
+                                            class="col-sm-9 control-label"
+                                            style="padding-left: 0px; text-align: left;"><span
+                                            class="editable question-title">{{item.name}}</span></label></div>
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9 survey-optins">
+                                        <div v-for="(option, inx) in item.options"
+                                             v-if="showOption(item, option)">
+                                            <div class="col-sm-9">
+                                                <label class="radio-inline"
+                                                       v-if="item.type === 1 && showOption(item, option)">
+                                                    <input type="radio" value="option2"
+                                                           name="optionsRadios">
+                                                    <span class="editable question-option">{{option.name}}</span>
+                                                </label>
+
+                                                <label class="checkbox-inline"
+                                                       v-if="item.type === 2 && showOption(item, option)">
+                                                    <input type="checkbox" value="option1">
+                                                    <span class="editable question-option">{{option.name}}</span>
+                                                </label>
+
+                                                <label class="checkbox-inline"
+                                                       v-if="item.type === 3 && showOption(item, option)">
+                                                    <span class="editable question-option">评分项</span>:
+                                                    <span class="star-box">
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_5'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_4'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_4'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_3'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_3'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_2'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_2'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_1'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
+                                            </span>
+                                                </label>
+                                                <label class="checkbox-inline"
+                                                       v-if="item.type === 4 && showOption(item, option)">
+                                                    <span class="editable question-option">答</span>:
+                                                    <label class="radio-inline">
+                                                        <input type="text"
+                                                               name="optionsRadios"></label>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <span>当前: {{option.current}}</span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span v-if="option.configration">配额: {{option.configration}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 droppable sortable" style="display: none;">
+                            </div>
+                            <div class="col-md-6 droppable sortable" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-2" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>收集时间</th>
+                                            <th>填写人(手机号)</th>
+                                            <th>坐席号</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(item, index) in answers">
+                                            <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                            <td>
+                                                <span>{{item.createdAt}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.creator}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.seat}}</span>
+                                            </td>
+                                            <td>
+                                                <button type="button" v-on:click="details(item)"
+                                                        class="btn btn-primary btn-xs">查看
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                                             :changge="pageFn"></pageination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">收集样本详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group" v-for="item in selectAnswer.items">
+                            <label class="col-sm-3 control-label">标题:</label>
+                            <div class="col-sm-9">
+                                <span name="name" class="form-control" type="text" style="border: none;height: auto;">{{item.question}}</span>
+                            </div>
+                            <label class="col-sm-3 control-label">样本:</label>
+                            <div class="col-sm-9">
+                                <span name="name" class="form-control" type="text" style="border: none;height: auto;">{{item.value}}</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <div class="modal fade" id="myPhoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myPhoneModallLabel">外呼</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">电话:</label>
+                            <div class="col-sm-9">
+                                <input name="phone" id="phoneNum" class="form-control" type="text" style="height: auto;"
+                                       value="018357162602">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="calloutExternal()">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- Audios -->
+    <audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"></audio>
+    <audio id="ringtone" loop src="/survey/sounds/ringtone.wav"></audio>
+    <audio id="ringbacktone" loop src="/survey/sounds/ringbacktone.wav"></audio>
+    <audio id="dtmfTone" src="/survey/sounds/dtmf.wav"></audio>
+</div>
+<script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
+<script src="/survey/js/validateIsMain.js"></script>
+<script type="text/javascript">
+    console.log('script')
+    /**
+     * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
+     */
+    websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
+    agentno = '';//座席号码
+    password = '';//座席密码
+    exten = '';//座席分机
+    pstnnumber = '88312345';//外线号码
+    popupUrl = 'https://diaocha.svdata.cn/survey/input_s.html'//来电弹屏地址;
+
+    var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
+    var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
+    var sipPort = '7067';//软电话注册端口，不启用内置软电话可以不配置
+    var extenPwd = 'svdata123';//分机密码，不启用内置软电话可以不配置
+    var autoAnswer = 'no';//是否自动接听电话，只有启用内置软电话才生效
+
+    //注册WebSocket服务
+    if ('WebSocket' in window) {
+        websocket = new WebSocket(websocketUrl);
+    } else {
+        alert('当前浏览器不支持WebSocket通信，座席功能将不能使用！')
+    }
+
+</script>
+<script>
+    currentVue = new Vue({
+        el: '#subContainer',
+        data: {
+            selectAnswer: {},
+            applicationContextRootPath: '/survey/',
+            survey: {},
+            saveData: {
+                zsQuestions: [],
+                zsOptions: [],
+                surveyId: 0
+            },
+            loadData: {
+                zsQuestions: []
+            },
+            answers: [],
+            pageInfo: {
+                surveyId: sessionStorage.getItem('editParams'),
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10//每页显示条目个数不传默认10
+            },
+            crossForm: {
+                firstSelect: null,
+                secondSelect: null,
+                firstOption: [],
+                secondOption: []
+            },
+            itemForm: {
+                firstSelect: null
+            },
+            cti: {
+                status: 0,
+                server: 0
+            },
+            connectInfo: {
+                seatNum: null,
+                exten: null,
+                password: ''
+            },
+            socketServer: 0,
+            profile: {},
+            zg: null,
+            config: {
+                "appid": 2696647174,    // 必填，应用id，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "idName": new Date().getTime() + '',    // 必填，用户自定义id，全局唯一
+                "nickName": 'u' + new Date().getTime(),    // 必填，用户自定义昵称
+                "server": "wss://webliveroom-test.zego.im/ws",    // 必填，接入服务器地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "logLevel": 0,    //日志级别，debug:0,info:1,warn:2,error:3,report:99,disable:100（数字越大，日志越少），建议选择 1
+                "logUrl": "",    // 必填，logServer 地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
+                "remoteLogLevel": 0,    // 上传日志最低级别，建议跟 logLevel 一致
+                "testEnvironment": true, // 是否开启测试环境，默认为正式环境
+                "audienceCreateRoom": false //是否允许观众创建房间
+            }
+        },
+        watch: {
+            loadData(v, oldVal) {
+            },
+            ctiserver(v, oldVal) {
+
+                if (v === 1) {
+                    $("#connecting").hide();
+                    $("#connected").show();
+                }
+                if (v === 0) {
+                    $("#connecting").show();
+                    $("#connected").hide();
+                }
+
+            }
+        },
+        computed: {
+            ctiserver() {
+                console.log(this.cti.server);
+                return this.cti.server;
+            }
+        },
+        methods: {
+            calloutExternalModal() {
+                $("#myPhoneModal").modal("show");
+            },
+            details(item) {
+                var that = this;
+                $("#myModal").modal('show');
+                AJAX.GET("zsAnswer/" + item.id, {}, function (resp) {
+                    that.selectAnswer = resp.data;
+                    console.log(resp);
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
+                    that.answers = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            showOption(question, option) {
+                if (question.orderNum && option.questionOrderNum) {
+                    return question.orderNum === option.questionOrderNum;
+                }
+                if (question.id && option.questionId) {
+                    return question.id === option.questionId;
+                }
+                return false;
+            },
+            backToListPage() {
+                toPage('pages/task/index.html')
+            },
+            backToProjectDetails() {
+                sessionStorage.setItem('editParams', this.survey.projectId);
+                toPage('pages/project/details.html')
+            },
+            setUpRate(element) {
+                $(element).raty({
+                    number: 5,//多少个星星设置
+                    targetType: 'hint',//类型选择，number是数字值，hint，是设置的数组值
+                    path: this.applicationContextRootPath + 'img',
+                    hints: ['差', '一般', '好', '非常好', '全五星'],
+                    cancelOff: 'cancel-off.png',
+                    cancelOn: 'cancel-on.png',
+                    size: 24,
+                    starHalf: 'star-half.png',
+                    starOff: 'star-off.png',
+                    starOn: 'star-on.png',
+                    cancel: false,
+                    targetKeep: true,
+                    targetText: '请选择评分',
+                    click: function (score, evt) {
+                        alert('ID: ' + $(this).attr('id') + "\nscore: " + score + "\nevent: " + evt.type);
+                    }
+                });
+            },
+            reBindIndex() {
+                $('#surveyArea').children().each(function (index, item) {
+                    $(item).find('.question-index').text(index + 1)
+                })
+            },
+            bindEvent() {
+                var that = this;
+                $("#n-columns").on("change", function () {
+                    var v = $(this).val();
+                    if (v === "1") {
+                        var $col = $('.form-body .col-md-12').toggle(true);
+                        $('.form-body .col-md-6 .draggable').each(function (i, el) {
+                            $(this).remove().appendTo($col);
+                        })
+                        $('.form-body .col-md-6').toggle(false);
+                    } else {
+                        var $col = $('.form-body .col-md-6').toggle(true);
+                        $(".form-body .col-md-12 .draggable").each(function (i, el) {
+                            $(this).remove().appendTo(i % 2 ? $col[1] : $col[0]);
+                        });
+                        $('.form-body .col-md-12').toggle(false);
+                    }
+                });
+            },
+            loadEntity() {
+                var that = this;
+                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.survey = {
+                        id: resp.data.id,
+                        name: resp.data.name,
+                        currentNum: resp.data.currentNum,
+                        collectNum: resp.data.collectNum,
+                        projectId: resp.data.projectId,
+                        monit: resp.data.monit
+                    };
+
+                    // 判定是否需要视频监控
+                    if(that.survey.monit.value === 1) {
+                        // that.initZg();
+                    }
+                    popupUrl = 'https://diaocha.svdata.cn/survey/input_s.html?surveyId=' + that.survey.id
+                })
+            },
+            loadQuestions() {
+                var that = this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.loadData.zsQuestions = resp.data;
+                })
+            },
+            loadMe() {
+                var that = this;
+                AJAX.GET('profile', {}, function (resp) {
+                    that.profile = resp.data;
+                });
+            },
+            loadConnectInfo() {
+                let that = this;
+                AJAX.GET_SYNC("zsSeat/current", {}, function (resp) {
+                    window.agentno = resp.data.seatNum;
+                    window.exten = resp.data.seatNum;
+                    window.password = resp.data.password;
+                    that.connectInfo.seatNum = window.agentno;
+                    that.connectInfo.exten = window.exten;
+                    that.connectInfo.password = window.password;
+                });
+            },
+            initZg() {
+
+            },
+            openRoom() {
+                $('#previewContext').show();
+                $('#signalUrl').val() && zg.setCustomSignalUrl($('#signalUrl').val())
+                zg.setUserStateUpdate(true);
+                openRoom(this.connectInfo.seatNum + '', 1);
+            },
+            leaveRoom() {
+                $('#previewContext').hide();
+                leaveRoom();
+            }
+        },
+        created: function () {
+            this.initZg();
+            this.loadEntity();
+            console.log(123);
+            this.loadConnectInfo();
+            this.loadQuestions();
+            this.loadMe();
+            $ctiserver = this;
+            websocket.onopen = function (event) {
+                console.log(event)
+                $ctiserver.cti.server = 1
+            }
+            websocket.onerror = function () {
+                ("error");
+            };
+
+            websocket.onmessage = function () {
+                try {
+                    var jsonStr = JSON.parse(event.data);
+                    console.log("------------------------" , jsonStr);
+                    onEvent(jsonStr.type, jsonStr.status, jsonStr.method, jsonStr.retCode, jsonStr);
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            websocket.onclose = function () {
+                setMessageInnerHTML("close");
+            };
+
+            //离开或刷新页面
+            window.onbeforeunload = function () {
+                //return '确认要退出页面吗?';
+                if (websocket != null) {
+                    method = "signout";
+                    send();
+                    websocket.close();
+                }
+                if (useWebrtc == "yes") {
+                    sipUnRegister();
+                }
+            };
+            // openRoom('809', 1);
+
+        },
+        mounted: function () {
+            this.bindEvent();
+        },
+        beforeCreate: function () {
+            console.log('beforeCreate');
+        },
+        beforeDestroy: function () {
+            leaveRoom();
+        }
+    });
+
+    $step = $("#wizard").steps({
+        preloadContent: false,
+        labels: {
+            cancel: "取消",
+            current: "当前步骤：",
+            pagination: "分页",
+            finish: "呼叫",
+            next: "签入",
+            previous: "签出",
+            loading: "加载中 ..."
+        },
+        onStepChanging: function (event, currentIndex, newIndex) {
+            try {
+                signInOrOut();
+            } catch (e) {
+                console.log(e)
+                return false;
+            }
+            return true;
+
+        }
+    });
+</script>

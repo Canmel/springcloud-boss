@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META content="IE=5.0000" http-equiv="X-UA-Compatible">
+<TITLE>WEB座席客户端DEMO</TITLE>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<LINK href="resource/wabacus_system.css" rel="stylesheet" type="text/css">
+<LINK href="resource/artDialog.css" rel="stylesheet" type="text/css">
+<LINK href="resource/easyui.css" rel="stylesheet" type="text/css">
+<LINK href="resource/icon.css" rel="stylesheet" type="text/css">
+<SCRIPT src="resource/jquery-1.7.2.min.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/layout.index.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/jquery.easyui.min.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/wabacus_system.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/wabacus_util.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/wabacus_tools.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/wabacus_api.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/artDialog.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="resource/ctiClient-1.1.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/adapter.debug.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/SIPml-api.js?svn=250" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/webrtc-1.0.js" type="text/javascript"></SCRIPT>
+<link rel="stylesheet" href="ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="ztree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="ztree/js/jquery.ztree.exedit-3.5.js"></script>
+<SCRIPT type="text/javascript">
+	/**
+	 * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
+	 */
+	websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
+	agentno = '808';//座席号码
+	password = 'svdata123';//座席密码
+	exten = '808';//座席分机
+	pstnnumber = '88312345';//外线号码
+	popupUrl = 'http://www.baidu.com'//来电弹屏地址;
+	useMonitor = 'yes';//如是班长可以启用话务监控
+
+	var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
+	var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
+	var sipPort = '7067';//软电话注册端口，不启用内置软电话可以不配置
+	var extenPwd = 'svdata123';//分机密码，不启用内置软电话可以不配置
+	var autoAnswer = 'no';//是否自动接听电话，只有启用内置软电话才生效
+
+	//注册WebSocket服务
+	if('WebSocket' in window){
+  		websocket = new WebSocket(websocketUrl);
+  	}else {
+  		alert('当前浏览器不支持WebSocket通信，座席功能将不能使用！')
+  	}  
+
+	websocket.onerror = function(){
+  		setMessageInnerHTML("error");
+  	};
+  	
+  	websocket.onopen = function(event){
+  		setMessageInnerHTML("open");
+  	}
+  	
+  	websocket.onmessage = function(){
+		
+		try {
+			var jsonStr=JSON.parse(event.data); 
+			onEvent(jsonStr.type,jsonStr.status,jsonStr.method,jsonStr.retCode,jsonStr);
+		} catch (e) {
+			return false;
+		}
+  	}
+  	
+  	websocket.onclose = function(){
+  		setMessageInnerHTML("close");
+  	}
+		
+  	//离开或刷新页面
+  	window.onbeforeunload = function(){
+		//return '确认要退出页面吗?';
+  		if(websocket!=null){
+  			method = "signout";
+  			send();
+  			websocket.close();
+  		}
+		if(useWebrtc=="yes"){
+			sipUnRegister();
+		}
+  	}
+</script>
+</HEAD>
+
+<BODY scroll="no" style="-ms-overflow-y: hidden;" fit="true" onLoad="setToolbarEnabled(false,false,false,false,false,false,false,false,false,false)">
+<!-- 头部 -->
+<DIV style="background: rgb(127, 153, 190); height: 50px; color: rgb(255, 255, 255); line-height: 20px; overflow: hidden; font-family: Verdana, 微软雅黑,黑体;width:1200px;"
+border="false" split="false" region="north"><SPAN class="head" style="padding-top: 5px; padding-right: 20px; float: right;">&nbsp;
+  &nbsp;</SPAN> <SPAN id="state-div" style="padding-top: 5px; padding-left: 10px; font-family: Tahoma,Verdana,微软雅黑,新宋体; font-size: 12px; float: right;">
+  <TABLE bordercolor="#b0c4de" style="color: white; border-collapse: collapse;" 
+border="1">
+    <TBODY>
+      <TR>
+        <TD>欢迎: 808</TD>
+        <TD>座席号：<SPAN id="agentNumberShow">808</SPAN></TD>
+      </TR>
+      <TR>
+        <TD>分机号：<SPAN id="agentExtenShow">808</SPAN></TD>
+        <TD>座席状态：<SPAN id="seat_state">未签入</SPAN></TD>
+      </TR>
+    </TBODY>
+  </TABLE>
+  </SPAN>
+  <DIV class="easyui-panel" style="border: currentColor; height: 200px; padding-top: 1px; padding-left: 10px; display: block;">
+    <INPUT id="pstnnumber" type="hidden" value="52595810">
+    <INPUT id="signStatus" type="hidden" value="0">
+<A class="easyui-linkbutton" id="signInOrOut" style="color: rgb(255, 255, 255);" onClick="signInOrOut()" href="javascript:void(0)" iconcls="icon2-signin" plain="true">签入</A> 
+<A class="easyui-menubutton" id="allStatus" style="color: rgb(255, 255, 255);" href="javascript:void(0)" iconcls="icon2-edit" plain="true" menu="#setStatus">状态</A> 
+<A class="easyui-linkbutton" id="calloutInternal" style="color: rgb(255, 255, 255);" onClick="calloutInternal()" href="javascript:void(0)" 
+iconcls="icon2-internal-call" plain="true">内呼</A> 
+<A class="easyui-linkbutton" id="calloutExternal" style="color: rgb(255, 255, 255);" onClick="calloutExternal()" href="javascript:void(0)" iconcls="icon2-external-call" plain="true">外呼</A> 
+<A class="easyui-linkbutton" id="hangUp" style="color: rgb(255, 255, 255);" onClick="hangUp()" href="javascript:void(0)" iconcls="icon2-hangup" 
+plain="true">挂机</A> 
+<A class="easyui-linkbutton" id="evaluate" style="color: rgb(255, 255, 255);" onClick="customerEvaluate()" href="javascript:void(0)" iconcls="icon2-grade" 
+plain="true">评分</A> 
+<A class="easyui-linkbutton" id="hold" style="color: rgb(255, 255, 255);" onClick="hold()" href="javascript:void(0)" iconcls="icon2-pause" 
+plain="true">保持</A> 
+<A class="easyui-linkbutton" id="unHold" style="color: rgb(255, 255, 255);" onClick="unHold()" href="javascript:void(0)" iconcls="icon2-play" 
+plain="true">解除保持</A> 
+<A class="easyui-linkbutton" id="transfer" style="color: rgb(255, 255, 255);" onClick="transfer()" href="javascript:void(0)" iconcls="icon2-transfer" plain="true">转接</A> 
+<A class="easyui-linkbutton" id="threeway" style="color: rgb(255, 255, 255);" onClick="threeway()" href="javascript:void(0)" iconcls="icon2-threeway" plain="true">三方</A>
+<span id="monitorSpan" style="display:none"><A class="easyui-linkbutton" id="monitor" style="color: rgb(255, 255, 255);" onClick="monitor()" href="javascript:void(0)" iconcls="icon2-monitor" plain="true">话务监控</A></span></DIV>
+</DIV>
+<DIV class="easyui-menu" id="setStatus" style="background: rgb(224, 236, 255); width: 100px;">
+  <DIV onClick="changeStatus(0)" iconcls="icon-free">空闲</DIV>
+  <DIV onClick="changeStatus(6)" iconcls="icon-busy">忙碌</DIV>
+</DIV>
+
+<div id="msg_dial" style="width:200px;height:150px;display:none;margin-left:500px;margin-top:100px;background-color:#4682B4">
+		<div id="msg_win">
+			<div id="msg_title" ><img src="resource/msgcimg2.png"/><span style="vertical-align: middle;display: inline-block;">来电通知</span></div>
+			<div id="msg_content" >
+				<img src="resource/msgcimg1.png" style="width: 55px;height: 55px;margin-bottom: 10px;"  />&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 20px;" id="msgspan1"></span><br/>
+				<input type="button" style=" ;margin-left: 20px; width: 60px; height: 30px; padding-left:20px; background: url(resource/msgcall.png) no-repeat; background-position: 5px 6px;" name="btnCall" id="btnCall" value="接听"  onclick="sipAnswer();"/>&nbsp;
+				<input type="button" style="margin-left: 30px; width: 60px; height: 30px; padding-left:20px; background: url(resource/msghangup.png) no-repeat; background-position: 5px 6px;" name="btnHangUp" id="btnHangUp" value="挂断"  onclick="sipHangUp();"/>
+			</div>
+		</div>
+</div>
+
+<!-- Audios -->
+<audio id="audio_remote" src="sounds/ringbacktone.wav" autoplay="autoplay"> </audio>
+<audio id="ringtone" loop src="sounds/ringtone.wav"> </audio>
+<audio id="ringbacktone" loop src="sounds/ringbacktone.wav"> </audio>
+<audio id="dtmfTone" src="sounds/dtmf.wav"> </audio>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+		if(useMonitor=="yes"){
+			$("#monitorSpan").show(); 
+		}else{
+			$("#monitorSpan").hide(); 
+		}
+</SCRIPT>
