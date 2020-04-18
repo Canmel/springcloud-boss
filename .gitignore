@@ -1,5 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-/.idea/
 /springcloud-boss.iml
 /springcloud-system/springcloud-system.iml
 /springcloud-activiti/springcloud-activiti.iml
@@ -19,7 +18,6 @@
 /springcloud-stock-operation/target/
 
 /springcloud-interviewer/target/
-/.idea/
 /springcloud-interviewer/target/classes/
 /springcloud-access-control/target/
 /.idea/
