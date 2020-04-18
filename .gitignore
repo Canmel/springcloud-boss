@@ -23,3 +23,10 @@
 /.idea/
 /springcloud-survey/springcloud-survey.iml
 /springcloud-eureka-server/springcloud-eureka-server.iml
+/springcloud-access-control/springcloud-access-control.iml
+/springcloud-attendance/springcloud-attendance.iml
+/springcloud-common/springcloud-common.iml
+/springcloud-auth-server/springcloud-auth-server.iml
+/springcloud-redis/springcloud-redis.iml
+/springcloud-stock-operation/springcloud-stock-operation.iml
+/springcloud-core/springcloud-core.iml
