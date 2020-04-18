@@ -113,15 +113,15 @@ test-sender:
     - deployer
   script:
     - pwd
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-eureka-server/target/springcloud-eureka-server-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-system/target/springcloud-system-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-auth-server/target/springcloud-auth-server-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-survey/target/springcloud-survey-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-stock-operation/target/springcloud-stock-operation-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-interviewer/target/springcloud-interviewer-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-sms-server/target/springcloud-sms-server-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-access-control/target/springcloud-access-control-*.jar root@122.226.163.136:/root/sartifacts
-    - sshpass -p Lxg730124 scp -P 30022 springcloud-zuul-getway/target/springcloud-zuul-getway-*.jar root@122.226.163.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-eureka-server/target/springcloud-eureka-server-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-system/target/springcloud-system-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-auth-server/target/springcloud-auth-server-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-survey/target/springcloud-survey-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-stock-operation/target/springcloud-stock-operation-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-interviewer/target/springcloud-interviewer-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-sms-server/target/springcloud-sms-server-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-access-control/target/springcloud-access-control-*.jar root@122.226.162.136:/root/sartifacts
+    - sshpass -p Lxg730124 scp -P 30022 springcloud-zuul-getway/target/springcloud-zuul-getway-*.jar root@122.226.162.136:/root/sartifacts
 
 docker-deploy:
   stage: deploy
