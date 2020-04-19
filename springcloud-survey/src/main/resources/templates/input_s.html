@@ -275,6 +275,7 @@
 
             },
             radioChange(opt, event, type) {
+                // 判断类型
                 if(type === 2) {
                     return this.checkboxChanged(opt, event);
                 }
@@ -323,7 +324,7 @@
                     return;
                 }
                 let nextQIndex = this.getNextIndex(question);
-                if (nextQIndex > this.nextIndex) {
+                if (nextQIndex > 0) {
                     this.nextIndex = nextQIndex;
                 }
                 this.current = this.nextIndex;
