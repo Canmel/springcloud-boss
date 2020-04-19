@@ -46,7 +46,6 @@ public class ZsProjectController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsProject entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
@@ -55,7 +54,6 @@ public class ZsProjectController extends BaseCommonController {
      * 获取详情
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -64,7 +62,6 @@ public class ZsProjectController extends BaseCommonController {
      * 新建保存
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }
@@ -73,7 +70,6 @@ public class ZsProjectController extends BaseCommonController {
      * 编辑 更新
      */
     @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result update(@RequestBody ZsProject entity) {
         return super.update(entity);
     }
@@ -82,7 +78,6 @@ public class ZsProjectController extends BaseCommonController {
      * 删除
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }

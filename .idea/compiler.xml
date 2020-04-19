@@ -12,7 +12,6 @@
         <module name="springcloud-core" />
         <module name="springcloud-activiti" />
         <module name="springcloud-interviewer" />
-        <module name="springcloud-system" />
         <module name="springcloud-attendance" />
         <module name="springcloud-zuul-getway" />
         <module name="springcloud-common" />
@@ -20,8 +19,9 @@
         <module name="springcloud-survey" />
         <module name="springcloud-access-control" />
         <module name="springcloud-stock-operation" />
-        <module name="springcloud-redis" />
         <module name="spring-boot-activiti" />
+        <module name="springcloud-redis" />
+        <module name="springcloud-system" />
         <module name="springcloud-feign" />
       </profile>
     </annotationProcessing>
