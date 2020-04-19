@@ -9,6 +9,7 @@ import com.camel.survey.service.ZsSeatService;
 import com.camel.survey.service.ZsSignService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,10 @@ public class MonitorsController {
             zsSign.getSurvey();
             zsSign.getSurveyId();
             SysUser user = applicationToolsUtils.getUser(zsSign.getCreatorId());
-            users.add(user);
+            if(!ObjectUtils.isEmpty(user)) {
+                users.add(user);
+            }
+
         }
         return ResultUtil.success(users);
     }
