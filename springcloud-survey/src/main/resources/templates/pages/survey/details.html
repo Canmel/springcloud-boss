@@ -475,7 +475,6 @@
             },
             loadData: {
                 zsQuestions: [],
-                zsOptions: [],
             },
             concats: [],
             pageInfo: {
@@ -738,7 +737,6 @@
                  * 保存
                  */
                 $("#copy-to-clipboard").on("click", function () {
-                    console.log(that.saveData);
                     that.saveData.surveyId = that.survey.id;
                     that.saveData.zsQuestions = [];
                     that.saveData.zsOptions = [];
@@ -862,8 +860,6 @@
                 var that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.loadData.zsQuestions = resp.data;
-                    that.loadData.zsOptions = resp.data[0].zsOptions;
-                    console.log(that.loadData.zsOptions)
                 })
             }
         },
