@@ -113,6 +113,7 @@ test-sender:
     - deployer
   script:
     - pwd
+    - whoami
     - scp springcloud-eureka-server/target/springcloud-eureka-server-*.jar root@192.168.0.136:/root/sartifacts
     - scp springcloud-system/target/springcloud-system-*.jar root@122.226.162.136:/root/sartifacts
     - scp springcloud-auth-server/target/springcloud-auth-server-*.jar root@192.168.0.136:/root/sartifacts
