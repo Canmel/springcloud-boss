@@ -29,13 +29,11 @@ public class ZsCashApplyController extends BaseCommonController {
     private ZsCashApplyService service;
 
     @GetMapping("/pass/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result pass(@PathVariable Integer id) {
         return service.pass(id);
     }
 
     @GetMapping("/reject/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result reject(@PathVariable Integer id) {
         return service.reject(id);
     }
@@ -47,7 +45,6 @@ public class ZsCashApplyController extends BaseCommonController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public Result index(ZsCashApply apply) {
         return ResultUtil.success(service.selectPage(apply));
     }

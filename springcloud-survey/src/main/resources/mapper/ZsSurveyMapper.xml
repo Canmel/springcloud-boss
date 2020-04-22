@@ -12,6 +12,7 @@
         <result column="status" property="status" jdbcType="INTEGER"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
+        <result column="start_show" property="startShow"/>
         <result column="end_show" property="endShow"/>
         <result column="collect_type" property="collectType" jdbcType="INTEGER"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
@@ -32,6 +33,7 @@
         <result column="project_id" property="projectId"/>
         <result column="collect_num" property="collectNum"/>
         <result column="current_num" property="currentNum"/>
+        <result column="start_show" property="startShow"/>
         <result column="end_show" property="endShow"/>
         <result column="status" property="status" jdbcType="INTEGER"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
@@ -44,7 +46,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        zs_survey.id, zs_survey.name, end_show, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type
+        zs_survey.id, zs_survey.name, start_show, end_show, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
