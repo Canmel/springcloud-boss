@@ -59,11 +59,11 @@
         <h1>智慧调查<span>{{survey.name}}</span></h1>
     </header>
     <section>
-        <div class="row" v-if="current === 1">
+        <div class="row question-welcome" v-if="current === 1">
             <div class="text-center">
-                <label>
+                <span>
                     {{survey.startShow}}
-                </label>
+                </span>
             </div>
         </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
