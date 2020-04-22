@@ -10,10 +10,12 @@ import com.camel.survey.enums.ZsSurveyState;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.vo.ZsAnswerSave;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -152,6 +154,17 @@ public class ZsSurveyController extends BaseCommonController {
     public Result valid(@RequestBody ZsAnswerSave zsAnswerSave) {
 
         return service.valid(zsAnswerSave);
+    }
+
+    /**
+     * 问卷通过导入新增
+     * @param file
+     * @return
+     */
+    @PostMapping("/importSurvey")
+    public Result importSurvey(@RequestParam("file") MultipartFile file) {
+        service.importSurvey(file);
+        return ResultUtil.success("成功");
     }
 
     /**

@@ -11,6 +11,7 @@ import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.*;
+import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.exceptions.SurveyNotValidException;
@@ -19,9 +20,13 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -30,7 +35,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -328,5 +335,25 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean importSurvey(MultipartFile file) {
+        List<ZsQuestion> questions = ExcelUtil.readExcelObject(file, ZsQuestion.class, ZsQuestion.loadTranslate());
+        List<ZsOption> options = ExcelUtil.readExcelObject(file, ZsOption.class, ZsOption.loadTranslate());
+
+        try {
+            Workbook workbook = ExcelUtil.getWorkbook(file.getInputStream(), file.getOriginalFilename());
+            boolean hasNextSheet = true;
+            int sheetIndex = 0;
+            while (hasNextSheet) {
+                Sheet sheet = workbook.getSheetAt(sheetIndex);
+            }
+        }catch (IOException e) {
+            throw new ExcelImportException();
+        }catch (Exception e) {
+            throw new RuntimeException("未知错误");
+        }
+        return false;
     }
 }
