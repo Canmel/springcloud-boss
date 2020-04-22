@@ -59,6 +59,13 @@
         <h1>智慧调查<span>{{survey.name}}</span></h1>
     </header>
     <section>
+        <div class="row" v-if="current === 1">
+            <div class="text-center">
+                <label>
+                    {{survey.startShow}}
+                </label>
+            </div>
+        </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
@@ -153,6 +160,8 @@
                     <div class="row text-center" v-if="showSubmit">
                         <span class="submit btn btn-success" v-on:click="submit(item, $event)">提交</span>
                     </div>
+
+
                 </div>
             </div><!-- /simform-inner -->
         </form><!-- /simform -->
@@ -195,6 +204,9 @@
             this.loadSurvey();
         },
         methods: {
+            startSurvey() {
+                this.current += 1;
+            },
             validSurvey() {
                 var that = this;
                 var $inputs = $('.simform-inner').find('.question :visible').find('input');
