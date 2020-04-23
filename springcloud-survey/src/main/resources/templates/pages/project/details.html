@@ -46,14 +46,14 @@
                                     {{item['name']}}
                                     <div class="ibox-tools">
                                         <a class="collapse-link" data-toggle="tooltip" title="查看"
-                                           v-on:click="showSurveyDetails(item)">
+                                           v-on:click="showSurveyDetails(item)" v-if="resultDev">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <a class="collapse-link" data-toggle="tooltip" title="编辑"
-                                           v-on:click="editSurvey(item)">
+                                           v-on:click="editSurvey(item)" v-if="resultDev">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="close-link" data-toggle="tooltip" title="删除">
+                                        <a class="close-link" data-toggle="tooltip" title="删除" v-if="resultDev">
                                             <i class="fa fa-times"></i>
                                         </a>
                                         <a class="close-link" data-toggle="tooltip" title="删除"
@@ -194,7 +194,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" v-on:click="submitSurvey()">提交更改</button>
+                    <button type="button" class="btn btn-primary" v-on:click="submitSurvey()" v-if="resultDev">提交更改</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -229,12 +229,23 @@
                 monit: '0'
             },
             edit_mode: false,
-            exams_options: []
+            exams_options: [],
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
             this.loadExam();
             this.loadEntity();
             this.loadProjects();
+            this.master = sessionStorage.getItem('master');
+
+            this.result = this.admin.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
         },
         methods: {
             loadExam() {
@@ -268,7 +279,6 @@
                     collectNum: '',
                     collectType: 1,
                     exams: [],
-                    startShow: '',
                     endShow: '',
                     monit: 0
                 };
