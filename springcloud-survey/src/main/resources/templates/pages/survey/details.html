@@ -78,8 +78,8 @@
             <div class="ibox-title">
                 <h5>{{survey.name}}</h5>
                 <div class="ibox-tools">
-                    <a v-on:click=backToListPage() class="btn btn-info btn-xs">问卷列表</a>
-                    <a v-on:click=backToProjectDetails() class="btn btn-info btn-xs">项目详情</a>
+                    <a v-on:click=backToListPage() class="btn btn-info btn-xs" v-if="resultDev">问卷列表</a>
+                    <a v-on:click=backToProjectDetails() class="btn btn-info btn-xs" v-if="resultDev">项目详情</a>
                 </div>
             </div>
             <div class="ibox-content">
@@ -119,14 +119,14 @@
                     <form role="form" class="form-horizontal m-t">
 
                         <div class="form-group draggable" question-type='1'>
-                            <div class="col-sm-12">
+                            <div class="col-sm-12" v-if="resultDev">
                                 <label class="col-sm-3 control-label"><span class="question-index">1</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
                                         class="editable question-title">单选题</span></label>
                             </div>
                             <div class="col-sm-3">
                             </div>
-                            <div class="col-sm-9 survey-optins">
+                            <div class="col-sm-9 survey-optins" v-if="resultDev">
                                 <div>
                                     <label class="radio-inline">
                                         <input type="radio" checked="" value="option1" id="optionsRadios1"
@@ -134,7 +134,7 @@
                                             class="editable question-option">选项1</span></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
-                                <div>
+                                <div v-if="resultDev">
                                     <label class="radio-inline">
                                         <input type="radio" value="option2" id="optionsRadios2"
                                                name="optionsRadios"><span
@@ -152,20 +152,20 @@
                             </div>
                             <div class="col-sm-3">
                             </div>
-                            <div class="col-sm-9 survey-optins">
+                            <div class="col-sm-9 survey-optins" v-if="resultDev">
                                 <div>
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value="option1"><span
                                             class="editable question-option">选项1</span></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
-                                <div>
+                                <div v-if="resultDev">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value="option2"><span
                                             class="editable question-option">选项2</span></label>
                                     <label class="radio-inline"><span class="fa fa-trash options-delete"></span></label>
                                 </div>
-                                <div>
+                                <div v-if="resultDev">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value="option3"><span
                                             class="editable question-option">选项3</span></label>
@@ -175,7 +175,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group draggable" question-type='3'>
+                        <div class="form-group draggable" question-type='3' v-if="resultDev">
                             <div class="col-sm-12">
                                 <label class="col-sm-3 control-label"><span class="question-index">3</span>.</label>
                                 <label class="col-sm-9 control-label" style="padding-left: 0px;text-align: left;"><span
@@ -341,7 +341,8 @@
                         <div class="col-md-6 droppable sortable" style="display: none;">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-warning" data-clipboard-text="testing" id="copy-to-clipboard">
+                    <button type="submit" class="btn btn-warning" data-clipboard-text="testing" id="copy-to-clipboard"
+                    v-if="resultDev">
                         保存问卷
                     </button>
                 </div>
@@ -491,7 +492,13 @@
             navigat: {
                 selectedOption: null,
                 nextIndex: null
-            }
+            },
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         watch: {
             loadData(v, oldVal) {
@@ -864,6 +871,11 @@
             }
         },
         created: function () {
+            this.master = sessionStorage.getItem('master');
+
+            this.result = this.admin.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
             this.loadEntity();
         },
         mounted: function () {

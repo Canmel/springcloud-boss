@@ -96,6 +96,10 @@ public class ZsSignController extends BaseCommonController {
         return service.selectByUserId(member.getUid());
     }
 
+    @GetMapping("/signcount")
+    public Result getByUsername(String username,String phone){
+        return service.userZsSign(username,phone);
+    }
     /**
      * 获取service
      */

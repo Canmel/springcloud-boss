@@ -50,14 +50,14 @@
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false"
-                                    class="btn btn-primary btn-xs">修改
+                            <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false && result"
+                                    class="btn btn-primary btn-xs" >修改
                             </button>
-                            <button type="button" v-on:click="start(item)" v-if="item.state ? item.state.value === 1 : false"
-                                    class="btn btn-success btn-xs">开始调查
+                            <button type="button" v-on:click="start(item)" v-if="item.state ? item.state.value === 1 : false && resultDev"
+                                    class="btn btn-success btn-xs" >开始调查
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false"
-                                    class="btn btn-danger btn-xs">删除
+                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false && result"
+                                    class="btn btn-danger btn-xs" >删除
                             </button>
                             <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"
                                     class="btn btn-danger btn-xs">查看申请记录
@@ -86,16 +86,27 @@
                 total: 0,//总页数
                 size: 10//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
             // this.pagequery();
+            this.master = sessionStorage.getItem('master');
+
+            this.result = this.admin.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
         },
         methods: {
             appliable: function(item) {
                 if(item.collectType && item.state) {
                     // 电话收集方式 && 已经开始的问卷
-                    return item.collectType.value === 1 && item.state.value === 2;
+                    return item.collectType.value === 1 && item.state.value === 2 && this.resultDev;
                 }
                 return false;
             },

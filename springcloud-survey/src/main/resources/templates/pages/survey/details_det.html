@@ -219,13 +219,13 @@
                                             </td>
                                             <td>
                                                 <button type="button" v-on:click="details(item)"
-                                                        class="btn btn-primary btn-xs">查看
+                                                        class="btn btn-primary btn-xs" v-if="resultDev">查看
                                                 </button>
                                                 <button type="button" v-on:click="deleteItem(item)"
-                                                        class="btn btn-danger btn-xs">删除
+                                                        class="btn btn-danger btn-xs" v-if="resultDev">删除
                                                 </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-restore btn-xs">更改状态
+                                                        class="btn btn-restore btn-xs" v-if="resultDev">更改状态
                                                 </button>
                                             </td>
                                         </tr>
@@ -256,7 +256,7 @@
                                              style="">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <button class="btn btn-primary" v-on:click="exportTotal()">汇总导出
+                                                    <button class="btn btn-primary" v-on:click="exportTotal()"  v-if="resultDev">汇总导出
                                                     </button>
                                                 </div>
                                             </div>
@@ -357,7 +357,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <button class="btn btn-primary" v-on:click="exportCross()">交叉导出
+                                                    <button class="btn btn-primary" v-on:click="exportCross()"  v-if="resultDev">交叉导出
                                                     </button>
                                                 </div>
                                             </div>
@@ -368,14 +368,14 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="tabs_panels.html#collapseFour" class="" aria-expanded="true">明细导出</a>
+                                                   href="tabs_panels.html#collapseFour" class="" aria-expanded="true" v-if="resultDev">明细导出</a>
                                             </h4>
                                         </div>
                                         <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false"
                                              style="height: 0px;">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <button class="btn btn-primary" v-on:click="exportAnswers()">明细导出
+                                                    <button class="btn btn-primary" v-on:click="exportAnswers()" v-if="resultDev">明细导出
                                                     </button>
                                                 </div>
                                             </div>
@@ -493,7 +493,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="leaveRoom">关闭</button>
+                    <button type="button" v-if="resultDev" class="btn btn-default" data-dismiss="modal" id="leaveRoom">关闭</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -555,7 +555,13 @@
             previewVideo: null,
             isPreviewed: false,
             useLocalStreamList: [],
-            appSigin: '0x2e,0x80,0x69,0xdb,0x19,0x1a,0xbd,0x14,0x99,0xea,0xa4,0x5a,0xf8,0xcc,0x6f,0xfc,0x2f,0x83,0x4a,0x01,0x43,0x1c,0x5d,0xc5,0x4c,0x28,0x28,0x59,0xa6,0x2d,0x53,0x2b'
+            appSigin: '0x2e,0x80,0x69,0xdb,0x19,0x1a,0xbd,0x14,0x99,0xea,0xa4,0x5a,0xf8,0xcc,0x6f,0xfc,0x2f,0x83,0x4a,0x01,0x43,0x1c,0x5d,0xc5,0x4c,0x28,0x28,0x59,0xa6,0x2d,0x53,0x2b',
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         watch: {
             loadData(v, oldVal) {
@@ -974,6 +980,11 @@
             this.loadQuestions();
             this.initZg();
             this.loadMonitors();
+            this.master = sessionStorage.getItem('master');
+
+            this.result = this.admin.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
 
         },
         mounted: function () {

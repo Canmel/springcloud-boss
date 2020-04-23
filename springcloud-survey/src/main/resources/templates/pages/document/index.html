@@ -5,7 +5,7 @@
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a :href="applicationContextRootPath + 'pages/document/add.html'"
-                       data-pjax class="btn btn-primary btn-xs">上传资料</a>
+                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">上传资料</a>
                 </div>
             </div>
         </div>
@@ -43,7 +43,8 @@
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="download(item)" class="btn btn-success btn-xs">
+                            <button type="button" v-on:click="download(item)" class="btn btn-success btn-xs"
+                            v-if="resultIn">
                                 下载
                             </button>
                         </td>
@@ -72,10 +73,21 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            resultIn: false,//表示访客权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
             this.pagequery();
+            this.master = sessionStorage.getItem('master');
+
+            this.resultIn = this.interviewer.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
         },
         methods: {
             projectDetails: function (item) {
