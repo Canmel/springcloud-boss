@@ -3,6 +3,8 @@ package com.camel.survey.mapper;
 import com.camel.survey.model.ZsSign;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,4 +28,11 @@ public interface ZsSignMapper extends BaseMapper<ZsSign> {
     List<ZsSign> allInSurvey(Integer id);
 
     ZsSign selectLastByUser(Integer id);
+
+    /**
+     * 根据用户名查其记录
+     * @param username
+     * @return
+     */
+    HashMap<String,String> userZsSign(String username,String phone);
 }
