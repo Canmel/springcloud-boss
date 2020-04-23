@@ -5,11 +5,14 @@ import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsProject;
+import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsProjectService;
+import com.camel.survey.service.ZsSurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -41,6 +44,9 @@ public class ZsProjectController extends BaseCommonController {
 
     @Autowired
     private ZsProjectService service;
+
+    @Autowired
+    private ZsSurveyService surveyService;
 
     /**
      * 分页查询
@@ -80,6 +86,17 @@ public class ZsProjectController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
+    }
+
+    /**
+     * 问卷通过导入新增
+     * @param file
+     * @return
+     */
+    @PostMapping("/importSurvey/{id}")
+    public Result importSurvey(@RequestParam("file") MultipartFile file, @PathVariable("id") Integer surveyId) {
+        surveyService.importSurvey(file, surveyId);
+        return ResultUtil.success("成功");
     }
 
     /**

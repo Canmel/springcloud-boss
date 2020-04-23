@@ -157,17 +157,6 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     /**
-     * 问卷通过导入新增
-     * @param file
-     * @return
-     */
-    @PostMapping("/importSurvey")
-    public Result importSurvey(@RequestParam("file") MultipartFile file) {
-        service.importSurvey(file);
-        return ResultUtil.success("成功");
-    }
-
-    /**
      * 获取service
      */
     @Override

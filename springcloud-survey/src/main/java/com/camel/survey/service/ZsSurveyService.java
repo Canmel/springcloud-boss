@@ -106,5 +106,5 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
 
     ZsSurvey getByNameFromList(String name, List<ZsSurvey> surveys);
 
-    boolean  importSurvey(MultipartFile file);
+    boolean  importSurvey(MultipartFile file, Integer surveyId);
 }

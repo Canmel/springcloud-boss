@@ -56,6 +56,10 @@
                                         <a class="close-link" data-toggle="tooltip" title="删除">
                                             <i class="fa fa-times"></i>
                                         </a>
+                                        <a class="close-link" data-toggle="tooltip" title="删除"
+                                           v-on:click="importSurvey()">
+                                            <i class="fa fa-upload"></i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="panel-body" v-on:click="showSurveyDetails(item)">
@@ -197,7 +201,6 @@
     </div>
 </div>
 
-
 <script src="/survey/js/validateIsMain.js"></script>
 <script>
     var vue = new Vue({
@@ -333,11 +336,9 @@
             },
             showSurveyDetails(item) {
                 if(item.state && item.state.value === 2) {
-                    sessionStorage.setItem('editParams', item.id);
-                    toPage('pages/survey/details_det.html')
+                    toPage('pages/survey/details_det.html', item.id)
                 }else {
-                    sessionStorage.setItem('editParams', item.id);
-                    toPage('pages/survey/details_new.html')
+                    toPage('pages/survey/details_new.html', item.id)
                 }
             }
         }
@@ -373,4 +374,5 @@
             }
         });
     });
+
 </script>

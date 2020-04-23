@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.toolkit.MapUtils;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.model.ZsOption;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -226,8 +227,8 @@ public class ExcelUtil {
      */
     private static void setFieldValue(Object obj, Field f, Workbook wookbook, Cell cell, Map<String, List> translater) {
         List<String> keys = null;
-        List<Object> values = null;
-        if(MapUtils.isNotEmpty(translater)) {
+        List<Integer> values = null;
+        if (MapUtils.isNotEmpty(translater)) {
             keys = translater.get("keys");
             values = translater.get("values");
         }
@@ -236,26 +237,49 @@ public class ExcelUtil {
             if (f.getType() == byte.class || f.getType() == Byte.class) {
                 f.set(obj, Byte.parseByte(cell.getStringCellValue()));
             } else if (f.getType() == int.class || f.getType() == Integer.class) {
-                f.set(obj, Integer.parseInt(cell.getStringCellValue()));
+                String value = cell.getStringCellValue();
+                f.set(obj, doTrans(value, keys, values));
             } else if (f.getType() == Double.class || f.getType() == double.class) {
                 f.set(obj, Double.parseDouble(cell.getStringCellValue()));
             } else if (f.getType() == BigDecimal.class) {
                 f.set(obj, new BigDecimal(cell.getStringCellValue()));
             } else if (f.getType() == Date.class) {
                 f.set(obj, HSSFDateUtil.getJavaDate(Double.parseDouble(cell.getStringCellValue())));
+            } else if (f.getType() == boolean.class || f.getType() == Boolean.class) {
+                String value = cell.getStringCellValue();
+                f.set(obj, doTransBoolean(value));
             } else {
                 Object value = cell.getStringCellValue();
-                if(!CollectionUtils.isEmpty(keys)) {
-                    int keyIndex = keys.indexOf(value);
-                    if(keyIndex > -1 && !ObjectUtils.isEmpty(values.get(keyIndex))) {
-                        value = values.get(keyIndex);
-                    }
-                }
                 f.set(obj, value);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Integer doTrans(String o, List keys, List<Integer> values) {
+        Integer result = null;
+        try {
+            if (o == null || o.equals("")) {
+                return result;
+            }
+            result = Integer.parseInt(o);
+        } catch (NumberFormatException e) {
+            if (!CollectionUtils.isEmpty(keys)) {
+                int keyIndex = keys.indexOf(o);
+                if (keyIndex > -1 && !ObjectUtils.isEmpty(values.get(keyIndex))) {
+                    result = values.get(keyIndex);
+                }
+            }
+        }
+        return result;
+    }
+
+    public static Boolean doTransBoolean(String o) {
+        if ("是".equals(o)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -295,7 +319,7 @@ public class ExcelUtil {
         StringBuffer stringBuffer = new StringBuffer("Q");
         stringBuffer.append(qIndex).append(".").append(name);
         String result = stringBuffer.toString();
-        if(result.indexOf("?") > -1) {
+        if (result.indexOf("?") > -1) {
             result = result.replace("?", "？");
         }
         return result;
@@ -394,6 +418,7 @@ public class ExcelUtil {
 
     /**
      * 判断文件格式
+     *
      * @param in
      * @param fileName
      * @return
@@ -403,7 +428,7 @@ public class ExcelUtil {
         Workbook book = null;
         String filetype = fileName.substring(fileName.lastIndexOf("."));
 
-        if(".xls".equals(filetype)) {
+        if (".xls".equals(filetype)) {
             book = new HSSFWorkbook(in);
         } else if (".xlsx".equals(filetype)) {
             book = new XSSFWorkbook(in);

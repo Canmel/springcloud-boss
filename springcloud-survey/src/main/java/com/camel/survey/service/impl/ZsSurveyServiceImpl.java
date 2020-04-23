@@ -40,7 +40,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -149,8 +152,8 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result save(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        entity.setCreatorId(member.getId());
+        SysUser user = applicationToolsUtils.currentUser();
+        entity.setCreatorId(user.getUid());
         if (insert(entity)) {
             List<RelSurveyExam> relSurveyExamList = new ArrayList<>();
             if (ObjectUtils.isEmpty(entity.getExams())) {
@@ -338,22 +341,29 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     }
 
     @Override
-    public boolean importSurvey(MultipartFile file) {
+    @Transactional
+    public boolean importSurvey(MultipartFile file, Integer surveyId) {
+        SysUser user = applicationToolsUtils.currentUser();
         List<ZsQuestion> questions = ExcelUtil.readExcelObject(file, ZsQuestion.class, ZsQuestion.loadTranslate());
+        questions.forEach(q -> {
+            q.setSurveyId(surveyId);
+            q.setCreatorId(user.getUid());
+        });
         List<ZsOption> options = ExcelUtil.readExcelObject(file, ZsOption.class, ZsOption.loadTranslate());
-
-        try {
-            Workbook workbook = ExcelUtil.getWorkbook(file.getInputStream(), file.getOriginalFilename());
-            boolean hasNextSheet = true;
-            int sheetIndex = 0;
-            while (hasNextSheet) {
-                Sheet sheet = workbook.getSheetAt(sheetIndex);
-            }
-        }catch (IOException e) {
-            throw new ExcelImportException();
-        }catch (Exception e) {
-            throw new RuntimeException("未知错误");
-        }
-        return false;
+        List<ZsQuestion> uniqueQuestions = questions.stream().collect(
+                Collectors.collectingAndThen(Collectors.toCollection(
+                        () -> new TreeSet<>(Comparator.comparing(o -> o.getOrderNum()))), ArrayList::new)
+        );
+        questionService.insertBatch(uniqueQuestions);
+        uniqueQuestions.forEach(q -> {
+            options.forEach((o) -> {
+                if(q.getName().equals(o.getQuestion())){
+                    o.setQuestionId(q.getId());
+                    o.setCurrent(0);
+                    o.setCreatorId(user.getUid());
+                }
+            });
+        });
+        return optionService.insertBatch(options);
     }
 }
