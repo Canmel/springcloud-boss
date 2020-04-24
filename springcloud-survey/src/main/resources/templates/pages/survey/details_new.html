@@ -75,6 +75,10 @@
                                         <p class="label">{{question.name}}</p>
 
                                         <span style="float: right;">
+                                                        <span class="label label-info"
+                                                              v-on:click="questionCopy(question)">
+                                                            <p class="fa" style="display: inline;">复制</p>
+                                                        </span>
 														<span class="label label-success"
                                                               v-on:click="up($event, question)">
 															<p class="fa fa-arrow-up"></p>
@@ -127,7 +131,7 @@
 
                                     <div class="col-sm-11" v-if="question.type === 3">
                                         <div class="radio">
-                                            <label>{{zsoption.name}}</label>
+                                            <label><input type="text"></label>
                                             <span style="float: right;">
 															<span class="label label-success"
                                                                   v-on:click="upOption($event, zsoption)">
@@ -183,7 +187,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">题目类型</label>
                             <div class="col-sm-9">
-                                <select class="form-control m-b" disabled text="text" name="type"
+                                <select class="form-control m-b" text="text" name="type"
                                         v-model="selectedQuestion.type">
                                     <option value="1">单选题</option>
                                     <option value="2">多选题</option>
@@ -300,6 +304,35 @@
         mounted() {
         },
         methods: {
+            questionCopy(question){
+                event.stopPropagation();
+                let tmpQ = {
+                    id: question.id,
+                    orderNum: question.orderNum+1,
+                    name: question.name,
+                    type: question.type,
+                    surveyId: question.surveyId,
+                    maxSelect: question.maxSelect,
+                    minSelect: question.minSelect
+                };
+                let options=this.getOptionsByQuestion(question.orderNum);
+                let tmpOptions=[];
+                for (let j = 0; j < options.length; j++) {
+                    let o = options[j];
+                    let opt = {
+                        orderNum: o.orderNum,
+                        name: o.name,
+                        target: o.target,
+                        hasRemark: o.hasRemark,
+                        ignoreNum: o.ignoreNum,
+                        configration: o.configration, // 选项配额
+                        questionOrderNum: tmpQ.orderNum
+                    };
+                    tmpOptions.push(opt);
+                }
+                this.questions.push(tmpQ);
+                this.zsoptions = this.zsoptions.concat(tmpOptions);
+            },
             loadQuestions() {
                 let that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
@@ -388,7 +421,6 @@
             getOptionsByQuestion(questionOrderNum) {
                 let options = [];
                 $.each(this.zsoptions, function (index, item) {
-                    console.log(item);
                     if (item.questionOrderNum === questionOrderNum) {
                         options.push(item);
                     }
@@ -446,7 +478,6 @@
                 this.showModal('optionModal');
             },
             up(e, question) {
-                console.log(question);
                 let currentIndex = this.questions.indexOf(question);
                 e.stopPropagation();
                 if (currentIndex == 0) {
@@ -461,7 +492,6 @@
                 this.updateOption(question, true);
             },
             down(e, question) {
-                console.log(question);
                 let currentIndex = this.questions.indexOf(question);
                 e.stopPropagation();
                 if (currentIndex == this.questions.length - 1) {
@@ -495,7 +525,6 @@
                         this.$set(this.zsoptions, i, this.zsoptions[i]);
                     }
                 }
-
             },
             questionNameClickHandler(question) {
                 this.selectedQuestion = question;
@@ -505,7 +534,6 @@
                 $("#" + id).modal('show');
             },
             dragstart(e, data) {
-                console.log(e, data);
                 e.dataTransfer.setData('item', data.type)
             },
             dragend(e) {
