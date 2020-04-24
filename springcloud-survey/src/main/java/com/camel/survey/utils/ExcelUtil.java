@@ -6,16 +6,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.baomidou.mybatisplus.toolkit.MapUtils;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.model.ZsOption;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.TextAlign;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -94,7 +98,98 @@ public class ExcelUtil {
                         // 获取单元格
                         cell = row.getCell(coumnIndex);
                         // 设置属性
-                        setFieldValue(obj, f, wookbook, cell);
+                        setFieldValue(obj, f, wookbook, cell, null);
+                    }
+                }
+                System.out.println(obj);
+                // 添加到集合中
+                list.add(obj);
+            } catch (InstantiationException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ExcelImportException("excel文件内容出错");
+            }
+        }
+        try {
+            //释放资源
+            wookbook.close();
+            inputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static <T extends Object> List<T> readExcelObject(MultipartFile file, Class<T> clazz, Map<String, List> translater) {
+
+        // 存储excel数据
+        List<T> list = new ArrayList<>();
+        Workbook wookbook = null;
+        InputStream inputStream = null;
+
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            throw new ExcelImportException("文件读取异常");
+        }
+
+        // 根据excel文件版本获取工作簿
+        if (file.getOriginalFilename().endsWith(".xls")) {
+            wookbook = xls(inputStream);
+        } else if (file.getOriginalFilename().endsWith(".xlsx")) {
+            wookbook = xlsx(inputStream);
+        } else {
+            throw new ExcelImportException("非excel文件");
+        }
+
+        // 得到一个工作表
+        Sheet sheet = wookbook.getSheetAt(0);
+
+        // 获取行总数
+        int rows = sheet.getLastRowNum() + 1;
+        Row row;
+
+        // 获取类所有属性
+        Field[] fields = clazz.getDeclaredFields();
+
+        T obj = null;
+        int coumnIndex = 0;
+        Cell cell = null;
+        ExcelAnnotation excelAnnotation = null;
+        for (int i = 1; i < rows; i++) {
+            // 获取excel行
+            row = sheet.getRow(i);
+            //此处用来过滤空行
+            Cell cell0 = row.getCell(0);
+            if (ObjectUtils.isEmpty(cell0)) {
+                continue;
+            }
+            cell0.setCellType(CellType.STRING);
+            Cell cell1 = row.getCell(1);
+            cell1.setCellType(CellType.STRING);
+            if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
+                continue;
+            }
+            try {
+                // 创建实体
+                obj = clazz.newInstance();
+                for (Field f : fields) {
+                    // 设置属性可访问
+                    f.setAccessible(true);
+                    // 判断是否是注解
+                    if (f.isAnnotationPresent(ExcelAnnotation.class)) {
+                        // 获取注解
+                        excelAnnotation = f.getAnnotation(ExcelAnnotation.class);
+                        // 获取列索引
+                        coumnIndex = excelAnnotation.columnIndex();
+                        // 获取单元格
+                        cell = row.getCell(coumnIndex);
+                        // 设置属性
+                        setFieldValue(obj, f, wookbook, cell, translater);
                     }
                 }
                 System.out.println(obj);
@@ -130,25 +225,61 @@ public class ExcelUtil {
      * @return
      * @throws RuntimeException
      */
-    private static void setFieldValue(Object obj, Field f, Workbook wookbook, Cell cell) {
+    private static void setFieldValue(Object obj, Field f, Workbook wookbook, Cell cell, Map<String, List> translater) {
+        List<String> keys = null;
+        List<Integer> values = null;
+        if (MapUtils.isNotEmpty(translater)) {
+            keys = translater.get("keys");
+            values = translater.get("values");
+        }
         try {
             cell.setCellType(CellType.STRING);
             if (f.getType() == byte.class || f.getType() == Byte.class) {
                 f.set(obj, Byte.parseByte(cell.getStringCellValue()));
             } else if (f.getType() == int.class || f.getType() == Integer.class) {
-                f.set(obj, Integer.parseInt(cell.getStringCellValue()));
+                String value = cell.getStringCellValue();
+                f.set(obj, doTrans(value, keys, values));
             } else if (f.getType() == Double.class || f.getType() == double.class) {
                 f.set(obj, Double.parseDouble(cell.getStringCellValue()));
             } else if (f.getType() == BigDecimal.class) {
                 f.set(obj, new BigDecimal(cell.getStringCellValue()));
             } else if (f.getType() == Date.class) {
                 f.set(obj, HSSFDateUtil.getJavaDate(Double.parseDouble(cell.getStringCellValue())));
+            } else if (f.getType() == boolean.class || f.getType() == Boolean.class) {
+                String value = cell.getStringCellValue();
+                f.set(obj, doTransBoolean(value));
             } else {
-                f.set(obj, cell.getStringCellValue());
+                Object value = cell.getStringCellValue();
+                f.set(obj, value);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Integer doTrans(String o, List keys, List<Integer> values) {
+        Integer result = null;
+        try {
+            if (o == null || o.equals("")) {
+                return result;
+            }
+            result = Integer.parseInt(o);
+        } catch (NumberFormatException e) {
+            if (!CollectionUtils.isEmpty(keys)) {
+                int keyIndex = keys.indexOf(o);
+                if (keyIndex > -1 && !ObjectUtils.isEmpty(values.get(keyIndex))) {
+                    result = values.get(keyIndex);
+                }
+            }
+        }
+        return result;
+    }
+
+    public static Boolean doTransBoolean(String o) {
+        if ("是".equals(o)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -188,7 +319,7 @@ public class ExcelUtil {
         StringBuffer stringBuffer = new StringBuffer("Q");
         stringBuffer.append(qIndex).append(".").append(name);
         String result = stringBuffer.toString();
-        if(result.indexOf("?") > -1) {
+        if (result.indexOf("?") > -1) {
             result = result.replace("?", "？");
         }
         return result;
@@ -283,6 +414,29 @@ public class ExcelUtil {
         HSSFCell cell = row.createCell(cIndex);
         cell.setCellStyle(createCellStyle(row.getSheet().getWorkbook()));
         return cell;
+    }
+
+    /**
+     * 判断文件格式
+     *
+     * @param in
+     * @param fileName
+     * @return
+     */
+    public static Workbook getWorkbook(InputStream in, String fileName) throws Exception {
+
+        Workbook book = null;
+        String filetype = fileName.substring(fileName.lastIndexOf("."));
+
+        if (".xls".equals(filetype)) {
+            book = new HSSFWorkbook(in);
+        } else if (".xlsx".equals(filetype)) {
+            book = new XSSFWorkbook(in);
+        } else {
+            throw new Exception("请上传excel文件！");
+        }
+
+        return book;
     }
 
 }

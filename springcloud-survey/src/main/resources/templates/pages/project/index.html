@@ -4,7 +4,7 @@
             <h5>项目管理</h5>
             <div class="ibox-tools">
                 <a :href="applicationContextRootPath + 'pages/project/add.html'"
-                   data-pjax class="btn btn-primary btn-xs">新建项目</a>
+                   data-pjax class="btn btn-primary btn-xs" v-if="result">新建项目</a>
             </div>
         </div>
         <div class="ibox-content">
@@ -40,8 +40,8 @@
                         <td>{{item.creator.username}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs">修改</button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs">删除
+                            <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs" v-if="result">修改</button>
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="result">删除
                             </button>
                         </td>
                     </tr>
@@ -67,10 +67,21 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
             this.pagequery();
+            this.master = sessionStorage.getItem('master');
+
+            this.result = this.admin.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
         },
         methods: {
             pagequery: function () {

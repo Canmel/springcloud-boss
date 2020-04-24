@@ -13,6 +13,9 @@ variables:
 docker-package:
   image: maven:3-jdk-8
   stage: package
+    only:
+    - master
+    - preprod
   tags:
     - packager
   script:

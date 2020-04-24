@@ -38,6 +38,8 @@ public interface ZsSignService extends IService<ZsSign> {
      */
     PageInfo<ZsSign> selectPage(ZsSign entity);
 
+
+
     /**
      * 通过用户ID选择投递记录
      * @param id
@@ -48,4 +50,6 @@ public interface ZsSignService extends IService<ZsSign> {
     ZsSign selectLastByUser(Integer id);
 
     List<ZsSign> allInSurvey(Integer id);
+
+    Result userZsSign(String username,String phone);
 }

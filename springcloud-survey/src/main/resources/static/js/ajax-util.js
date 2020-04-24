@@ -111,7 +111,13 @@ AJAX = {
         if(sessionStorage.getItem("access_token")) {
             url = url + '?access_token=' + sessionStorage.getItem("access_token");
         }
-        __ajax(url, data, success, "post", "multipart/form-data; charset=utf-8;", false, false);
+        $.ajax({
+            type: "POST",           //因为是传输文件，所以必须是post
+            url: 'survey/' + url,         //对应的后台处理类的地址
+            data: data,
+            processData: false,
+            success: success()
+        });
     },
     GET:function(url, data, success){
       __ajax(url, data, success, "get");

@@ -146,7 +146,7 @@
                                                 </td>
                                                 <td><span>5.00</span>元</td>
                                                 <td> 2020-02-10 07:23:11</td>
-                                                <td class="client-status"><span class="label label-info">调查</span>
+                                                <td class="client-status"><span class="label label-info" v-if="resultIn">调查</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -155,7 +155,7 @@
                                                 </td>
                                                 <td><span>5.00</span>元</td>
                                                 <td> 2020-02-10 07:23:11</td>
-                                                <td class="client-status"><span class="label label-info">分享</span>
+                                                <td class="client-status"><span class="label label-info" v-if="resultIn">分享</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -164,7 +164,7 @@
                                                 </td>
                                                 <td><span>100.00</span>元</td>
                                                 <td> 2020-02-10 08:33:09</td>
-                                                <td class="client-status"><span class="label label-danger">提现</span>
+                                                <td class="client-status"><span class="label label-danger" v-if="resultIn">提现</span>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -239,11 +239,22 @@
         data: {
             applicationContextRootPath: '/survey/',
             profile: {},
-            works: []
+            works: [],
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            resultIn: false,//表示访客权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
             this.loadMe();
             this.loadWorks();
+            this.master = sessionStorage.getItem('master');
+
+            this.resultIn = this.interviewer.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
         },
         methods: {
             draw(item) {

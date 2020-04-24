@@ -8,6 +8,7 @@ import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -105,4 +106,5 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
 
     ZsSurvey getByNameFromList(String name, List<ZsSurvey> surveys);
 
+    boolean  importSurvey(MultipartFile file, Integer surveyId);
 }

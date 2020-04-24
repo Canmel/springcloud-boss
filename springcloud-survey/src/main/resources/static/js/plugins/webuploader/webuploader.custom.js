@@ -1990,6 +1990,7 @@
              * });
              */
             addBtn: function( pick ) {
+                console.log('22222222222222222222222',pick)
                 var me = this,
                     opts = me.options,
                     accept = opts.accept,

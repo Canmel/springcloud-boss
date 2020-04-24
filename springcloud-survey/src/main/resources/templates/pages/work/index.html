@@ -5,9 +5,9 @@
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a v-on:click="importData"
-                       data-pjax class="btn btn-primary btn-xs">导入记录</a>
+                       data-pjax class="btn btn-primary btn-xs" v-if="result">导入记录</a>
                     <a :href="applicationContextRootPath + 'pages/project/add.html'"
-                       data-pjax class="btn btn-success btn-xs">下载模板</a>
+                       data-pjax class="btn btn-success btn-xs" v-if="result">下载模板</a>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                             <span v-if="item.gain === 1">已提取</span>
                         </td>
                         <td>
-                            <a class="btn btn-circle btn-warning">查看</a>
+                            <a class="btn btn-circle btn-warning" v-if="resultDev">查看</a>
                         </td>
                     </tr>
                     </tbody>
@@ -111,9 +111,20 @@
             },
             file: null,
             items: [],
-            selectedItem: {}
+            selectedItem: {},
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
+            this.master = sessionStorage.getItem('master');
+
+            this.result = this.admin.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
         },
         methods: {
             selectFile() {

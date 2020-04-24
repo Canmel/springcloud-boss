@@ -55,10 +55,10 @@
 
                             <span class="fa fa-question-circle" title="这里是提示内容" style="cursor: pointer;"
                                   v-on:click="showRequire(item)"></span>
-                            <button type="button" v-on:click="signUp(item)" v-if="isShowApply(item)"
-                                    class="btn btn-primary btn-xs">报名参加
+                            <button type="button" v-on:click="signUp(item)" v-if="isShowApply(item) &&resultIn"
+                                    class="btn btn-primary btn-xs" >报名参加
                             </button>
-                            <button type="button" v-on:click="start(item)" v-if="isShowStart(item)"
+                            <button type="button" v-on:click="start(item)" v-if="isShowStart(item) && resultIn"
                                     class="btn btn-primary btn-xs">开始
                             </button>
                         </td>
@@ -115,9 +115,20 @@
                 size: 10,//每页显示条目个数不传默认10
             },
             items: [{}],
-            selectedItem: {}
+            selectedItem: {},
+            master: [],//接受权限数组
+            admin: ['admin',''],
+            DevOps: ['DevOps','admin'],
+            interviewer: ['interviewer','DevOps','admin'],
+            resultIn: false,//表示访客权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
+            this.master = sessionStorage.getItem('master');
+
+            this.resultIn = this.interviewer.filter(v => this.master.includes(v));
+
+            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
         },
         methods: {
             leaveRoom() {

@@ -11,6 +11,7 @@ import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.*;
+import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.exceptions.SurveyNotValidException;
@@ -19,9 +20,13 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -30,10 +35,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -142,8 +152,8 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result save(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        entity.setCreatorId(member.getId());
+        SysUser user = applicationToolsUtils.currentUser();
+        entity.setCreatorId(user.getUid());
         if (insert(entity)) {
             List<RelSurveyExam> relSurveyExamList = new ArrayList<>();
             if (ObjectUtils.isEmpty(entity.getExams())) {
@@ -328,5 +338,32 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             }
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public boolean importSurvey(MultipartFile file, Integer surveyId) {
+        SysUser user = applicationToolsUtils.currentUser();
+        List<ZsQuestion> questions = ExcelUtil.readExcelObject(file, ZsQuestion.class, ZsQuestion.loadTranslate());
+        questions.forEach(q -> {
+            q.setSurveyId(surveyId);
+            q.setCreatorId(user.getUid());
+        });
+        List<ZsOption> options = ExcelUtil.readExcelObject(file, ZsOption.class, ZsOption.loadTranslate());
+        List<ZsQuestion> uniqueQuestions = questions.stream().collect(
+                Collectors.collectingAndThen(Collectors.toCollection(
+                        () -> new TreeSet<>(Comparator.comparing(o -> o.getOrderNum()))), ArrayList::new)
+        );
+        questionService.insertBatch(uniqueQuestions);
+        uniqueQuestions.forEach(q -> {
+            options.forEach((o) -> {
+                if(q.getName().equals(o.getQuestion())){
+                    o.setQuestionId(q.getId());
+                    o.setCurrent(0);
+                    o.setCreatorId(user.getUid());
+                }
+            });
+        });
+        return optionService.insertBatch(options);
     }
 }
