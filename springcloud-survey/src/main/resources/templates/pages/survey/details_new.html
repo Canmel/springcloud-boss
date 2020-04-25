@@ -330,7 +330,7 @@
 
 
 <script>
-    new Vue({
+    var detailsVue = new Vue({
         el: '#subContainer',
         data: {
             questions: [],
@@ -978,6 +978,8 @@
                     stats = uploader.getStats();
                     if (stats.successNum) {
                         alert('上传成功');
+                        $('#importModal').modal('hide');
+                        detailsVue.loadQuestions();
                     } else {
                         // 没有成功的图片，重设
                         state = 'done';
@@ -1058,7 +1060,6 @@
                 uploader.upload();
             } else if (state === 'uploading') {
                 uploader.stop();
-                $('#importModal').modal('hide');
             }
         });
 
