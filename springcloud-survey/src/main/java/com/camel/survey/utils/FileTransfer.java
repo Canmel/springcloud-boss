@@ -9,8 +9,15 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.camel.survey.model.ZsAnswer;
+import com.camel.survey.service.MyFileTransterBackUpdate;
+import com.camel.survey.service.impl.FiletransCallBack;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+
+import java.util.List;
 
 public class FileTransfer {
+    public static final String BASE_RECORD_URL = "https://tj.svdata.cn/yscrm/servlet/filedown";
     // 地域ID，常量内容，请勿改变
     public static final String REGIONID = "cn-shanghai";
     public static final String ENDPOINTNAME = "cn-shanghai";
@@ -29,6 +36,7 @@ public class FileTransfer {
     public static final String KEY_TASK_ID = "TaskId";
     public static final String KEY_STATUS_TEXT = "StatusText";
     public static final String KEY_RESULT = "Result";
+    public static final String KEY_SENTENCES = "Sentences";
     // 状态值
     public static final String STATUS_SUCCESS = "SUCCESS";
     private static final String STATUS_RUNNING = "RUNNING";
@@ -37,8 +45,13 @@ public class FileTransfer {
     // 阿里云鉴权client
     public static IAcsClient client;
 
+    private static FileTransfer fileTransfer = null;
+
     public static FileTransfer getInstance(String accessKeyId, String accessKeySecret) {
-        return new FileTransfer(accessKeyId, accessKeySecret);
+        if(ObjectUtils.isEmpty(fileTransfer)) {
+            return new FileTransfer(accessKeyId, accessKeySecret);
+        }
+        return fileTransfer;
     }
 
     public FileTransfer(String accessKeyId, String accessKeySecret) {
@@ -78,6 +91,10 @@ public class FileTransfer {
         taskObject.put(KEY_VERSION, "4.0");
         // 设置是否输出词信息，默认为false，开启时需要设置version为4.0及以上
         taskObject.put(KEY_ENABLE_WORDS, true);
+
+        taskObject.put("enable_callback", true);
+        taskObject.put("callback_url", "http://122.226.162.136:8080/survey/zsSurvey/testCallback/result");
+
         String task = taskObject.toJSONString();
         System.out.println(task);
         // 设置以上JSON字符串为Body参数
@@ -157,10 +174,18 @@ public class FileTransfer {
     }
 
 
-    public boolean doTrans(ZsAnswer zsAnswer, String appkey) {
-        String taskId = this.submitFileTransRequest(appkey, "https://tj.svdata.cn/yscrm/servlet/filedown?filename=/YunEasy/FsPbx/CTI/DATA/recoredings/2020-04-26/cti_record_801_1587891874284875_aa5100ca-8569-4b93-9396-361d2315e215.mp3&showname=801_1587891874284875_aa5100ca-8569-4b93-9396-361d2315e215");
+    public boolean doTrans(ZsAnswer zsAnswer, String appkey, MyFileTransterBackUpdate callBack) {
+        List<String> fileNameList = CollectionUtils.arrayToList(zsAnswer.getRecord().split("/"));
+        String fileName = fileNameList.get(fileNameList.size() - 1);
+
+        String fileLink = BASE_RECORD_URL + "?filename=" + zsAnswer.getRecord();
+
+        fileLink += "&showname=" + fileName.split("\\.")[0];
+        String taskId = this.submitFileTransRequest(appkey, fileLink);
         if (taskId != null) {
+            // TODO 下一步可以保存任务ID到样本上,增加字段 taskID task执行结果
             System.out.println("录音文件识别请求成功，task_id: " + taskId);
+
         }
         else {
             System.out.println("录音文件识别请求失败！");
@@ -170,6 +195,7 @@ public class FileTransfer {
         String result = this.getFileTransResult(taskId);
         if (result != null) {
             System.out.println("录音文件识别结果查询成功：" + result);
+            callBack.update(result);
         }
         else {
             System.out.println("录音文件识别结果查询失败！");

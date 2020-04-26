@@ -571,7 +571,7 @@
         computed: {},
         methods: {
             qualityesting() {
-                AJAX.GET("zsSurvey/test?id=" + this.survey.id, {}, function (resp) {
+                AJAX.GET("zsSurvey/test/" + this.survey.id, {}, function (resp) {
                     toastr.success(resp.msg);
                 })
             },

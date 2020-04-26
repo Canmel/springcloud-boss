@@ -86,10 +86,22 @@
 
     <select id="selectDetailsBySurveyId" resultMap="BaseFullResultMap">
         select
-            <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from zs_answer
         where
-            survey_id = #{id}
+        survey_id = #{id}
         limit #{rowNum}, 200
+    </select>
+
+    <select id="selectAllWithConversation" resultMap="BaseResultMap">
+        SELECT
+            answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.seat, answer.created_at, answer.creator, answer.valid,
+            cdrinfo.record_file as record
+        FROM
+        zs_answer answer
+        LEFT JOIN zs_cdrinfo cdrinfo ON FIND_IN_SET(answer.agent_UUID, cdrinfo.uuids) > 0
+        WHERE
+        answer.survey_id = #{id}
+        AND answer.agent_UUID != '';
     </select>
 </mapper>

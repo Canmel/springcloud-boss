@@ -11,14 +11,19 @@ import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsSurveyState;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.service.MyFileTransterBackUpdate;
 import com.camel.survey.service.ZsAnswerService;
 import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.service.impl.FiletransCallBack;
 import com.camel.survey.utils.FileTransfer;
 import com.camel.survey.vo.ZsAnswerSave;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -54,6 +59,9 @@ public class ZsSurveyController extends BaseCommonController {
 
     @Autowired
     private ZsAnswerService zsAnswerService;
+
+    @Autowired
+    private MyFileTransterBackUpdate myFileTransterBackUpdate;
 
     /**
      * 分页查询
@@ -170,13 +178,20 @@ public class ZsSurveyController extends BaseCommonController {
     @GetMapping("/test/{id}")
     public Result test(@PathVariable Integer id) {
         Wrapper<ZsAnswer> answerWrapper = new EntityWrapper<ZsAnswer>();
-        List<ZsAnswer> zsAnswerList = zsAnswerService.selectList(answerWrapper);
-        FileTransfer transfer = new FileTransfer("accessKeyId", "accessKeySecret");
-        for (ZsAnswer answer: zsAnswerList) {
-            FileTransfer.getInstance("accessKeyId", "accessKeySecret").doTrans(answer, "appkey");
-
+        List<ZsAnswer> zsAnswerList = zsAnswerService.selectAllWithConversation(id);
+        for (ZsAnswer answer : zsAnswerList) {
+            if (!StringUtils.isEmpty(answer.getRecord())) {
+                FileTransfer.getInstance("LTAIzMblfN958hdS", "JCvyOFHQGk2nxXspac0Cm3mnz818AG")
+                        .doTrans(answer, "adgQwpK0xEsoIUrf", myFileTransterBackUpdate);
+            }
         }
         return ResultUtil.success("发起成功");
+    }
+
+    @AuthIgnore
+    @PostMapping("/testCallback/result")
+    public void GetResult(HttpServletRequest request) {
+        myFileTransterBackUpdate.update(request);
     }
 
     /**

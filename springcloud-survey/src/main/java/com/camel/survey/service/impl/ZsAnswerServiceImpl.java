@@ -158,4 +158,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         json.put("optId", optIds);
         this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Stock.Add.Topic"), json);
     }
+
+    @Override
+    public List<ZsAnswer> selectAllWithConversation(Integer id) {
+        return mapper.selectAllWithConversation(id);
+    }
 }

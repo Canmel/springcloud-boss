@@ -1,9 +1,8 @@
-package com.camel.survey.utils;
+package com.camel.survey.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.camel.survey.service.MyFileTransterBackUpdate;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -11,16 +10,16 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@RequestMapping("/filetrans/callback")
-@RestController
-public class FiletransCallBack {
+@Service
+public class FiletransCallBack implements MyFileTransterBackUpdate {
     // 以4开头的状态码是客户端错误
     private static final Pattern PATTERN_CLIENT_ERR = Pattern.compile("4105[0-9]*");
     // 以5开头的状态码是服务端错误
     private static final Pattern PATTERN_SERVER_ERR = Pattern.compile("5105[0-9]*");
+
     // 必须是post的方式
-    @RequestMapping(value = "result", method = RequestMethod.POST)
-    public void GetResult(HttpServletRequest request) {
+    @Override
+    public void update(HttpServletRequest request) {
         byte [] buffer = new byte[request.getContentLength()];
         ServletInputStream in = null;
         try {
@@ -72,5 +71,10 @@ public class FiletransCallBack {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void update(String result) {
+        System.out.println("更新完成" + result);
     }
 }
