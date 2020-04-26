@@ -1,5 +1,7 @@
 package com.camel.survey.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
@@ -7,38 +9,40 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsSurveyState;
+import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.service.ZsAnswerService;
 import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.utils.FileTransfer;
 import com.camel.survey.vo.ZsAnswerSave;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
- * 　　　　　　　┃         ┃ 　
+ * 　　　　　　　┃         ┃
  * 　　　　　　　┃    ━    ┃
  * 　　　　　　　┃  >   <  ┃
  * 　　　　　　　┃         ┃
  * 　　　　　　　┃... ⌒ ...┃
  * 　　　　　　　┃         ┃
- *             ┗━┓     ┏━┛
- *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
- *               ┃     ┃   神兽保佑,代码无bug
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 前端控制器>
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┗━━━━┓   @author baily
- *               ┃          ┣┓
- *               ┃          ┏┛  @since 1.0
- *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-12-06
- *                ┗┻┛    ┗┻┛
+ * ┗━┓     ┏━┛
+ * ┃     ┃　Code is far away from bug with the animal protecting
+ * ┃     ┃   神兽保佑,代码无bug
+ * ┃     ┃
+ * ┃     ┃
+ * ┃     ┃        < 前端控制器>
+ * ┃     ┃
+ * ┃     ┗━━━━┓   @author baily
+ * ┃          ┣┓
+ * ┃          ┏┛  @since 1.0
+ * ┗┓┓┏━━━━┳┓┏┛
+ * ┃┫┫    ┃┫┫    @date 2019-12-06
+ * ┗┻┛    ┗┻┛
  */
 @RestController
 @RequestMapping("/zsSurvey")
@@ -47,6 +51,9 @@ public class ZsSurveyController extends BaseCommonController {
 
     @Autowired
     private ZsSurveyService service;
+
+    @Autowired
+    private ZsAnswerService zsAnswerService;
 
     /**
      * 分页查询
@@ -90,7 +97,7 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     @PutMapping("/close/{id}")
-    public Result close(@PathVariable Integer id){
+    public Result close(@PathVariable Integer id) {
         ZsSurvey survey = service.selectById(id);
         survey.setState(ZsSurveyState.CLOSED);
         service.updateById(survey);
@@ -104,9 +111,10 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 获取问卷的所有问题和选项
+     *
      * @param id
      * @return Result 结果集包含vo.ZsQuestionSave
-     *  ZsQuestionSave中包含question and option
+     * ZsQuestionSave中包含question and option
      */
     @AuthIgnore
     @GetMapping("/questionAndOptions/{id}")
@@ -117,15 +125,16 @@ public class ZsSurveyController extends BaseCommonController {
     /**
      * 获取问卷的所有问题和选项
      * 为了问卷
+     *
      * @param id
      * @return Result 结果集包含vo.ZsQuestionSave
-     *  ZsQuestionSave中包含question and option
+     * ZsQuestionSave中包含question and option
      */
     @AuthIgnore
     @GetMapping("/questions/{id}")
     public Result loadQuestionSurvey(@PathVariable Integer id) {
         ZsSurvey survey = service.selectById(id);
-        if(!survey.getState().equals(ZsSurveyState.COLLECTING)) {
+        if (!survey.getState().equals(ZsSurveyState.COLLECTING)) {
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "该问卷尚未开始收集，请联系管理员");
         }
         return ResultUtil.success(service.questions(id));
@@ -133,6 +142,7 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 开始调查
+     *
      * @param id
      * @return
      */
@@ -143,6 +153,7 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 申请参加
+     *
      * @return
      */
     @GetMapping("/sign/{id}")
@@ -154,6 +165,18 @@ public class ZsSurveyController extends BaseCommonController {
     public Result valid(@RequestBody ZsAnswerSave zsAnswerSave) {
 
         return service.valid(zsAnswerSave);
+    }
+
+    @GetMapping("/test/{id}")
+    public Result test(@PathVariable Integer id) {
+        Wrapper<ZsAnswer> answerWrapper = new EntityWrapper<ZsAnswer>();
+        List<ZsAnswer> zsAnswerList = zsAnswerService.selectList(answerWrapper);
+        FileTransfer transfer = new FileTransfer("accessKeyId", "accessKeySecret");
+        for (ZsAnswer answer: zsAnswerList) {
+            FileTransfer.getInstance("accessKeyId", "accessKeySecret").doTrans(answer, "appkey");
+
+        }
+        return ResultUtil.success("发起成功");
     }
 
     /**

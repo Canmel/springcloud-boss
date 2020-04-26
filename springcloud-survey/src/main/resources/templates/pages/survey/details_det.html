@@ -61,6 +61,7 @@
             <div class="ibox-title">
                 <h5>{{survey.name}}</h5>
                 <div class="ibox-tools">
+                    <a v-on:click=qualityesting() class="btn btn-success btn-xs">质检</a>
                     <a v-on:click=backToListPage() class="btn btn-success btn-xs">返回</a>
                     <a v-on:click=closeSurvey(survey) v-if="survey.state === 2" class="btn btn-danger btn-xs">关闭</a>
                     <!--<a v-on:click=backToProjectDetails() class="btn btn-info btn-xs">项目详情</a>-->
@@ -569,6 +570,11 @@
         },
         computed: {},
         methods: {
+            qualityesting() {
+                AJAX.GET("zsSurvey/test?id=" + this.survey.id, {}, function (resp) {
+                    toastr.success(resp.msg);
+                })
+            },
             initZg() {
                 this.zg = new ZegoClient();
                 this.zg.setUserStateUpdate(true);

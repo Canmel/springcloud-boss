@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsAnswer">
         <id column="id" property="id"/>
         <result column="survey_id" property="surveyId"/>
+        <result column="agent_UUID" property="agentUUID"/>
         <result column="record" property="record"/>
         <result column="seat" property="seat"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
@@ -16,6 +17,7 @@
     <resultMap id="BaseFullResultMap" type="com.camel.survey.model.ZsAnswer">
         <id column="id" property="id"/>
         <result column="survey_id" property="surveyId"/>
+        <result column="agent_UUID" property="agentUUID"/>
         <result column="record" property="record"/>
         <result column="seat" property="seat"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
@@ -28,7 +30,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, survey_id, status, record, seat, created_at, creator, valid
+        id, survey_id, agent_UUID, status, record, seat, created_at, creator, valid
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

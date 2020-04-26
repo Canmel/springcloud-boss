@@ -463,7 +463,7 @@
 					setMonitorbarStatus(eventAgentNo,state);
 				}
 			}else if(methodType=="common_callin_bridge_ring"){//呼入弹屏
-				console.log("呼入弹屏")
+				console.log("呼入弹屏", jsonStr);
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
@@ -471,7 +471,7 @@
 					window.openUrl = url;
 				}
 			}else if(methodType=="manual_callout_agent_ring"){//呼出弹屏
-				console.log("外呼弹屏")
+                console.log("呼入弹屏", jsonStr);
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
@@ -485,6 +485,7 @@
 					window.openUrl = url;
 				}
 			}else if(methodType=="get_agentgroup_list"){//获取座席组列表
+                console.log("呼入弹屏", jsonStr);
 				var agentGroupNames = jsonStr.agentgroupname;
 				var agentGroupNums = jsonStr.agentgroupnum.split(",");
 				agentGroupStr = '[{"id":1,"pId":0,"name":"座席组","open":true,"isParent":true,"busid":"-1"}';//座席组信息

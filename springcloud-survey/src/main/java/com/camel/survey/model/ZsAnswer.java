@@ -76,6 +76,9 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     private String creator;
 
+    @TableField(value = "agent_UUID")
+    private String agentUUID;
+
     @TableField(exist = false)
     private List<ZsAnswerItem> items;
 

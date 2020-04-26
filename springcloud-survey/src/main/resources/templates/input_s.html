@@ -230,7 +230,8 @@
                     surveyId: this.getParams('surveyId'),
                     phone: this.getParams('phone'),
                     record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     if (resp.msg != '') {
                         alert(resp.msg);
@@ -420,7 +421,8 @@
                     surveyId: this.getParams('surveyId'),
                     phone: this.getParams('phone'),
                     record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     // alert(resp.msg);
                     $("#theForm").hide();
