@@ -15,10 +15,14 @@
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
-                               v-model="pageInfo.dname"> <span
+                        <input type="text" placeholder="请输入用户坐席号" class="input-sm form-control search-input"
+                               v-model="pageInfo.seatNum"> <span
                             class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="seatquerystart()"> 搜索</button></span>
+                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
+                               v-model="pageInfo.email"> <span
+                            class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequerystart()"> 搜索</button></span>
                     </div>
                 </div>
             </div>
@@ -33,6 +37,7 @@
                         <th>昵称</th>
                         <th>邮箱</th>
                         <th>电话</th>
+                        <th>坐席号</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -44,6 +49,7 @@
                         <td>{{item.nickname}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.mobile}}</td>
+                        <td>{{item.seatNum}}</td>
 <!--                        <td>{{item.gmtCreate | formatDate}}</td>-->
                         <td>
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs">
@@ -65,7 +71,6 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
-
         </div>
     </div>
 
@@ -135,7 +140,6 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
-                username: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -165,17 +169,78 @@
                     toastr.success(resp.msg);
                 })
             },
-            pagequery: function () {
-                var that = this;
+            pagequerystart: function () {
+                this.pageInfo.pageNum=1;
+                let that = this;
                 AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
+                for (let i = 0; i < that.items.length; i++) {
+                    AJAX.GET('zsSeat/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
+                        that.items[i].seatNum = resp.data.seatNum;
+                    })
+                }
+            },
+            seatquerystart: function(){
+                this.pageInfo.pageNum=1;
+                let that =this;
+                AJAX.GET('zsSeat', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+                for (let i = 0; i < that.items.length; i++) {
+                    AJAX.GET('/system/sysUser/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
+                        that.items[i].uid = resp.data.uid;
+                        that.items[i].username = resp.data.username;
+                        that.items[i].address = resp.data.address;
+                        that.items[i].nickname = resp.data.nickname;
+                        that.items[i].email = resp.data.email;
+                        that.items[i].mobile = resp.data.mobile;
+                    })
+                }
+            },
+            pagequery: function () {
+                let that = this;
+                AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+                for (let i = 0; i < that.items.length; i++) {
+                    AJAX.GET('zsSeat/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
+                        that.items[i].seatNum = resp.data.seatNum;
+                    })
+                }
+            },
+            seatquery: function(){
+                let that =this;
+                AJAX.GET('zsSeat', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+                for (let i = 0; i < that.items.length; i++) {
+                    AJAX.GET('/system/sysUser/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
+                        that.items[i].uid = resp.data.uid;
+                        that.items[i].username = resp.data.username;
+                        that.items[i].address = resp.data.address;
+                        that.items[i].nickname = resp.data.nickname;
+                        that.items[i].email = resp.data.email;
+                        that.items[i].mobile = resp.data.mobile;
+                    })
+                }
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
-                this.pagequery();
+                if(this.pageInfo.seatNum==null||this.pageInfo.seatNum===""){
+                    this.pagequery();
+                }
+                else{
+                    this.seatquery();
+                }
             },
             deleteItem(item) {
                 var that = this;

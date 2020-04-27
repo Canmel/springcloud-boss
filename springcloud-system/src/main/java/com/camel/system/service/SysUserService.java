@@ -59,4 +59,6 @@ public interface SysUserService extends IService<SysUser> {
     List<SysUser> byRole(Integer id);
 
     Result interviewer(SysUser sysUser);
+
+    SysUser selectByUid(Integer id);
 }

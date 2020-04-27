@@ -2,6 +2,7 @@ package com.camel.survey.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.survey.model.ZsSeat;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author baily
  * @since 2020-02-19
  */
+@Repository
 public interface ZsSeatMapper extends BaseMapper<ZsSeat> {
 
     /**
