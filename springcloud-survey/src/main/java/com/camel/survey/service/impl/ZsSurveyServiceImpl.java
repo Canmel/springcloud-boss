@@ -366,4 +366,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         });
         return optionService.insertBatch(options);
     }
+
+    @Override
+    public ZsSurvey findLatestSurvey() {
+        return mapper.findLatestSurvey();
+    }
 }

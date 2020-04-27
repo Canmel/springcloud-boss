@@ -131,6 +131,11 @@ public class ZsSurveyController extends BaseCommonController {
         return ResultUtil.success(service.questions(id));
     }
 
+    @GetMapping("/latestSurvey")
+    public Result latestSurvey() {
+        return ResultUtil.success(service.findLatestSurvey());
+    }
+
     /**
      * 开始调查
      * @param id
@@ -152,7 +157,6 @@ public class ZsSurveyController extends BaseCommonController {
 
     @PostMapping("/valid")
     public Result valid(@RequestBody ZsAnswerSave zsAnswerSave) {
-
         return service.valid(zsAnswerSave);
     }
 
