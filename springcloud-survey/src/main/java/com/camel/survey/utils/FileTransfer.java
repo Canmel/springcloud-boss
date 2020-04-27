@@ -8,8 +8,10 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.camel.survey.enums.ZsTaskStatus;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.service.MyFileTransterBackUpdate;
+import com.camel.survey.service.ZsAnswerService;
 import com.camel.survey.service.impl.FiletransCallBack;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -90,10 +92,10 @@ public class FileTransfer {
         // 新接入请使用4.0版本，已接入(默认2.0)如需维持现状，请注释掉该参数设置
         taskObject.put(KEY_VERSION, "4.0");
         // 设置是否输出词信息，默认为false，开启时需要设置version为4.0及以上
-        taskObject.put(KEY_ENABLE_WORDS, true);
+//        taskObject.put(KEY_ENABLE_WORDS, true);
 
         taskObject.put("enable_callback", true);
-        taskObject.put("callback_url", "http://122.226.162.136:8080/survey/zsSurvey/testCallback/result");
+        taskObject.put("callback_url", "http://meedesidy.qicp.io/survey/zsSurvey/testCallback/result");
 
         String task = taskObject.toJSONString();
         System.out.println(task);
@@ -174,7 +176,7 @@ public class FileTransfer {
     }
 
 
-    public boolean doTrans(ZsAnswer zsAnswer, String appkey, MyFileTransterBackUpdate callBack) {
+    public boolean doTrans(ZsAnswer zsAnswer, String appkey, MyFileTransterBackUpdate callBack, ZsAnswerService zsAnswerService) {
         List<String> fileNameList = CollectionUtils.arrayToList(zsAnswer.getRecord().split("/"));
         String fileName = fileNameList.get(fileNameList.size() - 1);
 
@@ -183,9 +185,10 @@ public class FileTransfer {
         fileLink += "&showname=" + fileName.split("\\.")[0];
         String taskId = this.submitFileTransRequest(appkey, fileLink);
         if (taskId != null) {
-            // TODO 下一步可以保存任务ID到样本上,增加字段 taskID task执行结果
+            zsAnswer.setTaskId(taskId);
+            zsAnswer.setTaskStatus(ZsTaskStatus.APPLYED);
+            zsAnswerService.updateById(zsAnswer);
             System.out.println("录音文件识别请求成功，task_id: " + taskId);
-
         }
         else {
             System.out.println("录音文件识别请求失败！");

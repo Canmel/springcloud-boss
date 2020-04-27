@@ -177,12 +177,11 @@ public class ZsSurveyController extends BaseCommonController {
 
     @GetMapping("/test/{id}")
     public Result test(@PathVariable Integer id) {
-        Wrapper<ZsAnswer> answerWrapper = new EntityWrapper<ZsAnswer>();
         List<ZsAnswer> zsAnswerList = zsAnswerService.selectAllWithConversation(id);
         for (ZsAnswer answer : zsAnswerList) {
             if (!StringUtils.isEmpty(answer.getRecord())) {
                 FileTransfer.getInstance("LTAIzMblfN958hdS", "JCvyOFHQGk2nxXspac0Cm3mnz818AG")
-                        .doTrans(answer, "adgQwpK0xEsoIUrf", myFileTransterBackUpdate);
+                        .doTrans(answer, "adgQwpK0xEsoIUrf", myFileTransterBackUpdate, zsAnswerService);
             }
         }
         return ResultUtil.success("发起成功");
