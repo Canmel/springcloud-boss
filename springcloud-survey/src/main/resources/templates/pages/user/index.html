@@ -152,7 +152,8 @@
                 uid: null,
                 seatNum: null,
                 password: ''
-            }
+            },
+            searchsign:'',
         },
         created: function () {
             this.loadAllRoles();
@@ -170,6 +171,7 @@
                 })
             },
             pagequerystart: function () {
+                this.searchsign="page";
                 this.pageInfo.pageNum=1;
                 let that = this;
                 AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
@@ -184,6 +186,7 @@
                 }
             },
             seatquerystart: function(){
+                this.searchsign="seat";
                 this.pageInfo.pageNum=1;
                 let that =this;
                 AJAX.GET('zsSeat', this.pageInfo, function (resp) {
@@ -235,7 +238,7 @@
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
-                if(this.pageInfo.seatNum==null||this.pageInfo.seatNum===""){
+                if(this.searchsign==="page"){
                     this.pagequery();
                 }
                 else{
