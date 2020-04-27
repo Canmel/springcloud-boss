@@ -35,6 +35,11 @@ public class ZsSeatController extends BaseCommonController {
     @Autowired
     private ApplicationToolsUtils applicationUtils;
 
+    @GetMapping
+    public Result index(ZsSeat zsSeat) {
+        return ResultUtil.success(service.pageQuery(zsSeat));
+    }
+
     @PostMapping
     public Result dis(ZsSeat zsSeat) {
         ZsSeat seat = service.selectByUid(zsSeat.getUid());
@@ -49,6 +54,11 @@ public class ZsSeatController extends BaseCommonController {
     public Result current() {
         SysUser member = applicationUtils.currentUser();
         return ResultUtil.success(service.selectByUid(member.getUid()));
+    }
+
+    @GetMapping("/{id}/selectByUid")
+    public Result selectByUid(@PathVariable Integer id) {
+        return ResultUtil.success(service.selectByUid(id));
     }
 
     @Override

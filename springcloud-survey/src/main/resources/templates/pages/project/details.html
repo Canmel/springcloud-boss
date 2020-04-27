@@ -117,7 +117,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" v-if="edit_mode==false">
                             <label class="col-sm-3 control-label">考核资格：</label>
                             <div class="col-sm-8">
                                 <select  id="usertype" multiple class="form-control" v-model="new_survey.exams">
@@ -131,7 +131,7 @@
                                 <span> {{new_survey.currentNum}}</span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="edit_mode==false">
                             <label class="col-sm-3 control-label">收集方式：</label>
                             <div class="col-sm-8">
                                 <select name="collect_num" aria-required="true"
@@ -143,7 +143,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group"  v-if="edit_mode==false">
                             <label class="col-sm-3 control-label">视频监控：</label>
                             <div class="col-sm-8">
                                 <select name="collect_num" aria-required="true"
@@ -194,7 +194,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" v-on:click="submitSurvey()" v-if="resultDev">提交更改</button>
+                    <button type="button" class="btn btn-primary" v-on:click="submitSurvey()" v-if="resultDev">提交{{edit_mode ? '更改' : '保存'}}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -292,11 +292,9 @@
                     alert("总收集份数不能小于已收集份数");
                     return false;
                 }
-                console.log(this.new_survey)
                 if (this.edit_mode) {
                     var that = this;
                     delete this.new_survey.currentNum;
-                    console.log(this.new_survey);
                     AJAX.PUT('zsSurvey', JSON.stringify(this.new_survey), function (resp) {
                         toastr.success(resp.msg);
                         $("#myModal").modal("hide");
@@ -314,7 +312,6 @@
                 }
             },
             editSurvey(item) {
-                console.log(item);
                 item.exams = [];
                 if(item.examList) {
                     item.examList.forEach(function (d) {
