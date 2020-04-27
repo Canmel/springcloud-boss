@@ -1,7 +1,11 @@
 package com.camel.survey.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.camel.survey.model.ZsSentenceResult;
 import com.camel.survey.service.MyFileTransterBackUpdate;
+import com.camel.survey.service.ZsSentenceResultService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletInputStream;
@@ -12,6 +16,10 @@ import java.util.regex.Pattern;
 
 @Service
 public class FiletransCallBack implements MyFileTransterBackUpdate {
+
+    @Autowired
+    private ZsSentenceResultService sentenceResultService;
+
     // 以4开头的状态码是客户端错误
     private static final Pattern PATTERN_CLIENT_ERR = Pattern.compile("4105[0-9]*");
     // 以5开头的状态码是服务端错误
@@ -44,20 +52,19 @@ public class FiletransCallBack implements MyFileTransterBackUpdate {
                 System.out.println("Result.Sentences.size: " +
                         jsonResult.getJSONObject("Result").getJSONArray("Sentences").size());
                 for (int i = 0; i < jsonResult.getJSONObject("Result").getJSONArray("Sentences").size(); i++) {
-                    System.out.println("Result.Sentences[" + i + "].BeginTime: " +
-                            jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i).getString("BeginTime"));
-                    System.out.println("Result.Sentences[" + i + "].EndTime: " +
-                            jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i).getString("EndTime"));
-                    System.out.println("Result.Sentences[" + i + "].SilenceDuration: " +
-                            jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i).getString("SilenceDuration"));
-                    System.out.println("Result.Sentences[" + i + "].Text: " +
-                            jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i).getString("Text"));
-                    System.out.println("Result.Sentences[" + i + "].ChannelId: " +
-                            jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i).getString("ChannelId"));
-                    System.out.println("Result.Sentences[" + i + "].SpeechRate: " +
-                            jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i).getString("SpeechRate"));
-                    System.out.println("Result.Sentences[" + i + "].EmotionValue: " +
-                            jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i).getString("EmotionValue"));
+                    JSONObject jsonObject = jsonResult.getJSONObject("Result").getJSONArray("Sentences").getJSONObject(i);
+                    Integer channelId = jsonObject.getInteger("ChannelId");
+                    ZsSentenceResult zsSentenceResult = new ZsSentenceResult(
+                            jsonResult.getString("TaskId"),
+                            jsonObject.getInteger("ChannelId"),
+                            jsonObject.getInteger("BeginTime"),
+                            jsonObject.getInteger("EndTime"),
+                            jsonObject.getString("Text"),
+                            jsonObject.getDouble("EmotionValue"),
+                            jsonObject.getInteger("SilenceDuration"),
+                            jsonObject.getInteger("speechRate")
+                            );
+                    sentenceResultService.insert(zsSentenceResult);
                 }
             }
             else if(matcherClient.matches()) {
