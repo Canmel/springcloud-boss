@@ -114,4 +114,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         userRoleMapper.insert(userRole);
         return ResultUtil.success("新增访员成功");
     }
+
+    @Override
+    public SysUser selectByUid(Integer id) {
+        Wrapper<SysUser> sysUserWrapper = new EntityWrapper<>();
+        sysUserWrapper.eq("uid", id);
+        return selectOne(sysUserWrapper);
+    }
 }

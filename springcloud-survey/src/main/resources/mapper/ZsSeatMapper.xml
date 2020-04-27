@@ -5,13 +5,14 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsSeat">
         <id column="id" property="id" />
+        <result column="uid" property="uid" />
         <result column="seatNum" property="seatNum" />
         <result column="password" property="password" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, seatNum AS seatNum, password
+        id, uid, seatNum AS seatNum, password
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -19,6 +20,10 @@
          <include refid="Base_Column_List"></include>
         from
         zs_seat
+        <where>
+            <if test="seatNum !=null and seatNum != ''">and zs_seat.seatNum like CONCAT('%', #{seatNum}, '%')</if>
+        </where>
+        ORDER BY zs_seat.uid
     </select>
 
     <select id="selectLastByUser" resultMap="BaseResultMap">
@@ -27,4 +32,14 @@
         from
         zs_seat
     </select>
+
+    <select id="searchBySeatNum" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_seat
+        where
+        seatNum like concat('%',#{seatNum},'%')
+    </select>
+
 </mapper>
