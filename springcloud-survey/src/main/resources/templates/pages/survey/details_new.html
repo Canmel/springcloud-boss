@@ -609,7 +609,7 @@
                 this.selectedIndex = this.zsoptions.indexOf(option);
                 e.stopPropagation;
                 this.selectedOption = option;
-                this.selectedOption.questionType=this.questions[option.questionOrderNum].type;
+                this.selectedOption.questionType=this.questions[option.questionOrderNum-1].type;
                 this.showModal('optionModal');
             },
             up(e, question) {
