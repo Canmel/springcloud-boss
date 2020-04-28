@@ -494,9 +494,6 @@
                 nextIndex: null
             },
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
         },
@@ -506,6 +503,16 @@
         },
         computed: {},
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                })
+            },
             configration(item, event) {
                 if ($(event.srcElement).parent().parent().find('.configration').length === 0) {
                     $(event.srcElement).parent().parent().find('.configration-label').append('<span class="configration editable">点击修改配额</span>');
@@ -871,11 +878,7 @@
             }
         },
         created: function () {
-            this.master = sessionStorage.getItem('master');
-
-            this.result = this.admin.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+            this.loginMaster();
             this.loadEntity();
         },
         mounted: function () {

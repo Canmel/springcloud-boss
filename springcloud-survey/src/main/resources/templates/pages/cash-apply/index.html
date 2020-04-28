@@ -49,7 +49,7 @@
                         </td>
                         <td>
                             <button type="button" v-on:click="pass(item)" class="btn btn-success btn-xs" v-if="item.status && item.status.code === 0
-                            && result ">
+                            && resultDev ">
                                 通过
                             </button>
                             <button type="button" v-on:click="reject(item)" class="btn btn-danger btn-xs" v-if="item.status && item.status.code === 0
@@ -83,23 +83,30 @@
                 size: 10,//每页显示条目个数不传默认10
             },
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
             items: [{}]
         },
         created: function () {
-
-            
-            this.master = sessionStorage.getItem('master');
-
-            this.result = this.admin.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+            this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                    }
+
+                })
+            },
             projectDetails: function (item) {
                 sessionStorage.setItem('editParams', item.projectId);
                 toPage("pages/project/details.html");

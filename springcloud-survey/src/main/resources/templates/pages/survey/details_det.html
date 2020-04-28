@@ -558,9 +558,6 @@
             useLocalStreamList: [],
             appSigin: '0x2e,0x80,0x69,0xdb,0x19,0x1a,0xbd,0x14,0x99,0xea,0xa4,0x5a,0xf8,0xcc,0x6f,0xfc,0x2f,0x83,0x4a,0x01,0x43,0x1c,0x5d,0xc5,0x4c,0x28,0x28,0x59,0xa6,0x2d,0x53,0x2b',
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
         },
@@ -573,6 +570,16 @@
             qualityesting() {
                 AJAX.GET("zsSurvey/test/" + this.survey.id, {}, function (resp) {
                     toastr.success(resp.msg);
+                })
+            },
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
                 })
             },
             initZg() {
@@ -986,11 +993,7 @@
             this.loadQuestions();
             this.initZg();
             this.loadMonitors();
-            this.master = sessionStorage.getItem('master');
-
-            this.result = this.admin.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+            this.loginMaster();
 
         },
         mounted: function () {
