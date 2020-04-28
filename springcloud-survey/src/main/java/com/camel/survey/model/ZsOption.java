@@ -102,6 +102,9 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
      */
     private Integer questionId;
 
+    //排他性
+    private Boolean exclusivity;
+
     @ExcelAnnotation(columnName = "题目", columnIndex = 1)
     @TableField(exist = false)
     private String question;

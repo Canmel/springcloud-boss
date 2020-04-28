@@ -293,6 +293,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group" v-if="selectedOption.questionType==2">
+                            <label class="col-sm-3 control-label">是否排他</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" text="text" name="exclusivity"
+                                        v-model="selectedOption.exclusivity" placeholder="是否需要排他">
+                                    <option v-for="val in [true, false]" :value="val">{{ val ? '是' : '否' }}</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group text-center">
                             <span class="btn btn-danger" v-on:click="deleteOption(selectedOption)">删除选项</span>
                         </div>
@@ -353,7 +363,9 @@
             zsoptions: [],
             surveyId: sessionStorage.getItem('editParams'),
             selectedQuestion: {},
-            selectedOption: {},
+            selectedOption: {
+                questionType:0,
+            },
             selectedIndex: 0
         },
         created: function () {
@@ -386,6 +398,7 @@
                         name: o.name,
                         target: o.target,
                         hasRemark: o.hasRemark,
+                        exclusivity: o.exclusivity,
                         ignoreNum: o.ignoreNum,
                         configration: o.configration, // 选项配额
                         questionOrderNum: tmpQ.orderNum
@@ -416,6 +429,7 @@
                                 name: o.name,
                                 target: o.target,
                                 hasRemark: o.hasRemark,
+                                exclusivity: o.exclusivity,
                                 ignoreNum: o.ignoreNum,
                                 configration: o.configration, // 选项配额
                                 questionOrderNum: item.orderNum
@@ -511,6 +525,7 @@
                     type: question.type,
                     orderNum: c + 1,
                     hasRemark: false,
+                    exclusivity: false,
                     ignoreNum: false,
                     questionOrderNum: question.orderNum
                 }
@@ -528,6 +543,7 @@
                     type: question.type,
                     orderNum: c + 1,
                     hasRemark: false,
+                    exclusivity: false,
                     ignoreNum: false,
                     questionOrderNum: question.orderNum
                 }
@@ -545,6 +561,7 @@
                     type: question.type,
                     orderNum: c + 1,
                     hasRemark: false,
+                    exclusivity: false,
                     ignoreNum: false,
                     questionOrderNum: question.orderNum
                 }
@@ -571,6 +588,7 @@
                 this.selectedIndex = this.zsoptions.indexOf(option);
                 e.stopPropagation;
                 this.selectedOption = option;
+                this.selectedOption.questionType=this.questions[option.questionOrderNum].type;
                 this.showModal('optionModal');
             },
             up(e, question) {
@@ -664,6 +682,7 @@
                         type: '1',
                         orderNum: 1,
                         hasRemark: false,
+                        exclusivity:false,
                         ignoreNum: false,
                         questionOrderNum: question.orderNum
 
@@ -672,6 +691,7 @@
                         type: '1',
                         orderNum: 2,
                         hasRemark: false,
+                        exclusivity: false,
                         ignoreNum: false,
                         questionOrderNum: question.orderNum
                     },
@@ -694,6 +714,7 @@
                         type: '2',
                         orderNum: 1,
                         hasRemark: false,
+                        exclusivity: false,
                         ignoreNum: false,
                         questionOrderNum: question.orderNum
 
@@ -702,6 +723,7 @@
                         type: '2',
                         orderNum: 2,
                         hasRemark: false,
+                        exclusivity: false,
                         ignoreNum: false,
                         questionOrderNum: question.orderNum
                     },
@@ -723,6 +745,7 @@
                         type: '3',
                         orderNum: 1,
                         hasRemark: false,
+                        exclusivity: false,
                         ignoreNum: false,
                         questionOrderNum: question.orderNum
 
