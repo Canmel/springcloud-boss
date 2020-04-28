@@ -2,9 +2,8 @@ package com.camel.survey.mapper;
 
 import com.camel.survey.model.ZsWorkRecord;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.camel.survey.model.ZsWorkWorkshift;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
 
