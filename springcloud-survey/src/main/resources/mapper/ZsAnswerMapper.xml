@@ -6,16 +6,21 @@
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsAnswer">
         <id column="id" property="id"/>
         <result column="survey_id" property="surveyId"/>
+        <result column="agent_UUID" property="agentUUID"/>
         <result column="record" property="record"/>
         <result column="seat" property="seat"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="creator" property="creator"/>
+        <result column="task_id" property="taskId"/>
+        <result column="task_status" property="taskStatus"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <resultMap id="BaseFullResultMap" type="com.camel.survey.model.ZsAnswer">
         <id column="id" property="id"/>
         <result column="survey_id" property="surveyId"/>
+        <result column="agent_UUID" property="agentUUID"/>
         <result column="record" property="record"/>
         <result column="seat" property="seat"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
@@ -28,7 +33,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, survey_id, status, record, seat, created_at, creator, valid
+        id, survey_id, agent_UUID, status, record, seat, created_at, creator, valid, task_id, task_status
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -84,10 +89,22 @@
 
     <select id="selectDetailsBySurveyId" resultMap="BaseFullResultMap">
         select
-            <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from zs_answer
         where
-            survey_id = #{id}
+        survey_id = #{id}
         limit #{rowNum}, 200
+    </select>
+
+    <select id="selectAllWithConversation" resultMap="BaseResultMap">
+        SELECT
+            answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.seat, answer.created_at, answer.creator, answer.valid,
+            cdrinfo.record_file as record
+        FROM
+        zs_answer answer
+        LEFT JOIN zs_cdrinfo cdrinfo ON FIND_IN_SET(answer.agent_UUID, cdrinfo.uuids) > 0
+        WHERE
+        answer.survey_id = #{id}
+        AND answer.agent_UUID != '';
     </select>
 </mapper>

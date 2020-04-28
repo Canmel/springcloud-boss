@@ -63,7 +63,6 @@
             <div class="text-center">
                 <span>
                     {{survey.startShow}}
-                </span>
             </div>
         </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
@@ -231,7 +230,8 @@
                     surveyId: this.getParams('surveyId'),
                     phone: this.getParams('phone'),
                     record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     if (resp.msg != '') {
                         alert(resp.msg);
@@ -421,7 +421,8 @@
                     surveyId: this.getParams('surveyId'),
                     phone: this.getParams('phone'),
                     record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     // alert(resp.msg);
                     $("#theForm").hide();
