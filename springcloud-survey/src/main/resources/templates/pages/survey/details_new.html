@@ -79,21 +79,20 @@
                                     <label class="col-sm-1 control-label">{{index + 1}}.</label>
                                     <div class="col-sm-11 form-control-static">
                                         <p class="label">{{question.name}}</p>
-
                                         <span style="float: right;">
-                                                        <span class="label label-info"
-                                                              v-on:click="questionCopy(question)">
-                                                            <p class="fa" style="display: inline;">复制</p>
-                                                        </span>
-														<span class="label label-success"
-                                                              v-on:click="up($event, question)">
-															<p class="fa fa-arrow-up"></p>
-														</span>
-														<span class="label label-primary"
-                                                              v-on:click="down($event, question)">
-															<p class="fa fa-arrow-down"></p>
-														</span>
-													</span>
+                                            <span class="label label-info"
+                                                  v-on:click="questionCopy(question)">
+                                                <p class="fa" style="display: inline;">复制</p>
+                                            </span>
+                                            <span class="label label-success"
+                                                  v-on:click="up($event, question)">
+                                                <p class="fa fa-arrow-up"></p>
+                                            </span>
+                                            <span class="label label-primary"
+                                                  v-on:click="down($event, question)">
+                                                <p class="fa fa-arrow-down"></p>
+                                            </span>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row no-margins option" style="cursor: pointer; background-color: gainsboro;"
@@ -101,21 +100,21 @@
                                      v-on:click="optionNameClickHandler( $event, zsoption)"
                                      v-if="zsoption.questionOrderNum == question.orderNum">
                                     <label class="col-sm-1 control-label" style="padding-right: 0;">
-                                        <option value="" class="length">{{zsoption.orderNum}}.</option>
+                                        <option value="" class="length" v-if="question.type === 1||question.type === 2">{{zsoption.orderNum}}.</option>
                                     </label>
                                     <div class="col-sm-11" v-if="question.type === 1">
                                         <div class="radio">
                                             <label><input type="radio" :value="zsoption.name">{{zsoption.name}}</label>
                                             <span style="float: right;">
-															<span class="label label-success"
-                                                                  v-on:click="upOption($event, zsoption)">
-																<p class="fa fa-arrow-up"></p>
-															</span>
-															<span class="label label-primary"
-                                                                  v-on:click="downOption($event, zsoption)">
-																<p class="fa fa-arrow-down"></p>
-															</span>
-														</span>
+                                             <span class="label label-success"
+                                                   v-on:click="upOption($event, zsoption)">
+                                                <p class="fa fa-arrow-up"></p>
+                                             </span>
+                                             <span class="label label-primary"
+                                                   v-on:click="downOption($event, zsoption)">
+                                                <p class="fa fa-arrow-down"></p>
+                                             </span>
+                                          </span>
                                         </div>
                                     </div>
                                     <div class="col-sm-11" v-if="question.type === 2">
@@ -123,35 +122,26 @@
                                             <label><input type="checkbox"
                                                           :value="zsoption.name">{{zsoption.name}}</label>
                                             <span style="float: right;">
-															<span class="label label-success"
-                                                                  v-on:click="upOption($event, zsoption)">
-																<p class="fa fa-arrow-up"></p>
-															</span>
-															<span class="label label-primary"
-                                                                  v-on:click="downOption($event, zsoption)">
-																<p class="fa fa-arrow-down"></p>
-															</span>
-														</span>
+                                             <span class="label label-success"
+                                                   v-on:click="upOption($event, zsoption)">
+                                                <p class="fa fa-arrow-up"></p>
+                                             </span>
+                                             <span class="label label-primary"
+                                                   v-on:click="downOption($event, zsoption)">
+                                                <p class="fa fa-arrow-down"></p>
+                                             </span>
+                                          </span>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-11" v-if="question.type === 3">
                                         <div class="radio">
-                                            <label>{{zsoption.name}}</label>
-                                            <span style="float: right;">
-															<span class="label label-success"
-                                                                  v-on:click="upOption($event, zsoption)">
-																<p class="fa fa-arrow-up"></p>
-															</span>
-															<span class="label label-primary"
-                                                                  v-on:click="downOption($event, zsoption)">
-																<p class="fa fa-arrow-down"></p>
-															</span>
-														</span>
+                                            <label>答：</label>
+                                            <input type="text" />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row no-margins" style="background-color: bisque;">
+                                <div class="row no-margins" style="background-color: bisque;"  v-if="question.type === 1||question.type === 2">
                                     <label class="col-sm-2 control-label" style="padding-right: 0;">
                                         <span v-on:click="addNewOption(question)" class="cursor-pointer">
                                             <span class="fa fa-plus-circle" style="font-size: 20px;"></span>
@@ -226,6 +216,15 @@
                             <div class="col-sm-9">
                                 <input class="form-control" type="number" name="minSelect"
                                        v-model="selectedQuestion.minSelect" placeholder="最少选择数量，默认为1"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否必答</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" text="text" name="compulsory"
+                                        v-model="selectedQuestion.compulsory" placeholder="是否必答">
+                                    <option v-for="val in [true, false]" :value="val">{{ val ? '是' : '否' }}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group text-center">
@@ -408,7 +407,8 @@
                     type: question.type,
                     surveyId: question.surveyId,
                     maxSelect: question.maxSelect,
-                    minSelect: question.minSelect
+                    minSelect: question.minSelect,
+                    compulsory: question.compulsory
                 };
                 let options=this.getOptionsByQuestion(question.orderNum);
                 let tmpOptions=[];
@@ -441,7 +441,8 @@
                             type: item.type,
                             surveyId: item.surveyId,
                             maxSelect: item.maxSelect,
-                            minSelect: item.minSelect
+                            minSelect: item.minSelect,
+                            compulsory: item.compulsory
                         };
                         for (let j = 0; j < item.options.length; j++) {
                             let o = item.options[j];
@@ -487,6 +488,7 @@
                     sessionStorage.setItem('editParams', that.survey.projectId);
                     toPage('pages/project/details.html');
                 });
+                console.log(params);
             },
             upOption(e, option) {
                 e.stopPropagation();
@@ -695,7 +697,8 @@
                     orderNum: this.questions.length + 1,
                     minSelect: 1,
                     surveyId: this.surveyId,
-                    maxSelect: 1
+                    maxSelect: 1,
+                    compulsory:true
                 };
                 let tmpOptions = [
                     {
@@ -727,7 +730,8 @@
                     orderNum: this.questions.length + 1,
                     surveyId: this.surveyId,
                     minSelect: 1,
-                    maxSelect: 2
+                    maxSelect: 2,
+                    compulsory:true
                 };
                 let tmpOptions = [
                     {
@@ -755,11 +759,12 @@
             renderDetailQuestion() {
                 let question = {
                     name: "问答题",
-                    type: 2,
+                    type: 3,
                     surveyId: this.surveyId,
                     orderNum: this.questions.length + 1,
                     minSelect: 1,
-                    maxSelect: 2
+                    maxSelect: 2,
+                    compulsory: true
                 };
                 let tmpOptions = [
                     {
@@ -779,9 +784,9 @@
             hideModal(id) {
                 $('#' + id).modal('hide');
                 // if(id == 'optionModal') {
-                // 	console.log(this.selectedIndex);
-                // 	console.log(this.zsoptions[this.selectedIndex])
-                // 	this.zsoptions[this.selectedIndex] = this.selectedOption;
+                //     console.log(this.selectedIndex);
+                //     console.log(this.zsoptions[this.selectedIndex])
+                //     this.zsoptions[this.selectedIndex] = this.selectedOption;
                 // }
             }
         },
