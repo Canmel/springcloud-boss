@@ -52,7 +52,7 @@
                                   class="btn btn-primary btn-xs" v-if="resultDev">修改
                             </button>
                             <button type="button" v-on:click="signUp(item)"
-                                    class="btn btn-success btn-xs">加入班级
+                                    class="btn btn-success btn-xs" v-if="!item.statusUser">加入班级
                             </button>
                             <button type="button" v-on:click="deleteItem(item)"
                                     class="btn btn-danger btn-xs" v-if="resultDev" >删除
@@ -118,10 +118,14 @@
             signDown(item) {
                 var that = this;
                 var statusUserId = {'id':item.statusUserId};
-                AJAX.DELETE('zsWorkRecord/signDown',statusUserId,function (resp) {
-                    toastr.success(resp.msg);
-                    that.pagequery();
-                });
+                confirm("您确定要退出该班次吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                            AJAX.DELETE('zsWorkRecord/signDown',statusUserId,function (resp) {
+                                toastr.success(resp.msg);
+                                that.pagequery();
+                            });
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
             },
             signUp: function (item) {
                 var that = this;
