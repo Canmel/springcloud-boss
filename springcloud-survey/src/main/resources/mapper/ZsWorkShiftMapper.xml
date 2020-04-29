@@ -40,6 +40,9 @@
     <where>
     zs_work_shift.status = 1
     AND zs_survey.status = 1
+    <if test="cname != null and cname != ''">
+      AND zs_work_shift.cname like concat('%', #{cname}, '%')
+    </if>
     </where>
     </select>
 

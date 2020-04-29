@@ -14,7 +14,7 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
-                               v-model="pageInfo.name"> <span
+                               v-model="pageInfo.cname"> <span
                             class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
                     </div>
@@ -82,7 +82,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
-                name: '',
+                cname: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10

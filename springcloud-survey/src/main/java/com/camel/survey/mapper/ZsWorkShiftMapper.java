@@ -21,5 +21,5 @@ public interface ZsWorkShiftMapper extends BaseMapper<ZsWorkShift> {
      * @param
      * @return
      */
-    List<ZsWorkShift> list();
+    List<ZsWorkShift> list(ZsWorkShift entity);
 }

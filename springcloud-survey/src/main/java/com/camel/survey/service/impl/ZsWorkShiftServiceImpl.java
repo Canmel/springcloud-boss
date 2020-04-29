@@ -44,7 +44,7 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
     public PageInfo<ZsWorkShift> selectPage(ZsWorkShift entity, Principal principal) {
 
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
-            mapper.list();
+            mapper.list(entity);
         });
         Wrapper<ZsWorkRecord> zsWorkRecordWrapper = new EntityWrapper<>();
         zsWorkRecordWrapper.eq("creator",entity.getUId());
