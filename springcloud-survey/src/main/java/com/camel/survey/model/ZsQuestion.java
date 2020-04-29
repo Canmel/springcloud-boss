@@ -77,6 +77,9 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
     @ExcelAnnotation(columnName = "最多选择", columnIndex = 3)
     private Integer maxSelect;
 
+    //必答性
+    private Boolean compulsory;
+
     /**
      * 选项
      */

@@ -50,6 +50,9 @@
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
+                            <button type="button" v-on:click="copy(item)"
+                                    class="btn btn-info btn-xs" >复制
+                            </button>
                             <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false && result"
                                     class="btn btn-primary btn-xs" >修改
                             </button>
@@ -89,6 +92,21 @@
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
+            new_survey:{
+                id: '',
+                name: '',
+                projectId: '',
+                collectNum: '',
+                collectType: 1,
+                exams: [],
+                startShow: '',
+                endShow: '',
+                collectPhone: '0',
+                monit: '0',
+            },
+            copySurveyId:0,
+            new_questions: [],
+            new_options: [],
         },
         created: function () {
             // this.pagequery();
@@ -147,6 +165,74 @@
                 $.pjax({
                     url: mvm.applicationContextRootPath + 'pages/survey/details_new.html',
                     container: '.page-container'
+                });
+            },
+            copy: function (item) {
+                let that=this;
+                that.copySurveyId=item.id;
+                item.exams = [];
+                if(item.examList) {
+                    item.examList.forEach(function (d) {
+                        item.exams.push(d.id);
+                    });
+                }
+                this.new_survey = {
+                    id: '',
+                    name: item.name,
+                    projectId: item.projectId,
+                    collectNum: item.collectNum,
+                    collectType: item.collectType.value,
+                    startShow:item.startShow,
+                    endShow: item.endShow,
+                    monit: item.monit.value,
+                    collectPhone:item.collectPhone,
+                    exams:item.exams,
+                };
+                AJAX.POST_JSON('zsSurvey', this.new_survey
+                    , function (resp) {
+                        toastr.success(resp.msg);
+                    }
+                );
+                AJAX.GET('zsSurvey/latestSurvey', {}, function (resp) {
+                    that.new_survey.id=resp.data.id;
+                })
+                that.copyquestions();
+            },
+            copyquestions:function(item){
+                let that=this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + that.copySurveyId, {}, function (resp) {
+                    for (let i = 0; i < resp.data.length; i++) {
+                        let item = resp.data[i];
+                        let tmpQ = {
+                            orderNum: item.orderNum,
+                            name: item.name,
+                            type: item.type,
+                            surveyId: that.new_survey.id,
+                            maxSelect: item.maxSelect,
+                            minSelect: item.minSelect
+                        };
+                        for (let j = 0; j < item.options.length; j++) {
+                            let o = item.options[j];
+                            let opt = {
+                                orderNum: o.orderNum,
+                                name: o.name,
+                                target: o.target,
+                                hasRemark: o.hasRemark,
+                                ignoreNum: o.ignoreNum,
+                                configration: o.configration, // 选项配额
+                                questionOrderNum: item.orderNum
+                            };
+                            that.new_options.push(opt);
+                        }
+                        that.new_questions.push(tmpQ);
+                    }
+                })
+                let params = {};
+                params.zsQuestions = that.new_questions;
+                params.zsOptions = that.new_options;
+                params.surveyId = that.new_survey.id;
+                AJAX.POST_JSON('zsQuestion', params, function (resp) {
+                    that.pagequery();
                 });
             },
             deleteItem: function (item) {
