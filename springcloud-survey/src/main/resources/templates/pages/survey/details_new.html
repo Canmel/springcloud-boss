@@ -175,12 +175,12 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="qustionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                            v-on:click="hideModal('questionMadal')">&times;
+                            v-on:click="hideModal('questionModal')">&times;
                     </button>
                     <h2 translate>题目属性</h2>
                 </div>
@@ -221,9 +221,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">是否必答</label>
                             <div class="col-sm-9">
-                                <select class="form-control m-b" text="text" name="compulsory"
-                                        v-model="selectedQuestion.compulsory" placeholder="是否必答">
-                                    <option v-for="val in [true, false]" :value="val">{{ val ? '是' : '否' }}</option>
+                                <select class="form-control m-b" name="compulsory"
+                                        v-model="selectedQuestion.compulsory">
+                                    <option v-for="val in [1, 0]" :value="val">{{ val ? '是' : '否' }}</option>
                                 </select>
                             </div>
                         </div>
@@ -304,9 +304,9 @@
                         <div class="form-group" v-if="selectedOption.questionType==2">
                             <label class="col-sm-3 control-label">是否排他</label>
                             <div class="col-sm-9">
-                                <select class="form-control m-b" text="text" name="exclusivity"
-                                        v-model="selectedOption.exclusivity" placeholder="是否需要排他">
-                                    <option v-for="val in [true, false]" :value="val">{{ val ? '是' : '否' }}</option>
+                                <select class="form-control m-b" name="exclusivity"
+                                        v-model="selectedOption.exclusivity">
+                                    <option v-for="val in [1, 0]" :value="val">{{ val ? '是' : '否' }}</option>
                                 </select>
                             </div>
                         </div>
@@ -442,7 +442,7 @@
                             surveyId: item.surveyId,
                             maxSelect: item.maxSelect,
                             minSelect: item.minSelect,
-                            compulsory: item.compulsory
+                            compulsory: item.compulsory.value
                         };
                         for (let j = 0; j < item.options.length; j++) {
                             let o = item.options[j];
@@ -451,7 +451,7 @@
                                 name: o.name,
                                 target: o.target,
                                 hasRemark: o.hasRemark,
-                                exclusivity: o.exclusivity,
+                                exclusivity: o.exclusivity.value,
                                 ignoreNum: o.ignoreNum,
                                 configration: o.configration, // 选项配额
                                 questionOrderNum: item.orderNum
@@ -604,10 +604,10 @@
                     this.zsoptions.splice(this.zsoptions.indexOf(tmp[i]), 1);
                 }
                 this.questions.splice(this.questions.indexOf(question), 1);
-                this.hideModal('qustionModal');
+                this.hideModal('questionModal');
             },
             optionNameClickHandler(e, option) {
-                this.selectedIndex = this.zsoptions.indexOf(option);
+                // this.selectedIndex = this.zsoptions.indexOf(option);
                 e.stopPropagation;
                 this.selectedOption = option;
                 this.selectedOption.questionType=this.questions[option.questionOrderNum-1].type;
@@ -664,7 +664,7 @@
             },
             questionNameClickHandler(question) {
                 this.selectedQuestion = question;
-                this.showModal('qustionModal');
+                this.showModal('questionModal');
             },
             showModal(id) {
                 $("#" + id).modal('show');
@@ -782,10 +782,12 @@
             },
             hideModal(id) {
                 $('#' + id).modal('hide');
+                // console.log(this.selectedQuestion);
                 // if(id == 'optionModal') {
-                //     console.log(this.selectedIndex);
-                //     console.log(this.zsoptions[this.selectedIndex])
                 //     this.zsoptions[this.selectedIndex] = this.selectedOption;
+                // }
+                // if(id == 'questionModal') {
+                //     this.questions[this.selectedIndex] = this.selectedQuestion;
                 // }
             }
         },
