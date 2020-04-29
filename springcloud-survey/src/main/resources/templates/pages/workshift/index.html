@@ -1,7 +1,7 @@
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>问卷管理</h5>
+            <h5>班次管理</h5>
             <div class="ibox-tools">
                 <a :href="applicationContextRootPath + 'pages/workshift/add.html'"
                    data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新建班次 </a>
@@ -52,7 +52,7 @@
                                   class="btn btn-primary btn-xs" v-if="resultDev">修改
                             </button>
                             <button type="button" v-on:click="signUp(item)"
-                                    class="btn btn-success btn-xs" v-if="!item.statusUser">加入班级
+                                    class="btn btn-success btn-xs" v-if="!item.statusUser">申请加入班次
                             </button>
                             <button type="button" v-on:click="deleteItem(item)"
                                     class="btn btn-danger btn-xs" v-if="resultDev" >删除
