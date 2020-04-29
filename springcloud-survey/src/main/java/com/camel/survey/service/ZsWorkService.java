@@ -19,5 +19,6 @@ public interface ZsWorkService extends IService<ZsWork> {
 
     Result importExcel(MultipartFile file);
 
-    PageInfo<ZsWork> selectPage(ZsWork zsWork, OAuth2Authentication oAuth2Authentication);
+    PageInfo<ZsWork> selectPage(ZsWork zsWork,String[] ids, OAuth2Authentication oAuth2Authentication);
+
 }

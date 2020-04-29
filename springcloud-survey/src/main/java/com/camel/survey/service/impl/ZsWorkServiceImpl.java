@@ -70,9 +70,13 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     }
 
     @Override
-    public PageInfo<ZsWork> selectPage(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
+    public PageInfo<ZsWork> selectPage(ZsWork entity,String[] ids, OAuth2Authentication oAuth2Authentication) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
-            mapper.list(entity);
+                    if(ids[0].equals("0")){
+                        mapper.list(entity,null);
+                    }else{
+                    mapper.list(entity,ids);
+                    }
         });
         return pageInfo;
     }
