@@ -88,6 +88,10 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     private ZsYesOrNo valid;
 
+    //是否有效，用于查询
+    @TableField(exist = false)
+    private Integer validValue;
+
     /**
      * 任务ID
      */
