@@ -87,11 +87,13 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 问卷预览</a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">已收到的问卷</a>
+                <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false" v-on:click="validQuery()">已收到的问卷</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">正在收集</a>
+                </li>
+                <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false" v-on:click="invalidQuery()">无效问卷</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -226,7 +228,7 @@
                                                         class="btn btn-danger btn-xs" v-if="resultDev">删除
                                                 </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-restore btn-xs" v-if="resultDev">更改状态
+                                                        class="btn btn-restore btn-xs" v-if="resultDev">标为无效
                                                 </button>
                                             </td>
                                         </tr>
@@ -448,6 +450,60 @@
                         </div>
                     </div>
                 </div>
+                <div id="tab-5" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>收集时间</th>
+                                            <th>填写人(手机号)</th>
+                                            <th>坐席号</th>
+                                            <th>有效</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(item, index) in answers">
+                                            <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                            <td>
+                                                <span>{{item.createdAt}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.creator}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.seat}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
+                                                <span class="label-success label" v-if="!item.valid || item.valid && item.valid.code === 1">是</span>
+                                            </td>
+                                            <td>
+                                                <button type="button" v-on:click="details(item)"
+                                                        class="btn btn-primary btn-xs" v-if="resultDev">查看
+                                                </button>
+                                                <button type="button" v-on:click="deleteItem(item)"
+                                                        class="btn btn-danger btn-xs" v-if="resultDev">删除
+                                                </button>
+                                                <button type="button" v-on:click="invalidItem(item)"
+                                                        class="btn btn-success btn-xs" v-if="resultDev">恢复为有效
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                                             :changge="pageFn"></pageination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -570,6 +626,14 @@
         },
         computed: {},
         methods: {
+            invalidQuery: function(){
+                this.pageInfo.validValue=0;
+                this.pagequery();
+            },
+            validQuery: function(){
+                this.pageInfo.validValue=1;
+                this.pagequery();
+            },
             qualityesting() {
                 AJAX.GET("zsSurvey/test/" + this.survey.id, {}, function (resp) {
                     toastr.success(resp.msg);
@@ -848,15 +912,29 @@
             },
             invalidItem(item) {
                 let that = this;
-                confirm("您确定要将这条数据的状态更改吗?", "", function (isConfirm) {
-                    if (isConfirm) {
-                        AJAX.GET("zsAnswer/invalid/" + item.id, {}, function (res) {
-                            toastr.success(res.msg);
-                            that.pagequery();
-                            that.loadEntity();
-                        });
-                    }
-                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+                if(item.valid.code==1){
+                    confirm("您确定要将这条数据标为无效吗?", "", function (isConfirm) {
+                        if (isConfirm) {
+                            AJAX.GET("zsAnswer/invalid/" + item.id, {}, function (res) {
+                                toastr.success(res.msg);
+                                that.pagequery();
+                                that.loadEntity();
+                            });
+                        }
+                    }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+                }
+                else{
+                    confirm("您确定要将这条数据恢复为有效吗?", "", function (isConfirm) {
+                        if (isConfirm) {
+                            AJAX.GET("zsAnswer/invalid/" + item.id, {}, function (res) {
+                                toastr.success(res.msg);
+                                that.pagequery();
+                                that.loadEntity();
+                            });
+                        }
+                    }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+                }
+
 
             },
             exportSeatAnswers() {
