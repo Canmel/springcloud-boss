@@ -5,7 +5,7 @@
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a :href="applicationContextRootPath + 'pages/role/add.html'"
-                       data-pjax class="btn btn-primary btn-xs">创建角色</a>
+                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">创建角色</a>
                 </div>
             </div>
         </div>
@@ -39,10 +39,10 @@
                         <td>{{item.remark}}</td>
                         <td>{{item.roleName}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs">
+                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
                                 编辑
                             </button>
-                            <button type="button" v-on:click="applyMenu(item)" class="btn btn-info btn-xs">
+                            <button type="button" v-on:click="applyMenu(item)" class="btn btn-info btn-xs" v-if="resultDev">
                                 分配菜单
                             </button>
                         </td>
@@ -99,12 +99,32 @@
             },
             items: [{}],
             allMenus: [],
-            menuIds: []
+            menuIds: [],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
             this.getMenus();
+            this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                    }
+
+                })
+            },
             saveMenus() {
                 AJAX.POST_JSON('/system/sysRole/menus',
                     {roleId: this.selected.roleId, menuIds: this.menuIds}

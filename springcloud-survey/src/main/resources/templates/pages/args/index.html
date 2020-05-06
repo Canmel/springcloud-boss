@@ -4,7 +4,7 @@
             <h5>参数管理</h5>
             <div class="ibox-tools">
                 <a :href="applicationContextRootPath + 'pages/args/add.html'"
-                   data-pjax class="btn btn-primary btn-xs">新建参数</a>
+                   data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新建参数</a>
             </div>
         </div>
         <div class="ibox-content">
@@ -44,8 +44,8 @@
                         <td>{{item.updator ? item.updator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs">修改</button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs">删除
+                            <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs" v-if="resultDev">修改</button>
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">删除
                             </button>
                         </td>
                     </tr>
@@ -70,12 +70,32 @@
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
+                master: [],//接受权限数组
+                result: false,//表示超级管理员权限
+                resultDev: false,//表示操作人员权限
             },
             items: [{}]
         },
         created: function () {
+            this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                    }
+
+                })
+            },
             pagequery: function () {
                 var that = this;
                 AJAX.GET('args', this.pageInfo, function (resp) {

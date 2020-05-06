@@ -25,9 +25,9 @@
                     <label class="col-sm-3 control-label">开始时间：</label>
                     <div class="col-sm-6" >
                         <div class="input-group input-medium date-picker input-daterange" data-date-format="yyyy-mm-dd">
-                            <input name="starttime" class=" datepicker" autocomplete="off" ref="inputstart" placeholder="请输入开始时间":value="zs_workshift.startTime" style="font-size: 13px;" type="text" >
+                            <input name="starttime" class=" datepicker" autocomplete="off" ref="inputstart" readonly placeholder="请输入开始时间":value="zs_workshift.startTime" style="font-size: 13px;" type="text" >
                             <span class="input-group-addon">—</span>
-                            <input name="endtime" class="datepicker" autocomplete="off" ref="inputend" placeholder="请输入结束时间":value="zs_workshift.endTime"  style="font-size: 13px;" type="text" >
+                            <input name="endtime" class="datepicker" autocomplete="off" ref="inputend" readonly placeholder="请输入结束时间":value="zs_workshift.endTime"  style="font-size: 13px;" type="text" >
                         </div>
                        <!-- <input type="text" class="datepicker" ref="inputstart" placeholder="请选择日期" >-->
                        <!-- <a @click="valChange">11111111</a>-->
@@ -187,16 +187,9 @@
 
         //datpicker时间控件
 
-        $('.datepicker').prop("readonly", true).datetimepicker({
-            timeText: '时间',
-            hourText: '小时',
-            minuteText: '分钟',
-            secondText: '秒',
-            currentText: '现在',
-            closeText: '完成',
-            showSecond: true, //显示秒
-            timeFormat: 'HH:mm:ss' //格式化时间
-        });
+        $("#endtime").hunterTimePicker();
+        //时间选择
+        $("#starttime").hunterTimePicker();
 
         // propose username by combining first- and lastname
         $("#username").focus(function () {
