@@ -50,7 +50,7 @@
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="copy(item)" v-if="result"
+                            <button type="button" v-on:click="copy(item)" v-if="resultDev"
                                     class="btn btn-info btn-xs" >复制
                             </button>
                             <button type="button" v-on:click="edit(item)" v-if="states(item)"
