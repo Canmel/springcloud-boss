@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.survey.annotation.ExcelAnnotation;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 import org.springframework.util.ObjectUtils;
 
@@ -103,7 +104,7 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     private Integer questionId;
 
     //排他性
-    private Boolean exclusivity;
+    private ZsYesOrNo exclusivity;
 
     @ExcelAnnotation(columnName = "题目", columnIndex = 1)
     @TableField(exist = false)

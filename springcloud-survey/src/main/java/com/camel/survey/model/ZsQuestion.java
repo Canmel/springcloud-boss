@@ -11,6 +11,7 @@ import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -78,7 +79,7 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
     private Integer maxSelect;
 
     //必答性
-    private Boolean compulsory;
+    private ZsYesOrNo compulsory;
 
     /**
      * 选项

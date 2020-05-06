@@ -46,6 +46,9 @@
             <if test="surveyId != null">
                 and survey_id = #{surveyId}
             </if>
+            <if test="validValue != null">
+                and valid = #{validValue}
+            </if>
         </where>
     </select>
 
