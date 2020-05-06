@@ -152,12 +152,15 @@
                                    style="display: initial; width: auto;">
                         </div>
                     </div>
-                    <div class="row text-center" v-if="!showSubmit" id="nextQuestion">
-                        <span class="glyphicon glyphicon-arrow-right" style="font-size: 30px; cursor: pointer;"
+                    <div class="row text-center" >
+                        <span class="glyphicon glyphicon-arrow-left" v-if="showLast" style="font-size: 30px; cursor: pointer;"
+                              v-on:click="lastQuestion()"></span>
+                        <span class="glyphicon glyphicon-arrow-right" v-if="!showSubmit" id="nextQuestion" style="font-size: 30px; cursor: pointer;"
                               v-on:click="nextQuestion(item, $event)"></span>
+
                     </div>
-                    <div class="row text-center" v-if="showSubmit">
-                        <span class="submit btn btn-success" v-on:click="submit(item, $event)">提交</span>
+                    <div class="row text-center">
+                        <span class="submit btn btn-success"  v-if="showSubmit" v-on:click="submit(item, $event)">提交</span>
                     </div>
 
 
@@ -193,9 +196,11 @@
             phone: '',
             current: 1,
             nextIndex: 1,
+            lastIndex: 2,
             tmpNext: [],
             tmpNextRadio: null,
             showSubmit: false,
+            showLast: false,
             endInfo: '问卷结束，感谢您的配合！'
         },
         created: function () {
@@ -310,6 +315,15 @@
                     }
                 }
             },
+            lastQuestion(){
+                console.log(this.nextIndex)
+                this.nextIndex -= 1;
+                this.current = this.nextIndex;
+                this.showSubmit = false;
+                if(this.nextIndex == 1){
+                    this.showLast = false;
+                }
+            },
             nextQuestion(question, event) {
                 if (!this.isInputed(question, event)) {
                     return alert('请选择');
@@ -328,7 +342,8 @@
                 this.validSurvey();
 
                 if (this.current === this.nextIndex) {
-                    this.nextIndex += 1
+                    this.nextIndex += 1;
+                    this.showLast = true;
                 }
                 if (this.questions.length <= this.nextIndex) {
                     this.showSubmit = true;
@@ -341,7 +356,6 @@
                     this.nextIndex = nextQIndex;
                 }
                 this.current = this.nextIndex;
-                this.nextIndex += 1;
             },
             getNextIndex(question) {
                 if(question.type === 1 && this.tmpNextRadio) {
@@ -450,6 +464,7 @@
             loadParams() {
                 var params = location.href.split("?")[1];
                 var paramsPair = params.split("&");
+                console.log(10215125);
                 this.paramsPair = paramsPair;
             },
             getParams(paramName) {
