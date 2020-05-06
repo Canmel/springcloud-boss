@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2020-04-18
  */
 public interface ZsCdrinfoMapper extends BaseMapper<ZsCdrinfo> {
-
+    ZsCdrinfo selectByAgentUUID(String uuid);
 }

@@ -371,4 +371,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public ZsSurvey findLatestSurvey() {
         return mapper.findLatestSurvey();
     }
+
+    @Override
+    public Integer avgTime(Integer id) {
+        return mapper.avgTime(id);
+    }
 }

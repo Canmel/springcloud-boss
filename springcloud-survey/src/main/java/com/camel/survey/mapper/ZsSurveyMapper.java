@@ -46,4 +46,6 @@ public interface ZsSurveyMapper extends BaseMapper<ZsSurvey> {
     void updateCurrent(Integer id);
 
     ZsSurvey findLatestSurvey();
+
+    Integer avgTime(Integer id);
 }
