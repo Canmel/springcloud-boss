@@ -32,6 +32,7 @@
                         <th>提现金额</th>
                         <th>申请时间</th>
                         <th>状态</th>
+                        <th>详情</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -47,9 +48,10 @@
                             <span v-if="item.status && item.status.code === 2" class="badge badge-success">{{item.status ? item.status.name : '未知'}}</span>
                             <span v-if="item.status && item.status.code === 3" class="badge badge-danger">{{item.status ? item.status.name : '未知'}}</span>
                         </td>
+                        <td><a class="btn btn-circle btn-warning" @click="pagequeryWork(item)" v-if="resultDev">查看</a></td>
                         <td>
                             <button type="button" v-on:click="pass(item)" class="btn btn-success btn-xs" v-if="item.status && item.status.code === 0
-                            && result ">
+                            && resultDev ">
                                 通过
                             </button>
                             <button type="button" v-on:click="reject(item)" class="btn btn-danger btn-xs" v-if="item.status && item.status.code === 0
@@ -63,7 +65,49 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
+            <div class="modal fade" id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">提现详情</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>日期</th>
+                                        <th>问卷名称</th>
+                                        <th>接触量</th>
+                                        <th>成功量</th>
+                                        <th>成功率</th>
+                                        <th>薪资</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="item in itemsWork">
+                                        <td><span>{{item.uname}}</span></td>
+                                        <td><span>{{item.workDate | formatOnlyDate}}</span></td>
+                                        <td><span>{{item.pname}}</span></td>
+                                        <td><span>{{item.tryNum}}</span></td>
+                                        <td><span>{{item.succssNum}}</span></td>
+                                        <td><span>{{Number.parseFloat(item.successRate).toFixed(2) + "%"}}</span></td>
+                                        <td><span>{{item.salary}}</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
+                        <div class="modal-footer">
+                            <pageination :total="pageInfoWork.total" :size="pageInfoWork.size" :page="pageInfoWork.pageNum"
+                                         :changge="pageFnWork"></pageination>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </div>
     </div>
 
@@ -82,24 +126,38 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
+            pageInfoWork: {
+                zsWorkId: [],
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
-            items: [{}]
+            items: [{}],
+            itemsWork: [{}]
         },
         created: function () {
-
-            
-            this.master = sessionStorage.getItem('master');
-
-            this.result = this.admin.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+            this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                    }
+
+                })
+            },
             projectDetails: function (item) {
                 sessionStorage.setItem('editParams', item.projectId);
                 toPage("pages/project/details.html");
@@ -116,6 +174,24 @@
                 this.pageInfo.pageNum = val;
                 this.pagequery();
             },
+            pagequeryWork: function (item) {
+                if(item != null){
+                    $("#addSurvey").modal('show');
+                    this.pageInfoWork.zsWorkId = item.zsWorkId;
+                    var that = this;
+                    AJAX.GET('zsWork', this.pageInfoWork, function (resp) {
+                        that.itemsWork = resp.data.list;
+                        that.pageInfoWork.pageNum = resp.data.pageNum;
+                        that.pageInfoWork.total = resp.data.total;
+                    })
+                }
+
+            },
+            pageFnWork: function (val) {
+                this.pageInfoWork.pageNum = val;
+                this.pagequeryWork();
+            },
+
             signUp(item) {
                 console.log(item);
             },

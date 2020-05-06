@@ -4,6 +4,7 @@ import com.camel.survey.model.ZsSign;
 import com.camel.survey.model.ZsWork;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
+import feign.Param;
 
 import java.util.List;
 
@@ -22,5 +23,5 @@ public interface ZsWorkMapper extends BaseMapper<ZsWork> {
      * @param entity
      * @return
      */
-    List<ZsSign> list(ZsWork entity);
+    List<ZsWork> list(@Param("entity")ZsWork entity, @Param("ids")String[] ids);
 }

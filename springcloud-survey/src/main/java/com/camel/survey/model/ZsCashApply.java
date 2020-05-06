@@ -1,5 +1,6 @@
 package com.camel.survey.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.text.SimpleDateFormat;
@@ -67,6 +68,8 @@ public class ZsCashApply extends BasePaginationEntity {
 
     private ZsApply status;
 
+    @TableField(exist = false)
+    private String[] zsWorkId;
     @Override
     public String toString() {
         return "ZsCashApply{" +
