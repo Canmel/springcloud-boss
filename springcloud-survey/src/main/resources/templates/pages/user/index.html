@@ -10,23 +10,20 @@
             </div>
         </div>
         <div class="ibox-content">
-
             <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="float: right">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入用户坐席号" class="input-sm form-control search-input"
-                               v-model="pageInfo.seatNum"> <span
-                            class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="seatquerystart()"> 搜索</button></span>
                         <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
                                v-model="pageInfo.email"> <span
                             class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequerystart()"> 搜索</button></span>
+                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="seatquery()"> 搜索</button></span>
                     </div>
                 </div>
+                <div class="col-sm-3" style="float: right">
+                    <input type="text" placeholder="请输入用户坐席号" class="input-sm form-control search-input"
+                           v-model="pageInfo.seatNum">
+                </div>
             </div>
-
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -153,6 +150,7 @@
                 seatNum: null,
                 password: ''
             },
+            // searchsign:'',
             searchsign:'',
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
@@ -160,6 +158,7 @@
         },
         created: function () {
             this.loadAllRoles();
+            this.pagequery();
             this.loginMaster();
         },
         methods: {
@@ -190,41 +189,41 @@
                     toastr.success(resp.msg);
                 })
             },
-            pagequerystart: function () {
-                this.searchsign="page";
-                this.pageInfo.pageNum=1;
-                let that = this;
-                AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
-                    that.items = resp.data.list;
-                    that.pageInfo.pageNum = resp.data.pageNum;
-                    that.pageInfo.total = resp.data.total;
-                })
-                for (let i = 0; i < that.items.length; i++) {
-                    AJAX.GET('zsSeat/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
-                        that.items[i].seatNum = resp.data.seatNum;
-                    })
-                }
-            },
-            seatquerystart: function(){
-                this.searchsign="seat";
-                this.pageInfo.pageNum=1;
-                let that =this;
-                AJAX.GET('zsSeat', this.pageInfo, function (resp) {
-                    that.items = resp.data.list;
-                    that.pageInfo.pageNum = resp.data.pageNum;
-                    that.pageInfo.total = resp.data.total;
-                })
-                for (let i = 0; i < that.items.length; i++) {
-                    AJAX.GET('/system/sysUser/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
-                        that.items[i].uid = resp.data.uid;
-                        that.items[i].username = resp.data.username;
-                        that.items[i].address = resp.data.address;
-                        that.items[i].nickname = resp.data.nickname;
-                        that.items[i].email = resp.data.email;
-                        that.items[i].mobile = resp.data.mobile;
-                    })
-                }
-            },
+            // pagequerystart: function () {
+            //     this.searchsign="page";
+            //     this.pageInfo.pageNum=1;
+            //     let that = this;
+            //     AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
+            //         that.items = resp.data.list;
+            //         that.pageInfo.pageNum = resp.data.pageNum;
+            //         that.pageInfo.total = resp.data.total;
+            //     })
+            //     for (let i = 0; i < that.items.length; i++) {
+            //         AJAX.GET('zsSeat/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
+            //             that.items[i].seatNum = resp.data.seatNum;
+            //         })
+            //     }
+            // },
+            // seatquerystart: function(){
+            //     this.searchsign="seat";
+            //     this.pageInfo.pageNum=1;
+            //     let that =this;
+            //     AJAX.GET('zsSeat', this.pageInfo, function (resp) {
+            //         that.items = resp.data.list;
+            //         that.pageInfo.pageNum = resp.data.pageNum;
+            //         that.pageInfo.total = resp.data.total;
+            //     })
+            //     for (let i = 0; i < that.items.length; i++) {
+            //         AJAX.GET('/system/sysUser/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
+            //             that.items[i].uid = resp.data.uid;
+            //             that.items[i].username = resp.data.username;
+            //             that.items[i].address = resp.data.address;
+            //             that.items[i].nickname = resp.data.nickname;
+            //             that.items[i].email = resp.data.email;
+            //             that.items[i].mobile = resp.data.mobile;
+            //         })
+            //     }
+            // },
             pagequery: function () {
                 let that = this;
                 AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
@@ -234,36 +233,38 @@
                 })
                 for (let i = 0; i < that.items.length; i++) {
                     AJAX.GET('zsSeat/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
-                        that.items[i].seatNum = resp.data.seatNum;
+                        if(resp.data){
+                            that.items[i].seatNum = resp.data.seatNum;
+                        }
                     })
                 }
             },
             seatquery: function(){
                 let that =this;
-                AJAX.GET('zsSeat', this.pageInfo, function (resp) {
-                    that.items = resp.data.list;
-                    that.pageInfo.pageNum = resp.data.pageNum;
-                    that.pageInfo.total = resp.data.total;
-                })
-                for (let i = 0; i < that.items.length; i++) {
-                    AJAX.GET('/system/sysUser/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
-                        that.items[i].uid = resp.data.uid;
-                        that.items[i].username = resp.data.username;
-                        that.items[i].address = resp.data.address;
-                        that.items[i].nickname = resp.data.nickname;
-                        that.items[i].email = resp.data.email;
-                        that.items[i].mobile = resp.data.mobile;
+                if(that.pageInfo.seatNum===''||that.pageInfo.seatNum==null){
+                    that.pagequery();
+                }
+                else{
+                    AJAX.GET('zsSeat', this.pageInfo, function (resp) {
+                        that.items = resp.data.list;
+                        that.pageInfo.pageNum = resp.data.pageNum;
+                        that.pageInfo.total = resp.data.total;
                     })
+                    for (let i = 0; i < that.items.length; i++) {
+                        AJAX.GET('/system/sysUser/' + that.items[i].uid + '/selectByUid', {}, function (resp) {
+                            that.items[i].uid = resp.data.uid;
+                            that.items[i].username = resp.data.username;
+                            that.items[i].address = resp.data.address;
+                            that.items[i].nickname = resp.data.nickname;
+                            that.items[i].email = resp.data.email;
+                            that.items[i].mobile = resp.data.mobile;
+                        })
+                    }
                 }
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
-                if(this.searchsign==="page"){
-                    this.pagequery();
-                }
-                else{
                     this.seatquery();
-                }
             },
             deleteItem(item) {
                 var that = this;
