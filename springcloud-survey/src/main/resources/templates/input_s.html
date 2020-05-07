@@ -63,6 +63,7 @@
             <div class="text-center">
                 <span>
                     {{survey.startShow}}
+                </span>
             </div>
         </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
@@ -96,6 +97,7 @@
                                                                   :id="'checkbox_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt, $event, item.type)"
                                                                   :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
+                                                                  :dexclusivity="opt.exclusivity ? opt.exclusivity.code : 0"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id"
                                                                   :value="opt.id + '_' +  opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
@@ -209,7 +211,6 @@
             validSurvey() {
                 var that = this;
                 var $inputs = $('.simform-inner').find('.question :visible').find('input');
-                console.log($inputs);
                 $inputs.each(function (index, item) {
                     var target = $(item).attr('dtarget');
                     var ckecked = $(item).is(':checked')
@@ -280,7 +281,6 @@
             },
             disableOption(opt) {
                 if (opt.configration && opt.current) {
-                    console.log(opt.configration, opt.current)
                     return opt.configration <= opt.current;
                 }
                 return false;
@@ -288,7 +288,7 @@
             },
             radioChange(opt, event, type) {
                 // 判断类型
-                if(type === 2) {
+                if (type === 2) {
                     return this.checkboxChanged(opt, event);
                 }
                 if (opt.target > 0) {
@@ -298,17 +298,27 @@
                 }
             },
             checkboxChanged(opt, event) {
+                if (opt.exclusivity && opt.exclusivity.code == 1) {
+                    if (event.target.checked) {
+                        this.tmpNext = [];
+                        $(event.target).parents('.question').find('input').not(event.target).attr('checked', false);
+                    }
+                }else{
+                    $(event.target).parents('.question').find("[dexclusivity=1]").attr('checked', false);
+                }
                 if (opt.target > 0) {
                     if (event.target.checked) {
                         this.tmpNext.push(opt.target);
                         this.tmpNext = Array.from(new Set(this.tmpNext));
                         this.tmpNext.sort(function (a1, a2) {
-                            return a1-a2;
+                            return a1 - a2;
                         })
                     } else {
                         this.tmpNext.splice(this.tmpNext.indexOf(opt.target), 1);
                     }
                 }
+
+
             },
             nextQuestion(question, event) {
                 if (!this.isInputed(question, event)) {
@@ -344,11 +354,11 @@
                 this.nextIndex += 1;
             },
             getNextIndex(question) {
-                if(question.type === 1 && this.tmpNextRadio) {
+                if (question.type === 1 && this.tmpNextRadio) {
                     let nextIndex = this.tmpNextRadio;
                     this.tmpNextRadio = null;
                     return nextIndex;
-                }else{
+                } else {
                     if (this.tmpNext.length > 0) {
                         let nextIndex = this.tmpNext[0];
                         this.tmpNext.splice(0, 1);
@@ -369,7 +379,6 @@
 
             },
             isInputed(question, event) {
-                console.log($inputs);
                 if (question.type === 1) {
                     var $inputs = $(event.srcElement).parents('.question').find('input:checked');
                     return $inputs.length !== 0;
