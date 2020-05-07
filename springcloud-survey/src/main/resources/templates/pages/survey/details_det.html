@@ -69,14 +69,20 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label class="col-sm-3 control-label">需收集数:</label>
                         <label class="col-sm-3 control-label">{{survey.collectNum}}</label>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label class="col-sm-3 control-label">已收集数:</label>
                         <label class="col-sm-3 control-label">{{survey.currentNum}}</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label class="col-sm-3 control-label">平均时间:</label>
+                        <label class="col-sm-3 control-label" v-if="avgTime">{{avgTime}} 秒</label>
+                        <a class="col-sm-3 control-label" v-if="!avgTime" v-on:click="getAvgTime()">点击获取</a>
                     </div>
                 </div>
             </div>
@@ -200,6 +206,7 @@
                                             <th>收集时间</th>
                                             <th>填写人(手机号)</th>
                                             <th>坐席号</th>
+                                            <th>通话时间</th>
                                             <th>有效</th>
                                             <th>操作</th>
                                         </tr>
@@ -215,6 +222,9 @@
                                             </td>
                                             <td>
                                                 <span>{{item.seat}}</span>
+                                            </td>
+                                            <td>
+                                                <span v-if="item.cdrinfo">{{item.cdrinfo.callLastsTime}}</span>
                                             </td>
                                             <td>
                                                 <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
@@ -570,6 +580,7 @@
                 zsOptions: [],
                 surveyId: 0
             },
+            avgTime: 0,
             loadData: {
                 zsQuestions: []
             },
@@ -614,9 +625,6 @@
             useLocalStreamList: [],
             appSigin: '0x2e,0x80,0x69,0xdb,0x19,0x1a,0xbd,0x14,0x99,0xea,0xa4,0x5a,0xf8,0xcc,0x6f,0xfc,0x2f,0x83,0x4a,0x01,0x43,0x1c,0x5d,0xc5,0x4c,0x28,0x28,0x59,0xa6,0x2d,0x53,0x2b',
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
         },
@@ -626,6 +634,14 @@
         },
         computed: {},
         methods: {
+            getAvgTime() {
+                let that = this;
+                AJAX.GET("zsSurvey/avgTime/" + this.survey.id, {}, function (resp) {
+                    if(resp.data) {
+                        that.avgTime = resp.data;
+                    }
+                })
+            },
             invalidQuery: function(){
                 this.pageInfo.validValue=0;
                 this.pagequery();
@@ -637,6 +653,16 @@
             qualityesting() {
                 AJAX.GET("zsSurvey/test/" + this.survey.id, {}, function (resp) {
                     toastr.success(resp.msg);
+                })
+            },
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
                 })
             },
             initZg() {
@@ -1064,11 +1090,7 @@
             this.loadQuestions();
             this.initZg();
             this.loadMonitors();
-            this.master = sessionStorage.getItem('master');
-
-            this.result = this.admin.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+            this.loginMaster();
 
         },
         mounted: function () {

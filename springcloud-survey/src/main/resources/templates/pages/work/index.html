@@ -5,9 +5,9 @@
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a v-on:click="importData"
-                       data-pjax class="btn btn-primary btn-xs" v-if="result">导入记录</a>
+                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">导入记录</a>
                     <a :href="applicationContextRootPath + 'pages/project/add.html'"
-                       data-pjax class="btn btn-success btn-xs" v-if="result">下载模板</a>
+                       data-pjax class="btn btn-success btn-xs" v-if="resultDev">下载模板</a>
                 </div>
             </div>
         </div>
@@ -104,6 +104,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                zsWorkId: [0],
                 uname: '',
                 pageNum: 1,
                 total: 0,//总页数
@@ -113,20 +114,23 @@
             items: [],
             selectedItem: {},
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
         },
         created: function () {
-            this.master = sessionStorage.getItem('master');
-
-            this.result = this.admin.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+           this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                })
+            },
             selectFile() {
                 $("#fileSelector").click();
             },

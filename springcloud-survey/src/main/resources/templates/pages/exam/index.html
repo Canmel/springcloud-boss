@@ -79,20 +79,32 @@
             },
             items: [{}],
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
+            result: false,
             resultIn: false,//表示访客权限
             resultDev: false,//表示操作人员权限
         },
         created: function () {
-            this.master = sessionStorage.getItem('master');
-
-            this.resultIn = this.interviewer.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+            this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                        that.resultIn =true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                        that.resultIn =true;
+                    }
+                    if(authority === 'ROLE_INTERVIEWER'){that.resultIn =true;}
+                })
+            },
             pagequery: function () {
                 var that = this;
                 AJAX.GET('zsExam', this.pageInfo, function (resp) {

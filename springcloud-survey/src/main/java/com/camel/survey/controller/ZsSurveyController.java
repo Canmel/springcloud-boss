@@ -71,6 +71,11 @@ public class ZsSurveyController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
 
+    @GetMapping("/avgTime/{id}")
+    public Result avgTime(@PathVariable Integer id) {
+        return ResultUtil.success(service.avgTime(id));
+    }
+
     /**
      * 获取详情
      */

@@ -276,9 +276,7 @@
             profile: {},
             userActives: [],
             master: [],//接受权限数组
-            admin: ['admin',''],
-            DevOps: ['DevOps','admin'],
-            interviewer: ['interviewer','DevOps','admin'],
+            result: false,
             resultIn: false,//表示访客权限
             resultDev: false,//表示操作人员权限
             user: {},//获取用户名查取其考试记录
@@ -289,16 +287,30 @@
             this.loadMe();
             this.loadUserActive();
 
-            this.master = sessionStorage.getItem('master');
-
-            this.resultIn = this.interviewer.filter(v => this.master.includes(v));
-
-            this.resultDev = this.DevOps.filter(v => this.master.includes(v));
+            this.loginMaster();
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
             this.loadCountSign();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                        that.resultIn =true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                        that.resultIn =true;
+                    }
+                    if(authority === 'ROLE_INTERVIEWER'){that.resultIn =true;}
+                })
+            },
             loadUserActive() {
                 var that = this;
                 AJAX.GET("zsSign/user", {}, function (resp) {

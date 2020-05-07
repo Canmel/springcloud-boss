@@ -8,13 +8,10 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.exceptions.ExcelImportException;
-import com.camel.survey.mapper.ZsProjectMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.mapper.ZsWorkMapper;
-import com.camel.survey.model.ZsProject;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.model.ZsWork;
-import com.camel.survey.service.ZsProjectService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ExcelUtil;
@@ -73,9 +70,13 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     }
 
     @Override
-    public PageInfo<ZsWork> selectPage(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
+    public PageInfo<ZsWork> selectPage(ZsWork entity,String[] ids, OAuth2Authentication oAuth2Authentication) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
-            mapper.list(entity);
+                    if(ids[0].equals("0")){
+                        mapper.list(entity,null);
+                    }else{
+                    mapper.list(entity,ids);
+                    }
         });
         return pageInfo;
     }

@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="css/demo/webuploader-demo.css">
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/timepicker/jquery-timepicker.css" rel="stylesheet">
     <!--<link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">-->
 </head>
 
@@ -156,7 +157,7 @@
 <script src="js/cti/wabacus_api.js"></script>
 <script src="js/cti/wabacus_util.js"></script>
 <script src="js/plugins/staps/jquery.steps.min.js"></script>
-
+<script src="js/plugins/timepicker/jquery-timepicker.js"></script>
 <!--<script src="js/vconsole.min.js"></script>-->
 <!--<script>-->
     <!--var vConsole = new VConsole();-->
@@ -210,7 +211,7 @@
                     that.user.userid = resp.data.principal.sysUser.uid;
                     that.user.password = resp.data.principal.sysUser.password;
                     sessionStorage.setItem('user',JSON.stringify(that.user));
-                    sessionStorage.setItem('master',that.master);
+                    sessionStorage.setItem('master',JSON.stringify(that.master));
                 });
             },
             sidebarClick: function (e) {
