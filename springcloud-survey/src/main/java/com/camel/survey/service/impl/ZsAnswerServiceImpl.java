@@ -8,10 +8,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsYesOrNo;
-import com.camel.survey.mapper.ZsAnswerItemMapper;
-import com.camel.survey.mapper.ZsAnswerMapper;
-import com.camel.survey.mapper.ZsOptionMapper;
-import com.camel.survey.mapper.ZsSurveyMapper;
+import com.camel.survey.mapper.*;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
@@ -71,6 +68,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     private ZsAnswerMapper zsAnswerMapper;
 
     @Autowired
+    private ZsCdrinfoMapper zsCdrinfoMapper;
+
+    @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Override
@@ -78,6 +78,13 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
+        List list = pageInfo.getList();
+        for (Object obj: list) {
+            ZsAnswer answer = (ZsAnswer) obj;
+            if(!ObjectUtils.isEmpty(answer.getAgentUUID()) && !answer.getAgentUUID().equals("0")) {
+                answer.setCdrinfo(zsCdrinfoMapper.selectByAgentUUID(answer.getAgentUUID()));
+            }
+        }
         return pageInfo;
     }
 

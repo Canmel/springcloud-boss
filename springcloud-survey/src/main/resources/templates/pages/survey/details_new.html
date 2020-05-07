@@ -408,7 +408,7 @@
                     surveyId: question.surveyId,
                     maxSelect: question.maxSelect,
                     minSelect: question.minSelect,
-                    compulsory: question.compulsory
+                    compulsory: question.compulsory.value
                 };
                 let options=this.getOptionsByQuestion(question.orderNum);
                 let tmpOptions=[];
@@ -419,7 +419,7 @@
                         name: o.name,
                         target: o.target,
                         hasRemark: o.hasRemark,
-                        exclusivity: o.exclusivity,
+                        exclusivity: o.exclusivity.value,
                         ignoreNum: o.ignoreNum,
                         configration: o.configration, // 选项配额
                         questionOrderNum: tmpQ.orderNum
@@ -488,6 +488,7 @@
                     sessionStorage.setItem('editParams', that.survey.projectId);
                     toPage('pages/project/details.html');
                 });
+                console.log(params);
             },
             upOption(e, option) {
                 e.stopPropagation();
@@ -697,7 +698,7 @@
                     minSelect: 1,
                     surveyId: this.surveyId,
                     maxSelect: 1,
-                    compulsory:true
+                    compulsory:1
                 };
                 let tmpOptions = [
                     {
@@ -730,7 +731,7 @@
                     surveyId: this.surveyId,
                     minSelect: 1,
                     maxSelect: 2,
-                    compulsory:true
+                    compulsory:1
                 };
                 let tmpOptions = [
                     {
@@ -763,7 +764,7 @@
                     orderNum: this.questions.length + 1,
                     minSelect: 1,
                     maxSelect: 2,
-                    compulsory: true
+                    compulsory: 1
                 };
                 let tmpOptions = [
                     {

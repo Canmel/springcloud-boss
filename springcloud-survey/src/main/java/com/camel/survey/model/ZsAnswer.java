@@ -99,6 +99,9 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
 
     private ZsTaskStatus taskStatus;
 
+    @TableField(exist = false)
+    private ZsCdrinfo cdrinfo;
+
     public ZsAnswer() {
     }
 

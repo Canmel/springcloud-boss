@@ -69,14 +69,20 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label class="col-sm-3 control-label">需收集数:</label>
                         <label class="col-sm-3 control-label">{{survey.collectNum}}</label>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label class="col-sm-3 control-label">已收集数:</label>
                         <label class="col-sm-3 control-label">{{survey.currentNum}}</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label class="col-sm-3 control-label">平均时间:</label>
+                        <label class="col-sm-3 control-label" v-if="avgTime">{{avgTime}} 秒</label>
+                        <a class="col-sm-3 control-label" v-if="!avgTime" v-on:click="getAvgTime()">点击获取</a>
                     </div>
                 </div>
             </div>
@@ -200,6 +206,7 @@
                                             <th>收集时间</th>
                                             <th>填写人(手机号)</th>
                                             <th>坐席号</th>
+                                            <th>通话时间</th>
                                             <th>有效</th>
                                             <th>操作</th>
                                         </tr>
@@ -215,6 +222,9 @@
                                             </td>
                                             <td>
                                                 <span>{{item.seat}}</span>
+                                            </td>
+                                            <td>
+                                                <span v-if="item.cdrinfo">{{item.cdrinfo.callLastsTime}}</span>
                                             </td>
                                             <td>
                                                 <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
@@ -570,6 +580,7 @@
                 zsOptions: [],
                 surveyId: 0
             },
+            avgTime: 0,
             loadData: {
                 zsQuestions: []
             },
@@ -623,6 +634,14 @@
         },
         computed: {},
         methods: {
+            getAvgTime() {
+                let that = this;
+                AJAX.GET("zsSurvey/avgTime/" + this.survey.id, {}, function (resp) {
+                    if(resp.data) {
+                        that.avgTime = resp.data;
+                    }
+                })
+            },
             invalidQuery: function(){
                 this.pageInfo.validValue=0;
                 this.pagequery();

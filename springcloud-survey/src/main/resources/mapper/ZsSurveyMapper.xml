@@ -112,4 +112,22 @@
         FROM
         zs_survey order by id desc limit 1
     </select>
+
+    <select id="avgTime" resultType="integer">
+        SELECT DISTINCT
+            IFNULL(AVG(cdr.call_lasts_time),0)
+        FROM
+            (
+                SELECT
+                    *
+                FROM
+                    zs_answer
+                WHERE
+                    survey_id = #{id}
+                AND agent_UUID != '0'
+            ) answer
+        LEFT JOIN zs_cdrinfo cdr ON cdr.uuids LIKE CONCAT('%', answer.agent_UUID, '%')
+        WHERE
+            cdr.call_lasts_time > 0
+    </select>
 </mapper>
