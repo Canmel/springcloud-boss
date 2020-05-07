@@ -61,6 +61,7 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
 
     private String endTime;
 
+    private String startDate;
     @TableField(exist = false)
     private String wtime;
     /**
