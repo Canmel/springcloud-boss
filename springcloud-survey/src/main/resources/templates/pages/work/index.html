@@ -56,7 +56,7 @@
                             <span v-if="item.gain === 1">已提取</span>
                         </td>
                         <td>
-                            <a class="btn btn-circle btn-warning" v-if="resultDev">查看</a>
+                            <a class="btn btn-circle btn-warning" @click="addSurveyShow(item)" v-if="resultDev">查看</a>
                         </td>
                     </tr>
                     </tbody>
@@ -64,7 +64,44 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
-
+            <div class="modal fade " id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content " style="width: 800px">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="">工作详情</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>工号</th>
+                                        <th>姓名</th>
+                                        <th>工作日期</th>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
+                                        <th>工作时长</th>
+                                        <th>工作地点</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-if="item">
+                                        <td><span>{{item.jobNumber}}</span></td>
+                                        <td><span>{{item.uname}}</span></td>
+                                        <td><span>{{item.workDate | formatOnlyDate}}</span></td>
+                                        <td><span>{{item.startTime | formatDate }}</span></td>
+                                        <td><span>{{item.endTime | formatDate}}</span></td>
+                                        <td><span>{{item.workHours}}</span></td>
+                                        <td><span>{{item.place}}</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </div>
     </div>
 
@@ -112,6 +149,7 @@
             },
             file: null,
             items: [],
+            item: {},
             selectedItem: {},
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
@@ -160,6 +198,13 @@
                     $("#myModal").modal("hide");
                 });
 
+            },
+            Timeformat : function(){
+
+            },
+            addSurveyShow : function(item){
+                $("#addSurvey").modal('show');
+                this.item = item;
             },
             pagequery: function () {
                 var that = this;
