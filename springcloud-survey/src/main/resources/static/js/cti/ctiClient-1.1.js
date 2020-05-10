@@ -716,6 +716,13 @@
 	    cancel: true
 		});
 	}
+
+	function surveyHangUp() {
+  		if(!window.surveyStatus || window.surveyStatus == 0) {
+  			return $("#earlyEndResonModal").modal("show");
+		}
+  		hangUp();
+	}
 	
 	//外呼
 	function calloutExternal(){
@@ -735,6 +742,15 @@
 	
 	//挂断
 	function hangUp(){
+		method="hangup";
+		send();
+	}
+
+	//提前结束挂断原因
+	function submitAdvanceReason(){
+  		alert('保存原因');
+  		$("#earlyEndResonModal").modal("hide");
+		$("#surveyModal").modal("hide");
 		method="hangup";
 		send();
 	}

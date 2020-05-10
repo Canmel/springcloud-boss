@@ -422,7 +422,7 @@
                 <div class="modal-body">
                     <form class="form-horizontal m-t">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">电话:</label>
+                            <label class="col-sm-3 control-label">电话1:</label>
                             <div class="col-sm-9">
                                 <input name="phone" id="phoneNum" class="form-control" type="text" style="height: auto;"
                                        value="018357162602">
@@ -437,11 +437,64 @@
         </div><!-- /.modal -->
     </div>
 
+    <div class="modal fade" id="surveyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 1000px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="surveyModalLabel">问卷</h4>
+                </div>
+                <div class="modal-body" style="padding: 0px; border: 0;">
+                    <iframe id="surveyIfram"  style="height: 700px; width: 100%;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="surveyHangUp()"><p class="fa fa-phone" style="margin: 0px;"></p>挂断</button>
+                    <button type="button" class="btn btn-success" onclick="calloutExternal()">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <div class="modal fade" id="earlyEndResonModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="earlyEndResonModalLabel">提前结束问卷原因</h4>
+                </div>
+                <div class="modal-body" style="padding: 0px; border: 0;">
+                    <form class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">请选择</label>
+                            <div class="col-sm-9">
+                                <select name="endAdvanceReason">
+                                    <option value="听不清对方的声音">听不清对方的声音</option>
+                                    <option value="听不懂对方的方言">听不懂对方的方言</option>
+                                    <option value="听不见对方的声音">听不见对方的声音</option>
+                                    <option value="对方完全不配合">对方完全不配合</option>
+                                    <option value="0" >其他</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="submitAdvanceReason()">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
     <!-- Audios -->
     <audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"></audio>
     <audio id="ringtone" loop src="/survey/sounds/ringtone.wav"></audio>
     <audio id="ringbacktone" loop src="/survey/sounds/ringbacktone.wav"></audio>
     <audio id="dtmfTone" src="/survey/sounds/dtmf.wav"></audio>
+
+
 </div>
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
@@ -455,7 +508,7 @@
     password = '';//座席密码
     exten = '';//座席分机
     pstnnumber = '88312345';//外线号码
-    popupUrl = 'https://diaocha.svdata.cn/survey/input_s.html'//来电弹屏地址;
+    popupUrl = window.location.protocol + "//" + window.location.host + '/survey/input_s.html'; //来电弹屏地址;
 
     var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
     var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
@@ -549,6 +602,7 @@
             }
         },
         methods: {
+
             calloutExternalModal() {
                 $("#myPhoneModal").modal("show");
             },
@@ -648,7 +702,8 @@
                     if(that.survey.monit.value === 1) {
                         // that.initZg();
                     }
-                    popupUrl = 'https://diaocha.svdata.cn/survey/input_s.html?surveyId=' + that.survey.id
+                    popupUrl = window.location.protocol + "//" + window.location.host + '/survey/input_s.html?surveyId=' + that.survey.id
+
                 })
             },
             loadQuestions() {
