@@ -12,6 +12,7 @@
         <result column="survey_id" property="surveyId" />
         <result column="start_time" property="startTime" />
         <result column="end_time" property="endTime" />
+        <result column="start_date" property="startDate" />
         <association property="survey" javaType="com.camel.survey.model.ZsSurvey">
             <id column="id" property="id"/>
             <result column="name" property="name"/>
@@ -33,6 +34,7 @@
 	zs_work_shift.survey_id,
 	zs_work_shift.start_time,
 	zs_work_shift.end_time,
+	zs_work_shift.start_date,
 	zs_survey.name
     FROM
         zs_work_shift
