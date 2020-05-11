@@ -123,7 +123,10 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
          * 修改主表状态
          */
         mapper.updateById(zsAnswer);
-        return ResultUtil.success("样本状态变更成功");
+        if(zsAnswer.getValid().getCode()==1)
+            return ResultUtil.success("样本状态已更改为有效");
+        else
+            return ResultUtil.success("样本状态已更改为无效");
     }
 
     @Override
