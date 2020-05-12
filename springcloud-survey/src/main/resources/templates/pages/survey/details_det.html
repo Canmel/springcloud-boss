@@ -1,3 +1,7 @@
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css" />
+</head>
 <style>
     .droppable-active {
         background-color: #ffe !important;
@@ -93,13 +97,11 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 问卷预览</a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false" v-on:click="validQuery()">已收到的问卷</a>
+                <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">已收到的问卷</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">正在收集</a>
-                </li>
-                <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false" v-on:click="invalidQuery()">无效问卷</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -178,8 +180,10 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <span>当前: {{option.current}}</span>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <span v-if="option.configration">配额: {{option.configration}}</span>
+                                                <span v-if="option.configration">&nbsp;配额: {{option.configration}}</span>
+                                                <span v-if="option.target&&option.target>-1&&option.target<10000">&nbsp;跳转到第{{option.target}}题</span>
+                                                <span v-if="option.target==-1">&nbsp;特殊属性：不保存样本并结束</span>
+                                                <span v-if="option.target==10000">&nbsp;特殊属性：保存样本并结束</span>
                                             </div>
                                         </div>
 
@@ -196,7 +200,30 @@
                 <div id="tab-2" class="tab-pane">
                     <div class="panel-body">
                         <div class="ibox-content">
-
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <select class="form-control m-b" name="type"
+                                            v-model="pageInfo.validValue">
+                                        <option value=1>有效问卷</option>
+                                        <option value=0>无效问卷</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
+                                           v-model="pageInfo.creator">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
+                                           v-model="pageInfo.seat">
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
+                                            class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -238,7 +265,10 @@
                                                         class="btn btn-danger btn-xs" v-if="resultDev">删除
                                                 </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-restore btn-xs" v-if="resultDev">标为无效
+                                                        class="btn btn-restore btn-xs" v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">标为无效
+                                                </button>
+                                                <button type="button" v-on:click="invalidItem(item)"
+                                                        class="btn btn-success btn-xs" v-if="resultDev&&(item.valid && item.valid.code === 0)">恢复为有效
                                                 </button>
                                             </td>
                                         </tr>
@@ -460,60 +490,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="tab-5" class="tab-pane">
-                    <div class="panel-body">
-                        <div class="ibox-content">
-
-                            <div class="row">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>收集时间</th>
-                                            <th>填写人(手机号)</th>
-                                            <th>坐席号</th>
-                                            <th>有效</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="(item, index) in answers">
-                                            <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                                            <td>
-                                                <span>{{item.createdAt}}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{item.creator}}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{item.seat}}</span>
-                                            </td>
-                                            <td>
-                                                <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
-                                                <span class="label-success label" v-if="!item.valid || item.valid && item.valid.code === 1">是</span>
-                                            </td>
-                                            <td>
-                                                <button type="button" v-on:click="details(item)"
-                                                        class="btn btn-primary btn-xs" v-if="resultDev">查看
-                                                </button>
-                                                <button type="button" v-on:click="deleteItem(item)"
-                                                        class="btn btn-danger btn-xs" v-if="resultDev">删除
-                                                </button>
-                                                <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-success btn-xs" v-if="resultDev">恢复为有效
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
-                                             :changge="pageFn"></pageination>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -586,6 +562,7 @@
             },
             answers: [],
             pageInfo: {
+                validValue:1,
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
@@ -641,14 +618,6 @@
                         that.avgTime = resp.data;
                     }
                 })
-            },
-            invalidQuery: function(){
-                this.pageInfo.validValue=0;
-                this.pagequery();
-            },
-            validQuery: function(){
-                this.pageInfo.validValue=1;
-                this.pagequery();
             },
             qualityesting() {
                 AJAX.GET("zsSurvey/test/" + this.survey.id, {}, function (resp) {
@@ -990,7 +959,12 @@
                 this.pagequery();
             },
             pagequery: function () {
+                this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
                 var that = this;
+                if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
+                    that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
+                    that.pageInfo.endDate=that.pageInfo.daterange.substring(22,41);
+                }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.answers = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
@@ -1091,13 +1065,46 @@
             this.initZg();
             this.loadMonitors();
             this.loginMaster();
-
         },
         mounted: function () {
             this.bindEvent();
         },
         beforeDestroy: function () {
             leaveRoom();
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        updateConfig();
+        function updateConfig() {
+            jQuery('#datePickerSelect').daterangepicker({
+                "startDate":"2019/12/22 00:00:00",
+                "timePickerSeconds": true,
+                "timePicker":true,
+                "opens":"center",
+                "buttonClasses":'btn btn-sm',
+                "applyClass":'btn-success',
+                "cancelClass":'btn-default',
+                "timePicker24Hour":true,
+                "linkedCalendars":false,
+                "autoUpdateInput":true,
+                locale: { //汉化
+                    format:"YYYY/MM/DD HH:mm:ss",
+                    applyLabel: '确定', //确定按钮文本
+                    cancelLabel: '取消', //取消按钮文本
+                    customRangeLabel: '自定义范围',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            }, function(start, end, label) {
+                // this.pageInfo.startDate=start.format('YYYY-MM-DD:HH:mm:ss');
+                // this.pageInfo.endDate=end.format('YYYY-MM-DD:HH:mm:ss');
+                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
+                console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
+            });
         }
     });
 </script>
