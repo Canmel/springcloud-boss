@@ -444,6 +444,9 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="surveyModalLabel">问卷</h4>
+                    <button type="button" class="btn btn-danger" onclick="surveyHangUp()"><p class="fa fa-phone" style="margin: 0px;"></p>挂断</button>
+                    <button type="button" class="btn btn-success" onclick="calloutExternal()">提交</button>
+
                 </div>
                 <div class="modal-body" style="padding: 0px; border: 0;">
                     <iframe id="surveyIfram"  style="height: 700px; width: 100%;"></iframe>
@@ -499,7 +502,6 @@
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
 <script type="text/javascript">
-    console.log('script')
     /**
      * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
      */
@@ -597,7 +599,6 @@
         },
         computed: {
             ctiserver() {
-                console.log(this.cti.server);
                 return this.cti.server;
             }
         },
@@ -746,13 +747,11 @@
         created: function () {
             this.initZg();
             this.loadEntity();
-            console.log(123);
             this.loadConnectInfo();
             this.loadQuestions();
             this.loadMe();
             $ctiserver = this;
             websocket.onopen = function (event) {
-                console.log(event)
                 $ctiserver.cti.server = 1
             }
             websocket.onerror = function () {
@@ -792,7 +791,6 @@
             this.bindEvent();
         },
         beforeCreate: function () {
-            console.log('beforeCreate');
         },
         beforeDestroy: function () {
             leaveRoom();
