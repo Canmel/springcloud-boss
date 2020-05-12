@@ -86,5 +86,6 @@
             zs_sign.username = #{param1}
         AND zs_work.phone = #{param2}
         AND result = 1
+        group by zs_work.succss_num
     </select>
 </mapper>

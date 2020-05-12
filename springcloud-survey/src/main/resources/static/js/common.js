@@ -26,7 +26,6 @@ var anchor_userid = '', anchro_username = '';
 
 
 $(function () {
-    console.log('sdk version is', ZegoClient.getCurrentVersion());
     // if (ZegoClient.isSupportWebrtc()) {
     //     ZegoClient.isSupportH264(result => {
     //         bindEvent();
@@ -40,7 +39,6 @@ $(function () {
     //     alert('浏览器不支持webrtc，换一个浏览器试试吧');
     // }
     ZegoClient.supportDetection(result => {
-        console.log(result);
         bindEvent();
     }, err => {
         alert(err);
@@ -86,7 +84,6 @@ function IsPC() {
 function enumDevices() {
     var audioInputList = [], videoInputList = [];
     zg.enumDevices(deviceInfo => {
-        console.log('enumDevices' + JSON.stringify(deviceInfo));
         if (deviceInfo.microphones) {
             for (var i = 0; i < deviceInfo.microphones.length; i++) {
 
@@ -94,7 +91,6 @@ function enumDevices() {
                     deviceInfo.microphones[i].label = 'microphone' + i;
                 }
                 audioInputList.push(' <option value="' + deviceInfo.microphones[i].deviceId + '">' + deviceInfo.microphones[i].label + '</option>');
-                console.log("microphone: " + deviceInfo.microphones[i].label);
             }
         }
 
@@ -104,7 +100,7 @@ function enumDevices() {
                     deviceInfo.cameras[i].label = 'camera' + i;
                 }
                 videoInputList.push('<option value="' + deviceInfo.cameras[i].deviceId + '">' + deviceInfo.cameras[i].label + '</option>');
-                console.log("camera: " + deviceInfo.cameras[i].label);
+                console.log("摄像头信息: " + deviceInfo.cameras[i].label);
             }
         }
 
@@ -523,10 +519,6 @@ function setConfig(zg) {
         });
     }
     //测试用代码，客户请忽略  end
-
-
-    console.log("config param:" + JSON.stringify(_config));
-
     _config.appid = _config.appid * 1;
     _config.testEnvironment = !!(_config.testEnvironment * 1);
 
