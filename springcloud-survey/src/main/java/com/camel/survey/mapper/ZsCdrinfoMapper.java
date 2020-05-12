@@ -2,6 +2,7 @@ package com.camel.survey.mapper;
 
 import com.camel.survey.model.ZsCdrinfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author baily
  * @since 2020-04-18
  */
+@Repository
 public interface ZsCdrinfoMapper extends BaseMapper<ZsCdrinfo> {
     ZsCdrinfo selectByAgentUUID(String uuid);
 }

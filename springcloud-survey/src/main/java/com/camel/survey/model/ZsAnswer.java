@@ -92,6 +92,14 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private Integer validValue;
 
+    //开始时间，用于查询
+    @TableField(exist = false)
+    private String startDate;
+
+    //结束时间，用于查询
+    @TableField(exist = false)
+    private String endDate;
+
     /**
      * 任务ID
      */
