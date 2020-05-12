@@ -180,8 +180,10 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <span>当前: {{option.current}}</span>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <span v-if="option.configration">配额: {{option.configration}}</span>
+                                                <span v-if="option.configration">&nbsp;配额: {{option.configration}}</span>
+                                                <span v-if="option.target&&option.target>-1&&option.target<10000">&nbsp;跳转到第{{option.target}}题</span>
+                                                <span v-if="option.target==-1">&nbsp;特殊属性：不保存样本并结束</span>
+                                                <span v-if="option.target==10000">&nbsp;特殊属性：保存样本并结束</span>
                                             </div>
                                         </div>
 
