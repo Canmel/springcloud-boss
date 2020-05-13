@@ -202,6 +202,10 @@ public class ZsSurveyController extends BaseCommonController {
         myFileTransterBackUpdate.update(request);
     }
 
+    @GetMapping("/downloadSurvey")
+    public Result downloadSurvey(@RequestParam("surveyId") Integer surveyId){
+        return service.downloadSurvey(surveyId);
+    }
     /**
      * 获取service
      */
