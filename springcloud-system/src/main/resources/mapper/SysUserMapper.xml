@@ -21,6 +21,7 @@
         <result column="org_name" property="orgName" jdbcType="VARCHAR"></result>
         <result column="address" property="address" jdbcType="VARCHAR"></result>
         <result column="remark" property="remark" jdbcType="VARCHAR"></result>
+        <result column="seat_num" property="seatNum" jdbcType="VARCHAR"></result>
         <collection property="roleIds" fetchType="eager" column="uid"
                     select="findRoleIdsByUserId"></collection>
     </resultMap>
@@ -44,7 +45,8 @@
         sys_user.org_no,
         sys_user.org_name,
         sys_user.address,
-        sys_user.remark
+        sys_user.remark,
+        sys_user.seat_num
     </sql>
 
     <select id="findRoleIdsByUserId" resultType="integer">
@@ -59,6 +61,7 @@
         <where>
             <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%')</if>
             <if test="username !=null and username != ''">and sys_user.username like CONCAT('%', #{username}, '%')</if>
+            <if test="seatNum !=null and seatNum != ''">and sys_user.seat_num like CONCAT('%', #{seatNum}, '%')</if>
         </where>
         ORDER BY sys_user.uid
     </select>
