@@ -11,10 +11,6 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 public class ExcelSurvey {
 
-
-    public static void main(String[] args) {
-        writeExcel("222","D://");
-    }
     public static void writeExcel(String name, String pathName) {
         //使用apache的poI HssFworkbook对象写入Excel并实现样式
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -71,12 +67,6 @@ public class ExcelSurvey {
         f.setBold(true);//加粗
         style.setFont(f);
         style.setAlignment(HorizontalAlignment.CENTER);//左右居中
-        return style;
-    }
-
-    public static HSSFCellStyle backGround(HSSFWorkbook workbook){
-        HSSFCellStyle style = workbook.createCellStyle();
-
         return style;
     }
     /**
