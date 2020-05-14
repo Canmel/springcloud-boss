@@ -231,7 +231,7 @@
 							confirm("来电通知", "", function (isConfirm) {
 								if (isConfirm) {
 									sipAnswer();
-									window.open(window.openUrl);
+									window.openSurvey(openUrl);
 								} else {
 									sipHangUp();
 								}

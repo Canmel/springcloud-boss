@@ -90,3 +90,9 @@ jQuery.validator.addMethod("isMobile", function(value, element) {
     var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
     return this.optional(element) || (length == 11 && mobile.test(value));
 }, "请正确填写手机号码");
+
+window.openSurvey = function (url) {
+    window.surveyStatus = 0;
+    $("#surveyIfram").attr('src', url);
+    $("#surveyModal").modal('show');
+}
