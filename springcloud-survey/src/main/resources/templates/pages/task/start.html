@@ -1,3 +1,7 @@
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css" />
+</head>
 <script src="js/SIPml-api.js?svn=250" type="text/javascript"></script>
 <script src="/survey/js/cti/webrtc-1.0.js"></script>
 <script src="/survey/js/common.js"></script>
@@ -318,8 +322,10 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <span>当前: {{option.current}}</span>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <span v-if="option.configration">配额: {{option.configration}}</span>
+                                                <span v-if="option.configration">&nbsp;配额: {{option.configration}}</span>
+                                                <span v-if="option.target&&option.target>-1&&option.target<10000">&nbsp;跳转到第{{option.target}}题</span>
+                                                <span v-if="option.target==-1">&nbsp;特殊属性：不保存样本并结束</span>
+                                                <span v-if="option.target==10000">&nbsp;特殊属性：保存样本并结束</span>
                                             </div>
                                         </div>
 
@@ -336,7 +342,23 @@
                 <div id="tab-2" class="tab-pane">
                     <div class="panel-body">
                         <div class="ibox-content">
-
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
+                                           v-model="pageInfo.creator">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
+                                           v-model="pageInfo.seat">
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
+                                            class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -540,6 +562,7 @@
             },
             answers: [],
             pageInfo: {
+                validValue:1,
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
@@ -618,6 +641,11 @@
             },
             pagequery: function () {
                 var that = this;
+                this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
+                    that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
+                    that.pageInfo.endDate=that.pageInfo.daterange.substring(22,41);
+                }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.answers = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
@@ -813,6 +841,39 @@
             }
             return true;
 
+        }
+    });
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        updateConfig();
+        function updateConfig() {
+            jQuery('#datePickerSelect').daterangepicker({
+                "startDate":"2019/12/22 00:00:00",
+                "timePickerSeconds": true,
+                "timePicker":true,
+                "opens":"center",
+                "buttonClasses":'btn btn-sm',
+                "applyClass":'btn-success',
+                "cancelClass":'btn-default',
+                "timePicker24Hour":true,
+                "linkedCalendars":false,
+                "autoUpdateInput":true,
+                locale: { //汉化
+                    format:"YYYY/MM/DD HH:mm:ss",
+                    applyLabel: '确定', //确定按钮文本
+                    cancelLabel: '取消', //取消按钮文本
+                    customRangeLabel: '自定义范围',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            }, function(start, end, label) {
+                // this.pageInfo.startDate=start.format('YYYY-MM-DD:HH:mm:ss');
+                // this.pageInfo.endDate=end.format('YYYY-MM-DD:HH:mm:ss');
+                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
+                console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
+            });
         }
     });
 </script>
