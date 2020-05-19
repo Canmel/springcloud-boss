@@ -14,6 +14,7 @@ import java.util.List;
  * @author baily
  * @since 2020-04-14
  */
+@Repository
 public interface ZsWorkShiftMapper extends BaseMapper<ZsWorkShift> {
 
     /**

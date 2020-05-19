@@ -103,6 +103,17 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         ZsAnswer zsAnswer = this.selectById(id);
         ZsSurvey zsSurvey = surveyMapper.selectById(zsAnswer.getSurveyId());
         if (!ObjectUtils.isEmpty(zsAnswer.getValid()) && zsAnswer.getValid() == ZsYesOrNo.NO) {
+            List<ZsAnswerItem> answerItems=answerItemMapper.selectByAnswerId(id);
+            for(int i=0;i<answerItems.size();i++){
+                ZsOption option = optionMapper.selectByQuestionAndName(answerItems.get(i).getQuestionId(),answerItems.get(i).getOption());
+                if(option!=null&&option.getConfigration()!=null){
+                    if(option.getCurrent()>=option.getConfigration()){
+                        return ResultUtil.updateError("样本状态","该样本内存在配额已满选项，不可恢复！");
+                    }
+                    option.setCurrent(option.getCurrent()+1);
+                    optionMapper.updateById(option);
+                }
+            }
             zsAnswer.setValid(ZsYesOrNo.YES);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.YES.getCode());
             /**
@@ -110,23 +121,33 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
              */
             zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() + 1);
         } else {
+            List<ZsAnswerItem> answerItems=answerItemMapper.selectByAnswerId(id);
+            for(int i=0;i<answerItems.size();i++){
+                ZsOption option = optionMapper.selectByQuestionAndName(answerItems.get(i).getQuestionId(),answerItems.get(i).getOption());
+                if(option!=null&&option.getConfigration()!=null){
+                    option.setCurrent(option.getCurrent()-1);
+                    optionMapper.updateById(option);
+                }
+            }
             zsAnswer.setValid(ZsYesOrNo.NO);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.NO.getCode());
             /**
              * 修改当前样本数量
              */
             zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() - 1);
-        }
 
+        }
         surveyMapper.updateById(zsSurvey);
         /**
          * 修改主表状态
          */
         mapper.updateById(zsAnswer);
-        if(zsAnswer.getValid().getCode()==1)
+        if(zsAnswer.getValid().getCode()==1) {
             return ResultUtil.success("样本状态已更改为有效");
-        else
+        }
+        else {
             return ResultUtil.success("样本状态已更改为无效");
+        }
     }
 
     @Override
