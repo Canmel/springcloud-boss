@@ -50,4 +50,6 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     Result deleteAnswer(Integer id);
 
     List<ZsAnswer> selectAllWithConversation(Integer id);
+
+    ZsAnswer selectByAgentUuid(String agentUuid);
 }
