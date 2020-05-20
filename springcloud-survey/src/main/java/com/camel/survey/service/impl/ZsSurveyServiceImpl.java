@@ -20,6 +20,7 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.ExcelSurvey;
 import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsSendSms;
@@ -375,5 +376,12 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Integer avgTime(Integer id) {
         return mapper.avgTime(id);
+    }
+
+    @Override
+    public Result downloadSurvey(Integer surveyId) {
+        ZsSurvey zsSurvey = mapper.selectById(surveyId);
+        ExcelSurvey.writeExcel(zsSurvey.getName(),"D:\\springcloud-boss\\springcloud-survey\\src\\main\\resources\\excel\\");
+        return ResultUtil.success("下载成功");
     }
 }
