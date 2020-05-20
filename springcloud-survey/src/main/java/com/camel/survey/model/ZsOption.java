@@ -3,10 +3,16 @@ package com.camel.survey.model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.camel.survey.annotation.ExcelAnnotation;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -48,31 +54,37 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     /**
      * 名称，显示作用
      */
+    @ExcelAnnotation(columnName = "选项", columnIndex = 6)
     private String name;
 
     /**
      * 有没有备注
      */
+    @ExcelAnnotation(columnName = "是否有备注", columnIndex = 9)
     public Boolean hasRemark;
 
     /**
      * 序号
      */
+    @ExcelAnnotation(columnName = "项号", columnIndex = 5)
     private Integer orderNum;
 
     /**
      * 下一个问题序号
      */
+    @ExcelAnnotation(columnName = "跳转至", columnIndex = 7)
     private Integer target;
 
     /**
      * 选项配额
      */
+    @ExcelAnnotation(columnName = "选项配额", columnIndex = 10)
     private Integer configration;
 
     /**
      * 不计配额
      */
+    @ExcelAnnotation(columnName = "忽略配额", columnIndex = 8)
     private Boolean ignoreNum;
 
     /**
@@ -91,6 +103,13 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
      */
     private Integer questionId;
 
+    //排他性
+    private ZsYesOrNo exclusivity;
+
+    @ExcelAnnotation(columnName = "题目", columnIndex = 1)
+    @TableField(exist = false)
+    private String question;
+
     @TableField(exist = false)
     private ZsQuestion zsQuestion;
 
@@ -108,6 +127,17 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
             return this.current >= this.configration;
         }
         return false;
+    }
+
+    public static Map<String, List> loadTranslate() {
+        List<String> keys = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
+        keys.add("是");values.add(0);
+        keys.add("否");values.add(1);
+        Map<String, List> map = new HashMap<>();
+        map.put("keys", keys);
+        map.put("values", values);
+        return map;
     }
 
     @Override

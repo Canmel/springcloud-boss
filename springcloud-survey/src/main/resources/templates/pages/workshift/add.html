@@ -1,0 +1,235 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="signupForm">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">班次名称：</label>
+                    <div class="col-sm-8">
+                        <input id="cnameval" name="cname" class="form-control"  placeholder="请输入班级名称" type="text" aria-required="true" aria-invalid="true"
+                               class="error" v-model="zs_workshift.cname">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">选择问卷：</label>
+                    <div class="col-sm-4">
+                        <span class="click-span"  v-on:click="applyRoles()">{{zs_workshift.surveyId==0?msg[0]:surveyname}}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">地址：</label>
+                    <div class="col-sm-8">
+                        <input name="adress" placeholder="请输入地址" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" v-model="zs_workshift.adress">
+                    </div>
+                </div>
+                <div class="form-group" id="data_1">
+                    <label class="col-sm-3 control-label">开始日期：</label>
+                    <div class="input-group date col-sm-4">
+                        <span>&nbsp;</span>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input id="startdate" name="startdate" class="form-control" autocomplete="off" ref="inputstartdate" placeholder="请选择开始日期"  style="font-size: 13px;" type="text" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">开始时间：</label>
+                    <div class="col-sm-6" >
+                        <div class="input-group input-medium date-picker input-daterange" data-date-format="yyyy-mm-dd">
+                            <input id="starttime" name="starttime" class=" datepicker" autocomplete="off" ref="inputstart" placeholder="请选择开始时间"  style="font-size: 13px;" type="text" >
+                            <span class="input-group-addon">—————</span>
+                            <input id="endtime" name="endtime" class="datepicker" autocomplete="off" ref="inputend" placeholder="请选择结束时间"  style="font-size: 13px;" type="text" >
+                        </div>
+                       <!-- <input type="text" class="datepicker" ref="inputstart" placeholder="请选择日期" >-->
+                       <!-- <a @click="valChange">11111111</a>-->
+                    </div>
+                </div>
+                <div class="modal fade" id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">选择试卷</h4>
+                            </div>
+                            <div class="modal-body">
+                                    <h3>可以选择的试卷:</h3>
+                                    <div class="row">
+                                        <div class="col-sm-8" v-for="item in items">
+                                            <label>
+                                                <div class="co">
+                                                    <span class="click-span" v-on:click="addSurveyid(item)">{{item.name}}</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                                             :changge="pageFn"></pageination>
+                        </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+                <h1>{{endtime}}</h1>
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-3">
+                        <h5 style="color:red" v-if="selectcount == 1">该班次名称重复，不可用！！！</h5>
+                        <h5 style="color:red" v-if="selectsurveyid == 1">该班次没有选择试卷，请选择！！</h5>
+                        <h5 style="color:red" v-if="timeregular == 1">请按照00:00的方式输入时间</h5>
+                        <h5 style="color:red" v-if="dateregular == 1">请按照0000-00-00的方式输入日期</h5>
+                        <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
+                        <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            zs_workshift: {
+                cname: '',
+                cuname: '',
+                adress: '',
+                startTime: '',
+                endTime: '',
+                startDate:'',
+                surveyId:0
+            },
+            pageInfo: {
+                name: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10//每页显示条目个数不传默认10
+            },
+            allRoles:[],
+            items:[],
+            msg :["点击选择试卷"],
+            surveyname:'',
+            user: {username:'',phone:'',userid:'',password:''},//存储username查取其参与考试
+            endtime: '',
+            starttime: '',
+            startdate:'',
+            selectcount: 0,
+            selectsurveyid: 0,
+            timeregular: 0,
+            dateregular: 0
+        },
+        created: function () {
+            var userJsonStr = sessionStorage.getItem('user');
+            this.user = JSON.parse(userJsonStr);
+            this.zs_workshift.cuname = this.user.username;
+        },
+        methods: {
+            cancel: function () {
+                this.backToMain();
+            },
+            save: function () {
+                console.log($("#signupForm").valid());
+               if(!$("#signupForm").valid()){
+                    return false;
+                }
+                var that = this;
+                that.zs_workshift.startTime = this.$refs.inputstart.value;
+                that.zs_workshift.endTime = this.$refs.inputend.value;
+                that.zs_workshift.startDate = this.$refs.inputstartdate.value;
+                var date = /^\d{4}-\d{2}-\d{2}$/;
+                var time = /^\d{2}:\d{2}$/;
+                that.selectsurveyid = 0;
+                that.dateregular = 0;
+                that.timeregular = 0;
+                if(that.zs_workshift.surveyId == 0){
+                    that.selectsurveyid = 1;
+                    return false;
+                }
+                if(!date.test(that.zs_workshift.startDate)){
+                    that.dateregular = 1;
+                    return false;
+                }
+                if(!time.test(that.zs_workshift.startTime)&&!time.test(that.zs_workshift.endTime)){
+                    that.timeregular = 1;
+                    return false;
+                }
+
+                AJAX.POST('zsWorkShift', that.zs_workshift, function (resp) {
+                    if(resp.data == 1){
+                        that.selectcount = 1;
+                        return false;
+                    }
+                    toastr.success("成功");
+                    that.backToMain();
+                });
+            },
+            applyRoles() {
+                $("#addSurvey").modal('show');
+
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsSurvey', this.pageInfo, function (resp) {
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                    that.items = resp.data.list;
+
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            addSurveyid(item) {
+
+                this.zs_workshift.surveyId = item.id;
+                this.surveyname = item.name;
+                $("#addSurvey").modal('hide');
+            },
+            backToMain: function () {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/workshift/index.html',
+                    container: '.page-container'
+                });
+            },
+        }
+    });
+    $().ready(function () {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                cname: "required",
+                adress: "required",
+                starttime: "required",
+                endtime: "required",
+                startdate:"required"
+            },
+            messages: {
+                cname: icon + "请输入班次名称",
+                adress: icon + "请选择地址",
+                starttime: icon + "请选择开始时间",
+                endtime: icon + "请选择结束时间",
+                startdate: icon + "请选择开始日期"
+            }
+        });
+
+
+        $('#data_1 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+        $("#endtime").hunterTimePicker();
+        //时间选择
+        $("#starttime").hunterTimePicker();
+        // propose username by combining first- and lastname
+        $("#username").focus(function () {
+            var firstname = $("#firstname").val();
+            var lastname = $("#lastname").val();
+            if (firstname && lastname && !this.value) {
+                this.value = firstname + "." + lastname;
+            }
+        });
+    });
+</script>

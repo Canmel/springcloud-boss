@@ -25,6 +25,7 @@
     var signin = false;//是否登录
 	var method = "";//请求类型
 	var agentstatus = "0";//座席状态
+	var agentstatusCurrent = "0";//座席状态
 	var callee = "";//被叫号码
 	var timeoutSec = 30;//心跳检测时间（秒）
 	var heartbeatId=-1;//心跳事件ID
@@ -59,9 +60,11 @@
   	//设置工具栏启用状态
   	function setToolbarEnabled(allStatusFlag,calloutInternalFlag,calloutExternalFlag,hangUpFlag,holdFlag,unHoldFlag,transferFlag,threewayFlag,evaluateFlag,monitorFlag){
   		if(allStatusFlag){
-  			$('#allStatus').show();
+  			$('#seatBusy').show();
+			$('#seatFree').show();
   		}else{
-  			$('#allStatus').hide();
+  			$('#seatBusy').hide();
+			$('#seatFree').hide();
   		}
   		if(calloutInternalFlag){
   			$('#calloutInternal').show();
@@ -458,12 +461,13 @@
 			}else if(methodType=='agent_status_change'){//座席状态被改变
 				if(eventAgentNo==agentno){
 					setToolbarByStatus(state);
+					agentstatusCurrent = state;
 				}
 				if($("#doctree").length>0){
 					setMonitorbarStatus(eventAgentNo,state);
 				}
 			}else if(methodType=="common_callin_bridge_ring"){//呼入弹屏
-				console.log("呼入弹屏")
+				console.log("呼入弹屏", jsonStr);
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
@@ -471,7 +475,7 @@
 					window.openUrl = url;
 				}
 			}else if(methodType=="manual_callout_agent_ring"){//呼出弹屏
-				console.log("外呼弹屏")
+                console.log("呼入弹屏", jsonStr);
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
@@ -485,6 +489,7 @@
 					window.openUrl = url;
 				}
 			}else if(methodType=="get_agentgroup_list"){//获取座席组列表
+                console.log("呼入弹屏", jsonStr);
 				var agentGroupNames = jsonStr.agentgroupname;
 				var agentGroupNums = jsonStr.agentgroupnum.split(",");
 				agentGroupStr = '[{"id":1,"pId":0,"name":"座席组","open":true,"isParent":true,"busid":"-1"}';//座席组信息
@@ -715,6 +720,29 @@
 	    cancel: true
 		});
 	}
+
+	function surveyHangUp() {
+  		// 问卷状态为0并且在通话中的坐席需要提交提前挂断原因
+  		if(!window.surveyStatus || window.surveyStatus == 0 || agentstatusCurrent === '2') {
+  			 $("#earlyEndResonModal").modal("show");
+  			 return false;
+		}
+  		// 如果是通话中需要先挂掉
+  		if(agentstatusCurrent === '2') {
+			hangUp();
+		}
+  		$("#surveyModal").modal("hide");
+  		return true;
+	}
+
+	function surveyHangUpWithBusy() {
+		if(surveyHangUp()) {
+			setTimeout(function(){
+				changeStatus(6);
+			},500);
+			$("#surveyModal").modal("hide");
+		}
+	}
 	
 	//外呼
 	function calloutExternal(){
@@ -734,8 +762,26 @@
 	
 	//挂断
 	function hangUp(){
-		method="hangup";
-		send();
+  		// 针对没有挂断的坐席，已经挂断的或者不在通话中的坐席直接忽略
+		if(agentstatusCurrent === '2') {
+			method="hangup";
+			send();
+		}
+	}
+
+	//提前结束挂断原因
+	function submitAdvanceReason(){
+  		$("#earlyEndResonModal").modal("hide");
+		$("#surveyModal").modal("hide");
+		hangUp();
+	}
+
+	//提前结束挂断原因并将自身置为忙碌
+	function submitAdvanceReasonWithBusy() {
+		submitAdvanceReason();
+		setTimeout(function(){
+			changeStatus(6);
+		},500);
 	}
 	
 	//评分

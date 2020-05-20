@@ -130,6 +130,11 @@ public class SysUser extends BasePaginationEntity implements Serializable {
      */
     private String idNum;
 
+    /**
+     * 座位号
+     */
+    private String seatNum;
+
     @TableField(exist = false)
     private List roleIds;
 

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsTaskStatus;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -76,6 +77,9 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     private String creator;
 
+    @TableField(value = "agent_UUID")
+    private String agentUUID;
+
     @TableField(exist = false)
     private List<ZsAnswerItem> items;
 
@@ -83,6 +87,34 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      * 是否有效
      */
     private ZsYesOrNo valid;
+
+    //是否有效，用于查询
+    @TableField(exist = false)
+    private Integer validValue;
+
+    //开始时间，用于查询
+    @TableField(exist = false)
+    private String startDate;
+
+    //结束时间，用于查询
+    @TableField(exist = false)
+    private String endDate;
+
+    /**
+     * 任务ID
+     */
+    private String taskId;
+
+    private ZsTaskStatus taskStatus;
+
+    @TableField(exist = false)
+    private ZsCdrinfo cdrinfo;
+
+    private String startTime;
+
+    private String callLastsTime;
+
+    private String endTime;
 
     public ZsAnswer() {
     }

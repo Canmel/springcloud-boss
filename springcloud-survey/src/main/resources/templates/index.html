@@ -28,6 +28,8 @@
     <link rel="stylesheet" type="text/css" href="css/demo/webuploader-demo.css">
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/timepicker/jquery-timepicker.css" rel="stylesheet">
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
     <!--<link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">-->
 </head>
 
@@ -102,9 +104,9 @@
                         </div>
                     </form>
                 </div>
-                <div style="float: right;margin-right: 1%;margin-top: 0.5%;">
-                    <button type="button" class="btn btn-sm btn-primary" v-on:click="logout()"> 登出</button>
-                    <button type="button" class="btn btn-sm btn-primary" v-on:click="editPwd()"> 修改密码</button>
+                <div style="float: right;margin-right: 1%;margin-top: 1%;">
+                    <a class="alert-link" v-on:click="logout()"> 登出</a>
+                    <a class="alert-link" v-on:click="editPwd()"> 修改密码</a>
                 </div>
             </nav>
         </div>
@@ -143,7 +145,7 @@
 <script src="js/jquery-ui-1.10.4.min.js"></script>
 <script src="js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="js/plugins/webuploader/webuploader.min.js"></script>
-
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <!-- Morris -->
 <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
 <script src="js/plugins/morris/morris.js"></script>
@@ -156,7 +158,9 @@
 <script src="js/cti/wabacus_api.js"></script>
 <script src="js/cti/wabacus_util.js"></script>
 <script src="js/plugins/staps/jquery.steps.min.js"></script>
-
+<script src="js/plugins/timepicker/jquery-timepicker.js"></script>
+<script type="text/javascript" src="js/plugins/daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
 <!--<script src="js/vconsole.min.js"></script>-->
 <!--<script>-->
     <!--var vConsole = new VConsole();-->
@@ -210,7 +214,7 @@
                     that.user.userid = resp.data.principal.sysUser.uid;
                     that.user.password = resp.data.principal.sysUser.password;
                     sessionStorage.setItem('user',JSON.stringify(that.user));
-                    sessionStorage.setItem('master',that.master);
+                    sessionStorage.setItem('master',JSON.stringify(that.master));
                 });
             },
             sidebarClick: function (e) {
@@ -256,7 +260,7 @@
         }
     });
     $(document).ajaxStart(function (XMLHttpRequest) {
-        console.log(XMLHttpRequest)
+        // console.log(XMLHttpRequest)
     })
 
     $(document).on("keypress", ".search-input", function (ev) {

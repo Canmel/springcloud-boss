@@ -1,6 +1,7 @@
 package com.camel.survey.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.common.enums.ResultEnum;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.PaginationUtil;
@@ -86,5 +87,10 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
     @Override
     public List<ZsSign> allInSurvey(Integer id) {
         return mapper.allInSurvey(id);
+    }
+
+    @Override
+    public Result userZsSign(String username,String phone) {
+        return new Result(ResultEnum.SUCCESS.getCode(), "操作成功", mapper.userZsSign(username,phone), true);
     }
 }

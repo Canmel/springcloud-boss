@@ -5,7 +5,7 @@
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a :href="applicationContextRootPath + 'pages/exam/add.html'"
-                       data-pjax class="btn btn-primary btn-xs">新增考试</a>
+                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新增考试</a>
                 </div>
             </div>
         </div>
@@ -41,13 +41,14 @@
                         <td>{{item.desc}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="delivery(item)" v-if="item.isDelivery ? item.isDelivery.value !== 1 : true" class="btn btn-success btn-xs">
+                            <button type="button" v-on:click="delivery(item)" v-if="item.isDelivery ? item.isDelivery.value !== 1 : true" class="btn btn-success btn-xs"
+                            v-if="resultIn">
                                 申请考核
                             </button>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs">
+                            <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs" v-if="resultDev">
                                 修改
                             </button>
-                            <button type="button" v-on:click="deliveryView(item)" class="btn btn-info btn-xs">
+                            <button type="button" v-on:click="deliveryView(item)" class="btn btn-info btn-xs" v-if="resultDev">
                                 投递记录
                             </button>
                         </td>
@@ -76,11 +77,34 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            master: [],//接受权限数组
+            result: false,
+            resultIn: false,//表示访客权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
+            this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                        that.resultIn =true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                        that.resultIn =true;
+                    }
+                    if(authority === 'ROLE_INTERVIEWER'){that.resultIn =true;}
+                })
+            },
             pagequery: function () {
                 var that = this;
                 AJAX.GET('zsExam', this.pageInfo, function (resp) {

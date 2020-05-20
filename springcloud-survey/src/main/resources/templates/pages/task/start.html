@@ -1,3 +1,7 @@
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css" />
+</head>
 <script src="js/SIPml-api.js?svn=250" type="text/javascript"></script>
 <script src="/survey/js/cti/webrtc-1.0.js"></script>
 <script src="/survey/js/common.js"></script>
@@ -166,16 +170,15 @@
                                                                     href="javascript:void(0)" iconcls="icon2-signin"
                                                                     plain="true">签入
                                                             </button>
-                                                            <button class="btn btn-rounded btn-primary" id="allStatus"
-                                                                    style="display: none;" href="javascript:void(0)"
+                                                            <button class="btn btn-rounded btn-success" id="seatFree"
+                                                                    style="display: none;" onclick="changeStatus(0)"
                                                                     iconcls="icon2-edit" plain="true" menu="#setStatus">
-                                                                状态
+                                                                空闲
                                                             </button>
-                                                            <button class="btn btn-rounded btn-primary"
-                                                                    id="calloutInternal" style="display: none;"
-                                                                    onClick="calloutInternal()"
-                                                                    href="javascript:void(0)"
-                                                                    iconcls="icon2-internal-call" plain="true">内呼
+                                                            <button class="btn btn-rounded btn-primary btn-danger" id="seatBusy"
+                                                                    style="display: none;" onclick="changeStatus(6)"
+                                                                    iconcls="icon2-edit" plain="true" menu="#setStatus">
+                                                                忙碌
                                                             </button>
                                                             <button class="btn btn-rounded btn-primary"
                                                                     id="calloutExternal" style="display: none;"
@@ -319,8 +322,10 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <span>当前: {{option.current}}</span>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <span v-if="option.configration">配额: {{option.configration}}</span>
+                                                <span v-if="option.configration">&nbsp;配额: {{option.configration}}</span>
+                                                <span v-if="option.target&&option.target>-1&&option.target<10000">&nbsp;跳转到第{{option.target}}题</span>
+                                                <span v-if="option.target==-1">&nbsp;特殊属性：不保存样本并结束</span>
+                                                <span v-if="option.target==10000">&nbsp;特殊属性：保存样本并结束</span>
                                             </div>
                                         </div>
 
@@ -337,7 +342,23 @@
                 <div id="tab-2" class="tab-pane">
                     <div class="panel-body">
                         <div class="ibox-content">
-
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
+                                           v-model="pageInfo.creator">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
+                                           v-model="pageInfo.seat">
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
+                                            class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -422,7 +443,7 @@
                 <div class="modal-body">
                     <form class="form-horizontal m-t">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">电话:</label>
+                            <label class="col-sm-3 control-label">电话1:</label>
                             <div class="col-sm-9">
                                 <input name="phone" id="phoneNum" class="form-control" type="text" style="height: auto;"
                                        value="018357162602">
@@ -437,16 +458,69 @@
         </div><!-- /.modal -->
     </div>
 
+    <div class="modal fade" id="surveyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 85%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title" style="font-size: 20px;" id="surveyModalLabel">问卷</span>
+                    <div class="text-right" style="float: right; display: inline-block;">
+                        <button type="button" class="btn btn-danger" onclick="surveyHangUpWithBusy()"><p class="fa fa-phone" style="margin: 0px;"></p>挂断或关闭并置为忙碌</button>
+                        <button type="button" class="btn btn-danger" onclick="surveyHangUp()"><p class="fa fa-phone" style="margin: 0px;"></p>挂断或关闭</button>
+                    </div>
+
+                </div>
+                <div class="modal-body" style="padding: 0px; border: 0;">
+                    <iframe id="surveyIfram" frameborder="0" style="height: 700px; width: 100%;"></iframe>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <div class="modal fade" id="earlyEndResonModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="earlyEndResonModalLabel">提前结束问卷原因</h4>
+                </div>
+                <div class="modal-body" style="padding: 0px; border: 0;">
+                    <form class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">请选择</label>
+                            <div class="col-sm-9">
+                                <select name="endAdvanceReason" class="form-control">
+                                    <option value="听不清对方的声音">听不清对方的声音</option>
+                                    <option value="听不懂对方的方言">听不懂对方的方言</option>
+                                    <option value="听不见对方的声音">听不见对方的声音</option>
+                                    <option value="对方完全不配合">对方完全不配合</option>
+                                    <option value="0" >其他</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="submitAdvanceReasonWithBusy()">挂断置忙</button>
+                    <button type="button" class="btn btn-danger" onclick="submitAdvanceReason()">直接挂断</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
     <!-- Audios -->
     <audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"></audio>
     <audio id="ringtone" loop src="/survey/sounds/ringtone.wav"></audio>
     <audio id="ringbacktone" loop src="/survey/sounds/ringbacktone.wav"></audio>
     <audio id="dtmfTone" src="/survey/sounds/dtmf.wav"></audio>
+
+
 </div>
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
 <script type="text/javascript">
-    console.log('script')
     /**
      * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
      */
@@ -455,7 +529,7 @@
     password = '';//座席密码
     exten = '';//座席分机
     pstnnumber = '88312345';//外线号码
-    popupUrl = 'https://diaocha.svdata.cn/survey/input_s.html'//来电弹屏地址;
+    popupUrl = window.location.protocol + "//" + window.location.host + '/survey/input_s.html'; //来电弹屏地址;
 
     var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
     var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
@@ -488,6 +562,7 @@
             },
             answers: [],
             pageInfo: {
+                validValue:1,
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
@@ -544,11 +619,11 @@
         },
         computed: {
             ctiserver() {
-                console.log(this.cti.server);
                 return this.cti.server;
             }
         },
         methods: {
+
             calloutExternalModal() {
                 $("#myPhoneModal").modal("show");
             },
@@ -566,6 +641,11 @@
             },
             pagequery: function () {
                 var that = this;
+                this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
+                    that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
+                    that.pageInfo.endDate=that.pageInfo.daterange.substring(22,41);
+                }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.answers = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
@@ -648,7 +728,8 @@
                     if(that.survey.monit.value === 1) {
                         // that.initZg();
                     }
-                    popupUrl = 'https://diaocha.svdata.cn/survey/input_s.html?surveyId=' + that.survey.id
+                    popupUrl = window.location.protocol + "//" + window.location.host + '/survey/input_s.html?surveyId=' + that.survey.id
+
                 })
             },
             loadQuestions() {
@@ -691,13 +772,11 @@
         created: function () {
             this.initZg();
             this.loadEntity();
-            console.log(123);
             this.loadConnectInfo();
             this.loadQuestions();
             this.loadMe();
             $ctiserver = this;
             websocket.onopen = function (event) {
-                console.log(event)
                 $ctiserver.cti.server = 1
             }
             websocket.onerror = function () {
@@ -707,7 +786,6 @@
             websocket.onmessage = function () {
                 try {
                     var jsonStr = JSON.parse(event.data);
-                    console.log("------------------------" , jsonStr);
                     onEvent(jsonStr.type, jsonStr.status, jsonStr.method, jsonStr.retCode, jsonStr);
                 } catch (e) {
                     return false;
@@ -737,7 +815,6 @@
             this.bindEvent();
         },
         beforeCreate: function () {
-            console.log('beforeCreate');
         },
         beforeDestroy: function () {
             leaveRoom();
@@ -764,6 +841,39 @@
             }
             return true;
 
+        }
+    });
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        updateConfig();
+        function updateConfig() {
+            jQuery('#datePickerSelect').daterangepicker({
+                "startDate":"2019/12/22 00:00:00",
+                "timePickerSeconds": true,
+                "timePicker":true,
+                "opens":"center",
+                "buttonClasses":'btn btn-sm',
+                "applyClass":'btn-success',
+                "cancelClass":'btn-default',
+                "timePicker24Hour":true,
+                "linkedCalendars":false,
+                "autoUpdateInput":true,
+                locale: { //汉化
+                    format:"YYYY/MM/DD HH:mm:ss",
+                    applyLabel: '确定', //确定按钮文本
+                    cancelLabel: '取消', //取消按钮文本
+                    customRangeLabel: '自定义范围',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            }, function(start, end, label) {
+                // this.pageInfo.startDate=start.format('YYYY-MM-DD:HH:mm:ss');
+                // this.pageInfo.endDate=end.format('YYYY-MM-DD:HH:mm:ss');
+                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
+                console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
+            });
         }
     });
 </script>

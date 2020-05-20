@@ -89,6 +89,10 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
+        List<ZsCashApply> list = pageInfo.getList();
+        list.forEach(e -> {
+            e.setZsWorkId(e.getWorks().split(","));
+        });
         return pageInfo;
     }
 

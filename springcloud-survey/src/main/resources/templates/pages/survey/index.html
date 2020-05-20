@@ -3,8 +3,8 @@
         <div class="ibox-title">
             <h5>问卷管理</h5>
             <div class="ibox-tools">
-                <!--<a :href="applicationContextRootPath + 'pages/project/add.html'"-->
-                <!--data-pjax class="btn btn-primary btn-xs">新建问卷</a>-->
+                <a :href="applicationContextRootPath + 'pages/project/add.html'"
+                   data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新建问卷</a>
             </div>
         </div>
         <div class="ibox-content">
@@ -50,14 +50,17 @@
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" v-if="item.state ? item.state.value === 1 : false"
-                                    class="btn btn-primary btn-xs">修改
+                            <button type="button" v-on:click="copy(item)" v-if="resultDev"
+                                    class="btn btn-info btn-xs" >复制
                             </button>
-                            <button type="button" v-on:click="start(item)" v-if="item.state ? item.state.value === 1 : false"
-                                    class="btn btn-success btn-xs">开始调查
+                            <button type="button" v-on:click="edit(item)" v-if="states(item)"
+                                    class="btn btn-primary btn-xs" >修改
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" v-if="item.state ? item.state.value === 1 : false"
-                                    class="btn btn-danger btn-xs">删除
+                            <button type="button" v-on:click="start(item)" v-if="states(item)"
+                                    class="btn btn-success btn-xs" >开始调查
+                            </button>
+                            <button type="button" v-on:click="deleteItem(item)" v-if="states(item)"
+                                    class="btn btn-danger btn-xs" >删除
                             </button>
                             <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"
                                     class="btn btn-danger btn-xs">查看申请记录
@@ -71,7 +74,6 @@
 
         </div>
     </div>
-
 </div>
 
 <script src="/survey/js/validateIsMain.js"></script>
@@ -86,20 +88,55 @@
                 total: 0,//总页数
                 size: 10//每页显示条目个数不传默认10
             },
-            items: [{}]
+            items: [{}],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
+            new_survey:{
+                id: '',
+                name: '',
+                projectId: '',
+                collectNum: '',
+                collectType: 1,
+                exams: [],
+                startShow: '',
+                endShow: '',
+                collectPhone: '0',
+                monit: '0',
+            },
+            copySurveyId:0,
+            new_questions: [],
+            new_options: [],
         },
         created: function () {
             // this.pagequery();
+            this.loginMaster();
         },
         methods: {
-            appliable: function(item) {
-                if(item.collectType && item.state) {
-                    // 电话收集方式 && 已经开始的问卷
-                    return item.collectType.value === 1 && item.state.value === 2;
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                })
+            },
+            states: function(item) {
+                if(item.state){
+                    return item.state.value === 1 && this.resultDev
                 }
                 return false;
             },
-            applyView: function(item){
+            appliable: function(item) {
+                if(item.collectType && item.state) {
+                    // 电话收集方式 && 已经开始的问卷
+                    return item.collectType.value === 1 && item.state.value === 2 && this.resultDev;
+                }
+                return false;
+            },
+            applyView: function (item) {
                 toPage("pages/survey/applyView.html", item.id);
             },
             start: function (item) {
@@ -132,8 +169,76 @@
             edit: function (item) {
                 sessionStorage.setItem('editParams', item.id);
                 $.pjax({
-                    url: mvm.applicationContextRootPath + 'pages/survey/details.html',
+                    url: mvm.applicationContextRootPath + 'pages/survey/details_new.html',
                     container: '.page-container'
+                });
+            },
+            copy: function (item) {
+                let that=this;
+                that.copySurveyId=item.id;
+                item.exams = [];
+                if(item.examList) {
+                    item.examList.forEach(function (d) {
+                        item.exams.push(d.id);
+                    });
+                }
+                this.new_survey = {
+                    id: '',
+                    name: item.name,
+                    projectId: item.projectId,
+                    collectNum: item.collectNum,
+                    collectType: item.collectType.value,
+                    startShow:item.startShow,
+                    endShow: item.endShow,
+                    monit: item.monit.value,
+                    collectPhone:item.collectPhone,
+                    exams:item.exams,
+                };
+                AJAX.POST_JSON('zsSurvey', this.new_survey
+                    , function (resp) {
+                        toastr.success(resp.msg);
+                    }
+                );
+                AJAX.GET('zsSurvey/latestSurvey', {}, function (resp) {
+                    that.new_survey.id=resp.data.id;
+                })
+                that.copyquestions();
+            },
+            copyquestions:function(item){
+                let that=this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + that.copySurveyId, {}, function (resp) {
+                    for (let i = 0; i < resp.data.length; i++) {
+                        let item = resp.data[i];
+                        let tmpQ = {
+                            orderNum: item.orderNum,
+                            name: item.name,
+                            type: item.type,
+                            surveyId: that.new_survey.id,
+                            maxSelect: item.maxSelect,
+                            minSelect: item.minSelect
+                        };
+                        for (let j = 0; j < item.options.length; j++) {
+                            let o = item.options[j];
+                            let opt = {
+                                orderNum: o.orderNum,
+                                name: o.name,
+                                target: o.target,
+                                hasRemark: o.hasRemark,
+                                ignoreNum: o.ignoreNum,
+                                configration: o.configration, // 选项配额
+                                questionOrderNum: item.orderNum
+                            };
+                            that.new_options.push(opt);
+                        }
+                        that.new_questions.push(tmpQ);
+                    }
+                })
+                let params = {};
+                params.zsQuestions = that.new_questions;
+                params.zsOptions = that.new_options;
+                params.surveyId = that.new_survey.id;
+                AJAX.POST_JSON('zsQuestion', params, function (resp) {
+                    that.pagequery();
                 });
             },
             deleteItem: function (item) {

@@ -46,7 +46,6 @@ public class ZsExamController extends BaseCommonController {
      * 分页查询
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'INTERVIEWER')")
     public Result serviceindex(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
@@ -55,7 +54,6 @@ public class ZsExamController extends BaseCommonController {
      * 获取详情
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'INTERVIEWER')")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
     }
@@ -64,7 +62,6 @@ public class ZsExamController extends BaseCommonController {
      * 新建保存
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result save(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
         return service.save(entity, oAuth2Authentication);
     }
@@ -73,7 +70,6 @@ public class ZsExamController extends BaseCommonController {
      * 编辑 更新
      */
     @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result update(@RequestBody ZsExam entity) {
         return super.update(entity);
     }
@@ -82,19 +78,16 @@ public class ZsExamController extends BaseCommonController {
      * 删除
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
     @GetMapping("/delivery/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'INTERVIEWER')")
     public Result delivery(OAuth2Authentication oAuth2Authentication, @PathVariable Integer id) {
         return service.delivery(id, oAuth2Authentication);
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS')")
     public Result all() {
         return service.all();
     }

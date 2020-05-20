@@ -79,6 +79,9 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
      */
     private ZsSurveyCollectType collectType;
 
+    @TableField(value = "start_show")
+    private String startShow;
+
     @TableField(value = "end_show")
     private String endShow;
 

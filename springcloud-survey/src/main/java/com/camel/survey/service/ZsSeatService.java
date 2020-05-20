@@ -1,9 +1,13 @@
 package com.camel.survey.service;
 
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.survey.model.ZsSeat;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.survey.model.ZsSign;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,6 +18,9 @@ import com.camel.survey.model.ZsSign;
  * @since 2020-02-19
  */
 public interface ZsSeatService extends IService<ZsSeat> {
+
+    PageInfo<ZsSeat> pageQuery(ZsSeat zsSeat);
+
     ZsSeat selectByUid(Integer id);
 
     ZsSeat selectLastByUser(Integer id);

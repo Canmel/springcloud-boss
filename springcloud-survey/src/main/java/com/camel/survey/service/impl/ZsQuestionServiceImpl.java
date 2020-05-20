@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
@@ -15,6 +16,7 @@ import com.camel.survey.exceptions.SurveyNotValidException;
 import com.camel.survey.mapper.ZsQuestionMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
@@ -77,6 +79,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
     public PageInfo<ZsQuestion> selectPage(ZsQuestion entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
@@ -98,10 +103,10 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             deleteBatchIds(qIds);
             zsOptionService.delete(optionWrapper);
         }
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
+        SysUser user = applicationToolsUtils.currentUser();
         // 保存问题
         entity.getZsQuestions().forEach(q -> {
-            q.setCreatorId(member.getId());
+            q.setCreatorId(user.getUid());
             mapper.insert(q);
             List<ZsOption> optionList = entity.optionsfilterAndBuildInsertParams(q);
             // 保存选项

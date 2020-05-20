@@ -45,11 +45,17 @@
         zs_work
         <where>
             status = 1
-            <if test="uname != null and uname != ''">
-                AND uname like concat('%', #{uname}, '%')
+            <if test="entity.uname != null and entity.uname != ''">
+                AND uname like concat('%', #{entity.uname}, '%')
             </if>
-            <if test="idNum != null and idNum != ''">
-                AND id_num = #{idNum}
+            <if test="entity.idNum != null and entity.idNum != ''">
+                AND id_num = #{entity.idNum}
+            </if>
+            <if test="ids != null">
+                AND id in
+                <foreach collection="ids" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
             </if>
         </where>
     </select>

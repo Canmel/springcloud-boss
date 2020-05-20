@@ -5,6 +5,8 @@ import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsAnswer;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
@@ -46,4 +48,8 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     Result invalid(Integer id);
 
     Result deleteAnswer(Integer id);
+
+    List<ZsAnswer> selectAllWithConversation(Integer id);
+
+    ZsAnswer selectByAgentUuid(String agentUuid);
 }

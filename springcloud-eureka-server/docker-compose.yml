@@ -11,6 +11,7 @@ services:
     tty: true
     environment:
       APPLICATION_IP: 192.168.0.180
+      SURVEY_ENV: dev
     networks:
       - survey-net
 networks:

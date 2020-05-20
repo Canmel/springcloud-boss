@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsSentenceResultMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsSentenceResult">
+        <id column="task_id" property="taskId" />
+        <result column="channel_id" property="channelId" />
+        <result column="begin_time" property="beginTime" />
+        <result column="end_time" property="endTime" />
+        <result column="text" property="text" />
+        <result column="emotion_value" property="emotionValue" />
+        <result column="silence_duration" property="silenceDuration" />
+        <result column="speech_rate" property="speechRate" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        task_id, channel_id, begin_time, end_time, text, emotion_value, silence_duration, speech_rate, status
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List"></include>
+        from
+        zs_sentence_result
+    </select>
+</mapper>

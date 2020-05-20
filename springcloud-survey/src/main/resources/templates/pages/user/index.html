@@ -5,24 +5,26 @@
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a :href="applicationContextRootPath + 'pages/user/add.html'"
-                       data-pjax class="btn btn-primary btn-xs">创建用户</a>
+                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">创建用户</a>
                 </div>
             </div>
         </div>
         <div class="ibox-content">
-
             <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请输入用户坐席号" class="input-sm form-control search-input"
+                           v-model="pageInfo.seatNum">
+                </div>
+                <div class="col-sm-6">
                     <div class="input-group">
                         <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
-                               v-model="pageInfo.dname"> <span
+                               v-model="pageInfo.email"> <span
                             class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button></span>
                     </div>
                 </div>
-            </div>
 
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -33,6 +35,7 @@
                         <th>昵称</th>
                         <th>邮箱</th>
                         <th>电话</th>
+                        <th>坐席号</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -44,18 +47,19 @@
                         <td>{{item.nickname}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.mobile}}</td>
+                        <td>{{item.seatNum}}</td>
 <!--                        <td>{{item.gmtCreate | formatDate}}</td>-->
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs">
+                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
                                 编辑
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs">
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">
                                 删除
                             </button>
-                            <button type="button" v-on:click="applyRoles(item)" class="btn btn-info btn-xs">
+                            <button type="button" v-on:click="applyRoles(item)" class="btn btn-info btn-xs" v-if="resultDev">
                                 分配角色
                             </button>
-                            <button type="button" v-on:click="seatModal(item)" class="btn btn-warning btn-xs">
+                            <button type="button" v-on:click="seatModal(item)" class="btn btn-warning btn-xs" v-if="resultDev">
                                 分配坐席
                             </button>
                         </td>
@@ -65,7 +69,6 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
-
         </div>
     </div>
 
@@ -135,7 +138,6 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
-                username: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -148,12 +150,34 @@
                 uid: null,
                 seatNum: null,
                 password: ''
-            }
+            },
+            // searchsign:'',
+            searchsign:'',
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
             this.loadAllRoles();
+            this.pagequery();
+            this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                    }
+                })
+            },
             seatModal: function(item) {
                 this.seat.uid=item.uid;
                 $("#seatModal").modal("show");
@@ -164,9 +188,12 @@
                     $("#seatForm")[0].reset()
                     toastr.success(resp.msg);
                 })
+                AJAX.PUT('/system/sysUser', JSON.stringify(this.seat), function (resp) {
+                });
+                this.pagequery();
             },
             pagequery: function () {
-                var that = this;
+                let that = this;
                 AJAX.GET('/system/sysUser', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
@@ -175,7 +202,7 @@
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
-                this.pagequery();
+                    this.pagequery();
             },
             deleteItem(item) {
                 var that = this;

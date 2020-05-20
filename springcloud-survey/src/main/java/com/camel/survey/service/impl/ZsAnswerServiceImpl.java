@@ -8,10 +8,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsYesOrNo;
-import com.camel.survey.mapper.ZsAnswerItemMapper;
-import com.camel.survey.mapper.ZsAnswerMapper;
-import com.camel.survey.mapper.ZsOptionMapper;
-import com.camel.survey.mapper.ZsSurveyMapper;
+import com.camel.survey.mapper.*;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
@@ -71,6 +68,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     private ZsAnswerMapper zsAnswerMapper;
 
     @Autowired
+    private ZsCdrinfoMapper zsCdrinfoMapper;
+
+    @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Override
@@ -78,6 +78,13 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
+        List list = pageInfo.getList();
+        for (Object obj: list) {
+            ZsAnswer answer = (ZsAnswer) obj;
+            if(!ObjectUtils.isEmpty(answer.getAgentUUID()) && !answer.getAgentUUID().equals("0")) {
+                answer.setCdrinfo(zsCdrinfoMapper.selectByAgentUUID(answer.getAgentUUID()));
+            }
+        }
         return pageInfo;
     }
 
@@ -96,6 +103,17 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         ZsAnswer zsAnswer = this.selectById(id);
         ZsSurvey zsSurvey = surveyMapper.selectById(zsAnswer.getSurveyId());
         if (!ObjectUtils.isEmpty(zsAnswer.getValid()) && zsAnswer.getValid() == ZsYesOrNo.NO) {
+            List<ZsAnswerItem> answerItems=answerItemMapper.selectByAnswerId(id);
+            for(int i=0;i<answerItems.size();i++){
+                ZsOption option = optionMapper.selectByQuestionAndName(answerItems.get(i).getQuestionId(),answerItems.get(i).getOption());
+                if(option!=null&&option.getConfigration()!=null){
+                    if(option.getCurrent()>=option.getConfigration()){
+                        return ResultUtil.updateError("样本状态","该样本内存在配额已满选项，不可恢复！");
+                    }
+                    option.setCurrent(option.getCurrent()+1);
+                    optionMapper.updateById(option);
+                }
+            }
             zsAnswer.setValid(ZsYesOrNo.YES);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.YES.getCode());
             /**
@@ -103,20 +121,33 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
              */
             zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() + 1);
         } else {
+            List<ZsAnswerItem> answerItems=answerItemMapper.selectByAnswerId(id);
+            for(int i=0;i<answerItems.size();i++){
+                ZsOption option = optionMapper.selectByQuestionAndName(answerItems.get(i).getQuestionId(),answerItems.get(i).getOption());
+                if(option!=null&&option.getConfigration()!=null){
+                    option.setCurrent(option.getCurrent()-1);
+                    optionMapper.updateById(option);
+                }
+            }
             zsAnswer.setValid(ZsYesOrNo.NO);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.NO.getCode());
             /**
              * 修改当前样本数量
              */
             zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() - 1);
-        }
 
+        }
         surveyMapper.updateById(zsSurvey);
         /**
          * 修改主表状态
          */
         mapper.updateById(zsAnswer);
-        return ResultUtil.success("样本状态变更成功");
+        if(zsAnswer.getValid().getCode()==1) {
+            return ResultUtil.success("样本状态已更改为有效");
+        }
+        else {
+            return ResultUtil.success("样本状态已更改为无效");
+        }
     }
 
     @Override
@@ -157,5 +188,15 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         json.put("surveyId", surveyId);
         json.put("optId", optIds);
         this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Stock.Add.Topic"), json);
+    }
+
+    @Override
+    public List<ZsAnswer> selectAllWithConversation(Integer id) {
+        return mapper.selectAllWithConversation(id);
+    }
+
+    @Override
+    public ZsAnswer selectByAgentUuid(String agentUuid) {
+        return mapper.selectByAgentUuid(agentUuid);
     }
 }

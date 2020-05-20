@@ -5,9 +5,9 @@
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a v-on:click="importData"
-                       data-pjax class="btn btn-primary btn-xs">导入记录</a>
+                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">导入记录</a>
                     <a :href="applicationContextRootPath + 'pages/project/add.html'"
-                       data-pjax class="btn btn-success btn-xs">下载模板</a>
+                       data-pjax class="btn btn-success btn-xs" v-if="resultDev">下载模板</a>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                             <span v-if="item.gain === 1">已提取</span>
                         </td>
                         <td>
-                            <a class="btn btn-circle btn-warning">查看</a>
+                            <a class="btn btn-circle btn-warning" @click="addSurveyShow(item)" v-if="resultDev">查看</a>
                         </td>
                     </tr>
                     </tbody>
@@ -64,7 +64,44 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
-
+            <div class="modal fade " id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content " style="width: 800px">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="">工作详情</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>工号</th>
+                                        <th>姓名</th>
+                                        <th>工作日期</th>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
+                                        <th>工作时长</th>
+                                        <th>工作地点</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-if="item">
+                                        <td><span>{{item.jobNumber}}</span></td>
+                                        <td><span>{{item.uname}}</span></td>
+                                        <td><span>{{item.workDate | formatOnlyDate}}</span></td>
+                                        <td><span>{{item.startTime | formatDate }}</span></td>
+                                        <td><span>{{item.endTime | formatDate}}</span></td>
+                                        <td><span>{{item.workHours}}</span></td>
+                                        <td><span>{{item.place}}</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </div>
     </div>
 
@@ -104,6 +141,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                zsWorkId: [0],
                 uname: '',
                 pageNum: 1,
                 total: 0,//总页数
@@ -111,11 +149,26 @@
             },
             file: null,
             items: [],
-            selectedItem: {}
+            item: {},
+            selectedItem: {},
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
+           this.loginMaster();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                })
+            },
             selectFile() {
                 $("#fileSelector").click();
             },
@@ -145,6 +198,13 @@
                     $("#myModal").modal("hide");
                 });
 
+            },
+            Timeformat : function(){
+
+            },
+            addSurveyShow : function(item){
+                $("#addSurvey").modal('show');
+                this.item = item;
             },
             pagequery: function () {
                 var that = this;

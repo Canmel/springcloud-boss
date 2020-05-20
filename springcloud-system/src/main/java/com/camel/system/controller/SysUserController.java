@@ -168,6 +168,11 @@ public class SysUserController extends BaseCommonController {
         service.updateById(sysUser);
     }
 
+    @GetMapping("/{id}/selectByUid")
+    public Result selectByUid(@PathVariable Integer id) {
+        return ResultUtil.success(service.selectByUid(id));
+    }
+
     @Override
     public IService getiService() {
         return service;

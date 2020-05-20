@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsWorkShiftMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsWorkShift">
+        <id column="id" property="Id" />
+        <result column="cname" property="cname" />
+        <result column="cuname" property="cuname" />
+        <result column="adress" property="adress" />
+        <result column="status" property="status" />
+        <result column="survey_id" property="surveyId" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="start_date" property="startDate" />
+        <association property="survey" javaType="com.camel.survey.model.ZsSurvey">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+        </association>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, cname, cuname, adress, role, survey_id, wtime, stata
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+       SELECT
+	zs_work_shift.id,
+	zs_work_shift.cname,
+	zs_work_shift.cuname,
+	zs_work_shift.adress,
+	zs_work_shift.survey_id,
+	zs_work_shift.start_time,
+	zs_work_shift.end_time,
+	zs_work_shift.start_date,
+	zs_survey.name
+    FROM
+        zs_work_shift
+    LEFT JOIN zs_survey ON zs_work_shift.survey_id = zs_survey.id
+    <where>
+    zs_work_shift.status = 1
+    AND zs_survey.status = 1
+    <if test="cname != null and cname != ''">
+      AND zs_work_shift.cname like concat('%', #{cname}, '%')
+    </if>
+    </where>
+    </select>
+
+
+</mapper>

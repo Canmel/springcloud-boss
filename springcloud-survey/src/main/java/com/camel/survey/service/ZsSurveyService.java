@@ -2,12 +2,14 @@ package com.camel.survey.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -105,4 +107,10 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
 
     ZsSurvey getByNameFromList(String name, List<ZsSurvey> surveys);
 
+    boolean  importSurvey(MultipartFile file, Integer surveyId);
+
+    //获取最新问卷
+    ZsSurvey findLatestSurvey();
+
+    Integer avgTime(Integer id);
 }

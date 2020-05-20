@@ -59,6 +59,13 @@
         <h1>智慧调查<span>{{survey.name}}</span></h1>
     </header>
     <section>
+        <div class="row question-welcome" v-if="current === 1">
+            <div class="text-center">
+                <span>
+                    {{survey.startShow}}
+                </span>
+            </div>
+        </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
@@ -90,6 +97,7 @@
                                                                   :id="'checkbox_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt, $event, item.type)"
                                                                   :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
+                                                                  :dexclusivity="opt.exclusivity ? opt.exclusivity.code : 0"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id"
                                                                   :value="opt.id + '_' +  opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
@@ -153,6 +161,8 @@
                     <div class="row text-center" v-if="showSubmit">
                         <span class="submit btn btn-success" v-on:click="submit(item, $event)">提交</span>
                     </div>
+
+
                 </div>
             </div><!-- /simform-inner -->
         </form><!-- /simform -->
@@ -195,10 +205,12 @@
             this.loadSurvey();
         },
         methods: {
+            startSurvey() {
+                this.current += 1;
+            },
             validSurvey() {
                 var that = this;
                 var $inputs = $('.simform-inner').find('.question :visible').find('input');
-                console.log($inputs);
                 $inputs.each(function (index, item) {
                     var target = $(item).attr('dtarget');
                     var ckecked = $(item).is(':checked')
@@ -219,7 +231,8 @@
                     surveyId: this.getParams('surveyId'),
                     phone: this.getParams('phone'),
                     record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     if (resp.msg != '') {
                         alert(resp.msg);
@@ -268,7 +281,6 @@
             },
             disableOption(opt) {
                 if (opt.configration && opt.current) {
-                    console.log(opt.configration, opt.current)
                     return opt.configration <= opt.current;
                 }
                 return false;
@@ -276,7 +288,7 @@
             },
             radioChange(opt, event, type) {
                 // 判断类型
-                if(type === 2) {
+                if (type === 2) {
                     return this.checkboxChanged(opt, event);
                 }
                 if (opt.target > 0) {
@@ -286,17 +298,27 @@
                 }
             },
             checkboxChanged(opt, event) {
+                if (opt.exclusivity && opt.exclusivity.code == 1) {
+                    if (event.target.checked) {
+                        this.tmpNext = [];
+                        $(event.target).parents('.question').find('input').not(event.target).attr('checked', false);
+                    }
+                }else{
+                    $(event.target).parents('.question').find("[dexclusivity=1]").attr('checked', false);
+                }
                 if (opt.target > 0) {
                     if (event.target.checked) {
                         this.tmpNext.push(opt.target);
                         this.tmpNext = Array.from(new Set(this.tmpNext));
                         this.tmpNext.sort(function (a1, a2) {
-                            return a1-a2;
+                            return a1 - a2;
                         })
                     } else {
                         this.tmpNext.splice(this.tmpNext.indexOf(opt.target), 1);
                     }
                 }
+
+
             },
             nextQuestion(question, event) {
                 if (!this.isInputed(question, event)) {
@@ -332,11 +354,11 @@
                 this.nextIndex += 1;
             },
             getNextIndex(question) {
-                if(question.type === 1 && this.tmpNextRadio) {
+                if (question.type === 1 && this.tmpNextRadio) {
                     let nextIndex = this.tmpNextRadio;
                     this.tmpNextRadio = null;
                     return nextIndex;
-                }else{
+                } else {
                     if (this.tmpNext.length > 0) {
                         let nextIndex = this.tmpNext[0];
                         this.tmpNext.splice(0, 1);
@@ -357,7 +379,6 @@
 
             },
             isInputed(question, event) {
-                console.log($inputs);
                 if (question.type === 1) {
                     var $inputs = $(event.srcElement).parents('.question').find('input:checked');
                     return $inputs.length !== 0;
@@ -409,11 +430,13 @@
                     surveyId: this.getParams('surveyId'),
                     phone: this.getParams('phone'),
                     record: this.getParams('record'),
-                    seat: this.getParams('seat')
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     // alert(resp.msg);
                     $("#theForm").hide();
                     $("#end").show();
+                    parent.surveyStatus = 1;
                     that.survey.endShow = resp.msg;
                     // window.close();
                     return false;

@@ -90,7 +90,6 @@ __ajax = function(url, data, success, type ,contentType, sync){
    if(type === 'put') {
         config.dataType = 'json';
    }
-   console.log(config)
     $.ajax(config)
 };
 

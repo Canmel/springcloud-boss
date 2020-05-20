@@ -41,8 +41,8 @@ public class ZsWorkController extends BaseCommonController {
     private ApplicationToolsUtils applicationUtils;
 
     @GetMapping
-    public Result index(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
-        return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
+    public Result index(ZsWork entity,@RequestParam("zsWorkId[]")String[] zsWorkId, OAuth2Authentication oAuth2Authentication) {
+        return ResultUtil.success(service.selectPage(entity,zsWorkId, oAuth2Authentication));
     }
 
     /**
@@ -76,7 +76,7 @@ public class ZsWorkController extends BaseCommonController {
         }
         entity.setIdNum(sysUser.getIdNum());
         entity.setUname(sysUser.getUsername());
-        return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
+        return ResultUtil.success(service.selectPage(entity,null, oAuth2Authentication));
     }
 
     @Override

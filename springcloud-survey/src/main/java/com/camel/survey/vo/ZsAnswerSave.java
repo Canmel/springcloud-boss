@@ -65,6 +65,11 @@ public class ZsAnswerSave {
     public String record;
 
     /**
+     * cti 定位通话字段
+     */
+    public String agentUUID;
+
+    /**
      * 获取选项ID
      * @return
      */
@@ -80,6 +85,7 @@ public class ZsAnswerSave {
         ZsAnswer answer = new ZsAnswer(this.surveyId, this.phone);
         answer.setSeat(ObjectUtils.isEmpty(this.seat) ? "0" : this.seat);
         answer.setRecord(this.record);
+        answer.setAgentUUID(this.agentUUID);
         return answer;
     }
 
