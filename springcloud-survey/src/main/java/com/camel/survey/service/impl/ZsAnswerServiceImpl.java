@@ -194,4 +194,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     public List<ZsAnswer> selectAllWithConversation(Integer id) {
         return mapper.selectAllWithConversation(id);
     }
+
+    @Override
+    public ZsAnswer selectByAgentUuid(String agentUuid) {
+        return mapper.selectByAgentUuid(agentUuid);
+    }
 }

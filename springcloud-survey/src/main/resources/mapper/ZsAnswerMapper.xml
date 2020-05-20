@@ -13,6 +13,9 @@
         <result column="created_at" property="createdAt"/>
         <result column="creator" property="creator"/>
         <result column="task_id" property="taskId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="call_lasts_time" property="callLastsTime"/>
         <result column="task_status" property="taskStatus"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
@@ -26,6 +29,9 @@
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="creator" property="creator"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="call_lasts_time" property="callLastsTime"/>
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
         </collection>
@@ -33,7 +39,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, survey_id, agent_UUID, status, record, seat, created_at, creator, valid, task_id, task_status
+        id, survey_id, agent_UUID, status, record, seat, created_at, creator, valid, task_id, task_status,start_time,end_time,call_lasts_time
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -121,5 +127,14 @@
         WHERE
         answer.survey_id = #{id}
         AND answer.agent_UUID != '';
+    </select>
+
+    <select id="selectByAgentUuid"  resultMap="BaseFullResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from zs_answer
+        where
+        status=1
+        and agent_UUID=#{agentUuid}
     </select>
 </mapper>
