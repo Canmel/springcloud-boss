@@ -50,7 +50,7 @@
                         <td>
                             <span class="badge badge" >{{item.wtime}}</span>
                         </td>
-                        <td>{{item.cuname}}</td>
+                        <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>
                             <button type="button" v-on:click="edit(item)"
                                   class="btn btn-primary btn-xs" v-if="resultDev">修改
@@ -90,7 +90,7 @@
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
-                uId: ''
+                idNum: ''
             },
             items: [],
             master: [],//接受权限数组
@@ -102,7 +102,7 @@
             this.loginMaster();
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
-            this.pageInfo.uId = this.user.userid;
+            this.pageInfo.idNum = this.user.idNum;
         },
         methods: {
             loginMaster(){
@@ -134,7 +134,7 @@
             signUp: function (item) {
                 var that = this;
 
-                var zsWorkRecord = {'wsId':item.id,'creatorId': that.user.userid,'username':that.user.username,'surveyId' : item.surveyId}
+                var zsWorkRecord = {'wsId':item.id,'cIdNum': that.user.idNum,'surveyId' : item.surveyId}
                 AJAX.POST('zsWorkRecord/sign', zsWorkRecord, function (resp) {
                     toastr.success(resp.msg);
                     that.pagequery();

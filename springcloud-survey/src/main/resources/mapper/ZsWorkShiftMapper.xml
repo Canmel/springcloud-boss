@@ -6,10 +6,10 @@
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsWorkShift">
         <id column="id" property="Id" />
         <result column="cname" property="cname" />
-        <result column="cuname" property="cuname" />
         <result column="adress" property="adress" />
         <result column="status" property="status" />
         <result column="survey_id" property="surveyId" />
+        <result column="creator" property="creatorId"/>
         <result column="start_time" property="startTime" />
         <result column="end_time" property="endTime" />
         <result column="start_date" property="startDate" />
@@ -29,8 +29,8 @@
        SELECT
 	zs_work_shift.id,
 	zs_work_shift.cname,
-	zs_work_shift.cuname,
 	zs_work_shift.adress,
+	zs_work_shift.creator,
 	zs_work_shift.survey_id,
 	zs_work_shift.start_time,
 	zs_work_shift.end_time,

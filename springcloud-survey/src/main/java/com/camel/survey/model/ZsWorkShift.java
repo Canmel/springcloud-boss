@@ -21,7 +21,7 @@ import lombok.Data;
  * @since 2020-04-14
  */
 @Data
-public class ZsWorkShift extends BasePaginationEntity implements Serializable {
+public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,10 +35,6 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
      */
     private String cname;
     /**
-     * 创建者名称
-     */
-    private String cuname;
-    /**
      * 举办地点
      */
     private String adress;
@@ -48,7 +44,7 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private ZsYesOrNo statusUser;
     @TableField(exist = false)
-    private Integer statusUserId;
+    private String statusUserId;
 
     /**
      * 试卷id
@@ -65,10 +61,10 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private String wtime;
     /**
-     * 使用者手机号
+     * 使用者idNum
      */
     @TableField(exist = false)
-    private String uId;
+    private String idNUM;
     /**
      * 拼接试卷详情
      */
@@ -78,16 +74,4 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private ZsYesOrNo isApplySuccess;
 
-    @Override
-    public String toString() {
-        return "ZsWorkShift{" +
-        ", cId=" + Id +
-        ", cName=" + cname +
-        ", cUname=" + cuname +
-        ", adress=" + adress +
-        ", surveyId=" + surveyId +
-        ", starttime=" + startTime +
-        ", endtime=" + endTime +
-        "}";
-    }
 }

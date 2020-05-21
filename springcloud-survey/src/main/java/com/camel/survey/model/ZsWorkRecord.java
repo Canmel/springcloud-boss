@@ -1,12 +1,16 @@
 package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsSurveySignResult;
 import com.camel.survey.enums.ZsYesOrNo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -18,7 +22,7 @@ import lombok.Data;
  * @since 2020-04-27
  */
 @Data
-public class ZsWorkRecord extends ZsSurveyBaseEntity {
+public class ZsWorkRecord extends BasePaginationEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,15 +36,26 @@ public class ZsWorkRecord extends ZsSurveyBaseEntity {
      */
     private Integer wsId;
     /**
-     * 用户名
+     * 申请者身份证号
      */
-    private String username;
-
+    @TableField("cid_Num")
+    private String cIdNum;
     /**
      * 审批结果
      */
     private ZsSurveySignResult result;
 
+    /**
+     * 创建时间
+     */
+    @TableField("created_at")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+    private Date createdAt;
+    /**
+     * 状态
+     */
+    @TableLogic
+    private ZsStatus status;
     @TableField(exist = false)
     private ZsYesOrNo isApply;
 
@@ -50,13 +65,7 @@ public class ZsWorkRecord extends ZsSurveyBaseEntity {
     @TableField(exist = false)
     private Integer surveyId;
 
-    @Override
-    public String toString() {
-        return "ZsWorkRecord{" +
-        ", id=" + id +
-        ", wsId=" + wsId +
-        ", username=" + username +
-        ", result=" + result +
-        "}";
-    }
+    @TableField(exist = false)
+    private SysUser creator;
+
 }

@@ -91,8 +91,8 @@
             applicationContextRootPath: '/survey/',
             zs_workshift: {
                 cname: '',
-                cuname: '',
                 adress: '',
+                creatorId:'',
                 startTime: '',
                 endTime: '',
                 startDate:'',
@@ -120,7 +120,7 @@
         created: function () {
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
-            this.zs_workshift.cuname = this.user.username;
+            this.zs_workshift.creatorId = this.user.userid;
         },
         methods: {
             cancel: function () {
@@ -154,11 +154,11 @@
                 }
 
                 AJAX.POST('zsWorkShift', that.zs_workshift, function (resp) {
-                    if(resp.data == 1){
-                        that.selectcount = 1;
-                        return false;
-                    }
-                    toastr.success("成功");
+                        if(!resp.success && resp.success != null){
+                            toastr.success(resp.msg);
+                            return resp.success;
+                        }
+                    toastr.success(resp.msg);
                     that.backToMain();
                 });
             },

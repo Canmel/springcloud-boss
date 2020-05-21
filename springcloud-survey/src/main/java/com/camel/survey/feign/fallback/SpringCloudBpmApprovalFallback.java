@@ -1,6 +1,7 @@
 package com.camel.survey.feign.fallback;
 
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,11 @@ public class SpringCloudBpmApprovalFallback implements FallbackFactory<SpringClo
 
             @Override
             public Result allUser() {
+                return null;
+            }
+
+            @Override
+            public SysUser oneUser(String idNum) {
                 return null;
             }
         };

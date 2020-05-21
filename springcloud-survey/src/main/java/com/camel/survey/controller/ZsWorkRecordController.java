@@ -4,14 +4,17 @@ package com.camel.survey.controller;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import com.camel.survey.model.ZsWorkRecord;
 import com.camel.survey.service.ZsWorkRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,12 +31,19 @@ public class ZsWorkRecordController extends BaseCommonController {
     @Autowired
     private ZsWorkRecordService service;
 
+    @Autowired
+    private SpringCloudSystemFeignClient springCloudSystemFeignClient;
+
     /**
      * 分页查询
      */
     @GetMapping
     public Result index(ZsWorkRecord entity) {
-        return ResultUtil.success(service.selectPage(entity));
+        List<ZsWorkRecord> list = service.selectZsWorkRList(entity);
+        list.forEach(zsDelivery -> {
+            zsDelivery.setCreator(springCloudSystemFeignClient.oneUser(zsDelivery.getCIdNum()));
+        });
+        return ResultUtil.success(service.selectPage(list));
     }
 
     @PostMapping("/sign")
@@ -53,6 +63,15 @@ public class ZsWorkRecordController extends BaseCommonController {
         return super.delete(id);
     }
 
+    /**
+     *先根据idNum查询用户，然后根据用户查询其预约时间
+     * @return
+     */
+    @AuthIgnore
+    @GetMapping("/access/list/{idNum}")
+    public Result selectWorkR(@PathVariable String idNum){
+        return service.selectWorkR(idNum);
+    }
     @Override
     public IService getiService() {
         return service;

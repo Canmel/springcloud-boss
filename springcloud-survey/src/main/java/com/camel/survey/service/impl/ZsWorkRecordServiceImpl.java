@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.enums.ZsAccessState;
 import com.camel.survey.model.ZsSign;
 import com.camel.survey.model.ZsWorkRecord;
 import com.camel.survey.mapper.ZsWorkRecordMapper;
@@ -15,12 +16,16 @@ import com.camel.survey.service.ZsWorkRecordService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.survey.service.ZsWorkShiftService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.TimeCompare;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -45,27 +50,25 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
     @Autowired
     private ZsSignService zsSignService;
 
-    @Autowired
-    private ApplicationToolsUtils applicationToolsUtils;
-
+    @Override
+    public PageInfo<ZsWorkRecord> selectPage(List<ZsWorkRecord> list) {
+        PageInfo pageInfo = PaginationUtil.startPage(new ZsWorkShift(),()->{
+            List<ZsWorkRecord> zsWorkRecords = new ArrayList<>();
+        });
+        pageInfo.setList(list);
+        return pageInfo;
+    }
 
     @Override
-    public PageInfo<ZsWorkRecord> selectPage(ZsWorkRecord entity) {
-        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
-            mapper.list(entity);
-        });
-        List<ZsWorkRecord> deliveries = pageInfo.getList();
-        deliveries.forEach(zsDelivery -> {
-            zsDelivery.setCreator(applicationToolsUtils.getUser(zsDelivery.getCreatorId()));
-        });
-        return pageInfo;
+    public List<ZsWorkRecord> selectZsWorkRList(ZsWorkRecord entity) {
+        return mapper.list(entity);
     }
 
     @Override
     public Result start(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication) {
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
         wrapper.eq("ws_id",entity.getWsId());
-        wrapper.eq("creator",entity.getCreatorId());
+        wrapper.eq("cid_num",entity.getCIdNum());
         if(mapper.selectCount(wrapper)>0){
             return ResultUtil.success("您已提交过了，请勿重复提交");
         };
@@ -94,5 +97,37 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
         }
 
         return ResultUtil.success("修改成功",zsSignService.update(zsSign,wrapper));
+    }
+
+    @Override
+    public Result selectWorkR(String idNum) {
+        Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
+        wrapper.eq("cid_num",idNum);
+        List<ZsWorkRecord> zsWorkRecords = mapper.selectList(wrapper);
+        List<ZsWorkShift> zsWorkShifts = new ArrayList<>();
+        Map<Integer, String > indexaAndDate = new HashMap<>();
+        int i = 0;
+        for (ZsWorkRecord zsWorkRecord : zsWorkRecords) {
+            ZsWorkShift zsWorkShift = zsWorkservice.selectById(zsWorkRecord.getWsId());
+            zsWorkShifts.add(zsWorkShift);
+            indexaAndDate.put(i,zsWorkShift.getStartDate());
+            i+=1;
+        }
+        List<Integer> integers = TimeCompare.dateCompare(indexaAndDate);
+        Map<Integer, ZsWorkShift> indexaAndTime = new HashMap<>();
+        if(integers.size()<1){
+            return ResultUtil.success(ZsAccessState.NORMAL.getName());
+        }
+        else {
+        for (int j = 0; j <integers.size() ; j++) {
+            indexaAndTime.put(integers.get(j),zsWorkShifts.get(integers.get(j)));
+        }
+            List<Integer> timeCompare = TimeCompare.timeCompare(indexaAndTime);
+            if(timeCompare.size()<1){
+                return ResultUtil.success(ZsAccessState.FAILD.getName());
+            }else {
+                return ResultUtil.success(ZsAccessState.SUCESS.getName());
+            }
+        }
     }
 }
