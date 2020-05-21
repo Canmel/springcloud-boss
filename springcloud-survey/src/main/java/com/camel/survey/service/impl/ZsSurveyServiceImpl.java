@@ -376,4 +376,25 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public Integer avgTime(Integer id) {
         return mapper.avgTime(id);
     }
+
+    @Override
+    public Result stopOrUse(Integer id) {
+        ZsSurvey survey = mapper.selectById(id);
+        if(!ObjectUtils.isEmpty(survey)) {
+            if(survey.getState().getValue() == ZsSurveyState.COLLECTING.getValue() ) {
+                survey.setState(ZsSurveyState.CLOSED);
+                if(this.updateById(survey)) {
+                    return ResultUtil.success("回收问卷成功");
+                }
+            }
+            if(survey.getState().getValue() == ZsSurveyState.CLOSED.getValue() ) {
+                survey.setState(ZsSurveyState.COLLECTING);
+                if(this.updateById(survey)) {
+                    return ResultUtil.success("启用问卷成功");
+                }
+            }
+
+        }
+        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "问卷状态更改失败");
+    }
 }

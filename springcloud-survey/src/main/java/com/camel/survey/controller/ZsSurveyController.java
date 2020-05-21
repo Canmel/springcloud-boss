@@ -169,6 +169,19 @@ public class ZsSurveyController extends BaseCommonController {
         return service.start(id);
     }
 
+
+    /**
+     * 回收问卷
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/stopOrUse/{id}")
+    public Result stop(@PathVariable Integer id) {
+        return service.stopOrUse(id);
+    }
+
+
     /**
      * 申请参加
      *

@@ -56,7 +56,7 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
                 workRecord.forEach(v -> {
                     if (e.getId().equals(v.getWsId()) && v.getResult().equals(ZsSurveySignResult.SUCCESS)){
                         e.setStatusUserId(v.getId());
-                        e.setStatusUser(ZsYesOrNo.YES);
+                        e.setStatus(ZsYesOrNo.YES);
                     }
                 });
             }
@@ -68,4 +68,8 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
         return pageInfo;
     }
 
+    @Override
+    public List<ZsWorkShift> all(ZsWorkShift entity, String openId) {
+        return mapper.list(entity);
+    }
 }

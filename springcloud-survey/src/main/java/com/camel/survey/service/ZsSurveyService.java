@@ -113,4 +113,6 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
     ZsSurvey findLatestSurvey();
 
     Integer avgTime(Integer id);
+
+    Result stopOrUse(Integer id);
 }

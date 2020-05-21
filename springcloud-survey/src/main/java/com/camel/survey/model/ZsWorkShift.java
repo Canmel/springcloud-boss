@@ -29,7 +29,7 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
      * 班次主键
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer Id;
+    private Integer id;
     /**
      * 名称
      */
@@ -46,7 +46,7 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
      * 该班级用户操作的状态
      */
     @TableField(exist = false)
-    private ZsYesOrNo statusUser;
+    private ZsYesOrNo status;
     @TableField(exist = false)
     private Integer statusUserId;
 
@@ -81,7 +81,6 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
     @Override
     public String toString() {
         return "ZsWorkShift{" +
-        ", cId=" + Id +
         ", cName=" + cname +
         ", cUname=" + cuname +
         ", adress=" + adress +

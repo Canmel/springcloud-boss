@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsWorkShift">
-        <id column="id" property="Id" />
+        <id column="id" property="id" />
         <result column="cname" property="cname" />
         <result column="cuname" property="cuname" />
         <result column="adress" property="adress" />
@@ -26,19 +26,19 @@
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
-       SELECT
-	zs_work_shift.id,
-	zs_work_shift.cname,
-	zs_work_shift.cuname,
-	zs_work_shift.adress,
-	zs_work_shift.survey_id,
-	zs_work_shift.start_time,
-	zs_work_shift.end_time,
-	zs_work_shift.start_date,
-	zs_survey.name
-    FROM
-        zs_work_shift
-    LEFT JOIN zs_survey ON zs_work_shift.survey_id = zs_survey.id
+        SELECT
+            zs_work_shift.id,
+            zs_work_shift.cname,
+            zs_work_shift.cuname,
+            zs_work_shift.adress,
+            zs_work_shift.survey_id,
+            zs_work_shift.start_time,
+            zs_work_shift.end_time,
+            zs_work_shift.start_date,
+            zs_survey.name
+        FROM
+            zs_work_shift
+        LEFT JOIN zs_survey ON zs_work_shift.survey_id = zs_survey.id
     <where>
     zs_work_shift.status = 1
     AND zs_survey.status = 1
@@ -47,6 +47,5 @@
     </if>
     </where>
     </select>
-
 
 </mapper>
