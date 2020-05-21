@@ -32,4 +32,10 @@ public class WeixinViewController {
     public String salary() {
         return "salary";
     }
+
+    @AuthIgnore
+    @GetMapping("/appointment")
+    public String appointment() {
+        return "appointment";
+    }
 }
