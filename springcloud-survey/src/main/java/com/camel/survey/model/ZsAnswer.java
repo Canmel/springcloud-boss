@@ -110,6 +110,12 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private ZsCdrinfo cdrinfo;
 
+    private String startTime;
+
+    private String callLastsTime;
+
+    private String endTime;
+
     public ZsAnswer() {
     }
 

@@ -81,4 +81,8 @@ public class ResultUtil {
     public static Result deleteError(String entityName) {
         return success("删除" + entityName + "失败");
     }
+
+    public static Result updateError(String entityName,String remarks ) {
+        return success("修改" + entityName + "失败," + remarks);
+    }
 }

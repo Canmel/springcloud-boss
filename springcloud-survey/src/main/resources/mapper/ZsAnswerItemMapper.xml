@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsAnswerItem">
         <id column="id" property="id"/>
         <result column="question" property="question"/>
+        <result column="question_id" property="questionId"/>
         <result column="value" property="value"/>
         <result column="type" property="type"/>
         <result column="answer_id" property="answerId"/>
@@ -18,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, question, value, type, status, created_at, creator, `option`, answer_id, valid
+        id, question, question_id,value, type, status, created_at, creator, `option`, answer_id, valid
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
