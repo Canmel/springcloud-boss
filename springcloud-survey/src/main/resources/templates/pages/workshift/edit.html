@@ -71,7 +71,7 @@
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3">
                         <h5 style="color:red" v-if="selectsurveyid == 1">该班次没有选择试卷，请选择！！</h5>
-                        <h5 style="color:red" v-if="timeregular == 1">请按照00:00的方式输入时间</h5>
+                        <h5 style="color:red" v-if="timeregular == 1">请按照00:00的方式输入时间，且结束时间大于开始时间</h5>
                         <h5 style="color:red" v-if="dateregular == 1">请按照0000-00-00的方式输入日期</h5>
                         <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
                         <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
@@ -137,6 +137,15 @@
                 }
                 if(!date.test(that.zs_workshift.startDate)){
                     that.dateregular = 1;
+                    return false;
+                }
+                var hours = parseInt(that.zs_workshift.endTime.substring(0,3))-parseInt(that.zs_workshift.startTime.substring(0,3));
+                var minutes = parseInt(that.zs_workshift.endTime.substring(4))-parseInt(that.zs_workshift.startTime.substring(4));
+                if(hours<0){
+                    that.timeregular = 1;
+                    return false;
+                }else if(minutes<1){
+                    that.timeregular = 1;
                     return false;
                 }
                 AJAX.PUT('zsWorkShift',  JSON.stringify({id:that.zs_workshift.id, surveyId:that.zs_workshift.surveyId, adress:that.zs_workshift.adress, startDate:that.zs_workshift.startDate, startTime:that.zs_workshift.startTime, endTime:that.zs_workshift.endTime}), function (resp) {

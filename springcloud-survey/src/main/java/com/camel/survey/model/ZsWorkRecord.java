@@ -67,5 +67,7 @@ public class ZsWorkRecord extends BasePaginationEntity {
 
     @TableField(exist = false)
     private SysUser creator;
+    @TableField(exist = false)
+    private Integer creatorId;
 
 }

@@ -93,7 +93,7 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
         if(zsWorkShift != null){
             zsSign.setResult(entity.getResult());
             wrapper.eq("survey_id",zsWorkShift.getSurveyId());
-            wrapper.eq("creator",entity.getCreator().getUid());
+            wrapper.eq("creator",entity.getCreatorId());
         }
 
         return ResultUtil.success("修改成功",zsSignService.update(zsSign,wrapper));
