@@ -6,6 +6,8 @@ import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.config.WxConstants;
+import com.camel.interviewer.exceptions.NotWxExplorerException;
+import com.camel.interviewer.exceptions.WxServerConnectException;
 import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WxSubscibeService;
@@ -13,6 +15,7 @@ import com.camel.interviewer.service.WxUserService;
 import com.camel.interviewer.utils.HttpUtils;
 import com.camel.interviewer.utils.MessageUtil;
 import com.camel.interviewer.utils.XmlUtil;
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,10 +116,13 @@ public class WeixinStartController {
             String responseBody = HttpUtils.httpGetMethod(USERID_URL, params);
             if (responseBody != null) {
                 tokenBody = JSONObject.parseObject(responseBody);
+                if(StringUtils.isNotBlank(tokenBody.getString("errcode"))) {
+                    throw new NotWxExplorerException();
+                }
                 System.out.println(tokenBody.toJSONString());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new WxServerConnectException();
         }
         WxUser wxUser = wxUserService.selectByOpenid(tokenBody.getString("openid"));
         return ResultUtil.success(wxUser);
