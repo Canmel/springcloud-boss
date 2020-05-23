@@ -95,4 +95,8 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
     }
 
 
+    @Override
+    public List<ZsWorkShift> all(ZsWorkShift entity, String openId) {
+        return mapper.list(entity);
+    }
 }

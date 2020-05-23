@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsWorkShift;
 import com.camel.survey.service.ZsWorkShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,12 @@ public class ZsWorkShiftController extends BaseCommonController {
     public Result index(ZsWorkShift entity, Principal principal) {
 
         return ResultUtil.success(service.selectPage(entity, principal));
+    }
+
+    @AuthIgnore
+    @GetMapping("/all")
+    public Result all(ZsWorkShift entity, String openId) {
+        return ResultUtil.success(service.all(entity, openId));
     }
 
 

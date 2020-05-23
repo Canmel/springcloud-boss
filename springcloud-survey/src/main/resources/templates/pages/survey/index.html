@@ -65,6 +65,12 @@
                             <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"
                                     class="btn btn-danger btn-xs">查看申请记录
                             </button>
+                            <button type="button" v-on:click="changeStatus(item, '回收')" v-if="showBack(item)"
+                                    class="btn btn-danger btn-xs">回收
+                            </button>
+                            <button type="button" v-on:click="changeStatus(item, '启用')" v-if="showUse(item)"
+                                    class="btn btn-danger btn-xs">启用
+                            </button>
                     </tr>
                     </tbody>
                 </table>
@@ -113,6 +119,29 @@
             this.loginMaster();
         },
         methods: {
+            changeStatus(item, opt) {
+                let that = this;
+                confirm("您确定"+ opt +"该问卷吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET('zsSurvey/stopOrUse/' + item.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        });
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            showBack(item) {
+                if(item.state){
+                    return item.state.value === 2 && this.result
+                }
+                return false;
+            },
+            showUse(item) {
+                if(item.state){
+                    return item.state.value === 4 && this.result
+                }
+                return false;
+            },
             loginMaster(){
                 var that = this;
                 this.master = sessionStorage.getItem('master');

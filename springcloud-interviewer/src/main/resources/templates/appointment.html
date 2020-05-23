@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>预约上岗</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <link rel="stylesheet" href="/viewer/wx/css/weui.min.css">
     <link rel="stylesheet" href="/viewer/wx/css/weui.css">
-    <link rel="stylesheet" href="/viewer/wx/css/example.css"/>
     <link rel="stylesheet" href="/viewer/wx/css/jquery-weui.css">
     <link rel="stylesheet" href="/viewer/wx/css/demos.css">
     <script src="/viewer/wx/js/jquery-2.1.4.js"></script>
@@ -13,35 +13,36 @@
 
     <script src="/viewer/wx/js/vue.js"></script>
 </head>
-<body>
+<body ontouchstart>
 <div class="container" id="container">
-    <div class="page form_page js_show">
-        <header class='demos-header'>
-            <div class="weui-form__text-area">
-                <h2 class="weui-form__title">预约上岗</h2>
-                <div class="weui-form__desc" v-if="userinfo">请确认完善个人信息才能提现</div>
-            </div>
-        </header>
+    <div class="weui_msg" v-if="false">
+        <div class="weui_icon_area"><i class="weui_icon_cancel weui_icon_msg"></i></div>
+        <div class="weui_text_area">
+            <h2 class="weui_msg_title">无权限操作</h2>
+            <p class="weui_msg_desc">请使用微信客户端浏览</p>
+        </div>
 
-        <div class="weui-form-preview">
-            <div class="weui-form-preview__hd">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">可提现额度</label>
-                    <em class="weui-form-preview__value">¥{{balance}}</em>
-                </div>
-            </div>
-            <div class="weui-form-preview__bd" v-if="works.length > 0">
-                <div class="weui-form-preview__item" v-for="item in works">
-                    <label class="weui-form-preview__label">{{item.workDate}}</label>
-                    <label class="weui-form-preview__label">{{item.place}}</label>
-                    <span class="weui-form-preview__value">￥{{item.salary}}</span>
-                </div>
-            </div>
-            <div class="weui-form-preview__ft">
-                <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" v-on:click="cashout()">提现</a>
+    </div>
+    <div class="weui-panel" style="padding-top: 10%;">
+        <div class="weui-panel__hd">近期工作安排</div>
+        <div class="weui-panel__bd">
+            <div class="weui-media-box weui-media-box_text" v-for="item in works">
+                <h4 class="weui-media-box__title">{{item.cname}}</h4>
+                <p class="weui-media-box__desc"><p v-if="item.survey" style="font-size: 14px;">{{item.survey.name}}</p>
+                <ul class="weui-media-box__info">
+                    <li class="weui-media-box__info__meta">班次时间</li>
+                    <li class="weui-media-box__info__meta">{{item.startDate}}</li>
+                    <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.startTime}} - {{item.endTime}}</li>
+                </ul>
+                <ul class="weui-media-box__info">
+                    <li class="weui-media-box__info__meta" style="line-height: normal;"><i class="weui-icon-arrow"></i></li>
+                    <li class="weui-media-box__info__meta">{{item.adress}}</li>
+                </ul>
             </div>
         </div>
-        <br>
+    </div>
+    <div class="weui_extra_area">
+        <a href="">赛炜调查</a>
     </div>
 </div>
 <script src="/viewer/wx/js/fastclick.js"></script>
@@ -76,31 +77,25 @@
             this.initUserInfo();
         },
         methods: {
-            cashout() {
-                let work_ids = [];
+            initWorkList() {
                 let that = this;
-                $.each(this.works, function (index, item ) {
-                    work_ids.push(item.id)
-                });
-                console.log(work_ids);
-                AJAX.POST("/survey/zsCashApply", {uid: this.userinfo.id, openid: this.userinfo.openid, uname: this.userinfo.username, works: work_ids.join(",")},function (res) {
-                    if(res.code === 200) {
-                        $.toast(res.msg);
-                    } else {
-                        $.toast(res.msg,"cancel");
+                $.ajax({
+                        url: '/survey/zsWorkShift/all',
+                        type: 'GET',
+                        async: false,
+                        success: function (resp) {
+                            if (resp.code == 200 && resp.data) {
+                                that.works = resp.data;
+                            }
+                        },
+                        error: function (err) {
+                            that.userinfo = null;
+                            $.toast(err.msg, "cancel", function (toast) {
+                            });
+
+                        }
                     }
-                    that.loadWorks();
-                })
-            },
-            loadWorks() {
-                let that =this;
-                AJAX.GET("/survey/zsWork/cash", {uname: this.userinfo.username, idNum: this.userinfo.idNum}, function (resp) {
-                    that.works = resp.data;
-                    that.balance = 0;
-                    $.each(that.works, function (index, item) {
-                        that.balance += item.salary
-                    })
-                });
+                )
             },
             initUserInfo() {
                 let that = this;
@@ -110,7 +105,7 @@
                         type: 'GET',
                         async: false,
                         success: function (resp) {
-                            if(resp.data) {
+                            if (resp.code == 200 && resp.data) {
                                 let user = resp.data;
                                 that.userinfo.id = user.id;
                                 that.userinfo.openid = user.openid;
@@ -121,16 +116,21 @@
                                 that.userinfo.email = user.email;
                                 that.userinfo.sex = user.sex;
                                 that.loadWorks();
+                                that.initWorkList();
                             } else {
                                 that.userinfo = null;
+                                // TODO 生产环境删除
+                                that.initWorkList();
                             }
+
                         },
                         error: function (err) {
                             that.userinfo = null;
                         }
                     });
                 } else {
-                    $.toast("未获取到用户信息", "cancel", function (toast) {});
+                    $.toast("未获取到用户信息", "cancel", function (toast) {
+                    });
                 }
             },
             getQueryString(name) {

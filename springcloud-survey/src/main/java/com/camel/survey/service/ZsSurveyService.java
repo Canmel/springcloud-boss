@@ -114,4 +114,7 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
 
     Integer avgTime(Integer id);
 
+    Result downloadSurvey(Integer surveyId);
+
+    Result stopOrUse(Integer id);
 }
