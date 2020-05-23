@@ -369,11 +369,4 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public Integer avgTime(Integer id) {
         return mapper.avgTime(id);
     }
-
-    @Override
-    public Result downloadSurvey(Integer surveyId) {
-        ZsSurvey zsSurvey = mapper.selectById(surveyId);
-        // TODO: 2020/5/23 本来这里是下载问卷的 
-        return ResultUtil.success("下载成功");
-    }
 }
