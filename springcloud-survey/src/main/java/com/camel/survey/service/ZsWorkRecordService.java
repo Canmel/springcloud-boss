@@ -29,6 +29,8 @@ public interface ZsWorkRecordService extends IService<ZsWorkRecord> {
 
     Result updateSignW (ZsWorkRecord entity);
 
+    Result deleteSingW(ZsWorkRecord entity);
+
     /**
      * 和门禁机器进行交互
      * @param idNum

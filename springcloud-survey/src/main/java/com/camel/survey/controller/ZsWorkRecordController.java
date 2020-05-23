@@ -1,8 +1,11 @@
 package com.camel.survey.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.feign.SpringCloudSystemFeignClient;
@@ -46,21 +49,33 @@ public class ZsWorkRecordController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(list));
     }
 
+    /**
+     * 用户报名班次
+     * @param entity
+     * @param oAuth2Authentication
+     * @return
+     */
     @PostMapping("/sign")
     public Result sign(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication){
         return service.start(entity, oAuth2Authentication);
     }
     /**
-     * 编辑 更新
+     * 编辑 更新 班次
      */
     @PutMapping
     public Result update(@RequestBody ZsWorkRecord entity) {
         return service.updateSignW(entity);
     }
 
-    @DeleteMapping("/signDown/{id}")
-    public Result delete(@PathVariable Integer id, OAuth2Authentication oAuth2Authentication){
-        return super.delete(id);
+    /**
+     *
+     * @param
+     * @param
+     * @return
+     */
+    @GetMapping("/signDown")
+    public Result delete(ZsWorkRecord entity){
+        return service.deleteSingW(entity);
     }
 
     /**

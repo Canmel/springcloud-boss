@@ -11,7 +11,6 @@ import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.*;
-import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.exceptions.SurveyNotValidException;
@@ -20,14 +19,10 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
-import com.camel.survey.utils.ExcelSurvey;
 import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -38,7 +33,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -399,10 +393,5 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "问卷状态更改失败");
     }
 
-    @Override
-    public Result downloadSurvey(Integer surveyId) {
-        ZsSurvey zsSurvey = mapper.selectById(surveyId);
-        ExcelSurvey.writeExcel(zsSurvey.getName(),"D:\\springcloud-boss\\springcloud-survey\\src\\main\\resources\\excel\\");
-        return ResultUtil.success("下载成功");
-    }
+
 }
