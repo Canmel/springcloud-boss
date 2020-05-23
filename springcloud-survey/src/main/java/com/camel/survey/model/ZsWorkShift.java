@@ -41,15 +41,13 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
      */
     private String address;
     /**
-     * 该班级用户操作的状态
+     * 该班次用户操作的状态
      */
     @TableField(exist = false)
     private ZsYesOrNo statusUser;
-    @TableField(exist = false)
-    private Integer statusUserId;
 
     /**
-     * 试卷id
+     * 问卷id
      */
     private Integer surveyId;
     /**
@@ -73,7 +71,7 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private String idNum;
     /**
-     * 拼接试卷详情
+     * 拼接问卷详情
      */
     @TableField(exist = false)
     private ZsSurvey survey;
