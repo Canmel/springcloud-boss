@@ -162,12 +162,11 @@
                                 that.userinfo.phone = user.phone;
                                 that.userinfo.email = user.email;
                                 that.userinfo.sex = user.sex;
-                                that.loadWorks();
                                 that.initWorkList();
                             } else {
                                 that.userinfo = null;
                                 // TODO 生产环境删除
-                                // that.initWorkList();
+                                that.initWorkList();
                             }
 
                         },
