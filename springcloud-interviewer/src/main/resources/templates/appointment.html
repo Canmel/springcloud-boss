@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预约上岗</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <link rel="stylesheet" href="/viewer/wx/css/weui.css">
+    <link rel="stylesheet" href="/viewer/wx/css/example.css"/>
+    <link rel="stylesheet" href="/viewer/wx/css/jquery-weui.css">
+    <link rel="stylesheet" href="/viewer/wx/css/demos.css">
+    <script src="/viewer/wx/js/jquery-2.1.4.js"></script>
+    <script src="/viewer/wx/js/jweixin-1.6.0.js"></script>
+
+    <script src="/viewer/wx/js/vue.js"></script>
+</head>
+<body>
+<div class="container" id="container">
+    <div class="page form_page js_show">
+        <header class='demos-header'>
+            <div class="weui-form__text-area">
+                <h2 class="weui-form__title">预约上岗</h2>
+                <div class="weui-form__desc" v-if="userinfo">请确认完善个人信息才能提现</div>
+            </div>
+        </header>
+
+        <div class="weui-form-preview">
+            <div class="weui-form-preview__hd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">可提现额度</label>
+                    <em class="weui-form-preview__value">¥{{balance}}</em>
+                </div>
+            </div>
+            <div class="weui-form-preview__bd" v-if="works.length > 0">
+                <div class="weui-form-preview__item" v-for="item in works">
+                    <label class="weui-form-preview__label">{{item.workDate}}</label>
+                    <label class="weui-form-preview__label">{{item.place}}</label>
+                    <span class="weui-form-preview__value">￥{{item.salary}}</span>
+                </div>
+            </div>
+            <div class="weui-form-preview__ft">
+                <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" v-on:click="cashout()">提现</a>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+<script src="/viewer/wx/js/fastclick.js"></script>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="/viewer/wx/js/jquery-weui.js"></script>
+<script src="/viewer/wx/js/ajax-util.js"></script>
+</body>
+
+<script type="application/javascript">
+    new Vue({
+        el: '#container',
+        data: {
+            userinfo: {
+                id: '',
+                openid: '',
+                username: '',
+                idNum: '',
+                school: '',
+                phone: '',
+                sex: '0',
+                email: '',
+                validCode: ''
+            },
+            works: [],
+            balance: 0
+        },
+        created: function () {
+            this.initUserInfo();
+        },
+        methods: {
+            cashout() {
+                let work_ids = [];
+                let that = this;
+                $.each(this.works, function (index, item ) {
+                    work_ids.push(item.id)
+                });
+                console.log(work_ids);
+                AJAX.POST("/survey/zsCashApply", {uid: this.userinfo.id, openid: this.userinfo.openid, uname: this.userinfo.username, works: work_ids.join(",")},function (res) {
+                    if(res.code === 200) {
+                        $.toast(res.msg);
+                    } else {
+                        $.toast(res.msg,"cancel");
+                    }
+                    that.loadWorks();
+                })
+            },
+            loadWorks() {
+                let that =this;
+                AJAX.GET("/survey/zsWork/cash", {uname: this.userinfo.username, idNum: this.userinfo.idNum}, function (resp) {
+                    that.works = resp.data;
+                    that.balance = 0;
+                    $.each(that.works, function (index, item) {
+                        that.balance += item.salary
+                    })
+                });
+            },
+            initUserInfo() {
+                let that = this;
+                if (this.getQueryString("code") || true) {
+                    $.ajax({
+                        url: '/viewer/getUserInfo?code=' + this.getQueryString("code"),
+                        type: 'GET',
+                        async: false,
+                        success: function (resp) {
+                            if(resp.data) {
+                                let user = resp.data;
+                                that.userinfo.id = user.id;
+                                that.userinfo.openid = user.openid;
+                                that.userinfo.username = user.username;
+                                that.userinfo.idNum = user.idNum;
+                                that.userinfo.school = user.school;
+                                that.userinfo.phone = user.phone;
+                                that.userinfo.email = user.email;
+                                that.userinfo.sex = user.sex;
+                                that.loadWorks();
+                            } else {
+                                that.userinfo = null;
+                            }
+                        },
+                        error: function (err) {
+                            that.userinfo = null;
+                        }
+                    });
+                } else {
+                    $.toast("未获取到用户信息", "cancel", function (toast) {});
+                }
+            },
+            getQueryString(name) {
+                let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+                let r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return unescape(r[2]);
+                }
+                return null;
+            },
+        }
+    });
+</script>
+</html>
