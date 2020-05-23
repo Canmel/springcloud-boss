@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">地址：</label>
                     <div class="col-sm-8">
-                        <input name="adress" placeholder="请输入地址" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" v-model="zs_workshift.adress">
+                        <input name="address" placeholder="请输入地址" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" v-model="zs_workshift.address">
                     </div>
                 </div>
                 <div class="form-group" id="data_1">
@@ -46,10 +46,10 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">选择试卷</h4>
+                                <h4 class="modal-title" id="myModalLabel">选择问卷</h4>
                             </div>
                             <div class="modal-body">
-                                    <h3>可以选择的试卷:</h3>
+                                    <h3>可以选择的问卷:</h3>
                                     <div class="row">
                                         <div class="col-sm-8" v-for="item in items">
                                             <label>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3">
-                        <h5 style="color:red" v-if="selectsurveyid == 1">该班次没有选择试卷，请选择！！</h5>
+                        <h5 style="color:red" v-if="selectsurveyid == 1">该班次没有选择问卷，请选择！！</h5>
                         <h5 style="color:red" v-if="timeregular == 1">请按照00:00的方式输入时间，且结束时间大于开始时间</h5>
                         <h5 style="color:red" v-if="dateregular == 1">请按照0000-00-00的方式输入日期</h5>
                         <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
@@ -144,13 +144,13 @@
                 if(hours<0){
                     that.timeregular = 1;
                     return false;
-                }else{
+                }else if(hours == 0){
                     if(minutes<1){
                         that.timeregular = 1;
                         return false;
                     }
                 }
-                AJAX.PUT('zsWorkShift',  JSON.stringify({id:that.zs_workshift.id, surveyId:that.zs_workshift.surveyId, adress:that.zs_workshift.adress, startDate:that.zs_workshift.startDate, startTime:that.zs_workshift.startTime, endTime:that.zs_workshift.endTime}), function (resp) {
+                AJAX.PUT('zsWorkShift',  JSON.stringify({id:that.zs_workshift.id, surveyId:that.zs_workshift.surveyId, address:that.zs_workshift.address, startDate:that.zs_workshift.startDate, startTime:that.zs_workshift.startTime, endTime:that.zs_workshift.endTime}), function (resp) {
                     toastr.success(resp.msg);
                     that.backToMain();
                 });
@@ -208,14 +208,14 @@
         $("#signupForm").validate({
             rules: {
                 cname: "required",
-                adress: "required",
+                address: "required",
                 starttime: "required",
                 endtime: "required",
                 startdate:"required"
             },
             messages: {
                 cname: icon + "请输入班次名称",
-                adress: icon + "请输入地址",
+                address: icon + "请输入地址",
                 starttime: icon + "请选择开始时间",
                 endtime: icon + "请选择结束时间",
                 startdate: icon + "请选择开始日期"

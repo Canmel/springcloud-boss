@@ -3,6 +3,7 @@ package com.camel.survey.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsAccessState;
@@ -49,6 +50,9 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
 
     @Autowired
     private ZsSignService zsSignService;
+
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
     public PageInfo<ZsWorkRecord> selectPage(List<ZsWorkRecord> list) {
@@ -97,6 +101,15 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
         }
 
         return ResultUtil.success("修改成功",zsSignService.update(zsSign,wrapper));
+    }
+
+    @Override
+    public Result deleteSingW(ZsWorkRecord entity) {
+        SysUser user = applicationToolsUtils.getUser(entity.getCreatorId());
+        Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
+        wrapper.eq("ws_id",entity.getWsId());
+        wrapper.eq("cid_num",user.getIdNum());
+        return ResultUtil.success("退出成功",mapper.delete(wrapper));
     }
 
     @Override

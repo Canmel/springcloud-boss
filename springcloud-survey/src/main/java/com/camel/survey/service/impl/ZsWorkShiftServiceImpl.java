@@ -58,21 +58,20 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
         Wrapper<ZsWorkRecord> zsWorkRecordWrapper = new EntityWrapper<>();
         zsWorkRecordWrapper.eq("cid_num",entity.getIdNum());
         List<ZsWorkRecord> workRecord = service.selectList(zsWorkRecordWrapper);
-        List<ZsWorkShift> list = pageInfo.getList();
-        list.forEach(zsDelivery -> {
+        List<ZsWorkShift> ZsWorkShifts = pageInfo.getList();
+        ZsWorkShifts.forEach(ZsWorkShift -> {
             //设置每个班次的创建者
-            zsDelivery.setCreator(applicationToolsUtils.getUser(zsDelivery.getCreatorId()));
+            ZsWorkShift.setCreator(applicationToolsUtils.getUser(ZsWorkShift.getCreatorId()));
             if(workRecord.size()>0){
                 workRecord.forEach(v -> {
-                    if (zsDelivery.getId().equals(v.getWsId()) && v.getResult().equals(ZsSurveySignResult.SUCCESS)){
-                        zsDelivery.setStatusUserId(v.getId());
-                        zsDelivery.setStatusUser(ZsYesOrNo.YES);
+                    if (ZsWorkShift.getId().equals(v.getWsId()) && v.getResult().equals(ZsSurveySignResult.SUCCESS)){
+                        ZsWorkShift.setStatusUser(ZsYesOrNo.YES);
                     }
                 });
             }
-            String startTime =  zsDelivery.getStartTime();
-            String endTime =  zsDelivery.getEndTime();
-            zsDelivery.setWtime(startTime+":00 - "+endTime+":00");
+            String startTime =  ZsWorkShift.getStartTime();
+            String endTime =  ZsWorkShift.getEndTime();
+            ZsWorkShift.setWtime(startTime+":00 - "+endTime+":00");
         });
         return pageInfo;
     }
