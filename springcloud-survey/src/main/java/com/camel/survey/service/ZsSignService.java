@@ -51,5 +51,10 @@ public interface ZsSignService extends IService<ZsSign> {
 
     List<ZsSign> allInSurvey(Integer id);
 
-    Result userZsSign(String username,String phone);
+    /**
+     * 使用用户id查询调查问卷量，和成功量
+     * @param userid
+     * @return
+     */
+    Result userZsSign(String userid);
 }

@@ -240,7 +240,7 @@
             agreen(item) {
                 var that = this;
                 console.log(item.creatorId)
-                AJAX.PUT('zsWorkRecord', JSON.stringify({id: item.id, wsId:item.wsId, creator:item.creatorId, result: 'SUCCESS'}), function (resp) {
+                AJAX.PUT('zsWorkRecord', JSON.stringify({id: item.id, wsId:item.wsId, creatorId:item.creator.uid, result: 'SUCCESS'}), function (resp) {
                     toastr.success(resp.msg);
                     that.loadDelivery();
                     that.loadPassed();
@@ -249,7 +249,7 @@
             },
             refuse(item) {
                 var that = this;
-                AJAX.PUT('zsWorkRecord', JSON.stringify({id: item.id, wsId:item.wsId, creator:item.creatorId, result: 'FAILD'}), function (resp) {
+                AJAX.PUT('zsWorkRecord', JSON.stringify({id: item.id, wsId:item.wsId, creatorId:item.creator.uid, result: 'FAILD'}), function (resp) {
                     toastr.success(resp.msg);
                     that.loadDelivery();
                     that.loadPassed();
@@ -259,7 +259,7 @@
             rollback(item) {
                 var that = this;
                 console.log(item.id)
-                AJAX.PUT('zsWorkRecord', JSON.stringify({id: item.id, wsId:item.wsId, creator:item.creatorId, result: 'APPLY'}), function (resp) {
+                AJAX.PUT('zsWorkRecord', JSON.stringify({id: item.id, wsId:item.wsId, creatorId:item.creator.uid, result: 'APPLY'}), function (resp) {
                     toastr.success(resp.msg);
                     that.loadDelivery();
                     that.loadPassed();

@@ -147,6 +147,13 @@ public class SysUserController extends BaseCommonController {
         return ResultUtil.success("修改用户头像成功");
     }
 
+    @GetMapping("/byIdNum/{idNum}")
+    public SysUser oneUser(@PathVariable String idNum){
+        Wrapper<SysUser> userWrapper = new EntityWrapper<>();
+        userWrapper.eq("id_num", idNum);
+        return service.selectOne(userWrapper);
+    }
+
     public static final String QUEUE_NAME = "ActiveMQ.System.New.User";
 
     @JmsListener(destination = QUEUE_NAME)
