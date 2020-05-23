@@ -141,6 +141,9 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("时间");
         headValues.add("电话");
         headValues.add("坐席");
+        headValues.add("收集开始时间");
+        headValues.add("收集结束时间");
+        headValues.add("通话时长");
         List<String> titleQList = new ArrayList<>();
         questionList.forEach(que -> {
             if (que.getType().equals(2)) {
@@ -164,6 +167,9 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("seat"));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
 
@@ -179,13 +185,13 @@ public class ExportServiceImpl implements ExportService {
                 for (int j = 0; j < questions.length; j++) {
                     if(titleQList.get(index).indexOf(questions[j]) > -1) {
                         if(titleQList.get(index).equals(questions[j])) { // 如果包含并且相等。直接输出
-                            fillCell(row.createCell(3 + index), style, answersArray[j]);
+                            fillCell(row.createCell(6 + index), style, answersArray[j]);
                             break;
                         } else {
                             String title = titleQList.get(index);
                             String option = title.split("_")[1];
                             if(optionList.indexOf(option) > -1) {
-                                fillCell(row.createCell(3 + index), style, answersArray[optionList.indexOf(option)]);
+                                fillCell(row.createCell(6 + index), style, answersArray[optionList.indexOf(option)]);
                             }
                         }
                     }

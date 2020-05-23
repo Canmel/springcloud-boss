@@ -56,9 +56,9 @@ public class ZsWorkShiftController extends BaseCommonController {
         zsWorkshift.eq("cname",entity.getCname());
         int count = service.selectCount(zsWorkshift);
         if( count>0 ){
-            return ResultUtil.success(count);
+            return ResultUtil.success("该班次已存在，请重新输入！！",false);
         };
-        return super.save(entity);
+        return service.saveWorkShift(entity);
     }
 
     /**
@@ -75,8 +75,8 @@ public class ZsWorkShiftController extends BaseCommonController {
      * 编辑 更新
      */
     @PutMapping
-    public Result update(@RequestBody ZsWorkShift entity, Principal principal) {
-        return  ResultUtil.success(service.updateById(entity));
+    public Result update(@RequestBody ZsWorkShift entity) {
+        return  service.updateWorkShift(entity);
     }
 
     /**

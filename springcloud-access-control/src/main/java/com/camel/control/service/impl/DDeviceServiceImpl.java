@@ -1,7 +1,10 @@
 package com.camel.control.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.control.model.DDevice;
 import com.camel.control.mapper.DDeviceMapper;
+import com.camel.control.model.ResultAccess;
 import com.camel.control.service.DDeviceService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ public class DDeviceServiceImpl extends ServiceImpl<DDeviceMapper, DDevice> impl
     @Autowired
     private DDeviceMapper mapper;
 
+
     @Override
     public Boolean save(DDevice device) {
         if(!ObjectUtils.isEmpty(device) && !ObjectUtils.isEmpty(device.getDeviceNumber())) {
@@ -37,5 +41,23 @@ public class DDeviceServiceImpl extends ServiceImpl<DDeviceMapper, DDevice> impl
             }
         }
         return false;
+    }
+
+    @Override
+    public ResultAccess findDDeviceByDeviceNumber(String deviceNumber, String msg) {
+        ResultAccess result = new ResultAccess();
+        result.setMsg(msg);
+        Wrapper<DDevice> wrapper = new EntityWrapper();
+        wrapper.eq("device_number",deviceNumber);
+        Integer count = mapper.selectCount(wrapper);
+        if(count>=1){
+            result.setCode(200);
+        }
+        if(!ObjectUtils.isEmpty(msg)&& msg.equals("认证成功")){
+            result.setPersonnelType("0");
+        }else{
+            result.setPersonnelType("2");
+        }
+        return result;
     }
 }

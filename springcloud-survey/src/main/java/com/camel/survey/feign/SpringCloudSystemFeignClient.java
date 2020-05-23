@@ -1,13 +1,15 @@
 package com.camel.survey.feign;
 
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.survey.config.KeepErrMsgConfiguration;
-import com.camel.survey.feign.fallback.SpringCloudBpmApprovalFallback;
+import com.camel.survey.feign.fallback  .SpringCloudBpmApprovalFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 
 /**
  *
@@ -56,4 +58,13 @@ public interface SpringCloudSystemFeignClient {
      */
     @RequestMapping(value = "/sysUser/all", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     Result allUser();
+
+    /**
+     * 通过身份证号获取用户
+     * @param idNum
+     * @return
+     */
+    @RequestMapping(value = "/sysUser/byIdNum/{idNum}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    SysUser oneUser(@PathVariable("idNum") String idNum);
+
 }
