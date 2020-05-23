@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.interviewer.enums.ZsStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 /**
  * <p>
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author baily
  * @since 2020-03-04
  */
+@Data
 public class WxSubscibe extends BasePaginationEntity {
 
     private static final long serialVersionUID = 1L;
@@ -31,6 +33,11 @@ public class WxSubscibe extends BasePaginationEntity {
     private String user;
 
     /**
+     * 分享者
+     */
+    private String shareUser;
+
+    /**
      * 状态
      */
     @TableLogic
@@ -42,8 +49,9 @@ public class WxSubscibe extends BasePaginationEntity {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date createdAt;
 
-    public WxSubscibe(String user) {
+    public WxSubscibe(String user, String shareUser) {
         this.user = user;
+        this.shareUser = shareUser;
     }
 
     public WxSubscibe() {

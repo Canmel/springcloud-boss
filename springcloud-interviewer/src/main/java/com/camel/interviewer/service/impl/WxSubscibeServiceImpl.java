@@ -6,7 +6,11 @@ import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.mapper.WxSubscibeMapper;
 import com.camel.interviewer.service.WxSubscibeService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,8 +23,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class WxSubscibeServiceImpl extends ServiceImpl<WxSubscibeMapper, WxSubscibe> implements WxSubscibeService {
     @Override
-    public boolean save(String toUserName) {
-        return this.insert(new WxSubscibe(toUserName));
+    public boolean save(String toUserName, String eventKey) {
+        String shareName = "";
+        if(StringUtils.isNotBlank(eventKey) && StringUtils.contains(eventKey, "_")) {
+            List<String> params = CollectionUtils.arrayToList(StringUtils.split(eventKey, "_"));
+            shareName = params.get(1);
+        }
+        return this.insert(new WxSubscibe(toUserName, shareName));
     }
 
     @Override

@@ -20,7 +20,7 @@ public class WxConstants {
      * js安全域名
      * 不带http:// 或者https:// 以及项目名称
      */
-    private String JS_SAVE_DOMAIN = "2fd59a5d.ngrok.io";
+    private String JS_SAVE_DOMAIN = "meedesidy.qicp.io";
     public static final String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
 
 }
