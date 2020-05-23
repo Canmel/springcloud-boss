@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsWorkShift">
         <id column="id" property="id" />
         <result column="cname" property="cname" />
-        <result column="adress" property="adress" />
+        <result column="address" property="address" />
         <result column="status" property="status" />
         <result column="survey_id" property="surveyId" />
         <result column="creator" property="creatorId"/>
