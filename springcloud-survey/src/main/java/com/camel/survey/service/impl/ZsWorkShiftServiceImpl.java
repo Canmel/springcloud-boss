@@ -56,7 +56,7 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
             mapper.list(entity);
         });
         Wrapper<ZsWorkRecord> zsWorkRecordWrapper = new EntityWrapper<>();
-        zsWorkRecordWrapper.eq("cid_num",entity.getIdNUM());
+        zsWorkRecordWrapper.eq("cid_num",entity.getIdNum());
         List<ZsWorkRecord> workRecord = service.selectList(zsWorkRecordWrapper);
         List<ZsWorkShift> list = pageInfo.getList();
         list.forEach(zsDelivery -> {
@@ -65,14 +65,14 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
             if(workRecord.size()>0){
                 workRecord.forEach(v -> {
                     if (zsDelivery.getId().equals(v.getWsId()) && v.getResult().equals(ZsSurveySignResult.SUCCESS)){
-                        zsDelivery.setStatusUserId(v.getCIdNum());
+                        zsDelivery.setStatusUserId(v.getId());
                         zsDelivery.setStatusUser(ZsYesOrNo.YES);
                     }
                 });
             }
             String startTime =  zsDelivery.getStartTime();
             String endTime =  zsDelivery.getEndTime();
-            zsDelivery.setWtime(startTime+":00-"+endTime+":00");
+            zsDelivery.setWtime(startTime+":00 - "+endTime+":00");
         });
         return pageInfo;
     }

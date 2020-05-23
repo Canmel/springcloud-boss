@@ -75,17 +75,4 @@
         AND creator = #{id}
     </select>
 
-    <select id="userZsSign" resultType="hashmap">
-        SELECT
-	    count(zs_sign.id) AS countsign,
-	    zs_work.succss_num
-        FROM
-            zs_sign
-        LEFT JOIN zs_work ON zs_work.uname = zs_sign.username
-        WHERE
-            zs_sign.username = #{param1}
-        AND zs_work.phone = #{param2}
-        AND result = 1
-        group by zs_work.succss_num
-    </select>
 </mapper>

@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="form-group" id="data_1">
-                    <label class="col-sm-3 control-label">开始日期：</label>
+                    <label class="col-sm-3 control-label">班次日期：</label>
                     <div class="input-group date col-sm-4">
                         <span>&nbsp;</span>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">开始时间：</label>
+                    <label class="col-sm-3 control-label">起止时间：</label>
                     <div class="col-sm-6" >
                         <div class="input-group input-medium date-picker input-daterange" data-date-format="yyyy-mm-dd">
                             <input id="starttime" name="starttime" class=" datepicker" autocomplete="off" ref="inputstart" placeholder="请选择开始时间"  style="font-size: 13px;" type="text" >
@@ -157,9 +157,11 @@
                 if(hours<0){
                     that.timeregular = 1;
                     return false;
-                }else if(minutes<1){
-                    that.timeregular = 1;
-                    return false;
+                }else{
+                    if(minutes<1){
+                        that.timeregular = 1;
+                        return false;
+                    }
                 }
                 AJAX.POST('zsWorkShift', that.zs_workshift, function (resp) {
                         if(!resp.success && resp.success != null){
@@ -213,7 +215,7 @@
             },
             messages: {
                 cname: icon + "请输入班次名称",
-                adress: icon + "请选择地址",
+                adress: icon + "请输入地址",
                 starttime: icon + "请选择开始时间",
                 endtime: icon + "请选择结束时间",
                 startdate: icon + "请选择开始日期"

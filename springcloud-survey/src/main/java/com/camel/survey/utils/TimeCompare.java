@@ -24,8 +24,8 @@ public class TimeCompare {
             Date now = new Date();
             try {
                 //比较日期
-                Date stardate = dateFormat.parse(value);
-                if(stardate.getTime()<now.getTime()){
+                String nowDate = dateFormat.format(now);
+                if(Long.valueOf(value.replaceAll("-",""))-Long.valueOf(nowDate.replaceAll("-",""))==0){
                     indexList.add(key);
                 }
             } catch (Exception e) {
@@ -34,7 +34,6 @@ public class TimeCompare {
         }
         return indexList;
     }
-
 
     public static List<Integer> timeCompare(Map<Integer, ZsWorkShift> indexAndTime){
         List<Integer> indexList = new ArrayList<>();

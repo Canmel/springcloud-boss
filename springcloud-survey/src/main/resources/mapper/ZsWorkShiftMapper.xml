@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsWorkShift">
-        <id column="id" property="Id" />
+        <id column="id" property="id" />
         <result column="cname" property="cname" />
         <result column="adress" property="adress" />
         <result column="status" property="status" />

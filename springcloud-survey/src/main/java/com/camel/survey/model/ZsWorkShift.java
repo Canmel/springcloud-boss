@@ -1,6 +1,7 @@
 package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
@@ -29,7 +31,7 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
      * 班次主键
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer Id;
+    private Integer id;
     /**
      * 名称
      */
@@ -44,7 +46,7 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private ZsYesOrNo statusUser;
     @TableField(exist = false)
-    private String statusUserId;
+    private Integer statusUserId;
 
     /**
      * 试卷id
@@ -58,13 +60,18 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
     private String endTime;
 
     private String startDate;
+    /**
+     * 状态
+     */
+    @TableLogic
+    private ZsStatus status;
     @TableField(exist = false)
     private String wtime;
     /**
      * 使用者idNum
      */
     @TableField(exist = false)
-    private String idNUM;
+    private String idNum;
     /**
      * 拼接试卷详情
      */

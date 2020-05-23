@@ -29,10 +29,4 @@ public interface ZsSignMapper extends BaseMapper<ZsSign> {
 
     ZsSign selectLastByUser(Integer id);
 
-    /**
-     * 根据用户名查其记录
-     * @param username
-     * @return
-     */
-    HashMap<String,String> userZsSign(String username,String phone);
 }
