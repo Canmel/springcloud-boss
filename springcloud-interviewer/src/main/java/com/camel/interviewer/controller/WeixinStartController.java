@@ -5,16 +5,16 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.config.WxConstants;
+import com.camel.interviewer.model.WxJsConfig;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WeixinStartService;
 import com.camel.interviewer.service.WxSubscibeService;
-import com.camel.interviewer.utils.MessageUtil;
-import com.camel.interviewer.utils.WxTokenUtil;
-import com.camel.interviewer.utils.XmlUtil;
+import com.camel.interviewer.utils.*;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -42,9 +43,6 @@ public class WeixinStartController {
     public static Logger logger = LoggerFactory.getLogger(WeixinStartService.class);
 
     @Autowired
-    RestTemplate restTemplate;
-
-    @Autowired
     private WeixinStartService service;
 
     @Autowired
@@ -55,6 +53,9 @@ public class WeixinStartController {
 
     @Autowired
     private WeixinStartService weixinStartService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @AuthIgnore
     @GetMapping
@@ -112,8 +113,39 @@ public class WeixinStartController {
         if(ObjectUtils.isEmpty(wxUser)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");
         }
-        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret());
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
         return ResultUtil.success(token);
+    }
+
+    @AuthIgnore
+    @GetMapping("/token")
+    private Result token() {
+        return ResultUtil.success(WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate));
+    }
+
+    @AuthIgnore
+    @GetMapping("/ticket")
+    private Result ticket() {
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
+        return ResultUtil.success(JsapiTicketUtil.getInstance().JsapiTicket(token, redisTemplate));
+    }
+
+    @AuthIgnore
+    @GetMapping("/signature")
+    private Result signature() {
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
+        String ticket = JsapiTicketUtil.getInstance().JsapiTicket(token, redisTemplate);
+        String randomStr = WxCommonsUtils.getInstance().getRandomStr();
+        String timestamp = WxCommonsUtils.getInstance().timeStamp();
+        Map<String, Object> map = new HashMap();
+        map.put("noncestr", randomStr);
+        map.put("jsapi_ticket", ticket);
+        map.put("timestamp", timestamp);
+        map.put("url", "https://diaocha.svdata.cn/viewer/salary");
+        String signatureStr = MapUrlParamsUtils.getUrlParamsByMap(map);
+        String signature = SHA1.encode(signatureStr);
+        WxJsConfig wxJsConfig = new WxJsConfig(wxConstants.getAppid(), timestamp, randomStr, signature);
+        return ResultUtil.success(wxJsConfig);
     }
 
     @AuthIgnore

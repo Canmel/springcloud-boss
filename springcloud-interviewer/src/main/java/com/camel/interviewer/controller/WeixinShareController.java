@@ -20,6 +20,7 @@ import okhttp3.Response;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +48,7 @@ public class WeixinShareController {
 
 
     @Autowired
-    RestTemplate restTemplate;
+    RedisTemplate redisTemplate;
 
     @Autowired
     private WxConstants wxConstants;
@@ -70,7 +71,7 @@ public class WeixinShareController {
         }
         JSONObject tokenBody = null;
         try {
-            String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret());
+            String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
             String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
             String  json = "{\"expire_seconds\": 604800, \"action_name\": \"QR_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \""+ wxUser.getOpenid() +"\"}}}";;
             Response responseBody = HttpUtils.httpPostResponse(url, new HashMap<String, String>(), json);

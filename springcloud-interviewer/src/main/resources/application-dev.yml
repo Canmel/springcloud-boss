@@ -134,8 +134,8 @@ logging:
 
 wx:
   account:
-#     appid: wx40d4fe2c2c03a2f3
-#     appsecret: c5f6da5b695d372321c9a46b792ec8f0
-    appsecret: a0eb49319937944512d1fcf65b3216c0
-    appid: wx0a2efc77aac2a84b
+     appid: wx40d4fe2c2c03a2f3
+     appsecret: c5f6da5b695d372321c9a46b792ec8f0
+#    appsecret: a0eb49319937944512d1fcf65b3216c0
+#    appid: wx0a2efc77aac2a84b
 
