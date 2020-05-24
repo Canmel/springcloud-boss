@@ -98,7 +98,7 @@
                 let that = this;
                 alert(location.href.split('#')[0]);
                 $.ajax({
-                    url: '/viewer/signature',
+                    url: '/viewer/signature?currentUrl=' + location.href.split('#')[0],
                     type: 'GET',
                     async: false,
                     success: function (resp) {
@@ -126,7 +126,6 @@
                         success: function (resp) {
                             if (resp.code == 200 && resp.data) {
                                 that.ticket = resp.data.ticket;
-                                that.qrCode += that.ticket;
                             } else {
                                 that.userinfo = null;
                             }

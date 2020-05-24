@@ -137,8 +137,7 @@ public class WeixinStartController {
 
     @AuthIgnore
     @GetMapping("/signature")
-    private Result signature(HttpServletRequest request) {
-        String currentUrl =  request.getRequestURL().toString();
+    private Result signature(String currentUrl) {
         String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
         String ticket = JsapiTicketUtil.getInstance().JsapiTicket(token, redisTemplate);
         Map<String, String> ret = sign(ticket, currentUrl);
