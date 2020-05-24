@@ -143,7 +143,7 @@ public class WeixinStartController {
         String ticket = JsapiTicketUtil.getInstance().JsapiTicket(token, redisTemplate);
         Map<String, String> ret = sign(ticket, currentUrl);
         for (Map.Entry entry : ret.entrySet()) {
-            System.out.println(entry.getKey() + ", " + entry.getValue());
+            logger.info(entry.getKey() + ", " + entry.getValue());
         }
         String randomStr = WxCommonsUtils.getInstance().getRandomStr();
         String timestamp = WxCommonsUtils.getInstance().timeStamp();
