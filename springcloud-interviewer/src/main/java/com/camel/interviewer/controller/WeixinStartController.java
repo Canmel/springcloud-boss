@@ -141,7 +141,7 @@ public class WeixinStartController {
         map.put("noncestr", randomStr);
         map.put("jsapi_ticket", ticket);
         map.put("timestamp", timestamp);
-        map.put("url", "https://diaocha.svdata.cn/viewer/salary");
+        map.put("url", "https://diaocha.svdata.cn/viewer/view/share");
         String signatureStr = MapUrlParamsUtils.getUrlParamsByMap(map);
         String signature = SHA1.encode(signatureStr);
         logger.info(signatureStr);
