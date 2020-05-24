@@ -21,7 +21,6 @@ docker-package:
     - master
   tags:
     - packager
-  script:
     - pwd
     - mvn clean package -Dmaven.test.skip=true -U -X
     # 在根目录创建一个文件夹来放所有的构建物

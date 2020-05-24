@@ -1,24 +1,16 @@
 package com.camel.interviewer.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.config.WxConstants;
-import com.camel.interviewer.exceptions.NotWxExplorerException;
-import com.camel.interviewer.exceptions.WxServerConnectException;
-import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WeixinStartService;
 import com.camel.interviewer.service.WxSubscibeService;
-import com.camel.interviewer.service.WxUserService;
-import com.camel.interviewer.utils.HttpUtils;
 import com.camel.interviewer.utils.MessageUtil;
 import com.camel.interviewer.utils.WxTokenUtil;
 import com.camel.interviewer.utils.XmlUtil;
-import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
