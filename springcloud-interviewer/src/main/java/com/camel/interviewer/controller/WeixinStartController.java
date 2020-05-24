@@ -132,7 +132,7 @@ public class WeixinStartController {
 
     @AuthIgnore
     @GetMapping("/signature")
-    private Result signature() {
+    private Result signature(String currentUrl) {
         String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
         String ticket = JsapiTicketUtil.getInstance().JsapiTicket(token, redisTemplate);
         String randomStr = WxCommonsUtils.getInstance().getRandomStr();
@@ -141,7 +141,7 @@ public class WeixinStartController {
         map.put("noncestr", randomStr);
         map.put("jsapi_ticket", ticket);
         map.put("timestamp", timestamp);
-        map.put("url", "https://diaocha.svdata.cn/viewer/view/share");
+        map.put("url", currentUrl);
         String signatureStr = MapUrlParamsUtils.getUrlParamsByMap(map);
         String signature = SHA1.encode(signatureStr);
         logger.info(signatureStr);
