@@ -20,6 +20,8 @@ import com.camel.interviewer.utils.WxTokenUtil;
 import com.camel.interviewer.utils.XmlUtil;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +49,7 @@ public class WeixinStartController {
     public static final String ECHOSTR = "echostr";
     public static final String AUTHORIZATION_CODE = "authorization_code";
 
+    public static Logger logger = LoggerFactory.getLogger(WeixinStartService.class);
 
     @Autowired
     RestTemplate restTemplate;
@@ -76,7 +79,7 @@ public class WeixinStartController {
     @AuthIgnore
     @PostMapping
     private void event(HttpServletRequest request, HttpServletResponse response) throws IOException {
-         request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String message = "success";
@@ -92,11 +95,13 @@ public class WeixinStartController {
             if (MessageUtil.MSGTYPE_EVENT.equals(msgType)) {
                 //处理订阅事件
                 if (MessageUtil.MESSAGE_SUBSCIBE.equals(eventType)) {
+                    logger.info("订阅事件推送");
                     message = MessageUtil.subscribeForText(toUserName, fromUserName);
                     wxSubscibeService.save(fromUserName, eventKey);
                     //处理取消订阅事件
                 } else if (MessageUtil.MESSAGE_UNSUBSCIBE.equals(eventType)) {
                     message = MessageUtil.unsubscribe(toUserName, fromUserName);
+                    logger.info("取消订阅事件推送");
                     wxSubscibeService.unsave(fromUserName);
                 }
             }

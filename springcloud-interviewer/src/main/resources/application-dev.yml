@@ -25,13 +25,13 @@ spring:
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
-      # ��ʼ��ʱ������
+      # 初始化连接池
       initialSize: 5
-      # ���������
+      # 最大连接数
       max-active: 10
-      # ��С����������
+      # 最小连接数
       min-idle: 5
-      # �������ȴ�ʱ��
+      # 超时时间
       max-wait: 60000
       # �Ƿ񻺴棨PsCatch��
       pool-prepared-statements: true
