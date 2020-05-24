@@ -96,6 +96,7 @@
             },
             getSignature() {
                 let that = this;
+                alert(location.href.split('#')[0]);
                 $.ajax({
                     url: '/viewer/signature',
                     type: 'GET',
