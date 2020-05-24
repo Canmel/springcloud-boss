@@ -144,8 +144,8 @@ public class WeixinStartController {
         map.put("url", "https://diaocha.svdata.cn/viewer/salary");
         String signatureStr = MapUrlParamsUtils.getUrlParamsByMap(map);
         String signature = SHA1.encode(signatureStr);
-        System.out.println(signatureStr);
-        System.out.println(signature);
+        logger.info(signatureStr);
+        logger.info(signature);
         WxJsConfig wxJsConfig = new WxJsConfig(wxConstants.getAppid(), timestamp, randomStr, signature);
         return ResultUtil.success(wxJsConfig);
     }
