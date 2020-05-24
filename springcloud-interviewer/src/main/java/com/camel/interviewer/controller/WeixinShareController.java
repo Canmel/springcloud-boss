@@ -68,10 +68,6 @@ public class WeixinShareController {
         if(ObjectUtils.isEmpty(wxUser)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");
         }
-        Map<String, String> params = new HashMap<>();
-        params.put("expire_seconds", "2592000");
-        params.put("action_name", "QR_STR_SCENE");
-        params.put("action_info", "{'scene': {'scene_str': 'subscribe'}, 'from': "+ wxUser.getOpenid() +"}");
         JSONObject tokenBody = null;
         try {
             String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret());
