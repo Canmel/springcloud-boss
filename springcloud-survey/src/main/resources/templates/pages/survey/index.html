@@ -56,6 +56,9 @@
                             <button type="button" v-on:click="edit(item)" v-if="states(item)"
                                     class="btn btn-primary btn-xs" >修改
                             </button>
+                            <button type="button" v-on:click="editSimple(item)" v-if="states(item)==false"
+                                    class="btn btn-primary btn-xs" >修改
+                            </button>
                             <button type="button" v-on:click="start(item)" v-if="states(item)"
                                     class="btn btn-success btn-xs" >开始调查
                             </button>
@@ -170,6 +173,13 @@
                 sessionStorage.setItem('editParams', item.id);
                 $.pjax({
                     url: mvm.applicationContextRootPath + 'pages/survey/details_new.html',
+                    container: '.page-container'
+                });
+            },
+            editSimple: function (item) {
+                sessionStorage.setItem('editParams', item.id);
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/survey/details_simple.html',
                     container: '.page-container'
                 });
             },
