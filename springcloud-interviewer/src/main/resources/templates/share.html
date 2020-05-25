@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="weui-panel" style="padding-top: 10%;" v-if="ticket">
-        <img v-bind:src="qrCodeSrc" v-if="ticket" style="width: 50%;">
+        <img v-bind:src="qrCodeSrc()" style="width: 50%;">
         <p>我的推荐二维码，长按保存发给朋友，或者直接转发给朋友或朋友圈</p>
     </div>
 </div>
@@ -59,6 +59,7 @@
                 return this.qrCode + this.ticket;
             },
             initWxConfig(params) {
+                alert(params.appId + " | " + params.timestamp + " |" + params.nonceStr + " | " + params.signature );
                 wx.config({
                     debug: true,
                     appId: params.appId,
@@ -98,7 +99,7 @@
                 let that = this;
                 alert(location.href.split('#')[0]);
                 $.ajax({
-                    url: '/viewer/signature?currentUrl=' + location.href.split('#')[0],
+                    url: '/viewer/signature?currentUrl=' + encodeURIComponent(location.href.split('#')[0]),
                     type: 'GET',
                     async: false,
                     success: function (resp) {
