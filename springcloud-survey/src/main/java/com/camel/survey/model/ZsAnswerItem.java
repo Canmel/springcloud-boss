@@ -60,6 +60,7 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
     private Date createdAt;
     private String creator;
     private String option;
+    private Integer optionId;
     /**
      * 是否有效
      */

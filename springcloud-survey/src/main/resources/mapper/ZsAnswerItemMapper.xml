@@ -15,11 +15,12 @@
         <result column="creator" property="creator"/>
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="seat" property="seat"/>
+        <result column="option_id" property="optionId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, question, question_id,value, type, status, created_at, creator, `option`, answer_id, valid
+        id, question, question_id,value, type, status, created_at, creator, `option`, answer_id, valid, option_id
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
