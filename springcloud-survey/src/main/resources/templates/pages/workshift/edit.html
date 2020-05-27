@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">选择问卷：</label>
                     <div class="col-sm-4">
-                        <span class="click-span"  v-on:click="applyRoles()">{{surveyname}}</span>
+                        <span class="click-span"  v-on:click="showSurveys()">{{surveyname}}</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -155,7 +155,7 @@
                     that.backToMain();
                 });
             },
-            applyRoles() {
+            showSurveys() {
                 $("#addSurvey").modal('show');
 
             },

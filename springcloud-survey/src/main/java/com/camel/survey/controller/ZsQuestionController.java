@@ -92,6 +92,11 @@ public class ZsQuestionController extends BaseCommonController {
         return service.saveAnswer(zsAnswerSave);
     }
 
+    @PostMapping("/simpleUpdate")
+    public Result updateSimply(@RequestBody ZsQuestion entity) {
+        return super.update(entity);
+    }
+
     /**
      * 获取service
      */

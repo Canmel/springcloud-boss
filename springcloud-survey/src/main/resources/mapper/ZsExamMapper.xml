@@ -58,4 +58,14 @@
         </where>
     </select>
 
+    <select id="findById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        FROM
+        zs_exam
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
 </mapper>

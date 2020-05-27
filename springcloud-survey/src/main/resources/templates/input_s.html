@@ -81,7 +81,8 @@
                                                                   v-on:change="radioChange(opt, $event, item.type)"
                                                                   :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
                                                                   :name="'radio_' + item.id + '_' + item.id"
-                                                                  :value="opt.id + '_' +  opt.name">
+                                                                  :value="opt.id + '_' +  opt.name"
+                                                                  :content="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{opt.name}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
@@ -99,7 +100,8 @@
                                                                   :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
                                                                   :dexclusivity="opt.exclusivity ? opt.exclusivity.code : 0"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id"
-                                                                  :value="opt.id + '_' +  opt.name">
+                                                                  :value="opt.id + '_' +  opt.name"
+                                                                  :content="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
@@ -198,7 +200,8 @@
             tmpNext: [],
             tmpNextRadio: null,
             showSubmit: false,
-            endInfo: '问卷结束，感谢您的配合！'
+            endInfo: '问卷结束，感谢您的配合！',
+            unclear:0
         },
         created: function () {
             this.loadParams();
@@ -213,15 +216,25 @@
                 var $inputs = $('.simform-inner').find('.question :visible').find('input');
                 $inputs.each(function (index, item) {
                     var target = $(item).attr('dtarget');
-                    var ckecked = $(item).is(':checked')
+                    var checked = $(item).is(':checked');
+                    var content = $(item).attr('content');
+                    // 选中说不清数量到达限额
+                    if (checked && content ==="说不清") {
+                        that.unclear=that.unclear+1;
+                        if(that.unclear>=that.survey.unclearCount){
+                            $("#theForm").hide();
+                            that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                            $("#end").show();
+                        }
+                    }
                     // 选中的项目 target为数字并且小于0
-                    if (ckecked && !isNaN(target) && target < 0) {
+                    if (checked && !isNaN(target) && target < 0) {
                         $("#theForm").hide();
                         that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
                         $("#end").show();
                     }
 
-                    if (ckecked && !isNaN(target) && target > 1000) {
+                    if (checked && !isNaN(target) && target > 1000) {
                         that.submit();
                     }
 
@@ -336,7 +349,6 @@
                     return;
                 }
                 this.validSurvey();
-
                 if (this.current === this.nextIndex) {
                     this.nextIndex += 1
                 }
