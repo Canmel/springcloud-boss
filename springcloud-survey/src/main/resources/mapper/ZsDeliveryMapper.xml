@@ -13,6 +13,9 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
+        <association property="exam" column="exam_id"
+                     select="com.camel.survey.mapper.ZsExamMapper.findById"></association>
+
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -32,6 +35,9 @@
             </if>
             <if test="ach != null">
                 AND ach = #{ach.value}
+            </if>
+            <if test="creatorId != null">
+                AND creator = #{creatorId}
             </if>
         </where>
     </select>
