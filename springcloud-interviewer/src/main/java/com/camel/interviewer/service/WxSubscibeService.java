@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface WxSubscibeService extends IService<WxSubscibe> {
 
-    boolean save(String toUserName);
+    boolean save(String toUserName, String eventKey);
 
     boolean unsave(String toUserName);
 }

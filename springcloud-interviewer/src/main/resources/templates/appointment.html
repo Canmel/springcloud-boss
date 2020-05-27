@@ -15,34 +15,71 @@
 </head>
 <body ontouchstart>
 <div class="container" id="container">
-    <div class="weui_msg" v-if="false">
-        <div class="weui_icon_area"><i class="weui_icon_cancel weui_icon_msg"></i></div>
+    <div class="weui_msg" v-if="userinfo">
+        <div class="weui_icon_area">
+            <i class="weui_icon_success weui_icon_msg"></i></div>
         <div class="weui_text_area">
             <h2 class="weui_msg_title">无权限操作</h2>
-            <p class="weui_msg_desc">请使用微信客户端浏览</p>
+            <p class="weui_msg_desc">请您完善个人信息后再次尝试</p>
         </div>
-
+        <div class="weui_extra_area">
+        </div>
     </div>
-    <div class="weui-panel" style="padding-top: 10%;">
-        <div class="weui-panel__hd">近期工作安排</div>
+    <div class="weui-panel" style="padding-top: 10%;" v-if="!userinfo">
+        <div class="weui-panel__hd" style="font-size: 25px;">近期定点调查</div>
         <div class="weui-panel__bd">
-            <div class="weui-media-box weui-media-box_text" v-for="item in works">
+            <div class="weui-media-box weui-media-box_text" v-for="item in works" v-on:click="itemClickHandler(item)">
                 <h4 class="weui-media-box__title">{{item.cname}}</h4>
-                <p class="weui-media-box__desc"><p v-if="item.survey" style="font-size: 14px;">{{item.survey.name}}</p>
+                <p class="weui-media-box__desc">
+                <p v-if="item.survey" style="font-size: 14px;">{{item.survey.name}}</p>
                 <ul class="weui-media-box__info">
                     <li class="weui-media-box__info__meta">班次时间</li>
                     <li class="weui-media-box__info__meta">{{item.startDate}}</li>
-                    <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.startTime}} - {{item.endTime}}</li>
+                    <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.startTime}} -
+                        {{item.endTime}}
+                    </li>
                 </ul>
                 <ul class="weui-media-box__info">
-                    <li class="weui-media-box__info__meta" style="line-height: normal;"><i class="weui-icon-arrow"></i></li>
-                    <li class="weui-media-box__info__meta">{{item.adress}}</li>
+                    <li class="weui-media-box__info__meta"><i class="weui-icon-arrow"></i> {{item.address}}</li>
                 </ul>
             </div>
+            <div class="weui-form__extra-area" style="bottom: 0px; text-align: center; width: 100%;">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a href="javascript:" class="weui-footer__link">赛炜调查提供技术支持</a>
+                    </p>
+                    <p class="weui-footer__text">Copyright © 2008-2019 diaocha.cn</p>
+                </div>
+            </div>
         </div>
+
     </div>
-    <div class="weui_extra_area">
-        <a href="">赛炜调查</a>
+
+    <div class="weui-dialog" id="eee" style="display: none">
+        <div class="weui-dialog__hd"><strong class="weui-dialog__title">{{currentWork.cname}}</strong></div>
+        <div class="bd">
+            <div class="weui_cells_title">{{currentWork.survey ? currentWork.survey.name : ""}}</div>
+            <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary" style="display: inline-block; -webkit-flex: unset; width: 30%;">
+                        <p>日期</p>
+                    </div>
+                    <div class="weui_cell_ft" style="display: inline-block; -webkit-flex: unset; width: 70%; text-align: center;">{{currentWork.startDate}}</div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary" style="display: inline-block; -webkit-flex: unset; width: 30%;">
+                        <p>时间</p>
+                    </div>
+                    <div class="weui_cell_ft" style="display: inline-block; -webkit-flex: unset; width: 70%; text-align: center;">{{currentWork.startTime}} -
+                        {{currentWork.endTime}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-dialog__ft">
+            <a href="javascript:;" v-on:click="confirmApply()" class="weui-dialog__btn ">确认申请</a>
+            <a href="javascript:;" v-on:click="cancelApply()" class="weui-dialog__btn default">我再看看</a>
+        </div>
     </div>
 </div>
 <script src="/viewer/wx/js/fastclick.js"></script>
@@ -70,13 +107,24 @@
                 email: '',
                 validCode: ''
             },
-            works: [],
-            balance: 0
+            currentWork: {},
+            works: []
         },
         created: function () {
             this.initUserInfo();
         },
         methods: {
+            confirmApply() {
+                // TODO
+            },
+            cancelApply() {
+                $('.weui-mask').hide();
+                $('.weui-dialog').hide();
+            },
+            itemClickHandler(item) {
+                this.currentWork = item;
+                $.openModal($("#eee"))
+            },
             initWorkList() {
                 let that = this;
                 $.ajax({
@@ -115,7 +163,6 @@
                                 that.userinfo.phone = user.phone;
                                 that.userinfo.email = user.email;
                                 that.userinfo.sex = user.sex;
-                                that.loadWorks();
                                 that.initWorkList();
                             } else {
                                 that.userinfo = null;

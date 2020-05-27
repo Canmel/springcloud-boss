@@ -166,6 +166,7 @@ public class SysUserController extends BaseCommonController {
             SysRole role = roleService.selectOne(roleWrapper);
             SysUserRole sysUserRole = new SysUserRole(sysUser.getUid(), role.getRoleId());
             userRoleService.insert(sysUserRole);
+            sysUserCacheConfig.initSysUsers();
             return;
         }
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
@@ -173,6 +174,7 @@ public class SysUserController extends BaseCommonController {
         SysUser current = service.selectOne(userWrapper);
         sysUser.setUid(current.getUid());
         service.updateById(sysUser);
+        sysUserCacheConfig.initSysUsers();
     }
 
     @GetMapping("/{id}/selectByUid")
