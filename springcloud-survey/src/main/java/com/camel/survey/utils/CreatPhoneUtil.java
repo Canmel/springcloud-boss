@@ -1,12 +1,6 @@
 package com.camel.survey.utils;
 
-import org.bouncycastle.tsp.TSPUtil;
-
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeSet;
-
-import static com.sun.org.apache.xml.internal.security.keys.keyresolver.KeyResolver.length;
 
 public class CreatPhoneUtil {
 
