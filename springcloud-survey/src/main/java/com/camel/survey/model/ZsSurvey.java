@@ -92,6 +92,8 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
 
     private ZsSurveyState state;
 
+    private Integer unclearCount;
+
     @TableField(exist = false)
     private ZsYesOrNo isApplySuccess;
 

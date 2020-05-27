@@ -19,6 +19,7 @@
         <result column="creator" property="creatorId"/>
         <result column="collect_phone" property="collectPhone"/>
         <result column="monit" property="monit"/>
+        <result column="unclear_count" property="unclearCount"/>
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <association property="project" column="project_id"
                      select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
@@ -45,12 +46,13 @@
         <result column="creator" property="creatorId"/>
         <result column="collect_phone" property="collectPhone"/>
         <result column="monit" property="monit"/>
+        <result column="unclear_count" property="unclearCount"/>
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        zs_survey.id, zs_survey.name, start_show, end_show, collect_phone, monit, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type
+        zs_survey.id, zs_survey.name, start_show, end_show, collect_phone, monit, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type, zs_survey.unclear_count
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
