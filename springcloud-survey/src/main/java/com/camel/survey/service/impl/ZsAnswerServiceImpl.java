@@ -103,41 +103,58 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         ZsAnswer zsAnswer = this.selectById(id);
         ZsSurvey zsSurvey = surveyMapper.selectById(zsAnswer.getSurveyId());
         if (!ObjectUtils.isEmpty(zsAnswer.getValid()) && zsAnswer.getValid() == ZsYesOrNo.NO) {
-            List<ZsAnswerItem> answerItems=answerItemMapper.selectByAnswerId(id);
-            for(int i=0;i<answerItems.size();i++){
-                ZsOption option = optionMapper.selectByQuestionAndName(answerItems.get(i).getQuestionId(),answerItems.get(i).getOption());
-                if(option!=null&&option.getConfigration()!=null){
-                    if(option.getCurrent()>=option.getConfigration()){
-                        return ResultUtil.updateError("样本状态","该样本内存在配额已满选项，不可恢复！");
+            // 获取所有选项，如果包含不计配额的不需要恢复配额
+            ZsAnswer answer = selectById(id);
+            Boolean ignoreNum = false;
+            List<Integer> oIds = new ArrayList<>();
+            // 查询本次回答所有的内容选项
+            List<ZsAnswerItem> answerItems = answerItemMapper.selectByAnswerId(id);
+            if (!ObjectUtils.isEmpty(answer)) {
+                List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
+                for (int i = 0; i < answerItems.size(); i++) {
+                    for (int j = 0; j < option.size(); j++) {
+                        if (answerItems.get(i).getOption().equals(option.get(j).getName()) && answerItems.get(i).getQuestion().equals(option.get(j).getZsQuestion().getName())) {
+                            if (!ObjectUtils.isEmpty(option.get(i).getIgnoreNum()) && option.get(i).getIgnoreNum()) {
+                                ignoreNum = true;
+                            }
+                            oIds.add(option.get(j).getId());
+                        }
+
                     }
-                    option.setCurrent(option.getCurrent()+1);
-                    optionMapper.updateById(option);
                 }
+            }
+            if (!ignoreNum) {
+                addCurrent(answer.getSurveyId(), oIds);
             }
             zsAnswer.setValid(ZsYesOrNo.YES);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.YES.getCode());
-            /**
-             * 修改当前样本数量
-             */
-            zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() + 1);
         } else {
-            List<ZsAnswerItem> answerItems=answerItemMapper.selectByAnswerId(id);
-            for(int i=0;i<answerItems.size();i++){
-                ZsOption option = optionMapper.selectByQuestionAndName(answerItems.get(i).getQuestionId(),answerItems.get(i).getOption());
-                if(option!=null&&option.getConfigration()!=null){
-                    option.setCurrent(option.getCurrent()-1);
-                    optionMapper.updateById(option);
+            // 获取所有选项，如果包含不计配额的不需要恢复配额
+            ZsAnswer answer = selectById(id);
+            Boolean ignoreNum = false;
+            List<Integer> oIds = new ArrayList<>();
+            // 查询本次回答所有的内容选项
+            List<ZsAnswerItem> answerItems = answerItemMapper.selectByAnswerId(id);
+            if (!ObjectUtils.isEmpty(answer)) {
+                List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
+                for (int i = 0; i < answerItems.size(); i++) {
+                    for (int j = 0; j < option.size(); j++) {
+                        if (answerItems.get(i).getOption().equals(option.get(j).getName()) && answerItems.get(i).getQuestion().equals(option.get(j).getZsQuestion().getName())) {
+                            if (!ObjectUtils.isEmpty(option.get(i).getIgnoreNum()) && option.get(i).getIgnoreNum()) {
+                                ignoreNum = true;
+                            }
+                            oIds.add(option.get(j).getId());
+                        }
+
+                    }
                 }
+            }
+            if (!ignoreNum) {
+                reduceCurrent(answer.getSurveyId(), oIds);
             }
             zsAnswer.setValid(ZsYesOrNo.NO);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.NO.getCode());
-            /**
-             * 修改当前样本数量
-             */
-            zsSurvey.setCurrentNum(zsSurvey.getCurrentNum() - 1);
-
         }
-        surveyMapper.updateById(zsSurvey);
         /**
          * 修改主表状态
          */
@@ -155,26 +172,28 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     public Result deleteAnswer(Integer id) {
         // 获取所有选项，如果包含不计配额的不需要恢复配额
         ZsAnswer answer = selectById(id);
-        Boolean ignoreNum = false;
-        List<Integer> oIds = new ArrayList<>();
-        // 查询本次回答所有的内容选项
-        List<ZsAnswerItem> answerItems = answerItemMapper.selectByAnswerId(id);
-        if (!ObjectUtils.isEmpty(answer)) {
-            List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
-            for (int i = 0; i < answerItems.size(); i++) {
-                for (int j = 0; j < option.size(); j++) {
-                    if (answerItems.get(i).getOption().equals(option.get(j).getName()) && answerItems.get(i).getQuestion().equals(option.get(j).getZsQuestion().getName())) {
-                        if (!ObjectUtils.isEmpty(option.get(i).getIgnoreNum()) && option.get(i).getIgnoreNum()) {
-                            ignoreNum = true;
+        if (!ObjectUtils.isEmpty(answer.getValid()) && answer.getValid() == ZsYesOrNo.YES) {
+            Boolean ignoreNum = false;
+            List<Integer> oIds = new ArrayList<>();
+            // 查询本次回答所有的内容选项
+            List<ZsAnswerItem> answerItems = answerItemMapper.selectByAnswerId(id);
+            if (!ObjectUtils.isEmpty(answer)) {
+                List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
+                for (int i = 0; i < answerItems.size(); i++) {
+                    for (int j = 0; j < option.size(); j++) {
+                        if (answerItems.get(i).getOption().equals(option.get(j).getName()) && answerItems.get(i).getQuestion().equals(option.get(j).getZsQuestion().getName())) {
+                            if (!ObjectUtils.isEmpty(option.get(i).getIgnoreNum()) && option.get(i).getIgnoreNum()) {
+                                ignoreNum = true;
+                            }
+                            oIds.add(option.get(j).getId());
                         }
-                        oIds.add(option.get(j).getId());
-                    }
 
+                    }
                 }
             }
-        }
-        if (!ignoreNum) {
-            updateCurrent(answer.getSurveyId(), oIds);
+            if (!ignoreNum) {
+                reduceCurrent(answer.getSurveyId(), oIds);
+            }
         }
         mapper.deleteById(id);
         Wrapper<ZsAnswerItem> answerItemWrapper = new EntityWrapper<>();
@@ -183,7 +202,15 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         return ResultUtil.success("删除成功");
     }
 
-    public void updateCurrent(Integer surveyId, List<Integer> optIds) {
+
+    public void reduceCurrent(Integer surveyId, List<Integer> optIds) {
+        JSONObject json = new JSONObject();
+        json.put("surveyId", surveyId);
+        json.put("optId", optIds);
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Stock.Reduce.Topic"), json);
+    }
+
+    public void addCurrent(Integer surveyId, List<Integer> optIds) {
         JSONObject json = new JSONObject();
         json.put("surveyId", surveyId);
         json.put("optId", optIds);
