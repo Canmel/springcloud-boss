@@ -1,0 +1,238 @@
+<style>
+    .droppable-active {
+        background-color: #ffe !important;
+    }
+
+    .tools a {
+        cursor: pointer;
+        font-size: 80%;
+    }
+
+    .form-body .col-md-6,
+    .form-body .col-md-12 {
+        min-height: 400px;
+    }
+
+    .draggable {
+        cursor: move;
+    }
+
+    .sortable > div:hover {
+        border: 1px darkgray dotted;
+    }
+
+    .option:hover {
+        border: 1px darkgray dotted;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>问题预览</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row form-body form-horizontal m-t">
+                        <div class="col-md-12 droppable sortable" id="form-body">
+                            <div class="form-group" v-for="(question, index) in questions">
+                                <div class="row no-margins " style="background-color: bisque; cursor: pointer;"
+                                     v-on:click="questionNameClickHandler(question)">
+                                    <label class="col-sm-1 control-label">{{index + 1}}.</label>
+                                    <div class="col-sm-11 form-control-static">
+                                        <p class="label">{{question.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="row no-margins option" style="cursor: pointer; background-color: gainsboro;"
+                                     v-for="zsoption in zsoptions"
+                                     v-on:click="optionNameClickHandler( $event, zsoption)"
+                                     v-if="zsoption.questionOrderNum == question.orderNum">
+                                    <label class="col-sm-1 control-label" style="padding-right: 0;">
+                                        <option value="" class="length" v-if="question.type === 1||question.type === 2">{{zsoption.orderNum}}.</option>
+                                    </label>
+                                    <div class="col-sm-11" v-if="question.type === 1">
+                                        <div class="radio">
+                                            <label><input type="radio" :value="zsoption.name">{{zsoption.name}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-11" v-if="question.type === 2">
+                                        <div class="radio">
+                                            <label><input type="checkbox"
+                                                          :value="zsoption.name">{{zsoption.name}}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-11" v-if="question.type === 3">
+                                        <div class="radio">
+                                            <label>答：</label>
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            v-on:click="updateQuestion()"><p class="fa fa-check"></p></button>
+                    </button>
+                    <h2 translate>题目属性</h2>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">题目标题</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" text="text" name="name" v-model="selectedQuestion.name"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="optionModal" ng-controller="KisBpmChoseAssignmentCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            v-on:click="updateOption()"><p class="fa fa-check"></p></button>
+                    <h2 translate>选项属性</h2>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">选项文本</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="name" v-model="selectedOption.name"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
+<script src="/survey/js/validateIsMain.js"></script>
+
+
+<script>
+    var detailsVue = new Vue({
+        el: '#subContainer',
+        data: {
+            questions: [],
+            zsoptions: [],
+            surveyId: sessionStorage.getItem('editParams'),
+            selectedQuestion: {},
+            selectedOption: {
+                questionType:0,
+            },
+            selectedIndex: 0
+        },
+        created: function () {
+            this.loadSurvey();
+            this.loadQuestions();
+        },
+        mounted() {
+        },
+        methods: {
+            updateQuestion(){
+                let that=this;
+                AJAX.POST_JSON('zsQuestion/simpleUpdate',that.selectedQuestion, function (resp) {
+                    toastr.success(resp.msg);
+                    that.hideModal('questionModal');
+                });
+            },
+            updateOption(){
+                let that=this;
+                console.log(that.selectedOption)
+                AJAX.PUT('zsOption',JSON.stringify(that.selectedOption), function (resp) {
+                    toastr.success(resp.msg);
+                    that.hideModal('optionModal');
+                });
+            },
+            loadQuestions() {
+                let that = this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    for (let i = 0; i < resp.data.length; i++) {
+                        let item = resp.data[i];
+                        let tmpQ = {
+                            id: item.id,
+                            orderNum: item.orderNum,
+                            name: item.name,
+                            type: item.type,
+                            surveyId: item.surveyId,
+                            maxSelect: item.maxSelect,
+                            minSelect: item.minSelect,
+                            compulsory: item.compulsory.value
+                        };
+                        for (let j = 0; j < item.options.length; j++) {
+                            let o = item.options[j];
+                            let opt = {
+                                id:o.id,
+                                orderNum: o.orderNum,
+                                name: o.name,
+                                target: o.target,
+                                hasRemark: o.hasRemark,
+                                exclusivity: o.exclusivity.value,
+                                ignoreNum: o.ignoreNum,
+                                configration: o.configration, // 选项配额
+                                questionOrderNum: item.orderNum
+                            };
+                            that.zsoptions.push(opt);
+                        }
+
+                        that.questions.push(tmpQ);
+                    }
+                })
+                console.log(that.zsoptions)
+
+            },
+            loadSurvey() {
+                var that = this;
+                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.survey = {
+                        id: resp.data.id,
+                        name: resp.data.name,
+                        currentNum: resp.data.currentNum,
+                        collectNum: resp.data.collectNum,
+                        projectId: resp.data.projectId,
+                        collectType: resp.data.collectType,
+                        ignoreNum: resp.data.ignoreNum
+                    };
+                })
+            },
+            optionNameClickHandler(e, option) {
+                // this.selectedIndex = this.zsoptions.indexOf(option);
+                e.stopPropagation;
+                this.selectedOption = option;
+                this.selectedOption.questionType=this.questions[option.questionOrderNum-1].type;
+                this.showModal('optionModal');
+            },
+            questionNameClickHandler(question) {
+                this.selectedQuestion = question;
+                this.showModal('questionModal');
+            },
+            showModal(id) {
+                $("#" + id).modal('show');
+            },
+            hideModal(id) {
+                $('#' + id).modal('hide');
+            }
+        },
+
+    });
+</script>
