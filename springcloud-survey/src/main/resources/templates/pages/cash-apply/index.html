@@ -48,7 +48,7 @@
                             <span v-if="item.status && item.status.code === 2" class="badge badge-success">{{item.status ? item.status.name : '未知'}}</span>
                             <span v-if="item.status && item.status.code === 3" class="badge badge-danger">{{item.status ? item.status.name : '未知'}}</span>
                         </td>
-                        <td><a class="btn btn-circle btn-warning" @click="pagequeryWork(item)" v-if="resultDev">查看</a></td>
+                        <td><a class="btn btn-circle btn-warning" @click="showCashWorks(item)" v-if="resultDev">查看</a></td>
                         <td>
                             <button type="button" v-on:click="pass(item)" class="btn btn-success btn-xs" v-if="item.status && item.status.code === 0
                             && resultDev ">
@@ -65,7 +65,7 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
-            <div class="modal fade " id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade " id="cashDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content " style="width: 800px">
                         <div class="modal-header">
@@ -127,7 +127,7 @@
                 size: 10,//每页显示条目个数不传默认10
             },
             pageInfoWork: {
-                zsWorkId: [0],
+                zsWorkId:[0],
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -175,23 +175,23 @@
                 this.pagequery();
             },
             pagequeryWork: function (item) {
-                if(item != null){
-                    $("#addSurvey").modal('show');
-                    this.pageInfoWork.zsWorkId = item.zsWorkId;
+                    if(item != null)this.pageInfoWork.zsWorkId = item.zsWorkId;
+                    if(this.pageInfoWork.zsWorkId[0] != 0){
                     var that = this;
                     AJAX.GET('zsWork', this.pageInfoWork, function (resp) {
                         that.itemsWork = resp.data.list;
                         that.pageInfoWork.pageNum = resp.data.pageNum;
                         that.pageInfoWork.total = resp.data.total;
-                    })
-                }
-
+                    })}
             },
             pageFnWork: function (val) {
                 this.pageInfoWork.pageNum = val;
                 this.pagequeryWork();
             },
-
+            showCashWorks: function(item){
+                $("#cashDetails").modal('show');
+                this.pagequeryWork(item);
+            },
             signUp(item) {
                 console.log(item);
             },

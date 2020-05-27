@@ -2,6 +2,7 @@ package com.camel.survey.mapper;
 
 import com.camel.survey.model.ZsExam;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.camel.survey.model.ZsSurvey;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -26,4 +27,11 @@ public interface ZsExamMapper extends BaseMapper<ZsExam> {
     List<ZsExam> listBySurveyId(Integer id);
 
     List<ZsExam> listByUserId(Integer id);
+
+    /**
+     * 查询项目简单返回
+     * @param id
+     * @return
+     */
+    ZsExam findById(Integer id);
 }
