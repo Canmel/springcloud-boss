@@ -354,6 +354,16 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
                 Collectors.collectingAndThen(Collectors.toCollection(
                         () -> new TreeSet<>(Comparator.comparing(o -> o.getOrderNum()))), ArrayList::new)
         );
+        Wrapper zsQuestionWrapper = new EntityWrapper<>();
+        zsQuestionWrapper.eq("survey_id", surveyId);
+        List<ZsQuestion> zsQuestions = questionService.selectList(zsQuestionWrapper);
+        if (zsQuestions.size() > 0) {
+            Wrapper<ZsOption> optionWrapper = new EntityWrapper<>();
+            List<Integer> qIds = zsQuestions.stream().map(ZsQuestion::getId).collect(Collectors.toList());
+            optionWrapper.in("question_id", qIds);
+            questionService.deleteBatchIds(qIds);
+            optionService.delete(optionWrapper);
+        }
         questionService.insertBatch(uniqueQuestions);
         uniqueQuestions.forEach(q -> {
             options.forEach((o) -> {
