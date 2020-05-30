@@ -201,7 +201,8 @@
             tmpNextRadio: null,
             showSubmit: false,
             endInfo: '问卷结束，感谢您的配合！',
-            unclear:0
+            unclear:0,
+            tmpNextAll: []
         },
         created: function () {
             this.loadParams();
@@ -321,14 +322,14 @@
                 }
                 if (opt.target > 0) {
                     if (event.target.checked) {
-                        this.tmpNext.push(opt.target);
-                        this.tmpNext = Array.from(new Set(this.tmpNext));
-                        this.tmpNext.sort(function (a1, a2) {
-                            return a1 - a2;
-                        })
+                        this.tmpNextAll.push(opt.target);
                     } else {
-                        this.tmpNext.splice(this.tmpNext.indexOf(opt.target), 1);
+                        this.tmpNextAll.splice(this.tmpNextAll.indexOf(opt.target), 1);
                     }
+                    this.tmpNext = Array.from(new Set(this.tmpNextAll));
+                    this.tmpNext.sort(function (a1, a2) {
+                        return a1 - a2;
+                    })
                 }
 
 
