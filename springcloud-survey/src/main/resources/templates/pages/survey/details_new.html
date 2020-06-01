@@ -371,6 +371,7 @@
     var detailsVue = new Vue({
         el: '#subContainer',
         data: {
+            applicationContextRootPath: '/survey/',
             questions: [],
             zsoptions: [],
             surveyId: sessionStorage.getItem('editParams'),
@@ -435,6 +436,8 @@
             },
             loadQuestions() {
                 let that = this;
+                that.questions=[];
+                that.zsoptions=[];
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     for (let i = 0; i < resp.data.length; i++) {
                         let item = resp.data[i];

@@ -78,5 +78,9 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
 
     @TableField(exist = false)
     private ZsYesOrNo isApplySuccess;
-
+    /**
+     * 输出通过门禁信息
+     */
+    @TableField(exist = false)
+    private String zsAccessMsg;
 }

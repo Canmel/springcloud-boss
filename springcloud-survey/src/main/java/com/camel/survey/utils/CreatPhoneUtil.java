@@ -1,6 +1,9 @@
 package com.camel.survey.utils;
 
+
 import java.util.TreeSet;
+
+
 
 public class CreatPhoneUtil {
 
@@ -28,15 +31,16 @@ public class CreatPhoneUtil {
         for (int j = 0; j < i; j++) {
             telSet.add(getTel());
         }
+        while(telSet.size()<i){
+            telSet.addAll(getBatchTel(i - telSet.size()));
+        }
         return telSet;
     }
 
     public static void main(String[] args) {
         int i = 100;
         TreeSet batchTel = getBatchTel(i);
-        while(batchTel.size()<100){
-            batchTel.addAll(getBatchTel(i - batchTel.size()));
-        }
+
         System.out.println(batchTel);
         }
     }
