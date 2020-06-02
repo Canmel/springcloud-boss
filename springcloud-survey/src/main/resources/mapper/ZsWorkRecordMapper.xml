@@ -5,12 +5,11 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsWorkRecord">
         <id column="id" property="id"/>
-        <result column="username" property="username"/>
         <result column="status" property="status"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="result" property="result" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="creator" property="creatorId"/>
+        <result column="cid_num" property="cIdNum"/>
         <result column="ws_id" property="wsId"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
@@ -19,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, ws_id, username, status, creator, created_at, result
+        id, ws_id, status, cid_num, created_at, result
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

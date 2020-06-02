@@ -65,8 +65,12 @@
                     <h5>拖拽左侧表单元素到此区域</h5>
                     <div class="ibox-tools">
                         <div class="ibox-tools">
+                            <a
+                               data-pjax class="btn btn-primary btn-xs">下载</a>
+                        </div>
+                        <div class="ibox-tools">
                             <a v-on:click="importSurvey()"
-                               data-pjax class="btn btn-primary btn-xs">导入</a>
+                               data-pjax class="btn btn-success btn-xs">导入</a>
                         </div>
                     </div>
                 </div>
@@ -793,7 +797,7 @@
                 // if(id == 'questionModal') {
                 //     this.questions[this.selectedIndex] = this.selectedQuestion;
                 // }
-            }
+            },
         },
 
     });

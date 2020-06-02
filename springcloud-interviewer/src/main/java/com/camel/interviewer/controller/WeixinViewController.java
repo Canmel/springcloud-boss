@@ -38,4 +38,10 @@ public class WeixinViewController {
     public String appointment() {
         return "appointment";
     }
+
+    @AuthIgnore
+    @GetMapping("/share")
+    public String share() {
+        return "share";
+    }
 }

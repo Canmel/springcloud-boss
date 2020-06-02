@@ -1,6 +1,7 @@
 package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
@@ -21,7 +23,7 @@ import lombok.Data;
  * @since 2020-04-14
  */
 @Data
-public class ZsWorkShift extends BasePaginationEntity implements Serializable {
+public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,29 +31,23 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
      * 班次主键
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer Id;
+    private Integer id;
     /**
      * 名称
      */
     private String cname;
     /**
-     * 创建者名称
-     */
-    private String cuname;
-    /**
      * 举办地点
      */
-    private String adress;
+    private String address;
     /**
-     * 该班级用户操作的状态
+     * 该班次用户操作的状态
      */
     @TableField(exist = false)
     private ZsYesOrNo statusUser;
-    @TableField(exist = false)
-    private Integer statusUserId;
 
     /**
-     * 试卷id
+     * 问卷id
      */
     private Integer surveyId;
     /**
@@ -62,32 +58,29 @@ public class ZsWorkShift extends BasePaginationEntity implements Serializable {
     private String endTime;
 
     private String startDate;
+    /**
+     * 状态
+     */
+    @TableLogic
+    private ZsStatus status;
     @TableField(exist = false)
     private String wtime;
     /**
-     * 使用者手机号
+     * 使用者idNum
      */
     @TableField(exist = false)
-    private String uId;
+    private String idNum;
     /**
-     * 拼接试卷详情
+     * 拼接问卷详情
      */
     @TableField(exist = false)
     private ZsSurvey survey;
 
     @TableField(exist = false)
     private ZsYesOrNo isApplySuccess;
-
-    @Override
-    public String toString() {
-        return "ZsWorkShift{" +
-        ", cId=" + Id +
-        ", cName=" + cname +
-        ", cUname=" + cuname +
-        ", adress=" + adress +
-        ", surveyId=" + surveyId +
-        ", starttime=" + startTime +
-        ", endtime=" + endTime +
-        "}";
-    }
+    /**
+     * 输出通过门禁信息
+     */
+    @TableField(exist = false)
+    private String zsAccessMsg;
 }

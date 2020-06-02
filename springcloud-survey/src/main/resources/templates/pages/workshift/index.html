@@ -26,10 +26,9 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>问卷名称</th>
-                        <th>所属班次</th>
-                        <th>地址</th>
-                        <th>班次开始日期</th>
+                        <th>班次名称</th>
+                        <th>班次地址</th>
+                        <th>班次日期</th>
                         <th>班次时间</th>
                         <th>管理者</th>
                         <th>操作</th>
@@ -38,34 +37,30 @@
                     <tbody>
                     <tr v-for="(item,index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>
-                            <span class="click-span" v-on:click="details(item)">{{item.survey.name}}</span>
-                        </td>
                         <td><span class="click-span" >{{item.cname}}</span>
                         </td>
-                        <td>{{item.adress}}</td>
+                        <td>{{item.address}}</td>
                         <td>
                             <span class="badge badge" >{{item.startDate}}</span>
                         </td>
                         <td>
                             <span class="badge badge" >{{item.wtime}}</span>
                         </td>
-                        <td>{{item.cuname}}</td>
+                        <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)"
-                                  class="btn btn-primary btn-xs" v-if="resultDev">修改
+
+                            <button type="button" @click="detailedShow(item)"
+                                    class="btn btn-danger btn-xs">详细操作
                             </button>
-                            <button type="button" v-on:click="signUp(item)"
-                                    class="btn btn-success btn-xs" v-if="!item.statusUser">申请加入班次
-                            </button>
+                            <!--<a class="btn btn-circle btn-warning" >查看</a>-->
                             <button type="button" v-on:click="deleteItem(item)"
                                     class="btn btn-danger btn-xs" v-if="resultDev" >删除
                             </button>
+                            <button type="button" v-on:click="edit(item)"
+                                    class="btn btn-primary btn-xs" v-if="resultDev">修改
+                            </button>
                             <button type="button" v-on:click="applyView(item)"
                                     class="btn btn-danger btn-xs" v-if="resultDev" >查看申请记录
-                            </button>
-                            <button type="button" v-on:click="signDown(item)"
-                                    class="btn btn-danger btn-xs" v-if="item.statusUser" >退出
                             </button>
                     </tr>
                     </tbody>
@@ -73,7 +68,51 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
+            <div class="modal fade " id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="width: 800px">
+                        <div class="modal-header">
+                            <button type="button" id="closeButton" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="">工作详情</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>班次名称</th>
+                                        <th>所属问卷</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-if="item">
+                                        <td><span>{{item.cname}}</span></td>
+                                        <td>
+                                            <span class="click-span" v-on:click="details(item)" v-if="item.survey">{{item.survey.name}}</span>
+                                        </td>
+                                        <td>
+                                            <button type="button" v-on:click="signUp(item)"
+                                                    class="btn btn-success btn-xs" v-if="!item.statusUser">申请加入班次
+                                            </button>
+                                            <button type="button" v-on:click="signDown(item)"
+                                                    class="btn btn-danger btn-xs" v-if="item.statusUser" >退出班次
+                                            </button>
 
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </div>
     </div>
 
@@ -90,19 +129,21 @@
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
-                uId: ''
+                idNum: ''
             },
             items: [],
+            item:{},
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
             user: {username:'',phone:'',userid:'',password:''},//存储username查取其参与考试
+            zsWorkRecord:{},
         },
         created: function () {
             this.loginMaster();
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
-            this.pageInfo.uId = this.user.userid;
+            this.pageInfo.idNum = this.user.idNum;
         },
         methods: {
             loginMaster(){
@@ -116,15 +157,17 @@
                 })
             },
             applyView: function(item){
+                $("#closeButton").trigger('click');
                 sessionStorage.setItem('wsId', item.id);
                 toPage("pages/workshift/applyView.html", item.id);
             },
             signDown(item) {
                 var that = this;
-                var statusUserId = {'id':item.statusUserId};
+
                 confirm("您确定要退出该班次吗?", "", function (isConfirm) {
                     if (isConfirm) {
-                            AJAX.DELETE('zsWorkRecord/signDown',statusUserId,function (resp) {
+                        $("#closeButton").trigger('click');
+                            AJAX.GET('zsWorkRecord/signDown/?'+'wsId='+item.id+'&creatorId='+that.user.userid,{},function (resp) {
                                 toastr.success(resp.msg);
                                 that.pagequery();
                             });
@@ -133,8 +176,8 @@
             },
             signUp: function (item) {
                 var that = this;
-
-                var zsWorkRecord = {'wsId':item.id,'creatorId': that.user.userid,'username':that.user.username,'surveyId' : item.surveyId}
+                $("#closeButton").trigger('click');
+                var zsWorkRecord = {'wsId':item.id,'cIdNum': that.user.idNum,'surveyId' : item.surveyId}
                 AJAX.POST('zsWorkRecord/sign', zsWorkRecord, function (resp) {
                     toastr.success(resp.msg);
                     that.pagequery();
@@ -154,6 +197,9 @@
                 this.pagequery();
             },
             edit: function (item) {
+               this.editWorkShift(item);
+            },
+            editWorkShift(item){
                 sessionStorage.setItem('editParams', item.id);
                 $.pjax({
                     url: mvm.applicationContextRootPath + 'pages/workshift/edit.html',
@@ -164,6 +210,7 @@
                 var that = this;
                 confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
                     if (isConfirm) {
+                        $("#closeButton").trigger('click');
                         AJAX.DELETE('zsWorkShift', item, function (resp) {
                             toastr.success(resp.msg);
                             that.pagequery();
@@ -175,7 +222,12 @@
             details: function (item) {
                 sessionStorage.setItem('editParams', item.surveyId);
                 toPage('pages/survey/details_det.html')
-            }
+            },
+            detailedShow : function(item){
+                $("#addSurvey").modal('show');
+                console.log(item);
+                this.item = item;
+            },
         }
     });
 </script>

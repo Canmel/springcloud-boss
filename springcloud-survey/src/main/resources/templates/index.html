@@ -185,7 +185,7 @@
             tops: [],
             subs: [],
             master: [],//用于存储权限数组
-            user: {username:'',phone:'',userid:'',password:''},//存储username查取其参与考试
+            user: {username:'',phone:'',userid:'',password:'',idNum:""},//存储username查取其参与考试
         },
         created: function () {
             this.loadTops();
@@ -213,6 +213,7 @@
                     that.user.phone = resp.data.principal.sysUser.mobile;
                     that.user.userid = resp.data.principal.sysUser.uid;
                     that.user.password = resp.data.principal.sysUser.password;
+                    that.user.idNum = resp.data.principal.sysUser.idNum;
                     sessionStorage.setItem('user',JSON.stringify(that.user));
                     sessionStorage.setItem('master',JSON.stringify(that.master));
                 });

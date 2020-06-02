@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我要分享</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <link rel="stylesheet" href="/viewer/wx/css/weui.min.css">
+    <link rel="stylesheet" href="/viewer/wx/css/weui.css">
+    <link rel="stylesheet" href="/viewer/wx/css/jquery-weui.css">
+    <link rel="stylesheet" href="/viewer/wx/css/demos.css">
+    <script src="/viewer/wx/js/jquery-2.1.4.js"></script>
+    <script src="/viewer/wx/js/jweixin-1.6.0.js"></script>
+
+    <script src="/viewer/wx/js/vue.js"></script>
+</head>
+<body ontouchstart>
+<div class="container" id="container">
+    <div class="weui_msg" v-if="!ticket">
+        <div class="weui_icon_area">
+            <i class="weui_icon_cancel weui_icon_msg"></i></div>
+        <div class="weui_text_area">
+            <h2 class="weui_msg_title">无权限操作</h2>
+            <p class="weui_msg_desc">请您完善个人信息后再次尝试</p>
+        </div>
+        <div class="weui_extra_area">
+        </div>
+    </div>
+    <div class="weui-panel" style="padding-top: 10%;" v-if="ticket">
+        <img v-bind:src="qrCode" v-if="ticket" style="width: 50%;">
+    </div>
+</div>
+<script src="/viewer/wx/js/fastclick.js"></script>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="/viewer/wx/js/jquery-weui.js"></script>
+<script src="/viewer/wx/js/ajax-util.js"></script>
+</body>
+
+<script type="application/javascript">
+    new Vue({
+        el: '#container',
+        data: {
+            ticket: null,
+            qrCode: "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=",
+
+        },
+        created: function () {
+            this.initUserInfo();
+        },
+        methods: {
+            initUserInfo() {
+                let that = this;
+                if (this.getQueryString("code") || true) {
+                    $.ajax({
+                        url: '/viewer/share/getQRCode?code=' + this.getQueryString("code"),
+                        type: 'GET',
+                        async: false,
+                        success: function (resp) {
+                            if (resp.code == 200 && resp.data) {
+                                that.ticket = resp.data.ticket;
+                                that.qrCode += that.ticket;
+                            } else {
+                                that.userinfo = null;
+                            }
+
+                        },
+                        error: function (err) {
+                            that.userinfo = null;
+                        }
+                    });
+                } else {
+                    $.toast("未获取到用户信息", "cancel", function (toast) {
+                    });
+                }
+            },
+            getQueryString(name) {
+                let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+                let r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return unescape(r[2]);
+                }
+                return null;
+            },
+        }
+    });
+</script>
+</html>

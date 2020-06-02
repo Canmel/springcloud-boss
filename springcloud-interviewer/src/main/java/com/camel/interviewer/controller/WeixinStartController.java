@@ -3,18 +3,25 @@ package com.camel.interviewer.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPObject;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.config.WxConstants;
+import com.camel.interviewer.exceptions.NotWxExplorerException;
+import com.camel.interviewer.exceptions.WxServerConnectException;
 import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
+import com.camel.interviewer.service.WeixinStartService;
 import com.camel.interviewer.service.WxSubscibeService;
 import com.camel.interviewer.service.WxUserService;
 import com.camel.interviewer.utils.HttpUtils;
 import com.camel.interviewer.utils.MessageUtil;
+import com.camel.interviewer.utils.WxTokenUtil;
 import com.camel.interviewer.utils.XmlUtil;
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,13 +52,16 @@ public class WeixinStartController {
     RestTemplate restTemplate;
 
     @Autowired
+    private WeixinStartService service;
+
+    @Autowired
     private WxConstants wxConstants;
 
     @Autowired
     private WxSubscibeService wxSubscibeService;
 
     @Autowired
-    private WxUserService wxUserService;
+    private WeixinStartService weixinStartService;
 
     @AuthIgnore
     @GetMapping
@@ -66,7 +76,7 @@ public class WeixinStartController {
     @AuthIgnore
     @PostMapping
     private void event(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setCharacterEncoding("UTF-8");
+         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String message = "success";
@@ -76,18 +86,18 @@ public class WeixinStartController {
             String toUserName = map.get("ToUserName");//消息目的用户标识
             String msgType = map.get("MsgType");//消息类型
             String content = map.get("Content");//消息内容
-
+            String eventKey = map.get("EventKey");//自定义参数
             String eventType = map.get("Event");
             //如果为事件类型
             if (MessageUtil.MSGTYPE_EVENT.equals(msgType)) {
                 //处理订阅事件
                 if (MessageUtil.MESSAGE_SUBSCIBE.equals(eventType)) {
                     message = MessageUtil.subscribeForText(toUserName, fromUserName);
-                    wxSubscibeService.save(toUserName);
+                    wxSubscibeService.save(fromUserName, eventKey);
                     //处理取消订阅事件
                 } else if (MessageUtil.MESSAGE_UNSUBSCIBE.equals(eventType)) {
                     message = MessageUtil.unsubscribe(toUserName, fromUserName);
-                    wxSubscibeService.unsave(toUserName);
+                    wxSubscibeService.unsave(fromUserName);
                 }
             }
         } catch (DocumentException e) {
@@ -101,24 +111,19 @@ public class WeixinStartController {
     }
 
     @AuthIgnore
+    @GetMapping("/getToken")
+    private Result qrCode(String code) {
+        WxUser wxUser = weixinStartService.getUser(code);
+        if(ObjectUtils.isEmpty(wxUser)) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");
+        }
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret());
+        return ResultUtil.success(token);
+    }
+
+    @AuthIgnore
     @GetMapping("getUserInfo")
     private Result getUserInfo(String code) {
-        Map<String, String> params = new HashMap<>();
-        params.put("appid", wxConstants.getAppid());
-        params.put("code", code);
-        params.put("secret", wxConstants.getAppsecret());
-        params.put("grant_type", AUTHORIZATION_CODE);
-        JSONObject tokenBody = null;
-        try {
-            String responseBody = HttpUtils.httpGetMethod(USERID_URL, params);
-            if (responseBody != null) {
-                tokenBody = JSONObject.parseObject(responseBody);
-                System.out.println(tokenBody.toJSONString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        WxUser wxUser = wxUserService.selectByOpenid(tokenBody.getString("openid"));
-        return ResultUtil.success(wxUser);
+        return ResultUtil.success(service.getUser(code));
     }
 }

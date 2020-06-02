@@ -12,17 +12,17 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">选择问卷：</label>
                     <div class="col-sm-4">
-                        <span class="click-span"  v-on:click="applyRoles()">{{zs_workshift.surveyId==0?msg[0]:surveyname}}</span>
+                        <span class="click-span"  v-on:click="showSurveys()">{{zs_workshift.surveyId==0?msg[0]:surveyname}}</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">地址：</label>
                     <div class="col-sm-8">
-                        <input name="adress" placeholder="请输入地址" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" v-model="zs_workshift.adress">
+                        <input name="address" placeholder="请输入地址" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" v-model="zs_workshift.address">
                     </div>
                 </div>
                 <div class="form-group" id="data_1">
-                    <label class="col-sm-3 control-label">开始日期：</label>
+                    <label class="col-sm-3 control-label">班次日期：</label>
                     <div class="input-group date col-sm-4">
                         <span>&nbsp;</span>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">开始时间：</label>
+                    <label class="col-sm-3 control-label">起止时间：</label>
                     <div class="col-sm-6" >
                         <div class="input-group input-medium date-picker input-daterange" data-date-format="yyyy-mm-dd">
                             <input id="starttime" name="starttime" class=" datepicker" autocomplete="off" ref="inputstart" placeholder="请选择开始时间"  style="font-size: 13px;" type="text" >
@@ -46,10 +46,10 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">选择试卷</h4>
+                                <h4 class="modal-title" id="myModalLabel">选择问卷</h4>
                             </div>
                             <div class="modal-body">
-                                    <h3>可以选择的试卷:</h3>
+                                    <h3>可以选择的问卷:</h3>
                                     <div class="row">
                                         <div class="col-sm-8" v-for="item in items">
                                             <label>
@@ -72,8 +72,8 @@
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3">
                         <h5 style="color:red" v-if="selectcount == 1">该班次名称重复，不可用！！！</h5>
-                        <h5 style="color:red" v-if="selectsurveyid == 1">该班次没有选择试卷，请选择！！</h5>
-                        <h5 style="color:red" v-if="timeregular == 1">请按照00:00的方式输入时间</h5>
+                        <h5 style="color:red" v-if="selectsurveyid == 1">该班次没有选择问卷，请选择！！</h5>
+                        <h5 style="color:red" v-if="timeregular == 1">请按照00:00的方式输入时间，且结束时间大于开始时间</h5>
                         <h5 style="color:red" v-if="dateregular == 1">请按照0000-00-00的方式输入日期</h5>
                         <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
                         <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
@@ -91,8 +91,8 @@
             applicationContextRootPath: '/survey/',
             zs_workshift: {
                 cname: '',
-                cuname: '',
-                adress: '',
+                address: '',
+                creatorId:'',
                 startTime: '',
                 endTime: '',
                 startDate:'',
@@ -106,7 +106,7 @@
             },
             allRoles:[],
             items:[],
-            msg :["点击选择试卷"],
+            msg :["点击选择问卷"],
             surveyname:'',
             user: {username:'',phone:'',userid:'',password:''},//存储username查取其参与考试
             endtime: '',
@@ -120,7 +120,7 @@
         created: function () {
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
-            this.zs_workshift.cuname = this.user.username;
+            this.zs_workshift.creatorId = this.user.userid;
         },
         methods: {
             cancel: function () {
@@ -152,17 +152,27 @@
                     that.timeregular = 1;
                     return false;
                 }
-
-                AJAX.POST('zsWorkShift', that.zs_workshift, function (resp) {
-                    if(resp.data == 1){
-                        that.selectcount = 1;
+                var hours = parseInt(that.zs_workshift.endTime.substring(0,3))-parseInt(that.zs_workshift.startTime.substring(0,3));
+                var minutes = parseInt(that.zs_workshift.endTime.substring(4))-parseInt(that.zs_workshift.startTime.substring(4));
+                if(hours<0){
+                    that.timeregular = 1;
+                    return false;
+                }else if (hours == 0){
+                    if(minutes<1){
+                        that.timeregular = 1;
                         return false;
                     }
-                    toastr.success("成功");
+                }
+                AJAX.POST('zsWorkShift', that.zs_workshift, function (resp) {
+                        if(!resp.success && resp.success != null){
+                            toastr.success(resp.msg);
+                            return resp.success;
+                        }
+                    toastr.success(resp.msg);
                     that.backToMain();
                 });
             },
-            applyRoles() {
+            showSurveys() {
                 $("#addSurvey").modal('show');
 
             },
@@ -198,14 +208,14 @@
         $("#signupForm").validate({
             rules: {
                 cname: "required",
-                adress: "required",
+                address: "required",
                 starttime: "required",
                 endtime: "required",
                 startdate:"required"
             },
             messages: {
                 cname: icon + "请输入班次名称",
-                adress: icon + "请选择地址",
+                address: icon + "请输入地址",
                 starttime: icon + "请选择开始时间",
                 endtime: icon + "请选择结束时间",
                 startdate: icon + "请选择开始日期"

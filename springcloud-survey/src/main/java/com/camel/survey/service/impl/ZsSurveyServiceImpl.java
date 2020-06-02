@@ -11,7 +11,6 @@ import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.*;
-import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.exceptions.SurveyNotValidException;
@@ -24,9 +23,6 @@ import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -37,7 +33,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -386,4 +381,27 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public Integer avgTime(Integer id) {
         return mapper.avgTime(id);
     }
+
+    @Override
+    public Result stopOrUse(Integer id) {
+        ZsSurvey survey = mapper.selectById(id);
+        if(!ObjectUtils.isEmpty(survey)) {
+            if(survey.getState().getValue() == ZsSurveyState.COLLECTING.getValue() ) {
+                survey.setState(ZsSurveyState.CLOSED);
+                if(this.updateById(survey)) {
+                    return ResultUtil.success("回收问卷成功");
+                }
+            }
+            if(survey.getState().getValue() == ZsSurveyState.CLOSED.getValue() ) {
+                survey.setState(ZsSurveyState.COLLECTING);
+                if(this.updateById(survey)) {
+                    return ResultUtil.success("启用问卷成功");
+                }
+            }
+
+        }
+        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "问卷状态更改失败");
+    }
+
+
 }

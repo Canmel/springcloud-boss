@@ -147,6 +147,13 @@ public class SysUserController extends BaseCommonController {
         return ResultUtil.success("修改用户头像成功");
     }
 
+    @GetMapping("/byIdNum/{idNum}")
+    public SysUser oneUser(@PathVariable String idNum){
+        Wrapper<SysUser> userWrapper = new EntityWrapper<>();
+        userWrapper.eq("id_num", idNum);
+        return service.selectOne(userWrapper);
+    }
+
     public static final String QUEUE_NAME = "ActiveMQ.System.New.User";
 
     @JmsListener(destination = QUEUE_NAME)
@@ -159,6 +166,7 @@ public class SysUserController extends BaseCommonController {
             SysRole role = roleService.selectOne(roleWrapper);
             SysUserRole sysUserRole = new SysUserRole(sysUser.getUid(), role.getRoleId());
             userRoleService.insert(sysUserRole);
+            sysUserCacheConfig.initSysUsers();
             return;
         }
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
@@ -166,6 +174,7 @@ public class SysUserController extends BaseCommonController {
         SysUser current = service.selectOne(userWrapper);
         sysUser.setUid(current.getUid());
         service.updateById(sysUser);
+        sysUserCacheConfig.initSysUsers();
     }
 
     @GetMapping("/{id}/selectByUid")

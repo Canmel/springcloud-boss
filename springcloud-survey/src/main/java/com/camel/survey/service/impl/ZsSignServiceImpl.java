@@ -1,5 +1,7 @@
 package com.camel.survey.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.common.enums.ResultEnum;
 import com.camel.core.entity.BasePaginationEntity;
@@ -7,7 +9,9 @@ import com.camel.core.entity.Result;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.mapper.ZsSignMapper;
+import com.camel.survey.model.ZsDelivery;
 import com.camel.survey.model.ZsSign;
+import com.camel.survey.service.ZsDeliveryService;
 import com.camel.survey.service.ZsSignService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsDynamicView;
@@ -16,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -50,6 +56,8 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
+    @Autowired
+    private ZsDeliveryService zsDeliveryService;
     @Override
     public PageInfo<ZsSign> selectPage(ZsSign entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
@@ -90,7 +98,18 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
     }
 
     @Override
-    public Result userZsSign(String username,String phone) {
-        return new Result(ResultEnum.SUCCESS.getCode(), "操作成功", mapper.userZsSign(username,phone), true);
+    public Result userZsSign(String userid) {
+        Map<String,Integer> map = new HashMap<>();
+        Wrapper<ZsSign> wrapperSign = new EntityWrapper<>();
+        wrapperSign.eq("creator",userid);
+        wrapperSign.eq("result",1);
+        Wrapper<ZsDelivery> wrapperDelivery = new EntityWrapper<>();
+        wrapperDelivery.eq("creator",userid);
+        wrapperDelivery.eq("ach",1);
+        Integer countSign = mapper.selectCount(wrapperSign);
+        Integer countDelivery = zsDeliveryService.selectCount(wrapperDelivery);
+        map.put("countSign",countSign);
+        map.put("countDelivery",countDelivery);
+        return new Result(ResultEnum.SUCCESS.getCode(), "操作成功",map, true);
     }
 }

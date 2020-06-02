@@ -471,7 +471,7 @@
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
-					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					var url=popupUrl+"?phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
 					window.openUrl = url;
 				}
 			}else if(methodType=="manual_callout_agent_ring"){//呼出弹屏
@@ -479,13 +479,13 @@
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
-					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					var url=popupUrl+"?phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
 					window.openUrl = url;
 				}
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
-					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					var url=popupUrl+"?phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
 					window.openUrl = url;
 				}
 			}else if(methodType=="get_agentgroup_list"){//获取座席组列表
