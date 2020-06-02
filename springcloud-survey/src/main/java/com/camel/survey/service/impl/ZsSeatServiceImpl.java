@@ -3,13 +3,22 @@ package com.camel.survey.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.common.entity.Member;
+import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
+import com.camel.core.utils.ResultUtil;
+import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.mapper.ZsSeatMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
+import com.camel.survey.model.Args;
 import com.camel.survey.model.ZsSeat;
 import com.camel.survey.service.ZsSeatService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,5 +53,13 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     @Override
     public ZsSeat selectLastByUser(Integer id) {
         return mapper.selectLastByUser(id);
+    }
+
+    @Override
+    public Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
+        if (insert(entity)) {
+            return ResultUtil.success("新增成功");
+        }
+        return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");
     }
 }
