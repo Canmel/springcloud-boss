@@ -725,7 +725,7 @@
   		// 问卷状态为0并且在通话中的坐席需要提交提前挂断原因
 		// 1 问卷完成
 		// 0 恩卷进行中
-		if(window.surveyStatus && window.surveyStatus ==0 && agentstatusCurrent === '2' ) {
+		if(!window.surveyStatus && agentstatusCurrent === '2' ) {
   			 $("#earlyEndResonModal").modal("show");
   			 return false;
 		}
