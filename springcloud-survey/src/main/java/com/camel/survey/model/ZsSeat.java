@@ -27,7 +27,7 @@ public class ZsSeat extends BasePaginationEntity {
     /**
      * 坐席号
      */
-    @TableField("seatNum")
+    @TableField("seat_num")
     private String seatNum;
 
     private Integer uid;
@@ -36,6 +36,11 @@ public class ZsSeat extends BasePaginationEntity {
      * 坐席密码
      */
     private String password;
+
+    /**
+     * 坐席描述
+     */
+    private String description;
 
     @Override
     public String toString() {

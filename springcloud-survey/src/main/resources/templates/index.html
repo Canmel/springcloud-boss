@@ -189,7 +189,7 @@
         },
         created: function () {
             this.loadTops();
-            this.loadSuns();
+            this.loadSubs();
             this.loadMaster();
         },
         methods: {
@@ -199,7 +199,7 @@
                     that.tops = resp.data;
                 });
             },
-            loadSuns: function() {
+            loadSubs: function() {
                 let that = this;
                 AJAX.GET("/system/sysMenu/subs", {}, function (resp) {
                     that.subs = resp.data;
