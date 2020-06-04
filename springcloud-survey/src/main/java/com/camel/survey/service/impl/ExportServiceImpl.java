@@ -181,22 +181,61 @@ public class ExportServiceImpl implements ExportService {
             ques = (String) result.get(i).get("questions");
             String[] questions = ques.split("@##@", -1);
             List<String> qs = CollectionUtils.arrayToList(questions);
+
+            // 循环所有标题/表头上的题目
             for (int index = 0; index < titleQList.size(); index++) {
-                for (int j = 0; j < questions.length; j++) {
-                    if(titleQList.get(index).indexOf(questions[j]) > -1) {
-                        if(titleQList.get(index).equals(questions[j])) { // 如果包含并且相等。直接输出
-                            fillCell(row.createCell(6 + index), style, answersArray[j]);
-                            break;
-                        } else {
-                            String title = titleQList.get(index);
-                            String option = title.split("_")[1];
-                            if(optionList.indexOf(option) > -1) {
-                                fillCell(row.createCell(6 + index), style, answersArray[optionList.indexOf(option)]);
+                System.out.println(titleQList.get(index));
+                // 拆分表头
+                String titleStr = titleQList.get(index);
+                String titleQ = "";
+                String titleO = "";
+                if(titleStr.contains("_")) {
+                    titleQ = titleStr.split("_")[0];
+                    titleO = titleStr.split("_")[1];
+                }
+                // 循环问题
+                for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
+                    // 全等，即单选
+                    if(titleStr.equals(qs.get(qIndex))) {
+                        fillCell(row.createCell(6 + index), style, answersArray[qIndex]);
+                        qIndex = qs.size();
+                    }else{
+                        // 多选， 并且问题和excel当前表头相同
+                        if(titleQ.equals(qs.get(qIndex))) {
+                            // 根据问题的序号，得出的选项
+                            String oStr = optionList.get(qIndex);
+                            // 如果excel中表头也有这个选项，则表示位置正确
+                            if(org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
+                                fillCell(row.createCell(6 + index), style, answersArray[qIndex]);
+                                qIndex = qs.size();
                             }
                         }
                     }
                 }
+
             }
+//            for (int index = 0; index < titleQList.size(); index++) {
+//                for (int j = 0; j < questions.length; j++) {
+//                    if(titleQList.get(index).indexOf(questions[j]) > -1) {
+//                        if(titleQList.get(index).equals(questions[j])) { // 如果包含并且相等。直接输出
+//                            fillCell(row.createCell(6 + index), style, answersArray[j]);
+//                            break;
+//                        } else {
+//                            String title = titleQList.get(index);
+//                            String option = "";
+//                            if(title.contains("_")) {
+//                                option = title.split("_")[1];
+//                            }else {
+//                                System.out.println(title);
+//                            }
+//                            if(optionList.indexOf(option) > -1) {
+//                                fillCell(row.createCell(6 + index), style, answersArray[optionList.indexOf(option)]);
+//                                j = questions.length;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
         return wb;
     }

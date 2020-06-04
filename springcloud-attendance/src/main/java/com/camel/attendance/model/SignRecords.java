@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -58,6 +59,11 @@ public class SignRecords extends BasePaginationEntity implements Serializable {
      * 状态
      */
     private Integer status;
+
+    /**
+     * 简略地址
+     */
+    private String addr;
     /**
      * 类型
      */
@@ -101,7 +107,61 @@ public class SignRecords extends BasePaginationEntity implements Serializable {
      */
     private Integer delayTime;
 
+    /**
+     * 允许打卡的坐标
+     */
+    private String position;
+
+    /**
+     * 可打卡半径
+     */
+    private Integer radius;
+
     public SignRecords() {
+    }
+
+    /**
+     * 获取打卡经度
+     * @return
+     */
+    public Double getSignLat() {
+        if(StringUtils.isNotBlank(this.getCoordinate())) {
+            return Double.parseDouble(this.getCoordinate().split(",")[1]);
+        }
+        return null;
+    }
+
+    /**
+     * 获取打卡纬度
+     * @return
+     */
+    public Double getSignLng() {
+        if(StringUtils.isNotBlank(this.getCoordinate())) {
+            return Double.parseDouble(this.getCoordinate().split(",")[0]);
+        }
+        return null;
+    }
+
+    /**
+     * 获取定义经度
+     * @return
+     */
+    public Double getDefinedLat() {
+        if(StringUtils.isNotBlank(this.getPosition())) {
+            return Double.parseDouble(this.getPosition().split(",")[0]);
+        }
+        return null;
+    }
+
+    /**
+     * 获取定义纬度
+     * @return
+     */
+    public Double getDefinedLng() {
+        if(StringUtils.isNotBlank(this.getPosition())) {
+            return Double.parseDouble(this.getPosition().split(",")[1]);
+        }
+        return null;
     }
 
     public SignRecords(Integer userId, String createdAtStr) {

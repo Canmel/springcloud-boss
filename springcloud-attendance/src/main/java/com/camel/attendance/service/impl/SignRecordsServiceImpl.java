@@ -12,6 +12,7 @@ import com.camel.attendance.service.ArgsService;
 import com.camel.attendance.service.SignRecordsService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.attendance.utils.ApplicationToolsUtils;
+import com.camel.attendance.utils.LocationUtils;
 import com.camel.attendance.vo.SignDayRecord;
 import com.camel.attendance.vo.SignRecordTotal;
 import com.camel.common.entity.Member;
@@ -45,7 +46,7 @@ import java.util.*;
  * 　　　　　　　┃  >   <  ┃
  * 　　　　　　　┃         ┃
  * 　　　　　　　┃... ⌒ ...┃
- * 　　　　　　　┃         ┃
+ * 　　　　　　　┃         ┃signRecords/date/
  *             ┗━┓     ┏━┛
  *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
  *               ┃     ┃   神兽保佑,代码无bug
@@ -97,7 +98,10 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     public Result signIn(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignInTimeException, NotSignOutTimeException {
         // 获取打卡时间的配置，完成记录， 创建快照
         setArgs(signRecords);
-
+        Double diameter = LocationUtils.getDistance(signRecords.getSignLat(), signRecords.getSignLng(), signRecords.getDefinedLat(), signRecords.getDefinedLng());
+        if(diameter > signRecords.getRadius()) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您不在允许打卡区域，请移步至该区域再次尝试");
+        }
         SysUser member = applicationToolsUtils.currentUser();
         signRecords.setUserId(member.getUid());
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
@@ -115,8 +119,10 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     public boolean doSign(SignRecords signRecords, SysUser member) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SignRecords si = new SignRecords(member.getUid(), simpleDateFormat.format(new Date()));
+        // 查看当日的有效打卡
         SignRecords result = mapper.selectLastValidRecord(si);
         if (!ObjectUtils.isEmpty(result)) {
+            // 如果已经有效了，即打卡正常签到/签退，无需再次签到/签退
             if (SignRecordDetermine.NORMAL.getValue().equals(result.getDetermine())) {
                 return true;
             }
@@ -130,6 +136,10 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     public Result signOut(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignInTimeException, NotSignOutTimeException {
         // 获取打卡时间的配置，完成记录， 创建快照
         setArgs(signRecords);
+        Double diameter = LocationUtils.getDistance(signRecords.getSignLat(), signRecords.getSignLng(), signRecords.getDefinedLat(), signRecords.getDefinedLng());
+        if(diameter > signRecords.getRadius()) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您不在允许打卡区域，请移步至该区域再次尝试");
+        }
         SysUser member = applicationToolsUtils.currentUser();
         signRecords.setUserId(member.getUid());
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
@@ -196,6 +206,12 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
             if (Args.DELAY_TIME_CODE.equals(args.getCode())) {
                 signRecords.setDelayTime(Integer.parseInt(args.getValue()));
             }
+            if (Args.SIGN_POSITION.equals(args.getCode())) {
+                signRecords.setPosition(args.getValue());
+            }
+            if (Args.SIGN_RADIUS.equals(args.getCode())) {
+                signRecords.setRadius(Integer.parseInt(args.getValue()));
+            }
         });
     }
 
@@ -218,6 +234,10 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
                     Integer signType = record.getType();
                     // 签到
                     if (SignRecordType.SIGN_IN.getValue().equals(signType)) {
+                        // 签到的话，有正常的记录就就不要了
+                        if(!ObjectUtils.isEmpty(subResult.get("sign_in_determine_code")) && subResult.get("sign_in_determine_code").equals(SignRecordDetermine.NORMAL.getValue())) {
+                            return;
+                        }
                         if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
                             subResult.put("sign_in_determine_code", SignRecordDetermine.NORMAL.getValue());
                             subResult.put("sign_in_determine_text", SignRecordDetermine.NORMAL.getName());
@@ -231,6 +251,14 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
 
                         subResult.put("sign_in_time", record.getCreatedAtStr());
                     } else {
+                        // 签退： 取最后一次正常的签退，如果已经有签退的记录，并且还有更新的记录就添加
+                        if(!ObjectUtils.isEmpty(subResult.get("sign_out_determine_code")) && subResult.get("sign_out_determine_code").equals(SignRecordDetermine.NORMAL.getValue())) {
+                            if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
+                                subResult.put("sign_out_determine_code", SignRecordDetermine.NORMAL.getValue());
+                                subResult.put("sign_out_determine_text", SignRecordDetermine.NORMAL.getName());
+                            }
+                            return;
+                        }
                         if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
                             subResult.put("sign_out_determine_code", SignRecordDetermine.NORMAL.getValue());
                             subResult.put("sign_out_determine_text", SignRecordDetermine.NORMAL.getName());
