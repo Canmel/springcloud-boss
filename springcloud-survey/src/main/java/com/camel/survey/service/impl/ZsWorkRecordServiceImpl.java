@@ -66,6 +66,14 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
     }
 
     @Override
+    public List<ZsWorkRecord> selectZsWorkRListByUid(Integer id) {
+        Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
+        wrapper.eq("creator",id);
+        wrapper.eq("result",1);
+        return mapper.selectList(wrapper);
+    }
+
+    @Override
     public Result start(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication) {
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
         wrapper.eq("ws_id",entity.getWsId());

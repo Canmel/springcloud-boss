@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsWorkShift;
 import com.camel.survey.service.ZsWorkShiftService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,9 @@ public class ZsWorkShiftController extends BaseCommonController {
 
     @Autowired
     private ZsWorkShiftService service;
+
+    @Autowired
+    private ApplicationToolsUtils applicationUtils;
 
     /**
      * 分页查询
@@ -85,6 +90,12 @@ public class ZsWorkShiftController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
+    }
+
+    @GetMapping("/current/{id}")
+    public Result current(@PathVariable Integer id) {
+        SysUser member = applicationUtils.currentUser();
+        return ResultUtil.success(service.selectByUidandSurveyId(member.getUid(),id));
     }
 
     @Override

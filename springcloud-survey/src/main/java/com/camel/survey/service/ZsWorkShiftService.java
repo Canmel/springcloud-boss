@@ -1,6 +1,7 @@
 package com.camel.survey.service;
 
 import com.camel.core.entity.Result;
+import com.camel.survey.model.ZsSeat;
 import com.camel.survey.model.ZsWorkShift;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
@@ -30,4 +31,6 @@ public interface ZsWorkShiftService extends IService<ZsWorkShift> {
     Result saveWorkShift(ZsWorkShift entity);
 
     Result updateWorkShift(ZsWorkShift entity);
+
+    List<ZsWorkShift> selectByUidandSurveyId(Integer userId,Integer surveyId);
 }

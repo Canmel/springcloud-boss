@@ -177,7 +177,7 @@
             signUp: function (item) {
                 var that = this;
                 $("#closeButton").trigger('click');
-                var zsWorkRecord = {'wsId':item.id,'cIdNum': that.user.idNum,'surveyId' : item.surveyId}
+                var zsWorkRecord = {'wsId':item.id,'cIdNum': that.user.idNum,'surveyId' : item.surveyId, 'creatorId':that.user.userid, 'username':that.user.username}
                 AJAX.POST('zsWorkRecord/sign', zsWorkRecord, function (resp) {
                     toastr.success(resp.msg);
                     that.pagequery();
