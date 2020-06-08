@@ -19,13 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -49,6 +46,11 @@ public class ZsCdrinfoController extends BaseCommonController {
 
     @Autowired
     private ZsAnswerService answerService;
+
+    @GetMapping("/{id}")
+    public Result detail(@PathVariable("id") String id){
+        return ResultUtil.success(service.details(id));
+    }
 
     @AuthIgnore
     @PostMapping

@@ -1,7 +1,7 @@
 package com.camel.survey.service;
 
-import com.camel.survey.model.ZsCdrinfo;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.survey.model.ZsCdrinfo;
 
 /**
  * <p>
@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2020-04-18
  */
 public interface ZsCdrinfoService extends IService<ZsCdrinfo> {
-
+    ZsCdrinfo details(String id);
 }

@@ -1,0 +1,50 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            cdrinfo: {},
+            questions: null,
+            survey: null
+        },
+        created: function () {
+            this.loadAnswer();
+            this.loadEntity();
+        },
+        methods: {
+            loadEntity() {
+                let that = this;
+                AJAX.GET('zsCdrinfo/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.cdrinfo = resp.data;
+                })
+            },
+            loadAnswer(){
+                let that = this;
+                AJAX.GET('zsAnswer/agent/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.zsAnswer = resp.data;
+                    that.loadSurvey(that.zsAnswer.surveyId);
+                })
+            },
+            loadSurvey(id) {
+                console.log(id)
+                let that = this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + id, {}, function (resp) {
+                    let result = resp.data;
+                    that.questions = result.zsQuestions;
+                });
+                AJAX.GET('zsSurvey/' + id, {}, function (resp) {
+                    that.survey = resp.data;
+                });
+            }
+
+        }
+    });
+</script>

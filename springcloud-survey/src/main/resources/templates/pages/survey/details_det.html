@@ -264,6 +264,9 @@
                                                 <button type="button" v-on:click="deleteItem(item)"
                                                         class="btn btn-danger btn-xs" v-if="resultDev">删除
                                                 </button>
+                                                <button type="button" v-on:click="checkRecord(item)"
+                                                            class="btn btn-warning btn-xs" v-if="item.cdrinfo">复核
+                                                </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
                                                         class="btn btn-restore btn-xs" v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">标为无效
                                                 </button>
@@ -611,6 +614,13 @@
         },
         computed: {},
         methods: {
+            checkRecord(answer) {
+                sessionStorage.setItem('editParams', answer.agentUUID);
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/survey/check.html',
+                    container: '.page-container'
+                });
+            },
             getAvgTime() {
                 let that = this;
                 AJAX.GET("zsSurvey/avgTime/" + this.survey.id, {}, function (resp) {

@@ -44,4 +44,14 @@
             uuids like concat('%', #{uuid} ,'%')
         </where>
     </select>
+
+    <select id="details" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_cdrinfo
+        <where>
+            id = #{uuid}
+        </where>
+    </select>
 </mapper>
