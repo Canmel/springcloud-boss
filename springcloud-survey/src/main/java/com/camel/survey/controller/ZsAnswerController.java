@@ -61,9 +61,7 @@ public class ZsAnswerController extends BaseCommonController {
 
     @GetMapping("/agent/{agent}")
     public Result detailsp(@PathVariable("agent") String agent) {
-        Wrapper wrapper = new EntityWrapper();
-        wrapper.eq("agent_UUID", agent);
-        return ResultUtil.success(service.selectOne(wrapper));
+        return ResultUtil.success(service.details(agent));
     }
 
 

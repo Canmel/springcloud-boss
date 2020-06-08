@@ -34,6 +34,8 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
 
     ZsAnswer details(Integer id);
 
+    ZsAnswer detailsA(String agent);
+
     List<ZsAnswer> selectDetailsBySurveyId(Integer id, Integer rowNum);
 
     List<ZsAnswer> selectAllWithConversation(Integer id);

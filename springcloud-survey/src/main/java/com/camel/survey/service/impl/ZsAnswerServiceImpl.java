@@ -94,6 +94,11 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     }
 
     @Override
+    public ZsAnswer details(String agent) {
+        return mapper.detailsA(agent);
+    }
+
+    @Override
     @Transactional
     public Result invalid(Integer id) {
 //        mapper.invalidItems()

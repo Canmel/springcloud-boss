@@ -1,7 +1,100 @@
-<div id="subContainer" class="wrapper wrapper-content">
-    <div class="ibox float-e-margins">
-        <div class="ibox-content">
+<div id="subContainer" class="wrapper wrapper-content" style="height: 100%">
+    <div class="row" style="height: 100%">
+        <div class="col-sm-3" style="height: 100%">
+            asdasd
+        </div>
 
+        <div class="col-sm-9" style="height: 100%">
+            <div class="" style="height: 60%">
+                <div class="ibox" style="height: 99%">
+                    <div class="ibox-content" style="height: 90%">
+                        <div class="text-center">
+                            <h2><b>{{survey.name}}</b></h2>
+                        </div>
+                        <div class="form-group" style="margin-top: 5%;" v-for="(item, index) in tquestions" v-if="item.id === currentQId">
+                            <div class="col-sm-12"><label class="col-sm-3 control-label" style="text-align: right;"><span
+                                    class="question-index">1</span>.</label> <label class="col-sm-9 control-label"
+                                                                                    style="padding-left: 0px; text-align: left;"><span
+                                    class="editable question-title">{{item.name}}</span></label></div>
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9 survey-optins">
+                                    <div v-for="(option, inx) in item.options"
+                                         v-if="showOption(item, option)">
+                                        <div class="col-sm-9">
+                                            <label class="radio-inline"
+                                                   v-if="item.type === 1 && showOption(item, option)">
+                                                <input type="radio" value="option2" :checked="isSelected(option)"
+                                                       name="optionsRadios">
+                                                <span class="editable question-option">{{option.name}}</span>
+                                            </label>
+
+                                            <label class="checkbox-inline"
+                                                   v-if="item.type === 2 && showOption(item, option)">
+                                                <input type="checkbox" :value="Math.random()" :checked="isSelected(option)">
+                                                <span class="editable question-option">{{option.name}}</span>
+                                            </label>
+
+                                            <label class="checkbox-inline"
+                                                   v-if="item.type === 3 && showOption(item, option)">
+                                                <span class="editable question-option">评分项</span>:
+                                                <span class="star-box">
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_5'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_4'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_4'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_3'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_3'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_2'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_2'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_1'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
+                                            </span>
+                                            </label>
+                                            <label class="checkbox-inline"
+                                                   v-if="item.type === 4 && showOption(item, option)">
+                                                <span class="editable question-option">答</span>:
+                                                <label class="radio-inline">
+                                                    <input type="text"
+                                                           name="optionsRadios"></label>
+                                            </label>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="min-height: 10%" class="form-group row">
+                        <div class="col-sm-6 text-center">
+                            <button @click="preQ()" v-bind:disabled="currentIndex === 0">上一题</button>
+                        </div>
+                        <div class="col-sm-6 text-center" >
+                            <button @click="nextQ()" v-bind:disabled="currentIndex === questionIds.length - 1">下一题</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox" style="height: 40%">
+                sdsd
+
+            </div>
         </div>
     </div>
 </div>
@@ -12,24 +105,46 @@
         data: {
             applicationContextRootPath: '/survey/',
             cdrinfo: {},
-            questions: null,
-            survey: null
+            questions: [],
+            tquestions: [],
+            questionIds: [],
+            survey: null,
+            currentIndex: 0,
+            currentQId: 0
         },
         created: function () {
             this.loadAnswer();
             this.loadEntity();
         },
         methods: {
+            preQ() {
+                this.currentIndex--;
+                this.currentQId = this.questionIds[this.currentIndex];
+                console.log(this.questionIds)
+            },
+            nextQ() {
+                this.currentIndex++;
+                this.currentQId = this.questionIds[this.currentIndex];
+                console.log(this.questionIds);
+            },
             loadEntity() {
                 let that = this;
                 AJAX.GET('zsCdrinfo/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.cdrinfo = resp.data;
                 })
             },
-            loadAnswer(){
+            loadAnswer() {
                 let that = this;
                 AJAX.GET('zsAnswer/agent/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.zsAnswer = resp.data;
+                    that.questions = resp.data.items;
+                    that.currentQId = that.questions[0].questionId;
+                    for (let i = 0; i < that.questions.length; i++) {
+                        console.log(that.questions[i]);
+                        that.questionIds.push(that.questions[i].questionId);
+                        that.questionIds = that.uniq(that.questionIds);
+                    }
+                    console.log("----->", that.questionIds)
                     that.loadSurvey(that.zsAnswer.surveyId);
                 })
             },
@@ -38,11 +153,42 @@
                 let that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + id, {}, function (resp) {
                     let result = resp.data;
-                    that.questions = result.zsQuestions;
+                    that.tquestions = result;
                 });
                 AJAX.GET('zsSurvey/' + id, {}, function (resp) {
                     that.survey = resp.data;
                 });
+            },
+            showOption(question, option) {
+                if (question.orderNum && option.questionOrderNum) {
+                    return question.orderNum === option.questionOrderNum;
+                }
+                if (question.id && option.questionId) {
+                    return question.id === option.questionId;
+                }
+                return false;
+            },
+            isSelected(item) {
+                let answer = this.getAnswer(item.id);
+                return answer;
+            },
+            getAnswer(id) {
+                for (let i = 0; i < this.questions.length; i++) {
+                    console.log(this.questions[i].optionId + '------', id);
+                    if(this.questions[i].optionId === id){
+                        return this.questions[i];
+                    }
+                }
+                return null;
+            },
+            uniq(arr) {
+                let newArr = []
+                for(let i = 0; i < arr.length; i++) {
+                    if(newArr.indexOf(arr[i]) < 0) {
+                        newArr.push(arr[i])
+                    }
+                }
+                return newArr
             }
 
         }
