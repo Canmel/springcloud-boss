@@ -52,4 +52,6 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     List<ZsAnswer> selectAllWithConversation(Integer id);
 
     ZsAnswer selectByAgentUuid(String agentUuid);
+
+
 }
