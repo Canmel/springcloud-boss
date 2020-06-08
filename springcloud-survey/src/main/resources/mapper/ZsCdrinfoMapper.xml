@@ -4,7 +4,8 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsCdrinfo">
-        <id column="call_uuid" property="call_uuid" />
+        <id column="id" property="id" />
+        <result column="call_uuid" property="call_uuid" />
         <result column="uuids" property="uuids" />
         <result column="call_type" property="call_type" />
         <result column="caller_num" property="caller_num" />
@@ -24,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        call_uuid, uuids, call_type, caller_num, callee_num, start_time, call_lasts_time, agent_duration, caller_agent_num, callee_agent_num, caller_agent_group_name, record_file, grade, taskid, taskname, ivr_dtmf
+        id, call_uuid, uuids, call_type, caller_num, callee_num, start_time, call_lasts_time, agent_duration, caller_agent_num, callee_agent_num, caller_agent_group_name, record_file, grade, taskid, taskname, ivr_dtmf
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

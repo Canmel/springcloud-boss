@@ -1,5 +1,6 @@
 package com.camel.survey.model;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import lombok.Data;
 
@@ -16,6 +17,8 @@ public class ZsCdrinfo extends BasePaginationEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id")
+    private String id;
     private String call_uuid;
     private String uuids;
     private String call_type;
