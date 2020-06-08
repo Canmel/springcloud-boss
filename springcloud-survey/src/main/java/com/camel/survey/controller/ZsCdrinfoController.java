@@ -13,6 +13,7 @@ import com.camel.survey.service.ZsCdrinfoService;
 import org.attoparser.trace.MarkupTraceEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,14 +52,17 @@ public class ZsCdrinfoController extends BaseCommonController {
                 ZsCdrinfo cdr= (ZsCdrinfo) CollectionUtils.arrayToList(params.get("cdr")).get(0);
                 ZsAnswer answer = new ZsAnswer();
                 String[] uuids=null;
+                if(StringUtils.isEmpty(cdr.getUuids())) {
+                    return "success";
+                }
                 uuids = cdr.getUuids().split(",");
                 for(int i=0;i<uuids.length;i++){
                     if(answerService.selectByAgentUuid(uuids[i])!=null){
                         answer.setId(answerService.selectByAgentUuid(uuids[i]).getId());
                     }
                 }
-                answer.setStartTime(cdr.getStartTime());
-                answer.setCallLastsTime(cdr.getCallLastsTime());
+                answer.setStartTime(cdr.getStart_time());
+                answer.setCallLastsTime(cdr.getCall_lasts_time());
                 answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime())*1000));
                 if(answer.getId()!=null) answerService.updateById(answer);
                 return "success";

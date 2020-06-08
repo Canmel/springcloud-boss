@@ -16,22 +16,22 @@ public class ZsCdrinfo extends BasePaginationEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private String callUuid;
+    private String call_uuid;
     private String uuids;
-    private String callType;
-    private String callerNum;
-    private String calleeNum;
-    private String startTime;
-    private String callLastsTime;
-    private Integer agentDuration;
-    private String callerAgentNum;
-    private String calleeAgentNum;
-    private String callerAgentGroupName;
-    private String recordFile;
-    private Integer grade;
-    private Integer taskid;
+    private String call_type;
+    private String caller_num;
+    private String callee_num;
+    private String start_time;
+    private String call_lasts_time;
+    private Integer agent_duration;
+    private String caller_agent_num;
+    private String callee_agent_num;
+    private String caller_agent_group_name;
+    private String record_file;
+    private String grade;
+    private String taskid;
     private String taskname;
-    private String ivrDtmf;
+    private String ivr_dtmf;
 
 
     @Override
