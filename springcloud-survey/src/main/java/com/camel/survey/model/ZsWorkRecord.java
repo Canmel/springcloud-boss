@@ -38,7 +38,7 @@ public class ZsWorkRecord extends BasePaginationEntity {
     /**
      * 申请者身份证号
      */
-    @TableField("cid_Num")
+    @TableField("cid_num")
     private String cIdNum;
     /**
      * 审批结果
@@ -65,9 +65,12 @@ public class ZsWorkRecord extends BasePaginationEntity {
     @TableField(exist = false)
     private Integer surveyId;
 
+    @TableField(value = "creator")
+    private Integer creatorId;
+
     @TableField(exist = false)
     private SysUser creator;
-    @TableField(exist = false)
-    private Integer creatorId;
+
+    private String username;
 
 }

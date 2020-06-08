@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,6 +93,18 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
             throw new SourceDataNotValidException("您选择了一条没有限制的问卷，这是一条不正确的数据，请联系管理员");
         }
         return ResultUtil.success("修改班次成功",mapper.updateById(entity));
+    }
+
+    @Override
+    public List<ZsWorkShift> selectByUidandSurveyId(Integer userId,Integer surveyId) {
+        List<ZsWorkRecord> zsWorkRecords = service.selectZsWorkRListByUid(userId);
+        List<ZsWorkShift> zsWorkShifts = new ArrayList<>();
+        for(int i=0;i<zsWorkRecords.size();i++){
+            if(selectById(zsWorkRecords.get(i).getWsId()).getSurveyId()==surveyId){
+                zsWorkShifts.add(selectById(zsWorkRecords.get(i).getWsId()));
+            }
+        }
+        return zsWorkShifts;
     }
 
 
