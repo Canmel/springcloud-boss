@@ -16,7 +16,7 @@
         <result column="caller_agent_num" property="callee_agent_num" />
         <result column="callee_agent_num" property="callee_agent_num" />
         <result column="caller_agent_group_name" property="caller_agent_group_name" />
-        <result column="record_file" property="record_file" />
+        <result column="record_file" property="recordFile" />
         <result column="grade" property="grade" />
         <result column="taskid" property="taskid" />
         <result column="taskname" property="taskname" />

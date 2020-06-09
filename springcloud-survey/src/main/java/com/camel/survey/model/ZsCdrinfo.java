@@ -1,5 +1,6 @@
 package com.camel.survey.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import lombok.Data;
@@ -30,7 +31,8 @@ public class ZsCdrinfo extends BasePaginationEntity {
     private String caller_agent_num;
     private String callee_agent_num;
     private String caller_agent_group_name;
-    private String record_file;
+    @TableField("record_file")
+    private String recordFile;
     private String grade;
     private String taskid;
     private String taskname;

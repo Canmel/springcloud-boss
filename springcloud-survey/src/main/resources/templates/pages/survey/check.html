@@ -92,8 +92,11 @@
                 </div>
             </div>
             <div class="ibox" style="height: 40%">
-                sdsd
-
+                <div class="play-box">
+                    <audio controls="controls" style="margin-top: 22%; width: 100%;" :src="recordUrl">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
             </div>
         </div>
     </div>
@@ -110,13 +113,56 @@
             questionIds: [],
             survey: null,
             currentIndex: 0,
-            currentQId: 0
+            currentQId: 0,
+            recordUrl:'',
+            baseRecordUrl: 'http://tj.svdata.cn/yscrm/servlet/filedown?filename='
         },
         created: function () {
             this.loadAnswer();
             this.loadEntity();
+            // this.initPlayer();
         },
         methods: {
+            initPlayer() {
+                let player = new Player();
+                player.init({
+                    autoPlay: true,//自动播放
+                    effect: 0,//频谱效果,不设置或0为随机变化,1为条形柱状,2为环状声波,3 心电图效果
+                    color: null,//颜色 color:16进制颜色代码,不设置或设置为空(空字符或null)将随机使用默认颜色
+                    button: {//设置生成的控制按钮,不设置button默认全部创建
+                        prev: true,//上一首
+                        play: true,//播放,暂停
+                        next: true,//下一首
+                        volume: true,//音量
+                        progressControl: true,//是否开启进度控制
+                    },
+                    event: function (e) {
+                        //这是一个事件方法,点击控制按钮会到此方法
+                        //参数:e.eventType 事件类型
+                        //参数:e.describe 事件详情,或参数
+                        //e.eventType  prev: 点击上一首,next：点击下一首,play:点击 播放/暂停
+                        console.log(e);
+                    },
+                    energy: function (value) {
+                        //此时播放的能量值,时刻变化
+                        //console.log(value);
+                    },
+                    playList: [//播放列表
+                        {
+                            title: "Kandy",//音乐标题
+                            album: "",//所属专辑
+                            artist: "",//艺术家
+                            mp3: "http://tj.svdata.cn/yscrm/servlet/filedown?filename=/YunEasy/FsPbx/CTI/DATA/recoredings/2020-06-08/cti_record_9045_1591593741793225_d9837644-778e-4bc9-a890-5bfc067db285.mp3",//音乐路径
+                        },
+                        {
+                            title: "Paper Gangsta",//音乐标题
+                            album: "",//所属专辑
+                            artist: "",//艺术家
+                            mp3: "music/mp3.mp3",//音乐路径
+                        },
+                    ]
+                });
+            },
             preQ() {
                 this.currentIndex--;
                 this.currentQId = this.questionIds[this.currentIndex];
@@ -131,6 +177,14 @@
                 let that = this;
                 AJAX.GET('zsCdrinfo/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.cdrinfo = resp.data;
+                    if(that.cdrinfo && that.cdrinfo.recordFile) {
+                        that.cdrinfo.recordFile = '/YunEasy/FsPbx/CTI/DATA/recoredings/2020-06-08/cti_record_9045_1591593741793225_d9837644-778e-4bc9-a890-5bfc067db285.mp3';
+                        that.recordUrl = that.baseRecordUrl + that.cdrinfo.recordFile + '&showname=11';
+                    }else{
+                        that.recordUrl = '';
+                        toastr.success('未获取到录音信息,请稍后尝试', '错误');
+                    }
+
                 })
             },
             loadAnswer() {
