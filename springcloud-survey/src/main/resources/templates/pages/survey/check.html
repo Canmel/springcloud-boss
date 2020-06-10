@@ -207,6 +207,7 @@
         opacity: 1;
         z-index: 100;
     }
+
     /*! normalize.css 2012-03-11T12:53 UTC - http://github.com/necolas/normalize.css */
 
     /* =============================================================================
@@ -629,7 +630,7 @@
     input[type="submit"] {
         cursor: pointer; /* 1 */
         -webkit-appearance: button; /* 2 */
-        *overflow: visible;  /* 3 */
+        *overflow: visible; /* 3 */
     }
 
     /*
@@ -752,7 +753,8 @@
 
                                             <label class="checkbox-inline"
                                                    v-if="item.type === 2 && showOption(item, option)">
-                                                <input type="checkbox" :value="Math.random()" :checked="isSelected(option)">
+                                                <input type="checkbox" :value="Math.random()"
+                                                       :checked="isSelected(option)">
                                                 <span class="editable question-option">{{option.name}}</span>
                                             </label>
 
@@ -820,12 +822,15 @@
                             <div style="height: 70%;"></div>
                             <form id="defaultForm" method="post" class="form-horizontal" style="height: 30%;">
                                 <div class="form-group has-feedback">
-                                    <textarea type="text" class="form-control" cols="2" name="remark" placeholder="请给出复核意见"></textarea>
+                                    <textarea type="text" class="form-control" cols="2" name="remark"
+                                              placeholder="请给出复核意见"></textarea>
                                 </div>
                                 <div class="form-group" style="text-align: center;">
-                                    <button class="btn btn-info btn-circle btn-lg" type="button"><i class="fa fa-check"></i>
+                                    <button class="btn btn-info btn-circle btn-lg" type="button"><i
+                                            class="fa fa-check"></i>
                                     </button>
-                                    <button class="btn btn-warning btn-circle btn-lg" type="button"><i class="fa fa-times"></i>
+                                    <button class="btn btn-warning btn-circle btn-lg" type="button"><i
+                                            class="fa fa-times"></i>
                                     </button>
                                 </div>
                             </form>
@@ -850,8 +855,10 @@
                             </div>
                             <div class="audio-control-interface">
                                 <div class="play-pause-container">
-                                    <a href="javascript:;" class="audio-play" tabindex="1" style="background-size: contain; margin-top: -10px;">Play</a>
-                                    <a href="javascript:;" class="audio-pause" tabindex="1" style="background-size: contain; margin-top: -10px;">Pause</a>
+                                    <a href="javascript:;" class="audio-play" tabindex="1"
+                                       style="background-size: contain; margin-top: -10px;">Play</a>
+                                    <a href="javascript:;" class="audio-pause" tabindex="1"
+                                       style="background-size: contain; margin-top: -10px;">Pause</a>
                                 </div>
                                 <div class="time-container">
                                     <span class="play-time"></span> / <span class="total-time"></span>
@@ -914,7 +921,7 @@
                 AJAX.GET('zsCdrinfo/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     that.cdrinfo = resp.data;
                     if (that.cdrinfo && that.cdrinfo.recordFile) {
-                        that.duration = that.cdrinfo.agent_duration;
+                        that.duration = that.cdrinfo.call_lasts_time - that.cdrinfo.agent_duration > 0 ? that.cdrinfo.call_lasts_time : that.cdrinfo.agent_duration;
                         that.recordUrl = that.baseRecordUrl + that.cdrinfo.recordFile + '&showname=11';
                     } else {
                         that.recordUrl = '';
