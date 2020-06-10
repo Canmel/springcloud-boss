@@ -185,11 +185,11 @@
             saveSeat() {
                 AJAX.POST("zsSeat", this.seat, function (resp) {
                     $("#seatModal").modal("hide");
-                    $("#seatForm")[0].reset()
+                    $("#seatForm")[0].reset();
                     toastr.success(resp.msg);
                 })
-                AJAX.PUT('/system/sysUser', JSON.stringify(this.seat), function (resp) {
-                });
+                AJAX.POST_JSON('/system/sysUser/updateSeat',this.seat, function (resp) {
+                })
                 this.pagequery();
             },
             pagequery: function () {

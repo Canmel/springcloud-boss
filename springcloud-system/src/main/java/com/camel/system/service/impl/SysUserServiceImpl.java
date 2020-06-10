@@ -121,4 +121,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUserWrapper.eq("uid", id);
         return selectOne(sysUserWrapper);
     }
+
+    @Override
+    public boolean updateSeat(String seatNum,Integer userId) {
+        mapper.updateSeat(userId,seatNum);
+        return true;
+    }
 }

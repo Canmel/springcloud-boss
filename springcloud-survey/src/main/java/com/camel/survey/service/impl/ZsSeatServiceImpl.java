@@ -57,9 +57,17 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
 
     @Override
     public Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
+        deleteByUser(entity.getUid());
         if (insert(entity)) {
-            return ResultUtil.success("新增成功");
+            return ResultUtil.success("分配成功");
         }
-        return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");
+        return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "分配失败");
+    }
+
+    @Override
+    public boolean deleteByUser(int userId) {
+        Wrapper<ZsSeat> zsSeatWrapper = new EntityWrapper<>();
+        zsSeatWrapper.eq("uid", userId);
+        return delete(zsSeatWrapper);
     }
 }

@@ -37,6 +37,10 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
      */
     private String cname;
     /**
+     * 用户名
+     */
+    private String cuname;
+    /**
      * 举办地点
      */
     private String address;

@@ -34,4 +34,6 @@ public interface ZsSeatService extends IService<ZsSeat> {
      * @return
      */
     Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication);
+
+    boolean deleteByUser(int userId);
 }

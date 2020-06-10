@@ -532,7 +532,11 @@
                 "remoteLogLevel": 0,    // 上传日志最低级别，建议跟 logLevel 一致
                 "testEnvironment": true, // 是否开启测试环境，默认为正式环境
                 "audienceCreateRoom": false //是否允许观众创建房间
-            }
+            },
+            seat:{
+
+            },
+            workshifts:[]
         },
         watch: {
             loadData(v, oldVal) {
@@ -637,8 +641,16 @@
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
-                        monit: resp.data.monit
+                        monit: resp.data.monit,
+                        state: resp.data.state
                     };
+                    if(resp.data.state.value!=2){
+                        alert("该问卷目前不处于收集状态！");
+                        $.pjax({
+                            url: mvm.applicationContextRootPath + 'pages/task/index.html',
+                            container: '.page-container'
+                        });
+                    }
 
                     // 判定是否需要视频监控
                     if(that.survey.monit.value === 1) {
@@ -663,12 +675,66 @@
             loadConnectInfo() {
                 let that = this;
                 AJAX.GET_SYNC("zsSeat/current", {}, function (resp) {
-                    window.agentno = resp.data.seatNum;
-                    window.exten = resp.data.seatNum;
-                    window.password = resp.data.password;
-                    that.connectInfo.seatNum = window.agentno;
-                    that.connectInfo.exten = window.exten;
-                    that.connectInfo.password = window.password;
+                    if(resp.data!=null) {
+                        window.agentno = resp.data.seatNum;
+                        window.exten = resp.data.seatNum;
+                        window.password = resp.data.password;
+                        that.connectInfo.seatNum = window.agentno;
+                        that.connectInfo.exten = window.exten;
+                        that.connectInfo.password = window.password;
+                    }
+                });
+            },
+            loadSeat(){
+                let that = this;
+                AJAX.GET_SYNC("zsSeat/current", {}, function (resp) {
+                    if(resp.data==null){
+                        alert("您目前未分配坐席，请申请坐席！");
+                        $.pjax({
+                            url: mvm.applicationContextRootPath + 'pages/task/index.html',
+                            container: '.page-container'
+                        });
+                    }
+                    else{
+                        that.seat.id = resp.data.id;
+                        that.seat.seatNum = resp.data.seatNum;
+                        that.seat.password = resp.data.password;
+                        that.seat.uid = resp.data.uid;
+                        that.seat.description = resp.data.description;
+                    }
+                });
+            },
+            loadWorkShift(){
+                let that = this;
+                AJAX.GET_SYNC("zsWorkShift/current/" + that.survey.id, {}, function (resp) {
+                    if(resp.data.length==0){
+                        alert("您目前未分配到属于该问卷的班次，请先申请对应班次！");
+                        $.pjax({
+                            url: mvm.applicationContextRootPath + 'pages/task/index.html',
+                            container: '.page-container'
+                        });
+                    }
+                    else{
+                        that.workshifts=resp.data;
+                        let timeState=false;
+                        var current=moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+                        let currentDate = current.substring(0,10);
+                        let currentTime = current.substring(11,16);
+                        for(let i=0;i<that.workshifts.length;i++){
+                            if(that.workshifts[i].startDate === currentDate){
+                                if(that.workshifts[i].startTime<=currentTime&&that.workshifts[i].endTime>=currentTime){
+                                    timeState=true;
+                                }
+                            }
+                        }
+                        if(timeState==false){
+                            alert("当前时间不在您的班次内，请先申请对应班次！");
+                            $.pjax({
+                                url: mvm.applicationContextRootPath + 'pages/task/index.html',
+                                container: '.page-container'
+                            });
+                        }
+                    }
                 });
             },
             initZg() {
@@ -689,6 +755,8 @@
             this.initZg();
             this.loadEntity();
             this.loadConnectInfo();
+            this.loadSeat();
+            this.loadWorkShift();
             this.loadQuestions();
             this.loadMe();
             $ctiserver = this;
