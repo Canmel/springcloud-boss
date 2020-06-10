@@ -61,4 +61,6 @@ public interface SysUserService extends IService<SysUser> {
     Result interviewer(SysUser sysUser);
 
     SysUser selectByUid(Integer id);
+
+    boolean updateSeat(String seatNum,Integer userId);
 }
