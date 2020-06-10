@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsWorkShift">
         <id column="id" property="id" />
         <result column="cname" property="cname" />
+        <result column="cuname" property="cuname" />
         <result column="address" property="address" />
         <result column="status" property="status" />
         <result column="survey_id" property="surveyId" />
@@ -22,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, cname, cuname, address, role, survey_id, wtime, stata
+        id, cname, cuname, address, survey_id, status,start_date,start_time,end_time,creator,created_at
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

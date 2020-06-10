@@ -71,4 +71,10 @@
         <include refid="BASE_SQL"/>
         FROM sys_user sys_user WHERE sys_user.uid IN (SELECT user_id FROM sys_user_role sur WHERE role_id = #{id})
     </select>
+
+    <update id="updateSeat">
+        update
+        sys_user
+        set seat_num = #{seatNum} where uid = #{userId}
+    </update>
 </mapper>

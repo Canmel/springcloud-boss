@@ -12,6 +12,7 @@ import com.camel.core.model.SysUserRole;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.entity.RedisUser;
 import com.camel.redis.utils.SerizlizeUtil;
+import com.camel.survey.model.ZsSeat;
 import com.camel.system.annotation.Log;
 import com.camel.core.model.SysUser;
 import com.camel.system.config.SysUserCacheConfig;
@@ -117,6 +118,14 @@ public class SysUserController extends BaseCommonController {
             return ResultUtil.success("修改用户角色成功");
         }
         return ResultUtil.error(400, "修改用户角色失败");
+    }
+
+    @PostMapping("/updateSeat")
+    public Result updateSeat(@RequestBody ZsSeat seat) {
+        if (service.updateSeat(seat.getSeatNum(),seat.getUid())) {
+            return ResultUtil.success("修改用户坐席成功");
+        }
+        return ResultUtil.error(400, "修改用户坐席失败");
     }
 
     @GetMapping("/me")
