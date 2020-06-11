@@ -57,7 +57,7 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
 
     @Override
     public Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
-        deleteByUser(entity.getUid());
+        deleteByUserAndSeat(entity.getUid(),entity.getSeatNum());
         if (insert(entity)) {
             return ResultUtil.success("分配成功");
         }
@@ -65,9 +65,12 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     }
 
     @Override
-    public boolean deleteByUser(int userId) {
+    public boolean deleteByUserAndSeat(int userId,String seatNum) {
         Wrapper<ZsSeat> zsSeatWrapper = new EntityWrapper<>();
         zsSeatWrapper.eq("uid", userId);
+        delete(zsSeatWrapper);
+        zsSeatWrapper.eq("uid", null);
+        zsSeatWrapper.eq("seat_num", seatNum);
         return delete(zsSeatWrapper);
     }
 }
