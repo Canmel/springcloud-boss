@@ -23,4 +23,7 @@ public class WxConstants {
     private String JS_SAVE_DOMAIN = "meedesidy.qicp.io";
     public static final String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
 
+    // 二维码自定义参数事件
+    public static final String QRCODE_EVENTKEY = "qrscene_";
+
 }

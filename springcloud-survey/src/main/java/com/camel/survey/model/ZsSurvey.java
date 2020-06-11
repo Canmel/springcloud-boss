@@ -88,6 +88,9 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     @TableField(value = "collect_phone")
     private Integer collectPhone;
 
+    /**
+     * 是否需要监控
+     */
     private ZsYesOrNo monit;
 
     private ZsSurveyState state;

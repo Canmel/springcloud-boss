@@ -4,13 +4,18 @@ import com.camel.common.entity.Member;
 import com.camel.core.model.SysUser;
 import com.camel.redis.utils.SerizlizeUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -69,7 +74,22 @@ public class ApplicationToolsUtils {
         return result;
     }
 
-    public Member currentUser(OAuth2Authentication oAuth2Authentication) {
-        return (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
+
+    public SysUser currentUser(OAuth2Authentication oAuth2Authentication) {
+        ObjectMapper mapper = new ObjectMapper();
+        SysUser user = null;
+        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) oAuth2Authentication.getUserAuthentication();
+        LinkedHashMap tokenDetails = (LinkedHashMap)token.getDetails();
+        LinkedHashMap p = (LinkedHashMap) tokenDetails.get("principal");
+        LinkedHashMap userInfo = (LinkedHashMap) p.get("sysUser");
+        if(!CollectionUtils.isEmpty(userInfo)) {
+            user = mapper.convertValue(userInfo, SysUser.class);
+            System.out.println(user);
+        }
+        return user;
+    }
+
+    public SysUser currentUser() {
+        return currentUser((OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication());
     }
 }

@@ -44,6 +44,8 @@ public class Args extends BasePaginationEntity implements Serializable {
     public static final String SIGN_OUT_TIME_CODE = "sign_out_time";
     public static final String DELAY_TIME_CODE = "delay_time";
     public static final String ADVANCE_TIME_CODE = "advance_time";
+    public static final String SIGN_POSITION = "sign_position_1";
+    public static final String SIGN_RADIUS = "sign_radius";
 
     private static final long serialVersionUID = 1L;
     /**

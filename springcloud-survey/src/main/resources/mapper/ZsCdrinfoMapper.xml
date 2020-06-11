@@ -4,27 +4,28 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsCdrinfo">
-        <id column="call_uuid" property="callUuid" />
+        <id column="id" property="id" />
+        <result column="call_uuid" property="call_uuid" />
         <result column="uuids" property="uuids" />
-        <result column="call_type" property="callType" />
-        <result column="caller_num" property="callerNum" />
-        <result column="callee_num" property="calleeNum" />
-        <result column="start_time" property="startTime" />
-        <result column="call_lasts_time" property="callLastsTime" />
-        <result column="agent_duration" property="agentDuration" />
-        <result column="caller_agent_num" property="callerAgentNum" />
-        <result column="callee_agent_num" property="calleeAgentNum" />
-        <result column="caller_agent_group_name" property="callerAgentGroupName" />
+        <result column="call_type" property="call_type" />
+        <result column="caller_num" property="caller_num" />
+        <result column="callee_num" property="callee_num" />
+        <result column="start_time" property="start_time" />
+        <result column="call_lasts_time" property="call_lasts_time" />
+        <result column="agent_duration" property="agent_duration" />
+        <result column="caller_agent_num" property="callee_agent_num" />
+        <result column="callee_agent_num" property="callee_agent_num" />
+        <result column="caller_agent_group_name" property="caller_agent_group_name" />
         <result column="record_file" property="recordFile" />
         <result column="grade" property="grade" />
         <result column="taskid" property="taskid" />
         <result column="taskname" property="taskname" />
-        <result column="ivr_dtmf" property="ivrDtmf" />
+        <result column="ivr_dtmf" property="ivr_dtmf" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        call_uuid, uuids, call_type, caller_num, callee_num, start_time, call_lasts_time, agent_duration, caller_agent_num, callee_agent_num, caller_agent_group_name, record_file, grade, taskid, taskname, ivr_dtmf
+        id, call_uuid, uuids, call_type, caller_num, callee_num, start_time, call_lasts_time, agent_duration, caller_agent_num, callee_agent_num, caller_agent_group_name, record_file, grade, taskid, taskname, ivr_dtmf
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -41,6 +42,16 @@
         zs_cdrinfo
         <where>
             uuids like concat('%', #{uuid} ,'%')
+        </where>
+    </select>
+
+    <select id="details" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_cdrinfo
+        <where>
+            id = #{uuid}
         </where>
     </select>
 </mapper>

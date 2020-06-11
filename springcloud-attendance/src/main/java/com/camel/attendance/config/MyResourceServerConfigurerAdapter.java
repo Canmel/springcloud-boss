@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,6 +49,13 @@ public class MyResourceServerConfigurerAdapter extends ResourceServerConfigurerA
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
+                .and()
+                .cors().disable()
+                .cors()
+                .and()
+                .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest)
+                .permitAll()
                 .and()
                 .httpBasic();
     }

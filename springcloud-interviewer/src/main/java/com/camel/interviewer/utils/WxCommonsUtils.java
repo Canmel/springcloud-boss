@@ -1,6 +1,6 @@
 package com.camel.interviewer.utils;
 
-import java.util.UUID;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class WxCommonsUtils {
     public WxCommonsUtils() {
@@ -11,7 +11,7 @@ public class WxCommonsUtils {
     }
 
     public String getRandomStr() {
-        return UUID.randomUUID().toString();
+        return RandomStringUtils.randomAlphanumeric(16);
     }
 
     public String timeStamp() {

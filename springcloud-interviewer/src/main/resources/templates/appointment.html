@@ -15,7 +15,7 @@
 </head>
 <body ontouchstart>
 <div class="container" id="container">
-    <div class="weui_msg" v-if="userinfo">
+    <div class="weui_msg" v-if="!userinfo">
         <div class="weui_icon_area">
             <i class="weui_icon_success weui_icon_msg"></i></div>
         <div class="weui_text_area">
@@ -25,7 +25,7 @@
         <div class="weui_extra_area">
         </div>
     </div>
-    <div class="weui-panel" style="padding-top: 10%;" v-if="!userinfo">
+    <div class="weui-panel" style="padding-top: 10%;" v-if="userinfo">
         <div class="weui-panel__hd" style="font-size: 25px;">近期定点调查</div>
         <div class="weui-panel__bd">
             <div class="weui-media-box weui-media-box_text" v-for="item in works" v-on:click="itemClickHandler(item)">

@@ -2,6 +2,7 @@ package com.camel.interviewer.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.camel.interviewer.config.WxConstants;
 import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.mapper.WxSubscibeMapper;
 import com.camel.interviewer.service.WxSubscibeService;
@@ -25,8 +26,8 @@ public class WxSubscibeServiceImpl extends ServiceImpl<WxSubscibeMapper, WxSubsc
     @Override
     public boolean save(String toUserName, String eventKey) {
         String shareName = "";
-        if(StringUtils.isNotBlank(eventKey) && StringUtils.contains(eventKey, "_")) {
-            List<String> params = CollectionUtils.arrayToList(StringUtils.split(eventKey, "_"));
+        if(StringUtils.isNotBlank(eventKey) && StringUtils.contains(eventKey, WxConstants.QRCODE_EVENTKEY)) {
+            List<String> params = CollectionUtils.arrayToList(eventKey.split(WxConstants.QRCODE_EVENTKEY));
             shareName = params.get(1);
         }
         return this.insert(new WxSubscibe(toUserName, shareName));

@@ -1,26 +1,20 @@
 package com.camel.interviewer.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.config.WxConstants;
-import com.camel.interviewer.exceptions.NotWxExplorerException;
-import com.camel.interviewer.exceptions.WxServerConnectException;
-import com.camel.interviewer.model.WxSubscibe;
+import com.camel.interviewer.model.WxJsConfig;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WeixinStartService;
 import com.camel.interviewer.service.WxSubscibeService;
-import com.camel.interviewer.service.WxUserService;
-import com.camel.interviewer.utils.HttpUtils;
-import com.camel.interviewer.utils.MessageUtil;
-import com.camel.interviewer.utils.WxTokenUtil;
-import com.camel.interviewer.utils.XmlUtil;
-import org.apache.commons.lang.StringUtils;
+import com.camel.interviewer.utils.*;
 import org.dom4j.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
@@ -47,9 +45,7 @@ public class WeixinStartController {
     public static final String ECHOSTR = "echostr";
     public static final String AUTHORIZATION_CODE = "authorization_code";
 
-
-    @Autowired
-    RestTemplate restTemplate;
+    public static Logger logger = LoggerFactory.getLogger(WeixinStartService.class);
 
     @Autowired
     private WeixinStartService service;
@@ -62,6 +58,9 @@ public class WeixinStartController {
 
     @Autowired
     private WeixinStartService weixinStartService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @AuthIgnore
     @GetMapping
@@ -76,7 +75,7 @@ public class WeixinStartController {
     @AuthIgnore
     @PostMapping
     private void event(HttpServletRequest request, HttpServletResponse response) throws IOException {
-         request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String message = "success";
@@ -92,11 +91,13 @@ public class WeixinStartController {
             if (MessageUtil.MSGTYPE_EVENT.equals(msgType)) {
                 //处理订阅事件
                 if (MessageUtil.MESSAGE_SUBSCIBE.equals(eventType)) {
+                    logger.info("订阅事件推送");
                     message = MessageUtil.subscribeForText(toUserName, fromUserName);
                     wxSubscibeService.save(fromUserName, eventKey);
                     //处理取消订阅事件
                 } else if (MessageUtil.MESSAGE_UNSUBSCIBE.equals(eventType)) {
                     message = MessageUtil.unsubscribe(toUserName, fromUserName);
+                    logger.info("取消订阅事件推送");
                     wxSubscibeService.unsave(fromUserName);
                 }
             }
@@ -117,13 +118,108 @@ public class WeixinStartController {
         if(ObjectUtils.isEmpty(wxUser)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");
         }
-        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret());
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
         return ResultUtil.success(token);
+    }
+
+    @AuthIgnore
+    @GetMapping("/token")
+    private Result token() {
+        return ResultUtil.success(WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate));
+    }
+
+    @AuthIgnore
+    @GetMapping("/ticket")
+    private Result ticket() {
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
+        return ResultUtil.success(JsapiTicketUtil.getInstance().JsapiTicket(token, redisTemplate));
+    }
+
+    @AuthIgnore
+    @GetMapping("/signature")
+    private Result signature(String currentUrl) {
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
+        String ticket = JsapiTicketUtil.getInstance().JsapiTicket(token, redisTemplate);
+        Map<String, String> ret = sign(ticket, currentUrl);
+        for (Map.Entry entry : ret.entrySet()) {
+            logger.info(entry.getKey() + ", " + entry.getValue());
+        }
+        String randomStr = WxCommonsUtils.getInstance().getRandomStr();
+        String timestamp = WxCommonsUtils.getInstance().timeStamp();
+        Map<String, Object> map = new HashMap();
+        map.put("noncestr", randomStr);
+        map.put("jsapi_ticket", ticket);
+        map.put("timestamp", timestamp);
+        map.put("url", currentUrl);
+        String signatureStr = MapUrlParamsUtils.getUrlParamsByMap(map);
+        String signature = SHA1.encode(signatureStr);
+        logger.info(signatureStr);
+        logger.info(signature);
+        WxJsConfig wxJsConfig = new WxJsConfig(wxConstants.getAppid(), timestamp, randomStr, signature);
+        return ResultUtil.success(wxJsConfig);
     }
 
     @AuthIgnore
     @GetMapping("getUserInfo")
     private Result getUserInfo(String code) {
         return ResultUtil.success(service.getUser(code));
+    }
+
+    public static Map<String, String> sign(String jsapi_ticket, String url) {
+        Map<String, String> ret = new HashMap<String, String>();
+        String nonce_str = create_nonce_str();
+        String timestamp = create_timestamp();
+        String string1;
+        String signature = "";
+
+        //注意这里参数名必须全部小写，且必须有序
+        string1 = "jsapi_ticket=" + jsapi_ticket +
+                "&noncestr=" + nonce_str +
+                "&timestamp=" + timestamp +
+                "&url=" + url;
+        System.out.println(string1);
+
+        try
+        {
+            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+            crypt.reset();
+            crypt.update(string1.getBytes("UTF-8"));
+            signature = byteToHex(crypt.digest());
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+        ret.put("url", url);
+        ret.put("jsapi_ticket", jsapi_ticket);
+        ret.put("nonceStr", nonce_str);
+        ret.put("timestamp", timestamp);
+        ret.put("signature", signature);
+
+        return ret;
+    }
+
+    private static String byteToHex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash)
+        {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+    }
+
+    private static String create_nonce_str() {
+        return UUID.randomUUID().toString();
+    }
+
+    private static String create_timestamp() {
+        return Long.toString(System.currentTimeMillis() / 1000);
     }
 }

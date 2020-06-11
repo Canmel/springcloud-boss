@@ -61,8 +61,13 @@ spring:
     password: admin
     packages:
       trust-all: true
-#  jms:
-#    pub-sub-domain: true
+  mvc:
+    static-path-pattern: /**
+    view:
+      prefix: /
+      suffix: .html
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
 
 eureka:
   instance:

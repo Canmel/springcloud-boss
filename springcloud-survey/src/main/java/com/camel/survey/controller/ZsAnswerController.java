@@ -1,5 +1,7 @@
 package com.camel.survey.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
@@ -56,6 +58,12 @@ public class ZsAnswerController extends BaseCommonController {
     public Result details(@PathVariable Integer id) {
         return ResultUtil.success(service.details(id));
     }
+
+    @GetMapping("/agent/{agent}")
+    public Result detailsp(@PathVariable("agent") String agent) {
+        return ResultUtil.success(service.details(agent));
+    }
+
 
     /**
      * 新建保存

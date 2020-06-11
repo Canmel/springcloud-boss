@@ -17,6 +17,7 @@
         <result column="sign_out_time" property="signOutTime"/>
         <result column="advance_time" property="advanceTime"/>
         <result column="delay_time" property="delayTime"/>
+        <result column="addr" property="addr"/>
     </resultMap>
     
     <resultMap id="SignRecordMapper" type="com.camel.attendance.vo.SignRecordTotal">
@@ -32,7 +33,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, status, type, created_at, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') created_at_str , coordinate, remark, determine, sign_in_time, sign_out_time, advance_time, delay_time
+        id, user_id, status, type, created_at, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') created_at_str , coordinate, remark, determine, sign_in_time, sign_out_time, advance_time, delay_time, addr
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -77,7 +78,7 @@
           sign_records
         <where>
             <if test="createdAtStr != null and createdAtStr != ''">
-                AND DATE_FORMAT(created_at,'%Y-%m-%d') = #{createdAtStr}
+                AND DATE_FORMAT(created_at,'%Y-%c-%d') = #{createdAtStr}
             </if>
             <if test="userId != null">
                 AND user_id = #{userId}

@@ -1,0 +1,990 @@
+<style>
+
+    a {
+        color: #555;
+        text-decoration: none;
+    }
+
+    .container {
+        width: 100%;
+        position: relative;
+        min-height: 750px;
+    }
+
+    .clr {
+        clear: both;
+        padding: 0;
+        height: 0;
+        margin: 0;
+    }
+
+    .container > header {
+        margin: 10px;
+        padding: 20px 10px 10px 10px;
+        position: relative;
+        display: block;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    .container > header h1 {
+        font-size: 40px;
+        line-height: 40px;
+        margin: 0;
+        position: relative;
+        font-weight: 300;
+        color: #726f66;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7);
+    }
+
+    .container > header h1 span {
+        font-weight: 700;
+    }
+
+    .container > header h2 {
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin: 0;
+        padding: 15px 0 5px 0;
+        color: #6190ca;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7);
+    }
+
+    /* Header Style */
+    .codrops-top {
+        line-height: 24px;
+        font-size: 11px;
+        background: #fff;
+        background: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        z-index: 9999;
+        position: relative;
+        font-family: Cambria, Georgia, serif;
+        box-shadow: 1px 0px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .codrops-top a {
+        padding: 0px 10px;
+        letter-spacing: 1px;
+        color: #333;
+        display: inline-block;
+    }
+
+    .codrops-top a:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .codrops-top span.right {
+        float: right;
+    }
+
+    .codrops-top span.right a {
+        float: left;
+        display: block;
+    }
+
+    /* Component style */
+
+    .audio-slideshow {
+        height: 100%;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .audio-slideshow .audio-slides {
+        position: relative;
+    }
+
+    .audio-slideshow .audio-slides img {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .audio-slideshow .audio-control-interface {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 48px;
+    }
+
+    .audio-slideshow .play-pause-container, .audio-slideshow .time-container {
+        position: absolute;
+        bottom: 25px;
+        height: 18px;
+        font-weight: bold;
+        color: #777;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .audio-slideshow .play-pause-container a {
+        outline: none;
+        text-indent: -99999px;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+    }
+
+    .audio-slideshow .play-pause-container a.audio-play {
+        width: 30px;
+        height: 30px;
+        background: transparent url(/survey/img/play.png) no-repeat center center;
+    }
+
+    .audio-slideshow .play-pause-container a.audio-pause {
+        width: 30px;
+        height: 30px;
+        background: transparent url(/survey/img/pause.png) no-repeat center center;
+    }
+
+    .audio-slideshow .audio-control-interface .time-container {
+        right: 3px;
+    }
+
+    .audio-slideshow .timeline {
+        position: absolute;
+        width: 100%;
+        background-color: #ccc;
+        height: 20px;
+        bottom: 0;
+        left: 0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    .audio-slideshow .timeline .playhead {
+        position: absolute;
+        height: 20px;
+        background: #333;
+        width: 0;
+        border-radius: 10px;
+    }
+
+    .marker {
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4) inset;
+        position: absolute;
+        background: #B8BAC6;
+        top: 5px;
+    }
+
+    .marker div {
+        padding: 5px;
+        position: absolute;
+        bottom: 20px;
+        opacity: 0;
+        left: -50px;
+        z-index: -1;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        background: #d9edf7;
+        background: -moz-linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #f5f6f6 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f6f6), color-stop(21%, #dbdce2), color-stop(49%, #b8bac6), color-stop(80%, #dddfe3), color-stop(100%, #f5f6f6));
+        background: -webkit-linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #f5f6f6 100%);
+        background: -o-linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #f5f6f6 100%);
+        background: -ms-linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #f5f6f6 100%);
+        background: linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #f5f6f6 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f6f6', endColorstr='#f5f6f6', GradientType=0);
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+        z-index: 100;
+    }
+
+    .marker span img {
+        display: block;
+    }
+
+    .marker:hover div {
+        opacity: 1;
+        z-index: 100;
+    }
+
+    /*! normalize.css 2012-03-11T12:53 UTC - http://github.com/necolas/normalize.css */
+
+    /* =============================================================================
+       HTML5 display definitions
+       ========================================================================== */
+
+    /*
+     * Corrects block display not defined in IE6/7/8/9 & FF3
+     */
+
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    nav,
+    section,
+    summary {
+        display: block;
+    }
+
+    /*
+     * Corrects inline-block display not defined in IE6/7/8/9 & FF3
+     */
+
+    audio,
+    canvas,
+    video {
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+    }
+
+    /*
+     * Prevents modern browsers from displaying 'audio' without controls
+     * Remove excess height in iOS5 devices
+     */
+
+    audio:not([controls]) {
+        display: none;
+        height: 0;
+    }
+
+    /*
+     * Addresses styling for 'hidden' attribute not present in IE7/8/9, FF3, S4
+     * Known issue: no IE6 support
+     */
+
+    [hidden] {
+        display: none;
+    }
+
+
+    /* =============================================================================
+       Base
+       ========================================================================== */
+
+    /*
+     * 1. Corrects text resizing oddly in IE6/7 when body font-size is set using em units
+     *    http://clagnut.com/blog/348/#c790
+     * 2. Prevents iOS text size adjust after orientation change, without disabling user zoom
+     *    www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/
+     */
+
+    html {
+        font-size: 100%; /* 1 */
+        -webkit-text-size-adjust: 100%; /* 2 */
+        -ms-text-size-adjust: 100%; /* 2 */
+    }
+
+    /*
+     * Addresses font-family inconsistency between 'textarea' and other form elements.
+     */
+
+    html,
+    button,
+    input,
+    select,
+    textarea {
+        font-family: sans-serif;
+    }
+
+    /*
+     * Addresses margins handled incorrectly in IE6/7
+     */
+
+    body {
+        margin: 0;
+    }
+
+
+    /* =============================================================================
+       Links
+       ========================================================================== */
+
+    /*
+     * Addresses outline displayed oddly in Chrome
+     */
+
+    a:focus {
+        outline: thin dotted;
+    }
+
+    /*
+     * Improves readability when focused and also mouse hovered in all browsers
+     * people.opera.com/patrickl/experiments/keyboard/test
+     */
+
+    a:hover,
+    a:active {
+        outline: 0;
+    }
+
+
+    /* =============================================================================
+       Typography
+       ========================================================================== */
+
+    /*
+     * Addresses font sizes and margins set differently in IE6/7
+     * Addresses font sizes within 'section' and 'article' in FF4+, Chrome, S5
+     */
+
+    h1 {
+        font-size: 2em;
+        margin: 0.67em 0;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        margin: 0.83em 0;
+    }
+
+    h3 {
+        font-size: 1.17em;
+        margin: 1em 0;
+    }
+
+    h4 {
+        font-size: 1em;
+        margin: 1.33em 0;
+    }
+
+    h5 {
+        font-size: 0.83em;
+        margin: 1.67em 0;
+    }
+
+    h6 {
+        font-size: 0.75em;
+        margin: 2.33em 0;
+    }
+
+    /*
+     * Addresses styling not present in IE7/8/9, S5, Chrome
+     */
+
+    abbr[title] {
+        border-bottom: 1px dotted;
+    }
+
+    /*
+     * Addresses style set to 'bolder' in FF3+, S4/5, Chrome
+    */
+
+    b,
+    strong {
+        font-weight: bold;
+    }
+
+    blockquote {
+        margin: 1em 40px;
+    }
+
+    /*
+     * Addresses styling not present in S5, Chrome
+     */
+
+    dfn {
+        font-style: italic;
+    }
+
+    /*
+     * Addresses styling not present in IE6/7/8/9
+     */
+
+    mark {
+        background: #ff0;
+        color: #000;
+    }
+
+    /*
+     * Addresses margins set differently in IE6/7
+     */
+
+    p,
+    pre {
+        margin: 1em 0;
+    }
+
+    /*
+     * Corrects font family set oddly in IE6, S4/5, Chrome
+     * en.wikipedia.org/wiki/User:Davidgothberg/Test59
+     */
+
+    pre,
+    code,
+    kbd,
+    samp {
+        font-family: monospace, serif;
+        _font-family: 'courier new', monospace;
+        font-size: 1em;
+    }
+
+    /*
+     * Improves readability of pre-formatted text in all browsers
+     */
+
+    pre {
+        white-space: pre;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    /*
+     * 1. Addresses CSS quotes not supported in IE6/7
+     * 2. Addresses quote property not supported in S4
+     */
+
+    /* 1 */
+
+    q {
+        quotes: none;
+    }
+
+    /* 2 */
+
+    q:before,
+    q:after {
+        content: '';
+        content: none;
+    }
+
+    small {
+        font-size: 75%;
+    }
+
+    /*
+     * Prevents sub and sup affecting line-height in all browsers
+     * gist.github.com/413930
+     */
+
+    sub,
+    sup {
+        font-size: 75%;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+    }
+
+    sup {
+        top: -0.5em;
+    }
+
+    sub {
+        bottom: -0.25em;
+    }
+
+
+    /* =============================================================================
+       Lists
+       ========================================================================== */
+
+    /*
+     * Addresses margins set differently in IE6/7
+     */
+
+    dl,
+    menu,
+    ol,
+    ul {
+        margin: 1em 0;
+    }
+
+    dd {
+        margin: 0 0 0 40px;
+    }
+
+    /*
+     * Addresses paddings set differently in IE6/7
+     */
+
+    menu,
+    ol,
+    ul {
+        padding: 0 0 0 40px;
+    }
+
+    /*
+     * Corrects list images handled incorrectly in IE7
+     */
+
+    nav ul,
+    nav ol {
+        list-style: none;
+        list-style-image: none;
+    }
+
+
+    /* =============================================================================
+       Embedded content
+       ========================================================================== */
+
+    /*
+     * 1. Removes border when inside 'a' element in IE6/7/8/9, FF3
+     * 2. Improves image quality when scaled in IE7
+     *    code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/
+     */
+
+    img {
+        border: 0; /* 1 */
+        -ms-interpolation-mode: bicubic; /* 2 */
+    }
+
+    /*
+     * Corrects overflow displayed oddly in IE9
+     */
+
+    svg:not(:root) {
+        overflow: hidden;
+    }
+
+
+    /* =============================================================================
+       Figures
+       ========================================================================== */
+
+    /*
+     * Addresses margin not present in IE6/7/8/9, S5, O11
+     */
+
+    figure {
+        margin: 0;
+    }
+
+
+    /* =============================================================================
+       Forms
+       ========================================================================== */
+
+    /*
+     * Corrects margin displayed oddly in IE6/7
+     */
+
+    form {
+        margin: 0;
+    }
+
+    /*
+     * Define consistent border, margin, and padding
+     */
+
+    fieldset {
+        border: 1px solid #c0c0c0;
+        margin: 0 2px;
+        padding: 0.35em 0.625em 0.75em;
+    }
+
+    /*
+     * 1. Corrects color not being inherited in IE6/7/8/9
+     * 2. Corrects text not wrapping in FF3
+     * 3. Corrects alignment displayed oddly in IE6/7
+     */
+
+    legend {
+        border: 0; /* 1 */
+        padding: 0;
+        white-space: normal; /* 2 */
+        *margin-left: -7px; /* 3 */
+    }
+
+    /*
+     * 1. Corrects font size not being inherited in all browsers
+     * 2. Addresses margins set differently in IE6/7, FF3+, S5, Chrome
+     * 3. Improves appearance and consistency in all browsers
+     */
+
+    button,
+    input,
+    select,
+    textarea {
+        font-size: 100%; /* 1 */
+        margin: 0; /* 2 */
+        vertical-align: baseline; /* 3 */
+        *vertical-align: middle; /* 3 */
+    }
+
+    /*
+     * Addresses FF3/4 setting line-height on 'input' using !important in the UA stylesheet
+     */
+
+    button,
+    input {
+        line-height: normal; /* 1 */
+    }
+
+    /*
+     * 1. Improves usability and consistency of cursor style between image-type 'input' and others
+     * 2. Corrects inability to style clickable 'input' types in iOS
+     * 3. Removes inner spacing in IE7 without affecting normal text inputs
+     *    Known issue: inner spacing remains in IE6
+     */
+
+    button,
+    input[type="button"],
+    input[type="reset"],
+    input[type="submit"] {
+        cursor: pointer; /* 1 */
+        -webkit-appearance: button; /* 2 */
+        *overflow: visible; /* 3 */
+    }
+
+    /*
+     * Re-set default cursor for disabled elements
+     */
+
+    button[disabled],
+    input[disabled] {
+        cursor: default;
+    }
+
+    /*
+     * 1. Addresses box sizing set to content-box in IE8/9
+     * 2. Removes excess padding in IE8/9
+     * 3. Removes excess padding in IE7
+          Known issue: excess padding remains in IE6
+     */
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        box-sizing: border-box; /* 1 */
+        padding: 0; /* 2 */
+        *height: 13px; /* 3 */
+        *width: 13px; /* 3 */
+    }
+
+    /*
+     * 1. Addresses appearance set to searchfield in S5, Chrome
+     * 2. Addresses box-sizing set to border-box in S5, Chrome (include -moz to future-proof)
+     */
+
+    input[type="search"] {
+        -webkit-appearance: textfield; /* 1 */
+        -moz-box-sizing: content-box;
+        -webkit-box-sizing: content-box; /* 2 */
+        box-sizing: content-box;
+    }
+
+    /*
+     * Removes inner padding and search cancel button in S5, Chrome on OS X
+     */
+
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+    }
+
+    /*
+     * Removes inner padding and border in FF3+
+     * www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/
+     */
+
+    button::-moz-focus-inner,
+    input::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+    }
+
+    /*
+     * 1. Removes default vertical scrollbar in IE6/7/8/9
+     * 2. Improves readability and alignment in all browsers
+     */
+
+    textarea {
+        overflow: auto; /* 1 */
+        vertical-align: top; /* 2 */
+    }
+
+
+    /* =============================================================================
+       Tables
+       ========================================================================== */
+
+    /*
+     * Remove most spacing between table cells
+     */
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+</style>
+<div id="subContainer" class="wrapper wrapper-content" style="height: 100%">
+    <div class="row" style="height: 100%">
+        <div class="col-sm-3" style="height: 100%">
+            <div class="ibox" style="height: 99%">
+                <div class="ibox-content" style="height: 90%">
+                    显示一些问卷信息
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-9" style="height: 100%">
+            <div class="" style="height: 60%">
+                <div class="col-sm-9" style="height: 100%; padding: 0">
+                    <div class="ibox" style="height: 99%">
+                        <div class="ibox-content" style="height: 90%">
+                            <div class="text-center">
+                                <h2><b>{{survey.name}}</b></h2>
+                            </div>
+                            <div class="form-group" style="margin-top: 5%;" v-for="(item, index) in tquestions"
+                                 v-if="item.id === currentQId">
+                                <div class="col-sm-12"><label class="col-sm-3 control-label"
+                                                              style="text-align: right;"><span
+                                        class="question-index">1</span>.</label> <label class="col-sm-9 control-label"
+                                                                                        style="padding-left: 0px; text-align: left;"><span
+                                        class="editable question-title">{{item.name}}</span></label></div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 survey-optins">
+                                    <div v-for="(option, inx) in item.options"
+                                         v-if="showOption(item, option)">
+                                        <div class="col-sm-9">
+                                            <label class="radio-inline"
+                                                   v-if="item.type === 1 && showOption(item, option)">
+                                                <input type="radio" value="option2" :checked="isSelected(option)"
+                                                       name="optionsRadios">
+                                                <span class="editable question-option">{{option.name}}</span>
+                                            </label>
+
+                                            <label class="checkbox-inline"
+                                                   v-if="item.type === 2 && showOption(item, option)">
+                                                <input type="checkbox" :value="Math.random()"
+                                                       :checked="isSelected(option)">
+                                                <span class="editable question-option">{{option.name}}</span>
+                                            </label>
+
+                                            <label class="checkbox-inline"
+                                                   v-if="item.type === 3 && showOption(item, option)">
+                                                <span class="editable question-option">评分项</span>:
+                                                <span class="star-box">
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_5'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_5'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_4'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_4'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_3'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_3'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_2'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_2'"></label>
+
+                                                <input type="radio"
+                                                       :name="'star_' + item.orderNum + '_' + option.orderNum"
+                                                       :id="'star_' + item.orderNum + '_' + option.orderNum + '_1'"
+                                                       hidden/>
+                                                <label :for="'star_' + item.orderNum + '_' + option.orderNum + '_1'"></label>
+                                            </span>
+                                            </label>
+                                            <label class="checkbox-inline"
+                                                   v-if="item.type === 4 && showOption(item, option)">
+                                                <span class="editable question-option">答</span>:
+                                                <label class="radio-inline">
+                                                    <input type="text"
+                                                           name="optionsRadios"></label>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="min-height: 10%" class="form-group row">
+                            <div class="col-sm-6 text-center">
+                                <button @click="preQ()" v-bind:disabled="currentIndex === 0">上一题</button>
+                            </div>
+                            <div class="col-sm-6 text-center">
+                                <button @click="nextQ()" v-bind:disabled="currentIndex === questionIds.length - 1">下一题
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="height: 100%; padding: 0px;">
+                    <div class="ibox" style="height: 99%">
+                        <div class="ibox-content" style="height: 100%">
+                            <div style="height: 70%;"></div>
+                            <form id="defaultForm" method="post" class="form-horizontal" style="height: 30%;">
+                                <div class="form-group has-feedback">
+                                    <textarea type="text" class="form-control" cols="2" name="remark"
+                                              placeholder="请给出复核意见"></textarea>
+                                </div>
+                                <div class="form-group" style="text-align: center;">
+                                    <button class="btn btn-info btn-circle btn-lg" type="button"><i
+                                            class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-warning btn-circle btn-lg" type="button"><i
+                                            class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox" style="height: 40%">
+                <div style="height: 100%;">
+                    <!--                    <audio controls="controls" style="margin-top: 22%; width: 100%;" :src="recordUrl">-->
+                    <!--                        Your browser does not support the audio element.-->
+                    <!--                    </audio>-->
+                    <section v-if="recordUrl" style="height: 100%;">
+                        <div id="audio-slideshow" class="audio-slideshow" :data-audio="recordUrl">
+                            <div class="audio-slides">
+                                <div data-slide-time="0" alt=""></div>
+                                <div data-slide-time="5" alt=""></div>
+                                <div data-slide-time="10" alt=""></div>
+                                <div data-slide-time="15" alt=""></div>
+                                <div data-slide-time="20" alt=""></div>
+                                <div data-slide-time="25" alt=""></div>
+                            </div>
+                            <div class="audio-control-interface">
+                                <div class="play-pause-container">
+                                    <a href="javascript:;" class="audio-play" tabindex="1"
+                                       style="background-size: contain; margin-top: -10px;">Play</a>
+                                    <a href="javascript:;" class="audio-pause" tabindex="1"
+                                       style="background-size: contain; margin-top: -10px;">Pause</a>
+                                </div>
+                                <div class="time-container">
+                                    <span class="play-time"></span> / <span class="total-time"></span>
+                                </div>
+                                <div class="timeline">
+                                    <div class="timeline-controls"></div>
+                                    <div class="playhead"></div>
+                                </div>
+                                <div class="jplayer"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            cdrinfo: {},
+            questions: [],
+            tquestions: [],
+            questionIds: [],
+            survey: null,
+            currentIndex: 0,
+            currentQId: 0,
+            recordUrl: '',
+            duration: 0,
+            baseRecordUrl: 'http://tj.svdata.cn/yscrm/servlet/filedown?filename='
+        },
+        created: function () {
+            this.loadAnswer();
+            this.loadEntity();
+        },
+        watch: {
+            recordUrl: function (v, n) {
+                this.initPlayer();
+            }
+        },
+        methods: {
+            initPlayer() {
+                $('#audio-slideshow').audioSlideshow({duration: this.duration});
+            },
+            preQ() {
+                this.currentIndex--;
+                this.currentQId = this.questionIds[this.currentIndex];
+                console.log(this.questionIds)
+            },
+            nextQ() {
+                this.currentIndex++;
+                this.currentQId = this.questionIds[this.currentIndex];
+                console.log(this.questionIds);
+            },
+            loadEntity() {
+                let that = this;
+                AJAX.GET('zsCdrinfo/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.cdrinfo = resp.data;
+                    if (that.cdrinfo && that.cdrinfo.recordFile) {
+                        that.duration = that.cdrinfo.call_lasts_time - that.cdrinfo.agent_duration > 0 ? that.cdrinfo.call_lasts_time : that.cdrinfo.agent_duration;
+                        that.recordUrl = that.baseRecordUrl + that.cdrinfo.recordFile + '&showname=11';
+                    } else {
+                        that.recordUrl = '';
+                        toastr.success('未获取到录音信息,请稍后尝试', '错误');
+                    }
+
+                })
+            },
+            loadAnswer() {
+                let that = this;
+                AJAX.GET('zsAnswer/agent/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.zsAnswer = resp.data;
+                    that.questions = resp.data.items;
+                    that.currentQId = that.questions[0].questionId;
+                    for (let i = 0; i < that.questions.length; i++) {
+                        that.questionIds.push(that.questions[i].questionId);
+                        that.questionIds = that.uniq(that.questionIds);
+                    }
+                    that.loadSurvey(that.zsAnswer.surveyId);
+                })
+            },
+            loadSurvey(id) {
+                console.log(id)
+                let that = this;
+                AJAX.GET('zsSurvey/questionAndOptions/' + id, {}, function (resp) {
+                    let result = resp.data;
+                    that.tquestions = result;
+                });
+                AJAX.GET('zsSurvey/' + id, {}, function (resp) {
+                    that.survey = resp.data;
+                });
+            },
+            showOption(question, option) {
+                if (question.orderNum && option.questionOrderNum) {
+                    return question.orderNum === option.questionOrderNum;
+                }
+                if (question.id && option.questionId) {
+                    return question.id === option.questionId;
+                }
+                return false;
+            },
+            isSelected(item) {
+                let answer = this.getAnswer(item.id);
+                return answer;
+            },
+            getAnswer(id) {
+                for (let i = 0; i < this.questions.length; i++) {
+                    if (this.questions[i].optionId === id) {
+                        return this.questions[i];
+                    }
+                }
+                return null;
+            },
+            uniq(arr) {
+                let newArr = []
+                for (let i = 0; i < arr.length; i++) {
+                    if (newArr.indexOf(arr[i]) < 0) {
+                        newArr.push(arr[i])
+                    }
+                }
+                return newArr
+            }
+
+        }
+    });
+</script>

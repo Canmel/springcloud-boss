@@ -18,6 +18,9 @@
         <result column="call_lasts_time" property="callLastsTime"/>
         <result column="task_status" property="taskStatus"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <association property="cdrinfo" javaType="com.camel.survey.model.ZsCdrinfo">
+            <id property="id" column="cdr_id" jdbcType="INTEGER"></id>
+        </association>
     </resultMap>
 
     <resultMap id="BaseFullResultMap" type="com.camel.survey.model.ZsAnswer">
@@ -44,28 +47,30 @@
 
     <select id="list" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"></include>
+        info.id cdr_id,
+        answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at, answer.creator, answer.valid, answer.task_id, answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time
         from
-        zs_answer
+        zs_answer answer
+        LEFT JOIN zs_cdrinfo info ON info.id = answer.agent_UUID
         <where>
-            status = 1
+            answer.status = 1
             <if test="surveyId != null">
-                and survey_id = #{surveyId}
+                and answer.survey_id = #{surveyId}
             </if>
             <if test="validValue != null">
-                and valid = #{validValue}
+                and answer.valid = #{validValue}
             </if>
             <if test="seat != null">
-                and seat like concat('%', #{seat}, '%')
+                and answer.seat like concat('%', #{seat}, '%')
             </if>
             <if test="creator != null">
-                and creator like concat('%', #{creator}, '%')
+                and answer.creator like concat('%', #{creator}, '%')
             </if>
             <if test="startDate != null">
-                and created_at &gt;= #{startDate}
+                and answer.created_at &gt;= #{startDate}
             </if>
             <if test="endDate != null">
-                and created_at &lt;= #{endDate}
+                and answer.created_at &lt;= #{endDate}
             </if>
         </where>
     </select>
@@ -105,6 +110,17 @@
         <where>
             status = 1
             and id = #{id}
+        </where>
+    </select>
+
+    <select id="detailsA" resultMap="BaseFullResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_answer
+        <where>
+            status = 1
+            and agent_UUID = #{agent}
         </where>
     </select>
 

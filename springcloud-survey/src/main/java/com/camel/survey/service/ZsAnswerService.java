@@ -45,6 +45,8 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
      */
     ZsAnswer details(Integer id);
 
+    ZsAnswer details(String agent);
+
     Result invalid(Integer id);
 
     Result deleteAnswer(Integer id);
@@ -52,4 +54,6 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     List<ZsAnswer> selectAllWithConversation(Integer id);
 
     ZsAnswer selectByAgentUuid(String agentUuid);
+
+
 }

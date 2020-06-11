@@ -15,4 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ZsCdrinfoMapper extends BaseMapper<ZsCdrinfo> {
     ZsCdrinfo selectByAgentUUID(String uuid);
+
+    ZsCdrinfo details(String id);
 }

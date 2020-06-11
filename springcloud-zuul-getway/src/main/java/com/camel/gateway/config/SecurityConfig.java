@@ -5,6 +5,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.cors.CorsUtils;
 
 /**
  *                   _ooOoo_
@@ -46,6 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and().headers().frameOptions().disable()
+                .and()
+                .cors().disable()
+                .cors()
+                .and()
+                .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest)
+                .permitAll()
                 .and()
                 .csrf().disable();
     }

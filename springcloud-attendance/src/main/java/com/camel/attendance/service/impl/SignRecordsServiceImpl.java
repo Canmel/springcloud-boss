@@ -12,11 +12,13 @@ import com.camel.attendance.service.ArgsService;
 import com.camel.attendance.service.SignRecordsService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.attendance.utils.ApplicationToolsUtils;
+import com.camel.attendance.utils.LocationUtils;
 import com.camel.attendance.vo.SignDayRecord;
 import com.camel.attendance.vo.SignRecordTotal;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -43,7 +46,7 @@ import java.util.*;
  * 　　　　　　　┃  >   <  ┃
  * 　　　　　　　┃         ┃
  * 　　　　　　　┃... ⌒ ...┃
- * 　　　　　　　┃         ┃
+ * 　　　　　　　┃         ┃signRecords/date/
  *             ┗━┓     ┏━┛
  *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
  *               ┃     ┃   神兽保佑,代码无bug
@@ -95,9 +98,12 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     public Result signIn(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignInTimeException, NotSignOutTimeException {
         // 获取打卡时间的配置，完成记录， 创建快照
         setArgs(signRecords);
-
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, auth2Authentication.getName());
-        signRecords.setUserId(member.getId());
+        Double diameter = LocationUtils.getDistance(signRecords.getSignLat(), signRecords.getSignLng(), signRecords.getDefinedLat(), signRecords.getDefinedLng());
+        if(diameter > signRecords.getRadius()) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您不在允许打卡区域，请移步至该区域再次尝试");
+        }
+        SysUser member = applicationToolsUtils.currentUser();
+        signRecords.setUserId(member.getUid());
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
         signRecords.setType(SignRecordType.SIGN_IN.getCode());
         determine(signRecords);
@@ -110,11 +116,13 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean doSign(SignRecords signRecords, Member member) {
+    public boolean doSign(SignRecords signRecords, SysUser member) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SignRecords si = new SignRecords(member.getId(), simpleDateFormat.format(new Date()));
+        SignRecords si = new SignRecords(member.getUid(), simpleDateFormat.format(new Date()));
+        // 查看当日的有效打卡
         SignRecords result = mapper.selectLastValidRecord(si);
         if (!ObjectUtils.isEmpty(result)) {
+            // 如果已经有效了，即打卡正常签到/签退，无需再次签到/签退
             if (SignRecordDetermine.NORMAL.getValue().equals(result.getDetermine())) {
                 return true;
             }
@@ -128,8 +136,12 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     public Result signOut(SignRecords signRecords, OAuth2Authentication auth2Authentication) throws ParseException, NotSignInTimeException, NotSignOutTimeException {
         // 获取打卡时间的配置，完成记录， 创建快照
         setArgs(signRecords);
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, auth2Authentication.getName());
-        signRecords.setUserId(member.getId());
+        Double diameter = LocationUtils.getDistance(signRecords.getSignLat(), signRecords.getSignLng(), signRecords.getDefinedLat(), signRecords.getDefinedLng());
+        if(diameter > signRecords.getRadius()) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您不在允许打卡区域，请移步至该区域再次尝试");
+        }
+        SysUser member = applicationToolsUtils.currentUser();
+        signRecords.setUserId(member.getUid());
         signRecords.setStatus(SignRecordStatus.NORMAL.getCode());
         signRecords.setType(SignRecordType.SIGN_OUT.getCode());
         determine(signRecords);
@@ -194,14 +206,21 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
             if (Args.DELAY_TIME_CODE.equals(args.getCode())) {
                 signRecords.setDelayTime(Integer.parseInt(args.getValue()));
             }
+            if (Args.SIGN_POSITION.equals(args.getCode())) {
+                signRecords.setPosition(args.getValue());
+            }
+            if (Args.SIGN_RADIUS.equals(args.getCode())) {
+                signRecords.setRadius(Integer.parseInt(args.getValue()));
+            }
         });
     }
 
     @Override
     public List<Map<String, Object>> selectByMonth(String ydate, String mdate, OAuth2Authentication oAuth2Authentication) {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-M-d");
         String month = ydate + "-" + mdate;
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        SignRecords signRecords = new SignRecords(member.getId(), month);
+        SysUser user = applicationToolsUtils.currentUser();
+        SignRecords signRecords = new SignRecords(user.getUid(), month);
         List<String> days = getDayByMonth(ydate, mdate);
         List<Map<String, Object>> result = new ArrayList<>();
         // 查询这个月的签到情况
@@ -210,11 +229,15 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
             Map<String, Object> subResult = new HashMap<>(16);
             subResult.put("createdAt", day);
             signRecordsList.forEach(record -> {
-                if (day.equals(simpleDateFormat.format(record.getCreatedAt()))) {
+                if (day.equals(sf.format(record.getCreatedAt()))) {
                     Integer determineValue = record.getDetermine();
                     Integer signType = record.getType();
                     // 签到
                     if (SignRecordType.SIGN_IN.getValue().equals(signType)) {
+                        // 签到的话，有正常的记录就就不要了
+                        if(!ObjectUtils.isEmpty(subResult.get("sign_in_determine_code")) && subResult.get("sign_in_determine_code").equals(SignRecordDetermine.NORMAL.getValue())) {
+                            return;
+                        }
                         if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
                             subResult.put("sign_in_determine_code", SignRecordDetermine.NORMAL.getValue());
                             subResult.put("sign_in_determine_text", SignRecordDetermine.NORMAL.getName());
@@ -228,6 +251,14 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
 
                         subResult.put("sign_in_time", record.getCreatedAtStr());
                     } else {
+                        // 签退： 取最后一次正常的签退，如果已经有签退的记录，并且还有更新的记录就添加
+                        if(!ObjectUtils.isEmpty(subResult.get("sign_out_determine_code")) && subResult.get("sign_out_determine_code").equals(SignRecordDetermine.NORMAL.getValue())) {
+                            if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
+                                subResult.put("sign_out_determine_code", SignRecordDetermine.NORMAL.getValue());
+                                subResult.put("sign_out_determine_text", SignRecordDetermine.NORMAL.getName());
+                            }
+                            return;
+                        }
                         if (determineValue.equals(SignRecordDetermine.NORMAL.getValue())) {
                             subResult.put("sign_out_determine_code", SignRecordDetermine.NORMAL.getValue());
                             subResult.put("sign_out_determine_text", SignRecordDetermine.NORMAL.getName());
@@ -265,33 +296,30 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
     }
 
     public static List<String> getDayByMonth(String yearParam, String monthParam) {
-        List list = new ArrayList();
-        Calendar calendar = new GregorianCalendar(Integer.parseInt(yearParam), Integer.parseInt(monthParam), 0);
-        int day = calendar.getActualMaximum(Calendar.DATE);
-
-        int y = new Date().getYear() + 1900;
-        int m = new Date().getMonth() + 1;
-        int d = new Date().getDay();
-
-        if (Integer.parseInt(yearParam) == y && Integer.parseInt(monthParam) == m) {
-            day = d;
+        SimpleDateFormat sf = new SimpleDateFormat("YYYY-mm-dd");
+        List<String> list = new ArrayList<String>();
+        Calendar aCalendar = Calendar.getInstance(Locale.CHINA);
+        aCalendar.set(Calendar.YEAR, Integer.parseInt(yearParam));
+        aCalendar.set(Calendar.MONTH, Integer.parseInt(monthParam) - 1);
+        Date date = new Date();
+        int currentMonth = date.getMonth() + 1;
+        int month = Integer.parseInt(monthParam);
+        int day = 0;
+        if(month == currentMonth) {
+            day = aCalendar.get(Calendar.DATE);
+        } if(month < currentMonth) {
+            day = aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         }
-
+        String monStr = String.valueOf(month);
         for (int i = 1; i <= day; i++) {
-            String aDate = null;
-            if (Integer.parseInt(monthParam) < 10 && i < 10) {
-                aDate = yearParam + "-0" + monthParam + "-0" + i;
+            String dayStr = String.valueOf(i);
+            if(month < 0) {
+                monStr = "0" + month;
             }
-            if (Integer.parseInt(monthParam) < 10 && i >= 10) {
-                aDate = yearParam + "-0" + monthParam + "-" + i;
+            if(i < 0) {
+                dayStr = "0" + i;
             }
-            if (Integer.parseInt(monthParam) >= 10 && i < 10) {
-                aDate = yearParam + "-" + monthParam + "-0" + i;
-            }
-            if (Integer.parseInt(monthParam) >= 10 && i >= 10) {
-                aDate = yearParam + "-" + monthParam + "-" + i;
-            }
-
+            String aDate = yearParam + "-" + monStr + "-" + dayStr;
             list.add(aDate);
         }
         return list;
@@ -299,15 +327,15 @@ public class SignRecordsServiceImpl extends ServiceImpl<SignRecordsMapper, SignR
 
     @Override
     public List<SignRecords> day(String day, OAuth2Authentication oAuth2Authentication) {
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        SignRecords signRecords = new SignRecords(member.getId(), day);
+        SysUser user = applicationToolsUtils.currentUser();
+        SignRecords signRecords = new SignRecords(user.getUid(), day);
         return mapper.selectByDay(signRecords);
     }
 
     @Override
     public SignRecordTotal totalByMonth(String month, OAuth2Authentication oAuth2Authentication) {
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        SignRecords signRecords = new SignRecords(member.getId(), month);
+        SysUser user = applicationToolsUtils.currentUser();
+        SignRecords signRecords = new SignRecords(user.getUid(), month);
         List<SignRecords> signRecordsList = mapper.selectTotalByMonth(signRecords);
         List<String> days = getDayByMonth(month.split("-")[0], month.split("-")[1]);
 

@@ -20,6 +20,7 @@ import okhttp3.Response;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +48,7 @@ public class WeixinShareController {
 
 
     @Autowired
-    RestTemplate restTemplate;
+    RedisTemplate redisTemplate;
 
     @Autowired
     private WxConstants wxConstants;
@@ -68,13 +69,9 @@ public class WeixinShareController {
         if(ObjectUtils.isEmpty(wxUser)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");
         }
-        Map<String, String> params = new HashMap<>();
-        params.put("expire_seconds", "2592000");
-        params.put("action_name", "QR_STR_SCENE");
-        params.put("action_info", "{'scene': {'scene_str': 'subscribe'}, 'from': "+ wxUser.getOpenid() +"}");
         JSONObject tokenBody = null;
         try {
-            String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret());
+            String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
             String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
             String  json = "{\"expire_seconds\": 604800, \"action_name\": \"QR_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \""+ wxUser.getOpenid() +"\"}}}";;
             Response responseBody = HttpUtils.httpPostResponse(url, new HashMap<String, String>(), json);
