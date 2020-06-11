@@ -1,0 +1,169 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>{{survey.name}}号码信息查看</h5>
+            <div class="ibox-tools">
+                <div class="ibox-tools">
+                    <a v-on:click="importPhoneInformation()"
+                       data-pjax class="btn btn-success btn-xs">导入</a>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入号码信息" class="input-sm form-control search-input"
+                               v-model="pageInfo.mobile"> <span
+                            class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>手机号</th>
+                        <th>号码信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in items">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td>{{item.mobile}}</td>
+                        <td>{{item.information}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
+
+        </div>
+    </div>
+    <div class="modal" id="importModal" ng-controller="KisBpmChoseAssignmentCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="importModalLabel">选择导入文件</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <div>
+                            <p>您可以尝试文件拖拽或者点击添加文件按钮，来上传文件</p>
+                            <div id="uploader" class="wu-example">
+                                <div class="queueList">
+                                    <div id="dndArea" class="placeholder">
+                                        <!--                                        <div id="filePickerss"></div>-->
+                                        <p>将文件拖到这里</p>
+                                    </div>
+                                </div>
+                                <div class="statusBar" style="display:none;">
+                                    <div class="progress">
+                                        <span class="text">0%</span>
+                                        <span class="percentage"></span>
+                                    </div>
+                                    <div class="info"></div>
+                                    <div class="btns">
+                                        <div id="filePicker2"></div>
+                                        <div class="uploadBtn">开始上传</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+                surveyId:''
+            },
+            items: [{}],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
+            survey: {},
+        },
+        created: function () {
+            this.loadEntity();
+            this.loginMaster();
+            this.pagequery();
+        },
+        methods: {
+            loadEntity() {
+                let that = this;
+                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.survey = {
+                        id: resp.data.id,
+                        name: resp.data.name,
+                        monit: resp.data.monit,
+                        currentNum: resp.data.currentNum,
+                        collectNum: resp.data.collectNum,
+                        projectId: resp.data.projectId,
+                        state: resp.data.state ? resp.data.state.value : null
+                    };
+                    that.pageInfo.surveyId=resp.data.id;
+                })
+            },
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                    }
+
+                })
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsPhoneInformation', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            importSurvey() {
+                $("#importModal").modal('show');
+            },
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                })
+            },
+        },
+    });
+</script>
