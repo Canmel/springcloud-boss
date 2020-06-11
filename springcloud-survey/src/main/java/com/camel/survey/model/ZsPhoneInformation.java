@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
 import lombok.Data;
 
 /**
@@ -28,7 +29,9 @@ public class ZsPhoneInformation extends BasePaginationEntity {
     private Date createdAt;
     @TableId(value = "creator")
     private Integer creatorId;
-    /**
+
+    private SysUser creator;
+  /**
      * 问卷ID
      */
     private Integer surveyId;
