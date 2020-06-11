@@ -69,8 +69,8 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
         Wrapper<ZsSeat> zsSeatWrapper = new EntityWrapper<>();
         zsSeatWrapper.eq("uid", userId);
         delete(zsSeatWrapper);
-        zsSeatWrapper.eq("uid", null);
-        zsSeatWrapper.eq("seat_num", seatNum);
-        return delete(zsSeatWrapper);
+        Wrapper<ZsSeat> zsSeatWrapper1 = new EntityWrapper<>();
+        zsSeatWrapper1.eq("seat_num", seatNum);
+        return delete(zsSeatWrapper1);
     }
 }
