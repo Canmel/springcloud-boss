@@ -18,6 +18,12 @@
         <result column="call_lasts_time" property="callLastsTime"/>
         <result column="task_status" property="taskStatus"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="review_status" property="reviewStatus" />
+        <result column="review_msg" property="reviewMsg" />
+        <result column="reviewer" property="reviewerId" />
+        <association property="reviewer" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="reviewer" jdbcType="INTEGER"></id>
+        </association>
         <association property="cdrinfo" javaType="com.camel.survey.model.ZsCdrinfo">
             <id property="id" column="cdr_id" jdbcType="INTEGER"></id>
         </association>
@@ -42,13 +48,16 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, survey_id, agent_UUID, status, record, seat, created_at, creator, valid, task_id, task_status,start_time,end_time,call_lasts_time
+        id, survey_id, agent_UUID, status, record, seat, created_at, creator,
+         valid, task_id, task_status,start_time,end_time,call_lasts_time,
+         review_status, review_msg, reviewer
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
         info.id cdr_id,
-        answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at, answer.creator, answer.valid, answer.task_id, answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time
+        answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at, answer.creator, answer.valid, answer.task_id, answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,
+        answer.review_status, answer.review_msg, answer.reviewer
         from
         zs_answer answer
         LEFT JOIN zs_cdrinfo info ON info.id = answer.agent_UUID
@@ -152,5 +161,26 @@
         where
         status=1
         and agent_UUID=#{agentUuid}
+    </select>
+
+    <select id="randomList" resultMap="BaseResultMap">
+        SELECT
+            result.*
+        FROM
+            (
+            SELECT
+                cdrinfo.id cdr_id,
+                answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at, answer.creator, answer.valid, answer.task_id, answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time
+            FROM
+                zs_answer answer
+                LEFT JOIN zs_cdrinfo cdrinfo ON cdrinfo.id = answer.agent_UUID
+            WHERE
+                answer.survey_id = #{surveyId}
+                AND cdrinfo.id IS NOT NULL
+            ) result
+        ORDER BY
+            RAND()
+            LIMIT 0,
+            10;
     </select>
 </mapper>

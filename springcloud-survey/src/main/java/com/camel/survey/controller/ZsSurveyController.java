@@ -215,6 +215,12 @@ public class ZsSurveyController extends BaseCommonController {
         myFileTransterBackUpdate.update(request);
     }
 
+
+    @GetMapping("/reviewRate/{id}")
+    public Result reviewRate(@PathVariable Integer id) {
+        return ResultUtil.success("成功", service.reviewRate(id));
+    }
+
     /**
      * 获取service
      */

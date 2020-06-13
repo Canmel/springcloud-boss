@@ -13,6 +13,7 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.Args;
 import com.camel.survey.model.ZsSeat;
 import com.camel.survey.service.ZsSeatService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,16 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     @Autowired
     public ZsSeatMapper mapper;
 
+    @Autowired
+    public ApplicationToolsUtils applicationToolsUtils;
+
     @Override
     public PageInfo<ZsSeat> pageQuery(ZsSeat zsSeat) {
         PageInfo pageInfo = PageHelper.startPage(zsSeat.getPageNum(), zsSeat.getPageSize()).doSelectPageInfo(()-> mapper.list(zsSeat));
+        List<ZsSeat> seats = (List<ZsSeat>) pageInfo.getList();
+        seats.forEach(record -> {
+            record.setUser(applicationToolsUtils.getUser(record.getUid()));
+        });
         return pageInfo;
     }
 

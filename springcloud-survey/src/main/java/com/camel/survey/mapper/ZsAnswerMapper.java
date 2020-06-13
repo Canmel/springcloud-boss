@@ -41,4 +41,6 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
     List<ZsAnswer> selectAllWithConversation(Integer id);
 
     ZsAnswer selectByAgentUuid(String agentUuid);
+
+    List<ZsAnswer> randomList(Integer surveyId);
 }

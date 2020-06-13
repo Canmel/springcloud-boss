@@ -96,15 +96,11 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
     }
 
     @Override
-    public List<ZsWorkShift> selectByUidandSurveyId(Integer userId,Integer surveyId) {
-        List<ZsWorkRecord> zsWorkRecords = service.selectZsWorkRListByUid(userId);
-        List<ZsWorkShift> zsWorkShifts = new ArrayList<>();
-        for(int i=0;i<zsWorkRecords.size();i++){
-            if(selectById(zsWorkRecords.get(i).getWsId()).getSurveyId()==surveyId){
-                zsWorkShifts.add(selectById(zsWorkRecords.get(i).getWsId()));
-            }
-        }
-        return zsWorkShifts;
+    public ZsWorkShift selectByUidandSurveyId(Integer userId,Integer surveyId) {
+        ZsWorkShift ws = new ZsWorkShift();
+        ws.setCreatorId(userId);
+        ws.setSurveyId(surveyId);
+        return mapper.findWsByShift(ws);
     }
 
 

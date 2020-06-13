@@ -20,10 +20,10 @@
                                             <tbody>
                                             <tr v-for="item in applies">
                                                 <td class="client-avatar"><span class="fa fa-user"></span></td>
-                                                <td><a data-toggle="tab" href="#contact-1" class="client-link">{{item.creator.username}}</a>
+                                                <td><a data-toggle="tab" href="#contact-1" class="client-link">{{item.creator ? item.creator.username : ''}}</a>
                                                 </td>
                                                 <td class="contact-type"><i class="fa fa-phone"> </i>
-                                                <td> {{item.creator.mobile}}</td>
+                                                <td> {{item.creator ? item.creator.mobile : ''}}</td>
                                                 </td>
                                                 <td> {{item.createdAt}}</td>
                                                 <td class="client-status">

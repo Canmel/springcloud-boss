@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
 import lombok.Data;
 
 /**
@@ -41,6 +42,9 @@ public class ZsSeat extends BasePaginationEntity {
      * 坐席描述
      */
     private String description;
+
+    @TableField(exist = false)
+    private SysUser user;
 
     @Override
     public String toString() {

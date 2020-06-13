@@ -718,8 +718,37 @@
     <div class="row" style="height: 100%">
         <div class="col-sm-3" style="height: 100%">
             <div class="ibox" style="height: 99%">
+                <div class="ibox-title">
+                    <h5>待复核列表</h5>
+                </div>
                 <div class="ibox-content" style="height: 90%">
-                    显示一些问卷信息
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>被访人</th>
+                                <th>时长</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, index) in items">
+                                <td>{{item.creator}}</td>
+                                <td>{{item.callLastsTime ? item.callLastsTime + '秒' : '未知'}}</td>
+                                <td>
+                                    <button type="button" v-on:click="checkRecord(item)" v-if="reviewShow(item)"
+                                            class="btn btn-info btn-xs" >复核
+                                    </button>
+                                    <span v-if="isReviewing(item)">复核中</span>
+                                    <span v-if="!item.cdrinfo">无数据</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <button class="btn btn-primary " type="button" @click="refreshList()"><i class="fa fa-refresh"></i> <span class="bold">换一批</span></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -728,6 +757,12 @@
             <div class="" style="height: 60%">
                 <div class="col-sm-9" style="height: 100%; padding: 0">
                     <div class="ibox" style="height: 99%">
+                        <div class="ibox-title">
+                            <!--<h5>{{// survey.name}}</h5>-->
+                            <div class="ibox-tools">
+                                <a v-on:click=backToListPage() class="btn btn-success btn-xs">返回</a>
+                            </div>
+                        </div>
                         <div class="ibox-content" style="height: 90%">
                             <div class="text-center">
                                 <h2><b>{{survey.name}}</b></h2>
@@ -736,7 +771,7 @@
                                  v-if="item.id === currentQId">
                                 <div class="col-sm-12"><label class="col-sm-3 control-label"
                                                               style="text-align: right;"><span
-                                        class="question-index">1</span>.</label> <label class="col-sm-9 control-label"
+                                        class="question-index">{{index + 1}}</span>.</label> <label class="col-sm-9 control-label"
                                                                                         style="padding-left: 0px; text-align: left;"><span
                                         class="editable question-title">{{item.name}}</span></label></div>
                                 <div class="col-sm-3"></div>
@@ -822,14 +857,14 @@
                             <div style="height: 70%;"></div>
                             <form id="defaultForm" method="post" class="form-horizontal" style="height: 30%;">
                                 <div class="form-group has-feedback">
-                                    <textarea type="text" class="form-control" cols="2" name="remark"
+                                    <textarea type="text" class="form-control" cols="2" name="remark" v-model="review.reviewMsg"
                                               placeholder="请给出复核意见"></textarea>
                                 </div>
                                 <div class="form-group" style="text-align: center;">
-                                    <button class="btn btn-info btn-circle btn-lg" type="button"><i
+                                    <button class="btn btn-info btn-circle btn-lg" type="button" @click="agree()"><i
                                             class="fa fa-check"></i>
                                     </button>
-                                    <button class="btn btn-warning btn-circle btn-lg" type="button"><i
+                                    <button class="btn btn-warning btn-circle btn-lg" type="button" @click="refuse()"><i
                                             class="fa fa-times"></i>
                                     </button>
                                 </div>
@@ -882,18 +917,31 @@
         el: '#subContainer',
         data: {
             applicationContextRootPath: '/survey/',
+            pageInfo: {
+                surveyId: sessionStorage.getItem('surveyId'),
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10//每页显示条目个数不传默认10
+            },
+            items: [{}], //待检列表
             cdrinfo: {},
             questions: [],
             tquestions: [],
             questionIds: [],
             survey: null,
+            zsAnswer: {},
             currentIndex: 0,
             currentQId: 0,
             recordUrl: '',
             duration: 0,
-            baseRecordUrl: 'http://tj.svdata.cn/yscrm/servlet/filedown?filename='
+            baseRecordUrl: 'http://tj.svdata.cn/yscrm/servlet/filedown?filename=',
+            review: {
+                reviewMsg: '',
+                reviewStatus: 0
+            }
         },
         created: function () {
+            this.pagequery();
             this.loadAnswer();
             this.loadEntity();
         },
@@ -903,6 +951,37 @@
             }
         },
         methods: {
+            refreshList(){
+                this.pagequery();
+            },
+            checkRecord(answer) {
+                sessionStorage.setItem('editParams', answer.agentUUID);
+                sessionStorage.setItem('surveyId', answer.surveyId);
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/survey/check.html',
+                    container: '.page-container'
+                });
+            },
+            isReviewing(item){
+                return item.cdrinfo && item.agentUUID === sessionStorage.getItem('editParams');
+            },
+            reviewShow(item) {
+                return item.cdrinfo && item.agentUUID !== sessionStorage.getItem('editParams');
+            },
+            refuse() {
+                this.review.reviewStatus = 2;
+                this.review.answerId = this.zsAnswer.id;
+                AJAX.POST("zsAnswer/review", this.review, function (resp) {
+                    toastr.success(resp.msg);
+                });
+            },
+            agree() {
+                this.review.reviewStatus = 1;
+                this.review.answerId = this.zsAnswer.id;
+                AJAX.POST("zsAnswer/review", this.review, function (resp) {
+                    toastr.success(resp.msg);
+                });
+            },
             initPlayer() {
                 $('#audio-slideshow').audioSlideshow({duration: this.duration});
             },
@@ -983,8 +1062,18 @@
                     }
                 }
                 return newArr
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsAnswer/randoms', this.pageInfo, function (resp) {
+                    that.items = resp.data;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            backToListPage() {
+                toPage('pages/survey/details_det.html', this.zsAnswer.surveyId);
             }
-
         }
     });
 </script>

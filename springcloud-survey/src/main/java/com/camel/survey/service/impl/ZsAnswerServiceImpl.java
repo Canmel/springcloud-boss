@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsYesOrNo;
@@ -14,6 +15,7 @@ import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsAnswerService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageInfo;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.activemq.command.ActiveMQTopic;
@@ -72,6 +74,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
 
     @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
+
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
     public PageInfo<ZsAnswer> selectPage(ZsAnswer entity) {
@@ -230,5 +235,16 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     @Override
     public ZsAnswer selectByAgentUuid(String agentUuid) {
         return mapper.selectByAgentUuid(agentUuid);
+    }
+
+    @Override
+    public boolean review(Integer answerId, Integer reviewStatus, String reviewMsg) {
+        SysUser user = applicationToolsUtils.currentUser();
+        return this.updateById(new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid()));
+    }
+
+    @Override
+    public List<ZsAnswer> randomList(ZsAnswer zsAnswer) {
+        return mapper.randomList(zsAnswer.getSurveyId());
     }
 }

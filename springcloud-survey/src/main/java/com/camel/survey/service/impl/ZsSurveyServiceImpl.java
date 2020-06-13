@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import cn.hutool.core.util.NumberUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -34,6 +35,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -100,7 +102,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     private ZsSurveyRecordService surveyRecordService;
 
     @Autowired
-    private ZsAnswerItemService answerItemService;
+    private ZsAnswerService answerService;
 
     public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
@@ -403,5 +405,21 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "问卷状态更改失败");
     }
 
+    @Override
+    public String reviewRate(Integer id) {
+        Wrapper wrapper = new EntityWrapper();
+        wrapper.eq("survey_id", id);
+        wrapper.eq("status", ZsStatus.CREATED.getValue());
+        Integer count = answerService.selectCount(wrapper);
+        wrapper.in("review_status", new Integer[]{1, 2});
+        Integer countReviews = answerService.selectCount(wrapper);
+        if(0 == count || 0 == countReviews) {
+            return "0";
+        }
+        NumberFormat format = NumberFormat.getPercentInstance();
+        format.setMaximumFractionDigits(2);
+        format.setMinimumFractionDigits(2);
 
+        return format.format(countReviews.floatValue()/count.floatValue());
+    }
 }

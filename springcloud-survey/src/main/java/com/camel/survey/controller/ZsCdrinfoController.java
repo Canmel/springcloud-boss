@@ -3,8 +3,8 @@ package com.camel.survey.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
-import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsAnswer;
@@ -13,7 +13,6 @@ import com.camel.survey.service.ZsAnswerService;
 import com.camel.survey.service.ZsCdrinfoService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.attoparser.trace.MarkupTraceEvent;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -21,11 +20,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
-import com.camel.core.controller.BaseCommonController;
-
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>

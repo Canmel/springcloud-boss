@@ -115,4 +115,6 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
     Integer avgTime(Integer id);
 
     Result stopOrUse(Integer id);
+
+    String reviewRate(Integer id);
 }
