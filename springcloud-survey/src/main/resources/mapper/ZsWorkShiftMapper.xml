@@ -51,16 +51,26 @@
 
     <select id="findWsByShift" resultMap="BaseResultMap">
         SELECT
-          shift.id, shift.cname, shift.cuname, shift.address, shift.survey_id, shift.status,shift.start_date,shift.start_time,shift.end_time,record.creator,shift.created_at
+        shift.id,
+        shift.cname,
+        shift.cuname,
+        shift.address,
+        shift.survey_id,
+        shift. STATUS,
+        shift.start_date,
+        shift.start_time,
+        shift.end_time,
+        record.creator,
+        shift.created_at
         FROM
         zs_work_record record
         LEFT JOIN zs_work_shift shift ON shift.id = record.ws_id
         WHERE
-        record.STATUS = 1
+        record. STATUS = 1
         AND record.creator = #{creatorId}
-        AND shift.start_date = DATE_FORMAT( now( ), '%Y-%m-%d' )
-        AND DATE_FORMAT( now( ), '%H:%i' ) <![CDATA[ > ]]> shift.start_date
-        AND DATE_FORMAT( now( ), '%H:%i' ) <![CDATA[ < ]]> shift.end_time
+        AND shift.start_date = DATE_FORMAT(now(), '%Y-%m-%d')
+        AND TIME_TO_SEC(now()) <![CDATA[ > ]]> TIME_TO_SEC(shift.start_time)
+        AND TIME_TO_SEC(now()) <![CDATA[ < ]]> TIME_TO_SEC(shift.end_time)
         AND shift.survey_id = #{surveyId}
     </select>
 
