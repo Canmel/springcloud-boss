@@ -57,6 +57,7 @@
     <!-- Top Navigation -->
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
+        <h3><span>{{survey.informationTemplate}}</span></h3>
     </header>
     <section>
         <div class="row question-welcome" v-if="current === 1">
@@ -179,6 +180,9 @@
     </section>
 </div>
 </body>
+
+<script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
+<script src="/survey/js/validateIsMain.js"></script>
 <script>
     new Vue({
         el: '#container',
@@ -187,7 +191,8 @@
             pageInfo: {},
             survey: {
                 name: '',
-                endShow: '问卷结束，感谢您的配合！'
+                endShow: '问卷结束，感谢您的配合！',
+                informationTemplate:'',
             },
             paramsPair: [],
             questions: [],
@@ -202,15 +207,54 @@
             showSubmit: false,
             endInfo: '问卷结束，感谢您的配合！',
             unclear:0,
-            tmpNextAll: []
+            tmpNextAll: [],
+            phoneInformation:{
+                mobile:'',
+                surveyId:'',
+                information:'',
+            },
         },
         created: function () {
             this.loadParams();
             this.loadSurvey();
+            if(this.survey.informationTemplate!=null){
+                this.loadInformation();
+            }
         },
         methods: {
-            startSurvey() {
-                this.current += 1;
+            loadInformation() {
+                let that=this;
+                this.phoneInformation.mobile=this.getParams('phone');
+                this.phoneInformation.surveyId=this.survey.id;
+                AJAX.GET('zsPhoneInformation/selectByMobile' ,this.phoneInformation , function (resp) {
+                    if(resp.data!=null){
+                        that.phoneInformation.information = resp.data.information;
+                        that.phoneInformation.mobile = resp.data.mobile;
+                        that.phoneInformation.surveyId = resp.data.surveyId;
+                        let result=that.phoneInformation.information.split("，");
+                        console.log(result);
+                        if(that.count(that.survey.informationTemplate,"${param}")==result.length){
+                            for(let i=0;i<result.length;i++){
+                                that.survey.informationTemplate=that.survey.informationTemplate.replace("${param}",result[i]);
+                            }
+                        }
+                        else{
+                            alert("被访对象数据不正确，请联系管理员");
+                        }
+                    }
+                    else{
+                            alert("被访对象数据为空，请联系管理员");
+                    }
+                });
+            },
+            count(str,s){
+                let count=0;
+                for(let i=0;i<(str.length-s.length+1);i++){
+                    if(str.substring(i,i+s.length)===s){
+                        count++;
+                    }
+                }
+                return count;
             },
             validSurvey() {
                 var that = this;
