@@ -1,10 +1,13 @@
 package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.io.Serializable;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.survey.annotation.ExcelAnnotation;
 import lombok.Data;
 
 /**
@@ -16,7 +19,7 @@ import lombok.Data;
  * @since 2020-06-10
  */
 @Data
-public class ZsPhoneInformation extends BasePaginationEntity {
+public class ZsPhoneInformation extends ZsSurveyBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,20 +28,15 @@ public class ZsPhoneInformation extends BasePaginationEntity {
     /**
      * 手机号码
      */
+    @ExcelAnnotation(columnName = "手机号", columnIndex = 0)
     private String mobile;
-    private Date createdAt;
-    @TableId(value = "creator")
-    private Integer creatorId;
 
-    private SysUser creator;
   /**
      * 问卷ID
      */
     private Integer surveyId;
-    /**
-     * 状态
-     */
-    private Integer status;
+
+    @ExcelAnnotation(columnName = "电话号码信息", columnIndex = 1)
     private String information;
 
 
@@ -47,10 +45,7 @@ public class ZsPhoneInformation extends BasePaginationEntity {
         return "ZsPhoneInformation{" +
         ", id=" + id +
         ", mobile=" + mobile +
-        ", createdAt=" + createdAt +
-        ", creatorId=" + creatorId +
         ", surveyId=" + surveyId +
-        ", status=" + status +
         ", information=" + information +
         "}";
     }
