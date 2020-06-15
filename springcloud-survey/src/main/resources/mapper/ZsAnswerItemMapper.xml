@@ -124,7 +124,17 @@
     </select>
 
     <select id="selectSeatTotal" resultType="hashmap">
-        select a.seat, count(1) questionNum, COUNT(DISTINCT a.id) surveyNum from zs_answer_item ai left join zs_answer a on ai.answer_id = a.id where a.survey_id = #{id} group by a.seat
+        SELECT
+            a.seat,
+            count( DISTINCT a.id, ai.question_id ) questionNum,
+            COUNT( DISTINCT a.id ) surveyNum
+        FROM
+            zs_answer_item ai
+            LEFT JOIN zs_answer a ON ai.answer_id = a.id
+        WHERE
+            a.survey_id = #{id}
+        GROUP BY
+            a.seat;
     </select>
 
     <update id="chageInvalidByAnswer">
