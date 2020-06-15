@@ -45,6 +45,10 @@
                                 <div class="panel-heading">
                                     {{item['name']}}
                                     <div class="ibox-tools">
+                                        <a class="collapse-link" data-toggle="tooltip" title="查看号码信息"
+                                           v-on:click="showPhoneDetails(item)" v-if="resultDev">
+                                            <i class="fa fa-phone"></i>
+                                        </a>
                                         <a class="collapse-link" data-toggle="tooltip" title="查看"
                                            v-on:click="showSurveyDetails(item)" v-if="resultDev">
                                             <i class="fa fa-eye"></i>
@@ -56,7 +60,7 @@
                                         <a class="close-link" data-toggle="tooltip" title="删除" v-if="resultDev">
                                             <i class="fa fa-times"></i>
                                         </a>
-                                        <a class="close-link" data-toggle="tooltip" title="删除"
+                                        <a class="close-link" data-toggle="tooltip" title="导入"
                                            v-on:click="importSurvey()">
                                             <i class="fa fa-upload"></i>
                                         </a>
@@ -190,6 +194,20 @@
                                        aria-invalid="true" v-model="new_survey.endShow">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">可选“不清楚”数：</label>
+                            <div class="col-sm-8">
+                                <input name="unclear_count" class="form-control" type="text" aria-required="true"
+                                       aria-invalid="true" v-model="new_survey.unclearCount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">号码信息模板：</label>
+                            <div class="col-sm-8">
+                                <input name="information_template" class="form-control" type="text" aria-required="true"
+                                       aria-invalid="true" v-model="new_survey.informationTemplate">
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -226,7 +244,9 @@
                 startShow: '',
                 endShow: '',
                 collectPhone: '0',
-                monit: '0'
+                monit: '0',
+                informationTemplate:'',
+                unclearCount:'',
             },
             edit_mode: false,
             exams_options: [],
@@ -284,8 +304,10 @@
                     exams: [],
                     startShow: '',
                     endShow: '',
-                    monit: 0
-                };
+                    monit: 0,
+                    informationTemplate:'',
+                    unclearCount:'',
+               };
                 this.new_survey.collectType = '1';
             },
             submitSurvey() {
@@ -333,16 +355,9 @@
                     exams: item.exams,
                     startShow: item.startShow,
                     endShow: item.endShow,
-                    monit: 0
-                }
-            },
-            resetForm() {
-                this.new_survey = {
-                    id: '',
-                    name: '',
-                    projectId: '',
-                    collectNum: '',
-                    monit: 0
+                    monit: 0,
+                    informationTemplate:item.informationTemplate,
+                    unclearCount:item.unclearCount,
                 }
             },
             showSurveyDetails(item) {
@@ -351,7 +366,10 @@
                 }else {
                     toPage('pages/survey/details_new.html', item.id)
                 }
-            }
+            },
+            showPhoneDetails(item) {
+                toPage('pages/survey/phone_details.html', item.id)
+            },
         }
     });
 
