@@ -56,6 +56,10 @@
 <div id="container">
     <!-- Top Navigation -->
     <header class="codrops-header">
+        <div style="float: left;">
+            <span style="color: black;">计时：</span>
+            <span style="color: black;" id="time">00:00</span>
+        </div>
         <h1>智慧调查<span>{{survey.name}}</span></h1>
         <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
@@ -72,7 +76,7 @@
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
                     <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span style="font-size: 12px;"
-                                                                                       v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
+                          v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 1 && showOptions(item, opt)">
@@ -232,9 +236,6 @@
                     if(resp.data!=null){
                         that.phoneInformation.information = resp.data.information;
                         that.pageParams= JSON.parse(that.phoneInformation.information);
-                        // if(that.survey.informationTemplate.split("$").length!=that.phoneInformation.information.split(",").length+1){
-                        //     alert("被访对象数据不正确，请联系管理员");
-                        // }
                     }
                     else{
                         alert("被访对象数据为空，请联系管理员");
@@ -548,5 +549,49 @@
             }
         }
     });
+</script>
+
+<script>
+
+    //我需要两个变量来分别存储秒数和分钟数
+    var second = 0;
+    var minute = 0;
+    //然后需要一个变量来存储我的定时器
+    var int;
+
+    function timer(){  //声明一个timer函数，在这个函数里实现我的功能。
+        second += 1;  //秒数加1
+        if(second > 59){
+            second = 0;  //当秒数大于59的时候，让秒数重新归零。
+            minute += 1;  //分钟数加1
+        }
+        //然后将秒和分钟追加到dom里，为了保持00:00这样的格式，我们需要做一些简单的判断
+        if(minute < 10){
+            document.getElementById('time').innerHTML = '0' + minute + ":0" + second;
+            if(second < 10){
+                document.getElementById('time').innerHTML = '0' + minute + ":0" + second;
+            }else{
+                document.getElementById('time').innerHTML = '0' + minute + ":" + second;
+            }
+        }else{
+            document.getElementById('time').innerHTML = minute + ":0" + second;
+            if(second < 10){
+                document.getElementById('time').innerHTML = minute + ":0" + second;
+            }else{
+                document.getElementById('time').innerHTML = minute + ":" + second;
+            }
+        }
+    }
+    //然后我创建一个定时器来执行timer函数，在js中，1000毫秒等于1秒。我可以让这个定时器每隔1000毫秒执行一次timer函数。我想要的效果是点击开始按钮的时候再执行这个定时器。
+    //我可以把这个定时器放在一个函数里，在我点击开始按钮的时候运行这个函数即可。
+    function start(){
+        //在每次点击开始按钮时，我们需要先清除一下定时器，然后再执行定时器，原因是如果不清除，每次点击开始按钮，定时器都会累加，会导致计时越来越快的bug
+        clearInterval(int);
+        int = setInterval(timer,1000);
+    }
+    jQuery(document).ready(function(){
+        start();
+    });
+
 </script>
 </html>
