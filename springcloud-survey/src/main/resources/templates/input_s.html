@@ -57,13 +57,13 @@
     <!-- Top Navigation -->
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
-        <h3><span>{{survey.informationTemplate}}</span></h3>
+        <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
     <section>
         <div class="row question-welcome" v-if="current === 1">
             <div class="text-center">
                 <span>
-                    {{survey.startShow}}
+                    {{textFilter(survey.startShow)}}
                 </span>
             </div>
         </div>
@@ -71,7 +71,7 @@
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
-                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;"
+                    <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span style="font-size: 12px;"
                                                                                        v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
                     <div class="question-option" v-for="(opt, i) in item.options"
@@ -85,7 +85,7 @@
                                                                   :value="opt.id + '_' +  opt.name"
                                                                   :content="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
-                                <span>{{opt.name}}</span>
+                                <span>{{textFilter(opt.name)}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
                                        v-model="opt.name">
                             </label>
@@ -104,7 +104,7 @@
                                                                   :value="opt.id + '_' +  opt.name"
                                                                   :content="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
-                                <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
+                                <span :value="opt.id + '_' +  opt.name">{{textFilter(opt.name)}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
                                        v-model="opt.name">
                             </label>
@@ -114,7 +114,7 @@
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 3 && showOptions(item, opt)">
                         <div>
-                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
+                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{textFilter(opt.name)}}</span>
                             <span class="star-box">
                             <input type="radio" value="5"
                                    :name="'star_' + item.id + '_' + opt.id"
@@ -152,7 +152,7 @@
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 4 && showOptions(item, opt)">
                         <div>
-                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
+                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{textFilter(opt.name)}}</span>
                             <input type="text" :name="'answer_' + item.id + '_' + opt.id" class="form-control"
                                    style="display: initial; width: auto;">
                         </div>
@@ -172,7 +172,7 @@
         <div id="end" class="simform" autocomplete="off" style="font-size: 14px; display: none;">
             <div class="simform-inner">
                 <div class="question">
-                    <h4 class="question-title" style="font-size: 30px;">{{survey.endShow}}</h4>
+                    <h4 class="question-title" style="font-size: 30px;">{{textFilter(survey.endShow)}}</h4>
                 </div>
             </div>
         </div>
@@ -213,48 +213,48 @@
                 surveyId:'',
                 information:'',
             },
+            pageParams:{},
+
         },
         created: function () {
             this.loadParams();
             this.loadSurvey();
             if(this.survey.informationTemplate!=null){
-                this.loadInformation();
+                this.initPageParams();
             }
         },
         methods: {
-            loadInformation() {
+            initPageParams() {
                 let that=this;
                 this.phoneInformation.mobile=this.getParams('phone');
                 this.phoneInformation.surveyId=this.survey.id;
-                AJAX.GET('zsPhoneInformation/selectByMobile' ,this.phoneInformation , function (resp) {
+                AJAX.GET('zsPhoneInformation/selectByMobileAndSurvey' ,this.phoneInformation , function (resp) {
                     if(resp.data!=null){
                         that.phoneInformation.information = resp.data.information;
-                        that.phoneInformation.mobile = resp.data.mobile;
-                        that.phoneInformation.surveyId = resp.data.surveyId;
-                        let result=that.phoneInformation.information.split("，");
-                        console.log(result);
-                        if(that.count(that.survey.informationTemplate,"${param}")==result.length){
-                            for(let i=0;i<result.length;i++){
-                                that.survey.informationTemplate=that.survey.informationTemplate.replace("${param}",result[i]);
-                            }
-                        }
-                        else{
-                            alert("被访对象数据不正确，请联系管理员");
-                        }
+                        that.pageParams= JSON.parse(that.phoneInformation.information);
+                        // if(that.survey.informationTemplate.split("$").length!=that.phoneInformation.information.split(",").length+1){
+                        //     alert("被访对象数据不正确，请联系管理员");
+                        // }
                     }
                     else{
-                            alert("被访对象数据为空，请联系管理员");
+                        alert("被访对象数据为空，请联系管理员");
                     }
                 });
             },
-            count(str,s){
-                let count=0;
-                for(let i=0;i<(str.length-s.length+1);i++){
-                    if(str.substring(i,i+s.length)===s){
-                        count++;
+            textFilter(text){
+                if(text!=null){
+                    let that = this;
+                    for(let i=0;i<Object.keys(that.pageParams).length;i++){
+                        let str="{"+Object.keys(that.pageParams)[i]+"}";
+                        if(text.includes(str)){
+                            text=text.replace(new RegExp(str,'g'),Object.values(that.pageParams)[i]);
+                        }
+                    }
+                    if(text.includes("{")&&text.includes("}")){
+                        alert("被访对象数据不正确，请联系管理员");
                     }
                 }
-                return count;
+                return text;
             },
             validSurvey() {
                 var that = this;

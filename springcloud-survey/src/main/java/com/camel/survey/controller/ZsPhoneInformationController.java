@@ -49,7 +49,7 @@ public class ZsPhoneInformationController extends BaseCommonController {
      * 根据号码获取详情
      */
     @AuthIgnore
-    @GetMapping("/selectByMobile")
+    @GetMapping("/selectByMobileAndSurvey")
     public Result details(ZsPhoneInformation zsPhoneInformation) {
         return ResultUtil.success(service.selectByMobileAndSurvey(zsPhoneInformation));
     }
