@@ -1,0 +1,575 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>{{survey.name}}：号码信息查看</h5>
+            <div class="ibox-tools">
+                <div class="ibox-tools">
+                    <a v-on:click="importPhoneInformation()"
+                       data-pjax class="btn btn-success btn-xs">导入</a>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入号码信息" class="input-sm form-control search-input"
+                               v-model="pageInfo.mobile"> <span
+                            class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>手机号</th>
+                        <th>号码信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in items">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td>{{item.mobile}}</td>
+                        <td>{{item.information}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
+
+        </div>
+    </div>
+    <div class="modal" id="importModal" ng-controller="KisBpmChoseAssignmentCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="importModalLabel">选择导入文件</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <div>
+                            <p>您可以尝试文件拖拽来上传文件</p>
+                            <div id="uploader" class="wu-example">
+                                <div class="queueList">
+                                    <div id="dndArea" class="placeholder">
+                                        <!--                                        <div id="filePickerss"></div>-->
+                                        <p>将文件拖到这里</p>
+                                    </div>
+                                </div>
+                                <div class="statusBar" style="display:none;">
+                                    <div class="progress">
+                                        <span class="text">0%</span>
+                                        <span class="percentage"></span>
+                                    </div>
+                                    <div class="info"></div>
+                                    <div class="btns">
+                                        <div id="filePicker2"></div>
+                                        <div class="uploadBtn">开始上传</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var detailsVue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+                surveyId:''
+            },
+            items: [{}],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
+            survey: {},
+        },
+        created: function () {
+            this.loadEntity();
+            this.loginMaster();
+            this.pagequery();
+        },
+        methods: {
+            loadEntity() {
+                let that = this;
+                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams'), {}, function (resp) {
+                    that.survey = {
+                        id: resp.data.id,
+                        name: resp.data.name,
+                        monit: resp.data.monit,
+                        currentNum: resp.data.currentNum,
+                        collectNum: resp.data.collectNum,
+                        projectId: resp.data.projectId,
+                        state: resp.data.state ? resp.data.state.value : null
+                    };
+                    that.pageInfo.surveyId=resp.data.id;
+                })
+            },
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if(authority ==='ROLE_DEVOPS'){
+                        that.resultDev = true;
+                    }
+
+                })
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsPhoneInformation', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            importPhoneInformation() {
+                $("#importModal").modal('show');
+            },
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                })
+            },
+        },
+    });
+</script>
+
+<script>
+    jQuery(function () {
+        var BASE_URL = 'js/plugins/webuploader';
+        var $ = jQuery,    // just in case. Make sure it's not an other libaray.
+            $wrap = $('#uploader'),
+            $queue = $('<ul class="filelist"></ul>')
+                .appendTo($wrap.find('.queueList')),
+            $statusBar = $wrap.find('.statusBar'),
+            $info = $statusBar.find('.info'),
+            $upload = $wrap.find('.uploadBtn'),
+            $placeHolder = $wrap.find('.placeholder'),
+            $progress = $statusBar.find('.progress').hide(),
+            fileCount = 0,
+            fileSize = 0,
+            ratio = window.devicePixelRatio || 1,
+            thumbnailWidth = 110 * ratio,
+            thumbnailHeight = 110 * ratio,
+            state = 'pedding',
+            percentages = {},
+            supportTransition = (function () {
+                var s = document.createElement('p').style,
+                    r = 'transition' in s ||
+                        'WebkitTransition' in s ||
+                        'MozTransition' in s ||
+                        'msTransition' in s ||
+                        'OTransition' in s;
+                s = null;
+                return r;
+            })(),
+
+            // WebUploader实例
+            uploader;
+
+        if (!WebUploader.Uploader.support()) {
+            alert('Web Uploader 不支持您的浏览器！如果你使用的是IE浏览器，请尝试升级 flash 播放器');
+            throw new Error('WebUploader does not support the browser you are using.');
+        }
+
+        // 实例化
+        uploader = WebUploader.create({
+            pick: {
+                id: '#filePickerss',
+                label: '点击选择文件'
+            },
+            dnd: '#uploader .queueList',
+            paste: document.body,
+
+            // swf文件路径
+            swf: BASE_URL + '/Uploader.swf',
+
+            disableGlobalDnd: true,
+
+            chunked: true,
+            // server: 'http://webuploader.duapp.com/server/fileupload.php',
+            server: '/survey/zsPhoneInformation/importPhoneInformation/'+ sessionStorage.getItem("editParams") +'?access_token=' + sessionStorage.getItem('access_token'),
+            fileNumLimit: 300,
+            fileSizeLimit: 5 * 1024 * 1024,    // 200 M
+            fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
+        });
+
+        // 当有文件添加进来时执行，负责view的创建
+        function addFile(file) {
+            var $li = $('<li id="' + file.id + '">' +
+                '<p class="title">' + file.name + '</p>' +
+                '<p class="imgWrap"></p>' +
+                '<p class="progress"><span></span></p>' +
+                '</li>'),
+
+                $btns = $('<div class="file-panel">' +
+                    '<span class="cancel">删除</span>' +
+                    '<span class="rotateRight">向右旋转</span>' +
+                    '<span class="rotateLeft">向左旋转</span></div>').appendTo($li),
+                $prgress = $li.find('p.progress span'),
+                $wrap = $li.find('p.imgWrap'),
+                $info = $('<p class="error"></p>'),
+
+                showError = function (code) {
+                    switch (code) {
+                        case 'exceed_size':
+                            text = '文件大小超出';
+                            break;
+
+                        case 'interrupt':
+                            text = '上传暂停';
+                            break;
+
+                        default:
+                            text = '上传失败，请重试';
+                            break;
+                    }
+
+                    $info.text(text).appendTo($li);
+                };
+
+            if (file.getStatus() === 'invalid') {
+                showError(file.statusText);
+            } else {
+                // @todo lazyload
+                $wrap.text('预览中');
+                uploader.makeThumb(file, function (error, src) {
+                    if (error) {
+                        $wrap.text('不能预览');
+                        return;
+                    }
+
+                    var img = $('<img src="' + src + '">');
+                    $wrap.empty().append(img);
+                }, thumbnailWidth, thumbnailHeight);
+
+                percentages[file.id] = [file.size, 0];
+                file.rotation = 0;
+            }
+
+            file.on('statuschange', function (cur, prev) {
+                if (prev === 'progress') {
+                    $prgress.hide().width(0);
+                } else if (prev === 'queued') {
+                    $li.off('mouseenter mouseleave');
+                    $btns.remove();
+                }
+
+                // 成功
+                if (cur === 'error' || cur === 'invalid') {
+                    console.log(file.statusText);
+                    showError(file.statusText);
+                    percentages[file.id][1] = 1;
+                } else if (cur === 'interrupt') {
+                    showError('interrupt');
+                } else if (cur === 'queued') {
+                    percentages[file.id][1] = 0;
+                } else if (cur === 'progress') {
+                    $info.remove();
+                    $prgress.css('display', 'block');
+                } else if (cur === 'complete') {
+                    $li.append('<span class="success"></span>');
+                }
+
+                $li.removeClass('state-' + prev).addClass('state-' + cur);
+            });
+
+            $li.on('mouseenter', function () {
+                $btns.stop().animate({height: 30});
+            });
+
+            $li.on('mouseleave', function () {
+                $btns.stop().animate({height: 0});
+            });
+
+            $btns.on('click', 'span', function () {
+                var index = $(this).index(),
+                    deg;
+
+                switch (index) {
+                    case 0:
+                        uploader.removeFile(file);
+                        return;
+
+                    case 1:
+                        file.rotation += 90;
+                        break;
+
+                    case 2:
+                        file.rotation -= 90;
+                        break;
+                }
+
+                if (supportTransition) {
+                    deg = 'rotate(' + file.rotation + 'deg)';
+                    $wrap.css({
+                        '-webkit-transform': deg,
+                        '-mos-transform': deg,
+                        '-o-transform': deg,
+                        'transform': deg
+                    });
+                } else {
+                    $wrap.css('filter', 'progid:DXImageTransform.Microsoft.BasicImage(rotation=' + (~~((file.rotation / 90) % 4 + 4) % 4) + ')');
+                    // use jquery animate to rotation
+                    // $({
+                    //     rotation: rotation
+                    // }).animate({
+                    //     rotation: file.rotation
+                    // }, {
+                    //     easing: 'linear',
+                    //     step: function( now ) {
+                    //         now = now * Math.PI / 180;
+
+                    //         var cos = Math.cos( now ),
+                    //             sin = Math.sin( now );
+
+                    //         $wrap.css( 'filter', "progid:DXImageTransform.Microsoft.Matrix(M11=" + cos + ",M12=" + (-sin) + ",M21=" + sin + ",M22=" + cos + ",SizingMethod='auto expand')");
+                    //     }
+                    // });
+                }
+
+
+            });
+
+            $li.appendTo($queue);
+        }
+
+        // 负责view的销毁
+        function removeFile(file) {
+            var $li = $('#' + file.id);
+
+            delete percentages[file.id];
+            updateTotalProgress();
+            $li.off().find('.file-panel').off().end().remove();
+        }
+
+        function updateTotalProgress() {
+            var loaded = 0,
+                total = 0,
+                spans = $progress.children(),
+                percent;
+
+            $.each(percentages, function (k, v) {
+                total += v[0];
+                loaded += v[0] * v[1];
+            });
+
+            percent = total ? loaded / total : 0;
+
+            spans.eq(0).text(Math.round(percent * 100) + '%');
+            spans.eq(1).css('width', Math.round(percent * 100) + '%');
+            updateStatus();
+        }
+
+        function updateStatus() {
+            var text = '', stats;
+
+            if (state === 'ready') {
+                text = '选中' + fileCount + '个文件，共' +
+                    WebUploader.formatSize(fileSize) + '。';
+            } else if (state === 'confirm') {
+                stats = uploader.getStats();
+                if (stats.uploadFailNum) {
+                    text = '已成功上传' + stats.successNum + '张照片至XX相册，' +
+                        stats.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败图片或<a class="ignore" href="#">忽略</a>'
+                }
+
+            } else {
+                stats = uploader.getStats();
+                text = '共' + fileCount + '张（' +
+                    WebUploader.formatSize(fileSize) +
+                    '），已上传' + stats.successNum + '张';
+
+                if (stats.uploadFailNum) {
+                    text += '，失败' + stats.uploadFailNum + '张';
+                }
+            }
+
+            $info.html(text);
+        }
+
+        function setState(val) {
+            var file, stats;
+
+            if (val === state) {
+                return;
+            }
+
+            $upload.removeClass('state-' + state);
+            $upload.addClass('state-' + val);
+            state = val;
+
+            switch (state) {
+                case 'pedding':
+                    $placeHolder.removeClass('element-invisible');
+                    $queue.parent().removeClass('filled');
+                    $queue.hide();
+                    $statusBar.addClass('element-invisible');
+                    uploader.refresh();
+                    break;
+
+                case 'ready':
+                    $placeHolder.addClass('element-invisible');
+                    $('#filePicker2').removeClass('element-invisible');
+                    $queue.parent().addClass('filled');
+                    $queue.show();
+                    $statusBar.removeClass('element-invisible');
+                    uploader.refresh();
+                    break;
+
+                case 'uploading':
+                    $('#filePicker2').addClass('element-invisible');
+                    $progress.show();
+                    $upload.text('暂停上传');
+                    break;
+
+                case 'paused':
+                    $progress.show();
+                    $upload.text('继续上传');
+                    break;
+
+                case 'confirm':
+                    $progress.hide();
+                    $upload.text('开始上传').addClass('disabled');
+
+                    stats = uploader.getStats();
+                    if (stats.successNum && !stats.uploadFailNum) {
+                        setState('finish');
+                        return;
+                    }
+                    break;
+                case 'finish':
+                    stats = uploader.getStats();
+                    if (stats.successNum) {
+                        alert('上传成功');
+                        $('#importModal').modal('hide');
+                        detailsVue.pagequery();
+                    } else {
+                        // 没有成功的图片，重设
+                        state = 'done';
+                        location.reload();
+                    }
+                    break;
+            }
+
+            updateStatus();
+        }
+
+        uploader.onUploadProgress = function (file, percentage) {
+            var $li = $('#' + file.id),
+                $percent = $li.find('.progress span');
+
+            $percent.css('width', percentage * 100 + '%');
+            percentages[file.id][1] = percentage;
+            updateTotalProgress();
+        };
+
+        uploader.onFileQueued = function (file) {
+            fileCount++;
+            fileSize += file.size;
+
+            if (fileCount === 1) {
+                $placeHolder.addClass('element-invisible');
+                $statusBar.show();
+            }
+
+            addFile(file);
+            setState('ready');
+            updateTotalProgress();
+        };
+
+        uploader.onFileDequeued = function (file) {
+            fileCount--;
+            fileSize -= file.size;
+
+            if (!fileCount) {
+                setState('pedding');
+            }
+
+            removeFile(file);
+            updateTotalProgress();
+
+        };
+
+        uploader.on('all', function (type) {
+            var stats;
+            switch (type) {
+                case 'uploadFinished':
+                    setState('confirm');
+                    break;
+
+                case 'startUpload':
+                    setState('uploading');
+                    break;
+
+                case 'stopUpload':
+                    setState('paused');
+                    break;
+
+            }
+        });
+
+        uploader.onError = function (code) {
+            alert('Eroor: ' + code);
+        };
+
+        $upload.on('click', function () {
+            if ($(this).hasClass('disabled')) {
+                return false;
+            }
+
+            if (state === 'ready') {
+                uploader.upload();
+            } else if (state === 'paused') {
+                uploader.upload();
+            } else if (state === 'uploading') {
+                uploader.stop();
+            }
+        });
+
+        $info.on('click', '.retry', function () {
+            uploader.retry();
+        });
+
+        $info.on('click', '.ignore', function () {
+            alert('todo');
+        });
+
+        $upload.addClass('state-' + state);
+        updateTotalProgress();
+    });
+</script>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsPhoneInformationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsPhoneInformation">
+        <id column="id" property="id" />
+        <result column="mobile" property="mobile" />
+        <result column="created_at" property="createdAt" />
+        <result column="creator" property="creatorId" />
+        <result column="survey_id" property="surveyId" />
+        <result column="status" property="status" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="information" property="information" />
+        <association property="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator" jdbcType="INTEGER"></id>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, mobile, created_at, creator, survey_id, status, information
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List"></include>
+        from
+        zs_phone_information
+        <where>
+            survey_id=#{surveyId}
+            and
+            status = 1
+            <if test="mobile !=null and mobile != ''">
+                and mobile like CONCAT('%', #{mobile}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

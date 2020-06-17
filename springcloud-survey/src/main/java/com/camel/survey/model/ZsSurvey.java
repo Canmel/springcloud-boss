@@ -109,6 +109,8 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     public List<ZsExam> examList;
 
+    private String informationTemplate;
+
     public ZsSurvey(Integer id) {
         this.id = id;
     }
