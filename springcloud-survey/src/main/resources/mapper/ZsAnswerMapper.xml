@@ -21,6 +21,10 @@
         <result column="review_status" property="reviewStatus" />
         <result column="review_msg" property="reviewMsg" />
         <result column="reviewer" property="reviewerId" />
+        <result column="uid" property="uid" />
+        <association property="user" javaType="com.camel.core.model.SysUser">
+            <id property="id" column="uid" jdbcType="INTEGER"></id>
+        </association>
         <association property="reviewer" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="reviewer" jdbcType="INTEGER"></id>
         </association>
