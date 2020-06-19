@@ -32,5 +32,5 @@ public interface ZsWorkShiftService extends IService<ZsWorkShift> {
 
     Result updateWorkShift(ZsWorkShift entity);
 
-    List<ZsWorkShift> selectByUidandSurveyId(Integer userId,Integer surveyId);
+    ZsWorkShift selectByUidandSurveyId(Integer userId,Integer surveyId);
 }

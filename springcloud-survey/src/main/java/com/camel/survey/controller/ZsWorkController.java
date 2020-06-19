@@ -79,6 +79,11 @@ public class ZsWorkController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity,null, oAuth2Authentication));
     }
 
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) {
+        return super.delete(id);
+    }
+
     @Override
     public IService getiService() {
         return service;

@@ -1,4 +1,4 @@
-<div id="subContainer" class="wrapper wrapper-content">
+    <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>工作记录</h5>
@@ -57,6 +57,7 @@
                         </td>
                         <td>
                             <a class="btn btn-circle btn-warning" @click="addSurveyShow(item)" v-if="resultDev">查看</a>
+                            <a class="btn btn-circle btn-danger" @click="deleteItem(item)" v-if="result">删除</a>
                         </td>
                     </tr>
                     </tbody>
@@ -159,6 +160,21 @@
            this.loginMaster();
         },
         methods: {
+            deleteItem(item) {
+                let that = this;
+                confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        console.log(item);
+                        AJAX.DELETE('zsWork', {id: item.id}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
             loginMaster(){
                 var that = this;
                 this.master = sessionStorage.getItem('master');

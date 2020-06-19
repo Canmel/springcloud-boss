@@ -50,4 +50,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     List<SysUser> byRole(Integer id);
 
     int updateSeat(Integer userId, String seatNum);
+
+    int deleteSeat(String seatNum);
 }

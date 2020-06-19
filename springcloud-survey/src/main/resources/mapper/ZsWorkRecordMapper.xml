@@ -12,6 +12,7 @@
         <result column="cid_num" property="cIdNum"/>
         <result column="username" property="username"/>
         <result column="ws_id" property="wsId"/>
+        <result column="creator" property="creatorId"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>

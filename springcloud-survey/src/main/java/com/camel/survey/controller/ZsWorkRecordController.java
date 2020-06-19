@@ -11,6 +11,7 @@ import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import com.camel.survey.model.ZsWorkRecord;
 import com.camel.survey.service.ZsWorkRecordService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class ZsWorkRecordController extends BaseCommonController {
     private ZsWorkRecordService service;
 
     @Autowired
-    private SpringCloudSystemFeignClient springCloudSystemFeignClient;
+    private ApplicationToolsUtils applicationToolsUtils;
 
     /**
      * 分页查询
@@ -43,8 +44,8 @@ public class ZsWorkRecordController extends BaseCommonController {
     @GetMapping
     public Result index(ZsWorkRecord entity) {
         List<ZsWorkRecord> list = service.selectZsWorkRList(entity);
-        list.forEach(zsDelivery -> {
-            zsDelivery.setCreator(springCloudSystemFeignClient.oneUser(zsDelivery.getCIdNum()));
+        list.forEach(record -> {
+            record.setCreator(applicationToolsUtils.getUser(record.getCreatorId()));
         });
         return ResultUtil.success(service.selectPage(list));
     }

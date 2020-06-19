@@ -31,7 +31,7 @@
                         <th>坐席号</th>
                         <th>坐席密码</th>
                         <th>描述信息</th>
-                        <th>用户Id</th>
+                        <th>用户</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -41,7 +41,7 @@
                         <td>{{item.seatNum}}</td>
                         <td>{{item.password}}</td>
                         <td>{{item.description}}</td>
-                        <td>{{item.uid}}</td>
+                        <td>{{item.user ? item.user.username : ''}}</td>
                         <td>
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
                                 编辑

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.service.ZsAnswerService;
@@ -92,6 +93,20 @@ public class ZsAnswerController extends BaseCommonController {
     @GetMapping("/invalid/{id}")
     public Result invalid(@PathVariable Integer id) {
         return service.invalid(id);
+    }
+
+    @PostMapping("/review")
+    public Result review(Integer answerId, Integer reviewStatus, String reviewMsg) {
+        if(service.review(answerId, reviewStatus, reviewMsg)) {
+            return ResultUtil.success("复核成功");
+        }else {
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "复核失败");
+        }
+    }
+
+    @GetMapping("/randoms")
+    public Result randoms(ZsAnswer entity) {
+        return ResultUtil.success(service.randomList(entity));
     }
 
     /**

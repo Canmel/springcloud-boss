@@ -13,6 +13,7 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.Args;
 import com.camel.survey.model.ZsSeat;
 import com.camel.survey.service.ZsSeatService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,16 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     @Autowired
     public ZsSeatMapper mapper;
 
+    @Autowired
+    public ApplicationToolsUtils applicationToolsUtils;
+
     @Override
     public PageInfo<ZsSeat> pageQuery(ZsSeat zsSeat) {
         PageInfo pageInfo = PageHelper.startPage(zsSeat.getPageNum(), zsSeat.getPageSize()).doSelectPageInfo(()-> mapper.list(zsSeat));
+        List<ZsSeat> seats = (List<ZsSeat>) pageInfo.getList();
+        seats.forEach(record -> {
+            record.setUser(applicationToolsUtils.getUser(record.getUid()));
+        });
         return pageInfo;
     }
 
@@ -57,7 +65,7 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
 
     @Override
     public Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
-        deleteByUser(entity.getUid());
+        deleteByUserAndSeat(entity.getUid(),entity.getSeatNum());
         if (insert(entity)) {
             return ResultUtil.success("分配成功");
         }
@@ -65,9 +73,12 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     }
 
     @Override
-    public boolean deleteByUser(int userId) {
+    public boolean deleteByUserAndSeat(int userId,String seatNum) {
         Wrapper<ZsSeat> zsSeatWrapper = new EntityWrapper<>();
         zsSeatWrapper.eq("uid", userId);
-        return delete(zsSeatWrapper);
+        delete(zsSeatWrapper);
+        Wrapper<ZsSeat> zsSeatWrapper1 = new EntityWrapper<>();
+        zsSeatWrapper1.eq("seat_num", seatNum);
+        return delete(zsSeatWrapper1);
     }
 }

@@ -28,25 +28,50 @@
 
     <select id="list" resultMap="BaseResultMap">
        SELECT
-	zs_work_shift.id,
-	zs_work_shift.cname,
-	zs_work_shift.address,
-	zs_work_shift.creator,
-	zs_work_shift.survey_id,
-	zs_work_shift.start_time,
-	zs_work_shift.end_time,
-	zs_work_shift.start_date,
-	zs_survey.name
-    FROM
-        zs_work_shift
-    LEFT JOIN zs_survey ON zs_work_shift.survey_id = zs_survey.id
-    <where>
-    zs_work_shift.status = 1
-    AND zs_survey.status = 1
-    <if test="cname != null and cname != ''">
-      AND zs_work_shift.cname like concat('%', #{cname}, '%')
-    </if>
-    </where>
+        zs_work_shift.id,
+        zs_work_shift.cname,
+        zs_work_shift.address,
+        zs_work_shift.creator,
+        zs_work_shift.survey_id,
+        zs_work_shift.start_time,
+        zs_work_shift.end_time,
+        zs_work_shift.start_date,
+        zs_survey.name
+        FROM
+            zs_work_shift
+        LEFT JOIN zs_survey ON zs_work_shift.survey_id = zs_survey.id
+        <where>
+        zs_work_shift.status = 1
+        AND zs_survey.status = 1
+        <if test="cname != null and cname != ''">
+          AND zs_work_shift.cname like concat('%', #{cname}, '%')
+        </if>
+        </where>
+    </select>
+
+    <select id="findWsByShift" resultMap="BaseResultMap">
+        SELECT
+        shift.id,
+        shift.cname,
+        shift.cuname,
+        shift.address,
+        shift.survey_id,
+        shift.`status`,
+        shift.start_date,
+        shift.start_time,
+        shift.end_time,
+        record.creator,
+        shift.created_at
+        FROM
+        zs_work_record record
+        LEFT JOIN zs_work_shift shift ON shift.id = record.ws_id
+        WHERE
+        record.status = 1
+        AND record.creator = #{creatorId}
+        AND shift.start_date = DATE_FORMAT(now(), '%Y-%m-%d')
+        AND TIME_TO_SEC(now()) <![CDATA[ > ]]> TIME_TO_SEC(shift.start_time)
+        AND TIME_TO_SEC(now()) <![CDATA[ < ]]> TIME_TO_SEC(shift.end_time)
+        AND shift.survey_id = #{surveyId}
     </select>
 
 

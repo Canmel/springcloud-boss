@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsTaskStatus;
 import com.camel.survey.enums.ZsYesOrNo;
@@ -88,15 +89,21 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     private ZsYesOrNo valid;
 
-    //是否有效，用于查询
+    /**
+     * 是否有效，用于查询
+     */
     @TableField(exist = false)
     private Integer validValue;
 
-    //开始时间，用于查询
+    /**
+     * 开始时间，用于查询
+     */
     @TableField(exist = false)
     private String startDate;
 
-    //结束时间，用于查询
+    /**
+     * 结束时间，用于查询
+     */
     @TableField(exist = false)
     private String endDate;
 
@@ -116,6 +123,16 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
 
     private String endTime;
 
+    private String reviewMsg;
+
+    private Integer reviewStatus;
+
+    @TableField(exist = false)
+    private SysUser reviewer;
+
+    @TableField("reviewer")
+    private Integer reviewerId;
+
     public ZsAnswer() {
     }
 
@@ -126,6 +143,13 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     public ZsAnswer(Integer surveyId, String creator) {
         this.surveyId = surveyId;
         this.creator = creator;
+    }
+
+    public ZsAnswer(Integer id, String reviewMsg, Integer reviewStatus, Integer reviewerId) {
+        this.id = id;
+        this.reviewMsg = reviewMsg;
+        this.reviewStatus = reviewStatus;
+        this.reviewerId = reviewerId;
     }
 
     @Override

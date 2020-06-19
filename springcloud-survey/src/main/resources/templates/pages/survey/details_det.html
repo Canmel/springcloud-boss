@@ -73,20 +73,25 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <label class="col-sm-3 control-label">需收集数:</label>
-                        <label class="col-sm-3 control-label">{{survey.collectNum}}</label>
+                    <div class="col-sm-3">
+                        <label class="col-sm-6 control-label">需收集数:</label>
+                        <label class="col-sm-6 control-label">{{survey.collectNum}}</label>
                     </div>
 
-                    <div class="col-sm-4">
-                        <label class="col-sm-3 control-label">已收集数:</label>
-                        <label class="col-sm-3 control-label">{{survey.currentNum}}</label>
+                    <div class="col-sm-3">
+                        <label class="col-sm-6 control-label">已收集数:</label>
+                        <label class="col-sm-6 control-label">{{survey.currentNum}}</label>
                     </div>
 
-                    <div class="col-sm-4">
-                        <label class="col-sm-3 control-label">平均时间:</label>
-                        <label class="col-sm-3 control-label" v-if="avgTime">{{avgTime}} 秒</label>
-                        <a class="col-sm-3 control-label" v-if="!avgTime" v-on:click="getAvgTime()">点击获取</a>
+                    <div class="col-sm-3">
+                        <label class="col-sm-6 control-label">平均时间:</label>
+                        <label class="col-sm-6 control-label" v-if="avgTime">{{avgTime}} 秒</label>
+                        <a class="col-sm-6 control-label" v-if="!avgTime" v-on:click="getAvgTime()">点击获取</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="col-sm-6 control-label">复核率:</label>
+                        <label class="col-sm-6 control-label" v-if="reviewRate">{{reviewRate}}</label>
+                        <a class="col-sm-6 control-label" v-if="!reviewRate" v-on:click="getReviewRate()">点击获取</a>
                     </div>
                 </div>
             </div>
@@ -235,6 +240,7 @@
                                             <th>坐席号</th>
                                             <th>通话时间</th>
                                             <th>有效</th>
+                                            <th>复核</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
@@ -256,6 +262,11 @@
                                             <td>
                                                 <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
                                                 <span class="label-success label" v-if="!item.valid || item.valid && item.valid.code === 1">是</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-input" v-if="!item.reviewStatus">未开始</span>
+                                                <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
+                                                <span class="text-danger" v-if="item.reviewStatus === 2">未通过</span>
                                             </td>
                                             <td>
                                                 <button type="button" v-on:click="details(item)"
@@ -560,6 +571,7 @@
                 surveyId: 0
             },
             avgTime: 0,
+            reviewRate: 0,
             loadData: {
                 zsQuestions: []
             },
@@ -614,8 +626,17 @@
         },
         computed: {},
         methods: {
+            getReviewRate() {
+                let that = this;
+                AJAX.GET("zsSurvey/reviewRate/" + this.survey.id, {}, function (resp) {
+                    if(resp.data) {
+                        that.reviewRate = resp.data;
+                    }
+                })
+            },
             checkRecord(answer) {
                 sessionStorage.setItem('editParams', answer.agentUUID);
+                sessionStorage.setItem('surveyId', answer.surveyId);
                 $.pjax({
                     url: mvm.applicationContextRootPath + 'pages/survey/check.html',
                     container: '.page-container'
@@ -993,7 +1014,7 @@
                 return false;
             },
             backToListPage() {
-                toPage('pages/survey/index.html')
+                toPage('pages/survey/details_det.html')
             },
             backToProjectDetails() {
                 sessionStorage.setItem('editParams', this.survey.projectId);

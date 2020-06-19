@@ -77,4 +77,10 @@
         sys_user
         set seat_num = #{seatNum} where uid = #{userId}
     </update>
+
+    <update id="deleteSeat">
+        update
+        sys_user
+        set seat_num = '' where seat_num = #{seatNum}
+    </update>
 </mapper>
