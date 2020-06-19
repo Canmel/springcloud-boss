@@ -144,6 +144,9 @@ public class ZsWork extends BasePaginationEntity {
     @ExcelAnnotation(columnIndex = 29, columnName = "地点")
     private String place;
 
+
+    private Integer state;
+
     /**
      * 状态
      */
@@ -157,6 +160,13 @@ public class ZsWork extends BasePaginationEntity {
      * 获取时间，从工作薪酬提出到余额
      */
     private Date gainTime;
+
+    /**
+     * 指出该工作记录数据来源
+     */
+    private Integer source;
+
+    private Integer uid;
 
     public ZsWork(Integer id, Integer gain) {
         this.id = id;

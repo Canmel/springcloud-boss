@@ -309,7 +309,7 @@ body:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav li:hover > .nav-seco
 .mini-navbar .nav li:focus > .nav-second-level {
     display: block;
     border-radius: 0 2px 2px 0;
-    min-width: 140px;
+    min-width: 100px;
     height: auto;
 }
 
@@ -474,7 +474,7 @@ body.fixed-sidebar.mini-navbar .navbar-static-side {
 }
 
 body.fixed-sidebar.mini-navbar #page-wrapper {
-    margin: 0 0 0 70px;
+    margin: 0 0 0 0;
 }
 
 body.body-small.fixed-sidebar.mini-navbar #page-wrapper {
@@ -7541,7 +7541,7 @@ body.skin-3 {
         display: none;
     }
     body.fixed-sidebar.mini-navbar .navbar-static-side {
-        width: 70px;
+        width: 0;
     }
     .lock-word {
         display: none;
