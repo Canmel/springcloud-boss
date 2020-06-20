@@ -234,7 +234,7 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @Override
     public String getMouduleName() {
-        return "";
+        return "问卷";
     }
 
 }
