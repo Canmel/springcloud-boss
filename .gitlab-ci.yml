@@ -87,5 +87,5 @@ docker-deploy:
     - cd springcloud-interviewer && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-sms-server && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-access-control && docker-compose up -d && cd .. && pwd
-#    - cd springcloud-zuul-getway && docker-compose up -d && cd .. && pwd
+    - cd springcloud-zuul-getway && docker-compose up -d && cd .. && pwd
     - docker rmi `docker images | grep  "<none>" | awk '{print $3}'`
