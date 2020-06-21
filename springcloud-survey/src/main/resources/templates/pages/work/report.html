@@ -8,8 +8,7 @@
                     </div>
                     <select class="form-control" v-model="work.projectId">
                         <option value="0">请选择参与的项目</option>
-                        <option value="1">项目1</option>
-                        <option value="2">项目2</option>
+                        <option :value="item.id" v-for="item in projects">{{item.name}}</option>
                     </select>
                 </div>
                 <div class="form-group date-form">
@@ -42,7 +41,7 @@
                 </div>
                 <div class="input-group m-b">
                     <div class="input-group-btn">
-                        <div class="btn btn-white" type="button">结束时间</div>
+                        <div class="btn btn-white" type="button">开始时间</div>
                     </div>
                     <input type="text" class="form-control clockpicker" readonly data-autoclose="true"
                            placeholder="请选择开始时间" ref="startTime">
@@ -56,14 +55,15 @@
                 </div>
                 <div class="input-group m-b">
                     <div class="input-group-btn">
-                        <button class="btn btn-white" type="button">就餐用时</button>
+                        <button class="btn btn-white" type="button">休息用时</button>
                     </div>
                     <input type="text" max="24" min="0" class="form-control" v-model="work.eatTime"
                            placeholder="请输入就餐用时" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" step="0.01">
                 </div>
 
                 <div class="text-center">
-                    <a data-toggle="modal" class="btn btn-primary" @click="submitWorkData()">提交今日数据</a>
+                    <a data-toggle="modal" class="btn btn-primary" @click="submitWorkData()">提交数据</a>
+                    <a class="btn btn-secondary" @click="backToList()">取消</a>
                 </div>
             </form>
         </div>
@@ -75,6 +75,7 @@
         el: '#subContainer',
         data: {
             applicationContextRootPath: '/survey/',
+            projects: [],
             work: {
                 projectId: 0,
                 workDate: '2020-06-10',
@@ -87,18 +88,33 @@
             }
         },
         created: function () {
+            this.loadActiviesSurvey();
         },
         methods: {
+            backToList() {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/work/list.html',
+                    container: '.page-container'
+                });
+            },
             submitWorkData() {
                 this.work.workDate = this.$refs.workDate.value;
-                this.work.startTime = this.$refs.startTime.value;
-                this.work.endTime = this.$refs.endTime.value;
-                console.log(this.work);
+                this.work.startTime = this.work.workDate + ' ' + this.$refs.startTime.value + ':00';
+                this.work.endTime = this.work.workDate + ' ' + this.$refs.endTime.value + ':00';
+                AJAX.POST('zsWork/report', this.work, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                })
 
             },
             floatFilter() {
                 console.log(this.work.eatTime);
                 this.work.eatTime = this.work.eatTime.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g, '');
+            },
+            loadActiviesSurvey() {
+                let that = this;
+                AJAX.GET("zsOtherSurvey/actives", {}, function (resp) {
+                    that.projects = resp.data;
+                });
             }
         }
     });

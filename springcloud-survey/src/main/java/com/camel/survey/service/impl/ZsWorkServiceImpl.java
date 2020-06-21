@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.exceptions.ExcelImportException;
@@ -14,6 +15,7 @@ import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.ExcelUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
 
     @Autowired
     private ZsSurveyService zsSurveyService;
+
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
     public Result importExcel(MultipartFile file) {
@@ -98,5 +103,23 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
             return mapper.delete(workWrapper) > 0;
         }
         return true;
+    }
+
+
+    @Override
+    public Result report(ZsWork zsWork) {
+        SysUser currentUser = applicationToolsUtils.currentUser();
+        zsWork.buildNecessaryAttribute(zsSurveyService, currentUser);
+        if(insert(zsWork)) {
+            return ResultUtil.success("保存工作记录成功");
+        }
+        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "保存工作记录失败");
+    }
+
+    @Override
+    public PageInfo me(ZsWork entity) {
+        SysUser me = applicationToolsUtils.currentUser();
+        entity.setUid(me.getUid());
+        return selectPage(entity, null, null);
     }
 }

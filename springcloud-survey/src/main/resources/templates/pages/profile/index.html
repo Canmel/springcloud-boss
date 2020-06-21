@@ -198,7 +198,7 @@
                                     <button type="button" class="btn btn-primary btn-sm btn-block" v-if="resultIn"><i class="fa fa-envelope"></i> 发送消息</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="button" class="btn btn-default btn-sm btn-block" v-if="resultIn"><i class="fa fa-coffee"></i> 赞助</button>
+                                    <button type="button" class="btn btn-default btn-sm btn-block" v-if="resultIn" @click="toWorkList()"><i class="fa fa-coffee"></i> 工作记录</button>
                                 </div>
                             </div>
                         </div>
@@ -391,6 +391,9 @@
             this.loadCountSign();
         },
         methods: {
+            toWorkList() {
+                toPage('pages/work/list.html');
+            },
             loginMaster(){
                 var that = this;
                 this.master = sessionStorage.getItem('master');

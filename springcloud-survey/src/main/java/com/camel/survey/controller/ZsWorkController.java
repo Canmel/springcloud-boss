@@ -11,6 +11,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
+import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -45,6 +46,16 @@ public class ZsWorkController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity,zsWorkId, oAuth2Authentication));
     }
 
+    @PostMapping("/report")
+    public Result report(ZsWork work) {
+        return  ResultUtil.success(service.report(work));
+    }
+
+    @GetMapping("/me")
+    public Result me(ZsWork entity) {
+        return ResultUtil.success(service.me(entity));
+    }
+
     /**
      *
      * 查询可提现记录
@@ -59,6 +70,7 @@ public class ZsWorkController extends BaseCommonController {
         zsWorkWrapper.eq("uname", uname);
         zsWorkWrapper.eq("id_num", idNum);
         zsWorkWrapper.eq("gain", ZsGain.NORMAL.getCode());
+        zsWorkWrapper.eq("state", ZsWorkState.SUCCESS.getValue());
         return ResultUtil.success(service.selectList(zsWorkWrapper));
     }
 
@@ -77,6 +89,24 @@ public class ZsWorkController extends BaseCommonController {
         entity.setIdNum(sysUser.getIdNum());
         entity.setUname(sysUser.getUsername());
         return ResultUtil.success(service.selectPage(entity,null, oAuth2Authentication));
+    }
+
+    @GetMapping("/pass/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    public Result pass(@PathVariable Integer id) {
+        ZsWork work = service.selectById(id);
+        work.setState(ZsWorkState.SUCCESS);
+        service.updateById(work);
+        return ResultUtil.success("通过成功");
+    }
+
+    @GetMapping("/reject/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    public Result reject(@PathVariable Integer id) {
+        ZsWork work = service.selectById(id);
+        work.setState(ZsWorkState.FAILD);
+        service.updateById(work);
+        return ResultUtil.success("驳回成功");
     }
 
     @DeleteMapping("/{id}")

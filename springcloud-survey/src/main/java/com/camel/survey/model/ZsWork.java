@@ -5,10 +5,16 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.service.ZsWorkService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.ObjectUtils;
 
 /**
  * <p>
@@ -50,6 +56,7 @@ public class ZsWork extends BasePaginationEntity {
      * 日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     @ExcelAnnotation(columnIndex = 2, columnName = "日期")
     private Date workDate;
     /**
@@ -95,11 +102,13 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 开始时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 12, columnName = "开始时间")
     private Date startTime;
     /**
      * 结束时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 13, columnName = "结束时间")
     private Date endTime;
     /**
@@ -145,7 +154,7 @@ public class ZsWork extends BasePaginationEntity {
     private String place;
 
 
-    private Integer state;
+    private ZsWorkState state;
 
     /**
      * 状态
@@ -204,5 +213,17 @@ public class ZsWork extends BasePaginationEntity {
         ", gain=" + gain +
         ", gainTime=" + gainTime +
         "}";
+    }
+
+    public void buildNecessaryAttribute(ZsSurveyService service, SysUser user) {
+        if(!ObjectUtils.isEmpty(this.projectId)) {
+            ZsSurvey survey = service.selectById(this.projectId);
+            setProjectId(survey.getId());
+            setPname(survey.getName());
+        }
+        setUname(user.getUsername());
+        setIdNum(user.getIdNum());
+        setPhone(user.getMobile());
+        setUid(user.getUid());
     }
 }
