@@ -19,25 +19,21 @@
 <div class="container" id="container" style="height: 100%;">
     <div style="height: 100%;">
         <div style="height: 100%;">
-            <div style="height: 60%; background-image: url('/viewer/wx/img/shareBg1.png'); background-size:100% 100%; background-repeat: no-repeat;">
+            <div style="height: 81.5%; background-image: url('/viewer/wx/img/share01.png'); background-size:100% 100%; background-repeat: no-repeat;">
 
             </div>
-            <div style="height: 30%; background-color: #ffffff; border-left: 6px #e1e3e8 solid; border-right: 6px #e1e3e8 solid;">
-                <div class="weui-row weui-no-gutter">
-                    <div class="weui-col-50">
-                        <div style="padding: 20% 10% 30% 30%; font-size: 25px; text-align: center; color: #6091f8;">
-                            <div><b>扫码关注</b></div>
-                            <div><b>跟我同行</b></div>
-                        </div>
+            <div style="height: 11.5%; background-color: #ffffff;">
+                <div class="weui-row weui-no-gutter" style="height: 100%;">
+                    <div style="width: 39%; height: 100%; background-image: url('/viewer/wx/img/share02.png'); background-size: 100% 100%;">
                     </div>
-                    <div class="weui-col-50">
-                        <div class="weui-panel" style="padding-top: 10%;" v-if="ticket">
-                            <img v-bind:src="qrCodeSrc()" style="width: 80%;" />
-                        </div>
+                    <div style="width: 25%; height: 100%;">
+                        <img v-bind:src="qrCodeSrc()" v-if="ticket">
+                    </div>
+                    <div style="width: 36%; height: 100%; background-image: url('/viewer/wx/img/share03.png'); background-size: 100% 100%;">
                     </div>
                 </div>
             </div>
-            <div style="height: 10%; background-image: url('/viewer/wx/img/shareBg2.png'); background-size: contain;">
+            <div style="height: 7%; background-image: url('/viewer/wx/img/share04.png'); background-size: 100% 100%;">
             </div>
         </div>
 
