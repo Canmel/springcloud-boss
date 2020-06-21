@@ -58,9 +58,16 @@
                         <button class="btn btn-white" type="button">休息用时</button>
                     </div>
                     <input type="text" max="24" min="0" class="form-control" v-model="work.eatTime"
-                           placeholder="请输入就餐用时" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" step="0.01">
+                           placeholder="请输入休息用时（单位:小时）" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" step="0.01">
                 </div>
 
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <button class="btn btn-white" type="button">通话时长</button>
+                    </div>
+                    <input type="text" max="1000" min="0" class="form-control" v-model="work.callTime"
+                           placeholder="请输入通话时长（单位:分钟）" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" step="0.01">
+                </div>
                 <div class="text-center">
                     <a data-toggle="modal" class="btn btn-primary" @click="submitWorkData()">提交数据</a>
                     <a class="btn btn-secondary" @click="backToList()">取消</a>
@@ -99,10 +106,15 @@
             },
             submitWorkData() {
                 this.work.workDate = this.$refs.workDate.value;
-                this.work.startTime = this.work.workDate + ' ' + this.$refs.startTime.value + ':00';
-                this.work.endTime = this.work.workDate + ' ' + this.$refs.endTime.value + ':00';
+                if(this.$refs.startTime.value) {
+                    this.work.startTime = this.work.workDate + ' ' + this.$refs.startTime.value + ':00';
+                }
+                if(this.$refs.endTime.value) {
+                    this.work.endTime = this.work.workDate + ' ' + this.$refs.endTime.value + ':00';
+                }
                 AJAX.POST('zsWork/report', this.work, function (resp) {
                     toastr.success(resp['msg'], '操作成功');
+                    toPage("pages/work/list.html");
                 })
 
             },

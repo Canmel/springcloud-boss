@@ -9,12 +9,18 @@ import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.exceptions.SurveyNotValidException;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.ObjectUtils;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -37,6 +43,7 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 项目主键
      */
+    @NotNull(message = "项目不能为空")
     private Integer projectId;
     /**
      * 项目名称
@@ -57,6 +64,7 @@ public class ZsWork extends BasePaginationEntity {
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
+    @NotNull(message = "日期不能为空")
     @ExcelAnnotation(columnIndex = 2, columnName = "日期")
     private Date workDate;
     /**
@@ -72,18 +80,21 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 工号
      */
+    @NotBlank(message = "工号不能为空")
     @ExcelAnnotation(columnIndex = 6, columnName = "工号")
     private String jobNumber;
     /**
      * 接触量
      */
+    @NotNull(message = "接触量不能为空")
     @ExcelAnnotation(columnIndex = 7, columnName = "接触量")
     private Integer tryNum;
     /**
      * 成功量
      */
+    @NotNull(message = "成功量不能为空")
     @ExcelAnnotation(columnIndex = 8, columnName = "成功量")
-    private Integer succssNum;
+    private Integer successNum;
     /**
      * 无效量
      */
@@ -102,18 +113,21 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 开始时间
      */
+    @NotNull(message = "开始时间不能为空")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 12, columnName = "开始时间")
     private Date startTime;
     /**
      * 结束时间
      */
+    @NotNull(message = "结束时间不能为空")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 13, columnName = "结束时间")
     private Date endTime;
     /**
      * 就餐时间
      */
+    @NotNull(message = "休息时间不能为空")
     @ExcelAnnotation(columnIndex = 14, columnName = "就餐时间")
     private Double eatTime;
     /**
@@ -121,6 +135,9 @@ public class ZsWork extends BasePaginationEntity {
      */
     @ExcelAnnotation(columnIndex = 15, columnName = "工作时长")
     private Double workHours;
+
+    @NotNull(message = "通话时长不能为空")
+    private Double callTime;
     /**
      * 基准量
      */
@@ -197,7 +214,7 @@ public class ZsWork extends BasePaginationEntity {
         ", idNum=" + idNum +
         ", jobNumber=" + jobNumber +
         ", tryNum=" + tryNum +
-        ", succssNum=" + succssNum +
+        ", succssNum=" + successNum +
         ", invalidNum=" + invalidNum +
         ", validNum=" + validNum +
         ", successRate=" + successRate +
@@ -216,8 +233,12 @@ public class ZsWork extends BasePaginationEntity {
     }
 
     public void buildNecessaryAttribute(ZsSurveyService service, SysUser user) {
+        this.validEntity();
         if(!ObjectUtils.isEmpty(this.projectId)) {
             ZsSurvey survey = service.selectById(this.projectId);
+            if(ObjectUtils.isEmpty(survey)) {
+                throw new SourceDataNotValidException("未选择任何问卷");
+            }
             setProjectId(survey.getId());
             setPname(survey.getName());
         }
@@ -225,5 +246,14 @@ public class ZsWork extends BasePaginationEntity {
         setIdNum(user.getIdNum());
         setPhone(user.getMobile());
         setUid(user.getUid());
+    }
+
+    public void validEntity() {
+        if(ObjectUtils.isEmpty(this.getStartTime()) || ObjectUtils.isEmpty(this.getEndTime())) {
+            throw new SourceDataNotValidException("开始时间与结束时间不能是一个空值");
+        }
+        if(this.startTime.getTime() >= this.endTime.getTime()) {
+            throw  new SourceDataNotValidException("结束时间不能是一个小于开始时间的值");
+        }
     }
 }

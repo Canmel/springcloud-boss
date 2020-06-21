@@ -12,6 +12,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
 import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -19,10 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -47,7 +50,10 @@ public class ZsWorkController extends BaseCommonController {
     }
 
     @PostMapping("/report")
-    public Result report(ZsWork work) {
+    public Result report(@Valid ZsWork work, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new SourceDataNotValidException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return  ResultUtil.success(service.report(work));
     }
 
