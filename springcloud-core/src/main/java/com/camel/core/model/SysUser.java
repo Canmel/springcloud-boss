@@ -2,6 +2,7 @@ package com.camel.core.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     /**
      * 状态(0：已删除，1：正常)
      */
+    @TableLogic
     private String status;
     /**
      * 创建时间

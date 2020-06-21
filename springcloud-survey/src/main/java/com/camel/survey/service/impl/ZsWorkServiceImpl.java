@@ -62,7 +62,7 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
                 }
             }
 
-            if (deleteByPlaceAndDate(works) && insertBatch(works)) {
+            if (insertBatch(works)) {
                 return ResultUtil.success("数据导入成功");
             }
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "导入失败");

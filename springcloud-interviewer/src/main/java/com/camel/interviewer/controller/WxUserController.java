@@ -1,6 +1,8 @@
 package com.camel.interviewer.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
@@ -13,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.messaging.support.GenericMessage;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -47,6 +50,14 @@ public class WxUserController extends BaseCommonController {
         Object code = redisTemplate.opsForValue().get(wxUser.getPhone());
         if(!wxUser.getValidCode().equals(code)) {
             return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "验证码无效或已过期");
+        }
+        if(!ObjectUtils.isEmpty(wxUser.getIdNum())) {
+            Wrapper wrapper = new EntityWrapper();
+            wrapper.eq("id_num", wxUser.getIdNum());
+            int count = service.selectCount(wrapper);
+            if(count > 0) {
+                return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "身份证号已经被注册");
+            }
         }
         boolean insert = service.insert(wxUser);
         if (insert) {
