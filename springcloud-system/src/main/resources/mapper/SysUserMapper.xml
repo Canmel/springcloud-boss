@@ -59,6 +59,7 @@
         FROM
         sys_user
         <where>
+            sys_user.status = 1
             <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%')</if>
             <if test="username !=null and username != ''">and sys_user.username like CONCAT('%', #{username}, '%')</if>
             <if test="seatNum !=null and seatNum != ''">and sys_user.seat_num like CONCAT('%', #{seatNum}, '%')</if>
