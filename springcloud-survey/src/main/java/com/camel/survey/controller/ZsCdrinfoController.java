@@ -74,9 +74,6 @@ public class ZsCdrinfoController extends BaseCommonController {
                             cdr.setId(uuids[j]);
                         }
                     }
-                    if(ObjectUtils.isEmpty(answer.getId())) {
-                        continue;
-                    }
                     service.insert(cdr);
                     answer.setStartTime(cdr.getStart_time());
                     answer.setCallLastsTime(cdr.getCall_lasts_time());
