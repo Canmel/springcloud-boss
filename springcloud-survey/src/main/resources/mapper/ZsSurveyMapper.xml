@@ -134,4 +134,29 @@
         WHERE
             cdr.call_lasts_time > 0
     </select>
+
+    <select id="checkAnswers"  resultType="com.camel.survey.model.ZsWork">
+        select
+            a.survey_id AS project_id,
+            cast(a.created_at AS date) AS work_date,
+            a.uid AS uid,
+            a.seat AS job_number,
+            count(*) AS succss_num,
+            u.username AS uname,
+            u.mobile AS phone,
+            u.id_num AS id_num,
+            s.name AS pname
+        from
+            dw_oauth2.sys_user AS u
+        LEFT JOIN zs_answer AS a ON a.uid = u.uid
+        LEFT JOIN zs_survey AS s ON a.survey_id = s.id
+        where
+            a. STATUS = 1
+            AND a.checked = 0
+            and a.survey_id = #{surveyId}
+        GROUP BY
+            work_date,
+            uid,
+            seat
+    </select>
 </mapper>

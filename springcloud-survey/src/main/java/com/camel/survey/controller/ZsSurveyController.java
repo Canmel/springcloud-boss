@@ -222,6 +222,14 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     /**
+     * 结算
+     */
+    @PostMapping("/check/{id}")
+    public Result check(@PathVariable Integer id) {
+        return service.check(id);
+    }
+
+    /**
      * 获取service
      */
     @Override

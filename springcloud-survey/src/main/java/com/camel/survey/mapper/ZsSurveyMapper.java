@@ -2,6 +2,7 @@ package com.camel.survey.mapper;
 
 import com.camel.survey.model.ZsSurvey;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.camel.survey.model.ZsWork;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -48,4 +49,6 @@ public interface ZsSurveyMapper extends BaseMapper<ZsSurvey> {
     ZsSurvey findLatestSurvey();
 
     Integer avgTime(Integer id);
+
+    List<ZsWork> checkAnswers(Integer surveyId);
 }

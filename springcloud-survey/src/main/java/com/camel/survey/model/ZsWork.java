@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsWorkSource;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -158,6 +159,12 @@ public class ZsWork extends BasePaginationEntity {
      */
     private Date gainTime;
 
+    private ZsWorkSource source;
+
+    private int uid;
+
+    private int state;
+
     public ZsWork(Integer id, Integer gain) {
         this.id = id;
         this.gain = gain;
@@ -193,6 +200,9 @@ public class ZsWork extends BasePaginationEntity {
         ", salary=" + salary +
         ", gain=" + gain +
         ", gainTime=" + gainTime +
+        ", source=" + source +
+        ", uid=" + uid +
+        ", state=" + state +
         "}";
     }
 }

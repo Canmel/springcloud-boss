@@ -102,6 +102,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Autowired
     private ZsAnswerService answerService;
 
+    @Autowired
+    private ZsWorkService zsWorkService;
+
     public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
     public static final String SMS_SURVEY_URL = "http://127.0.0.1:8080/survey/web_survey.html";
@@ -419,5 +422,25 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         format.setMinimumFractionDigits(2);
 
         return format.format(countReviews.floatValue()/count.floatValue());
+    }
+
+    @Override
+    public Result check(Integer id) {
+        Wrapper wrapper = new EntityWrapper();
+        wrapper.eq("survey_id",id);
+        wrapper.eq("checked",0);
+        wrapper.eq("status",1);
+        List<ZsAnswer> answers =answerService.selectList(wrapper);
+        List<ZsWork> zsWorks = mapper.checkAnswers(id);
+        zsWorks.forEach(w -> {
+            w.setSource(ZsWorkSource.CHECKED);
+        });
+        answers.forEach(a -> {
+            a.setChecked(1);
+        });
+        if(answerService.updateBatchById(answers)&&zsWorkService.insertBatch(zsWorks)){
+            return ResultUtil.success("结算成功");
+        }
+        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "结算失败");
     }
 }
