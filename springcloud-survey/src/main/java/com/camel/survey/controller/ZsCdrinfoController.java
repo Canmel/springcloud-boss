@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -58,29 +59,33 @@ public class ZsCdrinfoController extends BaseCommonController {
                 LoggerFactory.getLogger(ZsCdrinfoController.class).info("开始保存录音信息" + JSONObject.toJSON(params).toString());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 for (int i = 0; i < zsCdrinfos.size(); i++) {
-                    ZsCdrinfo cdr= zsCdrinfos.get(i);
-                    if(StringUtils.isEmpty(cdr.getUuids()) || !NumberUtils.isNumber(cdr.getCall_lasts_time())) {
-                        return "success";
-                    }
-
-
                     ZsAnswer answer = new ZsAnswer();
-                    String[] uuids=null;
-                    uuids = cdr.getUuids().split(",");
-                    for(int j=0;j<uuids.length;j++){
-                        ZsAnswer zsAnswer = answerService.selectByAgentUuid(uuids[j]);
-                        if(!ObjectUtils.isEmpty(zsAnswer)){
-                            answer.setId(zsAnswer.getId());
-                            cdr.setId(uuids[j]);
+                    ZsCdrinfo cdr= zsCdrinfos.get(i);
+                    if(StringUtils.isEmpty(cdr.getUuids())) {
+                        cdr.setId(UUID.randomUUID().toString());
+                        service.insert(cdr);
+                        return "success";
+                    }else {
+                        String[] uuids = cdr.getUuids().split(",");
+                        for (int j = 0; j < uuids.length; j++) {
+                            ZsAnswer zsAnswer = answerService.selectByAgentUuid(uuids[j]);
+                            if (!ObjectUtils.isEmpty(zsAnswer)) {
+                                answer.setId(zsAnswer.getId());
+                                cdr.setId(uuids[j]);
+                            }
+                        }
+                        if(ObjectUtils.isEmpty(cdr.getId())) {
+                            cdr.setId(UUID.randomUUID().toString());
+                        }
+                        service.insert(cdr);
+                        answer.setStartTime(cdr.getStart_time());
+                        answer.setCallLastsTime(cdr.getCall_lasts_time());
+                        answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime())*1000));
+                        if(answer.getId()!=null) {
+                            answerService.updateById(answer);
                         }
                     }
-                    service.insert(cdr);
-                    answer.setStartTime(cdr.getStart_time());
-                    answer.setCallLastsTime(cdr.getCall_lasts_time());
-                    answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime())*1000));
-                    if(answer.getId()!=null) {
-                        answerService.updateById(answer);
-                    }
+
                 }
                 return "success";
             }

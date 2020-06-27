@@ -234,6 +234,9 @@ public class ZsWork extends BasePaginationEntity {
 
     public void buildNecessaryAttribute(ZsSurveyService service, SysUser user) {
         this.validEntity();
+        if(ObjectUtils.isEmpty(user.getIdNum())) {
+            throw new SourceDataNotValidException("您还未完善个人身份证信息，请先完善");
+        }
         if(!ObjectUtils.isEmpty(this.projectId)) {
             ZsSurvey survey = service.selectById(this.projectId);
             if(ObjectUtils.isEmpty(survey)) {
