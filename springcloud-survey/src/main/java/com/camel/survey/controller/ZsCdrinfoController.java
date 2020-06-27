@@ -9,8 +9,10 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsCdrinfo;
+import com.camel.survey.model.ZsSeat;
 import com.camel.survey.service.ZsAnswerService;
 import com.camel.survey.service.ZsCdrinfoService;
+import com.camel.survey.service.ZsSeatService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,9 @@ public class ZsCdrinfoController extends BaseCommonController {
     private ZsCdrinfoService service;
 
     @Autowired
+    private ZsSeatService seatService;
+
+    @Autowired
     private ZsAnswerService answerService;
 
     @GetMapping("/{id}")
@@ -61,6 +66,10 @@ public class ZsCdrinfoController extends BaseCommonController {
                 for (int i = 0; i < zsCdrinfos.size(); i++) {
                     ZsAnswer answer = new ZsAnswer();
                     ZsCdrinfo cdr= zsCdrinfos.get(i);
+                    if(!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
+                        ZsSeat seat = seatService.selectBySeat(cdr.getCaller_agent_num());
+                        cdr.setUid(seat.getUid());
+                    }
                     if(StringUtils.isEmpty(cdr.getUuids())) {
                         cdr.setId(UUID.randomUUID().toString());
                         service.insert(cdr);
