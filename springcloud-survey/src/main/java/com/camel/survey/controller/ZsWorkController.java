@@ -44,11 +44,24 @@ public class ZsWorkController extends BaseCommonController {
     @Autowired
     private ApplicationToolsUtils applicationUtils;
 
+    /**
+     * 上报记录总列表
+     * @param entity
+     * @param zsWorkId
+     * @param oAuth2Authentication
+     * @return
+     */
     @GetMapping
     public Result index(ZsWork entity,@RequestParam("zsWorkId[]")String[] zsWorkId, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity,zsWorkId, oAuth2Authentication));
     }
 
+    /**
+     * 上报记录
+     * @param work
+     * @param bindingResult
+     * @return
+     */
     @PostMapping("/report")
     public Result report(@Valid ZsWork work, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
@@ -57,6 +70,11 @@ public class ZsWorkController extends BaseCommonController {
         return  ResultUtil.success(service.report(work));
     }
 
+    /**
+     * 我的上报记录
+     * @param entity
+     * @return
+     */
     @GetMapping("/me")
     public Result me(ZsWork entity) {
         return ResultUtil.success(service.me(entity));

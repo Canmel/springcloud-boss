@@ -62,7 +62,7 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @NotNull(message = "日期不能为空")
     @ExcelAnnotation(columnIndex = 2, columnName = "日期")
