@@ -11,8 +11,11 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.model.ZsSeat;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -43,6 +46,19 @@ public class ZsWorkController extends BaseCommonController {
 
     @Autowired
     private ApplicationToolsUtils applicationUtils;
+
+    @PutMapping
+    public Result update(@RequestBody ZsWork entity) {
+        if(!ObjectUtils.isEmpty(entity.getId())) {
+            ZsWork zsWork = service.selectById(entity.getId());
+            if(!ObjectUtils.isEmpty(zsWork)) {
+                if(!zsWork.getState().equals(ZsWorkState.APPLYED) || !zsWork.getStatus().equals(ZsStatus.CREATED)) {
+                    throw new SourceDataNotValidException("请不要更新已经提交或审核的数据");
+                }
+            }
+        }
+      return super.update(entity);
+    }
 
     /**
      * 上报记录总列表
