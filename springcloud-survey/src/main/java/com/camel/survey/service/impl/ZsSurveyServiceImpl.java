@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -139,6 +140,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public ZsSurvey selectById(Serializable id) {
         ZsSurvey entity = mapper.selectById(id);
+        if(ObjectUtils.isEmpty(entity)) {
+            return entity;
+        }
         applicationToolsUtils.allUsers().forEach(sysUser -> {
             if (sysUser.getUid().equals(entity.getCreatorId())) {
                 entity.setCreator(sysUser);

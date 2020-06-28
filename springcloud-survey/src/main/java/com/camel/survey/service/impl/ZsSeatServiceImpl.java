@@ -81,4 +81,9 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
         zsSeatWrapper1.eq("seat_num", seatNum);
         return delete(zsSeatWrapper1);
     }
+
+    @Override
+    public ZsSeat selectBySeat(String seat) {
+        return mapper.searchBySeatNum(seat);
+    }
 }

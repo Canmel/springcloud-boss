@@ -72,6 +72,9 @@ public class ExcelUtil {
         for (int i = 1; i < rows; i++) {
             // 获取excel行
             row = sheet.getRow(i);
+            if(ObjectUtils.isEmpty(row)) {
+                continue;
+            }
             //此处用来过滤空行
             Cell cell0 = row.getCell(0);
             if (ObjectUtils.isEmpty(cell0)) {

@@ -18,7 +18,7 @@ services:
       EUREKA_INSTANCE_IP: 192.168.0.180
       REDIS_HOST: 192.168.0.180
       AUTH_PORT: 4200
-      SURVEY_ENV: dev
+      SURVEY_ENV: prod
     networks:
       - survey-net
 networks:

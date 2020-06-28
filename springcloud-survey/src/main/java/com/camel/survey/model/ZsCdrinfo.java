@@ -37,6 +37,7 @@ public class ZsCdrinfo extends BasePaginationEntity {
     private String taskid;
     private String taskname;
     private String ivr_dtmf;
+    private Integer uid;
 
 
     @Override

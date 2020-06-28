@@ -166,19 +166,19 @@ public class SysUserController extends BaseCommonController {
     @JmsListener(destination = QUEUE_NAME)
     public void newNormalUser(SysUser sysUser) {
         System.out.println(sysUser);
+
         if(ObjectUtils.isEmpty(sysUser.getUid())) {
-            service.insert(sysUser);
-            Wrapper<SysRole> roleWrapper = new EntityWrapper<>();
-            roleWrapper.eq("role_name", "interviewer");
-            SysRole role = roleService.selectOne(roleWrapper);
-            SysUserRole sysUserRole = new SysUserRole(sysUser.getUid(), role.getRoleId());
-            userRoleService.insert(sysUserRole);
-            sysUserCacheConfig.initSysUsers();
+            insertNewUser(sysUser);
             return;
         }
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
         userWrapper.eq("id_num", sysUser.getIdNum());
         SysUser current = service.selectOne(userWrapper);
+        if(ObjectUtils.isEmpty(current)) {
+            sysUser.setUid(null);
+            insertNewUser(sysUser);
+            return;
+        }
         sysUser.setUid(current.getUid());
         service.updateById(sysUser);
         sysUserCacheConfig.initSysUsers();
@@ -197,6 +197,17 @@ public class SysUserController extends BaseCommonController {
     @Override
     public String getMouduleName() {
         return "用户";
+    }
+
+    public void insertNewUser(SysUser sysUser) {
+        service.insert(sysUser);
+        Wrapper<SysRole> roleWrapper = new EntityWrapper<>();
+        roleWrapper.eq("role_name", "interviewer");
+        SysRole role = roleService.selectOne(roleWrapper);
+        SysUserRole sysUserRole = new SysUserRole(sysUser.getUid(), role.getRoleId());
+        userRoleService.insert(sysUserRole);
+        sysUserCacheConfig.initSysUsers();
+        return;
     }
 }
 

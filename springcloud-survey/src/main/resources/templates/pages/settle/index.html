@@ -1,0 +1,30 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="progress progress-mini">
+            <div :style="'width:' + processPersent + '%;'" class="progress-bar"></div>
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            processPersent: 0
+        },
+        created: function () {
+            let that = this;
+            for (let i = 0; i < 100; i++) {
+                console.log(this.processPersent)
+                setTimeout(function () {
+                    that.processPersent++;
+                } ,1000);
+            }
+        },
+        methods: {
+            add() {
+                this.processPersent++;
+            }
+        }
+    });
+</script>

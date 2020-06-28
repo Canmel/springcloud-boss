@@ -16,6 +16,7 @@
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="seat" property="seat"/>
         <result column="option_id" property="optionId"/>
+        <result column="option" property="option" />
         <result column="uid" property="uid" />
         <association property="user" javaType="com.camel.core.model.SysUser">
             <id property="id" column="uid" jdbcType="INTEGER"></id>

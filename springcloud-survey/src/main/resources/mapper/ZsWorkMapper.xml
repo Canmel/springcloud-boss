@@ -14,7 +14,7 @@
         <result column="id_num" property="idNum"/>
         <result column="job_number" property="jobNumber"/>
         <result column="try_num" property="tryNum"/>
-        <result column="succss_num" property="succssNum"/>
+        <result column="success_num" property="successNum"/>
         <result column="invalid_num" property="invalidNum"/>
         <result column="valid_num" property="validNum"/>
         <result column="success_rate" property="successRate"/>
@@ -34,11 +34,15 @@
         <result column="source" property="source" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="uid" property="uid"/>
         <result column="state" property="state"/>
+        <result column="source" property="source" />
+        <result column="uid" property="uid" />
+        <result column="call_time" property="callTime" />
+        <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, project_id, pname, uname, ptime, work_date, phone, id_num, job_number, try_num, succss_num, invalid_num, valid_num, success_rate, start_time, end_time, eat_time, work_hours, benchmark, base_salary, royalty, meals, salary, place, gain, gain_time,source,uid,state
+        id, project_id, pname, uname, ptime, work_date, phone, id_num, job_number, try_num, success_num, invalid_num, valid_num, success_rate, start_time, end_time, eat_time, work_hours, benchmark, base_salary, royalty, meals, salary, place, gain, gain_time, source, uid, state, call_time
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -48,8 +52,14 @@
         zs_work
         <where>
             status = 1
+            <if test="entity.uid != null">
+                AND uid = #{entity.uid}
+            </if>
             <if test="entity.uname != null and entity.uname != ''">
                 AND uname like concat('%', #{entity.uname}, '%')
+            </if>
+            <if test="entity.pname != null and entity.pname != ''">
+                AND pname like concat('%', #{entity.pname}, '%')
             </if>
             <if test="entity.idNum != null and entity.idNum != ''">
                 AND id_num = #{entity.idNum}

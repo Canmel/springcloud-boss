@@ -21,11 +21,12 @@
         <result column="taskid" property="taskid" />
         <result column="taskname" property="taskname" />
         <result column="ivr_dtmf" property="ivr_dtmf" />
+        <result column="uid" property="uid" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, call_uuid, uuids, call_type, caller_num, callee_num, start_time, call_lasts_time, agent_duration, caller_agent_num, callee_agent_num, caller_agent_group_name, record_file, grade, taskid, taskname, ivr_dtmf
+        id, call_uuid, uuids, call_type, caller_num, callee_num, start_time, call_lasts_time, agent_duration, caller_agent_num, callee_agent_num, caller_agent_group_name, record_file, grade, taskid, taskname, ivr_dtmf, uid
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

@@ -11,6 +11,8 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
+import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -18,10 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -40,9 +44,40 @@ public class ZsWorkController extends BaseCommonController {
     @Autowired
     private ApplicationToolsUtils applicationUtils;
 
+    /**
+     * 上报记录总列表
+     * @param entity
+     * @param zsWorkId
+     * @param oAuth2Authentication
+     * @return
+     */
     @GetMapping
     public Result index(ZsWork entity,@RequestParam("zsWorkId[]")String[] zsWorkId, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity,zsWorkId, oAuth2Authentication));
+    }
+
+    /**
+     * 上报记录
+     * @param work
+     * @param bindingResult
+     * @return
+     */
+    @PostMapping("/report")
+    public Result report(@Valid ZsWork work, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new SourceDataNotValidException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        return  ResultUtil.success(service.report(work));
+    }
+
+    /**
+     * 我的上报记录
+     * @param entity
+     * @return
+     */
+    @GetMapping("/me")
+    public Result me(ZsWork entity) {
+        return ResultUtil.success(service.me(entity));
     }
 
     /**
@@ -59,6 +94,7 @@ public class ZsWorkController extends BaseCommonController {
         zsWorkWrapper.eq("uname", uname);
         zsWorkWrapper.eq("id_num", idNum);
         zsWorkWrapper.eq("gain", ZsGain.NORMAL.getCode());
+        zsWorkWrapper.eq("state", ZsWorkState.SUCCESS.getValue());
         return ResultUtil.success(service.selectList(zsWorkWrapper));
     }
 
@@ -77,6 +113,24 @@ public class ZsWorkController extends BaseCommonController {
         entity.setIdNum(sysUser.getIdNum());
         entity.setUname(sysUser.getUsername());
         return ResultUtil.success(service.selectPage(entity,null, oAuth2Authentication));
+    }
+
+    @GetMapping("/pass/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    public Result pass(@PathVariable Integer id) {
+        ZsWork work = service.selectById(id);
+        work.setState(ZsWorkState.SUCCESS);
+        service.updateById(work);
+        return ResultUtil.success("通过成功");
+    }
+
+    @GetMapping("/reject/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    public Result reject(@PathVariable Integer id) {
+        ZsWork work = service.selectById(id);
+        work.setState(ZsWorkState.FAILD);
+        service.updateById(work);
+        return ResultUtil.success("驳回成功");
     }
 
     @DeleteMapping("/{id}")

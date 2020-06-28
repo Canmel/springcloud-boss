@@ -16,28 +16,27 @@
 
 </head>
 <body ontouchstart>
-<div class="container" id="container">
-    <div v-if="!viewModel">
-        <div class="weui_msg" v-if="!ticket">
-            <div class="weui_icon_area">
-                <i class="weui_icon_cancel weui_icon_msg"></i></div>
-            <div class="weui_text_area">
-                <h2 class="weui_msg_title">无权限操作</h2>
-                <p class="weui_msg_desc">请您完善个人信息后再次尝试</p>
+<div class="container" id="container" style="height: 100%;">
+    <div style="height: 100%;">
+        <div style="height: 100%;">
+            <div style="height: 81.5%; background-image: url('/viewer/wx/img/share01.png'); background-size:100% 100%; background-repeat: no-repeat;">
+
             </div>
-            <div class="weui_extra_area">
+            <div style="height: 11.5%; background-color: #ffffff;">
+                <div class="weui-row weui-no-gutter" style="height: 100%;">
+                    <div style="width: 39%; height: 100%; background-image: url('/viewer/wx/img/share02.png'); background-size: 100% 100%;">
+                    </div>
+                    <div style="width: 25%; height: 100%;">
+                        <img v-bind:src="qrCodeSrc()" v-if="ticket" style="width: 100%;">
+                    </div>
+                    <div style="width: 36%; height: 100%; background-image: url('/viewer/wx/img/share03.png'); background-size: 100% 100%;">
+                    </div>
+                </div>
+            </div>
+            <div style="height: 7%; background-image: url('/viewer/wx/img/share04.png'); background-size: 100% 100%;">
             </div>
         </div>
-        <div class="weui-panel" style="padding-top: 10%;" v-if="ticket">
-            <img v-bind:src="qrCodeSrc()" style="width: 50%;">
-            <p>我的推荐二维码，长按保存发给朋友，或者直接转发给朋友或朋友圈</p>
-        </div>
-    </div>
-    <div v-if="viewModel">
-        <div class="weui-panel" style="padding-top: 10%;" v-if="ticket">
-            <img v-bind:src="qrCodeSrc()" style="width: 50%;">
-            <p>这是我的推荐，长按识别二维码，关智慧调查，和我一起。。。</p>
-        </div>
+
     </div>
 </div>
 <script src="/viewer/wx/js/fastclick.js"></script>
@@ -69,7 +68,7 @@
             initWxConfig(params) {
                 let that = this;
                 wx.config({
-                    debug: true,
+                    debug: false,
                     appId: params.appId,
                     timestamp: params.timestamp,
                     nonceStr: params.nonceStr,
@@ -77,29 +76,28 @@
                     jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData']
                 });
                 wx.ready(function () {
-                    // let baseUrl = "http://diaocha.natapp1.cc/";
-                    let baseUrl = "https://diaocha.svdata.cn/";
+                    let baseUrl = "http://diaocha.natapp1.cc/";
+                    // let baseUrl = "https://diaocha.svdata.cn/";
                     // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
                     wx.updateAppMessageShareData({
-                        title: '我咋地咋地了', // 分享标题
-                        desc: '你也来咋地', // 分享描述
+                        title: '提高能力,磨炼意志,锻炼口才,增加收入', // 分享标题
+                        desc: '撸起袖子加油干, 打开钱包笑灿烂', // 分享描述
                         link: baseUrl + 'viewer/view/share?ticket=' + that.ticket, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: baseUrl + 'survey/img/avatar/29.png', // 分享图标
+                        imgUrl: 'https://mmbiz.qpic.cn/mmbiz_png/DqcTjjLJ88ZkJ3ibMco3TbWNxNRGaYibibHqibLbPOqIkCiawbicrQcwTGbnJqAaFbDc6UV2qfqOic2SHQxCPwtc8yA6A/0?wx_fmt=png', // 分享图标
                         success: function () {
                         }
                     });
                     // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
                     wx.updateTimelineShareData({
-                        title: '我咋地咋地了', // 分享标题
+                        title: '提高能力,磨炼意志,锻炼口才,增加收入', // 分享标题
                         link: baseUrl + 'viewer/view/share?ticket=' + that.ticket, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: baseUrl + 'survey/img/avatar/29.png', // 分享图标
+                        imgUrl: 'https://mmbiz.qpic.cn/mmbiz_png/DqcTjjLJ88ZkJ3ibMco3TbWNxNRGaYibibHqibLbPOqIkCiawbicrQcwTGbnJqAaFbDc6UV2qfqOic2SHQxCPwtc8yA6A/0?wx_fmt=png', // 分享图标
                         success: function () {
                         }
                     });
                 });
 
                 wx.error(function (res) {
-                    alert(res);
                 });
             },
             getSignature() {

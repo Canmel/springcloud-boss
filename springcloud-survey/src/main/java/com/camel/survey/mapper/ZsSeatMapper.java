@@ -26,4 +26,6 @@ public interface ZsSeatMapper extends BaseMapper<ZsSeat> {
 
     ZsSeat selectLastByUser(Integer id);
 
+    ZsSeat searchBySeatNum(String seatNum);
+
 }

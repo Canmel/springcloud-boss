@@ -5,11 +5,23 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkSource;
+import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.exceptions.SurveyNotValidException;
+import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.service.ZsWorkService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.ObjectUtils;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -32,6 +44,7 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 项目主键
      */
+    @NotNull(message = "项目不能为空")
     private Integer projectId;
     /**
      * 项目名称
@@ -50,7 +63,9 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @NotNull(message = "日期不能为空")
     @ExcelAnnotation(columnIndex = 2, columnName = "日期")
     private Date workDate;
     /**
@@ -66,18 +81,21 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 工号
      */
+    @NotBlank(message = "工号不能为空")
     @ExcelAnnotation(columnIndex = 6, columnName = "工号")
     private String jobNumber;
     /**
      * 接触量
      */
+    @NotNull(message = "接触量不能为空")
     @ExcelAnnotation(columnIndex = 7, columnName = "接触量")
     private Integer tryNum;
     /**
      * 成功量
      */
+    @NotNull(message = "成功量不能为空")
     @ExcelAnnotation(columnIndex = 8, columnName = "成功量")
-    private Integer succssNum;
+    private Integer successNum;
     /**
      * 无效量
      */
@@ -96,16 +114,21 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 开始时间
      */
+    @NotNull(message = "开始时间不能为空")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 12, columnName = "开始时间")
     private Date startTime;
     /**
      * 结束时间
      */
+    @NotNull(message = "结束时间不能为空")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 13, columnName = "结束时间")
     private Date endTime;
     /**
      * 就餐时间
      */
+    @NotNull(message = "休息时间不能为空")
     @ExcelAnnotation(columnIndex = 14, columnName = "就餐时间")
     private Double eatTime;
     /**
@@ -113,6 +136,9 @@ public class ZsWork extends BasePaginationEntity {
      */
     @ExcelAnnotation(columnIndex = 15, columnName = "工作时长")
     private Double workHours;
+
+    @NotNull(message = "通话时长不能为空")
+    private Double callTime;
     /**
      * 基准量
      */
@@ -145,6 +171,9 @@ public class ZsWork extends BasePaginationEntity {
     @ExcelAnnotation(columnIndex = 29, columnName = "地点")
     private String place;
 
+
+    private ZsWorkState state;
+
     /**
      * 状态
      */
@@ -158,6 +187,13 @@ public class ZsWork extends BasePaginationEntity {
      * 获取时间，从工作薪酬提出到余额
      */
     private Date gainTime;
+
+    /**
+     * 指出该工作记录数据来源
+     */
+    private Integer source;
+
+    private Integer uid;
 
     private ZsWorkSource source;
 
@@ -185,7 +221,7 @@ public class ZsWork extends BasePaginationEntity {
         ", idNum=" + idNum +
         ", jobNumber=" + jobNumber +
         ", tryNum=" + tryNum +
-        ", succssNum=" + succssNum +
+        ", succssNum=" + successNum +
         ", invalidNum=" + invalidNum +
         ", validNum=" + validNum +
         ", successRate=" + successRate +
@@ -204,5 +240,33 @@ public class ZsWork extends BasePaginationEntity {
         ", uid=" + uid +
         ", state=" + state +
         "}";
+    }
+
+    public void buildNecessaryAttribute(ZsSurveyService service, SysUser user) {
+        this.validEntity();
+        if(ObjectUtils.isEmpty(user.getIdNum())) {
+            throw new SourceDataNotValidException("您还未完善个人身份证信息，请先完善");
+        }
+        if(!ObjectUtils.isEmpty(this.projectId)) {
+            ZsSurvey survey = service.selectById(this.projectId);
+            if(ObjectUtils.isEmpty(survey)) {
+                throw new SourceDataNotValidException("未选择任何问卷");
+            }
+            setProjectId(survey.getId());
+            setPname(survey.getName());
+        }
+        setUname(user.getUsername());
+        setIdNum(user.getIdNum());
+        setPhone(user.getMobile());
+        setUid(user.getUid());
+    }
+
+    public void validEntity() {
+        if(ObjectUtils.isEmpty(this.getStartTime()) || ObjectUtils.isEmpty(this.getEndTime())) {
+            throw new SourceDataNotValidException("开始时间与结束时间不能是一个空值");
+        }
+        if(this.startTime.getTime() >= this.endTime.getTime()) {
+            throw  new SourceDataNotValidException("结束时间不能是一个小于开始时间的值");
+        }
     }
 }

@@ -2,10 +2,13 @@ package com.camel.survey.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.survey.model.ZsWork;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -21,4 +24,7 @@ public interface ZsWorkService extends IService<ZsWork> {
 
     PageInfo<ZsWork> selectPage(ZsWork zsWork,String[] ids, OAuth2Authentication oAuth2Authentication);
 
+    Result report(ZsWork zsWork);
+
+    PageInfo me(ZsWork entity);
 }

@@ -1,0 +1,147 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="signupForm">
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <button tabindex="-1" class="btn btn-white" type="button">所属项目</button>
+                    </div>
+                    <select class="form-control" v-model="work.projectId">
+                        <option value="0">请选择参与的项目</option>
+                        <option :value="item.id" v-for="item in projects">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group date-form">
+                    <div class="col-sm-12">
+                        <div class="input-group date">
+                            <div class="input-group-btn">
+                                <div class="btn btn-white" type="button">工作日期</div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="选择要上报的工作日期" ref="workDate" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <div class="btn btn-white" type="button">访员工号</div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="请输入您的工号" v-model="work.jobNumber">
+                </div>
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <div class="btn btn-white" type="button">接触量</div>
+                    </div>
+                    <input type="number" class="form-control" placeholder="本次接触量" v-model="work.tryNum" onkeyup="value=this.value.replace(/\D+/g,'')">
+                </div>
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <div class="btn btn-white" type="button">成功量</div>
+                    </div>
+                    <input type="number" class="form-control" placeholder="本次成功量" v-model="work.successNum" onkeyup="value=this.value.replace(/\D+/g,'')">
+                </div>
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <div class="btn btn-white" type="button">开始时间</div>
+                    </div>
+                    <input type="text" class="form-control clockpicker" readonly data-autoclose="true"
+                           placeholder="请选择开始时间" ref="startTime">
+                </div>
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <div class="btn btn-white" type="button">结束时间</div>
+                    </div>
+                    <input type="text" class="form-control clockpicker" readonly data-autoclose="true"
+                           placeholder="请选择结束时间" ref="endTime">
+                </div>
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <button class="btn btn-white" type="button">休息用时</button>
+                    </div>
+                    <input type="text" max="24" min="0" class="form-control" v-model="work.eatTime"
+                           placeholder="请输入休息用时（单位:小时）" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" step="0.01">
+                </div>
+
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <button class="btn btn-white" type="button">通话时长</button>
+                    </div>
+                    <input type="text" max="1000" min="0" class="form-control" v-model="work.callTime"
+                           placeholder="请输入通话时长（单位:分钟）" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" step="0.01">
+                </div>
+                <div class="text-center">
+                    <a data-toggle="modal" class="btn btn-primary" @click="submitWorkData()">提交数据</a>
+                    <a class="btn btn-secondary" @click="backToList()">取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            projects: [],
+            work: {
+                projectId: 0,
+                workDate: '2020-06-10',
+                jobNumber: null,
+                tryNum: null,
+                successNum: null,
+                startTime: null,
+                endTime: null,
+                eatTime: null
+            }
+        },
+        created: function () {
+            this.loadActiviesSurvey();
+        },
+        methods: {
+            backToList() {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/work/list.html',
+                    container: '.page-container'
+                });
+            },
+            submitWorkData() {
+                this.work.workDate = this.$refs.workDate.value;
+                if(this.$refs.startTime.value) {
+                    this.work.startTime = this.work.workDate + ' ' + this.$refs.startTime.value + ':00';
+                }
+                if(this.$refs.endTime.value) {
+                    this.work.endTime = this.work.workDate + ' ' + this.$refs.endTime.value + ':00';
+                }
+                AJAX.POST('zsWork/report', this.work, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    toPage("pages/work/list.html");
+                })
+
+            },
+            floatFilter() {
+                console.log(this.work.eatTime);
+                this.work.eatTime = this.work.eatTime.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g, '');
+            },
+            loadActiviesSurvey() {
+                let that = this;
+                AJAX.GET("zsOtherSurvey/actives", {}, function (resp) {
+                    that.projects = resp.data;
+                });
+            }
+        }
+    });
+
+    $(document).ready(function () {
+
+        $('.date-form .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+        $('.clockpicker').clockpicker();
+
+    });
+</script>
