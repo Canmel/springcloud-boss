@@ -2,7 +2,10 @@ package com.camel.survey.model;
 
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.math.BigDecimal;
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
@@ -16,6 +19,7 @@ import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.ObjectUtils;
 
@@ -64,7 +68,7 @@ public class ZsWork extends BasePaginationEntity {
      * 日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "日期不能为空")
     @ExcelAnnotation(columnIndex = 2, columnName = "日期")
     private Date workDate;
@@ -115,14 +119,14 @@ public class ZsWork extends BasePaginationEntity {
      * 开始时间
      */
     @NotNull(message = "开始时间不能为空")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 12, columnName = "开始时间")
     private Date startTime;
     /**
      * 结束时间
      */
     @NotNull(message = "结束时间不能为空")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ExcelAnnotation(columnIndex = 13, columnName = "结束时间")
     private Date endTime;
     /**
@@ -206,44 +210,44 @@ public class ZsWork extends BasePaginationEntity {
     @Override
     public String toString() {
         return "ZsWork{" +
-        ", id=" + id +
-        ", projectId=" + projectId +
-        ", pname=" + pname +
-        ", ptime=" + ptime +
-        ", workDate=" + workDate +
-        ", phone=" + phone +
-        ", idNum=" + idNum +
-        ", jobNumber=" + jobNumber +
-        ", tryNum=" + tryNum +
-        ", succssNum=" + successNum +
-        ", invalidNum=" + invalidNum +
-        ", validNum=" + validNum +
-        ", successRate=" + successRate +
-        ", startTime=" + startTime +
-        ", endTime=" + endTime +
-        ", eatTime=" + eatTime +
-        ", workHours=" + workHours +
-        ", benchmark=" + benchmark +
-        ", baseSalary=" + baseSalary +
-        ", royalty=" + royalty +
-        ", meals=" + meals +
-        ", salary=" + salary +
-        ", gain=" + gain +
-        ", gainTime=" + gainTime +
-        ", source=" + source +
-        ", uid=" + uid +
-        ", state=" + state +
-        "}";
+                ", id=" + id +
+                ", projectId=" + projectId +
+                ", pname=" + pname +
+                ", ptime=" + ptime +
+                ", workDate=" + workDate +
+                ", phone=" + phone +
+                ", idNum=" + idNum +
+                ", jobNumber=" + jobNumber +
+                ", tryNum=" + tryNum +
+                ", succssNum=" + successNum +
+                ", invalidNum=" + invalidNum +
+                ", validNum=" + validNum +
+                ", successRate=" + successRate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", eatTime=" + eatTime +
+                ", workHours=" + workHours +
+                ", benchmark=" + benchmark +
+                ", baseSalary=" + baseSalary +
+                ", royalty=" + royalty +
+                ", meals=" + meals +
+                ", salary=" + salary +
+                ", gain=" + gain +
+                ", gainTime=" + gainTime +
+                ", source=" + source +
+                ", uid=" + uid +
+                ", state=" + state +
+                "}";
     }
 
     public void buildNecessaryAttribute(ZsSurveyService service, SysUser user) {
         this.validEntity();
-        if(ObjectUtils.isEmpty(user.getIdNum())) {
+        if (ObjectUtils.isEmpty(user.getIdNum())) {
             throw new SourceDataNotValidException("您还未完善个人身份证信息，请先完善");
         }
-        if(!ObjectUtils.isEmpty(this.projectId)) {
+        if (!ObjectUtils.isEmpty(this.projectId)) {
             ZsSurvey survey = service.selectById(this.projectId);
-            if(ObjectUtils.isEmpty(survey)) {
+            if (ObjectUtils.isEmpty(survey)) {
                 throw new SourceDataNotValidException("未选择任何问卷");
             }
             setProjectId(survey.getId());
@@ -256,11 +260,29 @@ public class ZsWork extends BasePaginationEntity {
     }
 
     public void validEntity() {
-        if(ObjectUtils.isEmpty(this.getStartTime()) || ObjectUtils.isEmpty(this.getEndTime())) {
+        if (ObjectUtils.isEmpty(this.getStartTime()) || ObjectUtils.isEmpty(this.getEndTime())) {
             throw new SourceDataNotValidException("开始时间与结束时间不能是一个空值");
         }
-        if(this.startTime.getTime() >= this.endTime.getTime()) {
-            throw  new SourceDataNotValidException("结束时间不能是一个小于开始时间的值");
+        if (this.startTime.getTime() >= this.endTime.getTime()) {
+            throw new SourceDataNotValidException("结束时间不能是一个小于开始时间的值");
         }
+    }
+
+    public Integer getValidNum() {
+        if (!ObjectUtils.isEmpty(this.validNum) && validNum != 0) {
+            return validNum;
+        }
+        return successNum - invalidNum;
+    }
+
+    public String getSuccessRate() {
+        if (StringUtils.isNotEmpty(successRate)) {
+            return successRate;
+        }
+        if (!ObjectUtils.isEmpty(tryNum) && tryNum > 0) {
+            Double f1 = new BigDecimal((float) 100 * successNum / tryNum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return f1.toString();
+        }
+        return successRate;
     }
 }
