@@ -46,6 +46,8 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result index(ZsAnswer entity) {
@@ -54,20 +56,27 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
         return ResultUtil.success(service.details(id));
     }
 
+    /**
+     * 获取复核答卷
+     * @param agent
+     * @return
+     */
     @GetMapping("/agent/{agent}")
     public Result detailsp(@PathVariable("agent") String agent) {
         return ResultUtil.success(service.details(agent));
     }
 
-
     /**
      * 新建保存
+     * @param entity
      */
     @PostMapping
     public Result save(@RequestBody ZsAnswer entity) {
@@ -76,6 +85,7 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsAnswer entity) {
@@ -84,17 +94,28 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return  service.deleteAnswer(id);
     }
 
+    /**
+     * 更改答卷状态
+     * @param id
+     */
     @GetMapping("/invalid/{id}")
     public Result invalid(@PathVariable Integer id) {
         return service.invalid(id);
     }
 
+    /**
+     * 复核答卷
+     * @param answerId
+     * @param reviewStatus
+     * @param reviewMsg
+     */
     @PostMapping("/review")
     public Result review(Integer answerId, Integer reviewStatus, String reviewMsg) {
         if(service.review(answerId, reviewStatus, reviewMsg)) {
@@ -104,6 +125,11 @@ public class ZsAnswerController extends BaseCommonController {
         }
     }
 
+    /**
+     * 获取待复核列表
+     * @param entity
+     * @return
+     */
     @GetMapping("/randoms")
     public Result randoms(ZsAnswer entity) {
         return ResultUtil.success(service.randomList(entity));

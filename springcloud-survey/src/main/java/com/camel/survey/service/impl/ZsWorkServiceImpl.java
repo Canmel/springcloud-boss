@@ -58,7 +58,7 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
             for (ZsWork work : works) {
                 ZsSurvey zsSurvey = zsSurveyService.getByNameFromList(work.getPname(), zsSurveyList);
                 if (!ObjectUtils.isEmpty(zsSurvey)) {
-                    work.setProjectId(zsSurvey.getProjectId());
+                    work.setProjectId(zsSurvey.getId());
                 }
             }
 

@@ -117,4 +117,6 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
     Result stopOrUse(Integer id);
 
     String reviewRate(Integer id);
+
+    Result check(Integer id);
 }

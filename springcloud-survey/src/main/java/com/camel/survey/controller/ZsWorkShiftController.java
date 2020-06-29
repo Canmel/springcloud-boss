@@ -37,6 +37,9 @@ public class ZsWorkShiftController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @param principal
+     * @return
      */
     @GetMapping
     public Result index(ZsWorkShift entity, Principal principal) {
@@ -44,16 +47,22 @@ public class ZsWorkShiftController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity, principal));
     }
 
+    /**
+     * 获取近期定点调查班次列表
+     * @param entity
+     * @param openId
+     * @return
+     */
     @AuthIgnore
     @GetMapping("/all")
     public Result all(ZsWorkShift entity, String openId) {
         return ResultUtil.success(service.all(entity, openId));
     }
 
-
-
     /**
      * 新建保存
+     * @param entity
+     * @param principal
      */
     @PostMapping
     public Result save(ZsWorkShift entity, Principal principal) {
@@ -78,6 +87,7 @@ public class ZsWorkShiftController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsWorkShift entity) {
@@ -86,23 +96,35 @@ public class ZsWorkShiftController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
+    /**
+     * 根据问卷和用户信息获取班次
+     * @param id
+     * @return
+     */
     @GetMapping("/current/{id}")
     public Result current(@PathVariable Integer id) {
         SysUser member = applicationUtils.currentUser();
         return ResultUtil.success(service.selectByUidandSurveyId(member.getUid(),id));
     }
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "班次";

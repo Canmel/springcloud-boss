@@ -30,6 +30,11 @@ public class MonitorsController {
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
+    /**
+     * 正在调查该问卷的访员
+     * @param monitor
+     * @return
+     */
     @GetMapping("/all")
     private Result all(ZsMonitor monitor) {
         List<SysUser> users = new ArrayList<>();
@@ -46,6 +51,11 @@ public class MonitorsController {
         return ResultUtil.success(users);
     }
 
+    /**
+     * 查看访员视频
+     * @param user
+     * @return
+     */
     @GetMapping("/user")
     private Result monitorByUser(SysUser user) {
         return ResultUtil.success(seatService.selectByUid(user.getUid()));

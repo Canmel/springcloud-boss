@@ -74,6 +74,9 @@
                             <button type="button" v-on:click="changeStatus(item, '启用')" v-if="showUse(item)"
                                     class="btn btn-danger btn-xs">启用
                             </button>
+                            <button type="button" v-on:click="check(item)" v-if="resultDev"
+                                    class="btn btn-warning btn-xs">结算
+                            </button>
                     </tr>
                     </tbody>
                 </table>
@@ -289,6 +292,16 @@
                             that.pagequery();
                         })
 
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            check: function (item) {
+                var that = this;
+                confirm("您确定要结算这个问卷吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.POST('zsSurvey/check/'+ item.id,{}, function (resp) {
+                            toastr.success(resp.msg);
+                        })
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
             },

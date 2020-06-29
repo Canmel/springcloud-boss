@@ -50,6 +50,8 @@ public class ZsProjectController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result index(ZsProject entity) {
@@ -58,6 +60,8 @@ public class ZsProjectController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
@@ -66,6 +70,7 @@ public class ZsProjectController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
      */
     @PostMapping
     public Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication) {
@@ -74,6 +79,7 @@ public class ZsProjectController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsProject entity) {
@@ -82,6 +88,7 @@ public class ZsProjectController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {

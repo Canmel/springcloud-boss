@@ -56,6 +56,13 @@ public class ExportController {
     @Autowired
     private ExportService service;
 
+    /**
+     * 问卷汇总导出
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
     @GetMapping("/survey/total/{id}")
     public void total(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
         ZsSurvey survey = zsSurveyService.selectById(id);
@@ -63,12 +70,24 @@ public class ExportController {
         ExportExcelUtils.export(service.total(id), survey.getName(), response);
     }
 
+    /**
+     * 问卷交叉导出
+     * @param zsCrossExport
+     * @param response
+     * @return
+     */
     @GetMapping("/survey/cross")
     public void cross(ZsCrossExport zsCrossExport, HttpServletResponse response) {
         ZsSurvey survey = zsSurveyService.selectById(zsCrossExport.getSurveyId());
         ExportExcelUtils.export(service.cross(zsCrossExport), "交叉_" + survey.getName(), response);
     }
 
+    /**
+     * 问卷问题导出
+     * @param id
+     * @param response
+     * @return
+     */
     @GetMapping("/survey/{id}/items")
     public void items(@PathVariable Integer id, HttpServletResponse response) {
         ZsQuestion question = zsQuestionService.selectById(id);
@@ -76,12 +95,24 @@ public class ExportController {
         ExportExcelUtils.export(service.items(survey.getId(), id), "问卷样本统计_" + survey.getName(), response);
     }
 
+    /**
+     * 问卷明细导出
+     * @param id
+     * @param response
+     * @return
+     */
     @GetMapping("/survey/answers/{id}")
     public void answers(@PathVariable Integer id, HttpServletResponse response) {
         ZsSurvey survey = zsSurveyService.selectById(id);
         ExportExcelUtils.export(service.answer(id), "样本明细_" + survey.getName(), response);
     }
 
+    /**
+     * 问卷坐席明细导出
+     * @param id
+     * @param response
+     * @return
+     */
     @GetMapping("/survey/seat/{id}")
     public void seat(@PathVariable Integer id, HttpServletResponse response) {
         ZsSurvey survey = zsSurveyService.selectById(id);

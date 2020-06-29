@@ -61,7 +61,7 @@ public class DocumentController extends BaseCommonController {
     /**
      * 获取分页列表
      * @param document
-     * @returnsdf
+     * @return
      */
     @GetMapping
     public Result index(Document document) {
@@ -125,7 +125,6 @@ public class DocumentController extends BaseCommonController {
     public Result delete(@PathVariable Integer id) throws QiniuException {
         return super.delete(id);
     }
-
     @GetMapping("/{id}")
     public Result url(@PathVariable("id") Integer id) throws FileNotFoundException {
         return ResultUtil.success((Object) service.url(id));
@@ -136,7 +135,7 @@ public class DocumentController extends BaseCommonController {
      *
      * @param response
      * @param fileName
-     * @return
+     * @return response
      */
     private HttpServletResponse setHeader(HttpServletResponse response, String fileName) {
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
@@ -170,11 +169,17 @@ public class DocumentController extends BaseCommonController {
         return null;
     }
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "文档";

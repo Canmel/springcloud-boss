@@ -138,6 +138,8 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     public SysUser user;
 
+    private Integer checked;
+
     public ZsAnswer() {
     }
 

@@ -52,6 +52,8 @@ public class ZsSignController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result index(ZsSign entity) {
@@ -60,6 +62,8 @@ public class ZsSignController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
@@ -68,6 +72,7 @@ public class ZsSignController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
      */
     @PostMapping
     public Result save(@RequestBody ZsSign entity) {
@@ -76,6 +81,7 @@ public class ZsSignController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsSign entity) {
@@ -84,22 +90,34 @@ public class ZsSignController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
+    /**
+     * 获取当前用户正在调查的问卷
+     * @param principal
+     * @return
+     */
     @GetMapping("/user")
     public Result getByUserId(Principal principal) {
         SysUser member = applicationToolsUtils.currentUser();
         return service.selectByUserId(member.getUid());
     }
 
+    /**
+     * 获取当前用户正在调查的问卷数量和通过考试的问卷数量
+     * @param userid
+     * @return
+     */
     @GetMapping("/signcount")
     public Result getByUsername(String userid){
         return service.userZsSign(userid);
     }
+
     /**
      * 获取service
      */

@@ -65,12 +65,20 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @param oAuth2Authentication
+     * @return
      */
     @GetMapping
     public Result index(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
 
+    /**
+     * 获取平均时间
+     * @param id
+     * @return
+     */
     @GetMapping("/avgTime/{id}")
     public Result avgTime(@PathVariable Integer id) {
         return ResultUtil.success(service.avgTime(id));
@@ -78,6 +86,8 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @AuthIgnore
     @GetMapping("/{id}")
@@ -87,6 +97,8 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
+     * @param oAuth2Authentication
      */
     @PostMapping
     public Result save(@RequestBody ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
@@ -95,6 +107,7 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsSurvey entity) {
@@ -103,12 +116,17 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
+    /**
+     * 关闭问卷
+     * @param id
+     */
     @PutMapping("/close/{id}")
     public Result close(@PathVariable Integer id) {
         ZsSurvey survey = service.selectById(id);
@@ -117,6 +135,11 @@ public class ZsSurveyController extends BaseCommonController {
         return ResultUtil.success("问卷 " + survey.getName() + " 已经关闭！");
     }
 
+    /**
+     * 根据项目获取问卷列表
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}/projects")
     public Result projects(@PathVariable Integer id) {
         return service.selectListByProjectId(id);
@@ -153,6 +176,10 @@ public class ZsSurveyController extends BaseCommonController {
         return ResultUtil.success(service.questions(id));
     }
 
+    /**
+     * 获取最新问卷
+     * @return
+     */
     @GetMapping("/latestSurvey")
     public Result latestSurvey() {
         return ResultUtil.success(service.findLatestSurvey());
@@ -184,7 +211,7 @@ public class ZsSurveyController extends BaseCommonController {
 
     /**
      * 申请参加
-     *
+     * @param id
      * @return
      */
     @GetMapping("/sign/{id}")
@@ -192,11 +219,19 @@ public class ZsSurveyController extends BaseCommonController {
         return service.sign(id, oAuth2Authentication);
     }
 
+    /**
+     * 判断问卷样本和选项配额是否已满
+     * @param zsAnswerSave
+     */
     @PostMapping("/valid")
     public Result valid(@RequestBody ZsAnswerSave zsAnswerSave) {
         return service.valid(zsAnswerSave);
     }
 
+    /**
+     * 问卷机器人质检
+     * @param id
+     */
     @GetMapping("/test/{id}")
     public Result test(@PathVariable Integer id) {
         List<ZsAnswer> zsAnswerList = zsAnswerService.selectAllWithConversation(id);
@@ -209,16 +244,32 @@ public class ZsSurveyController extends BaseCommonController {
         return ResultUtil.success("发起成功");
     }
 
+    /**
+     * 文件传输
+     * @param request
+     */
     @AuthIgnore
     @PostMapping("/testCallback/result")
     public void GetResult(HttpServletRequest request) {
         myFileTransterBackUpdate.update(request);
     }
 
-
+    /**
+     * 获取复核率
+     * @param id
+     */
     @GetMapping("/reviewRate/{id}")
     public Result reviewRate(@PathVariable Integer id) {
         return ResultUtil.success("成功", service.reviewRate(id));
+    }
+
+    /**
+     * 结算
+     * @param id
+     */
+    @PostMapping("/check/{id}")
+    public Result check(@PathVariable Integer id) {
+        return service.check(id);
     }
 
     /**

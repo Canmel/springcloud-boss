@@ -31,6 +31,9 @@
         <result column="status" property="status"/>
         <result column="gain" property="gain"/>
         <result column="gain_time" property="gainTime"/>
+        <result column="source" property="source" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="uid" property="uid"/>
+        <result column="state" property="state"/>
         <result column="source" property="source" />
         <result column="uid" property="uid" />
         <result column="call_time" property="callTime" />

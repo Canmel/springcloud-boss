@@ -29,9 +29,14 @@ public class ZsPhoneInformationController extends BaseCommonController {
     @Autowired
     private ZsPhoneInformationService service;
 
+    /**
+     * 分页查询
+     * @param entity
+     * @return
+     */
     @GetMapping
-    public Result index(ZsPhoneInformation zsPhoneInformation) {
-        return ResultUtil.success(service.pageQuery(zsPhoneInformation));
+    public Result index(ZsPhoneInformation entity) {
+        return ResultUtil.success(service.pageQuery(entity));
     }
 
     /**
@@ -47,18 +52,26 @@ public class ZsPhoneInformationController extends BaseCommonController {
 
     /**
      * 根据号码获取详情
+     * @param entity
+     * @return
      */
     @AuthIgnore
     @GetMapping("/selectByMobileAndSurvey")
-    public Result details(ZsPhoneInformation zsPhoneInformation) {
-        return ResultUtil.success(service.selectByMobileAndSurvey(zsPhoneInformation));
+    public Result details(ZsPhoneInformation entity) {
+        return ResultUtil.success(service.selectByMobileAndSurvey(entity));
     }
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "号码信息";

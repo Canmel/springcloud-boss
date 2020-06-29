@@ -8,6 +8,7 @@ import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsWorkSource;
 import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyNotValidException;
@@ -190,7 +191,7 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 指出该工作记录数据来源
      */
-    private Integer source;
+    private ZsWorkSource source;
 
     private Integer uid;
 
@@ -229,6 +230,9 @@ public class ZsWork extends BasePaginationEntity {
         ", salary=" + salary +
         ", gain=" + gain +
         ", gainTime=" + gainTime +
+        ", source=" + source +
+        ", uid=" + uid +
+        ", state=" + state +
         "}";
     }
 

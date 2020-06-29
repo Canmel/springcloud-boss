@@ -40,6 +40,8 @@ public class ZsWorkRecordController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result index(ZsWorkRecord entity) {
@@ -69,9 +71,8 @@ public class ZsWorkRecordController extends BaseCommonController {
     }
 
     /**
-     *
-     * @param
-     * @param
+     * 退出班次
+     * @param entity
      * @return
      */
     @GetMapping("/signDown")
@@ -81,6 +82,7 @@ public class ZsWorkRecordController extends BaseCommonController {
 
     /**
      *先根据idNum查询用户，然后根据用户查询其预约时间
+     * @param idNum
      * @return
      */
     @AuthIgnore
@@ -88,11 +90,18 @@ public class ZsWorkRecordController extends BaseCommonController {
     public Result selectWorkR(@PathVariable String idNum){
         return service.selectWorkR(idNum);
     }
+
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "班次报名";
