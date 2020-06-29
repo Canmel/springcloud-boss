@@ -47,6 +47,9 @@ public class ArgsController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @param oAuth2Authentication
+     * @return
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
@@ -56,6 +59,8 @@ public class ArgsController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
@@ -65,6 +70,8 @@ public class ArgsController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
+     * @param oAuth2Authentication
      */
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
@@ -74,6 +81,7 @@ public class ArgsController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
@@ -84,6 +92,7 @@ public class ArgsController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")

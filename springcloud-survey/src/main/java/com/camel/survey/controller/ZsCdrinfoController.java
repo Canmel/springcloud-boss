@@ -50,11 +50,20 @@ public class ZsCdrinfoController extends BaseCommonController {
     @Autowired
     private ZsAnswerService answerService;
 
+    /**
+     * 获取录音信息
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public Result detail(@PathVariable("id") String id){
         return ResultUtil.success(service.details(id));
     }
 
+    /**
+     * 新建保存
+     * @param params
+     */
     @AuthIgnore
     @PostMapping
     public String save(@RequestBody Map<String, ZsCdrinfo[]> params) {
@@ -105,11 +114,17 @@ public class ZsCdrinfoController extends BaseCommonController {
         return "error";
     }
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "话单推送";

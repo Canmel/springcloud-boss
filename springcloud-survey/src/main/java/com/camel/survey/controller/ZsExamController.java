@@ -44,6 +44,8 @@ public class ZsExamController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result serviceindex(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
@@ -52,6 +54,8 @@ public class ZsExamController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
@@ -60,6 +64,7 @@ public class ZsExamController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
      */
     @PostMapping
     public Result save(ZsExam entity, OAuth2Authentication oAuth2Authentication) {
@@ -68,6 +73,7 @@ public class ZsExamController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsExam entity) {
@@ -76,17 +82,27 @@ public class ZsExamController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
+    /**
+     * 申请考核
+     * @param oAuth2Authentication
+     * @param id
+     */
     @GetMapping("/delivery/{id}")
     public Result delivery(OAuth2Authentication oAuth2Authentication, @PathVariable Integer id) {
         return service.delivery(id, oAuth2Authentication);
     }
 
+    /**
+     * 获取所有考核资格
+     * @return
+     */
     @GetMapping("/all")
     public Result all() {
         return service.all();

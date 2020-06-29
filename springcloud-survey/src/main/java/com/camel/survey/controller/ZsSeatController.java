@@ -39,13 +39,20 @@ public class ZsSeatController extends BaseCommonController {
     @Autowired
     private ApplicationToolsUtils applicationUtils;
 
+    /**
+     * 分页查询
+     * @param entity
+     * @return
+     */
     @GetMapping
-    public Result index(ZsSeat zsSeat) {
-        return ResultUtil.success(service.pageQuery(zsSeat));
+    public Result index(ZsSeat entity) {
+        return ResultUtil.success(service.pageQuery(entity));
     }
 
     /**
      * 新建保存
+     * @param entity
+     * @param oAuth2Authentication
      */
     @PostMapping
     public Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
@@ -54,6 +61,8 @@ public class ZsSeatController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
@@ -62,18 +71,28 @@ public class ZsSeatController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsSeat entity) {
         return super.update(entity);
     }
 
+    /**
+     * 获取当前用户坐席
+     * @return
+     */
     @GetMapping("/current")
     public Result current() {
         SysUser member = applicationUtils.currentUser();
         return ResultUtil.success(service.selectByUid(member.getUid()));
     }
 
+    /**
+     * 根据用户列出坐席
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}/selectByUid")
     public Result selectByUid(@PathVariable Integer id) {
         return ResultUtil.success(service.selectByUid(id));
@@ -81,17 +100,24 @@ public class ZsSeatController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "坐席";

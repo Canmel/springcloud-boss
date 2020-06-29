@@ -98,12 +98,21 @@ public class ZsWorkController extends BaseCommonController {
         return ResultUtil.success(service.selectList(zsWorkWrapper));
     }
 
+    /**
+     * 上传工作记录
+     * @param file
+     */
     @PostMapping("/upload")
     public Result upLoad(@RequestParam MultipartFile file) {
         service.importExcel(file);
         return ResultUtil.success("上传成功");
     }
 
+    /**
+     * 获取当前用户收支查询
+     * @param entity
+     * @param oAuth2Authentication
+     */
     @GetMapping("/current")
     public Result current(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         SysUser sysUser = applicationUtils.currentUser();
@@ -115,6 +124,10 @@ public class ZsWorkController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity,null, oAuth2Authentication));
     }
 
+    /**
+     * 通过审核
+     * @param id
+     */
     @GetMapping("/pass/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result pass(@PathVariable Integer id) {
@@ -124,6 +137,10 @@ public class ZsWorkController extends BaseCommonController {
         return ResultUtil.success("通过成功");
     }
 
+    /**
+     * 驳回审核
+     * @param id
+     */
     @GetMapping("/reject/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result reject(@PathVariable Integer id) {
@@ -133,16 +150,26 @@ public class ZsWorkController extends BaseCommonController {
         return ResultUtil.success("驳回成功");
     }
 
+    /**
+     * 删除
+     * @param id
+     */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "工作记录";

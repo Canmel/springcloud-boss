@@ -43,6 +43,8 @@ public class ZsDeliveryController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result index(ZsDelivery entity) {
@@ -51,6 +53,8 @@ public class ZsDeliveryController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
@@ -59,6 +63,7 @@ public class ZsDeliveryController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
      */
     @PostMapping
     public Result save(@RequestBody ZsDelivery entity) {
@@ -67,6 +72,7 @@ public class ZsDeliveryController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsDelivery entity) {
@@ -75,6 +81,7 @@ public class ZsDeliveryController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {

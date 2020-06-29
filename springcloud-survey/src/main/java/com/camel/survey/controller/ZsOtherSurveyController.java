@@ -33,6 +33,8 @@ public class ZsOtherSurveyController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result index(ZsOtherSurvey entity, OAuth2Authentication oAuth2Authentication) {
@@ -41,6 +43,8 @@ public class ZsOtherSurveyController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @AuthIgnore
     @GetMapping("/{id}")
@@ -50,6 +54,7 @@ public class ZsOtherSurveyController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
      */
     @PostMapping
     public Result save(@RequestBody ZsOtherSurvey entity, OAuth2Authentication oAuth2Authentication) throws Exception {
@@ -58,12 +63,17 @@ public class ZsOtherSurveyController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsOtherSurvey entity) throws Exception {
         return service.update(entity);
     }
 
+    /**
+     * 列出有效问卷
+     * @return
+     */
     @GetMapping("/actives")
     public Result actives() {
         Wrapper wrapper = new EntityWrapper<ZsOtherSurvey>();
@@ -73,17 +83,24 @@ public class ZsOtherSurveyController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
     }
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "问卷";

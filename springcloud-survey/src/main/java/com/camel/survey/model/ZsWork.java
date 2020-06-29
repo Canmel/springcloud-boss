@@ -191,15 +191,9 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 指出该工作记录数据来源
      */
-    private Integer source;
-
-    private Integer uid;
-
     private ZsWorkSource source;
 
-    private int uid;
-
-    private int state;
+    private Integer uid;
 
     public ZsWork(Integer id, Integer gain) {
         this.id = id;

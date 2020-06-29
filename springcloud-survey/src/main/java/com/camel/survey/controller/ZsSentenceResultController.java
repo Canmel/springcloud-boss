@@ -24,11 +24,17 @@ public class ZsSentenceResultController extends BaseCommonController {
     @Autowired
     private ZsSentenceResultService service;
 
+    /**
+     * 获取service
+     */
     @Override
     public IService getiService() {
         return service;
     }
 
+    /**
+     * 获取模块名称
+     */
     @Override
     public String getMouduleName() {
         return "对话样本";

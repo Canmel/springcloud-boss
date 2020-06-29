@@ -64,6 +64,10 @@ public class HomeController {
         return homeService.lineChart();
     }
 
+    /**
+     * 首页扇形图
+     * @return
+     */
     @GetMapping("/pieChart")
     public Result pieChart() {
         return homeService.pieChart();

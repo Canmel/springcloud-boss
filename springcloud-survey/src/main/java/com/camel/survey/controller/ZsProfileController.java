@@ -45,12 +45,21 @@ public class ZsProfileController {
     @Autowired
     private ZsProfileService service;
 
+    /**
+     * 获取当前用户
+     * @param oAuth2Authentication
+     * @return
+     */
     @GetMapping
     public Result index(OAuth2Authentication oAuth2Authentication) {
         SysUser member = applicationToolsUtils.currentUser();
         return ResultUtil.success(applicationToolsUtils.getUser(member.getUid()));
     }
 
+    /**
+     * 列出所有问卷
+     * @return
+     */
     @GetMapping("/total")
     public Result total(){
         SysUser member = ApplicationToolsUtils.getInstance().currentUser();

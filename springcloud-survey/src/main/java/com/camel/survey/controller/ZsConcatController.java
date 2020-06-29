@@ -44,6 +44,8 @@ public class ZsConcatController extends BaseCommonController {
 
     /**
      * 分页查询
+     * @param entity
+     * @return
      */
     @GetMapping
     public Result index(ZsConcat entity) {
@@ -52,6 +54,8 @@ public class ZsConcatController extends BaseCommonController {
 
     /**
      * 获取详情
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
@@ -60,6 +64,8 @@ public class ZsConcatController extends BaseCommonController {
 
     /**
      * 新建保存
+     * @param entity
+     * @param oAuth2Authentication
      */
     @PostMapping
     public Result save(ZsConcat entity, OAuth2Authentication oAuth2Authentication) {
@@ -68,6 +74,7 @@ public class ZsConcatController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     * @param entity
      */
     @PutMapping
     public Result update(@RequestBody ZsConcat entity) {
@@ -76,6 +83,7 @@ public class ZsConcatController extends BaseCommonController {
 
     /**
      * 删除
+     * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
