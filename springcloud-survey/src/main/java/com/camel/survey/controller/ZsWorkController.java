@@ -49,15 +49,20 @@ public class ZsWorkController extends BaseCommonController {
 
     @PutMapping
     public Result update(@RequestBody ZsWork entity) {
-        if(!ObjectUtils.isEmpty(entity.getId())) {
+        if (!ObjectUtils.isEmpty(entity.getId())) {
             ZsWork zsWork = service.selectById(entity.getId());
-            if(!ObjectUtils.isEmpty(zsWork)) {
-                if(!zsWork.getState().equals(ZsWorkState.APPLYED) || !zsWork.getStatus().equals(ZsStatus.CREATED)) {
+            if (!ObjectUtils.isEmpty(zsWork)) {
+                if (!zsWork.getState().equals(ZsWorkState.APPLYED) || !zsWork.getStatus().equals(ZsStatus.CREATED)) {
                     throw new SourceDataNotValidException("请不要更新已经提交或审核的数据");
                 }
+                // 设置餐费与作废量
+                zsWork.setInvalidNum(entity.getInvalidNum());
+                zsWork.setMeals(entity.getMeals());
+                zsWork.resetSuccessRate();
+                entity.setSuccessRate(zsWork.getSuccessRate());
             }
         }
-      return super.update(entity);
+        return super.update(entity);
     }
 
     /**
@@ -68,8 +73,8 @@ public class ZsWorkController extends BaseCommonController {
      * @return
      */
     @GetMapping
-    public Result index(ZsWork entity,@RequestParam("zsWorkId[]")String[] zsWorkId, OAuth2Authentication oAuth2Authentication) {
-        return ResultUtil.success(service.selectPage(entity,zsWorkId, oAuth2Authentication));
+    public Result index(ZsWork entity, @RequestParam("zsWorkId[]") String[] zsWorkId, OAuth2Authentication oAuth2Authentication) {
+        return ResultUtil.success(service.selectPage(entity, zsWorkId, oAuth2Authentication));
     }
 
     /**
@@ -80,10 +85,10 @@ public class ZsWorkController extends BaseCommonController {
      */
     @PostMapping("/report")
     public Result report(@Valid ZsWork work, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             throw new SourceDataNotValidException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
-        return  ResultUtil.success(service.report(work));
+        return ResultUtil.success(service.report(work));
     }
 
     /**
@@ -132,12 +137,12 @@ public class ZsWorkController extends BaseCommonController {
     @GetMapping("/current")
     public Result current(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         SysUser sysUser = applicationUtils.currentUser();
-        if(ObjectUtils.isEmpty(sysUser.getUid()) || ObjectUtils.isEmpty(sysUser.getUsername())) {
+        if (ObjectUtils.isEmpty(sysUser.getUid()) || ObjectUtils.isEmpty(sysUser.getUsername())) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "对不起，清先完善身份信息");
         }
         entity.setIdNum(sysUser.getIdNum());
         entity.setUname(sysUser.getUsername());
-        return ResultUtil.success(service.selectPage(entity,null, oAuth2Authentication));
+        return ResultUtil.success(service.selectPage(entity, null, oAuth2Authentication));
     }
 
     /**

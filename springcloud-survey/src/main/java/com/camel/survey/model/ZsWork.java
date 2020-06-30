@@ -269,7 +269,10 @@ public class ZsWork extends BasePaginationEntity {
     }
 
     public Integer getValidNum() {
-        if (!ObjectUtils.isEmpty(this.validNum) && validNum != 0) {
+        if(ObjectUtils.isEmpty(validNum)) {
+            return 0;
+        }
+        if (validNum != 0) {
             return validNum;
         }
         return successNum - invalidNum;
@@ -280,9 +283,16 @@ public class ZsWork extends BasePaginationEntity {
             return successRate;
         }
         if (!ObjectUtils.isEmpty(tryNum) && tryNum > 0) {
-            Double f1 = new BigDecimal((float) 100 * successNum / tryNum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            Double f1 = new BigDecimal((float) 100 * getValidNum() / tryNum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             return f1.toString();
         }
         return successRate;
+    }
+
+    public void resetSuccessRate() {
+        if (!ObjectUtils.isEmpty(tryNum) && tryNum > 0 && !ObjectUtils.isEmpty(getValidNum())) {
+            Double f1 = new BigDecimal((float) 100 * getValidNum() / tryNum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            this.successRate = f1.toString();
+        }
     }
 }
