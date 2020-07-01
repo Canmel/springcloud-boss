@@ -49,6 +49,7 @@ public class ZsWorkController extends BaseCommonController {
     @Autowired
     private ApplicationToolsUtils applicationUtils;
 
+    @Log(moduleName = "工作记录", option = "修改餐补或修改作废量")
     @PutMapping
     public Result update(@RequestBody ZsWork entity) {
         if(!ObjectUtils.isEmpty(entity.getId())) {
@@ -195,16 +196,6 @@ public class ZsWorkController extends BaseCommonController {
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
-    }
-
-    /**
-     * 编辑 更新
-     * @param entity
-     */
-    @Log(moduleName = "工作记录", option = "更新")
-    @PutMapping
-    public Result update(@RequestBody ZsWork entity) {
-        return super.update(entity);
     }
 
     /**
