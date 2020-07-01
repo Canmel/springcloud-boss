@@ -100,7 +100,7 @@ public class ZsOptionController extends BaseCommonController {
      */
     @Override
     public String getMouduleName() {
-        return "";
+        return "选项";
     }
 
 }

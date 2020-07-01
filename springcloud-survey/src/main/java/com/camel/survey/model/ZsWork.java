@@ -215,7 +215,7 @@ public class ZsWork extends BasePaginationEntity {
         ", idNum=" + idNum +
         ", jobNumber=" + jobNumber +
         ", tryNum=" + tryNum +
-        ", succssNum=" + successNum +
+        ", successNum=" + successNum +
         ", invalidNum=" + invalidNum +
         ", validNum=" + validNum +
         ", successRate=" + successRate +

@@ -49,7 +49,7 @@
                         <td><span>{{item.workDate | formatOnlyDate}}</span></td>
                         <td><span>{{item.pname}}</span></td>
                         <td><span>{{item.tryNum}}</span></td>
-                        <td><span>{{item.succssNum}}</span></td>
+                        <td><span>{{item.successNum}}</span></td>
                         <td><span>{{100 * Number.parseFloat(item.successRate).toFixed(2) + "%"}}</span></td>
                         <td><span>{{item.salary}}</span></td>
                         <td><span class="label" :class="item.state.code === 1 ? 'label-info' : 'label-danger'">{{item.state ? item.state.name : ''}}</span></td>
@@ -58,6 +58,7 @@
                             <span v-if="item.gain === 1">已提取</span>
                         </td>
                         <td>
+                            <a class="btn btn-circle btn-success" @click="editItem(item)" v-if="resultDev">修改</a>
                             <a class="btn btn-circle btn-warning" @click="addSurveyShow(item)" v-if="resultDev">查看</a>
                             <a class="btn btn-circle btn-danger" @click="deleteItem(item)" v-if="result">删除</a>
                         </td>
@@ -101,7 +102,7 @@
                                         <td><span>{{item.workHours}}</span></td>
                                         <td><span>{{item.place}}</span></td>
                                         <td><span>{{item.tryNum}}</span></td>
-                                        <td><span>{{item.succssNum}}</span></td>
+                                        <td><span>{{item.successNum}}</span></td>
                                         <td><span>{{100*Number.parseFloat(item.successRate).toFixed(2) + "%"}}</span></td>
                                     </tr>
                                     </tbody>
@@ -206,6 +207,9 @@
                         //after click the cancel
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            editItem(item){
+                toPage('pages/work/edit.html', item.id);
             },
             loginMaster(){
                 var that = this;

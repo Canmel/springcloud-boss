@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.Date;
 
 /**
  * <p>
@@ -157,6 +158,25 @@ public class ZsWorkController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
+    }
+
+    /**
+     * 获取详情
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Result details(@PathVariable Integer id) {
+        return super.details(id);
+    }
+
+    /**
+     * 编辑 更新
+     * @param entity
+     */
+    @PutMapping
+    public Result update(@RequestBody ZsWork entity) {
+        return super.update(entity);
     }
 
     /**

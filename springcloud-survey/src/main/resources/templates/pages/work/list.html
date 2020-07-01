@@ -47,7 +47,7 @@
                         <td><span>{{item.workDate | formatOnlyDate}}</span></td>
                         <td><span>{{item.pname}}</span></td>
                         <td><span>{{item.tryNum}}</span></td>
-                        <td><span>{{item.succssNum}}</span></td>
+                        <td><span>{{item.successNum}}</span></td>
                         <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : ''}}</span></td>
                         <td><span>{{item.salary}}</span></td>
                         <td><span class="label" :class="item.state.code === 1 ? 'label-info' : 'label-danger'">{{item.state ? item.state.name : ''}}</span></td>
