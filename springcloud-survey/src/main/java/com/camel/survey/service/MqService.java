@@ -1,10 +1,6 @@
-package com.camel.system.mapper;
+package com.camel.survey.service;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.camel.system.model.SysNotice;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import javax.jms.JMSException;
 
 /**
  *
@@ -24,23 +20,31 @@ import java.util.List;
  *                    (  | |  | |  )
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
- * <通告MAPPER>
+ * <Mq>
  * @author baily
  * @since 1.0
- * @date 2019/10/31
+ * @date 2019/9/19
  **/
-@Repository
-public interface SysNoticeMapper extends BaseMapper<SysNotice> {
+public interface MqService {
     /**
-     * 列表查询
-     * @param sysNotice
+     * 发送消息
+     * @param msg
      * @return
+     * @throws JMSException
      */
-    List<SysNotice> list(SysNotice sysNotice);
+    boolean sendMsg(String msg) throws JMSException;
 
     /**
-     * 查询最大的排序数字
+     * 发送
+     * @param msg
      * @return
      */
-    Integer selectMaxOrderNum();
+    boolean send(String msg);
+
+    /**
+     * 发送消息
+     * @param msg
+     * @return
+     */
+    boolean sendForNotice(String msg);
 }

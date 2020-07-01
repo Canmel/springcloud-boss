@@ -10,6 +10,7 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.annotation.Log;
 import com.camel.survey.enums.ZsGain;
 import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
@@ -52,6 +53,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param oAuth2Authentication
      * @return
      */
+    @Log(moduleName = "工作记录", option = "查询列表")
     @GetMapping
     public Result index(ZsWork entity,@RequestParam("zsWorkId[]")String[] zsWorkId, OAuth2Authentication oAuth2Authentication) {
         return ResultUtil.success(service.selectPage(entity,zsWorkId, oAuth2Authentication));
@@ -63,6 +65,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param bindingResult
      * @return
      */
+    @Log(moduleName = "工作记录", option = "上报记录")
     @PostMapping("/report")
     public Result report(@Valid ZsWork work, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
@@ -76,6 +79,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param entity
      * @return
      */
+    @Log(moduleName = "工作记录", option = "查看我的上报记录")
     @GetMapping("/me")
     public Result me(ZsWork entity) {
         return ResultUtil.success(service.me(entity));
@@ -88,6 +92,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param uname
      * @return
      */
+    @Log(moduleName = "工作记录", option = "查询可提现记录")
     @GetMapping("/cash")
     @AuthIgnore
     public Result current(String idNum, String uname) {
@@ -103,6 +108,7 @@ public class ZsWorkController extends BaseCommonController {
      * 上传工作记录
      * @param file
      */
+    @Log(moduleName = "工作记录", option = "上传工作记录")
     @PostMapping("/upload")
     public Result upLoad(@RequestParam MultipartFile file) {
         service.importExcel(file);
@@ -114,6 +120,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param entity
      * @param oAuth2Authentication
      */
+    @Log(moduleName = "工作记录", option = "获取当前用户收支查询")
     @GetMapping("/current")
     public Result current(ZsWork entity, OAuth2Authentication oAuth2Authentication) {
         SysUser sysUser = applicationUtils.currentUser();
@@ -129,6 +136,7 @@ public class ZsWorkController extends BaseCommonController {
      * 通过审核
      * @param id
      */
+    @Log(moduleName = "工作记录", option = "通过审核")
     @GetMapping("/pass/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result pass(@PathVariable Integer id) {
@@ -142,6 +150,7 @@ public class ZsWorkController extends BaseCommonController {
      * 驳回审核
      * @param id
      */
+    @Log(moduleName = "工作记录", option = "驳回审核")
     @GetMapping("/reject/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result reject(@PathVariable Integer id) {
@@ -155,6 +164,7 @@ public class ZsWorkController extends BaseCommonController {
      * 删除
      * @param id
      */
+    @Log(moduleName = "工作记录", option = "删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
@@ -165,6 +175,7 @@ public class ZsWorkController extends BaseCommonController {
      * @param id
      * @return
      */
+    @Log(moduleName = "工作记录", option = "获取详情")
     @GetMapping("/{id}")
     public Result details(@PathVariable Integer id) {
         return super.details(id);
@@ -174,6 +185,7 @@ public class ZsWorkController extends BaseCommonController {
      * 编辑 更新
      * @param entity
      */
+    @Log(moduleName = "工作记录", option = "更新")
     @PutMapping
     public Result update(@RequestBody ZsWork entity) {
         return super.update(entity);
