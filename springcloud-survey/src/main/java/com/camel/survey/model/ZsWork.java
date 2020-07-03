@@ -282,9 +282,6 @@ public class ZsWork extends BasePaginationEntity {
         if(ObjectUtils.isEmpty(validNum)) {
             return successNum;
         }
-        if (validNum != 0) {
-            return validNum;
-        }
         return ObjectUtils.isEmpty(invalidNum) ? successNum : successNum - invalidNum;
     }
 
