@@ -13,6 +13,7 @@ import com.camel.survey.service.ZsCdrinfoService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -68,6 +69,7 @@ public class ZsAnswerController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/download")
     public void download(ZsAnswer entity, HttpServletResponse response) {
         ZsSurvey zsSurvey = surveyService.selectById(entity.getSurveyId());
