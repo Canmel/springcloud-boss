@@ -82,7 +82,6 @@ public class ZsCdrinfoController extends BaseCommonController {
                     if(StringUtils.isEmpty(cdr.getUuids())) {
                         cdr.setId(UUID.randomUUID().toString());
                         service.insert(cdr);
-                        return "success";
                     }else {
                         String[] uuids = cdr.getUuids().split(",");
                         for (int j = 0; j < uuids.length; j++) {

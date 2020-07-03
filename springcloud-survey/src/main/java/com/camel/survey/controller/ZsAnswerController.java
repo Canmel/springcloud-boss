@@ -1,17 +1,25 @@
 package com.camel.survey.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsAnswer;
+import com.camel.survey.model.ZsCdrinfo;
+import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsAnswerService;
+import com.camel.survey.service.ZsCdrinfoService;
+import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -44,6 +52,12 @@ public class ZsAnswerController extends BaseCommonController {
     @Autowired
     private ZsAnswerService service;
 
+    @Autowired
+    private ZsSurveyService surveyService;
+
+    @Autowired
+    private ZsCdrinfoService cdrinfoService;
+
     /**
      * 分页查询
      * @param entity
@@ -52,6 +66,17 @@ public class ZsAnswerController extends BaseCommonController {
     @GetMapping
     public Result index(ZsAnswer entity) {
         return ResultUtil.success(service.selectPage(entity));
+    }
+
+    @GetMapping("/download")
+    public void download(ZsAnswer entity, HttpServletResponse response) {
+        ZsSurvey zsSurvey = surveyService.selectById(entity.getSurveyId());
+        entity.setPageSize(null);
+        entity.setPageNum(null);
+        Set<String> agents=  service.selectAgentUuidsByEntity(entity);
+        List<ZsCdrinfo> cdrinfos = cdrinfoService.selectList(agents);
+
+        FileUtils.getInstance().downloadZipFiles(response, cdrinfos, zsSurvey.getName());
     }
 
     /**

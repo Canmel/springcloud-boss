@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -25,6 +26,8 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
      * @return
      */
     List<ZsAnswer> list(ZsAnswer entity);
+
+    Set<String> selectAgentUuidsByEntity(ZsAnswer entity);
 
     List<Map<String, Object>> selectRateBySurveyQuestion(@Param("id") Integer id, @Param("question") String question);
 

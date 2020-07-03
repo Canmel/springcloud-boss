@@ -13,7 +13,7 @@
         <result column="start_time" property="start_time" />
         <result column="call_lasts_time" property="call_lasts_time" />
         <result column="agent_duration" property="agent_duration" />
-        <result column="caller_agent_num" property="callee_agent_num" />
+        <result column="caller_agent_num" property="caller_agent_num" />
         <result column="callee_agent_num" property="callee_agent_num" />
         <result column="caller_agent_group_name" property="caller_agent_group_name" />
         <result column="record_file" property="recordFile" />
@@ -54,5 +54,23 @@
         <where>
             id = #{uuid}
         </where>
+    </select>
+
+    <select id="selectListByAgents" resultMap="BaseResultMap">
+        SELECT
+	        c.id, c.call_uuid, c.uuids, c.call_type, c.caller_num, c.callee_num, c.start_time, c.call_lasts_time, c.agent_duration,
+	        c.caller_agent_num, c.callee_agent_num, c.caller_agent_group_name, c.record_file, c.grade, c.taskid, c.taskname, c.ivr_dtmf, c.uid
+        FROM
+            zs_answer a
+        LEFT JOIN zs_cdrinfo c ON c.id = a.agent_UUID
+        WHERE
+            a.agent_UUID != ''
+        AND c.record_file IS NOT NULL
+        <if test="collection != null">
+            AND c.id IN
+            <foreach collection="collection" open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </if>
     </select>
 </mapper>

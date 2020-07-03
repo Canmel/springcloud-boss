@@ -3,6 +3,9 @@ package com.camel.survey.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.survey.model.ZsCdrinfo;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +16,6 @@ import com.camel.survey.model.ZsCdrinfo;
  */
 public interface ZsCdrinfoService extends IService<ZsCdrinfo> {
     ZsCdrinfo details(String id);
+
+    List<ZsCdrinfo> selectList(Set<String> agents);
 }

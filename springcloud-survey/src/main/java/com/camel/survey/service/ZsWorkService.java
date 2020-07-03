@@ -27,4 +27,6 @@ public interface ZsWorkService extends IService<ZsWork> {
     Result report(ZsWork zsWork);
 
     PageInfo me(ZsWork entity);
+
+
 }

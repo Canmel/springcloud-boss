@@ -19,6 +19,7 @@ import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.ObjectUtils;
@@ -178,6 +179,8 @@ public class ZsWork extends BasePaginationEntity {
 
     private ZsWorkState state;
 
+    private Double avgNum;
+
     /**
      * 状态
      */
@@ -257,25 +260,32 @@ public class ZsWork extends BasePaginationEntity {
         setIdNum(user.getIdNum());
         setPhone(user.getMobile());
         setUid(user.getUid());
+        resetSuccessRate();
     }
 
     public void validEntity() {
+        if(successNum > tryNum) {
+            throw new SourceDataNotValidException("成功量不能大于接触量");
+        }
         if (ObjectUtils.isEmpty(this.getStartTime()) || ObjectUtils.isEmpty(this.getEndTime())) {
             throw new SourceDataNotValidException("开始时间与结束时间不能是一个空值");
         }
         if (this.startTime.getTime() >= this.endTime.getTime()) {
             throw new SourceDataNotValidException("结束时间不能是一个小于开始时间的值");
         }
+        if(DateUtils.addHours(this.startTime, this.eatTime.intValue()).getTime() >= this.endTime.getTime()) {
+            throw new SourceDataNotValidException("上班时间已经全部休息了，本次不需要上报");
+        }
     }
 
     public Integer getValidNum() {
         if(ObjectUtils.isEmpty(validNum)) {
-            return 0;
+            return successNum;
         }
         if (validNum != 0) {
             return validNum;
         }
-        return successNum - invalidNum;
+        return ObjectUtils.isEmpty(invalidNum) ? successNum : successNum - invalidNum;
     }
 
     public String getSuccessRate() {

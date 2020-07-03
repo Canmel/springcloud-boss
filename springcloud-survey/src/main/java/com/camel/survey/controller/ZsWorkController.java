@@ -180,6 +180,34 @@ public class ZsWorkController extends BaseCommonController {
         return super.delete(id);
     }
 
+    // TODO
+    @GetMapping("/precaculate/{id}")
+    public Result pre(@PathVariable Integer id) {
+        ZsWork zsWork = service.selectById(id);
+
+        // 基准
+        zsWork.setBenchmark(0.0);
+        // 平均
+        zsWork.setAvgNum(0.0);
+        // 工资
+        zsWork.setSalary(0.0);
+        return ResultUtil.success(zsWork);
+    }
+
+    // TODO
+    @GetMapping("/caculate/{id}")
+    public Result caculate(@PathVariable Integer id) {
+        ZsWork zsWork = service.selectById(id);
+
+        // 基准
+        zsWork.setBenchmark(0.0);
+        // 平均
+        zsWork.setAvgNum(0.0);
+        // 工资
+        zsWork.setSalary(0.0);
+        return ResultUtil.success(zsWork);
+    }
+
     /**
      * 获取service
      */
