@@ -93,7 +93,7 @@ public class ZsAnswerSave {
         ZsAnswerItem zsAnswerItem = new ZsAnswerItem(question.getName(), ObjectUtils.isEmpty(zsOption) ? "" : zsOption.getName(), answerId, value, question.getType(), this.phone);
         zsAnswerItem.setSurveyId(surveyId);
         zsAnswerItem.setQuestionId(question.getId());
-        zsAnswerItem.setOptionId(zsOption.getId());
+        zsAnswerItem.setOptionId(ObjectUtils.isEmpty(zsOption) ? null : zsOption.getId());
         zsAnswerItem.setZsOption(zsOption);
         return zsAnswerItem;
     }
@@ -129,7 +129,9 @@ public class ZsAnswerSave {
                     }
                 }
             }
-            result.add(buildAnswerItem(question, zsOption, answerId, answerItem.getValue()));
+            if(!ObjectUtils.isEmpty(zsOption)) {
+                result.add(buildAnswerItem(question, zsOption, answerId, answerItem.getValue()));
+            }
         });
 
         return result;
