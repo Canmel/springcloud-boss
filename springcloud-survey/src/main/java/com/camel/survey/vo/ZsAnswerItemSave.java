@@ -61,11 +61,11 @@ public class ZsAnswerItemSave {
 
     public Integer getOId() {
         String[] nameArr = null;
-        if (StringUtils.isNotBlank(this.value)) {
-            nameArr = this.value.split("_");
+        if (StringUtils.isNotBlank(this.name)) {
+            nameArr = this.name.split("_");
         }
-        if (!ObjectUtils.isEmpty(nameArr) && nameArr.length == 2) {
-            return Integer.parseInt(nameArr[0]);
+        if (!ObjectUtils.isEmpty(nameArr) && nameArr.length == 3) {
+            return Integer.parseInt(nameArr[nameArr.length - 1]);
         }
         return optId;
     }
