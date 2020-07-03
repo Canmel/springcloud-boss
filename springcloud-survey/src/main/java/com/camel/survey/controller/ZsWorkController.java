@@ -1,12 +1,14 @@
 package com.camel.survey.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysLog;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
@@ -17,7 +19,9 @@ import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
@@ -26,6 +30,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * <p>
@@ -44,17 +51,10 @@ public class ZsWorkController extends BaseCommonController {
     @Autowired
     private ApplicationToolsUtils applicationUtils;
 
-    @PutMapping
-    public Result update(@RequestBody ZsWork entity) {
-        if(!ObjectUtils.isEmpty(entity.getId())) {
-            ZsWork zsWork = service.selectById(entity.getId());
-            if(!ObjectUtils.isEmpty(zsWork)) {
-                if(!zsWork.getState().equals(ZsWorkState.APPLYED) || !zsWork.getStatus().equals(ZsStatus.CREATED)) {
-                    throw new SourceDataNotValidException("请不要更新已经提交或审核的数据");
-                }
-            }
-        }
-      return super.update(entity);
+    @PutMapping("/updateInvalidNumOrMeals")
+    public Result update(@RequestBody ZsWork entity) throws UnknownHostException {
+        service.updateInvalidNumOrMeals(entity);
+        return ResultUtil.success("修改成功");
     }
 
     /**

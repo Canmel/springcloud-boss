@@ -186,14 +186,14 @@
         methods: {
             updateInvalidNum(item) {
                 let that = this;
-                AJAX.PUT("zsWork", JSON.stringify({id: item.id, invalidNum: item.invalidNum}), function (resp) {
+                AJAX.PUT("zsWork/updateInvalidNumOrMeals", JSON.stringify({id: item.id, invalidNum: item.invalidNum}), function (resp) {
                     toastr.success(resp['msg'], '操作成功');
                     that.pagequery();
                 })
             },
             updateMeals(item) {
                 let that = this;
-                AJAX.PUT("zsWork", JSON.stringify({id: item.id, meals: item.meals}), function (resp) {
+                AJAX.PUT("zsWork/updateInvalidNumOrMeals", JSON.stringify({id: item.id, meals: item.meals}), function (resp) {
                     toastr.success(resp['msg'], '操作成功');
                     that.pagequery();
                 })

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.model.SysLog;
 import com.github.pagehelper.PageInfo;
 
+import java.util.HashMap;
+
 /**
  <p>
  服务类
@@ -17,4 +19,6 @@ public interface SysLogService extends IService<SysLog> {
      * @return
      */
     PageInfo<SysLog> pageQuery(SysLog entity);
+
+    void add(HashMap<String, Object> map);
 }
