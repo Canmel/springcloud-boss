@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class FileUtils {
-    public static final String BASE_FILE_PATH="http://tj.svdata.cn/yscrm/servlet/filedown?filename=";
+    public static final String BASE_FILE_PATH="http://192.168.0.110/yscrm/servlet/filedown?filename=";
 
     private static FileUtils fileUtils = new FileUtils();
 
