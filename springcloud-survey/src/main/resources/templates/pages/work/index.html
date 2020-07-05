@@ -120,7 +120,10 @@
                             <table class="table table-striped">
                                 <tbody>
                                 <tr>
-                                    <td>基准量</td>
+                                    <td>
+                                        <label class="label">基准量</label>
+                                        <input class="form-control" v-modal="selectedItem.benchmark" />
+                                    </td>
                                     <td>人均产量</td>
                                     <td>餐补</td>
                                     <td></td>
@@ -285,6 +288,10 @@
 
             },
             addSurveyShow : function(item){
+                let that = this;
+                AJAX.get("zsWork/precaculate/" + item.id, {}, function (resp) {
+                    that.selectedItem = resp.data;
+                });
                 $("#addSurvey").modal('show');
                 this.item = item;
             },
