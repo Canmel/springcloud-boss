@@ -34,11 +34,26 @@
         <result column="source" property="source" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="uid" property="uid"/>
         <result column="state" property="state"/>
-        <result column="source" property="source" />
-        <result column="uid" property="uid" />
-        <result column="call_time" property="callTime" />
+        <result column="source" property="source"/>
+        <result column="uid" property="uid"/>
+        <result column="call_time" property="callTime"/>
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="avg_num" property="avgNum" />
+        <result column="avg_num" property="avgNum"/>
+    </resultMap>
+
+    <resultMap id="ProjectReportResultMap" type="com.camel.survey.vo.ProjectReport">
+        <result column="project_id" property="projectId"/>
+        <result column="benchmark" property="benchmark"/>
+        <result column="base_salary" property="baseSalary"/>
+        <result column="royalty" property="royalty"/>
+        <result column="avg_num" property="avgNum"/>
+        <result column="meals" property="meals"/>
+        <result column="salary" property="salary"/>
+        <result column="call_time" property="callTime"/>
+        <result column="success_num" property="successNum"/>
+        <result column="invalid_num" property="invalidNum" />
+        <result column="valid_num" property="validNum" />
+        <result column="work_hours" property="workHours" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -72,5 +87,21 @@
                 </foreach>
             </if>
         </where>
+    </select>
+
+    <select id="projectReport" resultMap="ProjectReportResultMap">
+        SELECT
+            project_id,
+            SUM(success_num) success_num,
+            SUM(invalid_num) invalid_num,
+            sum(success_num - invalid_num) valid_num,
+            SUM(call_time) call_time,
+            SUM(work_hours) work_hours
+        FROM
+            zs_work
+        WHERE
+            project_id != 0
+        GROUP BY
+            project_id
     </select>
 </mapper>

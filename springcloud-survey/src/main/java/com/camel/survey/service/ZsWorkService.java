@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.survey.model.ZsWork;
+import com.camel.survey.vo.ProjectReport;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,5 +29,5 @@ public interface ZsWorkService extends IService<ZsWork> {
 
     PageInfo me(ZsWork entity);
 
-
+    ProjectReport projectReport(Integer proId);
 }

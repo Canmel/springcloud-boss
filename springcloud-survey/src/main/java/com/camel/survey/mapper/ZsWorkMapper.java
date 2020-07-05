@@ -3,6 +3,7 @@ package com.camel.survey.mapper;
 import com.camel.survey.model.ZsSign;
 import com.camel.survey.model.ZsWork;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.camel.survey.vo.ProjectReport;
 import org.springframework.stereotype.Repository;
 import feign.Param;
 
@@ -24,4 +25,6 @@ public interface ZsWorkMapper extends BaseMapper<ZsWork> {
      * @return
      */
     List<ZsWork> list(@Param("entity")ZsWork entity, @Param("ids")String[] ids);
+
+    ProjectReport projectReport(Integer proId);
 }

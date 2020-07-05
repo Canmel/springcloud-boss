@@ -16,9 +16,12 @@ import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.ZsSeat;
+import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.model.ZsWork;
+import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.ProjectReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -46,6 +49,9 @@ public class ZsWorkController extends BaseCommonController {
 
     @Autowired
     private ApplicationToolsUtils applicationUtils;
+
+    @Autowired
+    private ZsSurveyService zsSurveyService;
 
     @PutMapping
     public Result update(@RequestBody ZsWork entity) {
@@ -154,6 +160,12 @@ public class ZsWorkController extends BaseCommonController {
     public Result pass(@PathVariable Integer id) {
         ZsWork work = service.selectById(id);
         work.setState(ZsWorkState.SUCCESS);
+        ProjectReport projectReport = service.projectReport(work.getProjectId());
+        work.setBenchmark(projectReport.getBenchmark());
+        work.setBaseSalary(projectReport.getBaseSalary());
+        work.setInvalidCost(work.loadInvalidCost());
+        work.resetSalary();
+        work.setAvgNum(projectReport.getAvgNum());
         service.updateById(work);
         return ResultUtil.success("通过成功");
     }
@@ -184,13 +196,16 @@ public class ZsWorkController extends BaseCommonController {
     @GetMapping("/precaculate/{id}")
     public Result pre(@PathVariable Integer id) {
         ZsWork zsWork = service.selectById(id);
-
+        ProjectReport projectReport = service.projectReport(zsWork.getProjectId());
         // 基准
-        zsWork.setBenchmark(0.0);
+        zsWork.setBenchmark(projectReport.getBenchmark());
         // 平均
-        zsWork.setAvgNum(0.0);
+        zsWork.setAvgNum(zsWork.getAvgNum());
+        // 基本工资
+        zsWork.setBaseSalary(projectReport.getBaseSalary());
         // 工资
-        zsWork.setSalary(0.0);
+        zsWork.resetSalary();
+        zsWork.setInvalidCost(zsWork.loadInvalidCost());
         return ResultUtil.success(zsWork);
     }
 
