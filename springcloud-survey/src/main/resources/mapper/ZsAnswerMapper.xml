@@ -91,6 +91,35 @@
         </where>
     </select>
 
+    <select id="selectAgentUuidsByEntity" resultType="string">
+        select
+        answer.agent_UUID
+        from
+        zs_answer answer
+        LEFT JOIN zs_cdrinfo info ON info.id = answer.agent_UUID
+        <where>
+            info.record_file is not null
+            <if test="surveyId != null">
+                and answer.survey_id = #{surveyId}
+            </if>
+            <if test="validValue != null">
+                and answer.valid = #{validValue}
+            </if>
+            <if test="seat != null">
+                and answer.seat like concat('%', #{seat}, '%')
+            </if>
+            <if test="creator != null">
+                and answer.creator like concat('%', #{creator}, '%')
+            </if>
+            <if test="startDate != null">
+                and answer.created_at &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and answer.created_at &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
     <select id="selectRateBySurveyQuestion" resultType="hashmap">
         select result.option, result.num, result.count, concat((result.num/result.count) * 100, '%') rate
         from (

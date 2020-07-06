@@ -6,6 +6,7 @@ import com.camel.survey.model.ZsAnswer;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -38,6 +39,8 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
      */
     PageInfo<ZsAnswer> selectPage(ZsAnswer entity);
 
+    List<ZsAnswer> list(ZsAnswer entity);
+
     /**
      * 获取答案详情
      * @param id
@@ -58,4 +61,6 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     boolean review(Integer answerId, Integer reviewStatus, String reviewMsg);
 
     List<ZsAnswer> randomList(ZsAnswer zsAnswer);
+
+    Set<String> selectAgentUuidsByEntity(ZsAnswer entity);
 }

@@ -55,7 +55,7 @@
                         <td><span>{{item.successNum}}</span></td>
                         <td><input style="max-width: 50px;" v-model="item.invalidNum" type="number" v-on:change="updateInvalidNum(item)"/></td>
                         <td><span>{{item.validNum}}</span></td>
-                        <td><span>{{item.successRate ? 100 * Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善数据'}}</span></td>
+                        <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span></td>
                         <td><input v-model="item.meals" style="max-width: 50px;" type="number" v-on:change="updateMeals(item)" /></td>
                         <td><span>{{item.salary}}</span></td>
                         <td><span class="label" :class="item.state.code === 1 ? 'label-info' : 'label-danger'">{{item.state ? item.state.name : ''}}</span></td>
@@ -108,11 +108,25 @@
                                         <td><span>{{item.place}}</span></td>
                                         <td><span>{{item.tryNum}}</span></td>
                                         <td><span>{{item.successNum}}</span></td>
-                                        <td><span>{{item.successRate ? 100*Number.parseFloat(item.successRate).toFixed(2) + "%" : ''}}</span></td>
+                                        <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <hr>
+                            <div>
+                                <b>项目基准</b>
+                            </div>
+                            <table class="table table-striped">
+                                <tbody>
+                                <tr>
+                                    <td>基准量</td>
+                                    <td>人均产量</td>
+                                    <td>餐补</td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="modal-footer">
                             <button type="button" v-on:click="pass(item)" class="btn btn-success" v-if="item.state && item.state.code === 0

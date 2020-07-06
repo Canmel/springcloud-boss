@@ -225,7 +225,9 @@
                                     <div class="input-group">
                                         <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
                                             class="input-group-btn">
-                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button></span>
+                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
+                                            <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出</button>
+                                    </span>
                                     </div>
                                 </div>
                             </div>
@@ -990,6 +992,17 @@
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
                 this.pagequery();
+            },
+            download() {
+                let that = this;
+                let params = Object.keys(this.pageInfo).map(function (key) {
+                    if(that.pageInfo[key]) {
+
+
+                    return encodeURIComponent(key) + "=" + encodeURIComponent(that.pageInfo[key]);
+                    }
+                }).join("&");
+                window.open('/survey/zsAnswer/download?access_token=' + sessionStorage.getItem('access_token') + "&" + params);
             },
             pagequery: function () {
                 this.pageInfo.daterange=document.getElementById("datePickerSelect").value;

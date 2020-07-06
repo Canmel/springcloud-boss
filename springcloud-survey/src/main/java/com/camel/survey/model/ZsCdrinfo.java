@@ -5,6 +5,10 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import lombok.Data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * <p>
  * <p>
@@ -48,5 +52,27 @@ public class ZsCdrinfo extends BasePaginationEntity {
                 ", taskid=" + taskid +
                 ", taskname=" + taskname +
                 "}";
+    }
+
+    public String loadRecordFileName() {
+        SimpleDateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat hhmmss = new SimpleDateFormat("HHmmss");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getCaller_agent_num());
+        stringBuilder.append("_");
+        stringBuilder.append(this.getCallee_num());
+        stringBuilder.append("_");
+        try {
+            Date date = full.parse(this.getStart_time());
+            stringBuilder.append(yyyyMMdd.format(date));
+            stringBuilder.append("_");
+            stringBuilder.append(hhmmss.format(date));
+            return stringBuilder.toString();
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
     }
 }

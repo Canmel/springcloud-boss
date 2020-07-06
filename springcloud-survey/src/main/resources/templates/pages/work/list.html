@@ -33,6 +33,8 @@
                         <th>问卷名称</th>
                         <th>接触量</th>
                         <th>成功量</th>
+                        <th>作废量</th>
+                        <th>有效量</th>
                         <th>成功率</th>
                         <th>薪资</th>
                         <th>审核</th>
@@ -48,6 +50,9 @@
                         <td><span>{{item.pname}}</span></td>
                         <td><span>{{item.tryNum}}</span></td>
                         <td><span>{{item.successNum}}</span></td>
+                        <td><span>{{item.successNum}}</span></td>
+                        <td><span>{{item.invalidNum}}</span></td>
+                        <td><span>{{item.validNum}}</span></td>
                         <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : ''}}</span></td>
                         <td><span>{{item.salary}}</span></td>
                         <td><span class="label" :class="item.state.code === 1 ? 'label-info' : 'label-danger'">{{item.state ? item.state.name : ''}}</span></td>

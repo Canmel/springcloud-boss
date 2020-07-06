@@ -27,6 +27,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -91,6 +92,13 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
             }
         }
         return pageInfo;
+    }
+
+    @Override
+    public List<ZsAnswer> list(ZsAnswer entity) {
+        entity.setPageNum(null);
+        entity.setPageSize(null);
+        return mapper.list(entity);
     }
 
     @Override
@@ -227,5 +235,10 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     @Override
     public List<ZsAnswer> randomList(ZsAnswer zsAnswer) {
         return mapper.randomList(zsAnswer.getSurveyId());
+    }
+
+    @Override
+    public Set<String> selectAgentUuidsByEntity(ZsAnswer entity) {
+        return mapper.selectAgentUuidsByEntity(entity);
     }
 }
