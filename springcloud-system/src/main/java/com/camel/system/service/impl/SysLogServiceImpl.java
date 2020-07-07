@@ -7,14 +7,12 @@ import com.camel.system.service.SysLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -41,7 +39,6 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void add(HashMap<String, Object> map) {
-        System.out.println("1111");
         if (map.containsKey(LOG) && !ObjectUtils.isEmpty(map.get(LOG))) {
             List<Object> list = (List<Object>) map.get(LOG);
             SysLog log = new SysLog((Integer) list.get(0),(String) list.get(1),(String) list.get(2),(Long) list.get(3),(String) list.get(4),(String) list.get(5),(String) list.get(6),(String) list.get(7));

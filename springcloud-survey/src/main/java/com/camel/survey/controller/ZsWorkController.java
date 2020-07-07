@@ -33,6 +33,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -54,8 +60,11 @@ public class ZsWorkController extends BaseCommonController {
     @Autowired
     private ZsSurveyService zsSurveyService;
 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     @PutMapping
-    public Result update(@RequestBody ZsWork entity) {
+    public Result update(@RequestBody ZsWork entity) throws UnknownHostException {
+        long beginTime = System.currentTimeMillis();
         if (!ObjectUtils.isEmpty(entity.getId())) {
             ZsWork zsWork = service.selectById(entity.getId());
             if (!ObjectUtils.isEmpty(zsWork)) {
@@ -79,9 +88,34 @@ public class ZsWorkController extends BaseCommonController {
                 }else {
                     entity.setAvgNum(zsWork.getAvgNum());
                 }
+                super.update(entity);
+                long time = System.currentTimeMillis()-beginTime;
+                SysUser sysUser = applicationUtils.currentUser();
+                String arg=null;
+                String num ="";
+                if(entity.getInvalidNum()!=null){
+                    arg="作废量";
+                    num=entity.getInvalidNum().toString();
+                }
+                else{
+                    arg="餐补";
+                    num=entity.getMeals().toString();
+                }
+                String operation =sysUser.getUsername()+" 修改 "+zsWork.getUname()+" 在 "+sdf.format(zsWork.getWorkDate())+" 关于 "+zsWork.getPname()+" 的 "+arg+" 为 "+num;
+                InetAddress ip4 = Inet4Address.getLocalHost();
+                List<Object> log = new ArrayList<>();
+                log.add(sysUser.getUid());
+                log.add(sysUser.getUsername());
+                log.add(operation);
+                log.add(time);
+                log.add(ip4.toString());
+                log.add("ZsWorkController.update(..)");
+                log.add(entity.toString());
+                log.add("工作记录");
+                service.addLog(log);
             }
         }
-        return super.update(entity);
+        return ResultUtil.success("修改成功");
     }
 
     /**
@@ -170,16 +204,31 @@ public class ZsWorkController extends BaseCommonController {
      */
     @GetMapping("/pass/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
-    public Result pass(@PathVariable Integer id) {
+    public Result pass(@PathVariable Integer id) throws UnknownHostException {
+        long beginTime = System.currentTimeMillis();
         ZsWork work = service.selectById(id);
         work.setState(ZsWorkState.SUCCESS);
         ProjectReport projectReport = service.projectReport(work.getProjectId());
         work.setBenchmark(projectReport.getBenchmark());
-        work.setBaseSalary(projectReport.getBaseSalary());
+        work.setBaseSalary(projectReport.getBaseSalary(work));
         work.setInvalidCost(work.loadInvalidCost());
         work.resetSalary();
         work.setAvgNum(projectReport.getAvgNum());
         service.updateById(work);
+        long time = System.currentTimeMillis()-beginTime;
+        SysUser sysUser = applicationUtils.currentUser();
+        String operation =sysUser.getUsername()+" 通过 "+work.getUname()+" 在 "+sdf.format(work.getWorkDate())+" 关于 "+work.getPname()+" 的工作记录审核";
+        InetAddress ip4 = Inet4Address.getLocalHost();
+        List<Object> log = new ArrayList<>();
+        log.add(sysUser.getUid());
+        log.add(sysUser.getUsername());
+        log.add(operation);
+        log.add(time);
+        log.add(ip4.toString());
+        log.add("ZsWorkController.pass(..)");
+        log.add(work.toString());
+        log.add("工作记录");
+        service.addLog(log);
         return ResultUtil.success("通过成功");
     }
 
@@ -189,10 +238,25 @@ public class ZsWorkController extends BaseCommonController {
      */
     @GetMapping("/reject/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
-    public Result reject(@PathVariable Integer id) {
+    public Result reject(@PathVariable Integer id) throws UnknownHostException {
+        long beginTime = System.currentTimeMillis();
         ZsWork work = service.selectById(id);
         work.setState(ZsWorkState.FAILD);
         service.updateById(work);
+        long time = System.currentTimeMillis()-beginTime;
+        SysUser sysUser = applicationUtils.currentUser();
+        String operation =sysUser.getUsername()+" 驳回 "+work.getUname()+" 在 "+sdf.format(work.getWorkDate())+" 关于 "+work.getPname()+" 的工作记录审核";
+        InetAddress ip4 = Inet4Address.getLocalHost();
+        List<Object> log = new ArrayList<>();
+        log.add(sysUser.getUid());
+        log.add(sysUser.getUsername());
+        log.add(operation);
+        log.add(time);
+        log.add(ip4.toString());
+        log.add("ZsWorkController.reject(..)");
+        log.add(work.toString());
+        log.add("工作记录");
+        service.addLog(log);
         return ResultUtil.success("驳回成功");
     }
 

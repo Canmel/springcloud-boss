@@ -6,14 +6,10 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
-import com.camel.core.model.SysLog;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
-import com.camel.survey.enums.ZsStatus;
-import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.ExcelImportException;
-import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.mapper.ZsWorkMapper;
 import com.camel.survey.model.ZsSurvey;
@@ -33,11 +29,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -144,43 +136,6 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     }
 
     @Override
-    public void updateInvalidNumOrMeals(ZsWork entity) throws UnknownHostException {
-        long beginTime = System.currentTimeMillis();
-        if(!ObjectUtils.isEmpty(entity.getId())) {
-            ZsWork zsWork = selectById(entity.getId());
-            if(!ObjectUtils.isEmpty(zsWork)) {
-                if(!zsWork.getState().equals(ZsWorkState.APPLYED) || !zsWork.getStatus().equals(ZsStatus.CREATED)) {
-                    throw new SourceDataNotValidException("请不要更新已经提交或审核的数据");
-                }
-            }
-            updateById(entity);
-            SysUser sysUser = applicationToolsUtils.currentUser();
-            String arg=null;
-            String num ="";
-            if(entity.getInvalidNum()!=null){
-                arg="作废量";
-                num=entity.getInvalidNum().toString();
-            }
-            else{
-                arg="餐补";
-                num=entity.getMeals().toString();
-            }
-            long time = System.currentTimeMillis()-beginTime;
-            String operation =sysUser.getUsername()+"修改"+zsWork.getUname()+"在"+zsWork.getWorkDate()+"关于"+zsWork.getPname()+"的"+arg+"为"+num;
-            InetAddress ip4 = Inet4Address.getLocalHost();
-            List<Object> log = new ArrayList<>();
-            log.add(sysUser.getUid());
-            log.add(sysUser.getUsername());
-            log.add(operation);
-            log.add(time);
-            log.add(ip4.toString());
-            log.add("ZsWorkController.updateInvalidNumOrMeals(..)");
-            log.add(entity.toString());
-            log.add("工作记录");
-            addLog(log);
-        }
-    }
-
     public void addLog(List<Object> log) {
         JSONObject json = new JSONObject();
         json.put("log", log);
