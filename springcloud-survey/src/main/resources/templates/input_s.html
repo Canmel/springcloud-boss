@@ -223,7 +223,7 @@
         created: function () {
             this.loadParams();
             this.loadSurvey();
-            if(this.survey.informationTemplate!=null){
+            if(this.survey.informationTemplate!=null&&this.survey.informationTemplate!=""){
                 this.initPageParams();
             }
         },

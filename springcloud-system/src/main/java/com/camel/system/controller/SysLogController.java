@@ -8,9 +8,12 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.core.model.SysLog;
 import com.camel.system.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 
 /**
  *
@@ -38,8 +41,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sysLog")
 public class SysLogController extends BaseCommonController {
+
+    public static final String ADD_LOG_NAME = "ActiveMQ.Log.Add.Topic";
+
     @Autowired
     private SysLogService service;
+
+    @JmsListener(destination = ADD_LOG_NAME)
+    public void add(HashMap msg) {
+        service.add(msg);
+    }
 
     @GetMapping
     public Result index(SysLog entity){

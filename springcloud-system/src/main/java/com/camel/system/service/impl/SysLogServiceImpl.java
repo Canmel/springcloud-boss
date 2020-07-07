@@ -7,7 +7,14 @@ import com.camel.system.service.SysLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,6 +26,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements SysLogService {
+
+    public static final String LOG = "log";
+
     @Autowired
     private SysLogMapper mapper;
 
@@ -26,5 +36,16 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     public PageInfo<SysLog> pageQuery(SysLog entity) {
         PageInfo pageInfo = PageHelper.startPage(entity.getPageNum(), entity.getPageSize()).doSelectPageInfo(() -> mapper.list(entity));
         return pageInfo;
+    }
+
+    @Transactional(rollbackFor = RuntimeException.class)
+    @Override
+    public void add(HashMap<String, Object> map) {
+        System.out.println("1111");
+        if (map.containsKey(LOG) && !ObjectUtils.isEmpty(map.get(LOG))) {
+            List<Object> list = (List<Object>) map.get(LOG);
+            SysLog log = new SysLog((Integer) list.get(0),(String) list.get(1),(String) list.get(2),(Long) list.get(3),(String) list.get(4),(String) list.get(5),(String) list.get(6),(String) list.get(7));
+            insert(log);
+        }
     }
 }

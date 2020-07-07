@@ -2,6 +2,7 @@ package com.camel.system.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.system.model.SysNotice;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import java.util.List;
  * @since 1.0
  * @date 2019/10/31
  **/
+@Repository
 public interface SysNoticeMapper extends BaseMapper<SysNotice> {
     /**
      * 列表查询

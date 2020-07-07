@@ -23,6 +23,7 @@
         <result column="reviewer" property="reviewerId" />
         <result column="uid" property="uid" />
         <result column="checked" property="checked" />
+        <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <association property="user" javaType="com.camel.core.model.SysUser">
             <id property="id" column="uid" jdbcType="INTEGER"></id>
         </association>

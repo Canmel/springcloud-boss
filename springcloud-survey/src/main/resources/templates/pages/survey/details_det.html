@@ -940,7 +940,7 @@
             },
             invalidItem(item) {
                 let that = this;
-                if(item.valid.code==1){
+                if(!item.valid || item.valid && item.valid.code === 1){
                     confirm("您确定要将这条数据标为无效吗?", "", function (isConfirm) {
                         if (isConfirm) {
                             AJAX.GET("zsAnswer/invalid/" + item.id, {}, function (res) {

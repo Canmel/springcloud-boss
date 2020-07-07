@@ -141,7 +141,7 @@
             cast(a.created_at AS date) AS work_date,
             a.uid AS uid,
             a.seat AS job_number,
-            count(*) AS succss_num,
+            count(*) AS success_num,
             u.username AS uname,
             u.mobile AS phone,
             u.id_num AS id_num,
