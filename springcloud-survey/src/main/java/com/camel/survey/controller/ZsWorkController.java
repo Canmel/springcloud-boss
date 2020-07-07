@@ -218,7 +218,9 @@ public class ZsWorkController extends BaseCommonController {
             // 平均
             zsWork.setAvgNum(zsWork.getAvgNum());
             // 基本工资
-            zsWork.setBaseSalary(projectReport.getBaseSalary(zsWork));
+            if(ObjectUtils.isEmpty(zsWork.getBaseSalary())) {
+                zsWork.setBaseSalary(projectReport.getBaseSalary(zsWork));
+            }
             // 工资
             zsWork.resetSalary();
             zsWork.setInvalidCost(zsWork.loadInvalidCost());

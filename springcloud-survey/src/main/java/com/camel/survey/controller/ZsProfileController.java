@@ -53,7 +53,7 @@ public class ZsProfileController {
     @GetMapping
     public Result index(OAuth2Authentication oAuth2Authentication) {
         SysUser member = applicationToolsUtils.currentUser();
-        return ResultUtil.success(applicationToolsUtils.getUser(member.getUid()));
+        return ResultUtil.success(member);
     }
 
     /**

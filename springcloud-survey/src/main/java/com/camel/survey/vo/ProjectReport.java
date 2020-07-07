@@ -100,9 +100,9 @@ public class ProjectReport {
      */
     public Double getBaseSalary(ZsWork work) {
         if(work.getAvgNum() < this.getBenchmark()) {
-            return 18 * this.workHours;
+            return 18 * work.getWorkHours();
         } else {
-            return 22 * this.workHours;
+            return 22 * work.getWorkHours();
         }
     }
 }
