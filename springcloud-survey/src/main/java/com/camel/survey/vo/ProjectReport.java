@@ -1,5 +1,7 @@
 package com.camel.survey.vo;
 
+import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.model.ZsWork;
 import lombok.Data;
 import org.springframework.util.ObjectUtils;
 
@@ -87,16 +89,17 @@ public class ProjectReport {
     public Double getAvgNum() {
         if (!ObjectUtils.isEmpty(this.workHours) && !this.workHours.equals(new Double(0))) {
             return new BigDecimal(successNum / workHours).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } else{
+            throw new SourceDataNotValidException("未统计到工作市场，需要更多的上报数据");
         }
-        return 0.0;
     }
 
     /**
      * 计算工资
      * @return
      */
-    public Double getBaseSalary() {
-        if(this.getAvgNum() < this.getBenchmark()) {
+    public Double getBaseSalary(ZsWork work) {
+        if(work.getAvgNum() < this.getBenchmark()) {
             return 18 * this.workHours;
         } else {
             return 22 * this.workHours;

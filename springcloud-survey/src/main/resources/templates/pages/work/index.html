@@ -138,9 +138,9 @@
                                 <tbody>
                                 <tr>
                                     <td><input v-model="selectedItem.benchmark" style="max-width: 50px;" type="number"
-                                               v-on:change="updateMeals(item)"/></td>
+                                               v-on:change="updateBenchmark(item, selectedItem.benchmark)"/></td>
                                     <td><input v-model="selectedItem.avgNum" style="max-width: 50px;" type="number"
-                                               v-on:change="updateMeals(item)"/></td>
+                                               v-on:change="updateAvgNum(item, selectedItem.avgNum)"/></td>
                                     <td>{{item.meals}}</td>
                                     <td>{{selectedItem.baseSalary}}</td>
                                     <td>{{selectedItem.invalidCost}}</td>
@@ -235,6 +235,26 @@
                     toastr.success(resp['msg'], '操作成功');
                     that.pagequery();
                 })
+            },
+            updateBenchmark(item, v) {
+                let that = this;
+                AJAX.PUT("zsWork", JSON.stringify({id: item.id, benchmark: v}), function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.reloadCaculate(item.id);
+                })
+            },
+            updateAvgNum(item, v) {
+                let that = this;
+                AJAX.PUT("zsWork", JSON.stringify({id: item.id, avgNum: v}), function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.reloadCaculate(item.id);
+                })
+            },
+            reloadCaculate(id) {
+                let that = this;
+                AJAX.GET("zsWork/precaculate/" + id, {}, function (resp) {
+                    that.selectedItem = resp.data;
+                });
             },
             pass(item) {
                 let that = this;

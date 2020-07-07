@@ -316,6 +316,9 @@ public class ZsWork extends BasePaginationEntity {
      * @return
      */
     public Double getAvgNum() {
+        if(!ObjectUtils.isEmpty(this.avgNum) && !this.avgNum.equals(new Double(0))) {
+            return this.avgNum;
+        }
         if (!ObjectUtils.isEmpty(this.workHours) && !this.workHours.equals(new Double(0))) {
             return new BigDecimal(successNum / workHours).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         }

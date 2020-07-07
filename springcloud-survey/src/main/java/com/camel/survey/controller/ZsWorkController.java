@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -62,10 +63,22 @@ public class ZsWorkController extends BaseCommonController {
                     throw new SourceDataNotValidException("请不要更新已经提交或审核的数据");
                 }
                 // 设置餐费与作废量
-                zsWork.setInvalidNum(entity.getInvalidNum());
-                zsWork.setMeals(entity.getMeals());
+                if(!ObjectUtils.isEmpty(entity.getInvalidNum())) {
+                    zsWork.setInvalidNum(entity.getInvalidNum());
+                }
+                if(!ObjectUtils.isEmpty(entity.getMeals())) {
+                    zsWork.setMeals(entity.getMeals());
+                }
+                if(!ObjectUtils.isEmpty(entity.getBenchmark())) {
+                    zsWork.setBenchmark(entity.getBenchmark());
+                }
                 zsWork.resetSuccessRate();
                 entity.setSuccessRate(zsWork.getSuccessRate());
+                if(!ObjectUtils.isEmpty(entity.getAvgNum()) && !entity.getAvgNum().equals(new Double(0))) {
+                    entity.setAvgNum(entity.getAvgNum());
+                }else {
+                    entity.setAvgNum(zsWork.getAvgNum());
+                }
             }
         }
         return super.update(entity);
@@ -196,16 +209,20 @@ public class ZsWorkController extends BaseCommonController {
     @GetMapping("/precaculate/{id}")
     public Result pre(@PathVariable Integer id) {
         ZsWork zsWork = service.selectById(id);
-        ProjectReport projectReport = service.projectReport(zsWork.getProjectId());
-        // 基准
-        zsWork.setBenchmark(projectReport.getBenchmark());
-        // 平均
-        zsWork.setAvgNum(zsWork.getAvgNum());
-        // 基本工资
-        zsWork.setBaseSalary(projectReport.getBaseSalary());
-        // 工资
-        zsWork.resetSalary();
-        zsWork.setInvalidCost(zsWork.loadInvalidCost());
+        if(zsWork.getState().equals(ZsWorkState.APPLYED)) {
+            ProjectReport projectReport = service.projectReport(zsWork.getProjectId());
+            // 基准
+            if(ObjectUtils.isEmpty(zsWork.getBenchmark())) {
+                zsWork.setBenchmark(projectReport.getBenchmark());
+            }
+            // 平均
+            zsWork.setAvgNum(zsWork.getAvgNum());
+            // 基本工资
+            zsWork.setBaseSalary(projectReport.getBaseSalary(zsWork));
+            // 工资
+            zsWork.resetSalary();
+            zsWork.setInvalidCost(zsWork.loadInvalidCost());
+        }
         return ResultUtil.success(zsWork);
     }
 
