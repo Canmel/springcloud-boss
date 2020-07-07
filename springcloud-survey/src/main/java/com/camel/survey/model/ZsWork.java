@@ -1,5 +1,8 @@
 package com.camel.survey.model;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 
@@ -200,6 +203,9 @@ public class ZsWork extends BasePaginationEntity {
      */
     private ZsWorkSource source;
 
+    @TableField(exist = false)
+    private Double invalidCost;
+
     private Integer uid;
 
     public ZsWork(Integer id, Integer gain) {
@@ -256,6 +262,7 @@ public class ZsWork extends BasePaginationEntity {
             setProjectId(survey.getId());
             setPname(survey.getName());
         }
+        setWorkHours(new Double(DateUtil.between(this.startTime, this.endTime, DateUnit.HOUR)) - this.eatTime);
         setUname(user.getUsername());
         setIdNum(user.getIdNum());
         setPhone(user.getMobile());
@@ -301,5 +308,54 @@ public class ZsWork extends BasePaginationEntity {
             Double f1 = new BigDecimal((float) 100 * getValidNum() / tryNum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             this.successRate = f1.toString();
         }
+    }
+
+    /**
+     * 计算平局值（平均每小时的总成功量）
+     *
+     * @return
+     */
+    public Double getAvgNum() {
+        if(!ObjectUtils.isEmpty(this.avgNum) && !this.avgNum.equals(new Double(0))) {
+            return this.avgNum;
+        }
+        if (!ObjectUtils.isEmpty(this.workHours) && !this.workHours.equals(new Double(0))) {
+            return new BigDecimal(successNum / workHours).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        }
+        return 0.0;
+    }
+
+    /**
+     * 计算工资
+     * 基本工资 + 提成 + 餐补 - 作废扣费
+     * @return
+     */
+    public Double resetSalary() {
+        Double s = getBaseSalary() + getRoyalty() + getMeals() - loadInvalidCost();
+        this.setSalary(s);
+        return s;
+    }
+
+    /**
+     * 计算提成
+     * @return
+     */
+    public Double resetRoyalty() {
+        if(this.getValidNum() > this.getBenchmark()) {
+            return (this.getValidNum() - this.getBenchmark()) * 4;
+        }
+        return 0.0;
+    }
+
+    /**
+     * 无效扣除费用
+     * 4 元一个
+     * @return
+     */
+    public Double loadInvalidCost() {
+        if(!ObjectUtils.isEmpty(this.invalidNum)) {
+            return invalidNum * 4.0;
+        }
+        return 0.0;
     }
 }

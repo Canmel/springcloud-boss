@@ -1,4 +1,4 @@
-    <div id="subContainer" class="wrapper wrapper-content">
+<div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>工作记录</h5>
@@ -53,12 +53,17 @@
                         <td><span>{{item.pname}}</span></td>
                         <td><span>{{item.tryNum}}</span></td>
                         <td><span>{{item.successNum}}</span></td>
-                        <td><input style="max-width: 50px;" v-model="item.invalidNum" type="number" v-on:change="updateInvalidNum(item)"/></td>
+                        <td><input style="max-width: 50px;" v-model="item.invalidNum" type="number"
+                                   v-on:change="updateInvalidNum(item)"/></td>
                         <td><span>{{item.validNum}}</span></td>
-                        <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span></td>
-                        <td><input v-model="item.meals" style="max-width: 50px;" type="number" v-on:change="updateMeals(item)" /></td>
+                        <td>
+                            <span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span>
+                        </td>
+                        <td><input v-model="item.meals" style="max-width: 50px;" type="number"
+                                   v-on:change="updateMeals(item)"/></td>
                         <td><span>{{item.salary}}</span></td>
-                        <td><span class="label" :class="item.state.code === 1 ? 'label-info' : 'label-danger'">{{item.state ? item.state.name : ''}}</span></td>
+                        <td><span class="label" :class="item.state.code === 1 ? 'label-info' : 'label-danger'">{{item.state ? item.state.name : ''}}</span>
+                        </td>
                         <td>
                             <span v-if="item.gain === 0">未提取</span>
                             <span v-if="item.gain === 1">已提取</span>
@@ -73,9 +78,10 @@
             </div>
             <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
                          :changge="pageFn"></pageination>
-            <div class="modal fade " id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade " id="addSurvey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog" style="width: 1000px">
-                    <div class="modal-content " >
+                    <div class="modal-content ">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="">工作详情</h4>
@@ -108,7 +114,8 @@
                                         <td><span>{{item.place}}</span></td>
                                         <td><span>{{item.tryNum}}</span></td>
                                         <td><span>{{item.successNum}}</span></td>
-                                        <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span></td>
+                                        <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -118,12 +125,26 @@
                                 <b>项目基准</b>
                             </div>
                             <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>总基准量</th>
+                                    <th>人均产量</th>
+                                    <th>餐补费用</th>
+                                    <th>基本工资</th>
+                                    <th>作废扣除</th>
+                                    <th>工资合计</th>
+                                </tr>
+                                </thead>
                                 <tbody>
                                 <tr>
-                                    <td>基准量</td>
-                                    <td>人均产量</td>
-                                    <td>餐补</td>
-                                    <td></td>
+                                    <td><input v-model="selectedItem.benchmark" style="max-width: 50px;" type="number"
+                                               v-on:change="updateBenchmark(item, selectedItem.benchmark)"/></td>
+                                    <td><input v-model="selectedItem.avgNum" style="max-width: 50px;" type="number"
+                                               v-on:change="updateAvgNum(item, selectedItem.avgNum)"/></td>
+                                    <td>{{item.meals}}</td>
+                                    <td>{{selectedItem.baseSalary}}</td>
+                                    <td>{{selectedItem.invalidCost}}</td>
+                                    <td>{{selectedItem.salary}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -131,12 +152,12 @@
                         <div class="modal-footer">
                             <button type="button" v-on:click="pass(item)" class="btn btn-success" v-if="item.state && item.state.code === 0
                             && resultDev " data-dismiss="modal">
-                                    通过
-                                </button>
-                                <button type="button" v-on:click="reject(item)" class="btn btn-danger" v-if="item.state && item.state.code === 0
+                                通过
+                            </button>
+                            <button type="button" v-on:click="reject(item)" class="btn btn-danger" v-if="item.state && item.state.code === 0
                              && resultDev" data-dismiss="modal">
-                                    驳回
-                                </button>
+                                驳回
+                            </button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
@@ -189,13 +210,16 @@
             file: null,
             items: [],
             item: {},
-            selectedItem: {},
+            selectedItem: {
+                benchmark: 0.0,
+                avgNum: 0.0
+            },
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
         },
         created: function () {
-           this.loginMaster();
+            this.loginMaster();
         },
         methods: {
             updateInvalidNum(item) {
@@ -211,6 +235,26 @@
                     toastr.success(resp['msg'], '操作成功');
                     that.pagequery();
                 })
+            },
+            updateBenchmark(item, v) {
+                let that = this;
+                AJAX.PUT("zsWork", JSON.stringify({id: item.id, benchmark: v}), function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.reloadCaculate(item.id);
+                })
+            },
+            updateAvgNum(item, v) {
+                let that = this;
+                AJAX.PUT("zsWork", JSON.stringify({id: item.id, avgNum: v}), function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.reloadCaculate(item.id);
+                })
+            },
+            reloadCaculate(id) {
+                let that = this;
+                AJAX.GET("zsWork/precaculate/" + id, {}, function (resp) {
+                    that.selectedItem = resp.data;
+                });
             },
             pass(item) {
                 let that = this;
@@ -241,14 +285,19 @@
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
             },
-            loginMaster(){
+            loginMaster() {
                 var that = this;
                 this.master = sessionStorage.getItem('master');
                 var masterJ = JSON.parse(this.master);
                 masterJ.forEach(e => {
                     var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
-                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                    if (authority === 'ROLE_ADMIN') {
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if (authority === 'ROLE_DEVOPS') {
+                        that.resultDev = true
+                    }
                 })
             },
             selectFile() {
@@ -281,10 +330,14 @@
                 });
 
             },
-            Timeformat : function(){
+            Timeformat: function () {
 
             },
-            addSurveyShow : function(item){
+            addSurveyShow: function (item) {
+                let that = this;
+                AJAX.GET("zsWork/precaculate/" + item.id, {}, function (resp) {
+                    that.selectedItem = resp.data;
+                });
                 $("#addSurvey").modal('show');
                 this.item = item;
             },

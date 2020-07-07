@@ -22,6 +22,7 @@ import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.ExcelUtil;
+import com.camel.survey.vo.ProjectReport;
 import com.github.pagehelper.PageInfo;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,6 +136,11 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
         SysUser me = applicationToolsUtils.currentUser();
         entity.setUid(me.getUid());
         return selectPage(entity, null, null);
+    }
+
+    @Override
+    public ProjectReport projectReport(Integer proId) {
+        return mapper.projectReport(proId);
     }
 
     @Override

@@ -1,27 +1,28 @@
 package com.camel.survey.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
-import com.camel.core.model.SysLog;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.model.ZsSeat;
+import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.model.ZsWork;
+import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
-import org.apache.activemq.command.ActiveMQTopic;
+import com.camel.survey.vo.ProjectReport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
@@ -31,9 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -52,6 +51,9 @@ public class ZsWorkController extends BaseCommonController {
     @Autowired
     private ApplicationToolsUtils applicationUtils;
 
+    @Autowired
+    private ZsSurveyService zsSurveyService;
+
     @PutMapping
     public Result update(@RequestBody ZsWork entity) {
         if (!ObjectUtils.isEmpty(entity.getId())) {
@@ -61,10 +63,22 @@ public class ZsWorkController extends BaseCommonController {
                     throw new SourceDataNotValidException("请不要更新已经提交或审核的数据");
                 }
                 // 设置餐费与作废量
-                zsWork.setInvalidNum(entity.getInvalidNum());
-                zsWork.setMeals(entity.getMeals());
+                if(!ObjectUtils.isEmpty(entity.getInvalidNum())) {
+                    zsWork.setInvalidNum(entity.getInvalidNum());
+                }
+                if(!ObjectUtils.isEmpty(entity.getMeals())) {
+                    zsWork.setMeals(entity.getMeals());
+                }
+                if(!ObjectUtils.isEmpty(entity.getBenchmark())) {
+                    zsWork.setBenchmark(entity.getBenchmark());
+                }
                 zsWork.resetSuccessRate();
                 entity.setSuccessRate(zsWork.getSuccessRate());
+                if(!ObjectUtils.isEmpty(entity.getAvgNum()) && !entity.getAvgNum().equals(new Double(0))) {
+                    entity.setAvgNum(entity.getAvgNum());
+                }else {
+                    entity.setAvgNum(zsWork.getAvgNum());
+                }
             }
         }
         return super.update(entity);
@@ -159,6 +173,12 @@ public class ZsWorkController extends BaseCommonController {
     public Result pass(@PathVariable Integer id) {
         ZsWork work = service.selectById(id);
         work.setState(ZsWorkState.SUCCESS);
+        ProjectReport projectReport = service.projectReport(work.getProjectId());
+        work.setBenchmark(projectReport.getBenchmark());
+        work.setBaseSalary(projectReport.getBaseSalary());
+        work.setInvalidCost(work.loadInvalidCost());
+        work.resetSalary();
+        work.setAvgNum(projectReport.getAvgNum());
         service.updateById(work);
         return ResultUtil.success("通过成功");
     }
@@ -189,13 +209,20 @@ public class ZsWorkController extends BaseCommonController {
     @GetMapping("/precaculate/{id}")
     public Result pre(@PathVariable Integer id) {
         ZsWork zsWork = service.selectById(id);
-
-        // 基准
-        zsWork.setBenchmark(0.0);
-        // 平均
-        zsWork.setAvgNum(0.0);
-        // 工资
-        zsWork.setSalary(0.0);
+        if(zsWork.getState().equals(ZsWorkState.APPLYED)) {
+            ProjectReport projectReport = service.projectReport(zsWork.getProjectId());
+            // 基准
+            if(ObjectUtils.isEmpty(zsWork.getBenchmark())) {
+                zsWork.setBenchmark(projectReport.getBenchmark());
+            }
+            // 平均
+            zsWork.setAvgNum(zsWork.getAvgNum());
+            // 基本工资
+            zsWork.setBaseSalary(projectReport.getBaseSalary(zsWork));
+            // 工资
+            zsWork.resetSalary();
+            zsWork.setInvalidCost(zsWork.loadInvalidCost());
+        }
         return ResultUtil.success(zsWork);
     }
 
