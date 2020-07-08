@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.survey.enums.ZsOtherSurveyType;
 import lombok.Data;
 
 /**
@@ -33,6 +34,12 @@ public class ZsOtherSurvey  extends ZsSurveyBaseEntity implements Serializable {
 
     private Integer state;
 
+    private String place;
+
+    private String ptime;
+
+    private ZsOtherSurveyType type;
+
     private Double ratio;
 
     @Override
@@ -40,6 +47,9 @@ public class ZsOtherSurvey  extends ZsSurveyBaseEntity implements Serializable {
         return "ZsOtherSurvey{" +
         ", id=" + id +
         ", name=" + name +
+        ", place=" + place +
+        ", ptime=" + ptime +
+        ", type=" + type +
         "}";
     }
 }
