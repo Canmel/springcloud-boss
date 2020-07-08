@@ -23,8 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, status, created_at, creator, state, place, ptime, type
-        id, name, status, created_at, creator, state, ratio
+        id, name, status, created_at, creator, state, place, ptime, type, ratio
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
