@@ -11,6 +11,10 @@
         <result column="created_at" property="createdAt" />
         <result column="creator" property="creatorId"/>
         <result column="state" property="state" />
+        <result column="place" property="place" />
+        <result column="ptime" property="ptime" />
+        <result column="type" property="type" jdbcType="INTEGER"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -18,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, status, created_at, creator, state
+        id, name, status, created_at, creator, state, place, ptime, type
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

@@ -29,6 +29,9 @@
                     <tr>
                         <th>序号</th>
                         <th>问卷名称</th>
+                        <th>问卷类型</th>
+                        <th>问卷地点</th>
+                        <th>问卷时间</th>
                         <th>创建人</th>
                         <th>创建时间</th>
                         <th>操作</th>
@@ -38,6 +41,9 @@
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
                         <td>{{item.name}}</td>
+                        <td>{{item.type.name}}</td>
+                        <td>{{item.place}}</td>
+                        <td>{{item.ptime}}</td>
                         <td>{{item.creatorId}}</td>
                         <td>{{item.createdAt}}</td>
                         <td>
@@ -118,7 +124,7 @@
             },
             deleteItem: function(item){
                 var that = this;
-                confirm("您确定要删除这个坐席吗?", "", function (isConfirm) {
+                confirm("您确定要删除这个问卷吗?", "", function (isConfirm) {
                     if (isConfirm) {
                         AJAX.DELETE('zsOtherSurvey', item, function (resp) {
                             toastr.success(resp.msg);
