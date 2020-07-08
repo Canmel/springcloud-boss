@@ -100,6 +100,7 @@
                                         <th>工作地点</th>
                                         <th>接触量</th>
                                         <th>成功量</th>
+                                        <th>作废量</th>
                                         <th>成功率</th>
                                     </tr>
                                     </thead>
@@ -114,6 +115,7 @@
                                         <td><span>{{item.place}}</span></td>
                                         <td><span>{{item.tryNum}}</span></td>
                                         <td><span>{{item.successNum}}</span></td>
+                                        <td><span>{{item.invalidNum}}</span></td>
                                         <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span>
                                         </td>
                                     </tr>
@@ -145,7 +147,7 @@
                                     <td>{{item.meals}}</td>
                                     <td>{{selectedItem.baseSalary ? selectedItem.baseSalary : '无数据'}}</td>
                                     <td>{{selectedItem.royalty}}</td>
-                                    <td>{{selectedItem.invalidCost}}</td>
+                                    <td>{{selectedItem.invalidCost ? selectedItem.invalidCost : item.invalidNum * 4.0}}</td>
                                     <td>{{selectedItem.salary ? selectedItem.salary : '无数据'}}</td>
                                 </tr>
                                 </tbody>

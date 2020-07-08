@@ -35,6 +35,7 @@
                         <th>难度系数</th>
                         <th>创建人</th>
                         <th>创建时间</th>
+                        <th>状态</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -42,26 +43,36 @@
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
                         <td>{{item.name}}</td>
-                        <td>{{item.type.name}}</td>
+                        <td>{{item.type ? item.type.name : ''}}</td>
                         <td>{{item.place}}</td>
                         <td>{{item.ptime}}</td>
                         <td>{{item.ratio ? item.ratio : '未设置'}}</td>
                         <td>{{item.creatorId}}</td>
                         <td>{{item.createdAt}}</td>
+                        <td>{{item.state !== 1 ? "不启用" : "启用"}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
+                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs"
+                                    v-if="resultDev">
                                 编辑
                             </button>
-                            <button type="button" v-on:click="addRatio(item)" class="btn btn-success btn-xs" v-if="resultDev && !item.ratio">
+                            <button type="button" v-on:click="addRatio(item)" class="btn btn-success btn-xs"
+                                    v-if="resultDev && !item.ratio">
                                 设置难度系数
                             </button>
-                            <button type="button" v-on:click="showBenchmark(item)" class="btn btn-primary btn-xs" v-if="resultDev">
+                            <button type="button" v-on:click="showBenchmark(item)" class="btn btn-primary btn-xs"
+                                    v-if="resultDev">
                                 每日基准量
                             </button>
-                            <button type="button" v-on:click="addBenchmark(item)" class="btn btn-primary btn-xs" v-if="resultDev">
+                            <button type="button" v-on:click="addBenchmark(item)" class="btn btn-primary btn-xs"
+                                    v-if="resultDev">
                                 新增基准量
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">
+                            <button type="button" v-on:click="changeState(item)" class="btn btn-primary btn-xs"
+                                    v-if="resultDev">
+                                {{item.state === 1 ? "不启用" : "启用"}}
+                            </button>
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs"
+                                    v-if="resultDev">
                                 删除
                             </button>
                         </td>
@@ -94,7 +105,8 @@
         </div><!-- /.modal -->
     </div>
 
-    <div class="modal fade" id="detailsList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="detailsList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -153,20 +165,19 @@
         },
         created: function () {
             this.loginMaster();
-            this.pagequery();
         },
         methods: {
-            loginMaster(){
+            loginMaster() {
                 var that = this;
                 this.master = sessionStorage.getItem('master');
                 var masterJ = JSON.parse(this.master);
                 masterJ.forEach(e => {
                     var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){
+                    if (authority === 'ROLE_ADMIN') {
                         that.result = true;
                         that.resultDev = true;
                     }
-                    if(authority ==='ROLE_DEVOPS'){
+                    if (authority === 'ROLE_DEVOPS') {
                         that.resultDev = true;
                     }
 
@@ -191,7 +202,7 @@
                     container: '.page-container'
                 });
             },
-            deleteItem: function(item){
+            deleteItem: function (item) {
                 var that = this;
                 confirm("您确定要删除这个问卷吗?", "", function (isConfirm) {
                     if (isConfirm) {
@@ -210,11 +221,14 @@
             },
             saveRatio() {
                 let that = this;
-                AJAX.PUT("zsOtherSurvey/ratio", JSON.stringify({id: this.selectedId, ratio: this.ratio}), function (resp) {
+                AJAX.PUT("zsOtherSurvey/ratio", JSON.stringify({
+                    id: this.selectedId,
+                    ratio: this.ratio
+                }), function (resp) {
                     toastr.success(resp.msg);
                     $("#myModal").modal('hide');
                     that.pagequery();
-                } )
+                })
             },
             addBenchmark(item) {
                 toPage("pages/other-survey/add_details.html", item.id)
@@ -228,6 +242,13 @@
                 let that = this;
                 AJAX.GET("zsSurveyBenchmark/pid/" + item.id, {}, function (resp) {
                     that.dayList = resp.data;
+                })
+            },
+            changeState(item) {
+                let that = this;
+                AJAX.PUT("zsOtherSurvey", JSON.stringify({id: item.id, state: item.state === 1 ? 0 : 1}), function (resp) {
+                    toastr.success("操作成功");
+                    that.pagequery();
                 })
             }
         }

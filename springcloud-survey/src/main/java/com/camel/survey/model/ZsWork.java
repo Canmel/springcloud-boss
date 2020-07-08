@@ -91,7 +91,6 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 工号
      */
-    @NotBlank(message = "工号不能为空")
     @ExcelAnnotation(columnIndex = 6, columnName = "工号")
     private String jobNumber;
     /**
@@ -340,7 +339,7 @@ public class ZsWork extends BasePaginationEntity {
      * @return
      */
     public Double resetSalary() {
-        Double s = getBaseSalary() + loadRoyalty() + getMeals() - loadInvalidCost();
+        Double s = new BigDecimal(getBaseSalary() + loadRoyalty() + getMeals() - loadInvalidCost()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.setSalary(s);
         return s;
     }
