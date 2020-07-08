@@ -100,8 +100,6 @@
         FROM
             zs_work
         WHERE
-            project_id != 0
-        GROUP BY
-            project_id
+            project_id = #{proId}
     </select>
 </mapper>

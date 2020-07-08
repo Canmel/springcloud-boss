@@ -13,6 +13,7 @@ import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.mapper.ZsWorkMapper;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.model.ZsWork;
+import com.camel.survey.service.ZsOtherSurveyService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -47,6 +48,9 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
 
     @Autowired
     private ZsSurveyService zsSurveyService;
+
+    @Autowired
+    private ZsOtherSurveyService otherSurveyService;
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
@@ -110,7 +114,7 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     @Override
     public Result report(ZsWork zsWork) {
         SysUser currentUser = applicationToolsUtils.currentUser();
-        zsWork.buildNecessaryAttribute(zsSurveyService, currentUser);
+        zsWork.buildNecessaryAttribute(otherSurveyService, currentUser);
         if(insert(zsWork)) {
             return ResultUtil.success("保存工作记录成功");
         }

@@ -18,12 +18,14 @@ import com.camel.survey.enums.ZsWorkSource;
 import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyNotValidException;
+import com.camel.survey.service.ZsOtherSurveyService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.ObjectUtils;
 
@@ -249,13 +251,13 @@ public class ZsWork extends BasePaginationEntity {
                 "}";
     }
 
-    public void buildNecessaryAttribute(ZsSurveyService service, SysUser user) {
+    public void buildNecessaryAttribute(ZsOtherSurveyService service, SysUser user) {
         this.validEntity();
         if (ObjectUtils.isEmpty(user.getIdNum())) {
             throw new SourceDataNotValidException("您还未完善个人身份证信息，请先完善");
         }
         if (!ObjectUtils.isEmpty(this.projectId)) {
-            ZsSurvey survey = service.selectById(this.projectId);
+            ZsOtherSurvey survey = service.selectById(this.projectId);
             if (ObjectUtils.isEmpty(survey)) {
                 throw new SourceDataNotValidException("未选择任何问卷");
             }
