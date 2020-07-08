@@ -33,6 +33,8 @@ public class ZsOtherSurvey  extends ZsSurveyBaseEntity implements Serializable {
 
     private Integer state;
 
+    private Double ratio;
+
     @Override
     public String toString() {
         return "ZsOtherSurvey{" +

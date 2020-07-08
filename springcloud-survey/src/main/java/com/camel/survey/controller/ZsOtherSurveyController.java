@@ -70,6 +70,11 @@ public class ZsOtherSurveyController extends BaseCommonController {
         return service.update(entity);
     }
 
+    @PutMapping("/ratio")
+    public Result updateRatio(@RequestBody ZsOtherSurvey entity) {
+        return super.update(entity);
+    }
+
     /**
      * 列出有效问卷
      * @return
