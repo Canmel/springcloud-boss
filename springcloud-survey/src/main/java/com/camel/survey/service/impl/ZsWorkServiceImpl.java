@@ -145,4 +145,9 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
         json.put("log", log);
         this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Log.Add.Topic"), json);
     }
+
+    @Override
+    public ProjectReport selectTotalInfoByWork(ZsWork zsWork) {
+        return mapper.selectTotalInfoByWork(zsWork);
+    }
 }

@@ -210,6 +210,12 @@ public class ZsWork extends BasePaginationEntity {
 
     private Integer uid;
 
+    /**
+     * 考核系数
+     */
+    @TableField(exist = false)
+    private Double examRatio;
+
     public ZsWork(Integer id, Integer gain) {
         this.id = id;
         this.gain = gain;
@@ -359,5 +365,30 @@ public class ZsWork extends BasePaginationEntity {
             return invalidNum * 4.0;
         }
         return 0.0;
+    }
+
+    public Double loadExamRatio() {
+        if(!ObjectUtils.isEmpty(getAvgNum()) && getAvgNum() > 0 && !ObjectUtils.isEmpty(getBenchmark()) && getBenchmark() > 0) {
+            return new BigDecimal(getAvgNum() / getBenchmark()).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+        }
+        return null;
+    }
+
+    public Double loadBaseSalary() {
+        if(!ObjectUtils.isEmpty(this.loadExamRatio())) {
+            Double examRatio = this.loadExamRatio();
+            if(examRatio >= 1.5) {
+                return getWorkHours() * 30;
+            } else if(examRatio >= 1.3) {
+                return getWorkHours() * 25;
+            }else if (examRatio >= 1.0) {
+                return getWorkHours() * 22;
+            }else if (examRatio >= 0.8) {
+                return getWorkHours() * 18;
+            }else{
+                return getValidNum() * 5.0;
+            }
+        }
+        return null;
     }
 }

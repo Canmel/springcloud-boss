@@ -32,4 +32,6 @@ public interface ZsWorkService extends IService<ZsWork> {
     ProjectReport projectReport(Integer proId);
 
     void addLog(List<Object> log);
+
+    ProjectReport selectTotalInfoByWork(ZsWork zsWork);
 }

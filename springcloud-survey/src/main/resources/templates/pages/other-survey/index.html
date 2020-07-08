@@ -49,8 +49,11 @@
                             <button type="button" v-on:click="addRatio(item)" class="btn btn-success btn-xs" v-if="resultDev && !item.ratio">
                                 设置难度系数
                             </button>
-                            <button type="button" v-on:click="addBenchmark(item)" class="btn btn-primary btn-xs" v-if="resultDev">
+                            <button type="button" v-on:click="showBenchmark(item)" class="btn btn-primary btn-xs" v-if="resultDev">
                                 每日基准量
+                            </button>
+                            <button type="button" v-on:click="addBenchmark(item)" class="btn btn-primary btn-xs" v-if="resultDev">
+                                新增基准量
                             </button>
                             <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">
                                 删除
@@ -84,6 +87,43 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+
+    <div class="modal fade" id="detailsList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">基准量</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>日期</th>
+                            <th>平均样本</th>
+                            <th>收集时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item, index) in dayList">
+                            <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                            <td>{{item.workDate}}</td>
+                            <td>{{item.avgTopNum}}</td>
+                            <td>{{item.workHours}}</td>
+                            <td>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" v-on:click="saveRatio()">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
 
 <script src="/survey/js/validateIsMain.js"></script>
@@ -102,7 +142,8 @@
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
             selectedId: null,
-            ratio: null
+            ratio: null,
+            dayList: []
         },
         created: function () {
             this.loginMaster();
@@ -170,7 +211,18 @@
                 } )
             },
             addBenchmark(item) {
-                toPage("pages/other-survey/details.html", item.id)
+                toPage("pages/other-survey/add_details.html", item.id)
+            },
+            showBenchmark(item) {
+                this.dayList = [];
+                this.queryDetailsList(item);
+                $("#detailsList").modal("show");
+            },
+            queryDetailsList(item) {
+                let that = this;
+                AJAX.GET("zsSurveyBenchmark/pid/" + item.id, {}, function (resp) {
+                    that.dayList = resp.data;
+                })
             }
         }
     });

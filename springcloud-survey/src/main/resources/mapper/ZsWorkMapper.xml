@@ -102,4 +102,8 @@
         WHERE
             project_id = #{proId}
     </select>
+
+    <select id="selectTotalInfoByWork" resultMap="ProjectReportResultMap">
+        select avg_top_num avg_num, work_hours work_hours FROM zs_survey_benchmark where pid = #{projectId} and work_date = #{workDate}
+    </select>
 </mapper>
