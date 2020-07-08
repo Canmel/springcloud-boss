@@ -9,7 +9,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 /**
@@ -32,5 +31,5 @@ public interface ZsWorkService extends IService<ZsWork> {
 
     ProjectReport projectReport(Integer proId);
 
-    void updateInvalidNumOrMeals(ZsWork entity) throws UnknownHostException;
+    void addLog(List<Object> log);
 }
