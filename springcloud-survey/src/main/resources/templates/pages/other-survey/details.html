@@ -1,11 +1,14 @@
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>其它问卷管理</h5>
+            <h5>问卷基准信息</h5>
             <div class="ibox-tools">
                 <div class="ibox-tools">
-                    <a :href="applicationContextRootPath + 'pages/other-survey/add.html'"
-                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新增问卷</a>
+                    <a v-on:click="addDetails()"
+                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新增</a>
+
+                    <a :href="applicationContextRootPath + 'pages/other-survey/index.html'"
+                       data-pjax class="btn btn-info btn-xs" v-if="resultDev">返回</a>
                 </div>
             </div>
         </div>
@@ -29,9 +32,6 @@
                     <tr>
                         <th>序号</th>
                         <th>问卷名称</th>
-                        <th>问卷类型</th>
-                        <th>问卷地点</th>
-                        <th>问卷时间</th>
                         <th>难度系数</th>
                         <th>创建人</th>
                         <th>创建时间</th>
@@ -42,9 +42,6 @@
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
                         <td>{{item.name}}</td>
-                        <td>{{item.type.name}}</td>
-                        <td>{{item.place}}</td>
-                        <td>{{item.ptime}}</td>
                         <td>{{item.ratio ? item.ratio : '未设置'}}</td>
                         <td>{{item.creatorId}}</td>
                         <td>{{item.createdAt}}</td>
@@ -55,11 +52,8 @@
                             <button type="button" v-on:click="addRatio(item)" class="btn btn-success btn-xs" v-if="resultDev && !item.ratio">
                                 设置难度系数
                             </button>
-                            <button type="button" v-on:click="showBenchmark(item)" class="btn btn-primary btn-xs" v-if="resultDev">
-                                每日基准量
-                            </button>
                             <button type="button" v-on:click="addBenchmark(item)" class="btn btn-primary btn-xs" v-if="resultDev">
-                                新增基准量
+                                每日基准量
                             </button>
                             <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">
                                 删除
@@ -83,49 +77,30 @@
                     <h4 class="modal-title" id="myModalLabel">输入难度系数</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal m-t">
-                        <input type="number" v-model="ratio" class="form-control"/>
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">前十平均样本数：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="选择工作日期" ref="workDate" v-model="form.avgTopNum" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">前十平均样本数：</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="avgTopNum" class="form-control" placeholder="请输入前十平均样本数" type="text" v-model="form.avgTopNum">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">样本收集时间：</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="workHours" class="form-control" placeholder="请输入样本收集时间" type="text" v-model="form.workHours">
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" v-on:click="saveRatio()">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-
-    <div class="modal fade" id="detailsList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">基准量</h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>序号</th>
-                            <th>日期</th>
-                            <th>平均样本</th>
-                            <th>收集时间</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(item, index) in dayList">
-                            <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                            <td>{{item.workDate}}</td>
-                            <td>{{item.avgTopNum}}</td>
-                            <td>{{item.workHours}}</td>
-                            <td>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" v-on:click="saveRatio()">保存</button>
+                    <button type="button" class="btn btn-success" v-on:click="save()">保存</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -139,21 +114,28 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                pid: null,
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
+            },
+            form: {
+                avgTopNum: null,
+                workHours: null
             },
             items: [{}],
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
             selectedId: null,
-            ratio: null,
-            dayList: []
         },
         created: function () {
+            if(sessionStorage.getItem("editParams")) {
+                this.pageInfo.pid = sessionStorage.getItem("editParams");
+            }else {
+                toPage("pages/other-survey/index.html");
+            }
             this.loginMaster();
-            this.pagequery();
         },
         methods: {
             loginMaster(){
@@ -174,7 +156,7 @@
             },
             pagequery: function () {
                 var that = this;
-                AJAX.GET('zsOtherSurvey', this.pageInfo, function (resp) {
+                AJAX.GET('zsSurveyBenchmark', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
@@ -184,52 +166,13 @@
                 this.pageInfo.pageNum = val;
                 this.pagequery();
             },
-            edit: function (item) {
-                sessionStorage.setItem('editParams', item.id);
-                $.pjax({
-                    url: mvm.applicationContextRootPath + 'pages/other-survey/edit.html',
-                    container: '.page-container'
-                });
+            addDetails() {
+                toPage("/pages/other-survey/add_details.html");
             },
-            deleteItem: function(item){
-                var that = this;
-                confirm("您确定要删除这个问卷吗?", "", function (isConfirm) {
-                    if (isConfirm) {
-                        AJAX.DELETE('zsOtherSurvey', item, function (resp) {
-                            toastr.success(resp.msg);
-                            that.pagequery();
-                        })
-                    } else {
-                        //after click the cancel
-                    }
-                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
-            },
-            addRatio(item) {
-                this.selectedId = item.id
-                $("#myModal").modal('show');
-            },
-            saveRatio() {
-                let that = this;
-                AJAX.PUT("zsOtherSurvey/ratio", JSON.stringify({id: this.selectedId, ratio: this.ratio}), function (resp) {
-                    toastr.success(resp.msg);
-                    $("#myModal").modal('hide');
-                    that.pagequery();
-                } )
-            },
-            addBenchmark(item) {
-                toPage("pages/other-survey/add_details.html", item.id)
-            },
-            showBenchmark(item) {
-                this.dayList = [];
-                this.queryDetailsList(item);
-                $("#detailsList").modal("show");
-            },
-            queryDetailsList(item) {
-                let that = this;
-                AJAX.GET("zsSurveyBenchmark/pid/" + item.id, {}, function (resp) {
-                    that.dayList = resp.data;
-                })
+            save() {
+
             }
         }
     });
+
 </script>

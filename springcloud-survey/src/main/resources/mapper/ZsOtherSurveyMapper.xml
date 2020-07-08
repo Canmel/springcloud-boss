@@ -15,6 +15,7 @@
         <result column="ptime" property="ptime" />
         <result column="type" property="type" jdbcType="INTEGER"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="ratio" property="ratio" />
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -23,6 +24,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, status, created_at, creator, state, place, ptime, type
+        id, name, status, created_at, creator, state, ratio
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

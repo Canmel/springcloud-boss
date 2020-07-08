@@ -27,4 +27,6 @@ public interface ZsWorkMapper extends BaseMapper<ZsWork> {
     List<ZsWork> list(@Param("entity")ZsWork entity, @Param("ids")String[] ids);
 
     ProjectReport projectReport(Integer proId);
+
+    ProjectReport selectTotalInfoByWork(ZsWork entity);
 }

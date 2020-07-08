@@ -1,6 +1,8 @@
 package com.camel.survey.vo;
 
+import cn.hutool.core.math.MathUtil;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.model.ZsOtherSurvey;
 import com.camel.survey.model.ZsWork;
 import lombok.Data;
 import org.springframework.util.ObjectUtils;
@@ -71,14 +73,18 @@ public class ProjectReport {
 
     /**
      * 计算基准量
-     *
+     * 基准量 = 平均数 * 系数 / 工作时间
      * @return
      */
-    public Double getBenchmark() {
-        if (!ObjectUtils.isEmpty(callTime) && !callTime.equals(new Double(0))) {
-            return new BigDecimal(validNum / callTime * 60).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    public Double loadBenchmark(ZsOtherSurvey survey) {
+        if(!ObjectUtils.isEmpty(survey.getRatio()) && survey.getRatio() > 0) {
+            if (!ObjectUtils.isEmpty(workHours) && !workHours.equals(new Double(0))) {
+                return new BigDecimal(survey.getRatio() * avgNum / workHours).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            }else {
+                throw new SourceDataNotValidException("前十平均数未设置");
+            }
         }
-        return 0.0;
+        throw new SourceDataNotValidException("考核系数未设置");
     }
 
     /**
@@ -98,11 +104,11 @@ public class ProjectReport {
      * 计算工资
      * @return
      */
-    public Double getBaseSalary(ZsWork work) {
-        if(work.getAvgNum() < this.getBenchmark()) {
-            return 18 * this.workHours;
+    public Double getBaseSalary(ZsWork work, ZsOtherSurvey survey) {
+        if(work.getAvgNum() < this.loadBenchmark(survey)) {
+            return 18 * work.getWorkHours();
         } else {
-            return 22 * this.workHours;
+            return 22 * work.getWorkHours();
         }
     }
 }

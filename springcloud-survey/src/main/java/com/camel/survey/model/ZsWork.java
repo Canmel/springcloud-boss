@@ -18,12 +18,14 @@ import com.camel.survey.enums.ZsWorkSource;
 import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyNotValidException;
+import com.camel.survey.service.ZsOtherSurveyService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.ObjectUtils;
 
@@ -208,6 +210,12 @@ public class ZsWork extends BasePaginationEntity {
 
     private Integer uid;
 
+    /**
+     * 考核系数
+     */
+    @TableField(exist = false)
+    private Double examRatio;
+
     public ZsWork(Integer id, Integer gain) {
         this.id = id;
         this.gain = gain;
@@ -249,13 +257,13 @@ public class ZsWork extends BasePaginationEntity {
                 "}";
     }
 
-    public void buildNecessaryAttribute(ZsSurveyService service, SysUser user) {
+    public void buildNecessaryAttribute(ZsOtherSurveyService service, SysUser user) {
         this.validEntity();
         if (ObjectUtils.isEmpty(user.getIdNum())) {
             throw new SourceDataNotValidException("您还未完善个人身份证信息，请先完善");
         }
         if (!ObjectUtils.isEmpty(this.projectId)) {
-            ZsSurvey survey = service.selectById(this.projectId);
+            ZsOtherSurvey survey = service.selectById(this.projectId);
             if (ObjectUtils.isEmpty(survey)) {
                 throw new SourceDataNotValidException("未选择任何问卷");
             }
@@ -357,5 +365,30 @@ public class ZsWork extends BasePaginationEntity {
             return invalidNum * 4.0;
         }
         return 0.0;
+    }
+
+    public Double loadExamRatio() {
+        if(!ObjectUtils.isEmpty(getAvgNum()) && getAvgNum() > 0 && !ObjectUtils.isEmpty(getBenchmark()) && getBenchmark() > 0) {
+            return new BigDecimal(getAvgNum() / getBenchmark()).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+        }
+        return null;
+    }
+
+    public Double loadBaseSalary() {
+        if(!ObjectUtils.isEmpty(this.loadExamRatio())) {
+            Double examRatio = this.loadExamRatio();
+            if(examRatio >= 1.5) {
+                return getWorkHours() * 30;
+            } else if(examRatio >= 1.3) {
+                return getWorkHours() * 25;
+            }else if (examRatio >= 1.0) {
+                return getWorkHours() * 22;
+            }else if (examRatio >= 0.8) {
+                return getWorkHours() * 18;
+            }else{
+                return getValidNum() * 5.0;
+            }
+        }
+        return null;
     }
 }

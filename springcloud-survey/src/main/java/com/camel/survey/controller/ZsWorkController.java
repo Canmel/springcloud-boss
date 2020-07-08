@@ -13,11 +13,10 @@ import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkState;
-import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.exceptions.SourceDataNotValidException;
-import com.camel.survey.model.ZsSeat;
-import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.model.ZsOtherSurvey;
 import com.camel.survey.model.ZsWork;
+import com.camel.survey.service.ZsOtherSurveyService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -30,9 +29,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -59,6 +56,9 @@ public class ZsWorkController extends BaseCommonController {
 
     @Autowired
     private ZsSurveyService zsSurveyService;
+
+    @Autowired
+    private ZsOtherSurveyService zsOtherSurveyService;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -207,10 +207,11 @@ public class ZsWorkController extends BaseCommonController {
     public Result pass(@PathVariable Integer id) throws UnknownHostException {
         long beginTime = System.currentTimeMillis();
         ZsWork work = service.selectById(id);
+        ZsOtherSurvey survey = zsOtherSurveyService.selectById(work.getProjectId());
         work.setState(ZsWorkState.SUCCESS);
         ProjectReport projectReport = service.projectReport(work.getProjectId());
         work.setBenchmark(projectReport.getBenchmark());
-        work.setBaseSalary(projectReport.getBaseSalary(work));
+        work.setBaseSalary(projectReport.getBaseSalary(work, survey));
         work.setInvalidCost(work.loadInvalidCost());
         work.resetSalary();
         work.setAvgNum(projectReport.getAvgNum());
@@ -274,33 +275,23 @@ public class ZsWorkController extends BaseCommonController {
     public Result pre(@PathVariable Integer id) {
         ZsWork zsWork = service.selectById(id);
         if(zsWork.getState().equals(ZsWorkState.APPLYED)) {
-            ProjectReport projectReport = service.projectReport(zsWork.getProjectId());
+            ProjectReport projectReport = service.selectTotalInfoByWork(zsWork);
+            ZsOtherSurvey otherSurvey = zsOtherSurveyService.selectById(zsWork.getProjectId());
             // 基准
             if(ObjectUtils.isEmpty(zsWork.getBenchmark())) {
-                zsWork.setBenchmark(projectReport.getBenchmark());
+                zsWork.setBenchmark(projectReport.loadBenchmark(otherSurvey));
             }
             // 平均
             zsWork.setAvgNum(zsWork.getAvgNum());
             // 基本工资
-            zsWork.setBaseSalary(projectReport.getBaseSalary(zsWork));
+            if(ObjectUtils.isEmpty(zsWork.getBaseSalary())) {
+                zsWork.setBaseSalary(zsWork.loadBaseSalary());
+            }
             // 工资
             zsWork.resetSalary();
+            zsWork.setExamRatio(zsWork.loadExamRatio());
             zsWork.setInvalidCost(zsWork.loadInvalidCost());
         }
-        return ResultUtil.success(zsWork);
-    }
-
-    // TODO
-    @GetMapping("/caculate/{id}")
-    public Result caculate(@PathVariable Integer id) {
-        ZsWork zsWork = service.selectById(id);
-
-        // 基准
-        zsWork.setBenchmark(0.0);
-        // 平均
-        zsWork.setAvgNum(0.0);
-        // 工资
-        zsWork.setSalary(0.0);
         return ResultUtil.success(zsWork);
     }
 

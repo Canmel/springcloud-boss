@@ -122,13 +122,14 @@
                             </div>
                             <hr>
                             <div>
-                                <b>项目基准</b>
+                                <b>结算信息</b>
                             </div>
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
                                     <th>总基准量</th>
                                     <th>人均产量</th>
+                                    <th>考核系数</th>
                                     <th>餐补费用</th>
                                     <th>基本工资</th>
                                     <th>作废扣除</th>
@@ -137,10 +138,9 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input v-model="selectedItem.benchmark" style="max-width: 50px;" type="number"
-                                               v-on:change="updateBenchmark(item, selectedItem.benchmark)"/></td>
-                                    <td><input v-model="selectedItem.avgNum" style="max-width: 50px;" type="number"
-                                               v-on:change="updateAvgNum(item, selectedItem.avgNum)"/></td>
+                                    <td>{{selectedItem.benchmark}}</td>
+                                    <td>{{selectedItem.avgNum}}</td>
+                                    <td>{{selectedItem.examRatio}}</td>
                                     <td>{{item.meals}}</td>
                                     <td>{{selectedItem.baseSalary}}</td>
                                     <td>{{selectedItem.invalidCost}}</td>
@@ -335,6 +335,7 @@
             },
             addSurveyShow: function (item) {
                 let that = this;
+                console.log(123213)
                 AJAX.GET("zsWork/precaculate/" + item.id, {}, function (resp) {
                     that.selectedItem = resp.data;
                 });
