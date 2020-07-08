@@ -114,12 +114,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     @Override
     @Transactional
     public Result invalid(Integer id) {
-//        mapper.invalidItems()
-        /**
-         * 修改子表样本数量
-         */
         ZsAnswer zsAnswer = this.selectById(id);
-        ZsSurvey zsSurvey = surveyMapper.selectById(zsAnswer.getSurveyId());
         if (!ObjectUtils.isEmpty(zsAnswer.getValid()) && zsAnswer.getValid() == ZsYesOrNo.NO) {
             // 获取所有选项，如果包含不计配额的不需要恢复配额
             ZsAnswer answer = selectById(id);
@@ -128,17 +123,12 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
             // 查询本次回答所有的内容选项
             List<ZsAnswerItem> answerItems = answerItemMapper.selectByAnswerId(id);
             if (!ObjectUtils.isEmpty(answer)) {
-                List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
                 for (int i = 0; i < answerItems.size(); i++) {
-                    for (int j = 0; j < option.size(); j++) {
-                        if (answerItems.get(i).getOption().equals(option.get(j).getName()) && answerItems.get(i).getQuestion().equals(option.get(j).getZsQuestion().getName())) {
-                            if (!ObjectUtils.isEmpty(option.get(i).getIgnoreNum()) && option.get(i).getIgnoreNum()) {
-                                ignoreNum = true;
-                            }
-                            oIds.add(option.get(j).getId());
-                        }
-
+                    ZsOption option1 = optionMapper.selectById(answerItems.get(i).getOptionId());
+                    if(!ObjectUtils.isEmpty(option1.getIgnoreNum())&&option1.getIgnoreNum()){
+                        ignoreNum = true;
                     }
+                    oIds.add(option1.getId());
                 }
             }
             if (!ignoreNum) {
@@ -156,15 +146,11 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
             if (!ObjectUtils.isEmpty(answer)) {
                 List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
                 for (int i = 0; i < answerItems.size(); i++) {
-                    for (int j = 0; j < option.size(); j++) {
-                        if (answerItems.get(i).getOption().equals(option.get(j).getName()) && answerItems.get(i).getQuestion().equals(option.get(j).getZsQuestion().getName())) {
-                            if (!ObjectUtils.isEmpty(option.get(i).getIgnoreNum()) && option.get(i).getIgnoreNum()) {
-                                ignoreNum = true;
-                            }
-                            oIds.add(option.get(j).getId());
-                        }
-
+                    ZsOption option1 = optionMapper.selectById(answerItems.get(i).getOptionId());
+                    if(!ObjectUtils.isEmpty(option1.getIgnoreNum())&&option1.getIgnoreNum()){
+                        ignoreNum = true;
                     }
+                    oIds.add(option1.getId());
                 }
             }
             if (!ignoreNum) {
@@ -196,17 +182,12 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
             // 查询本次回答所有的内容选项
             List<ZsAnswerItem> answerItems = answerItemMapper.selectByAnswerId(id);
             if (!ObjectUtils.isEmpty(answer)) {
-                List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
                 for (int i = 0; i < answerItems.size(); i++) {
-                    for (int j = 0; j < option.size(); j++) {
-                        if (answerItems.get(i).getOption().equals(option.get(j).getName()) && answerItems.get(i).getQuestion().equals(option.get(j).getZsQuestion().getName())) {
-                            if (!ObjectUtils.isEmpty(option.get(i).getIgnoreNum()) && option.get(i).getIgnoreNum()) {
-                                ignoreNum = true;
-                            }
-                            oIds.add(option.get(j).getId());
-                        }
-
+                    ZsOption option1 = optionMapper.selectById(answerItems.get(i).getOptionId());
+                    if(!ObjectUtils.isEmpty(option1.getIgnoreNum())&&option1.getIgnoreNum()){
+                        ignoreNum = true;
                     }
+                    oIds.add(option1.getId());
                 }
             }
             if (!ignoreNum) {

@@ -30,4 +30,6 @@ public interface ZsWorkService extends IService<ZsWork> {
     PageInfo me(ZsWork entity);
 
     ProjectReport projectReport(Integer proId);
+
+    void addLog(List<Object> log);
 }

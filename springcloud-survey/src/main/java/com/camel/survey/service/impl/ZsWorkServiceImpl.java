@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -20,7 +21,9 @@ import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ProjectReport;
 import com.github.pagehelper.PageInfo;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -54,6 +57,9 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
+
+    @Autowired
+    private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Override
     public Result importExcel(MultipartFile file) {
@@ -131,5 +137,12 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     @Override
     public ProjectReport projectReport(Integer proId) {
         return mapper.projectReport(proId);
+    }
+
+    @Override
+    public void addLog(List<Object> log) {
+        JSONObject json = new JSONObject();
+        json.put("log", log);
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Log.Add.Topic"), json);
     }
 }
