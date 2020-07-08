@@ -276,6 +276,9 @@ public class ZsWorkController extends BaseCommonController {
         ZsWork zsWork = service.selectById(id);
         if(zsWork.getState().equals(ZsWorkState.APPLYED)) {
             ProjectReport projectReport = service.selectTotalInfoByWork(zsWork);
+            if(ObjectUtils.isEmpty(projectReport)) {
+                throw new SourceDataNotValidException("暂未设置项目基准");
+            }
             ZsOtherSurvey otherSurvey = zsOtherSurveyService.selectById(zsWork.getProjectId());
             // 基准
             if(ObjectUtils.isEmpty(zsWork.getBenchmark())) {
@@ -288,9 +291,10 @@ public class ZsWorkController extends BaseCommonController {
                 zsWork.setBaseSalary(zsWork.loadBaseSalary());
             }
             // 工资
-            zsWork.resetSalary();
             zsWork.setExamRatio(zsWork.loadExamRatio());
+            zsWork.setRoyalty(zsWork.loadRoyalty());
             zsWork.setInvalidCost(zsWork.loadInvalidCost());
+            zsWork.resetSalary();
         }
         return ResultUtil.success(zsWork);
     }
