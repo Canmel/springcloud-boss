@@ -72,6 +72,35 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-9" v-if="resultDev">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row row-sm text-center">
+                        <div class="ibox-title">
+                            <h5>考核申请</h5>
+                        </div>
+                        <div class="col-xs-3" v-on:click="jumpTo('pages/workshift/exam.html')">
+                            <div class="panel padder-v item">
+                                <div class="h1 text-info font-thin h1">{{total.workrecordNum}}</div>
+                                <span class="text-muted text-xs">班次申请</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-3" v-on:click="jumpTo('pages/survey/exam.html')">
+                            <div class="panel padder-v item bg-info">
+                                <div class="h1 text-fff font-thin h1">{{total.signNum}}</div>
+                                <span class="text-muted text-xs">问卷申请</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-3" v-on:click="jumpTo('pages/exam/exam.html')">
+                            <div class="panel padder-v item bg-primary" style="cursor: auto">
+                                <div class="h1 text-fff font-thin h1">{{total.deliveryNum}}</div>
+                                <span class="text-muted text-xs">考核申请</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!--<script src="/attendance/js/validateIsMain.js"></script>-->
@@ -93,6 +122,9 @@
                 projectNum: 0,
                 surveyNum: 0,
                 collectNum: 0,
+                workrecordNum: 0,
+                signNum: 0,
+                deliveryNum: 0,
                 targetCollectNum: 0
             },
             collectings: [],
@@ -105,9 +137,13 @@
                 sms: 0,
                 phone: 0,
                 interview: 0
-            }
+            },
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
+            this.loginMaster();
             this.loadTotal();
             this.collecting();
             this.lineChart();
@@ -119,6 +155,18 @@
             this.renderEchartPie();
         },
         methods: {
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                })
+            },
             loadPieChart() {
                 var that = this;
                 AJAX.GET('home/pieChart', {}, function (resp) {

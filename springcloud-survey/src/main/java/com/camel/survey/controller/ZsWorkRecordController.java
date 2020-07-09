@@ -11,6 +11,7 @@ import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import com.camel.survey.model.ZsWorkRecord;
 import com.camel.survey.service.ZsWorkRecordService;
+import com.camel.survey.service.ZsWorkShiftService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -36,6 +37,9 @@ public class ZsWorkRecordController extends BaseCommonController {
     private ZsWorkRecordService service;
 
     @Autowired
+    private ZsWorkShiftService zsWorkShiftService;
+
+    @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
     /**
@@ -48,6 +52,7 @@ public class ZsWorkRecordController extends BaseCommonController {
         List<ZsWorkRecord> list = service.selectZsWorkRList(entity);
         list.forEach(record -> {
             record.setCreator(applicationToolsUtils.getUser(record.getCreatorId()));
+            record.setWorkshift(zsWorkShiftService.selectById(record.getWsId()));
         });
         return ResultUtil.success(service.selectPage(list));
     }
@@ -89,6 +94,16 @@ public class ZsWorkRecordController extends BaseCommonController {
     @GetMapping("/access/list/{idNum}")
     public Result selectWorkR(@PathVariable String idNum){
         return service.selectWorkR(idNum);
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/signDown/{id}")
+    public Result delete(@PathVariable Integer id) {
+        return super.delete(id);
     }
 
     /**
