@@ -51,10 +51,10 @@
                         <td>{{item.createdAt}}</td>
                         <td>{{item.state !== 1 ? "不启用" : "启用"}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs"
-                                    v-if="resultDev">
-                                编辑
-                            </button>
+<!--                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs"-->
+<!--                                    v-if="resultDev">-->
+<!--                                编辑-->
+<!--                            </button>-->
                             <button type="button" v-on:click="addRatio(item)" class="btn btn-success btn-xs"
                                     v-if="resultDev && !item.ratio">
                                 设置难度系数

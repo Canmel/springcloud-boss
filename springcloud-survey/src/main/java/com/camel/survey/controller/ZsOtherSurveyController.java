@@ -86,6 +86,11 @@ public class ZsOtherSurveyController extends BaseCommonController {
         return ResultUtil.success(service.selectList(wrapper));
     }
 
+    @GetMapping("/appointments")
+    public Result appointments() {
+        return ResultUtil.success(service.appointments());
+    }
+
     /**
      * 删除
      * @param id

@@ -13,9 +13,13 @@ import com.camel.survey.model.ZsWorkShift;
 import com.camel.survey.service.ZsWorkShiftService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * <p>
@@ -38,13 +42,15 @@ public class ZsWorkShiftController extends BaseCommonController {
     /**
      * 分页查询
      * @param entity
-     * @param principal
+     * @param
      * @return
      */
     @GetMapping
-    public Result index(ZsWorkShift entity, Principal principal) {
-
-        return ResultUtil.success(service.selectPage(entity, principal));
+    public Result index(ZsWorkShift entity, OAuth2Authentication authentication) {
+        if(!isAdmin(authentication.getAuthorities())) {
+            entity.setStartDate(new Date().toString());
+        }
+        return ResultUtil.success(service.selectPage(entity));
     }
 
     /**
@@ -128,6 +134,16 @@ public class ZsWorkShiftController extends BaseCommonController {
     @Override
     public String getMouduleName() {
         return "班次";
+    }
+
+
+    public boolean isAdmin(Collection<GrantedAuthority> list) {
+        for (GrantedAuthority authority:list) {
+            if(authority.getAuthority().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

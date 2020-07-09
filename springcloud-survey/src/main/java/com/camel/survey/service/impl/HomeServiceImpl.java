@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -74,5 +75,10 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public Result pieChart() {
         return ResultUtil.success(mapper.pieChart());
+    }
+
+    @Override
+    public List<Map> enabledSurvies() {
+        return mapper.enabledSurvies();
     }
 }

@@ -16,9 +16,11 @@ import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.ZsOtherSurvey;
 import com.camel.survey.model.ZsWork;
+import com.camel.survey.model.ZsWorkShift;
 import com.camel.survey.service.ZsOtherSurveyService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkService;
+import com.camel.survey.service.ZsWorkShiftService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ProjectReport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,10 @@ public class ZsWorkController extends BaseCommonController {
 
     @Autowired
     private ZsOtherSurveyService zsOtherSurveyService;
+
+    @Autowired
+    private ZsWorkShiftService workShiftService;
+
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

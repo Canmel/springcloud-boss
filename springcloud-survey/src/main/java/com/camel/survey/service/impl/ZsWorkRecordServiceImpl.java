@@ -7,6 +7,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsSign;
+import com.camel.survey.model.ZsWork;
 import com.camel.survey.model.ZsWorkRecord;
 import com.camel.survey.mapper.ZsWorkRecordMapper;
 import com.camel.survey.model.ZsWorkShift;
@@ -236,4 +237,8 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
         return map;
     }
 
+    @Override
+    public boolean hasAppointment(ZsWork work) {
+        return mapper.hasAppointment(work) > 0;
+    }
 }

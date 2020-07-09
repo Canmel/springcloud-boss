@@ -7,6 +7,8 @@ import com.camel.survey.model.ZsSurvey;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
+import java.util.List;
+
 /**
  * <p>
  * 其他平台问卷 服务类
@@ -39,4 +41,5 @@ public interface ZsOtherSurveyService extends IService<ZsOtherSurvey> {
      */
     Result update(ZsOtherSurvey zsOtherSurvey) throws Exception;
 
+    List<ZsOtherSurvey> appointments();
 }

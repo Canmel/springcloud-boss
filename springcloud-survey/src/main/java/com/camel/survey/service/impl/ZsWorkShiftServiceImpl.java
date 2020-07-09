@@ -51,8 +51,7 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
     private ZsWorkRecordService service;
 
     @Override
-    public PageInfo<ZsWorkShift> selectPage(ZsWorkShift entity, Principal principal) {
-
+    public PageInfo<ZsWorkShift> selectPage(ZsWorkShift entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
@@ -61,15 +60,6 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
         List<ZsWorkRecord> workRecord = service.selectList(zsWorkRecordWrapper);
         List<ZsWorkShift> ZsWorkShifts = pageInfo.getList();
         ZsWorkShifts.forEach(ZsWorkShift -> {
-            //设置每个班次的创建者
-            ZsWorkShift.setCreator(applicationToolsUtils.getUser(ZsWorkShift.getCreatorId()));
-            if(workRecord.size()>0){
-                workRecord.forEach(v -> {
-                    if (ZsWorkShift.getId().equals(v.getWsId()) && v.getResult().equals(ZsSurveySignResult.SUCCESS)){
-                        ZsWorkShift.setStatusUser(ZsYesOrNo.YES);
-                    }
-                });
-            }
             String startTime =  ZsWorkShift.getStartTime();
             String endTime =  ZsWorkShift.getEndTime();
             ZsWorkShift.setWtime(startTime+":00 - "+endTime+":00");

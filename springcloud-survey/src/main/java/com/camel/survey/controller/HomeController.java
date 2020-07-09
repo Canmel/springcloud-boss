@@ -1,6 +1,7 @@
 package com.camel.survey.controller;
 
 import com.camel.core.entity.Result;
+import com.camel.core.utils.ResultUtil;
 import com.camel.survey.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,4 +74,8 @@ public class HomeController {
         return homeService.pieChart();
     }
 
+    @GetMapping("/enabledSurveys")
+    public Result enabledSurvey() {
+        return ResultUtil.success(homeService.enabledSurvies());
+    }
 }

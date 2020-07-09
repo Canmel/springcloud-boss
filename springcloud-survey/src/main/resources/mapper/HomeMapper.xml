@@ -74,4 +74,10 @@
         GROUP BY
             survey.collect_type
     </select>
+
+    <select id="enabledSurvies" resultType="hashmap">
+        select type, name, id from zs_other_survey where `status` = 1 and state = 1
+        UNION ALL
+        select 0 type, name, id from zs_survey where `status` = 1 and state = 1
+    </select>
 </mapper>

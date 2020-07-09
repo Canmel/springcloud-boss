@@ -25,6 +25,6 @@ public interface ZsOtherSurveyMapper extends BaseMapper<ZsOtherSurvey> {
      */
     List<ZsOtherSurvey> list(ZsOtherSurvey entity);
 
-
+    List<ZsOtherSurvey> appointments(Integer uid);
 
 }

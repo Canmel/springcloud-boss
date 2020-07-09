@@ -54,7 +54,7 @@
                                         <div class="col-sm-8" v-for="item in items">
                                             <label>
                                                 <div class="co">
-                                                    <span class="click-span" v-on:click="addSurveyid(item)">{{item.name}}</span>
+                                                    <span class="click-span" v-on:click="addSurveyid(item)">{{projectName(item)}}</span>
                                                 </div>
                                             </label>
                                         </div>
@@ -93,7 +93,8 @@
                 startTime: '',
                 endTime: '',
                 startDate:'',
-                surveyId:0
+                surveyId:0,
+                stype: 0
             },
             pageInfo: {
                 name: '',
@@ -129,12 +130,12 @@
                if(!$("#signupForm").valid()){
                     return false;
                 }
-                var that = this;
+                let that = this;
                 that.zs_workshift.startTime = this.$refs.inputstart.value;
                 that.zs_workshift.endTime = this.$refs.inputend.value;
                 that.zs_workshift.startDate = this.$refs.inputstartdate.value;
-                var date = /^\d{4}-\d{2}-\d{2}$/;
-                var time = /^\d{2}:\d{2}$/;
+                let date = /^\d{4}-\d{2}-\d{2}$/;
+                let time = /^\d{2}:\d{2}$/;
                 that.selectsurveyid = 0;
                 that.dateregular = 0;
                 that.timeregular = 0;
@@ -150,8 +151,8 @@
                     that.timeregular = 1;
                     return false;
                 }
-                var hours = parseInt(that.zs_workshift.endTime.substring(0,3))-parseInt(that.zs_workshift.startTime.substring(0,3));
-                var minutes = parseInt(that.zs_workshift.endTime.substring(4))-parseInt(that.zs_workshift.startTime.substring(4));
+                let hours = parseInt(that.zs_workshift.endTime.substring(0,3))-parseInt(that.zs_workshift.startTime.substring(0,3));
+                let minutes = parseInt(that.zs_workshift.endTime.substring(4))-parseInt(that.zs_workshift.startTime.substring(4));
                 if(hours<0){
                     that.timeregular = 1;
                     return false;
@@ -172,15 +173,13 @@
             },
             showSurveys() {
                 $("#addSurvey").modal('show');
+                this.pagequery();
 
             },
             pagequery: function () {
-                var that = this;
-                AJAX.GET('zsSurvey', this.pageInfo, function (resp) {
-                    that.pageInfo.pageNum = resp.data.pageNum;
-                    that.pageInfo.total = resp.data.total;
-                    that.items = resp.data.list;
-
+                let that = this;
+                AJAX.GET('home/enabledSurveys', {}, function (resp) {
+                    that.items = resp.data;
                 })
             },
             pageFn: function (val) {
@@ -188,7 +187,7 @@
                 this.pagequery();
             },
             addSurveyid(item) {
-
+                this.zs_workshift.stype = item.type;
                 this.zs_workshift.surveyId = item.id;
                 this.surveyname = item.name;
                 $("#addSurvey").modal('hide');
@@ -199,6 +198,15 @@
                     container: '.page-container'
                 });
             },
+            projectName(item) {
+                if(item.type === 0) {
+                    return item.name;
+                }
+                if(item.type === 1) {
+                    return item.name + "(民调项目)"
+                }
+                return item.name + "(中移项目)";
+            }
         }
     });
     $().ready(function () {
