@@ -58,5 +58,6 @@
                 AND wr.`status` = 1
                 AND ws.`status` = 1
             )
+            AND state = 1
     </select>
 </mapper>
