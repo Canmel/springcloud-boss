@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 /**
  * <p>
@@ -61,7 +62,7 @@ public class ZsOtherSurveyServiceImpl extends ServiceImpl<ZsOtherSurveyMapper, Z
     @Override
     public Result update(ZsOtherSurvey zsOtherSurvey) throws Exception {
         ZsOtherSurvey zsOtherSurvey1=selectById(zsOtherSurvey.getId());
-        if(zsOtherSurvey.getName()==null||zsOtherSurvey.getName().equals(""))
+        if(!ObjectUtils.isEmpty(zsOtherSurvey.getName()) && zsOtherSurvey.getName().equals(""))
             return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "问卷名不为空!");
         Wrapper<ZsOtherSurvey> zsOtherSurveyWrapper = new EntityWrapper<>();
         zsOtherSurveyWrapper.eq("name", zsOtherSurvey.getName());

@@ -91,7 +91,6 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 工号
      */
-    @NotBlank(message = "工号不能为空")
     @ExcelAnnotation(columnIndex = 6, columnName = "工号")
     private String jobNumber;
     /**
@@ -279,7 +278,7 @@ public class ZsWork extends BasePaginationEntity {
     }
 
     public void validEntity() {
-        if(successNum > tryNum) {
+        if (successNum > tryNum) {
             throw new SourceDataNotValidException("成功量不能大于接触量");
         }
         if (ObjectUtils.isEmpty(this.getStartTime()) || ObjectUtils.isEmpty(this.getEndTime())) {
@@ -288,13 +287,13 @@ public class ZsWork extends BasePaginationEntity {
         if (this.startTime.getTime() >= this.endTime.getTime()) {
             throw new SourceDataNotValidException("结束时间不能是一个小于开始时间的值");
         }
-        if(DateUtils.addHours(this.startTime, this.eatTime.intValue()).getTime() >= this.endTime.getTime()) {
+        if (DateUtils.addHours(this.startTime, this.eatTime.intValue()).getTime() >= this.endTime.getTime()) {
             throw new SourceDataNotValidException("上班时间已经全部休息了，本次不需要上报");
         }
     }
 
     public Integer getValidNum() {
-        if(ObjectUtils.isEmpty(validNum)) {
+        if (ObjectUtils.isEmpty(validNum)) {
             return successNum;
         }
         return ObjectUtils.isEmpty(invalidNum) ? successNum : successNum - invalidNum;
@@ -324,7 +323,7 @@ public class ZsWork extends BasePaginationEntity {
      * @return
      */
     public Double getAvgNum() {
-        if(!ObjectUtils.isEmpty(this.avgNum) && !this.avgNum.equals(new Double(0))) {
+        if (!ObjectUtils.isEmpty(this.avgNum) && !this.avgNum.equals(new Double(0))) {
             return this.avgNum;
         }
         if (!ObjectUtils.isEmpty(this.workHours) && !this.workHours.equals(new Double(0))) {
@@ -336,56 +335,84 @@ public class ZsWork extends BasePaginationEntity {
     /**
      * 计算工资
      * 基本工资 + 提成 + 餐补 - 作废扣费
+     *
      * @return
      */
     public Double resetSalary() {
-        Double s = getBaseSalary() + getRoyalty() + getMeals() - loadInvalidCost();
+        Double s = new BigDecimal(getBaseSalary() + loadRoyalty() + getMeals() - loadInvalidCost()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.setSalary(s);
         return s;
     }
 
     /**
      * 计算提成
+     *
      * @return
      */
     public Double resetRoyalty() {
-        if(this.getValidNum() > this.getBenchmark()) {
+        if (this.getValidNum() > this.getBenchmark()) {
             return (this.getValidNum() - this.getBenchmark()) * 4;
         }
         return 0.0;
     }
 
     /**
+     * 计算提成
+     *
+     * @return
+     */
+    public Double loadRoyalty() {
+        // 考核系数
+        Double examRatioValue = loadExamRatio();
+        Double virtualBase = getBenchmark() * getWorkHours();
+        Double result = 0.0;
+        if (!ObjectUtils.isEmpty(examRatioValue)) {
+            // 虚拟基数， 需要达到的数量才有奖励
+            if (this.getValidNum() > virtualBase) {
+                if (examRatioValue > 1.5) {
+                    result = (this.validNum - virtualBase) * 4.0;
+                } else if (examRatioValue > 1.3) {
+                    result = (this.validNum - virtualBase) * 3.0;
+                } else if (examRatioValue > 1.0) {
+                    result = (this.validNum - virtualBase) * 2.0;
+                }
+            }
+        }
+        return new BigDecimal(result).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    /**
      * 无效扣除费用
      * 4 元一个
+     *
      * @return
      */
     public Double loadInvalidCost() {
-        if(!ObjectUtils.isEmpty(this.invalidNum)) {
+        if (!ObjectUtils.isEmpty(this.invalidNum)) {
             return invalidNum * 4.0;
         }
         return 0.0;
     }
 
     public Double loadExamRatio() {
-        if(!ObjectUtils.isEmpty(getAvgNum()) && getAvgNum() > 0 && !ObjectUtils.isEmpty(getBenchmark()) && getBenchmark() > 0) {
+        if (!ObjectUtils.isEmpty(getAvgNum()) && getAvgNum() > 0 && !ObjectUtils.isEmpty(getBenchmark()) && getBenchmark() > 0) {
             return new BigDecimal(getAvgNum() / getBenchmark()).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
         }
         return null;
     }
 
     public Double loadBaseSalary() {
-        if(!ObjectUtils.isEmpty(this.loadExamRatio())) {
+        if (!ObjectUtils.isEmpty(this.loadExamRatio())) {
             Double examRatio = this.loadExamRatio();
-            if(examRatio >= 1.5) {
+            if (examRatio >= 1.5) {
                 return getWorkHours() * 30;
-            } else if(examRatio >= 1.3) {
+            } else if (examRatio >= 1.3) {
                 return getWorkHours() * 25;
-            }else if (examRatio >= 1.0) {
+            } else if (examRatio >= 1.0) {
                 return getWorkHours() * 22;
-            }else if (examRatio >= 0.8) {
+            } else if (examRatio >= 0.8) {
                 return getWorkHours() * 18;
-            }else{
+            } else {
                 return getValidNum() * 5.0;
             }
         }

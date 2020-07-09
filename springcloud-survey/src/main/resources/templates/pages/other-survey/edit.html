@@ -72,7 +72,7 @@
                     that.otherSurvey = {
                         id: resp.data.id,
                         name: resp.data.name,
-                        type: resp.data.type.value,
+                        type: resp.data.type ? resp.data.type.value : null,
                         place: resp.data.place,
                         ptime: resp.data.ptime,
                     };

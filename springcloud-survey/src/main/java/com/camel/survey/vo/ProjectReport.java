@@ -78,7 +78,7 @@ public class ProjectReport {
      */
     public Double loadBenchmark(ZsOtherSurvey survey) {
         if(!ObjectUtils.isEmpty(survey.getRatio()) && survey.getRatio() > 0) {
-            if (!ObjectUtils.isEmpty(workHours) && !workHours.equals(new Double(0))) {
+            if (!ObjectUtils.isEmpty(this.workHours) && !workHours.equals(new Double(0)) && !ObjectUtils.isEmpty(avgNum) && !ObjectUtils.isEmpty(workHours)) {
                 return new BigDecimal(survey.getRatio() * avgNum / workHours).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             }else {
                 throw new SourceDataNotValidException("前十平均数未设置");

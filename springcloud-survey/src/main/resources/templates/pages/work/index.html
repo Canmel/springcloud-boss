@@ -100,6 +100,7 @@
                                         <th>工作地点</th>
                                         <th>接触量</th>
                                         <th>成功量</th>
+                                        <th>作废量</th>
                                         <th>成功率</th>
                                     </tr>
                                     </thead>
@@ -114,6 +115,7 @@
                                         <td><span>{{item.place}}</span></td>
                                         <td><span>{{item.tryNum}}</span></td>
                                         <td><span>{{item.successNum}}</span></td>
+                                        <td><span>{{item.invalidNum}}</span></td>
                                         <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span>
                                         </td>
                                     </tr>
@@ -132,19 +134,21 @@
                                     <th>考核系数</th>
                                     <th>餐补费用</th>
                                     <th>基本工资</th>
+                                    <th>提成奖励</th>
                                     <th>作废扣除</th>
                                     <th>工资合计</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>{{selectedItem.benchmark}}</td>
+                                    <td>{{selectedItem.benchmark? selectedItem.benchmark : '无数据'}}</td>
                                     <td>{{selectedItem.avgNum}}</td>
-                                    <td>{{selectedItem.examRatio}}</td>
+                                    <td>{{selectedItem.examRatio ? selectedItem.examRatio : '无数据'}}</td>
                                     <td>{{item.meals}}</td>
-                                    <td>{{selectedItem.baseSalary}}</td>
-                                    <td>{{selectedItem.invalidCost}}</td>
-                                    <td>{{selectedItem.salary}}</td>
+                                    <td>{{selectedItem.baseSalary ? selectedItem.baseSalary : '无数据'}}</td>
+                                    <td>{{selectedItem.royalty}}</td>
+                                    <td>{{selectedItem.invalidCost ? selectedItem.invalidCost : item.invalidNum * 4.0}}</td>
+                                    <td>{{selectedItem.salary ? selectedItem.salary : '无数据'}}</td>
                                 </tr>
                                 </tbody>
                             </table>
