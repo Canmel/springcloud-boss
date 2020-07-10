@@ -16,6 +16,9 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
+        <association property="workshift" javaType="com.camel.survey.model.ZsWorkShift">
+            <id property="wsId" column="workshift" jdbcType="INTEGER"></id>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
