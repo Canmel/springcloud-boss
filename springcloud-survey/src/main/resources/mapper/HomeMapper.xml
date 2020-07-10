@@ -7,6 +7,9 @@
         <result column="projet_num" property="projectNum"></result>
         <result column="collect_num" property="collectNum"></result>
         <result column="survey_num" property="surveyNum"></result>
+        <result column="workrecord_num" property="workrecordNum"></result>
+        <result column="sign_num" property="signNum"></result>
+        <result column="delivery_num" property="deliveryNum"></result>
         <result column="target_collect_num" property="targetCollectNum"></result>
     </resultMap>
 
@@ -20,6 +23,9 @@
             (SELECT count(1) FROM zs_project WHERE status = 1 )AS projet_num,
             (SELECT count(1) FROM zs_answer WHERE status = 1)AS collect_num,
             count(1)AS survey_num,
+            (SELECT count(1) FROM zs_work_record WHERE status = 1 and result = 0)AS workrecord_num,
+            (SELECT count(1) FROM zs_sign WHERE status = 1 and result = 0)AS sign_num,
+            (SELECT count(1) FROM zs_delivery WHERE status = 1 and ach = 0)AS delivery_num,
             SUM(collect_num)AS target_collect_num
         FROM
             zs_survey

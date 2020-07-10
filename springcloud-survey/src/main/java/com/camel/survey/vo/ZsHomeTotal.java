@@ -33,5 +33,11 @@ public class ZsHomeTotal {
 
     private Integer collectNum;
 
+    private Integer workrecordNum;
+
+    private Integer signNum;
+
+    private Integer deliveryNum;
+
     private Integer targetCollectNum;
 }

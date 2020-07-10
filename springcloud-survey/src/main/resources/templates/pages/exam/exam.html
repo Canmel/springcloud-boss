@@ -19,6 +19,8 @@
                                         <table class="table table-striped table-hover">
                                             <tbody>
                                             <tr v-for="item in applies">
+                                                <td class="contact-type"><i class="fa fa-list"></i>
+                                                <td> {{item.exam ? item.exam.name : ''}}</td>
                                                 <td class="client-avatar"><span class="fa fa-user"></span></td>
                                                 <td><a data-toggle="tab" href="#contact-1" class="client-link">
                                                     {{item.creator ? item.creator.username : ''}}
@@ -47,6 +49,8 @@
                                         <table class="table table-striped table-hover">
                                             <tbody>
                                             <tr v-for="item in passed">
+                                                <td class="contact-type"><i class="fa fa-list"></i>
+                                                <td> {{item.exam ? item.exam.name : ''}}</td>
                                                 <td class="client-avatar"><span class="fa fa-user"></span></td>
                                                 <td><a data-toggle="tab" href="#contact-1" class="client-link">
                                                     {{item.creator ? item.creator.username : ''}}
@@ -74,6 +78,8 @@
                                         <table class="table table-striped table-hover">
                                             <tbody>
                                             <tr v-for="item in refused">
+                                                <td class="contact-type"><i class="fa fa-list"></i>
+                                                <td> {{item.exam ? item.exam.name : ''}}</td>
                                                 <td class="client-avatar"><span class="fa fa-user"></span></td>
                                                 <td><a data-toggle="tab" href="#contact-1" class="client-link">
                                                     {{item.creator ? item.creator.username : ''}}
@@ -108,19 +114,12 @@
                         <div class="tab-pane active">
                             <div class="row m-b-lg">
                                 <div class="col-lg-4 text-center">
-                                    <h2>{{args.name}}</h2>
+                                    <h2>考核申请</h2>
                                 </div>
                                 <div class="col-lg-8"></div>
                             </div>
                             <div class="client-detail">
-                                <p>
-                                    {{args.desc}}
-                                </p>
-                                <p>
-                                    创建时间: {{args.createdAt}}
-                                </p>
-
-                                <button type="button" class="btn btn-info btn-sm btn-block" v-on:click="backToMain()"><i class="fa fa-mail-reply"></i> 返回列表
+                                <button type="button" class="btn btn-info btn-sm btn-block" v-on:click="backToMain()"><i class="fa fa-mail-reply"></i> 返回主页
                                 </button>
 
                             </div>
@@ -137,26 +136,19 @@
         el: '#subContainer',
         data: {
             applicationContextRootPath: '/survey/',
-            args: {
-                name: '',
-                desc: ''
-            },
             applyArgs: {
-                examId: sessionStorage.getItem("editParams"),
                 pageNum: 1,
                 ach: 'APPLY',
                 total: 0,//总页数
                 size: 10//每页显示条目个数不传默认10
             },
             passArgs: {
-                examId: sessionStorage.getItem("editParams"),
                 pageNum: 1,
                 ach: 'PASS',
                 total: 0,//总页数
                 size: 10//每页显示条目个数不传默认10
             },
             refusedArgs: {
-                examId: sessionStorage.getItem("editParams"),
                 pageNum: 1,
                 ach: 'FAIL',
                 total: 0,//总页数
@@ -167,7 +159,7 @@
             refused: []
         },
         created: function () {
-            this.loadEntity();
+
         },
         methods: {
             loadRefused() {
@@ -194,12 +186,6 @@
                     that.passArgs.total = resp.data.total;
                 });
             },
-            loadEntity() {
-                var that = this;
-                AJAX.GET('zsExam/' + sessionStorage.getItem('editParams'), {}, function (resp) {
-                    that.args = resp.data;
-                });
-            },
             cancel: function () {
                 this.backToMain();
             },
@@ -215,7 +201,7 @@
             },
             backToMain: function () {
                 $.pjax({
-                    url: mvm.applicationContextRootPath + 'pages/exam/index.html',
+                    url: mvm.applicationContextRootPath + 'pages/home.html',
                     container: '.page-container'
                 });
             },

@@ -35,6 +35,13 @@ public class ZsWorkRecord extends BasePaginationEntity {
      * 班次主键
      */
     private Integer wsId;
+
+    /**
+     * 班次
+     */
+    @TableField(exist = false)
+    private ZsWorkShift workshift;
+
     /**
      * 申请者身份证号
      */
