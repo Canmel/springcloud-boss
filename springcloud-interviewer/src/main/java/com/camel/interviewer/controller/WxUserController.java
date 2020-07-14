@@ -56,7 +56,7 @@ public class WxUserController extends BaseCommonController {
             wrapper.eq("id_num", wxUser.getIdNum());
             int count = service.selectCount(wrapper);
             if(count > 0) {
-                return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "身份证号已经被注册");
+                return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "身份证号已经被注册，如果被占用请联系管理员");
             }
         }
         boolean insert = service.insert(wxUser);
