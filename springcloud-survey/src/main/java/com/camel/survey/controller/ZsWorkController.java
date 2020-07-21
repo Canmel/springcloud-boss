@@ -215,15 +215,17 @@ public class ZsWorkController extends BaseCommonController {
         long beginTime = System.currentTimeMillis();
         ZsWork work = service.selectById(id);
         ZsOtherSurvey survey = zsOtherSurveyService.selectById(work.getProjectId());
-        if(ObjectUtils.isEmpty(survey.getRatio())) {
-            throw new SourceDataNotValidException("该问卷还没有设置难度系数");
+        if(!ObjectUtils.isEmpty(survey)) {
+            if(ObjectUtils.isEmpty(survey.getRatio())) {
+                throw new SourceDataNotValidException("该问卷还没有设置难度系数");
+            }
+            ProjectReport projectReport = service.selectTotalInfoByWork(work);
+            if(ObjectUtils.isEmpty(projectReport)) {
+                throw new SourceDataNotValidException("暂未设置项目基准数据");
+            }
+            work.setBenchmark(projectReport.loadBenchmark(survey));
         }
         work.setState(ZsWorkState.SUCCESS);
-        ProjectReport projectReport = service.selectTotalInfoByWork(work);
-        if(ObjectUtils.isEmpty(projectReport)) {
-            throw new SourceDataNotValidException("暂未设置项目基准数据");
-        }
-        work.setBenchmark(projectReport.loadBenchmark(survey));
         // 平均
         work.setAvgNum(work.getAvgNum());
         // 基本工资
@@ -296,7 +298,7 @@ public class ZsWorkController extends BaseCommonController {
         ZsWork zsWork = service.selectById(id);
         if(zsWork.getState().equals(ZsWorkState.APPLYED)) {
             ProjectReport projectReport = service.selectTotalInfoByWork(zsWork);
-            if(ObjectUtils.isEmpty(projectReport)) {
+            if(ObjectUtils.isEmpty(projectReport) && ObjectUtils.isEmpty(zsWork.getBenchmark())) {
                 throw new SourceDataNotValidException("暂未设置项目基准数据");
             }
             ZsOtherSurvey otherSurvey = zsOtherSurveyService.selectById(zsWork.getProjectId());

@@ -157,6 +157,8 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
 
     @Override
     public ProjectReport selectTotalInfoByWork(ZsWork zsWork) {
+        zsWork.setPageNum(null);
+        zsWork.setPageSize(null);
         return mapper.selectTotalInfoByWork(zsWork);
     }
 
