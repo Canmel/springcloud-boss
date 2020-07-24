@@ -1,6 +1,7 @@
 package com.camel.survey.service;
 
 import com.camel.core.entity.Result;
+import com.camel.survey.model.ZsDelivery;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.model.ZsWorkRecord;
 import com.baomidou.mybatisplus.service.IService;
@@ -24,7 +25,7 @@ public interface ZsWorkRecordService extends IService<ZsWorkRecord> {
      @param entity
      @return
      */
-    PageInfo<ZsWorkRecord> selectPage(List<ZsWorkRecord> entity);
+    PageInfo<ZsWorkRecord> selectPage(ZsWorkRecord entity);
 
     Result start(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication);
 

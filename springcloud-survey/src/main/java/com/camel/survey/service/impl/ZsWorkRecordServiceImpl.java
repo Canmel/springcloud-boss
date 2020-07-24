@@ -6,6 +6,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.model.ZsDelivery;
 import com.camel.survey.model.ZsSign;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.model.ZsWorkRecord;
@@ -53,17 +54,16 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
-    public PageInfo<ZsWorkRecord> selectPage(List<ZsWorkRecord> list) {
-        PageInfo pageInfo = PaginationUtil.startPage(new ZsWorkShift(),()->{
-            List<ZsWorkRecord> zsWorkRecords = new ArrayList<>();
+    public PageInfo<ZsWorkRecord> selectPage(ZsWorkRecord entity) {
+        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+            mapper.list(entity);
         });
-        pageInfo.setList(list);
+        List<ZsWorkRecord> workrecords = pageInfo.getList();
+        workrecords.forEach(zsWorkRecord -> {
+            zsWorkRecord.setCreator(applicationToolsUtils.getUser(zsWorkRecord.getCreatorId()));
+            zsWorkRecord.setWorkshift(zsWorkShiftservice.selectById(zsWorkRecord.getWsId()));
+        });
         return pageInfo;
-    }
-
-    @Override
-    public List<ZsWorkRecord> selectZsWorkRList(ZsWorkRecord entity) {
-        return mapper.list(entity);
     }
 
     @Override

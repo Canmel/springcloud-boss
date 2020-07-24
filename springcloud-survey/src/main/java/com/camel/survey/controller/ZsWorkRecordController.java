@@ -49,12 +49,7 @@ public class ZsWorkRecordController extends BaseCommonController {
      */
     @GetMapping
     public Result index(ZsWorkRecord entity) {
-        List<ZsWorkRecord> list = service.selectZsWorkRList(entity);
-        list.forEach(record -> {
-            record.setCreator(applicationToolsUtils.getUser(record.getCreatorId()));
-            record.setWorkshift(zsWorkShiftService.selectById(record.getWsId()));
-        });
-        return ResultUtil.success(service.selectPage(list));
+        return ResultUtil.success(service.selectPage(entity));
     }
 
     /**
