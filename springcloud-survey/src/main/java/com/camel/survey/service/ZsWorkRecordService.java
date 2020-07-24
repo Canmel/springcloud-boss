@@ -40,8 +40,6 @@ public interface ZsWorkRecordService extends IService<ZsWorkRecord> {
      */
     Result selectWorkR(String idNum);
 
-    List<ZsWorkRecord> selectZsWorkRList(ZsWorkRecord entity);
-
     List<ZsWorkRecord> selectZsWorkRListByUid(Integer id);
 
     boolean hasAppointment(ZsWork work);
