@@ -120,6 +120,10 @@ public class ApplicationToolsUtils {
     }
 
     public SysUser currentUser() {
-        return currentUser((OAuth2Authentication)SecurityContextHolder.getContext().getAuthentication());
+        try{
+            return currentUser((OAuth2Authentication)SecurityContextHolder.getContext().getAuthentication());
+        }catch (Exception e) {
+            return null;
+        }
     }
 }
