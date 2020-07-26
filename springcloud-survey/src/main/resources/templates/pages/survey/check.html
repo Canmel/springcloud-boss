@@ -792,6 +792,7 @@
                                                 <input type="checkbox" :value="Math.random()"
                                                        :checked="isSelected(option)">
                                                 <span class="editable question-option">{{option.name}}</span>
+                                                <span>{{getAnswer(option.id) ? option.name === getAnswer(option.id).value ? '' : '(' + getAnswer(option.id).value + ')' : ''}}</span>
                                             </label>
 
                                             <label class="checkbox-inline"
