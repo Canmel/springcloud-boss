@@ -62,6 +62,9 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
     private String endTime;
 
     private String startDate;
+
+    private Integer stype;
+
     /**
      * 状态
      */

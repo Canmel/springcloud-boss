@@ -118,7 +118,7 @@
             },
             loadActiviesSurvey() {
                 let that = this;
-                AJAX.GET("zsOtherSurvey/actives", {}, function (resp) {
+                AJAX.GET("zsOtherSurvey/appointments", {}, function (resp) {
                     that.projects = resp.data;
                 });
             }

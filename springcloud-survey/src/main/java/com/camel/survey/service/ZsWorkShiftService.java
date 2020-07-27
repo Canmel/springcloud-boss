@@ -23,7 +23,7 @@ public interface ZsWorkShiftService extends IService<ZsWorkShift> {
      @param entity
      @return
      */
-    PageInfo<ZsWorkShift> selectPage(ZsWorkShift entity, Principal principal);
+    PageInfo<ZsWorkShift> selectPage(ZsWorkShift entity);
 
 
     List<ZsWorkShift> all(ZsWorkShift entity, String openId);

@@ -2,6 +2,7 @@ package com.camel.survey.service;
 
 import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsDelivery;
+import com.camel.survey.model.ZsWork;
 import com.camel.survey.model.ZsWorkRecord;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
@@ -40,4 +41,6 @@ public interface ZsWorkRecordService extends IService<ZsWorkRecord> {
     Result selectWorkR(String idNum);
 
     List<ZsWorkRecord> selectZsWorkRListByUid(Integer id);
+
+    boolean hasAppointment(ZsWork work);
 }

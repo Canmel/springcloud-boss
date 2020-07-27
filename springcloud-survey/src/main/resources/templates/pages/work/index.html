@@ -109,14 +109,14 @@
                                         <td><span>{{item.jobNumber}}</span></td>
                                         <td><span>{{item.uname}}</span></td>
                                         <td><span>{{item.workDate | formatOnlyDate}}</span></td>
-                                        <td><span>{{item.startTime | formatDate }}</span></td>
-                                        <td><span>{{item.endTime | formatDate}}</span></td>
+                                        <td><span>{{item.startTime | formatOnlyTime }}</span></td>
+                                        <td><span>{{item.endTime | formatOnlyTime}}</span></td>
                                         <td><span>{{item.workHours}}</span></td>
                                         <td><span>{{item.place}}</span></td>
                                         <td><span>{{item.tryNum}}</span></td>
                                         <td><span>{{item.successNum}}</span></td>
                                         <td><span>{{item.invalidNum}}</span></td>
-                                        <td><span>{{item.successRate? Number.parseFloat(item.successRate).toFixed(2) + "%" : '未完善'}}</span>
+                                        <td><span>{{item.successRate? Number.parseFloat(item.successRate * 100).toFixed(2) + "%" : '未完善'}}</span>
                                         </td>
                                     </tr>
                                     </tbody>

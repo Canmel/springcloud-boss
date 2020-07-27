@@ -40,6 +40,7 @@
         zs_seat
         where
         seat_num like concat('%',#{seatNum},'%')
+        limit 1
     </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.camel.survey.mapper;
 
+import com.camel.survey.model.ZsWork;
 import com.camel.survey.model.ZsWorkRecord;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,6 @@ import java.util.List;
 public interface ZsWorkRecordMapper extends BaseMapper<ZsWorkRecord> {
 
     List<ZsWorkRecord> list(ZsWorkRecord zsWorkRecord);
+
+    int hasAppointment(ZsWork work);
 }
