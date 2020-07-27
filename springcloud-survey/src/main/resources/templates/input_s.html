@@ -278,7 +278,7 @@
                     var checked = $(item).is(':checked');
                     var content = $(item).attr('content');
                     // 选中说不清数量到达限额
-                    if (checked && content ==="说不清") {
+                    if (checked && content.search("说不清") !=-1) {
                         that.unclear=that.unclear+1;
                         if(that.unclear>=that.survey.unclearCount){
                             $("#theForm").hide();
@@ -427,9 +427,13 @@
             },
             //删除前一题的作答
             deletePreviousQuestion(){
+                let that = this;
                 let length=this.finalData.length;
                 for(let j=length-1;j>=0;j--){
                     if(this.finalData[j].name.split("_")[1]===(""+this.index[this.index.length-1])){
+                        if(this.finalData[j].value.split("_")[1].search("说不清")!=-1){
+                            that.unclear -= 1;
+                        }
                         this.finalData.pop(this.finalData[j]);
                     }
                 }
