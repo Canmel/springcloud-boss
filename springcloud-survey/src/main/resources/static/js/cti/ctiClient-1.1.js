@@ -260,6 +260,8 @@
   	//根据座席状态设置工具栏功能键启用状态
   	function setToolbarByStatus(state){
 							var seatState = $('#signin span');
+							$("#hugupSeatOnlyOut").show();
+							$("#hugupSeatFree").show();
 							if(state=="-1"){
 								seatState.text("离线");
 								setToolbarEnabled(false,false,false,false,false,false,false,false,false,false);
@@ -365,6 +367,8 @@
 				clearInterval(heartbeatId);
 			}
 			seatState.text("未签入");
+			$("#hugupSeatOnlyOut").hide();
+			$("#hugupSeatFree").hide();
 			setToolbarEnabled(false,false,false,false,false,false,false,false,false,false);
   			//websocket.send(message);
 			alert("与服务器连接中断，请重新签入");
@@ -384,6 +388,8 @@
 				clearInterval(heartbeatId);
 			}
 			seatState.text("未签入");
+			$("#hugupSeatOnlyOut").hide();
+			$("#hugupSeatFree").hide();
 			setToolbarEnabled(false,false,false,false,false,false,false,false,false,false);
   			//websocket.send(message);
 			alert("与服务器连接中断，请重新签入");
@@ -448,6 +454,8 @@
 	  				signin = false;
 					signInOrOut.html(signInOrOutHtml.replace("签出","签入"));
 					seatState.text("未签入");
+					$("#hugupSeatOnlyOut").hide();
+					$("#hugupSeatFree").hide();
 					$("#notsignin").show();
 					$("#signin").hide();
 					if(heartbeatId>=0){
@@ -618,6 +626,8 @@
 						}
 						alert("签出成功");
 						seatState.text("未签入");
+						$("#hugupSeatOnlyOut").hide();
+						$("#hugupSeatFree").hide();
 						setToolbarEnabled(false,false,false,false,false,false,false,false,false,false);
 	  				}else{
 	  					alert("签出失败");
@@ -784,6 +794,19 @@
 		setTimeout(function(){
 			changeStatus(6);
 		},500);
+	}
+
+	function setAcsType(state){
+		var endStatus = $('#endStatus');
+		//state 1:挂断后空闲  2:挂断后仅呼出 0：后处理
+		var message = "{'method':'setAcsType','agentno':'"+agentno+"','acstype':'"+state+"'}";
+		if(state == 1) {
+			endStatus.text("挂断后空闲");
+		}
+		if(state == 2) {
+			endStatus.text("挂断后仅呼出");
+		}
+		websocket.send(message);
 	}
 	
 	//评分
