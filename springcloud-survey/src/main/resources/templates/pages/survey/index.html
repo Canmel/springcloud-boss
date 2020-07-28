@@ -65,9 +65,9 @@
                             <button type="button" v-on:click="deleteItem(item)" v-if="states(item)"
                                     class="btn btn-danger btn-xs" >删除
                             </button>
-                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"
-                                    class="btn btn-danger btn-xs">查看申请记录
-                            </button>
+<!--                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"-->
+<!--                                    class="btn btn-danger btn-xs">查看申请记录-->
+<!--                            </button>-->
                             <button type="button" v-on:click="changeStatus(item, '回收')" v-if="showBack(item)"
                                     class="btn btn-danger btn-xs">回收
                             </button>
@@ -77,6 +77,7 @@
                             <button type="button" v-on:click="check(item)" v-if="resultDev"
                                     class="btn btn-warning btn-xs">结算
                             </button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

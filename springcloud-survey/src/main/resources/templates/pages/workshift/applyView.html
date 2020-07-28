@@ -268,8 +268,7 @@
             },
             signDown(item) {
                 var that = this;
-                var statusUserId = {'id':item.id};
-                AJAX.DELETE('zsWorkRecord/signDown',statusUserId,function (resp) {
+                AJAX.GET('zsWorkRecord/signDown/?'+'wsId='+item.wsId+'&creatorId='+item.creatorId,{},function (resp) {
                     toastr.success(resp.msg);
                     that.loadDelivery();
                     that.loadPassed();

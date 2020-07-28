@@ -115,6 +115,11 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
         wrapper.eq("ws_id",entity.getWsId());
         wrapper.eq("cid_num",user.getIdNum());
+        Wrapper<ZsSign> wrapper1 = new EntityWrapper<>();
+        ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(entity.getWsId());
+        wrapper1.eq("survey_id",zsWorkShift.getSurveyId());
+        wrapper1.eq("creator",entity.getCreatorId());
+        zsSignService.delete(wrapper1);
         return ResultUtil.success("退出成功",mapper.delete(wrapper));
     }
 
