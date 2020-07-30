@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
 /**
@@ -45,6 +46,8 @@ public class ZsSeat extends BasePaginationEntity {
 
     @TableField(exist = false)
     private SysUser user;
+
+    private ZsYesOrNo state;
 
     @Override
     public String toString() {

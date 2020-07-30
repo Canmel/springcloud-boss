@@ -8,6 +8,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsSeatMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.Args;
@@ -16,6 +17,7 @@ import com.camel.survey.service.ZsSeatService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -85,5 +87,25 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     @Override
     public ZsSeat selectBySeat(String seat) {
         return mapper.searchBySeatNum(seat);
+    }
+
+    @Override
+    public void callback(Integer id) {
+        mapper.callback(id);
+    }
+
+    @Override
+    public int assignSeat(Integer uid){
+        Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
+        wrapper.eq("state",0);
+        if(selectList(wrapper).size()>0){
+            ZsSeat seat = selectList(wrapper).get(0);
+            seat.setState(ZsYesOrNo.YES);
+            seat.setUid(uid);
+            updateById(seat);
+            mapper.assignSeat(seat.getSeatNum(),seat.getUid());
+            return 1;
+        }
+        return 0;
     }
 }

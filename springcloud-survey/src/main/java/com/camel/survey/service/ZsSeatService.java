@@ -38,4 +38,18 @@ public interface ZsSeatService extends IService<ZsSeat> {
     boolean deleteByUserAndSeat(int userId,String seatNum);
 
     ZsSeat selectBySeat(String seat);
+
+    /**
+     * 回收坐席，将该坐席的uid清空，state改为0
+     * @param id
+     * @return
+     */
+    void callback(Integer id);
+
+    /**
+     * 分配坐席，寻找作息表中uid为空的坐席，将第一个坐席分配给该uid对应的用户
+     * @param uid
+     * @return
+     */
+    int assignSeat(Integer uid);
 }
