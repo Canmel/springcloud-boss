@@ -77,7 +77,6 @@
         AND TIME_TO_SEC(now()) <![CDATA[ > ]]> TIME_TO_SEC(shift.start_time)
         AND TIME_TO_SEC(now()) <![CDATA[ < ]]> TIME_TO_SEC(shift.end_time)
         AND shift.survey_id = #{surveyId}
-        limit 0,1
     </select>
 
 

@@ -24,5 +24,5 @@ public interface ZsWorkShiftMapper extends BaseMapper<ZsWorkShift> {
      */
     List<ZsWorkShift> list(ZsWorkShift entity);
 
-    ZsWorkShift findWsByShift(ZsWorkShift ws);
+    List<ZsWorkShift> findWsByShift(ZsWorkShift ws);
 }
