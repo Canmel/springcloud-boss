@@ -71,11 +71,13 @@
         LEFT JOIN zs_work_shift shift ON shift.id = record.ws_id
         WHERE
         record.status = 1
+        AND shift.status = 1
         AND record.creator = #{creatorId}
         AND shift.start_date = DATE_FORMAT(now(), '%Y-%m-%d')
         AND TIME_TO_SEC(now()) <![CDATA[ > ]]> TIME_TO_SEC(shift.start_time)
         AND TIME_TO_SEC(now()) <![CDATA[ < ]]> TIME_TO_SEC(shift.end_time)
         AND shift.survey_id = #{surveyId}
+        limit 0,1
     </select>
 
 
