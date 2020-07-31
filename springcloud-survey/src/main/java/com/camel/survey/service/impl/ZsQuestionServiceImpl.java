@@ -12,6 +12,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.exceptions.SurveyNotValidException;
 import com.camel.survey.mapper.ZsQuestionMapper;
 import com.camel.survey.mapper.ZsSeatMapper;
@@ -165,10 +166,19 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
         for(int i=0;i<zsAnswerItemList.size();i++){
+            ZsAnswerItem zsAnswerItem = zsAnswerItemList.get(i);
+            ZsOption opt = zsAnswerItem.getZsOption();
+            if(!ObjectUtils.isEmpty(opt)) {
+                if(opt.getIgnoreNum() && opt.getTarget().equals(10000)) {
+                    zsAnswer.setValid(ZsYesOrNo.NO);
+                    // 有立即结束， 并且忽略配额的选项 那么 样本无效
+                    answerService.updateById(zsAnswer);
+                }
+            }
             if(!ObjectUtils.isEmpty(user)) {
-                zsAnswerItemList.get(i).setUid(user.getUid());
+                zsAnswerItem.setUid(user.getUid());
             } else if(!ObjectUtils.isEmpty(seat)) {
-                zsAnswerItemList.get(i).setUid(seat.getUid());
+                zsAnswerItem.setUid(seat.getUid());
             }
         }
 
