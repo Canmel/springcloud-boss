@@ -30,7 +30,6 @@
                         <th>班次地址</th>
                         <th>班次日期</th>
                         <th>班次时间</th>
-                        <th>管理者</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -46,22 +45,22 @@
                         <td>
                             <span class="badge badge" >{{item.wtime}}</span>
                         </td>
-                        <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>
 
                             <button type="button" @click="detailedShow(item)"
-                                    class="btn btn-danger btn-xs">详细操作
+                                    class="btn btn-primary btn-xs">详细操作
                             </button>
                             <!--<a class="btn btn-circle btn-warning" >查看</a>-->
                             <button type="button" v-on:click="deleteItem(item)"
                                     class="btn btn-danger btn-xs" v-if="resultDev" >删除
                             </button>
-                            <button type="button" v-on:click="edit(item)"
-                                    class="btn btn-primary btn-xs" v-if="resultDev">修改
+<!--                            <button type="button" v-on:click="edit(item)"-->
+<!--                                    class="btn btn-primary btn-xs" v-if="resultDev">修改-->
                             </button>
                             <button type="button" v-on:click="applyView(item)"
-                                    class="btn btn-danger btn-xs" v-if="resultDev" >查看申请记录
+                                    class="btn btn-info btn-xs" v-if="resultDev" >查看申请记录
                             </button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

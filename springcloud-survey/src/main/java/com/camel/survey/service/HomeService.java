@@ -2,6 +2,9 @@ package com.camel.survey.service;
 
 import com.camel.core.entity.Result;
 
+import java.util.List;
+import java.util.Map;
+
 public interface HomeService {
     /**
      * 首页统计
@@ -26,4 +29,10 @@ public interface HomeService {
      * @return
      */
     Result pieChart();
+
+    /**
+     * 开启的项目问卷
+     * @return
+     */
+    List<Map> enabledSurvies();
 }

@@ -51,10 +51,10 @@
                         <td>{{item.createdAt}}</td>
                         <td>{{item.state !== 1 ? "不启用" : "启用"}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs"
-                                    v-if="resultDev">
-                                编辑
-                            </button>
+<!--                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs"-->
+<!--                                    v-if="resultDev">-->
+<!--                                编辑-->
+<!--                            </button>-->
                             <button type="button" v-on:click="addRatio(item)" class="btn btn-success btn-xs"
                                     v-if="resultDev && !item.ratio">
                                 设置难度系数
@@ -121,7 +121,6 @@
                             <th>日期</th>
                             <th>平均样本</th>
                             <th>收集时间</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -130,14 +129,9 @@
                             <td>{{item.workDate}}</td>
                             <td>{{item.avgTopNum}}</td>
                             <td>{{item.workHours}}</td>
-                            <td>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" v-on:click="saveRatio()">保存</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->

@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
+
 /**
  * <p>
  * 其他平台问卷 服务实现类
@@ -74,5 +76,11 @@ public class ZsOtherSurveyServiceImpl extends ServiceImpl<ZsOtherSurveyMapper, Z
             return ResultUtil.success("修改成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "修改失败");
+    }
+
+    @Override
+    public List<ZsOtherSurvey> appointments() {
+        SysUser sysUser = applicationToolsUtils.currentUser();
+        return mapper.appointments(sysUser.getUid());
     }
 }

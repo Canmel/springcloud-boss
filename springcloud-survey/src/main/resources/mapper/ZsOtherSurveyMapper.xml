@@ -38,4 +38,26 @@
             </if>
         </where>
     </select>
+
+    <select id="appointments" resultMap="BaseResultMap">
+        SELECT
+            id, name, status, created_at, creator, state, place, ptime, type, ratio
+        FROM
+            zs_other_survey
+        WHERE
+            id IN (
+                SELECT DISTINCT
+                    survey_id
+                FROM
+                    zs_work_record wr
+                LEFT JOIN zs_work_shift ws ON wr.ws_id = ws.id
+                WHERE
+                    wr.creator = #{uid}
+                AND result = 1
+                AND ws.stype != 0
+                AND wr.`status` = 1
+                AND ws.`status` = 1
+            )
+            AND state = 1
+    </select>
 </mapper>

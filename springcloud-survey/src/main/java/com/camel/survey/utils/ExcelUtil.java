@@ -82,6 +82,9 @@ public class ExcelUtil {
             }
             cell0.setCellType(CellType.STRING);
             Cell cell1 = row.getCell(1);
+            if(ObjectUtils.isEmpty(cell1)) {
+                continue;
+            }
             cell1.setCellType(CellType.STRING);
             if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
                 continue;

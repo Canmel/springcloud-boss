@@ -339,9 +339,12 @@ public class ZsWork extends BasePaginationEntity {
      * @return
      */
     public Double resetSalary() {
-        Double s = new BigDecimal(getBaseSalary() + loadRoyalty() + getMeals() - loadInvalidCost()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        this.setSalary(s);
-        return s;
+        if(ObjectUtils.isEmpty(this.getSalary())) {
+            Double s = new BigDecimal(getBaseSalary() + loadRoyalty() + getMeals() - loadInvalidCost()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            this.setSalary(s);
+            return s;
+        }
+        return this.getSalary();
     }
 
     /**

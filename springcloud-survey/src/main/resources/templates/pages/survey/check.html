@@ -784,6 +784,7 @@
                                                 <input type="radio" value="option2" :checked="isSelected(option)"
                                                        name="optionsRadios">
                                                 <span class="editable question-option">{{option.name}}</span>
+                                                <span>{{getAnswer(option.id) ? option.name === getAnswer(option.id).value ? '' : '(' + getAnswer(option.id).value + ')' : ''}}</span>
                                             </label>
 
                                             <label class="checkbox-inline"
@@ -791,6 +792,7 @@
                                                 <input type="checkbox" :value="Math.random()"
                                                        :checked="isSelected(option)">
                                                 <span class="editable question-option">{{option.name}}</span>
+                                                <span>{{getAnswer(option.id) ? option.name === getAnswer(option.id).value ? '' : '(' + getAnswer(option.id).value + ')' : ''}}</span>
                                             </label>
 
                                             <label class="checkbox-inline"
@@ -1044,6 +1046,7 @@
             },
             isSelected(item) {
                 let answer = this.getAnswer(item.id);
+                console.log(answer);
                 return answer;
             },
             getAnswer(id) {

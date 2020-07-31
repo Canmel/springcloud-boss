@@ -9,11 +9,12 @@
         <result column="seat_num" property="seatNum" />
         <result column="password" property="password" />
         <result column="description" property="description" />
+        <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, seat_num, password, description
+        id, uid, seat_num, password, description,state
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -40,6 +41,24 @@
         zs_seat
         where
         seat_num like concat('%',#{seatNum},'%')
+        limit 1
     </select>
+
+    <update id="callback">
+        update
+        zs_seat
+        set
+        uid = null,
+        state = 0
+        where id = #{id}
+    </update>
+
+    <update id="assignSeat">
+        update
+        dw_oauth2.sys_user
+        set
+        seat_num=#{seatNum}
+        where uid = #{uid}
+    </update>
 
 </mapper>

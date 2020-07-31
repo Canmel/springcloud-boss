@@ -107,6 +107,17 @@ public class ZsSeatController extends BaseCommonController {
         return super.delete(id);
     }
 
+    @PostMapping("/callback/{id}")
+    public Result callback(@PathVariable Integer id) {
+        service.callback(id);
+        return ResultUtil.success("回收成功！");
+    }
+
+    @PostMapping("/assign/{id}")
+    public Result assign(@PathVariable Integer id) throws Exception {
+        return ResultUtil.success(service.assignSeat(id));
+    }
+
     /**
      * 获取service
      */

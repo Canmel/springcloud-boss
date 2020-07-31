@@ -10,13 +10,12 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.exceptions.ExcelImportException;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.mapper.ZsWorkMapper;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.model.ZsWork;
-import com.camel.survey.service.ZsOtherSurveyService;
-import com.camel.survey.service.ZsSurveyService;
-import com.camel.survey.service.ZsWorkService;
+import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ProjectReport;
@@ -60,6 +59,9 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
 
     @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
+
+    @Autowired
+    private ZsWorkRecordService workRecordService;
 
     @Override
     public Result importExcel(MultipartFile file) {
@@ -121,6 +123,13 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     public Result report(ZsWork zsWork) {
         SysUser currentUser = applicationToolsUtils.currentUser();
         zsWork.buildNecessaryAttribute(otherSurveyService, currentUser);
+        // 是否有成功预约 项目 时间
+        if(!workRecordService.hasAppointment(zsWork)) {
+            throw new SourceDataNotValidException("您还没有预约当天的班次");
+        }
+        if(isReported(zsWork)) {
+            throw new SourceDataNotValidException("您已经上报过当天的工作了，请不要重复上传");
+        }
         if(insert(zsWork)) {
             return ResultUtil.success("保存工作记录成功");
         }
@@ -148,6 +157,17 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
 
     @Override
     public ProjectReport selectTotalInfoByWork(ZsWork zsWork) {
+        zsWork.setPageNum(null);
+        zsWork.setPageSize(null);
         return mapper.selectTotalInfoByWork(zsWork);
+    }
+
+    public boolean isReported(ZsWork zsWork) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Wrapper<ZsWork> workWrapper = new EntityWrapper<>();
+        workWrapper.eq("uid", zsWork.getUid());
+        workWrapper.eq("project_id", zsWork.getProjectId());
+        workWrapper.eq("work_date", simpleDateFormat.format(zsWork.getWorkDate()));
+        return selectCount(workWrapper) > 0;
     }
 }

@@ -128,4 +128,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         mapper.updateSeat(userId,seatNum);
         return true;
     }
+
+    @Override
+    public boolean emptySeat(String seatNum) {
+        mapper.deleteSeat(seatNum);
+        return true;
+    }
 }

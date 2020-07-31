@@ -63,4 +63,11 @@ public interface SysUserService extends IService<SysUser> {
     SysUser selectByUid(Integer id);
 
     boolean updateSeat(String seatNum,Integer userId);
+
+    /**
+     * 将所有seat_num为seatNum的用户坐席号都置为空字符串
+     * @param seatNum
+     * @return
+     */
+    boolean emptySeat(String seatNum);
 }

@@ -14,6 +14,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.exceptions.SurveyNotValidException;
 import com.camel.survey.mapper.ZsQuestionMapper;
+import com.camel.survey.mapper.ZsSeatMapper;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -27,6 +28,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -75,6 +77,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
+
+    @Autowired
+    private ZsSeatMapper zsSeatMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -142,7 +147,13 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         }
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         SysUser user = applicationToolsUtils.currentUser();
-        zsAnswer.setUid(user.getUid());
+        ZsSeat seat = zsSeatMapper.searchBySeatNum(zsAnswerSave.getSeat());
+        if(!ObjectUtils.isEmpty(user)) {
+            zsAnswer.setUid(user.getUid());
+
+        }else if(!ObjectUtils.isEmpty(seat)){
+            zsAnswer.setUid(seat.getUid());
+        }
         answerService.insert(zsAnswer);
         // 获取所有问题
         List<ZsQuestion> zsQuestions = surveyService.questions(zsAnswerSave.getSurveyId());
@@ -154,7 +165,11 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
         for(int i=0;i<zsAnswerItemList.size();i++){
-            zsAnswerItemList.get(i).setUid(user.getUid());
+            if(!ObjectUtils.isEmpty(user)) {
+                zsAnswerItemList.get(i).setUid(user.getUid());
+            } else if(!ObjectUtils.isEmpty(seat)) {
+                zsAnswerItemList.get(i).setUid(seat.getUid());
+            }
         }
 
         if (!zsOptionService.contanisIgnore(oIds)) {

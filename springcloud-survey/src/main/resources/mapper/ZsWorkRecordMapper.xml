@@ -41,4 +41,17 @@
             </if>
         </where>
     </select>
+
+    <select id="hasAppointment" resultType="integer">
+        SELECT
+            IFNULL(count(1), 0) count
+        FROM
+            zs_work_record wr
+        LEFT JOIN zs_work_shift ws ON wr.ws_id = ws.id
+        WHERE
+            wr.creator = #{uid}
+        AND ws.stype > 0
+        AND start_date = DATE_FORMAT(#{workDate},"%Y-%m-%d")
+        AND ws.survey_id = #{projectId}
+    </select>
 </mapper>
