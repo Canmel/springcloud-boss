@@ -29,7 +29,7 @@ import java.util.UUID;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author baily
@@ -52,37 +52,39 @@ public class ZsCdrinfoController extends BaseCommonController {
 
     /**
      * 获取录音信息
+     *
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public Result detail(@PathVariable("id") String id){
+    public Result detail(@PathVariable("id") String id) {
         return ResultUtil.success(service.details(id));
     }
 
     /**
      * 新建保存
+     *
      * @param params
      */
     @AuthIgnore
     @PostMapping
     public String save(@RequestBody Map<String, ZsCdrinfo[]> params) {
-        try{
-            if(!ArrayUtils.isEmpty(params.get(CDR_KEY))) {
+        try {
+            if (!ArrayUtils.isEmpty(params.get(CDR_KEY))) {
                 List<ZsCdrinfo> zsCdrinfos = CollectionUtils.arrayToList(params.get(CDR_KEY));
                 LoggerFactory.getLogger(ZsCdrinfoController.class).info("开始保存录音信息" + JSONObject.toJSON(params).toString());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 for (int i = 0; i < zsCdrinfos.size(); i++) {
                     ZsAnswer answer = new ZsAnswer();
-                    ZsCdrinfo cdr= zsCdrinfos.get(i);
-                    if(!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
+                    ZsCdrinfo cdr = zsCdrinfos.get(i);
+                    if (!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
                         ZsSeat seat = seatService.selectBySeat(cdr.getCaller_agent_num());
                         cdr.setUid(seat.getUid());
                     }
-                    if(StringUtils.isEmpty(cdr.getUuids())) {
+                    if (StringUtils.isEmpty(cdr.getUuids())) {
                         cdr.setId(UUID.randomUUID().toString());
                         service.insert(cdr);
-                    }else {
+                    } else {
                         String[] uuids = cdr.getUuids().split(",");
                         for (int j = 0; j < uuids.length; j++) {
                             ZsAnswer zsAnswer = answerService.selectByAgentUuid(uuids[j]);
@@ -91,14 +93,14 @@ public class ZsCdrinfoController extends BaseCommonController {
                                 cdr.setId(uuids[j]);
                             }
                         }
-                        if(ObjectUtils.isEmpty(cdr.getId())) {
+                        if (ObjectUtils.isEmpty(cdr.getId())) {
                             cdr.setId(UUID.randomUUID().toString());
                         }
                         service.insert(cdr);
                         answer.setStartTime(cdr.getStart_time());
                         answer.setCallLastsTime(cdr.getCall_lasts_time());
-                        answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime())*1000));
-                        if(answer.getId()!=null) {
+                        answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
+                        if (answer.getId() != null) {
                             answerService.updateById(answer);
                         }
                     }
@@ -106,7 +108,7 @@ public class ZsCdrinfoController extends BaseCommonController {
                 }
                 return "success";
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return "error";
         }
