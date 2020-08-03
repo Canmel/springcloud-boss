@@ -90,7 +90,10 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
         ZsWorkShift ws = new ZsWorkShift();
         ws.setCreatorId(userId);
         ws.setSurveyId(surveyId);
-        return mapper.findWsByShift(ws).get(0);
+        if(mapper.findWsByShift(ws).size()>0){
+            return mapper.findWsByShift(ws).get(0);
+        }
+        return null;
     }
 
 
