@@ -9,11 +9,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  *
@@ -44,6 +48,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @SpringBootApplication
 @EnableOAuth2Client
+@Configuration
 public class SpringCloudSurveyApplication implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(SpringCloudSurveyApplication.class,args);
@@ -67,4 +72,20 @@ public class SpringCloudSurveyApplication implements CommandLineRunner {
         });
         return tomcat;
     }
+    /**
+     * 文件上传配置
+     *
+     * @return
+     */
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        //  单个数据大小
+        factory.setMaxFileSize("20480KB"); // KB,MB
+        /// 总上传数据大小
+        factory.setMaxRequestSize("204800KB");
+        return factory.createMultipartConfig();
+    }
+
+
 }
