@@ -224,8 +224,8 @@
             // server: 'http://webuploader.duapp.com/server/fileupload.php',
             server: '/survey/zsPhoneInformation/importPhoneInformation/'+ sessionStorage.getItem("editParams") +'?access_token=' + sessionStorage.getItem('access_token'),
             fileNumLimit: 300,
-            fileSizeLimit: 50 * 1024 * 1024,    // 200 M
-            fileSingleSizeLimit: 50 * 1024 * 1024    // 50 M
+            fileSizeLimit: 100 * 1024 * 1024,    // 100 M
+            fileSingleSizeLimit: 100 * 1024 * 1024    // 100 M
         });
 
         // 当有文件添加进来时执行，负责view的创建
