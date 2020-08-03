@@ -72,6 +72,24 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
 
     @Override
     public Result start(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication) {
+        ZsWorkShift zsWorkShift=zsWorkShiftservice.selectById(entity.getWsId());
+        Wrapper<ZsWorkRecord> wrapper1 = new EntityWrapper<>();
+        wrapper1.eq("creator",entity.getCreatorId());
+        List<ZsWorkRecord> workRecordList=mapper.selectList(wrapper1);
+        List<ZsWorkShift> workShiftList = new ArrayList<>();
+        workRecordList.forEach(workRecord -> {
+            if(zsWorkShiftservice.selectById(workRecord.getWsId())!=null){
+                workShiftList.add(zsWorkShiftservice.selectById(workRecord.getWsId()));
+            }
+        });
+
+        for(int i=0;i<workShiftList.size();i++){
+            if(workShiftList.get(i).getStartDate().equals(zsWorkShift.getStartDate())){
+                if(workShiftList.get(i).getStartTime().compareTo(zsWorkShift.getEndTime())<0&&workShiftList.get(i).getEndTime().compareTo(zsWorkShift.getStartTime())>0){
+                    return ResultUtil.success("该时间范围内您已申请了相关班次，不可重复申请");
+                }
+            }
+        }
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
         wrapper.eq("ws_id",entity.getWsId());
         wrapper.eq("cid_num",entity.getCIdNum());

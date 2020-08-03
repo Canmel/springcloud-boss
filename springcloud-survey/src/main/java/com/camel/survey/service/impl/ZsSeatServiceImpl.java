@@ -97,15 +97,21 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     @Override
     public int assignSeat(Integer uid){
         Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
-        wrapper.eq("state",0);
-        if(selectList(wrapper).size()>0){
-            ZsSeat seat = selectList(wrapper).get(0);
-            seat.setState(ZsYesOrNo.YES);
-            seat.setUid(uid);
-            updateById(seat);
-            mapper.assignSeat(seat.getSeatNum(),seat.getUid());
-            return 1;
+        wrapper.eq("uid",uid);
+        if(selectList(wrapper).size()==0){
+            Wrapper<ZsSeat> wrapper1 = new EntityWrapper<>();
+            wrapper1.eq("state",0);
+            if(selectList(wrapper1).size()>0){
+                ZsSeat seat = selectList(wrapper1).get(0);
+                seat.setState(ZsYesOrNo.YES);
+                seat.setUid(uid);
+                updateById(seat);
+                mapper.assignSeat(seat.getSeatNum(),seat.getUid());
+            }
+            else{
+                return 0;
+            }
         }
-        return 0;
+        return 1;
     }
 }
