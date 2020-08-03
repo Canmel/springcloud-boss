@@ -212,14 +212,14 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Result update(ZsSurvey zsSurvey) {
         if (updateById(zsSurvey)) {
-            Wrapper<RelSurveyExam> surveyExamWrapper = new EntityWrapper<>();
-            surveyExamWrapper.eq("survey_id", zsSurvey.getId());
-            relSurveyExamService.delete(surveyExamWrapper);
             List<RelSurveyExam> relSurveyExams = new ArrayList<>();
             zsSurvey.getExams().forEach(examId -> {
                 relSurveyExams.add(new RelSurveyExam(examId, zsSurvey.getId()));
             });
             if (!CollectionUtils.isEmpty(relSurveyExams)) {
+                Wrapper<RelSurveyExam> surveyExamWrapper = new EntityWrapper<>();
+                surveyExamWrapper.eq("survey_id", zsSurvey.getId());
+                relSurveyExamService.delete(surveyExamWrapper);
                 relSurveyExamService.insertBatch(relSurveyExams);
             }
             return ResultUtil.success("修改成功");

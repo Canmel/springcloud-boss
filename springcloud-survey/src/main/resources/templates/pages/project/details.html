@@ -319,7 +319,7 @@
                     return false;
                 }
                 if (this.edit_mode) {
-                    var that = this;
+                    let that = this;
                     delete this.new_survey.currentNum;
                     AJAX.PUT('zsSurvey', JSON.stringify(this.new_survey), function (resp) {
                         toastr.success(resp.msg);
@@ -327,7 +327,7 @@
                         that.loadProjects();
                     });
                 } else {
-                    var that = this;
+                    let that = this;
                     this.new_survey.projectId = this.zs_project.id;
                     AJAX.POST_JSON('zsSurvey', this.new_survey
                         , function (resp) {
@@ -361,10 +361,10 @@
                 }
             },
             showSurveyDetails(item) {
-                if(item.state && item.state.value === 2) {
-                    toPage('pages/survey/details_det.html', item.id)
+                if(item.state && item.state.value === 1) {
+                    toPage('pages/survey/details_new.html', item.id);
                 }else {
-                    toPage('pages/survey/details_new.html', item.id)
+                    toPage('pages/survey/details_det.html', item.id);
                 }
             },
             showPhoneDetails(item) {

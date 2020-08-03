@@ -17,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -56,9 +57,6 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
             pi.setSurveyId(surveyId);
             pi.setCreatorId(user.getUid());
         });
-        Wrapper zsPhoneInformationWrapper = new EntityWrapper<>();
-        zsPhoneInformationWrapper.eq("survey_id", surveyId);
-        delete(zsPhoneInformationWrapper);
         return insertBatch(zsPhoneInformations);
     }
 
@@ -68,6 +66,7 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
         zsPhoneInformationWrapper.eq("survey_id", zsPhoneInformation.getSurveyId());
         zsPhoneInformationWrapper.eq("mobile", zsPhoneInformation.getMobile());
         zsPhoneInformationWrapper.eq("status", 1);
+        zsPhoneInformationWrapper.orderDesc(CollectionUtils.arrayToList(new String[]{"created_at"}));
         return selectOne(zsPhoneInformationWrapper);
     }
 
