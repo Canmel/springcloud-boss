@@ -60,6 +60,17 @@ public class ZsSeatController extends BaseCommonController {
     }
 
     /**
+     * 手动分配坐席
+     * @param entity
+     * @param oAuth2Authentication
+     */
+    @PostMapping("/manualAssign")
+    public Result manualAssign(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
+        return service.manualAssign(entity, oAuth2Authentication);
+    }
+
+
+    /**
      * 获取详情
      * @param id
      * @return

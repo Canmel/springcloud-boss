@@ -86,9 +86,7 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
 
     @Override
     public boolean deleteByUserAndSeat(int userId,String seatNum) {
-        Wrapper<ZsSeat> zsSeatWrapper = new EntityWrapper<>();
-        zsSeatWrapper.eq("uid", userId);
-        delete(zsSeatWrapper);
+        mapper.callbackByUid(userId);
         Wrapper<ZsSeat> zsSeatWrapper1 = new EntityWrapper<>();
         zsSeatWrapper1.eq("seat_num", seatNum);
         return delete(zsSeatWrapper1);
@@ -123,5 +121,16 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
             }
         }
         return 1;
+    }
+
+    @Override
+    public Result manualAssign(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
+        deleteByUserAndSeat(entity.getUid(),entity.getSeatNum());
+        entity.setState(ZsYesOrNo.YES);
+        if (insert(entity)) {
+            return ResultUtil.success("分配成功");
+        }
+        return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "分配失败");
+
     }
 }
