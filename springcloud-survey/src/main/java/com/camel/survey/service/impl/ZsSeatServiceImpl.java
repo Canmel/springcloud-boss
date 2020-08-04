@@ -67,11 +67,21 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
 
     @Override
     public Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
-        deleteByUserAndSeat(entity.getUid(),entity.getSeatNum());
-        if (insert(entity)) {
-            return ResultUtil.success("分配成功");
+        if(entity.getSeatNum()==null||entity.getSeatNum().equals("")){
+            return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "坐席号不可为空");
         }
-        return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "分配失败");
+        if(entity.getPassword()==null||entity.getPassword().equals("")){
+            return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "坐席号密码不可为空");
+        }
+        Wrapper<ZsSeat> zsSeatWrapper = new EntityWrapper<>();
+        zsSeatWrapper.eq("seat_num", entity.getSeatNum());
+        if(selectList(zsSeatWrapper).size()>0){
+            return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "该坐席号已存在");
+        }
+        if (insert(entity)) {
+            return ResultUtil.success("新增坐席成功");
+        }
+        return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增坐席失败");
     }
 
     @Override
