@@ -55,9 +55,9 @@
 
                             <span class="fa fa-question-circle" title="这里是提示内容" style="cursor: pointer;"
                                   v-on:click="showRequire(item)"></span>
-<!--                            <button type="button" v-on:click="signUp(item)" v-if="isShowApply(item)"-->
-<!--                                    class="btn btn-primary btn-xs" >报名参加-->
-<!--                            </button>-->
+                            <button type="input" v-if="isShowApply(item)" disabled="disabled"
+                                    >请申请对应班次及考核等级
+                            </button>
                             <button type="button" v-on:click="start(item)" v-if="isShowStart(item)"
                                     class="btn btn-primary btn-xs">开始
                             </button>
