@@ -50,7 +50,7 @@
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
                                 编辑
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev && item.state && item.state.code === 0">
                                 删除
                             </button>
                             <button type="button" v-on:click="callbackItem(item)" class="btn btn-restore btn-xs" v-if="resultDev && item.state && item.state.code === 1">
@@ -127,21 +127,16 @@
             },
             deleteItem: function(item){
                 var that = this;
-                if(item.state.code==1){
-                    toastr.success("正在使用中的坐席不可删除，请先回收");
-                }
-                else{
-                    confirm("您确定要删除这个坐席吗?", "", function (isConfirm) {
-                        if (isConfirm) {
-                            AJAX.DELETE('zsSeat', item, function (resp) {
-                                toastr.success(resp.msg);
-                                that.pagequery();
-                            })
-                        } else {
-                            //after click the cancel
-                        }
-                    }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
-                }
+                confirm("您确定要删除这个坐席吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.DELETE('zsSeat', item, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
             },
             callbackItem:function(item){
                 var that = this;
