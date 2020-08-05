@@ -189,6 +189,7 @@
                                                 <span v-if="option.target&&option.target>-1&&option.target<10000">&nbsp;跳转到第{{option.target}}题</span>
                                                 <span v-if="option.target==-1">&nbsp;特殊属性：不保存样本并结束</span>
                                                 <span v-if="option.target==10000">&nbsp;特殊属性：保存样本并结束</span>
+                                                <span v-if="option.ignoreNum == true">&nbsp;忽略配额</span>
                                             </div>
                                         </div>
 
