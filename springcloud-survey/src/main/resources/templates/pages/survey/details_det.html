@@ -209,9 +209,9 @@
                             <div class="row">
                                 <div class="col-sm-2">
                                     <select class="form-control m-b" name="type"
-                                            v-model="pageInfo.validValue">
-                                        <option value=1>有效问卷</option>
-                                        <option value=0>无效问卷</option>
+                                            v-model="pageInfo.valid">
+                                        <option value='YES'>有效问卷</option>
+                                        <option value='NO'>无效问卷</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
@@ -584,7 +584,7 @@
             },
             answers: [],
             pageInfo: {
-                validValue:1,
+                valid:'YES',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
