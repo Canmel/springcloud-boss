@@ -1010,7 +1010,9 @@
                 window.open('/survey/zsAnswer/download?access_token=' + sessionStorage.getItem('access_token') + "&" + params);
             },
             pagequery: function () {
-                this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                if(document.getElementById("datePickerSelect").value!=null&&document.getElementById("datePickerSelect").value!=""){
+                    this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                }
                 var that = this;
                 if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
                     that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
@@ -1021,6 +1023,9 @@
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
+            },
+            format2: function(num) {
+                return (Array(2).join("0") + num).slice(-2);
             },
             showOption(question, option) {
                 if (question.orderNum && option.questionOrderNum) {
@@ -1116,6 +1121,9 @@
             this.initZg();
             this.loadMonitors();
             this.loginMaster();
+            this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
+                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" "+this.format2((new Date()).getHours())
+                +":"+this.format2((new Date()).getMinutes())+":"+this.format2((new Date()).getSeconds());
         },
         mounted: function () {
             this.bindEvent();
@@ -1131,7 +1139,7 @@
         updateConfig();
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "startDate":"2019/12/22 00:00:00",
+                "endDate":new Date(),
                 "timePickerSeconds": true,
                 "timePicker":true,
                 "opens":"center",
@@ -1151,8 +1159,6 @@
                         '七月', '八月', '九月', '十月', '十一月', '十二月'],
                 },
             }, function(start, end, label) {
-                // this.pageInfo.startDate=start.format('YYYY-MM-DD:HH:mm:ss');
-                // this.pageInfo.endDate=end.format('YYYY-MM-DD:HH:mm:ss');
                 jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
                 console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
             });
