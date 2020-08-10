@@ -61,4 +61,12 @@
         where uid = #{uid}
     </update>
 
+    <update id="callbackByUid">
+        update
+        zs_seat
+        set
+        uid = null,
+        state = 0
+        where uid = #{userId}
+    </update>
 </mapper>

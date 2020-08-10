@@ -56,8 +56,10 @@
                 }
                 var that = this;
                 AJAX.POST('zsSeat', this.seat, function (resp) {
-                    toastr.success(resp.msg);
-                    that.backToMain();
+                    if(resp){
+                        toastr.success(resp.msg);
+                        that.backToMain();
+                    }
                 });
 
             },

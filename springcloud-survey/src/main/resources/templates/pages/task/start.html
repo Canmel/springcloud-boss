@@ -145,6 +145,9 @@
                                                         <div id="signin" style="display: none;"><abbr
                                                                 title="服务器">坐席状态:</abbr> <span
                                                                 class="text-success">已签入</span><br></div>
+                                                        <div style=""><abbr
+                                                                title="服务器">挂断后状态:</abbr> <span
+                                                                class="text-success" id="endStatus">空闲</span><br></div>
                                                     </label>
 
                                                 </div>
@@ -209,6 +212,16 @@
                                                                     onClick="threeway()" style="display: none;"
                                                                     href="javascript:void(0)" iconcls="icon2-threeway"
                                                                     plain="true">三方
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary" id="hugupSeatOnlyOut"
+                                                                    style="display: none;" onclick="setAcsType(2)"
+                                                                    iconcls="icon2-edit" plain="true" menu="#setStatus">
+                                                                挂断后仅呼出
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-success" id="hugupSeatFree"
+                                                                    style="display: none;" onclick="setAcsType(1)"
+                                                                    iconcls="icon2-edit" plain="true" menu="#setStatus">
+                                                                挂断后空闲
                                                             </button>
                                                         </div>
                                                     </label>
@@ -495,7 +508,7 @@
             },
             answers: [],
             pageInfo: {
-                validValue:1,
+                valid:'YES',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数

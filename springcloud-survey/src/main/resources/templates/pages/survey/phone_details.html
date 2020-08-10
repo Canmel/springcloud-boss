@@ -6,6 +6,8 @@
                 <div class="ibox-tools">
                     <a v-on:click="importPhoneInformation()"
                        data-pjax class="btn btn-success btn-xs">导入</a>
+                    <a v-on:click="backToMain()"
+                       data-pjax class="btn btn-primary btn-xs">返回</a>
                 </div>
             </div>
         </div>
@@ -164,6 +166,10 @@
                     if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
                 })
             },
+            backToMain: function () {
+                sessionStorage.setItem('editParams', this.survey.projectId);
+                toPage('pages/project/details.html')
+            }
         },
     });
 </script>
@@ -224,8 +230,8 @@
             // server: 'http://webuploader.duapp.com/server/fileupload.php',
             server: '/survey/zsPhoneInformation/importPhoneInformation/'+ sessionStorage.getItem("editParams") +'?access_token=' + sessionStorage.getItem('access_token'),
             fileNumLimit: 300,
-            fileSizeLimit: 50 * 1024 * 1024,    // 200 M
-            fileSingleSizeLimit: 50 * 1024 * 1024    // 50 M
+            fileSizeLimit: 100 * 1024 * 1024,    // 100 M
+            fileSingleSizeLimit: 100 * 1024 * 1024    // 100 M
         });
 
         // 当有文件添加进来时执行，负责view的创建

@@ -62,9 +62,9 @@ public class SpringCloudZuulApplication implements CommandLineRunner {
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         //  单个数据大小
-        factory.setMaxFileSize("20480KB"); // KB,MB
+        factory.setMaxFileSize("102400KB"); // 100MB
         /// 总上传数据大小
-        factory.setMaxRequestSize("204800KB");
+        factory.setMaxRequestSize("1024000KB");
         return factory.createMultipartConfig();
     }
 

@@ -73,8 +73,8 @@
             <if test="surveyId != null">
                 and answer.survey_id = #{surveyId}
             </if>
-            <if test="validValue != null">
-                and answer.valid = #{validValue}
+            <if test="valid != null">
+                and answer.valid = #{valid.code}
             </if>
             <if test="seat != null">
                 and answer.seat like concat('%', #{seat}, '%')
@@ -102,8 +102,8 @@
             <if test="surveyId != null">
                 and answer.survey_id = #{surveyId}
             </if>
-            <if test="validValue != null">
-                and answer.valid = #{validValue}
+            <if test="valid != null">
+                and answer.valid = #{valid.code}
             </if>
             <if test="seat != null">
                 and answer.seat like concat('%', #{seat}, '%')

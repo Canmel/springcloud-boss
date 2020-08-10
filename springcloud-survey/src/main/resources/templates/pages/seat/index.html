@@ -50,7 +50,7 @@
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
                                 编辑
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev && item.state && item.state.code === 0">
                                 删除
                             </button>
                             <button type="button" v-on:click="callbackItem(item)" class="btn btn-restore btn-xs" v-if="resultDev && item.state && item.state.code === 1">
@@ -129,8 +129,6 @@
                 var that = this;
                 confirm("您确定要删除这个坐席吗?", "", function (isConfirm) {
                     if (isConfirm) {
-                        AJAX.POST_JSON('/system/sysUser/emptySeat',item, function (resp) {
-                        });
                         AJAX.DELETE('zsSeat', item, function (resp) {
                             toastr.success(resp.msg);
                             that.pagequery();

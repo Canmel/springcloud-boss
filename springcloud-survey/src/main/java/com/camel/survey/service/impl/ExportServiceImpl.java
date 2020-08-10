@@ -2,6 +2,7 @@ package com.camel.survey.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsAnswerMapper;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsAnswerItem;
@@ -144,6 +145,7 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("收集开始时间");
         headValues.add("收集结束时间");
         headValues.add("通话时长");
+        headValues.add("是否有效");
         List<String> titleQList = new ArrayList<>();
         questionList.forEach(que -> {
             if (que.getType().equals(2)) {
@@ -170,6 +172,7 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
+            fillCell(row.createCell(cellNum++), style, result.get(i).get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
 
@@ -197,7 +200,7 @@ public class ExportServiceImpl implements ExportService {
                 for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
                     // 全等，即单选
                     if(titleStr.equals(qs.get(qIndex))) {
-                        fillCell(row.createCell(6 + index), style, answersArray[qIndex]);
+                        fillCell(row.createCell(7 + index), style, answersArray[qIndex]);
                         qIndex = qs.size();
                     }else{
                         // 多选， 并且问题和excel当前表头相同
@@ -206,7 +209,7 @@ public class ExportServiceImpl implements ExportService {
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
                             if(org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
-                                fillCell(row.createCell(6 + index), style, answersArray[qIndex]);
+                                fillCell(row.createCell(7 + index), style, answersArray[qIndex]);
                                 qIndex = qs.size();
                             }
                         }
@@ -214,28 +217,6 @@ public class ExportServiceImpl implements ExportService {
                 }
 
             }
-//            for (int index = 0; index < titleQList.size(); index++) {
-//                for (int j = 0; j < questions.length; j++) {
-//                    if(titleQList.get(index).indexOf(questions[j]) > -1) {
-//                        if(titleQList.get(index).equals(questions[j])) { // 如果包含并且相等。直接输出
-//                            fillCell(row.createCell(6 + index), style, answersArray[j]);
-//                            break;
-//                        } else {
-//                            String title = titleQList.get(index);
-//                            String option = "";
-//                            if(title.contains("_")) {
-//                                option = title.split("_")[1];
-//                            }else {
-//                                System.out.println(title);
-//                            }
-//                            if(optionList.indexOf(option) > -1) {
-//                                fillCell(row.createCell(6 + index), style, answersArray[optionList.indexOf(option)]);
-//                                j = questions.length;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
         }
         return wb;
     }
