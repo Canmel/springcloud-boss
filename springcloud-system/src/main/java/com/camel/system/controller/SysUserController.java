@@ -126,6 +126,14 @@ public class SysUserController extends BaseCommonController {
         return ResultUtil.error(400, "修改用户坐席失败");
     }
 
+    @PostMapping("/emptySeat")
+    public Result emptySeat(@RequestBody ZsSeat seat) {
+        if (service.emptySeat(seat.getSeatNum())) {
+            return ResultUtil.success("清空用户坐席成功");
+        }
+        return ResultUtil.error(400, "清空用户坐席失败");
+    }
+
     @GetMapping("/me")
     public Result me() {
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();

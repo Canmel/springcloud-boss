@@ -60,6 +60,17 @@ public class ZsSeatController extends BaseCommonController {
     }
 
     /**
+     * 手动分配坐席
+     * @param entity
+     * @param oAuth2Authentication
+     */
+    @PostMapping("/manualAssign")
+    public Result manualAssign(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
+        return service.manualAssign(entity, oAuth2Authentication);
+    }
+
+
+    /**
      * 获取详情
      * @param id
      * @return
@@ -105,6 +116,17 @@ public class ZsSeatController extends BaseCommonController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         return super.delete(id);
+    }
+
+    @PostMapping("/callback/{id}")
+    public Result callback(@PathVariable Integer id) {
+        service.callback(id);
+        return ResultUtil.success("回收成功！");
+    }
+
+    @PostMapping("/assign/{id}")
+    public Result assign(@PathVariable Integer id) throws Exception {
+        return ResultUtil.success(service.assignSeat(id));
     }
 
     /**

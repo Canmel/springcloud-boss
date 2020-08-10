@@ -189,6 +189,7 @@
                                                 <span v-if="option.target&&option.target>-1&&option.target<10000">&nbsp;跳转到第{{option.target}}题</span>
                                                 <span v-if="option.target==-1">&nbsp;特殊属性：不保存样本并结束</span>
                                                 <span v-if="option.target==10000">&nbsp;特殊属性：保存样本并结束</span>
+                                                <span v-if="option.ignoreNum == true">&nbsp;忽略配额</span>
                                             </div>
                                         </div>
 
@@ -208,9 +209,9 @@
                             <div class="row">
                                 <div class="col-sm-2">
                                     <select class="form-control m-b" name="type"
-                                            v-model="pageInfo.validValue">
-                                        <option value=1>有效问卷</option>
-                                        <option value=0>无效问卷</option>
+                                            v-model="pageInfo.valid">
+                                        <option value='YES'>有效问卷</option>
+                                        <option value='NO'>无效问卷</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
@@ -583,7 +584,7 @@
             },
             answers: [],
             pageInfo: {
-                validValue:1,
+                valid:'YES',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
@@ -1009,7 +1010,9 @@
                 window.open('/survey/zsAnswer/download?access_token=' + sessionStorage.getItem('access_token') + "&" + params);
             },
             pagequery: function () {
-                this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                if(document.getElementById("datePickerSelect").value!=null&&document.getElementById("datePickerSelect").value!=""){
+                    this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                }
                 var that = this;
                 if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
                     that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
@@ -1020,6 +1023,9 @@
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
+            },
+            format2: function(num) {
+                return (Array(2).join("0") + num).slice(-2);
             },
             showOption(question, option) {
                 if (question.orderNum && option.questionOrderNum) {
@@ -1115,6 +1121,9 @@
             this.initZg();
             this.loadMonitors();
             this.loginMaster();
+            this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
+                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" "+this.format2((new Date()).getHours())
+                +":"+this.format2((new Date()).getMinutes())+":"+this.format2((new Date()).getSeconds());
         },
         mounted: function () {
             this.bindEvent();
@@ -1130,7 +1139,7 @@
         updateConfig();
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "startDate":"2019/12/22 00:00:00",
+                "endDate":new Date(),
                 "timePickerSeconds": true,
                 "timePicker":true,
                 "opens":"center",
@@ -1150,8 +1159,6 @@
                         '七月', '八月', '九月', '十月', '十一月', '十二月'],
                 },
             }, function(start, end, label) {
-                // this.pageInfo.startDate=start.format('YYYY-MM-DD:HH:mm:ss');
-                // this.pageInfo.endDate=end.format('YYYY-MM-DD:HH:mm:ss');
                 jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
                 console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
             });

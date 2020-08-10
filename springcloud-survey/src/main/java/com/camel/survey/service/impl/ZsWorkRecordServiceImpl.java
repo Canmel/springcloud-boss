@@ -6,17 +6,10 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
-import com.camel.survey.model.ZsDelivery;
-import com.camel.survey.model.ZsSign;
-import com.camel.survey.model.ZsWork;
-import com.camel.survey.model.ZsWorkRecord;
+import com.camel.survey.model.*;
 import com.camel.survey.mapper.ZsWorkRecordMapper;
-import com.camel.survey.model.ZsWorkShift;
-import com.camel.survey.service.ZsSignService;
-import com.camel.survey.service.ZsSurveyService;
-import com.camel.survey.service.ZsWorkRecordService;
+import com.camel.survey.service.*;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.camel.survey.service.ZsWorkShiftService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +44,9 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
     private ZsSignService zsSignService;
 
     @Autowired
+    private ZsSeatService zsSeatService;
+
+    @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
@@ -76,6 +72,24 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
 
     @Override
     public Result start(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication) {
+        ZsWorkShift zsWorkShift=zsWorkShiftservice.selectById(entity.getWsId());
+        Wrapper<ZsWorkRecord> wrapper1 = new EntityWrapper<>();
+        wrapper1.eq("creator",entity.getCreatorId());
+        List<ZsWorkRecord> workRecordList=mapper.selectList(wrapper1);
+        List<ZsWorkShift> workShiftList = new ArrayList<>();
+        workRecordList.forEach(workRecord -> {
+            if(zsWorkShiftservice.selectById(workRecord.getWsId())!=null){
+                workShiftList.add(zsWorkShiftservice.selectById(workRecord.getWsId()));
+            }
+        });
+
+        for(int i=0;i<workShiftList.size();i++){
+            if(workShiftList.get(i).getStartDate().equals(zsWorkShift.getStartDate())){
+                if(workShiftList.get(i).getStartTime().compareTo(zsWorkShift.getEndTime())<0&&workShiftList.get(i).getEndTime().compareTo(zsWorkShift.getStartTime())>0){
+                    return ResultUtil.success("该时间范围内您已申请了相关班次，不可重复申请");
+                }
+            }
+        }
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
         wrapper.eq("ws_id",entity.getWsId());
         wrapper.eq("cid_num",entity.getCIdNum());
@@ -105,7 +119,6 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
             wrapper.eq("survey_id",zsWorkShift.getSurveyId());
             wrapper.eq("creator",entity.getCreatorId());
         }
-
         return ResultUtil.success("修改成功",zsSignService.update(zsSign,wrapper));
     }
 
@@ -115,6 +128,11 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
         wrapper.eq("ws_id",entity.getWsId());
         wrapper.eq("cid_num",user.getIdNum());
+        Wrapper<ZsSign> wrapper1 = new EntityWrapper<>();
+        ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(entity.getWsId());
+        wrapper1.eq("survey_id",zsWorkShift.getSurveyId());
+        wrapper1.eq("creator",entity.getCreatorId());
+        zsSignService.delete(wrapper1);
         return ResultUtil.success("退出成功",mapper.delete(wrapper));
     }
 

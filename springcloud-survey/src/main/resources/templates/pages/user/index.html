@@ -183,7 +183,7 @@
                 $("#seatModal").modal("show");
             },
             saveSeat() {
-                AJAX.POST("zsSeat", this.seat, function (resp) {
+                AJAX.POST("zsSeat/manualAssign", this.seat, function (resp) {
                     $("#seatModal").modal("hide");
                     $("#seatForm")[0].reset();
                     toastr.success(resp.msg);
