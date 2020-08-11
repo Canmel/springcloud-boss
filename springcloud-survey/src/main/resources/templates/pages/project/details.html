@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="panel-body" v-on:click="showSurveyDetails(item)">
                                     <dd>名称: {{item['name']}}</dd>
-                                    <dd>状态: <span class="badge badge-info">{{item['status'] ? item['status']['name'] : ''}}</span></dd>
+                                    <dd>状态: <span class="badge badge-info">{{item.state ? item.state.name : ''}}</span></dd>
                                     <dd>收集份数: {{item['collectNum']}}</dd>
                                     <dd>当前份数: {{item['currentNum']}}</dd>
                                     <dd>收集方式: <span class="badge badge-info">{{item.collectType.name}}</span></dd>
