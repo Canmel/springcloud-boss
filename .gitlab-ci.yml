@@ -71,6 +71,7 @@ docker-build:
 #    - docker build -t $zuul_service ./sartifacts/zuul_service/
     - docker push $zuul_service
 
+
 docker-deploy:
   stage: deploy
   only:
