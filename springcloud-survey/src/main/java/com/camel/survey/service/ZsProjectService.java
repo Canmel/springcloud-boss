@@ -40,6 +40,13 @@ public interface ZsProjectService extends IService<ZsProject> {
     PageInfo<ZsProject> selectPage(ZsProject entity);
 
     /**
+     根据督导分页查询
+     @param entity
+     @return
+     */
+    PageInfo<ZsProject> selectPageDev(ZsProject entity);
+
+    /**
      * 新建
      * @param entity
      * @param oAuth2Authentication

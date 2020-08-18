@@ -59,6 +59,23 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
     @Override
     public PageInfo<ZsProject> selectPage(ZsProject entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+            mapper.list(entity);
+        });
+        List<ZsProject> projectList = pageInfo.getList();
+        projectList.forEach(project -> {
+            List<SysUser> users = applicationToolsUtils.allUsers();
+            users.forEach(sysUser -> {
+                if (sysUser.getUid().equals(project.getCreatorId())) {
+                    project.setCreator(sysUser);
+                }
+            });
+        });
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<ZsProject> selectPageDev(ZsProject entity) {
+        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.listByUid(applicationToolsUtils.currentUser().getUid());
         });
         List<ZsProject> projectList = pageInfo.getList();

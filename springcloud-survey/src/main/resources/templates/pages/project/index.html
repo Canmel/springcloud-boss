@@ -89,11 +89,21 @@
             },
             pagequery: function () {
                 var that = this;
-                AJAX.GET('zsProject', this.pageInfo, function (resp) {
-                    that.items = resp.data.list;
-                    that.pageInfo.pageNum = resp.data.pageNum;
-                    that.pageInfo.total = resp.data.total;
-                })
+                if(that.result==true){
+                    AJAX.GET('zsProject', this.pageInfo, function (resp) {
+                        that.items = resp.data.list;
+                        that.pageInfo.pageNum = resp.data.pageNum;
+                        that.pageInfo.total = resp.data.total;
+                    })
+                }
+                else{
+                    AJAX.GET('zsProject/Dev', this.pageInfo, function (resp) {
+                        that.items = resp.data.list;
+                        that.pageInfo.pageNum = resp.data.pageNum;
+                        that.pageInfo.total = resp.data.total;
+                    })
+                }
+
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
