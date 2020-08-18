@@ -24,14 +24,12 @@
         <result column="uid" property="uid" />
         <result column="checked" property="checked" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="cdr_id" property="cdrinfo.id"></result>
         <association property="user" javaType="com.camel.core.model.SysUser">
             <id property="id" column="uid" jdbcType="INTEGER"></id>
         </association>
         <association property="reviewer" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="reviewer" jdbcType="INTEGER"></id>
-        </association>
-        <association property="cdrinfo" javaType="com.camel.survey.model.ZsCdrinfo">
-            <id property="id" column="cdr_id" jdbcType="INTEGER"></id>
         </association>
     </resultMap>
 
@@ -87,6 +85,9 @@
             </if>
             <if test="endDate != null">
                 and answer.created_at &lt;= #{endDate}
+            </if>
+            <if test="callLastsTime != null">
+                and answer.call_lasts_time is not null
             </if>
         </where>
     </select>

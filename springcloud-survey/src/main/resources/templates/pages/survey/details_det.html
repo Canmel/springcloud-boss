@@ -228,6 +228,7 @@
                                             class="input-group-btn">
                                             <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
                                             <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出</button>
+                                            <button type="button" class="btn btn-warning btn-sm" v-on:click="checkRecord()">复核</button>
                                     </span>
                                     </div>
                                 </div>
@@ -244,6 +245,7 @@
                                             <th>通话时间</th>
                                             <th>有效</th>
                                             <th>复核</th>
+                                            <th>复核人</th>
                                             <th>复核意见</th>
                                             <th>操作</th>
                                         </tr>
@@ -273,6 +275,9 @@
                                                 <span class="text-danger" v-if="item.reviewStatus === 2">未通过</span>
                                             </td>
                                             <td>
+                                                <span>{{item.reviewer ? item.reviewer.username: ''}}</span>
+                                            </td>
+                                            <td>
                                                 <span>{{item.reviewMsg}}</span>
                                             </td>
                                             <td>
@@ -281,9 +286,6 @@
                                                 </button>
                                                 <button type="button" v-on:click="deleteItem(item)"
                                                         class="btn btn-danger btn-xs" v-if="resultDev">删除
-                                                </button>
-                                                <button type="button" v-on:click="checkRecord(item)"
-                                                            class="btn btn-warning btn-xs" v-if="item.cdrinfo">复核
                                                 </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
                                                         class="btn btn-restore btn-xs" v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">标为无效
@@ -641,9 +643,9 @@
                     }
                 })
             },
-            checkRecord(answer) {
-                sessionStorage.setItem('editParams', answer.agentUUID);
-                sessionStorage.setItem('surveyId', answer.surveyId);
+            // 复核
+            checkRecord() {
+                sessionStorage.setItem('surveyId', this.survey.id);
                 $.pjax({
                     url: mvm.applicationContextRootPath + 'pages/survey/check.html',
                     container: '.page-container'
