@@ -59,6 +59,15 @@ public class ZsProjectController extends BaseCommonController {
     }
 
     /**
+     * 根据督导分页查询
+     * @param entity
+     * @return
+     */
+    @GetMapping("/Dev")
+    public Result indexDev(ZsProject entity) {
+        return ResultUtil.success(service.selectPageDev(entity));
+    }
+    /**
      * 获取详情
      * @param id
      * @return

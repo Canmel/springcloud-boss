@@ -96,6 +96,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                // creatorId:JSON.parse(sessionStorage.getItem('user')).userid,
                 name: '',
                 pageNum: 1,
                 total: 0,//总页数
@@ -192,6 +193,9 @@
             },
             pagequery: function () {
                 var that = this;
+                if(this.result==false){
+                    this.pageInfo.creatorId=JSON.parse(sessionStorage.getItem('user')).userid;
+                }
                 AJAX.GET('zsSurvey', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;

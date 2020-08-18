@@ -30,6 +30,24 @@
         </where>
     </select>
 
+    <select id="listByUid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_project
+        WHERE
+        id IN (
+        SELECT DISTINCT
+        project_id
+        FROM
+        zs_survey
+        WHERE
+        creator = #{uid}
+        AND STATUS = 1
+        )
+        AND STATUS = 1
+    </select>
+
     <select id="selectProjectById" resultMap="BaseResultMap">
         select
         id, name, code, status, created_at, creator
