@@ -174,6 +174,22 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public Result selectListByProjectId(Integer id) {
         Wrapper<ZsSurvey> zsSurveyWrapper = new EntityWrapper<>();
         zsSurveyWrapper.eq("project_id", id);
+        List<ZsSurvey> surveys = this.selectList(zsSurveyWrapper);
+        List<SysUser> users = applicationToolsUtils.allUsers();
+        surveys.forEach(survey -> {
+            users.forEach(sysUser -> {
+                if (sysUser.getUid().equals(survey.getCreatorId())) {
+                    survey.setCreator(sysUser);
+                }
+            });
+        });
+        return ResultUtil.success(surveys);
+    }
+
+    @Override
+    public Result selectListByProjectIdDev(Integer id) {
+        Wrapper<ZsSurvey> zsSurveyWrapper = new EntityWrapper<>();
+        zsSurveyWrapper.eq("project_id", id);
         zsSurveyWrapper.eq("creator", applicationToolsUtils.currentUser().getUid());
         List<ZsSurvey> surveys = this.selectList(zsSurveyWrapper);
         List<SysUser> users = applicationToolsUtils.allUsers();

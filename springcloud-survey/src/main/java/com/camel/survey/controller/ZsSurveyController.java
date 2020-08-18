@@ -142,6 +142,16 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     /**
+     * 督导根据项目获取问卷列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}/projectsDev")
+    public Result projectsDev(@PathVariable Integer id) {
+        return service.selectListByProjectIdDev(id);
+    }
+
+    /**
      * 获取问卷的所有问题和选项
      *
      * @param id

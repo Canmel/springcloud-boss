@@ -255,10 +255,10 @@
             resultDev: false,//表示操作人员权限
         },
         created: function () {
+            this.loginMaster();
             this.loadExam();
             this.loadEntity();
             this.loadProjects();
-            this.loginMaster();
         },
         methods: {
             loginMaster(){
@@ -288,9 +288,17 @@
             },
             loadProjects() {
                 var that = this;
-                AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams') + '/projects', {}, function (resp) {
-                    that.surveies = resp.data;
-                })
+                if(this.result==true){
+                    AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams') + '/projects', {}, function (resp) {
+                        that.surveies = resp.data;
+                    })
+                }
+                else{
+                    AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams') + '/projectsDev', {}, function (resp) {
+                        that.surveies = resp.data;
+                    })
+                }
+
             },
             addSurvey() {
                 this.edit_mode = false;
