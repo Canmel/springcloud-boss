@@ -23,6 +23,13 @@ public interface ZsProjectMapper extends BaseMapper<ZsProject> {
      */
     List<ZsProject> list(ZsProject entity);
 
+    /**
+     * 根据用户查询列表
+     * @param uid
+     * @return
+     */
+    List<ZsProject> listByUid(Integer uid);
+
     ZsProject selectProjectById(Integer id);
 
 }
