@@ -60,6 +60,13 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
     Result selectListByProjectId(Integer id);
 
     /**
+     * 督导通过项目id查询列表
+     * @param id    项目ID
+     * @return
+     */
+    Result selectListByProjectIdDev(Integer id);
+
+    /**
      * 通过问卷ID获取问题与选项
      * @param id    问卷id
      * @return
