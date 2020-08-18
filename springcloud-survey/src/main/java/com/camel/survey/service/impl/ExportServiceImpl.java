@@ -233,9 +233,7 @@ public class ExportServiceImpl implements ExportService {
             ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question)), sheet);
             ExcelUtil.creatTotalHead(sheet, 20);
             logger.info("查询数据");
-//            zsAnswerItemService.selectCount()
             List<ZsOption> options = zsOptionService.selectBySurveyId(surveyId);
-
             int rowNum = 21;
             for (ZsOption option : options) {
                 if (!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
@@ -243,67 +241,8 @@ public class ExportServiceImpl implements ExportService {
                     ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
                 }
             }
-
-
         });
         System.out.println(ExcelUtil.class);
-
-
-//        List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(surveyId);
-//        questions.forEach(question -> {
-//            HSSFCellStyle style = createCellStyle(wb);
-//            Wrapper<ZsOption> optionWrapper = new EntityWrapper<>();
-//            optionWrapper.eq("question_id", question.getId());
-//            optionWrapper.eq("status", ZsStatus.CREATED.getValue());
-//            List<ZsOption> optionList = zsOptionService.selectList(optionWrapper);
-//            List<Map<String, Object>> answers = selectRateBySurveyQuestion(surveyId, question.getName());
-//            Integer count = 0;
-//
-//            HSSFSheet sheet = wb.createSheet("Q" + question.getOrderNum());
-//            sheet.autoSizeColumn(0);
-//            sheet.autoSizeColumn(1);
-//            sheet.autoSizeColumn(2);
-//            sheet.autoSizeColumn(3);
-//            //创建单元格，并设置值表头 设置表头居中
-//            try {
-//                // 填充工作表
-//                HSSFRow row = sheet.createRow(0);
-//                HSSFCell cell = row.createCell(0);
-//                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
-//                fillCell(cell, createHeadStyle(wb), "Q" + question.getOrderNum() + "." + question.getName());
-//                HSSFRow rowTitle = sheet.createRow(1);
-//                fillCell(rowTitle.createCell(0), createTitleStyle(wb), "");
-//                fillCell(rowTitle.createCell(1), createTitleStyle(wb), "选项");
-//                fillCell(rowTitle.createCell(2), createTitleStyle(wb), "个数");
-//                fillCell(rowTitle.createCell(3), createTitleStyle(wb), "百分比");
-//
-//                for (int i = 0; i < optionList.size(); i++) {
-//                    Integer cellIndex = 0;
-//                    HSSFRow optionRow = sheet.createRow(2 + i);
-//                    fillCell(optionRow.createCell(cellIndex++), style, i + 1);
-//                    fillCell(optionRow.createCell(cellIndex++), style, optionList.get(i).getName());
-//                    for (Map<String, Object> answer : answers) {
-//                        if (count == 0) {
-//                            count = Integer.parseInt(answer.get("count").toString());
-//                        }
-//                        if (answer.get("option").equals(optionList.get(i).getName())) {
-//                            String num = answer.get("num").toString();
-//                            fillCell(optionRow.createCell(cellIndex++), style, Integer.parseInt(num));
-//                            fillCell(optionRow.createCell(cellIndex), style, (String) answer.get("rate"));
-//                        }
-//                    }
-//                    if (cellIndex < 3) {
-//                        fillCell(optionRow.createCell(cellIndex++), style, 0);
-//                        fillCell(optionRow.createCell(cellIndex), style, 0);
-//                    }
-//                }
-//                HSSFRow row6 = sheet.createRow(optionList.size() + 2);
-//                fillRow(sheet.createRow(optionList.size() + 2), style, CollectionUtils.arrayToList(new String[]{"合计", "", count.toString(), "100%"}));
-//
-//            } catch (Exception ex) {
-//                throw new ExportFillDataException();
-//            }
-//        });
         return wb;
     }
 

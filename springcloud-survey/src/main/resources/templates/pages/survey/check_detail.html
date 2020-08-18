@@ -3,6 +3,7 @@
     <link type="text/css" rel="stylesheet" href="/survey/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="/survey/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="/survey/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/survey/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <style>
 
         a {
@@ -917,9 +918,9 @@
         methods: {
             radioChange(d) {
                 console.log(this.zsAnswer);
-                AJAX.PUT("zsAnswer/changeRadio", {answerId: this.zsAnswer.id, questionId: d.questionId, optionId: d.id}, function (resp) {
-
-                })
+                AJAX.GET("zsAnswer/changeRadio", {answerId: this.zsAnswer.id, questionId: d.questionId, optionId: d.id}, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                });
             },
             refuse() {
                 this.review.reviewStatus = 2;
