@@ -263,7 +263,7 @@
                                                 <span>{{item.seat}}</span>
                                             </td>
                                             <td>
-                                                <span v-if="item.cdrinfo">{{item.cdrinfo.callLastsTime}}</span>
+                                                <span v-if="item.callLastsTime">{{item.callLastsTime}}</span>
                                             </td>
                                             <td>
                                                 <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
@@ -1124,8 +1124,7 @@
             this.loadMonitors();
             this.loginMaster();
             this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
-                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" "+this.format2((new Date()).getHours())
-                +":"+this.format2((new Date()).getMinutes())+":"+this.format2((new Date()).getSeconds());
+                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 23:59:59";
         },
         mounted: function () {
             this.bindEvent();
@@ -1141,7 +1140,7 @@
         updateConfig();
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "endDate":new Date(),
+                "endDate":(new Date()).getFullYear()+"/"+((new Date()).getMonth()+1)+"/"+(new Date()).getDate()+" 23:59:59",
                 "timePickerSeconds": true,
                 "timePicker":true,
                 "opens":"center",
