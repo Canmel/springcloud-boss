@@ -218,8 +218,9 @@
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.reviewStatus">
                                         <option value=0>未复核</option>
-                                        <option value=1>通过</option>
-                                        <option value=2>未通过</option>
+                                        <option value=12>已复核</option>
+                                        <option value=1>复核通过</option>
+                                        <option value=2>复核作废</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-2" style="width: 13%;">
@@ -284,7 +285,7 @@
                                             <td>
                                                 <span class="text-input" v-if="!item.reviewStatus">未开始</span>
                                                 <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
-                                                <span class="text-danger" v-if="item.reviewStatus === 2">未通过</span>
+                                                <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
                                             </td>
                                             <td>
                                                 <span>{{item.reviewer ? item.reviewer.username: ''}}</span>

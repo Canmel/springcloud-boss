@@ -93,7 +93,10 @@
             <if test="reviewStatus == 0">
                 and answer.review_status is null
             </if>
-            <if test="reviewStatus != 0">
+            <if test="reviewStatus == 12">
+                and answer.review_status in (1,2)
+            </if>
+            <if test="reviewStatus != 0 and reviewStatus != 12">
                 and answer.review_status = #{reviewStatus}
             </if>
             <if test="reviewerName != null">
