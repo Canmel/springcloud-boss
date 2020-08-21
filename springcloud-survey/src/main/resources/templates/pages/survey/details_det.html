@@ -207,22 +207,34 @@
                     <div class="panel-body">
                         <div class="ibox-content">
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.valid">
                                         <option value='YES'>有效问卷</option>
                                         <option value='NO'>无效问卷</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2" style="width: 11%;">
+                                    <select class="form-control m-b" name="type"
+                                            v-model="pageInfo.reviewStatus">
+                                        <option value=0>未复核</option>
+                                        <option value=1>通过</option>
+                                        <option value=2>未通过</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2" style="width: 13%;">
+                                    <input type="text" placeholder="请输入复核人" class="input-sm form-control search-input"
+                                           v-model="pageInfo.reviewerName">
+                                </div>
+                                <div class="col-sm-2" style="width: 13%;">
                                     <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
                                            v-model="pageInfo.creator">
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2" style="width: 13%;">
                                     <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
                                            v-model="pageInfo.seat">
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-6" style="width: 39%;">
                                     <div class="input-group">
                                         <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
                                             class="input-group-btn">
@@ -586,6 +598,7 @@
             },
             answers: [],
             pageInfo: {
+                reviewStatus:0,
                 valid:'YES',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,

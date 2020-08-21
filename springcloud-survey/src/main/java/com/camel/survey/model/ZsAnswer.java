@@ -127,6 +127,8 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     @TableField("reviewer")
     private Integer reviewerId;
 
+    private String reviewerName;
+
     private Integer uid;
 
     @TableField(exist = false)
