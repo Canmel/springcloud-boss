@@ -765,11 +765,13 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                valid:'YES',
                 surveyId: sessionStorage.getItem('surveyId'),
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10, //每页显示条目个数不传默认10
-                callLastsTime: 1
+                callLastsTime: 1,
+                reviewStatus: 0
             },
             selected: {},
             items: [{}], //待检列表

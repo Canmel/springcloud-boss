@@ -89,6 +89,9 @@
             <if test="callLastsTime != null">
                 and answer.call_lasts_time is not null
             </if>
+            <if test="reviewStatus == 0">
+                and answer.review_status is null
+            </if>
         </where>
     </select>
 
