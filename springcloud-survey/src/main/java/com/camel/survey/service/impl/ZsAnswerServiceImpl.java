@@ -228,7 +228,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     @Override
     public boolean review(Integer answerId, Integer reviewStatus, String reviewMsg) {
         SysUser user = applicationToolsUtils.currentUser();
-        return this.updateById(new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid()));
+        return this.updateById(new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid(), user.getUsername()));
     }
 
     @Override
