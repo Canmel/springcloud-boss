@@ -1,17 +1,17 @@
 package com.camel.survey.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
-import com.camel.survey.model.ZsAnswer;
-import com.camel.survey.model.ZsCdrinfo;
-import com.camel.survey.model.ZsSurvey;
-import com.camel.survey.service.ZsAnswerService;
-import com.camel.survey.service.ZsCdrinfoService;
-import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.model.*;
+import com.camel.survey.service.*;
 import com.camel.survey.utils.FileUtils;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.tomcat.util.modeler.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +57,15 @@ public class ZsAnswerController extends BaseCommonController {
     private ZsSurveyService surveyService;
 
     @Autowired
+    private ZsQuestionService questionService;
+
+    @Autowired
+    private ZsOptionService optionService;
+
+    @Autowired
+    private ZsAnswerItemService answerItemService;
+
+    @Autowired
     private ZsCdrinfoService cdrinfoService;
 
     /**
@@ -67,6 +76,23 @@ public class ZsAnswerController extends BaseCommonController {
     @GetMapping
     public Result index(ZsAnswer entity) {
         return ResultUtil.success(service.selectPage(entity));
+    }
+
+    @GetMapping("/changeRadio")
+    public Result changeRadio(Integer answerId, Integer questionId, Integer optionId) {
+        Wrapper wrapper = new EntityWrapper<ZsAnswerItem>();
+        wrapper.eq("answer_id", answerId);
+        wrapper.eq("question_id", questionId);
+        wrapper.eq("type", 1);
+        ZsAnswerItem zsAnswerItem = answerItemService.selectOne(wrapper);
+        ZsOption n = optionService.selectById(optionId);
+        ZsOption o = optionService.selectById(zsAnswerItem.getOptionId());
+        if(ObjectUtils.notEqual(n.getTarget(), o.getTarget())) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
+        }
+        zsAnswerItem.setOptionId(optionId);
+        answerItemService.updateById(zsAnswerItem);
+        return ResultUtil.success("修改成功");
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

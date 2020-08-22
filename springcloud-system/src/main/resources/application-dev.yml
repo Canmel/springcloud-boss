@@ -61,8 +61,6 @@ spring:
     password: admin
     packages:
       trust-all: true
-  jms:
-    pub-sub-domain: true # topic时需要注释掉
   mvc:
     static-path-pattern: /**
     view:

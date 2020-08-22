@@ -137,7 +137,7 @@
             zs_answer_item ai
             LEFT JOIN zs_answer a ON ai.answer_id = a.id
         WHERE
-            a.`status` = 1
+            a.`status` = 1 and a.valid = 1
             AND a.survey_id = #{id}
         GROUP BY
             a.seat;

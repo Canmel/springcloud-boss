@@ -17,14 +17,12 @@
 		if(options){
 		  jQuery.extend(settings,options);
 		}
-		
 		// Begin to iterate over the jQuery collection that the method was called on
 		return this.each(function () {
 
 			// Cache `this`
 			var $that = $(this),
 				$slides = $that.find('.audio-slides').children(),
-
 				$currentTime = $that.find(settings.currentTimeSelector),
 				$duration = $that.find(settings.durationSelector),
 				$playhead = $that.find(settings.playheadSelector),
@@ -44,28 +42,21 @@
 			$slides.each(function (index, el) {
 				var $el = $(el);
 				$el.hide();
-
 				var second = parseInt($el.attr('data-slide-time')),
 					thumbnail = $el.attr('alt');
-
 				if (index > 0 && thumbnail) {
 					slideTimes.push(second);
-
 					var img = '<div><text>'+ thumbnail +'</text></div>',
 						$marker = $('<a href="javascript:;" class="marker" data-time="' + second + '">' + img + '</a>'),
 						l = (second / audioDurationinSeconds) * $that.width();
-
 					$marker.css('left', l).click(function (e) {
 						$jPlayerObj.jPlayer("play", parseInt($(this).attr('data-time')) + .5);
 					});
-
 					$timeline.append($marker);
 				}
 			});
-
 			var $jPlayerObj = $('<div></div>');
 			$that.append($jPlayerObj);
-
 			$jPlayerObj.jPlayer({
 				ready: function () {
 					$.jPlayer.timeFormat.padMin = false;

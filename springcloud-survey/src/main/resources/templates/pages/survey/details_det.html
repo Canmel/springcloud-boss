@@ -207,27 +207,41 @@
                     <div class="panel-body">
                         <div class="ibox-content">
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.valid">
                                         <option value='YES'>有效问卷</option>
                                         <option value='NO'>无效问卷</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2" style="width: 11%;">
+                                    <select class="form-control m-b" name="type"
+                                            v-model="pageInfo.reviewStatus">
+                                        <option value=0>未复核</option>
+                                        <option value=12>已复核</option>
+                                        <option value=1>复核通过</option>
+                                        <option value=2>复核作废</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2" style="width: 13%;">
+                                    <input type="text" placeholder="请输入复核人" class="input-sm form-control search-input"
+                                           v-model="pageInfo.reviewerName">
+                                </div>
+                                <div class="col-sm-2" style="width: 13%;">
                                     <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
                                            v-model="pageInfo.creator">
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2" style="width: 13%;">
                                     <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
                                            v-model="pageInfo.seat">
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-6" style="width: 39%;">
                                     <div class="input-group">
                                         <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
                                             class="input-group-btn">
                                             <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
                                             <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出</button>
+                                            <button type="button" class="btn btn-warning btn-sm" v-on:click="checkRecord()">复核</button>
                                     </span>
                                     </div>
                                 </div>
@@ -244,6 +258,7 @@
                                             <th>通话时间</th>
                                             <th>有效</th>
                                             <th>复核</th>
+                                            <th>复核人</th>
                                             <th>复核意见</th>
                                             <th>操作</th>
                                         </tr>
@@ -261,7 +276,7 @@
                                                 <span>{{item.seat}}</span>
                                             </td>
                                             <td>
-                                                <span v-if="item.cdrinfo">{{item.cdrinfo.callLastsTime}}</span>
+                                                <span v-if="item.callLastsTime">{{item.callLastsTime}}</span>
                                             </td>
                                             <td>
                                                 <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
@@ -270,7 +285,10 @@
                                             <td>
                                                 <span class="text-input" v-if="!item.reviewStatus">未开始</span>
                                                 <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
-                                                <span class="text-danger" v-if="item.reviewStatus === 2">未通过</span>
+                                                <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.reviewer ? item.reviewer.username: ''}}</span>
                                             </td>
                                             <td>
                                                 <span>{{item.reviewMsg}}</span>
@@ -281,9 +299,6 @@
                                                 </button>
                                                 <button type="button" v-on:click="deleteItem(item)"
                                                         class="btn btn-danger btn-xs" v-if="resultDev">删除
-                                                </button>
-                                                <button type="button" v-on:click="checkRecord(item)"
-                                                            class="btn btn-warning btn-xs" v-if="item.cdrinfo">复核
                                                 </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
                                                         class="btn btn-restore btn-xs" v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">标为无效
@@ -584,6 +599,7 @@
             },
             answers: [],
             pageInfo: {
+                reviewStatus:0,
                 valid:'YES',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
@@ -641,9 +657,9 @@
                     }
                 })
             },
-            checkRecord(answer) {
-                sessionStorage.setItem('editParams', answer.agentUUID);
-                sessionStorage.setItem('surveyId', answer.surveyId);
+            // 复核
+            checkRecord() {
+                sessionStorage.setItem('surveyId', this.survey.id);
                 $.pjax({
                     url: mvm.applicationContextRootPath + 'pages/survey/check.html',
                     container: '.page-container'
@@ -1122,8 +1138,7 @@
             this.loadMonitors();
             this.loginMaster();
             this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
-                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" "+this.format2((new Date()).getHours())
-                +":"+this.format2((new Date()).getMinutes())+":"+this.format2((new Date()).getSeconds());
+                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 23:59:59";
         },
         mounted: function () {
             this.bindEvent();
@@ -1139,7 +1154,7 @@
         updateConfig();
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "endDate":new Date(),
+                "endDate":(new Date()).getFullYear()+"/"+((new Date()).getMonth()+1)+"/"+(new Date()).getDate()+" 23:59:59",
                 "timePickerSeconds": true,
                 "timePicker":true,
                 "opens":"center",

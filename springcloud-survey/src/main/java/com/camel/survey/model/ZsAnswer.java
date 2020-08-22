@@ -127,6 +127,8 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     @TableField("reviewer")
     private Integer reviewerId;
 
+    private String reviewerName;
+
     private Integer uid;
 
     @TableField(exist = false)
@@ -146,11 +148,12 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
         this.creator = creator;
     }
 
-    public ZsAnswer(Integer id, String reviewMsg, Integer reviewStatus, Integer reviewerId) {
+    public ZsAnswer(Integer id, String reviewMsg, Integer reviewStatus, Integer reviewerId, String reviewerName) {
         this.id = id;
         this.reviewMsg = reviewMsg;
         this.reviewStatus = reviewStatus;
         this.reviewerId = reviewerId;
+        this.reviewerName = reviewerName;
     }
 
     @Override

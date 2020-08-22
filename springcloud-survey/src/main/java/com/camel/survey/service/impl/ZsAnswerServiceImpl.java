@@ -87,9 +87,8 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         List list = pageInfo.getList();
         for (Object obj: list) {
             ZsAnswer answer = (ZsAnswer) obj;
-            if(!ObjectUtils.isEmpty(answer.getAgentUUID()) && !answer.getAgentUUID().equals("0")) {
-                answer.setCdrinfo(zsCdrinfoMapper.selectByAgentUUID(answer.getAgentUUID()));
-            }
+            SysUser reviewer = applicationToolsUtils.getUser(answer.getReviewerId());
+            answer.setReviewer(reviewer);
         }
         return pageInfo;
     }
@@ -229,7 +228,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     @Override
     public boolean review(Integer answerId, Integer reviewStatus, String reviewMsg) {
         SysUser user = applicationToolsUtils.currentUser();
-        return this.updateById(new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid()));
+        return this.updateById(new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid(), user.getUsername()));
     }
 
     @Override
