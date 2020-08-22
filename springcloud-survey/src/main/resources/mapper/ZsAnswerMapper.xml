@@ -21,6 +21,7 @@
         <result column="review_status" property="reviewStatus" />
         <result column="review_msg" property="reviewMsg" />
         <result column="reviewer" property="reviewerId" />
+        <result column="reviewer_name" property="reviewerName" />
         <result column="uid" property="uid" />
         <result column="checked" property="checked" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
@@ -88,6 +89,18 @@
             </if>
             <if test="callLastsTime != null">
                 and answer.call_lasts_time is not null
+            </if>
+            <if test="reviewStatus == 0">
+                and answer.review_status is null
+            </if>
+            <if test="reviewStatus == 12">
+                and answer.review_status in (1,2)
+            </if>
+            <if test="reviewStatus != 0 and reviewStatus != 12">
+                and answer.review_status = #{reviewStatus}
+            </if>
+            <if test="reviewerName != null">
+                and answer.reviewer_name like concat('%', #{reviewerName}, '%')
             </if>
         </where>
     </select>

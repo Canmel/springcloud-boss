@@ -1,3 +1,8 @@
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css" />
+</head>
+
 <style>
 
     a {
@@ -716,7 +721,7 @@
 </style>
 <div id="subContainer" class="wrapper wrapper-content" style="height: 100%">
     <div class="row" style="height: 100%">
-        <div class="col-sm-5" style="height: 100%; padding-right: 0px;">
+        <div class="col-sm-6" style="height: 100%; padding-right: 0px;">
             <div class="ibox" style="height: 99%">
                 <div class="ibox-title">
                     <h5>待复核列表</h5>
@@ -725,19 +730,41 @@
                     </div>
                 </div>
                 <div class="ibox-content" style="height: 90%">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
+                                   v-model="pageInfo.creator">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
+                                   v-model="pageInfo.seat">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
+                                    class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th>收集时间</th>
                                 <th>被访人</th>
                                 <th>坐席</th>
+                                <th>通话时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="(item, index) in items">
+                                <td>{{item.createdAt}}</td>
                                 <td>{{item.creator}}</td>
                                 <td>{{item.seat}}</td>
+                                <td>{{item.callLastsTime}}</td>
                                 <td>
                                     <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id && item.reviewStatus == null" class="btn btn-info btn-xs" >复核</button>
                                     <span v-if="item.id === selected.id">复核中</span>
@@ -753,7 +780,7 @@
             </div>
         </div>
 
-        <div class="col-sm-7" style="height: 100%;">
+        <div class="col-sm-6" style="height: 100%;">
             <iframe id="detailIfram" style="height: 100%; width: 100%; border: none;" src="check_detail.html"></iframe>
         </div>
     </div>
@@ -765,11 +792,13 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                valid:'YES',
                 surveyId: sessionStorage.getItem('surveyId'),
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10, //每页显示条目个数不传默认10
-                callLastsTime: 1
+                callLastsTime: 1,
+                reviewStatus: 0
             },
             selected: {},
             items: [{}], //待检列表
@@ -792,6 +821,8 @@
             }
         },
         created: function () {
+            this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
+                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 23:59:59";
         },
         methods: {
             renderCheck(item) {
@@ -855,16 +886,58 @@
                 return newArr
             },
             pagequery: function () {
+                if(document.getElementById("datePickerSelect").value!=null&&document.getElementById("datePickerSelect").value!=""){
+                    this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                }
                 var that = this;
+                if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
+                    that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
+                    that.pageInfo.endDate=that.pageInfo.daterange.substring(22,41);
+                }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
             },
+            format2: function(num) {
+                return (Array(2).join("0") + num).slice(-2);
+            },
             backToListPage() {
                 toPage('pages/survey/details_det.html', this.pageInfo.surveyId);
             }
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        updateConfig();
+        function updateConfig() {
+            jQuery('#datePickerSelect').daterangepicker({
+                "endDate":(new Date()).getFullYear()+"/"+((new Date()).getMonth()+1)+"/"+(new Date()).getDate()+" 23:59:59",
+                "timePickerSeconds": true,
+                "timePicker":true,
+                "opens":"center",
+                "buttonClasses":'btn btn-sm',
+                "applyClass":'btn-success',
+                "cancelClass":'btn-default',
+                "timePicker24Hour":true,
+                "linkedCalendars":false,
+                "autoUpdateInput":true,
+                locale: { //汉化
+                    format:"YYYY/MM/DD HH:mm:ss",
+                    applyLabel: '确定', //确定按钮文本
+                    cancelLabel: '取消', //取消按钮文本
+                    customRangeLabel: '自定义范围',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            }, function(start, end, label) {
+                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
+                console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
+            });
         }
     });
 </script>
