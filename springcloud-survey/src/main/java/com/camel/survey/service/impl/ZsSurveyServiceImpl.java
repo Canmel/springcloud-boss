@@ -157,14 +157,6 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         SysUser user = applicationToolsUtils.currentUser();
         entity.setCreatorId(user.getUid());
         if (insert(entity)) {
-            List<RelSurveyExam> relSurveyExamList = new ArrayList<>();
-            if (ObjectUtils.isEmpty(entity.getExams())) {
-                throw new SurveyFormSaveException();
-            }
-            entity.getExams().forEach(examId -> {
-                relSurveyExamList.add(new RelSurveyExam(examId, entity.getId()));
-            });
-            relSurveyExamService.insertBatch(relSurveyExamList);
             return ResultUtil.success("新增成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "新增失败");

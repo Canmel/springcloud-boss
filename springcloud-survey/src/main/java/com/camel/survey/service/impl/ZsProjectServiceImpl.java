@@ -92,9 +92,9 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
 
     @Override
     public Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication) {
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        entity.setCreator(new SysUser(member.getId()));
-        entity.setCreatorId(member.getId());
+        SysUser user = applicationToolsUtils.currentUser();
+        entity.setCreator(user);
+        entity.setCreatorId(user.getUid());
         if (insert(entity)) {
             return ResultUtil.success("新增成功");
         }
