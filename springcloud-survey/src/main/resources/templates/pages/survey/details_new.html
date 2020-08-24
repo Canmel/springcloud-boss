@@ -401,7 +401,9 @@
         },
         methods: {
             isShowSpacialAttr() {
-                return !this.selectedOption.target
+                let isNormal = this.selectedOption.target > 0 && this.selectedOption.target < 10000;
+                console.log(isNormal);
+                return isNormal || !this.selectedOption.target;
             },
             isShowAddOption(question) {
                 let qtype = question.type;
