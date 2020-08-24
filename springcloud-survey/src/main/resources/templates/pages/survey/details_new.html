@@ -58,8 +58,7 @@
                     <h5>拖拽左侧表单元素到此区域</h5>
                     <div class="ibox-tools">
                         <div class="ibox-tools">
-                            <a
-                                    data-pjax class="btn btn-primary btn-xs">下载</a>
+                            <a data-pjax class="btn btn-primary btn-xs">下载</a>
                         </div>
                         <div class="ibox-tools">
                             <a v-on:click="importSurvey()"
@@ -100,20 +99,30 @@
                                      v-for="zsoption in zsoptions"
                                      v-on:click="optionNameClickHandler( $event, zsoption)"
                                      v-if="zsoption.questionOrderNum == question.orderNum">
-                                    <label class="col-sm-1 control-label" style="padding-right: 0;">
-                                        <option value="" class="length" v-if="isShowAddOption(question)">
+                                    <div class="col-sm-1 control-label" style="padding-right: 0;">
+                                        <span class="badge badge-success pull-left" v-if="zsoption.configration">{{zsoption.configration}}</span>
+                                        <span value="" class="length" v-if="isShowAddOption(question)">
                                             {{zsoption.orderNum}}.
-                                        </option>
-                                    </label>
+                                        </span>
+
+                                    </div>
                                     <div class="col-sm-11" v-if="question.type === 1 || question.type === '1'">
                                         <div class="radio">
-                                            <label><input type="radio" :value="zsoption.name">{{zsoption.name}}</label>
+                                            <label>
+                                                <input type="radio" :value="zsoption.name">{{zsoption.name}}
+                                                <input type="text" style="width: 70px;" disabled
+                                                       v-if="zsoption.hasRemark" value="备注"/>
+                                            </label>
                                             <span style="float: right;">
-                                             <span class="label label-danger">
-                                               <p class="fa fa-hand-o-right" v-if="zsoption.ignoreNum">忽略配额</p>
+                                             <span class="label label-danger" v-if="zsoption.ignoreNum">
+                                               <p class="fa fa-battery-empty">忽略配额</p>
                                              </span>
-                                             <span class="label label-warning-light" v-if="zsoption.target">
-                                                <p class="fa fa-hand-o-right">{{translateTarget(zsoption.target)}}</p>
+                                             <span class="label" v-if="zsoption.target">
+                                                <p class="fa fa-hand-o-right">
+                                                    <b style="color: #000000">
+                                                    <span class="badge badge-warning">{{translateTarget(zsoption.target)}}</span>
+                                                    </b>
+                                                </p>
                                              </span>
                                              <span class="label label-success"
                                                    v-on:click="upOption($event, zsoption)">
@@ -128,14 +137,21 @@
                                     </div>
                                     <div class="col-sm-11" v-if="question.type === 2 || question.type === '2'">
                                         <div class="radio">
-                                            <label><input type="checkbox"
-                                                          :value="zsoption.name">{{zsoption.name}}</label>
+                                            <label>
+                                                <input type="checkbox" :value="zsoption.name">{{zsoption.name}}
+                                                <input type="text" style="width: 70px;" disabled
+                                                       v-if="zsoption.hasRemark" value="备注"/>
+                                            </label>
                                             <span style="float: right;">
-                                             <span class="label label-danger">
-                                               <p class="fa fa-hand-o-right" v-if="zsoption.ignoreNum">忽略配额</p>
+                                             <span class="label label-danger" v-if="zsoption.ignoreNum">
+                                               <p class="fa fa-battery-empty">忽略配额</p>
                                              </span>
-                                                <span class="label label-warning" v-if="zsoption.target">
-                                              <p class="fa fa-hand-o-right">{{translateTarget(zsoption.target)}}</p>
+                                             <span class="label" v-if="zsoption.target">
+                                              <p class="fa fa-hand-o-right">
+                                                <b style="color: #000000">
+                                                    <span class="badge badge-warning">{{translateTarget(zsoption.target)}}</span>
+                                                </b>
+                                              </p>
                                              </span>
                                              <span class="label label-success"
                                                    v-on:click="upOption($event, zsoption)">
@@ -304,6 +320,7 @@
                         <label class="col-sm-3 control-label">是否备注</label>
                         <div class="col-sm-9">
                             <select class="form-control m-b" text="text" name="hasRemark"
+                                    @change="hasRemarkChangeHandler(selectedOption)"
                                     v-model="selectedOption.hasRemark" placeholder="是否需要备注">
                                 <option v-for="val in [true, false]" :value="val">{{ val ? '需要' : '不需要' }}</option>
                             </select>
@@ -412,6 +429,10 @@
         mounted() {
         },
         methods: {
+            hasRemarkChangeHandler(o) {
+                this.selectedOption = o;
+                this.$set(this.selectedOption, 'hasRemark', o.hasRemark);
+            },
             translateTarget(t) {
                 if (t === 10000) {
                     return '立即结束并保存样本';
@@ -619,7 +640,7 @@
                     name: '其它',
                     type: question.type,
                     orderNum: c + 1,
-                    hasRemark: false,
+                    hasRemark: true,
                     exclusivity: 0,
                     ignoreNum: false,
                     questionOrderNum: question.orderNum
@@ -671,7 +692,6 @@
                 if (this.selectedOption.target > 999) {
                     this.selectedOption.sattr = 0;
                 }
-                console.log(this.selectedOption);
                 this.selectedOption.questionType = this.questions[option.questionOrderNum - 1].type;
                 this.selected = 2;
             },
