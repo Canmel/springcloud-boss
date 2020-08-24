@@ -246,18 +246,8 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         if (isSuccess(id, member.getUid())) {
             return ResultUtil.success("您已经投递过了，并且已经审核通过，无需重复提交");
         }
-        List<ZsExam> zsExams = zsExamMapper.listBySurveyId(id);
-        List<ZsExam> userExams = zsExamMapper.listByUserId(member.getUid());
-
-        if (CollectionUtils.isEmpty(userExams)) {
-            return ResultUtil.success("投递失败，您没有获取相关等级权限！");
-        }
-        if (userExams.containsAll(zsExams)) {
-            if (zsSignService.insert(new ZsSign(id, member.getUsername(), member.getUid()))) {
-                return ResultUtil.success("投递成功");
-            }
-        } else {
-            return ResultUtil.success("投递失败，您没有获取相关等级权限！");
+        if (zsSignService.insert(new ZsSign(id, member.getUsername(), member.getUid()))) {
+            return ResultUtil.success("投递成功");
         }
         return ResultUtil.error(ResultEnum.SERVICE_ERROR);
     }
