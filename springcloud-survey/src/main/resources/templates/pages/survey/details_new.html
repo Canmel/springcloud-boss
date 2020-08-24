@@ -109,6 +109,12 @@
                                         <div class="radio">
                                             <label><input type="radio" :value="zsoption.name">{{zsoption.name}}</label>
                                             <span style="float: right;">
+                                             <span class="label label-danger">
+                                               <p class="fa fa-hand-o-right" v-if="zsoption.ignoreNum">忽略配额</p>
+                                             </span>
+                                             <span class="label label-warning-light" v-if="zsoption.target">
+                                                <p class="fa fa-hand-o-right">{{translateTarget(zsoption.target)}}</p>
+                                             </span>
                                              <span class="label label-success"
                                                    v-on:click="upOption($event, zsoption)">
                                                 <p class="fa fa-arrow-up"></p>
@@ -125,6 +131,12 @@
                                             <label><input type="checkbox"
                                                           :value="zsoption.name">{{zsoption.name}}</label>
                                             <span style="float: right;">
+                                             <span class="label label-danger">
+                                               <p class="fa fa-hand-o-right" v-if="zsoption.ignoreNum">忽略配额</p>
+                                             </span>
+                                                <span class="label label-warning" v-if="zsoption.target">
+                                              <p class="fa fa-hand-o-right">{{translateTarget(zsoption.target)}}</p>
+                                             </span>
                                              <span class="label label-success"
                                                    v-on:click="upOption($event, zsoption)">
                                                 <p class="fa fa-arrow-up"></p>
@@ -207,7 +219,8 @@
                     </div>
                 </form>
             </div>
-            <div class="ibox-content" v-if="selected === 1 || selected === 2" style="position: fixed; bottom: 40px; width: 28%;">
+            <div class="ibox-content" v-if="selected === 1 || selected === 2"
+                 style="position: fixed; bottom: 40px; width: 28%;">
                 <form class="form-horizontal" v-if="selected === 1">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">题目标题</label>
@@ -271,7 +284,6 @@
                     </div>
 
                     <div class="form-group" v-if="isShowSpacialAttr()">
-
                         <label class="col-sm-3 control-label">选择跳转</label>
                         <div class="col-sm-9">
                             <input class="form-control" type="number" name="target" v-model="selectedOption.target"
@@ -400,10 +412,18 @@
         mounted() {
         },
         methods: {
+            translateTarget(t) {
+                if (t === 10000) {
+                    return '立即结束并保存样本';
+                }
+                if (t === -1) {
+                    return '立即结束并放弃样本';
+                }
+                return 'Q.' + t;
+            },
             isShowSpacialAttr() {
                 let isNormal = this.selectedOption.target > 0 && this.selectedOption.target < 10000;
-                console.log(isNormal);
-                return isNormal || !this.selectedOption.target;
+                return !this.selectedOption.target || isNormal;
             },
             isShowAddOption(question) {
                 let qtype = question.type;
@@ -645,10 +665,10 @@
                 // this.selectedIndex = this.zsoptions.indexOf(option);
                 e.stopPropagation;
                 this.selectedOption = option;
-                if(this.selectedOption.target < 0) {
+                if (this.selectedOption.target < 0) {
                     this.selectedOption.sattr = 1;
                 }
-                if(this.selectedOption.target > 999) {
+                if (this.selectedOption.target > 999) {
                     this.selectedOption.sattr = 0;
                 }
                 console.log(this.selectedOption);
