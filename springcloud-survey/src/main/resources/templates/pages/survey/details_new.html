@@ -32,31 +32,24 @@
 
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-sm-4">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>元素</h5>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                拖拽到下方区域，即可生成快速模板
+            </div>
+            <div class="ibox-content">
+                <div class="form-group draggable alert alert-success col-sm-4" draggable="true"
+                     @dragstart="dragstart($event, {type: 1})" @dragend="dragend($event)">
+                    <label class="col-sm-12">单选题：</label>
                 </div>
-                <div class="ibox-content">
-                    <div class="alert alert-info">
-                        拖拽左侧的体型到右侧区域，即可生成快速模板
-                    </div>
-                    <form role="form" class="form-horizontal m-t">
-                        <div class="form-group draggable alert alert-success" draggable="true"
-                             @dragstart="dragstart($event, {type: 1})" @dragend="dragend($event)">
-                            <label class="col-sm-12">单选题：</label>
-                        </div>
-                        <div class="form-group draggable alert alert-info" draggable="true"
-                             @dragstart="dragstart($event, {type: 2})" @dragend="dragend($event)">
-                            <label class="col-sm-12">多选题：</label>
-                        </div>
-                        <div class="form-group draggable alert alert-warning" draggable="true"
-                             @dragstart="dragstart($event, {type: 3})" @dragend="dragend($event)">
-                            <label class="col-sm-12">问答题：</label>
-                        </div>
-                    </form>
-                    <div class="clearfix"></div>
+                <div class="form-group draggable alert alert-info col-sm-4" draggable="true"
+                     @dragstart="dragstart($event, {type: 2})" @dragend="dragend($event)">
+                    <label class="col-sm-12">多选题：</label>
                 </div>
+                <div class="form-group draggable alert alert-warning col-sm-4" draggable="true"
+                     @dragstart="dragstart($event, {type: 3})" @dragend="dragend($event)">
+                    <label class="col-sm-12">问答题：</label>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
         <div class="col-sm-8">
@@ -66,7 +59,7 @@
                     <div class="ibox-tools">
                         <div class="ibox-tools">
                             <a
-                               data-pjax class="btn btn-primary btn-xs">下载</a>
+                                    data-pjax class="btn btn-primary btn-xs">下载</a>
                         </div>
                         <div class="ibox-tools">
                             <a v-on:click="importSurvey()"
@@ -84,8 +77,12 @@
                                     <div class="col-sm-11 form-control-static">
                                         <p class="label">{{question.name}}</p>
                                         <span style="float: right;">
-                                            <span class="label label-info"
-                                                  v-on:click="questionCopy(question)">
+                                            <span class="label fa fa-trash"
+                                                  v-on:click="questionDelete(question, $event)">
+                                                <p class="fa" style="display: inline;">删除</p>
+                                            </span>
+                                            <span class="label label-info fa fa-copy"
+                                                  v-on:click="questionCopy(question, $event)">
                                                 <p class="fa" style="display: inline;">复制</p>
                                             </span>
                                             <span class="label label-success"
@@ -104,9 +101,11 @@
                                      v-on:click="optionNameClickHandler( $event, zsoption)"
                                      v-if="zsoption.questionOrderNum == question.orderNum">
                                     <label class="col-sm-1 control-label" style="padding-right: 0;">
-                                        <option value="" class="length" v-if="question.type === 1||question.type === 2">{{zsoption.orderNum}}.</option>
+                                        <option value="" class="length" v-if="isShowAddOption(question)">
+                                            {{zsoption.orderNum}}.
+                                        </option>
                                     </label>
-                                    <div class="col-sm-11" v-if="question.type === 1">
+                                    <div class="col-sm-11" v-if="question.type === 1 || question.type === '1'">
                                         <div class="radio">
                                             <label><input type="radio" :value="zsoption.name">{{zsoption.name}}</label>
                                             <span style="float: right;">
@@ -121,7 +120,7 @@
                                           </span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-11" v-if="question.type === 2">
+                                    <div class="col-sm-11" v-if="question.type === 2 || question.type === '2'">
                                         <div class="radio">
                                             <label><input type="checkbox"
                                                           :value="zsoption.name">{{zsoption.name}}</label>
@@ -138,27 +137,28 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-11" v-if="question.type === 3">
+                                    <div class="col-sm-11" v-if="question.type === 3 || question.type === '3'">
                                         <div class="radio">
                                             <label>答：</label>
-                                            <input type="text" />
+                                            <input type="text"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row no-margins" style="background-color: bisque;"  v-if="question.type === 1||question.type === 2">
-                                    <label class="col-sm-2 control-label" style="padding-right: 0;">
+                                <div class="row no-margins" style="background-color: bisque;"
+                                     v-if="isShowAddOption(question)">
+                                    <label class="col-sm-3 control-label" style="padding-right: 0;">
                                         <span v-on:click="addNewOption(question)" class="cursor-pointer">
                                             <span class="fa fa-plus-circle" style="font-size: 20px;"></span>
                                             新增选项
                                         </span>
                                     </label>
-                                    <label class="col-sm-2 control-label" style="padding-right: 0;">
+                                    <label class="col-sm-3 control-label" style="padding-right: 0;">
                                         <span v-on:click="addOtherOption(question)" class="cursor-pointer">
                                             <span class="fa fa-plus-circle" style="font-size: 20px;"></span>
                                             新增"其他"选项
                                         </span>
                                     </label>
-                                    <label class="col-sm-2 control-label" style="padding-right: 0;">
+                                    <label class="col-sm-3 control-label" style="padding-right: 0;">
                                         <span v-on:click="addNotClearOption(question)" class="cursor-pointer">
                                             <span class="fa fa-plus-circle" style="font-size: 20px;"></span>
                                             新增"说不清"选项
@@ -178,153 +178,162 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                            v-on:click="hideModal('questionModal')">&times;
-                    </button>
-                    <h2 translate>题目属性</h2>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">题目标题</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" text="text" name="name" v-model="selectedQuestion.name"/>
-                            </div>
+        <div class="col-sm-4 no-padding">
+            <div class="ibox-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">问卷名称</label>
+                        <div class="col-sm-9">
+                            <span class="form-control no-borders">{{survey.name}}</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">题目类型</label>
-                            <div class="col-sm-9">
-                                <select class="form-control m-b" name="type"
-                                        v-model="selectedQuestion.type">
-                                    <option value="1">单选题</option>
-                                    <option value="2">多选题</option>
-                                    <option value="3">问答题</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">已收集数</label>
+                        <div class="col-sm-9">
+                            <span class="form-control no-borders">{{survey.currentNum}}</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">最多选择</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" name="maxSelect"
-                                       v-model="selectedQuestion.maxSelect" placeholder="最多选择数量，默认为1"/>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">预计收集</label>
+                        <div class="col-sm-9">
+                            <span class="form-control no-borders">{{survey.collectNum}}</span>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">收集方式</label>
+                        <div class="col-sm-9">
+                            <span class="form-control no-borders">{{survey.collectType? survey.collectType.name : '未获取'}}</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="ibox-content" v-if="selected === 1 || selected === 2" style="position: fixed; bottom: 40px; width: 28%;">
+                <form class="form-horizontal" v-if="selected === 1">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">题目标题</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" text="text" name="name" v-model="selectedQuestion.name"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">题目类型</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="type"
+                                    v-model="selectedQuestion.type">
+                                <option value=1>单选题</option>
+                                <option value=2>多选题</option>
+                                <option value=3>问答题</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">最多选择</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="number" name="maxSelect"
+                                   v-model="selectedQuestion.maxSelect" placeholder="最多选择数量，默认为1"/>
+                        </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">最少选择</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" name="minSelect"
-                                       v-model="selectedQuestion.minSelect" placeholder="最少选择数量，默认为1"/>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">最少选择</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="number" name="minSelect"
+                                   v-model="selectedQuestion.minSelect" placeholder="最少选择数量，默认为1"/>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">是否必答</label>
-                            <div class="col-sm-9">
-                                <select class="form-control m-b" name="compulsory"
-                                        v-model="selectedQuestion.compulsory">
-                                    <option v-for="val in [1, 0]" :value="val">{{ val ? '是' : '否' }}</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否必答</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="compulsory"
+                                    v-model="selectedQuestion.compulsory">
+                                <option v-for="val in [1, 0]" :value="val">{{ val ? '是' : '否' }}</option>
+                            </select>
                         </div>
-                        <div class="form-group text-center">
-                            <span class="btn btn-danger" v-on:click="deleteQuestion(selectedQuestion)">删除问题</span>
+                    </div>
+                    <div class="form-group text-center">
+                        <span class="btn btn-danger" v-on:click="deleteQuestion(selectedQuestion)">删除问题</span>
+                    </div>
+                </form>
+
+                <form class="form-horizontal" v-if="selected === 2">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">选项文本</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="name" v-model="selectedOption.name"/>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">选项配额</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="number" name="configration"
+                                   v-model="selectedOption.configration" placeholder="本数据量收集顶额，默认不限制"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group" v-if="isShowSpacialAttr()">
+
+                        <label class="col-sm-3 control-label">选择跳转</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="number" name="target" v-model="selectedOption.target"
+                                   placeholder="跳转至自定义题号，默认为当前题号+1"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">计入配额</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" text="text" name="ignoreNum"
+                                    v-model="selectedOption.ignoreNum" placeholder="是否计入配额">
+                                <option value="false">计入配额</option>
+                                <option value="true">忽略配额</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否备注</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" text="text" name="hasRemark"
+                                    v-model="selectedOption.hasRemark" placeholder="是否需要备注">
+                                <option v-for="val in [true, false]" :value="val">{{ val ? '需要' : '不需要' }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="selectedOption.hasRemark">
+                        <label class="col-sm-3 control-label">备注提示</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="remark" v-model="selectedOption.remark"
+                                   placeholder="备注的提示信息"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">特殊属性</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" text="text" name="hasRemark"
+                                    v-model="selectedOption.sattr" v-on:change="sattrSelectHandler(selectedOption)"
+                                    placeholder="请选择特殊属性">
+                                <option v-for="val in [{key: -1, value: '不选择'},{key: 0, value: '立即结束并保存样本'}, {key: 1, value: '立即结束并放弃样本'}]"
+                                        :value="val.key">{{ val.value }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="selectedOption.questionType==2">
+                        <label class="col-sm-3 control-label">是否排他</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="exclusivity"
+                                    v-model="selectedOption.exclusivity">
+                                <option v-for="val in [1, 0]" :value="val">{{ val ? '是' : '否' }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <span class="btn btn-danger" v-on:click="deleteOption(selectedOption)">删除选项</span>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="modal" id="optionModal" ng-controller="KisBpmChoseAssignmentCtrl">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                            v-on:click="hideModal('optionModal')"><p class="fa fa-check"></p></button>
-                    <h2 translate>选项属性</h2>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">选项文本</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" name="name" v-model="selectedOption.name"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">选项配额</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" name="configration"
-                                       v-model="selectedOption.configration" placeholder="本数据量收集顶额，默认不限制"/>
-                            </div>
-                        </div>
-                        <div class="form-group" v-if="!(selectedOption.sattr > -1)">
-                            <label class="col-sm-3 control-label">选择跳转</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" name="target" v-model="selectedOption.target"
-                                       placeholder="跳转至自定义题号，默认为当前题号+1"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">计入配额</label>
-                            <div class="col-sm-9">
-                                <select class="form-control m-b" text="text" name="ignoreNum"
-                                        v-model="selectedOption.ignoreNum" placeholder="是否计入配额">
-                                    <option value="false">计入配额</option>
-                                    <option value="true">忽略配额</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">是否备注</label>
-                            <div class="col-sm-9">
-                                <select class="form-control m-b" text="text" name="hasRemark"
-                                        v-model="selectedOption.hasRemark" placeholder="是否需要备注">
-                                    <option v-for="val in [true, false]" :value="val">{{ val ? '需要' : '不需要' }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" v-if="selectedOption.hasRemark">
-                            <label class="col-sm-3 control-label">备注提示</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" name="remark" v-model="selectedOption.remark"
-                                       placeholder="备注的提示信息"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">特殊属性</label>
-                            <div class="col-sm-9">
-                                <select class="form-control m-b" text="text" name="hasRemark" v-model="selectedOption.sattr" v-on:change="sattrSelectHandler($event)"
-                                        placeholder="请选择特殊属性">
-                                    <option v-for="val in [{key: -1, value: '不选择'},{key: 0, value: '立即结束并保存样本'}, {key: 1, value: '立即结束并放弃样本'}]" :value="val.key">{{ val.value }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" v-if="selectedOption.questionType==2">
-                            <label class="col-sm-3 control-label">是否排他</label>
-                            <div class="col-sm-9">
-                                <select class="form-control m-b" name="exclusivity"
-                                        v-model="selectedOption.exclusivity">
-                                    <option v-for="val in [1, 0]" :value="val">{{ val ? '是' : '否' }}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group text-center">
-                            <span class="btn btn-danger" v-on:click="deleteOption(selectedOption)">删除选项</span>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <div class="modal" id="importModal" ng-controller="KisBpmChoseAssignmentCtrl">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -377,8 +386,11 @@
             surveyId: sessionStorage.getItem('editParams'),
             selectedQuestion: {},
             selectedOption: {
-                questionType:0,
+                questionType: 0,
+                sattr: -1
             },
+            survey: null,
+            selected: 0,
             selectedIndex: 0
         },
         created: function () {
@@ -388,35 +400,52 @@
         mounted() {
         },
         methods: {
-            sattrSelectHandler(e) {
-                console.log(this.selectedOption.sattr);
-                if(this.selectedOption.sattr === 0) {
-                    this.selectedOption.target = 10000;
+            isShowSpacialAttr() {
+                let isNormal = this.selectedOption.target > 0 && this.selectedOption.target < 10000;
+                console.log(isNormal);
+                return isNormal || !this.selectedOption.target;
+            },
+            isShowAddOption(question) {
+                let qtype = question.type;
+                return qtype === 1 || qtype === 2 || qtype === '1' || qtype === '2'
+            },
+            sattrSelectHandler(o) {
+                this.$set(this.selectedOption, 'sattr', o.sattr);
+                if (this.selectedOption.sattr === 0) {
+                    this.$set(this.selectedOption, 'target', 10000);
                 }
-                if(this.selectedOption.sattr === 1) {
-                    this.selectedOption.target = -1;
+                if (this.selectedOption.sattr === 1) {
+                    this.$set(this.selectedOption, 'target', -1);
                 }
-                if(this.selectedOption.sattr === -1) {
-                    this.selectedOption.target = null;
+                if (this.selectedOption.sattr === -1) {
+                    this.$set(this.selectedOption, 'target', null);
                 }
+
+
             },
             importSurvey() {
                 $("#importModal").modal('show');
             },
-            questionCopy(question){
+            questionDelete(question, event) {
+                event.stopPropagation();
+                let index = this.questions.indexOf(question);
+                this.questions.splice(index, 1);
+                this.selected = 0;
+            },
+            questionCopy(question, event) {
                 event.stopPropagation();
                 let tmpQ = {
                     id: question.id,
-                    orderNum: question.orderNum+1,
+                    orderNum: this.questions.length + 1,
                     name: question.name,
                     type: question.type,
                     surveyId: question.surveyId,
                     maxSelect: question.maxSelect,
                     minSelect: question.minSelect,
-                    compulsory: question.compulsory.value
+                    compulsory: question.compulsory ? question.compulsory.value : null
                 };
-                let options=this.getOptionsByQuestion(question.orderNum);
-                let tmpOptions=[];
+                let options = this.getOptionsByQuestion(question.orderNum);
+                let tmpOptions = [];
                 for (let j = 0; j < options.length; j++) {
                     let o = options[j];
                     let opt = {
@@ -424,7 +453,7 @@
                         name: o.name,
                         target: o.target,
                         hasRemark: o.hasRemark,
-                        exclusivity: o.exclusivity.value,
+                        exclusivity: o.exclusivity ? o.exclusivity.value : null,
                         ignoreNum: o.ignoreNum,
                         configration: o.configration, // 选项配额
                         questionOrderNum: tmpQ.orderNum
@@ -436,8 +465,8 @@
             },
             loadQuestions() {
                 let that = this;
-                that.questions=[];
-                that.zsoptions=[];
+                that.questions = [];
+                that.zsoptions = [];
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
                     for (let i = 0; i < resp.data.length; i++) {
                         let item = resp.data[i];
@@ -495,7 +524,6 @@
                     sessionStorage.setItem('editParams', that.survey.projectId);
                     toPage('pages/project/details.html');
                 });
-                console.log(params);
             },
             upOption(e, option) {
                 e.stopPropagation();
@@ -509,7 +537,6 @@
                 option.orderNum = option.orderNum - 1;
                 this.$set(this.zsoptions, currentIndex, preOption);
                 this.$set(this.zsoptions, currentIndex - 1, option);
-
             },
             downOption(e, option) {
                 e.stopPropagation();
@@ -618,8 +645,15 @@
                 // this.selectedIndex = this.zsoptions.indexOf(option);
                 e.stopPropagation;
                 this.selectedOption = option;
-                this.selectedOption.questionType=this.questions[option.questionOrderNum-1].type;
-                this.showModal('optionModal');
+                if(this.selectedOption.target < 0) {
+                    this.selectedOption.sattr = 1;
+                }
+                if(this.selectedOption.target > 999) {
+                    this.selectedOption.sattr = 0;
+                }
+                console.log(this.selectedOption);
+                this.selectedOption.questionType = this.questions[option.questionOrderNum - 1].type;
+                this.selected = 2;
             },
             up(e, question) {
                 let currentIndex = this.questions.indexOf(question);
@@ -672,7 +706,7 @@
             },
             questionNameClickHandler(question) {
                 this.selectedQuestion = question;
-                this.showModal('questionModal');
+                this.selected = 1;
             },
             showModal(id) {
                 $("#" + id).modal('show');
@@ -705,7 +739,7 @@
                     minSelect: 1,
                     surveyId: this.surveyId,
                     maxSelect: 1,
-                    compulsory:1
+                    compulsory: 1
                 };
                 let tmpOptions = [
                     {
@@ -713,7 +747,7 @@
                         type: '1',
                         orderNum: 1,
                         hasRemark: false,
-                        exclusivity:0,
+                        exclusivity: 0,
                         ignoreNum: false,
                         questionOrderNum: question.orderNum
 
@@ -738,7 +772,7 @@
                     surveyId: this.surveyId,
                     minSelect: 1,
                     maxSelect: 2,
-                    compulsory:1
+                    compulsory: 1
                 };
                 let tmpOptions = [
                     {
@@ -857,7 +891,7 @@
 
             chunked: true,
             // server: 'http://webuploader.duapp.com/server/fileupload.php',
-            server: '/survey/zsProject/importSurvey/'+ sessionStorage.getItem("editParams") +'?access_token=' + sessionStorage.getItem('access_token'),
+            server: '/survey/zsProject/importSurvey/' + sessionStorage.getItem("editParams") + '?access_token=' + sessionStorage.getItem('access_token'),
             fileNumLimit: 300,
             fileSizeLimit: 5 * 1024 * 1024,    // 200 M
             fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
@@ -926,7 +960,6 @@
 
                 // 成功
                 if (cur === 'error' || cur === 'invalid') {
-                    console.log(file.statusText);
                     showError(file.statusText);
                     percentages[file.id][1] = 1;
                 } else if (cur === 'interrupt') {
