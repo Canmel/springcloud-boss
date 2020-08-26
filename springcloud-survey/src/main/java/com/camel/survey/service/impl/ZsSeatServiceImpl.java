@@ -85,11 +85,8 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     }
 
     @Override
-    public boolean deleteByUserAndSeat(int userId,String seatNum) {
+    public void callbackByUser(int userId) {
         mapper.callbackByUid(userId);
-        Wrapper<ZsSeat> zsSeatWrapper1 = new EntityWrapper<>();
-        zsSeatWrapper1.eq("seat_num", seatNum);
-        return delete(zsSeatWrapper1);
     }
 
     @Override
@@ -125,12 +122,26 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
 
     @Override
     public Result manualAssign(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
-        deleteByUserAndSeat(entity.getUid(),entity.getSeatNum());
-        entity.setState(ZsYesOrNo.YES);
-        if (insert(entity)) {
+        Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
+        wrapper.eq("seat_num",entity.getSeatNum());
+        ZsSeat seat = selectOne(wrapper);
+        if(seat!=null){
+            if(seat.getState().getCode()==0){
+                callbackByUser(entity.getUid());
+            }
+            else{
+                return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "该坐席已分配，不可重复分配");
+            }
+        }
+        else{
+            return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "该坐席号不存在，请先新建坐席");
+        }
+        seat.setState(ZsYesOrNo.YES);
+        seat.setUid(entity.getUid());
+        seat.setPassword(entity.getPassword());
+        if (updateById(seat)) {
             return ResultUtil.success("分配成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "分配失败");
-
     }
 }
