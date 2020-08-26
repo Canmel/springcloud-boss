@@ -750,7 +750,7 @@
                                     <label class="radio-inline"
                                            v-if="item.type === 1 && showOption(item, option)">
                                         <input type="radio" :value="option.id" :checked="isSelected(option)"
-                                               @change="radioChange(option)"
+                                               @change="radioChange(option, item)"
                                                name="optionsRadios">
                                         <span class="editable question-option">{{option.name}}</span>
                                         <span>{{getAnswer(option.id) ? option.name === getAnswer(option.id).value ? '' : '(' + getAnswer(option.id).value + ')' : ''}}</span>
@@ -940,12 +940,12 @@
                 }
                 return option.hasRemark && this.selectedOption ? option.id === this.selectedOption.id : false;
             },
-            radioChange(d) {
+            radioChange(d, q) {
                 let orderNums = this.getQuestions();
                 console.log(orderNums);
                 console.log(d);
                 this.selectedOption = d;
-                let t = d.target ? d.target : d.orderNum + 1;
+                let t = d.target ? d.target : q.orderNum + 1;
                 if (orderNums.indexOf(t) > -1) {
                     AJAX.GET("zsAnswer/changeRadio", {
                         answerId: this.zsAnswer.id,
