@@ -941,10 +941,12 @@
                 return option.hasRemark && this.selectedOption ? option.id === this.selectedOption.id : false;
             },
             radioChange(d) {
-                this.getQuestions();
-
+                let orderNums = this.getQuestions();
+                console.log(orderNums);
+                console.log(d);
                 this.selectedOption = d;
-                if (this.orderNums.indexOf(d.target) > -1) {
+                let t = d.target ? d.target : d.orderNum + 1;
+                if (orderNums.indexOf(t) > -1) {
                     AJAX.GET("zsAnswer/changeRadio", {
                         answerId: this.zsAnswer.id,
                         questionId: d.questionId,
@@ -1047,6 +1049,7 @@
                         }
                     }
                 }
+                return this.orderNums;
             },
             uniq(arr) {
                 let newArr = [];
