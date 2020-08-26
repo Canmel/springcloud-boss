@@ -738,8 +738,9 @@
                          v-if="item.id === currentQId">
                         <div class="col-sm-12"><label class="col-sm-3 control-label"
                                                       style="text-align: right;"><span
-                                class="question-index">{{index + 1}}</span>.</label> <label class="col-sm-9 control-label"
-                                                                                            style="padding-left: 0px; text-align: left;"><span
+                                class="question-index">{{index + 1}}</span>.</label> <label
+                                class="col-sm-9 control-label"
+                                style="padding-left: 0px; text-align: left;"><span
                                 class="editable question-title">{{item.name}}</span></label></div>
                         <div class="col-sm-3"></div>
                         <div class="col-sm-9 survey-optins">
@@ -748,10 +749,13 @@
                                 <div class="col-sm-9">
                                     <label class="radio-inline"
                                            v-if="item.type === 1 && showOption(item, option)">
-                                        <input type="radio" :value="option.id" :checked="isSelected(option)" @change="radioChange(option)"
+                                        <input type="radio" :value="option.id" :checked="isSelected(option)"
+                                               @change="radioChange(option)"
                                                name="optionsRadios">
                                         <span class="editable question-option">{{option.name}}</span>
                                         <span>{{getAnswer(option.id) ? option.name === getAnswer(option.id).value ? '' : '(' + getAnswer(option.id).value + ')' : ''}}</span>
+                                        <input type="text" v-if="isShowEdit(option)"
+                                               @blur="onRemarkBlur(option, $event)" v-model="tmpRemark">
                                     </label>
 
                                     <label class="checkbox-inline"
@@ -760,6 +764,8 @@
                                                :checked="isSelected(option)">
                                         <span class="editable question-option">{{option.name}}</span>
                                         <span>{{getAnswer(option.id) ? option.name === getAnswer(option.id).value ? '' : '(' + getAnswer(option.id).value + ')' : ''}}</span>
+                                        <input type="text" v-if="isShowEdit(option)"
+                                               @blur="onRemarkBlur(option, $event)" v-model="tmpRemark">
                                     </label>
 
                                     <label class="checkbox-inline"
@@ -826,7 +832,8 @@
                     <div style="height: 70%;"></div>
                     <form id="defaultForm" method="post" class="form-horizontal" style="height: 30%;">
                         <div class="form-group has-feedback">
-                                    <textarea type="text" class="form-control" cols="2" name="remark" v-model="review.reviewMsg"
+                                    <textarea type="text" class="form-control" cols="2" name="remark"
+                                              v-model="review.reviewMsg"
                                               placeholder="请给出复核意见"></textarea>
                         </div>
                         <div class="form-group" style="text-align: center;">
@@ -891,17 +898,20 @@
             questions: [],
             tquestions: [],
             questionIds: [],
+            orderNums: [],
             survey: null,
             zsAnswer: {},
             currentIndex: 0,
             currentQId: null,
             recordUrl: '',
             duration: 0,
+            tmpRemark: null,
             baseRecordUrl: 'http://tj.svdata.cn/yscrm/servlet/filedown?filename=',
             review: {
                 reviewMsg: '',
                 reviewStatus: 0
-            }
+            },
+            selectedOption: null
         },
         watch: {
             recordUrl: function (v, n) {
@@ -909,18 +919,42 @@
             }
         },
         created: function () {
-            if(window.parent.checkVue.selected.id) {
+            if (window.parent.checkVue.selected.id) {
                 let survey = window.parent.checkVue.selected;
                 this.loadAnswer(survey);
                 this.loadEntity(survey);
             }
         },
         methods: {
-            radioChange(d) {
-                console.log(this.zsAnswer);
-                AJAX.GET("zsAnswer/changeRadio", {answerId: this.zsAnswer.id, questionId: d.questionId, optionId: d.id}, function (resp) {
+            onRemarkBlur(option, e) {
+                let answerItem = this.getAnswer(option.id);
+                answerItem.value = $(e.target).val();
+                AJAX.GET("zsAnswer/changeRemark", {id: answerItem.id, remark: answerItem.value}, function (resp) {
                     toastr.success(resp['msg'], '操作成功');
                 });
+                this.tmpRemark = null;
+            },
+            isShowEdit(option) {
+                if (option.hasRemark) {
+                    return option.hasRemark;
+                }
+                return option.hasRemark && this.selectedOption ? option.id === this.selectedOption.id : false;
+            },
+            radioChange(d) {
+                this.getQuestions();
+
+                this.selectedOption = d;
+                if (this.orderNums.indexOf(d.target) > -1) {
+                    AJAX.GET("zsAnswer/changeRadio", {
+                        answerId: this.zsAnswer.id,
+                        questionId: d.questionId,
+                        optionId: d.id
+                    }, function (resp) {
+                        toastr.success(resp['msg'], '操作成功');
+                    });
+                } else {
+                    toastr.error('跳题逻辑不同，不可切换', '错误');
+                }
             },
             refuse() {
                 this.review.reviewStatus = 2;
@@ -974,7 +1008,7 @@
             },
             loadEntity(item) {
                 let that = this;
-                if(!item.cdrinfo) {
+                if (!item.cdrinfo) {
                     return toastr.error('未获取到录音信息,请稍后尝试', '错误');
                 }
                 AJAX.GET('zsCdrinfo/' + item.cdrinfo.id, {}, function (resp) {
@@ -1002,6 +1036,17 @@
                     }
                     that.loadSurvey(that.zsAnswer.surveyId);
                 })
+            },
+            getQuestions() {
+                this.orderNums = [];
+                for (let i = 0; i < this.questionIds.length; i++) {
+                    let qId = this.questionIds[i];
+                    for (let j = 0; j < this.tquestions.length; j++) {
+                        if (this.tquestions[j].id === qId) {
+                            this.orderNums.push(this.tquestions[j].orderNum)
+                        }
+                    }
+                }
             },
             uniq(arr) {
                 let newArr = [];

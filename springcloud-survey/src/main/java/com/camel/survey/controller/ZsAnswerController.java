@@ -95,6 +95,14 @@ public class ZsAnswerController extends BaseCommonController {
         return ResultUtil.success("修改成功");
     }
 
+    @GetMapping("/changeRemark")
+    public Result changeRemark(Integer id, String remark) {
+        ZsAnswerItem zsAnswerItem = answerItemService.selectById(id);
+        zsAnswerItem.setValue(remark);
+        answerItemService.updateById(zsAnswerItem);
+        return ResultUtil.success("修改成功");
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/download")
     public void download(ZsAnswer entity, HttpServletResponse response) {
