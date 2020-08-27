@@ -58,7 +58,7 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
 
     ZsAnswer selectByAgentUuid(String agentUuid);
 
-    boolean review(Integer answerId, Integer reviewStatus, String reviewMsg);
+    boolean review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent);
 
     List<ZsAnswer> randomList(ZsAnswer zsAnswer);
 

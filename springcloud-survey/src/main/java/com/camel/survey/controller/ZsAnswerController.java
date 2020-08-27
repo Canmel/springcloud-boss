@@ -178,8 +178,8 @@ public class ZsAnswerController extends BaseCommonController {
      * @param reviewMsg
      */
     @PostMapping("/review")
-    public Result review(Integer answerId, Integer reviewStatus, String reviewMsg) {
-        if(service.review(answerId, reviewStatus, reviewMsg)) {
+    public Result review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent) {
+        if(service.review(answerId, reviewStatus, reviewMsg, reviewSpent)) {
             return ResultUtil.success("复核成功");
         }else {
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "复核失败");

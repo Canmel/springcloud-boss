@@ -129,12 +129,17 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
 
     private String reviewerName;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+    private Date reviewerAt;
+
     private Integer uid;
 
     @TableField(exist = false)
     public SysUser user;
 
     private Integer checked;
+
+    private Integer reviewSpent;
 
     public ZsAnswer() {
     }
@@ -148,12 +153,14 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
         this.creator = creator;
     }
 
-    public ZsAnswer(Integer id, String reviewMsg, Integer reviewStatus, Integer reviewerId, String reviewerName) {
+    public ZsAnswer(Integer id, String reviewMsg, Integer reviewStatus, Integer reviewerId, String reviewerName, Integer reviewSpent) {
         this.id = id;
         this.reviewMsg = reviewMsg;
         this.reviewStatus = reviewStatus;
         this.reviewerId = reviewerId;
         this.reviewerName = reviewerName;
+        this.reviewerAt = new Date();
+        this.reviewSpent = reviewSpent;
     }
 
     @Override

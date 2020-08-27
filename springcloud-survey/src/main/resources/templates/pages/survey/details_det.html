@@ -260,6 +260,8 @@
                                             <th>复核</th>
                                             <th>复核人</th>
                                             <th>复核意见</th>
+                                            <th>复核时间</th>
+                                            <th>复核时长</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
@@ -293,6 +295,8 @@
                                             <td>
                                                 <span>{{item.reviewMsg}}</span>
                                             </td>
+                                            <td>{{item.reviewerAt}}</td>
+                                            <td>{{item.reviewSpent ? item.reviewSpent / 1000 : ''}}</td>
                                             <td>
                                                 <button type="button" v-on:click="details(item)"
                                                         class="btn btn-primary btn-xs" v-if="resultDev">查看

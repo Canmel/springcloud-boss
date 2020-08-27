@@ -18,16 +18,18 @@
         <result column="call_lasts_time" property="callLastsTime"/>
         <result column="task_status" property="taskStatus"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="review_status" property="reviewStatus" />
-        <result column="review_msg" property="reviewMsg" />
-        <result column="reviewer" property="reviewerId" />
-        <result column="reviewer_name" property="reviewerName" />
-        <result column="uid" property="uid" />
-        <result column="checked" property="checked" />
+        <result column="review_status" property="reviewStatus"/>
+        <result column="review_msg" property="reviewMsg"/>
+        <result column="reviewer" property="reviewerId"/>
+        <result column="reviewer_name" property="reviewerName"/>
+        <result column="uid" property="uid"/>
+        <result column="checked" property="checked"/>
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="cdr_id" property="cdrinfo.id"></result>
+        <result column="reviewer_at" property="reviewerAt"></result>
+        <result column="review_spent" property="reviewSpent"></result>
         <association property="user" javaType="com.camel.core.model.SysUser">
-            <id property="id" column="uid" jdbcType="INTEGER"></id>
+            <result property="uid" column="uid" jdbcType="INTEGER"></result>
         </association>
         <association property="reviewer" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="reviewer" jdbcType="INTEGER"></id>
@@ -46,7 +48,7 @@
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
         <result column="call_lasts_time" property="callLastsTime"/>
-        <result column="checked" property="checked" />
+        <result column="checked" property="checked"/>
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
         </collection>
@@ -62,8 +64,10 @@
     <select id="list" resultMap="BaseResultMap">
         select
         info.id cdr_id,
-        answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at, answer.creator, answer.valid, answer.task_id, answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,
-        answer.review_status, answer.review_msg, answer.reviewer,answer.checked
+        answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at,
+        answer.creator, answer.valid, answer.task_id, answer.review_spent,
+        answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,
+        answer.review_status, answer.review_msg, answer.reviewer,answer.checked, answer.reviewer_at
         from
         zs_answer answer
         LEFT JOIN zs_cdrinfo info ON info.id = answer.agent_UUID
@@ -204,7 +208,7 @@
         AND answer.agent_UUID != '';
     </select>
 
-    <select id="selectByAgentUuid"  resultMap="BaseFullResultMap">
+    <select id="selectByAgentUuid" resultMap="BaseFullResultMap">
         select
         <include refid="Base_Column_List"></include>
         from zs_answer

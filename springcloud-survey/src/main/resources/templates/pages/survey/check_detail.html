@@ -864,7 +864,7 @@
                     </div>
                     <div class="audio-control-interface">
                         <div class="play-pause-container">
-                            <a href="javascript:;" class="audio-play" tabindex="1"
+                            <a href="javascript:;" class="audio-play" tabindex="1" @click="recordTime()"
                                style="background-size: contain; margin-top: -10px;">Play</a>
                             <a href="javascript:;" class="audio-pause" tabindex="1"
                                style="background-size: contain; margin-top: -10px;">Pause</a>
@@ -911,7 +911,8 @@
                 reviewMsg: '',
                 reviewStatus: 0
             },
-            selectedOption: null
+            selectedOption: null,
+            checkStartAt: null
         },
         watch: {
             recordUrl: function (v, n) {
@@ -926,6 +927,11 @@
             }
         },
         methods: {
+            recordTime() {
+                if(!this.checkStartAt) {
+                    this.checkStartAt = Date.now();
+                }
+            },
             onRemarkBlur(option, e) {
                 let answerItem = this.getAnswer(option.id);
                 answerItem.value = $(e.target).val();
@@ -961,6 +967,11 @@
             refuse() {
                 this.review.reviewStatus = 2;
                 this.review.answerId = this.zsAnswer.id;
+                if(this.checkStartAt) {
+                    this.review.reviewSpent = Date.now() - this.checkStartAt;
+                }else{
+                    return toastr.error('请先听录音', '错误');
+                }
                 AJAX.POST("zsAnswer/review", this.review, function (resp) {
                     toastr.success(resp.msg);
                 });
@@ -968,6 +979,11 @@
             agree() {
                 this.review.reviewStatus = 1;
                 this.review.answerId = this.zsAnswer.id;
+                if(this.checkStartAt) {
+                    this.review.reviewSpent = Date.now() - this.checkStartAt;
+                }else{
+                    return toastr.error('请先听录音', '错误');
+                }
                 AJAX.POST("zsAnswer/review", this.review, function (resp) {
                     toastr.success(resp.msg);
                 });
