@@ -80,7 +80,7 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
     }
 
     @Override
-    public List<Map<String, Object>> selectSeatTotal(Integer id) {
-        return mapper.selectSeatTotal(id);
+    public List<Map<String, Object>> selectWorkNumTotal(Integer id) {
+        return mapper.selectWorkNumTotal(id);
     }
 }

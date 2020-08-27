@@ -232,8 +232,8 @@
                                            v-model="pageInfo.creator">
                                 </div>
                                 <div class="col-sm-2" style="width: 13%;">
-                                    <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
-                                           v-model="pageInfo.seat">
+                                    <input type="text" placeholder="请输入工号" class="input-sm form-control search-input"
+                                           v-model="pageInfo.workNum">
                                 </div>
                                 <div class="col-sm-6" style="width: 39%;">
                                     <div class="input-group">
@@ -254,7 +254,7 @@
                                             <th>序号</th>
                                             <th>收集时间</th>
                                             <th>填写人(手机号)</th>
-                                            <th>坐席号</th>
+                                            <th>工号</th>
                                             <th>通话时间</th>
                                             <th>有效</th>
                                             <th>复核</th>
@@ -273,7 +273,7 @@
                                                 <span>{{item.creator}}</span>
                                             </td>
                                             <td>
-                                                <span>{{item.seat}}</span>
+                                                <span>{{item.workNum}}</span>
                                             </td>
                                             <td>
                                                 <span v-if="item.callLastsTime">{{item.callLastsTime}}</span>
@@ -465,15 +465,15 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="tabs_panels.html#collapseFive" class="" aria-expanded="true">坐席明细</a>
+                                                   href="tabs_panels.html#collapseFive" class="" aria-expanded="true">工号明细</a>
                                             </h4>
                                         </div>
                                         <div id="collapseFive" class="panel-collapse collapse" aria-expanded="false"
                                              style="height: 0px;">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <button class="btn btn-primary" v-on:click="exportSeatAnswers()">
-                                                        坐席明细
+                                                    <button class="btn btn-primary" v-on:click="exportworkNumAnswers()">
+                                                        工号明细
                                                     </button>
                                                 </div>
                                             </div>
@@ -988,8 +988,8 @@
 
 
             },
-            exportSeatAnswers() {
-                window.open('/survey/export/survey/seat/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));
+            exportworkNumAnswers() {
+                window.open('/survey/export/survey/workNum/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));
             },
             exportAnswers() {
                 window.open('/survey/export/survey/answers/' + this.survey.id + '?access_token=' + sessionStorage.getItem('access_token'));

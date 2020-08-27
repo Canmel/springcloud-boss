@@ -109,20 +109,20 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public HSSFWorkbook seat(Integer id) {
+    public HSSFWorkbook workNum(Integer id) {
         HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet = wb.createSheet("坐席收集样本统计");
+        HSSFSheet sheet = wb.createSheet("工号收集样本统计");
         HSSFCellStyle headStyle = createHeadStyle(wb);
         HSSFCellStyle style = createCellStyle(wb);
         List<Object> v = new ArrayList<>();
-        v.add("坐席");
+        v.add("工号");
         v.add("问题");
         v.add("样本");
         fillRow(sheet.createRow(0), headStyle, v);
-        List<Map<String, Object>> result = zsAnswerItemService.selectSeatTotal(id);
+        List<Map<String, Object>> result = zsAnswerItemService.selectWorkNumTotal(id);
         for (Map<String, Object> map : result) {
             List<Object> rowValue = new ArrayList<>();
-            rowValue.add(map.get("seat"));
+            rowValue.add(map.get("work_num"));
             rowValue.add(map.get("questionNum"));
             rowValue.add(map.get("surveyNum"));
             fillRow(sheet.createRow(result.indexOf(map) + 1), style, rowValue);
@@ -141,7 +141,7 @@ public class ExportServiceImpl implements ExportService {
         List<Object> headValues = new ArrayList<>();
         headValues.add("时间");
         headValues.add("电话");
-        headValues.add("坐席");
+        headValues.add("工号");
         headValues.add("收集开始时间");
         headValues.add("收集结束时间");
         headValues.add("通话时长");
@@ -168,7 +168,7 @@ public class ExportServiceImpl implements ExportService {
             HSSFRow row = sheet.createRow(1 + i);
             fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("seat"));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("work_num"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
