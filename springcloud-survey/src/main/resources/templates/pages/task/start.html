@@ -132,6 +132,7 @@
                                                     <p><i class="fa fa-map-marker"></i> {{profile.address}}</p>
                                                 </a>
                                                     <label><a href="profile.html"/>
+                                                        工号：{{user.workNum}}<br>
                                                         E-mail:{{profile.email}}<br>
                                                         <abbr title="Phone">Tel:</abbr> {{profile.mobile}}<br>
                                                         <abbr title="坐席号">坐席号:</abbr> {{connectInfo.seatNum ? connectInfo.seatNum : "正在获取..."}}<br>
@@ -534,6 +535,7 @@
             },
             socketServer: 0,
             profile: {},
+            user:{},
             zg: null,
             config: {
                 "appid": 2696647174,    // 必填，应用id，请从 即构管理控制台-https://console.zego.im/acount/register 获取
@@ -741,7 +743,13 @@
             leaveRoom() {
                 $('#previewContext').hide();
                 leaveRoom();
-            }
+            },
+            loadUser(){
+                var that = this;
+                AJAX.GET('/system/sysUser/'+that.user.userid, {}, function (resp) {
+                    that.user = resp.data;
+                });
+            },
         },
         created: function () {
             this.initZg();
@@ -751,6 +759,9 @@
             this.loadWorkShift();
             this.loadQuestions();
             this.loadMe();
+            var userJsonStr = sessionStorage.getItem('user');
+            this.user = JSON.parse(userJsonStr);
+            this.loadUser();
             $ctiserver = this;
             websocket.onopen = function (event) {
                 $ctiserver.cti.server = 1
