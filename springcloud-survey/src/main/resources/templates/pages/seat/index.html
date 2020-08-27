@@ -15,7 +15,7 @@
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
+                        <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
                                v-model="pageInfo.seatNum"> <span
                             class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
@@ -32,6 +32,7 @@
                         <th>坐席密码</th>
                         <th>描述信息</th>
                         <th>用户</th>
+                        <th>工号</th>
                         <th>是否在用</th>
                         <th>操作</th>
                     </tr>
@@ -43,6 +44,7 @@
                         <td>{{item.password}}</td>
                         <td>{{item.description}}</td>
                         <td>{{item.user ? item.user.username : ''}}</td>
+                        <td>{{item.workNum}}</td>
                         <td>
                             <span class="label-restore label" v-if="item.state && item.state.code === 0">否</span>
                             <span class="label-success label" v-if="item.state && item.state.code === 1">是</span></td>

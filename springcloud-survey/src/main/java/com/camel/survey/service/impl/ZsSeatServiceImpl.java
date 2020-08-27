@@ -110,6 +110,7 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
                 ZsSeat seat = selectList(wrapper1).get(0);
                 seat.setState(ZsYesOrNo.YES);
                 seat.setUid(uid);
+                seat.setWorkNum((seat.getUid()+1000)+"");
                 updateById(seat);
                 mapper.assignSeat(seat.getSeatNum(),seat.getUid());
             }
@@ -138,6 +139,7 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
         }
         seat.setState(ZsYesOrNo.YES);
         seat.setUid(entity.getUid());
+        seat.setWorkNum((seat.getUid()+1000)+"");
         seat.setPassword(entity.getPassword());
         if (updateById(seat)) {
             return ResultUtil.success("分配成功");
