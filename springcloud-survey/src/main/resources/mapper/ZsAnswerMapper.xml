@@ -65,7 +65,7 @@
 
     <select id="list" resultMap="BaseResultMap">
         select
-        info.id cdr_id,
+        info.id cdr_id, answer.label,
         answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at,
         answer.creator, answer.valid, answer.task_id, answer.review_spent, answer.work_num, answer.reviewer_name,
         answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,

@@ -106,29 +106,62 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     private String taskId;
 
+    /**
+     * 任务状态
+     */
     private ZsTaskStatus taskStatus;
 
+    /**
+     * CDR信息
+     */
     @TableField(exist = false)
     private ZsCdrinfo cdrinfo;
 
+    /**
+     * 开始时间
+     */
     private String startTime;
 
+    /**
+     * 时长
+     */
     private String callLastsTime;
 
+    /**
+     * 结束时间
+     */
     private String endTime;
 
+    /**
+     * 复核意见
+     */
     private String reviewMsg;
 
+    /**
+     * 复核结果
+     */
     private Integer reviewStatus;
 
+    /**
+     * 复核人
+     */
     @TableField(exist = false)
     private SysUser reviewer;
 
+    /**
+     * 复核人ID
+     */
     @TableField("reviewer")
     private Integer reviewerId;
 
+    /**
+     * 复核人名称
+     */
     private String reviewerName;
 
+    /**
+     * 复核时间
+     */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date reviewerAt;
 
@@ -141,7 +174,15 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
 
     private Integer reviewSpent;
 
+    /**
+     * 工号
+     */
     private String workNum;
+
+    /**
+     * 标签
+     */
+    public String label;
 
     public ZsAnswer() {
     }

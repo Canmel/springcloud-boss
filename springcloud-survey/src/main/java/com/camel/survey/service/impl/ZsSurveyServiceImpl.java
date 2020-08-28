@@ -309,6 +309,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Result valid(ZsAnswerSave zsAnswerSave) {
         ZsSurvey survey = selectById(zsAnswerSave.getSurveyId());
+        // 是否满配额
         if (survey.isFull()) {
             throw new SurveyNotValidException("我们的（" + survey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
         }

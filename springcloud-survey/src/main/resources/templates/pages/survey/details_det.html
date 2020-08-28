@@ -240,7 +240,7 @@
                                         <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
                                             class="input-group-btn">
                                             <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
-                                            <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出</button>
+                                            <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出录音</button>
                                             <button type="button" class="btn btn-warning btn-sm" v-on:click="checkRecord()">复核</button>
                                     </span>
                                     </div>
@@ -252,6 +252,7 @@
                                         <thead>
                                         <tr>
                                             <th>序号</th>
+                                            <th>标签</th>
                                             <th>收集时间</th>
                                             <th>填写人(手机号)</th>
                                             <th>工号</th>
@@ -268,6 +269,9 @@
                                         <tbody>
                                         <tr v-for="(item, index) in answers">
                                             <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                            <td>
+                                                <span>{{item.label}}</span>
+                                            </td>
                                             <td>
                                                 <span>{{item.createdAt}}</span>
                                             </td>

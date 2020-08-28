@@ -236,6 +236,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
         zsAnswerWrapper.eq("survey_id", zsAnswerSave.getSurveyId());
+        if(!ObjectUtils.isEmpty(zsAnswerSave.getLabel())) {
+            zsAnswerWrapper.eq("label", zsAnswerSave.getLabel());
+        }
         return answerService.selectCount(zsAnswerWrapper) > 0;
     }
 }
