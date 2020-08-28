@@ -125,12 +125,12 @@
     </select>
 
     <select id="selectExport" resultType="hashmap">
-            select a.valid, a.seat,a.creator,a.created_at,a.start_time,a.end_time,a.call_lasts_time,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers, GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id
+            select a.valid, a.work_num,a.creator,a.created_at,a.start_time,a.end_time,a.call_lasts_time,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers, GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id
     </select>
 
-    <select id="selectSeatTotal" resultType="hashmap">
+    <select id="selectWorkNumTotal" resultType="hashmap">
         SELECT
-            a.seat,
+            a.work_num,
             count( DISTINCT a.id, ai.question_id ) questionNum,
             COUNT( DISTINCT a.id ) surveyNum
         FROM
@@ -140,7 +140,7 @@
             a.`status` = 1 and a.valid = 1
             AND a.survey_id = #{id}
         GROUP BY
-            a.seat;
+            a.work_num;
     </select>
 
     <update id="chageInvalidByAnswer">

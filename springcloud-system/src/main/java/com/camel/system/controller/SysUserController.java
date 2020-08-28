@@ -77,7 +77,13 @@ public class SysUserController extends BaseCommonController {
 
     @PostMapping
     public Result save(@RequestBody SysUser sysUser) {
-        return super.save(sysUser);
+        super.save(sysUser);
+        Wrapper<SysUser> userWrapper = new EntityWrapper<>();
+        userWrapper.eq("id_num", sysUser.getIdNum());
+        SysUser current = service.selectOne(userWrapper);
+        current.setWorkNum((current.getUid()+1000)+"");
+        super.update(current);
+        return ResultUtil.success("新增成功");
     }
 
     @PostMapping("/interviewer")
@@ -188,6 +194,7 @@ public class SysUserController extends BaseCommonController {
             return;
         }
         sysUser.setUid(current.getUid());
+        sysUser.setWorkNum((sysUser.getUid()+1000)+"");
         service.updateById(sysUser);
         sysUserCacheConfig.initSysUsers();
     }

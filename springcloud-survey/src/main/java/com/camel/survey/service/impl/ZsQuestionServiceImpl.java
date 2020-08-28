@@ -151,7 +151,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         ZsSeat seat = zsSeatMapper.searchBySeatNum(zsAnswerSave.getSeat());
         if(!ObjectUtils.isEmpty(user)) {
             zsAnswer.setUid(user.getUid());
-
+            zsAnswer.setWorkNum((zsAnswer.getUid()+1000)+"");
         }else if(!ObjectUtils.isEmpty(seat)){
             zsAnswer.setUid(seat.getUid());
         }

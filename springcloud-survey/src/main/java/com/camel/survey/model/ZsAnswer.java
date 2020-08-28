@@ -141,6 +141,8 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
 
     private Integer reviewSpent;
 
+    private String workNum;
+
     public ZsAnswer() {
     }
 

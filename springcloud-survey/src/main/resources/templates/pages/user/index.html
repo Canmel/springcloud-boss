@@ -11,13 +11,25 @@
         </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-sm-6">
-                    <input type="text" placeholder="请输入用户坐席号" class="input-sm form-control search-input"
+                <div class="col-sm-2">
+                    <input type="text" placeholder="请输入工号" class="input-sm form-control search-input"
+                           v-model="pageInfo.workNum">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
+                           v-model="pageInfo.mobile">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" placeholder="请输入身份证" class="input-sm form-control search-input"
+                           v-model="pageInfo.idNum">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
                            v-model="pageInfo.seatNum">
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入用户名" class="input-sm form-control search-input"
+                        <input type="text" placeholder="请输入姓名" class="input-sm form-control search-input"
                                v-model="pageInfo.username"> <span
                             class="input-group-btn">
                                             <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button></span>
@@ -35,6 +47,7 @@
                         <th>昵称</th>
                         <th>邮箱</th>
                         <th>电话</th>
+                        <th>工号</th>
                         <th>坐席号</th>
                         <th>操作</th>
                     </tr>
@@ -47,6 +60,7 @@
                         <td>{{item.nickname}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.mobile}}</td>
+                        <td>{{item.workNum}}</td>
                         <td>{{item.seatNum}}</td>
 <!--                        <td>{{item.gmtCreate | formatDate}}</td>-->
                         <td>
@@ -183,12 +197,15 @@
                 $("#seatModal").modal("show");
             },
             saveSeat() {
+                let that=this;
                 AJAX.POST("zsSeat/manualAssign", this.seat, function (resp) {
                     $("#seatModal").modal("hide");
                     $("#seatForm")[0].reset();
-                    toastr.success(resp.msg);
-                })
-                AJAX.POST_JSON('/system/sysUser/updateSeat',this.seat, function (resp) {
+                    if(resp){
+                        toastr.success(resp.msg);
+                        AJAX.POST_JSON('/system/sysUser/updateSeat',that.seat, function (resp) {
+                        })
+                    }
                 })
                 this.pagequery();
             },

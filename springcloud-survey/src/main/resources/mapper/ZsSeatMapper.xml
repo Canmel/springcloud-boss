@@ -10,11 +10,12 @@
         <result column="password" property="password" />
         <result column="description" property="description" />
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="work_num" property="workNum" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, seat_num, password, description,state
+        id, uid, seat_num, password, description,state,work_num
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -49,7 +50,8 @@
         zs_seat
         set
         uid = null,
-        state = 0
+        state = 0,
+        work_num = null
         where id = #{id}
     </update>
 
@@ -66,7 +68,8 @@
         zs_seat
         set
         uid = null,
-        state = 0
+        state = 0,
+        work_num = null
         where uid = #{userId}
     </update>
 </mapper>

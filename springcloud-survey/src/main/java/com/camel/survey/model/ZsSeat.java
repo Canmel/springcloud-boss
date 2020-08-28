@@ -49,6 +49,8 @@ public class ZsSeat extends BasePaginationEntity {
 
     private ZsYesOrNo state;
 
+    private String workNum;
+
     @Override
     public String toString() {
         return "ZsSeat{" +

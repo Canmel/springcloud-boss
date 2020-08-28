@@ -113,10 +113,10 @@ public class ExportController {
      * @param response
      * @return
      */
-    @GetMapping("/survey/seat/{id}")
+    @GetMapping("/survey/workNum/{id}")
     public void seat(@PathVariable Integer id, HttpServletResponse response) {
         ZsSurvey survey = zsSurveyService.selectById(id);
-        ExportExcelUtils.export(service.seat(id), "坐席收集统计_" + survey.getName(), response);
+        ExportExcelUtils.export(service.workNum(id), "工号收集统计_" + survey.getName(), response);
     }
 
 }
