@@ -21,6 +21,6 @@ public interface ZsPhoneInformationService extends IService<ZsPhoneInformation> 
 
     boolean  importPhoneInformation(MultipartFile file, Integer surveyId);
 
-    List<ZsPhoneInformation> selectByMobileAndSurvey(ZsPhoneInformation zsPhoneInformation);
+    ZsPhoneInformation selectByMobileAndSurvey(ZsPhoneInformation zsPhoneInformation);
 
 }

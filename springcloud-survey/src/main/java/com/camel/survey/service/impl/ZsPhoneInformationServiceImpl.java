@@ -62,13 +62,13 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
     }
 
     @Override
-    public List<ZsPhoneInformation> selectByMobileAndSurvey(ZsPhoneInformation zsPhoneInformation) {
+    public ZsPhoneInformation selectByMobileAndSurvey(ZsPhoneInformation zsPhoneInformation) {
         Wrapper zsPhoneInformationWrapper = new EntityWrapper<>();
         zsPhoneInformationWrapper.eq("survey_id", zsPhoneInformation.getSurveyId());
         zsPhoneInformationWrapper.eq("mobile", zsPhoneInformation.getMobile());
         zsPhoneInformationWrapper.eq("status", 1);
-//        zsPhoneInformationWrapper.orderDesc(CollectionUtils.arrayToList(new String[]{"created_at"}));
-        return selectList(zsPhoneInformationWrapper);
+        zsPhoneInformationWrapper.orderDesc(CollectionUtils.arrayToList(new String[]{"created_at"}));
+        return selectOne(zsPhoneInformationWrapper);
     }
 
 }
