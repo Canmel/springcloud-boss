@@ -57,6 +57,7 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
             pi.setSurveyId(surveyId);
             pi.setCreatorId(user.getUid());
         });
+        mapper.deleteBySurveyId(surveyId);
         return insertBatch(zsPhoneInformations);
     }
 
