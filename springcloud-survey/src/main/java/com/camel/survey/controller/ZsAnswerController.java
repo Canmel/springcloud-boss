@@ -116,6 +116,16 @@ public class ZsAnswerController extends BaseCommonController {
     }
 
     /**
+     * 获取详情///
+     * @param id
+     * @return
+     */
+    @GetMapping("/full/{id}")
+    public Result full(@PathVariable Integer id) {
+        return ResultUtil.success(service.details(id));
+    }
+
+    /**
      * 获取详情
      * @param id
      * @return

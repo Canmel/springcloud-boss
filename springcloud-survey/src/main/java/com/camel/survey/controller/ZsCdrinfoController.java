@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -86,23 +87,27 @@ public class ZsCdrinfoController extends BaseCommonController {
                         service.insert(cdr);
                     } else {
                         String[] uuids = cdr.getUuids().split(",");
+                        List<ZsAnswer> zsAnswers = new ArrayList<>();
                         for (int j = 0; j < uuids.length; j++) {
-                            ZsAnswer zsAnswer = answerService.selectByAgentUuid(uuids[j]);
-                            if (!ObjectUtils.isEmpty(zsAnswer)) {
-                                answer.setId(zsAnswer.getId());
+                            zsAnswers = answerService.selectByAgentUuid(uuids[j]);
+                            if (!CollectionUtils.isEmpty(zsAnswers)) {
                                 cdr.setId(uuids[j]);
+                            }
+                        }
+                        for (ZsAnswer zsAnswer: zsAnswers) {
+                            answer.setId(zsAnswer.getId());
+                            answer.setStartTime(cdr.getStart_time());
+                            answer.setCallLastsTime(cdr.getCall_lasts_time());
+                            answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
+                            if (answer.getId() != null) {
+                                answerService.updateById(answer);
                             }
                         }
                         if (ObjectUtils.isEmpty(cdr.getId())) {
                             cdr.setId(UUID.randomUUID().toString());
                         }
                         service.insert(cdr);
-                        answer.setStartTime(cdr.getStart_time());
-                        answer.setCallLastsTime(cdr.getCall_lasts_time());
-                        answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
-                        if (answer.getId() != null) {
-                            answerService.updateById(answer);
-                        }
+
                     }
 
                 }

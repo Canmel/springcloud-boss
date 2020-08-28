@@ -48,6 +48,13 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
      */
     ZsAnswer details(Integer id);
 
+    /**
+     * 获取答案详情
+     * @param id
+     * @return
+     */
+    ZsAnswer full(Integer id);
+
     ZsAnswer details(String agent);
 
     Result invalid(Integer id);
@@ -56,7 +63,7 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
 
     List<ZsAnswer> selectAllWithConversation(Integer id);
 
-    ZsAnswer selectByAgentUuid(String agentUuid);
+    List<ZsAnswer> selectByAgentUuid(String agentUuid);
 
     boolean review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent);
 

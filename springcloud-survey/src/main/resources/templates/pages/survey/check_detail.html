@@ -1044,7 +1044,8 @@
             },
             loadAnswer(item) {
                 let that = this;
-                AJAX.GET('zsAnswer/agent/' + item.agentUUID, {}, function (resp) {
+                console.log(item);
+                AJAX.GET('zsAnswer/' + item.id, {}, function (resp) {
                     that.zsAnswer = resp.data;
                     that.questions = resp.data.items;
                     that.currentQId = that.questions[0].questionId;

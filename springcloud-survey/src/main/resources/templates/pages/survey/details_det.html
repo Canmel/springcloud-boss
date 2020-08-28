@@ -254,7 +254,7 @@
                                             <th>序号</th>
                                             <th>标签</th>
                                             <th>收集时间</th>
-                                            <th>填写人(手机号)</th>
+                                            <th>被访者</th>
                                             <th>工号</th>
                                             <th>通话时间</th>
                                             <th>有效</th>
@@ -270,7 +270,7 @@
                                         <tr v-for="(item, index) in answers">
                                             <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
                                             <td>
-                                                <span>{{item.label}}</span>
+                                                <span class="label label-info label-important">{{item.label}}</span>
                                             </td>
                                             <td>
                                                 <span>{{item.createdAt}}</span>

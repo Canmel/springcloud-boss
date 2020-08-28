@@ -26,14 +26,15 @@
         <result column="uid" property="uid" />
         <result column="checked" property="checked" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="cdr_id" property="cdrinfo.id"></result>
-        <result column="reviewer_at" property="reviewerAt"></result>
-        <result column="review_spent" property="reviewSpent"></result>
+        <result column="cdr_id" property="cdrinfo.id" />
+        <result column="reviewer_at" property="reviewerAt" />
+        <result column="review_spent" property="reviewSpent" />
+        <result column="label" property="label" />
         <association property="user" javaType="com.camel.core.model.SysUser">
-            <result property="uid" column="uid" jdbcType="INTEGER"></result>
+            <result property="uid" column="uid" jdbcType="INTEGER" />
         </association>
         <association property="reviewer" javaType="com.camel.core.model.SysUser">
-            <id property="uid" column="reviewer" jdbcType="INTEGER"></id>
+            <id property="uid" column="reviewer" jdbcType="INTEGER" />
         </association>
     </resultMap>
 
@@ -51,6 +52,7 @@
         <result column="call_lasts_time" property="callLastsTime"/>
         <result column="checked" property="checked" />
         <result column="work_num" property="workNum" />
+        <result column="label" property="label" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
         </collection>
@@ -189,6 +191,18 @@
         <where>
             status = 1
             and agent_UUID = #{agent}
+        </where>
+        limit 1
+    </select>
+
+    <select id="full" resultMap="BaseFullResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_answer
+        <where>
+            status = 1
+            and id = #{id}
         </where>
     </select>
 

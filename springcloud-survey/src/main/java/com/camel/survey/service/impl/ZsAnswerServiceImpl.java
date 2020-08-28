@@ -106,6 +106,11 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     }
 
     @Override
+    public ZsAnswer full(Integer id) {
+        return mapper.full(id);
+    }
+
+    @Override
     public ZsAnswer details(String agent) {
         return mapper.detailsA(agent);
     }
@@ -221,7 +226,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     }
 
     @Override
-    public ZsAnswer selectByAgentUuid(String agentUuid) {
+    public List<ZsAnswer> selectByAgentUuid(String agentUuid) {
         return mapper.selectByAgentUuid(agentUuid);
     }
 
