@@ -22,6 +22,7 @@
         <result column="review_msg" property="reviewMsg" />
         <result column="reviewer" property="reviewerId" />
         <result column="reviewer_name" property="reviewerName" />
+        <result column="work_num" property="workNum" />
         <result column="uid" property="uid" />
         <result column="checked" property="checked" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
@@ -47,6 +48,7 @@
         <result column="end_time" property="endTime"/>
         <result column="call_lasts_time" property="callLastsTime"/>
         <result column="checked" property="checked" />
+        <result column="work_num" property="workNum" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
         </collection>
@@ -56,14 +58,14 @@
     <sql id="Base_Column_List">
         id, survey_id, agent_UUID, status, record, seat, created_at, creator,
          valid, task_id, task_status,start_time,end_time,call_lasts_time,
-         review_status, review_msg, reviewer,checked
+         review_status, review_msg, reviewer,checked,reviewer_name,work_num
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
         info.id cdr_id,
         answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at, answer.creator, answer.valid, answer.task_id, answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,
-        answer.review_status, answer.review_msg, answer.reviewer,answer.checked
+        answer.review_status, answer.review_msg, answer.reviewer,answer.checked,answer.reviewer_name,answer.work_num
         from
         zs_answer answer
         LEFT JOIN zs_cdrinfo info ON info.id = answer.agent_UUID
@@ -101,6 +103,9 @@
             </if>
             <if test="reviewerName != null">
                 and answer.reviewer_name like concat('%', #{reviewerName}, '%')
+            </if>
+            <if test="workNum != null">
+                and answer.work_num like concat('%', #{workNum}, '%')
             </if>
         </where>
     </select>

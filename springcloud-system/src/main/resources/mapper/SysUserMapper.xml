@@ -22,6 +22,7 @@
         <result column="address" property="address" jdbcType="VARCHAR"></result>
         <result column="remark" property="remark" jdbcType="VARCHAR"></result>
         <result column="seat_num" property="seatNum" jdbcType="VARCHAR"></result>
+        <result column="work_num" property="workNum" jdbcType="VARCHAR"></result>
         <collection property="roleIds" fetchType="eager" column="uid"
                     select="findRoleIdsByUserId"></collection>
     </resultMap>
@@ -46,7 +47,8 @@
         sys_user.org_name,
         sys_user.address,
         sys_user.remark,
-        sys_user.seat_num
+        sys_user.seat_num,
+        sys_user.work_num
     </sql>
 
     <select id="findRoleIdsByUserId" resultType="integer">
@@ -63,6 +65,9 @@
             <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%')</if>
             <if test="username !=null and username != ''">and sys_user.username like CONCAT('%', #{username}, '%')</if>
             <if test="seatNum !=null and seatNum != ''">and sys_user.seat_num like CONCAT('%', #{seatNum}, '%')</if>
+            <if test="workNum !=null and workNum != ''">and sys_user.work_num like CONCAT('%', #{workNum}, '%')</if>
+            <if test="idNum !=null and idNum != ''">and sys_user.id_num like CONCAT('%', #{idNum}, '%')</if>
+            <if test="mobile !=null and mobile != ''">and sys_user.mobile like CONCAT('%', #{mobile}, '%')</if>
         </where>
         ORDER BY sys_user.uid
     </select>

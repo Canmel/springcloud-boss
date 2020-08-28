@@ -69,19 +69,11 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
 
     @Override
     public Result saveWorkShift(ZsWorkShift entity) {
-        List<ZsExam> zsExams = zsExamMapper.listBySurveyId(entity.getSurveyId());
-        if (CollectionUtils.isEmpty(zsExams)) {
-            throw new SourceDataNotValidException("您选择了一条没有限制的问卷，这是一条不正确的数据，请联系管理员");
-        }
         return ResultUtil.success("新建班次成功！",mapper.insert(entity));
     }
 
     @Override
     public Result updateWorkShift(ZsWorkShift entity) {
-        List<ZsExam> zsExams = zsExamMapper.listBySurveyId(entity.getSurveyId());
-        if (CollectionUtils.isEmpty(zsExams)) {
-            throw new SourceDataNotValidException("您选择了一条没有限制的问卷，这是一条不正确的数据，请联系管理员");
-        }
         return ResultUtil.success("修改班次成功",mapper.updateById(entity));
     }
 
