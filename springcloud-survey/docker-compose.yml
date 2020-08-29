@@ -8,6 +8,9 @@ services:
     privileged: true
     restart: always
     tty: true
+    volumes:
+      - /etc/timezone/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
     environment:
       APPLICATION_IP: 192.168.0.180
       DATABASE_IP: 192.168.0.180
