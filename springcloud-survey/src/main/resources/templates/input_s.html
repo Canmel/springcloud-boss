@@ -274,6 +274,9 @@
                 if(text!=null){
                     let that = this;
                     let filterParams = that.pageParams[this.userParamsIndex];
+                    if(!filterParams) {
+                        return  text;
+                    }
                     for(let i=0;i<Object.keys(filterParams).length;i++){
                         let str="{"+Object.keys(filterParams)[i]+"}";
                         if(text.includes(str)){
