@@ -547,7 +547,7 @@
                     record: this.getParams('record'),
                     seat: this.getParams('seat'),
                     agentUUID: this.getParams('agentUUID'),
-                    label: currentParams['type']
+                    label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null
                 }, function (resp) {
                     if(that.pageParams.length === that.userParamsIndex + 1) {
                         $("#theForm").hide();
