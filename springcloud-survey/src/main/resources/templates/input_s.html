@@ -549,7 +549,7 @@
                     agentUUID: this.getParams('agentUUID'),
                     label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null
                 }, function (resp) {
-                    if(that.pageParams.length === that.userParamsIndex + 1) {
+                    if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         $("#theForm").hide();
                         $("#end").show();
                         parent.surveyStatus = 1;
