@@ -89,8 +89,9 @@ public class ZsCdrinfoController extends BaseCommonController {
                         String[] uuids = cdr.getUuids().split(",");
                         List<ZsAnswer> zsAnswers = new ArrayList<>();
                         for (int j = 0; j < uuids.length; j++) {
-                            zsAnswers = answerService.selectByAgentUuid(uuids[j]);
-                            if (!CollectionUtils.isEmpty(zsAnswers)) {
+                            List<ZsAnswer> tmpAnswers = answerService.selectByAgentUuid(uuids[j]);
+                            if(!CollectionUtils.isEmpty(tmpAnswers)) {
+                                zsAnswers = tmpAnswers;
                                 cdr.setId(uuids[j]);
                             }
                         }
