@@ -73,7 +73,6 @@
         </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
-                ==============={{current}}
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
                     <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span style="font-size: 12px;"
