@@ -73,7 +73,6 @@
         </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
-              ==========================={{current}}
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
                     <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span style="font-size: 12px;"
@@ -313,6 +312,7 @@
                                 that.showSubmit = false;
                                 that.userParamsIndex++;
                                 that.validResult = false;
+                                that.finalData = [];
                             }
                         }
 
@@ -331,14 +331,15 @@
                             that.showSubmit = false;
                             that.userParamsIndex++;
                             that.validResult = false;
+                            that.finalData = [];
                         }
 
                     }
 
                     if (checked && !isNaN(target) && target > 1000) {
+                        that.tag = 0; //提前结束标签
                         that.submitImmediately();
                         if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
-                            that.tag = 0; //提前结束标签
                         }else{
                             $("#theForm")[0].reset();
                             that.current = 1;
@@ -349,6 +350,9 @@
                         }
                     }
                 });
+                if(!this.finalData.length>0) {
+                    return;
+                }
                 AJAX.POST_JSON('zsSurvey/valid', {
                     zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),
@@ -369,6 +373,7 @@
                             that.showSubmit = false;
                             that.userParamsIndex++;
                             that.validResult = false;
+                            that.finalData = [];
                         }
 
                     }
@@ -607,6 +612,7 @@
                         that.nextIndex = 1;
                         that.showSubmit = false;
                         that.userParamsIndex++;
+                        that.finalData = [];
                     }
                 });
             },
@@ -652,6 +658,7 @@
                         that.current = 1;
                         that.nextIndex = 1;
                         that.showSubmit = false;
+                        that.finalData = [];
                     }
                 });
             },
