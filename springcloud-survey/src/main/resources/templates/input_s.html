@@ -335,9 +335,9 @@
                     }
 
                     if (checked && !isNaN(target) && target > 1000) {
+                        that.submit();
                         if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                             that.tag = 0; //提前结束标签
-                            that.submit();
                         }else{
                             $("#theForm")[0].reset();
                             that.current = 1;
