@@ -90,6 +90,11 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     private ZsYesOrNo valid;
 
     /**
+     * 无效原因
+     */
+    private String inValidMsg;
+
+    /**
      * 开始时间，用于查询
      */
     @TableField(exist = false)

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.survey.model.ZsWork;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -51,4 +52,6 @@ public interface ZsSurveyMapper extends BaseMapper<ZsSurvey> {
     Integer avgTime(Integer id);
 
     List<ZsWork> checkAnswers(Integer surveyId);
+
+    Map<String, Object> selectTotal(Integer surveyId, Integer id);
 }

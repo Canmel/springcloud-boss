@@ -162,4 +162,12 @@
             uid,
             seat
     </select>
+
+    <select id="selectTotal" resultType="hashmap">
+        select
+            COUNT(1) try_num,
+            IFNULL(SUM(case valid WHEN 1 THEN 1 else 0 END), 0) success_num,
+            IFNULL(SUM(case valid WHEN 0 THEN 1 else 0 END), 0) invalid_num
+        from zs_answer where survey_id = #{surveyId} and uid = #{id};
+    </select>
 </mapper>

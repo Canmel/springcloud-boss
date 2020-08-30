@@ -30,6 +30,7 @@
         <result column="reviewer_at" property="reviewerAt" />
         <result column="review_spent" property="reviewSpent" />
         <result column="label" property="label" />
+        <result column="in_valid_msg" property="inValidMsg" />
         <association property="user" javaType="com.camel.core.model.SysUser">
             <result property="uid" column="uid" jdbcType="INTEGER" />
         </association>
@@ -53,6 +54,7 @@
         <result column="checked" property="checked" />
         <result column="work_num" property="workNum" />
         <result column="label" property="label" />
+        <result column="in_valid_msg" property="inValidMsg" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
         </collection>
@@ -62,12 +64,12 @@
     <sql id="Base_Column_List">
         id, survey_id, agent_UUID, status, record, seat, created_at, creator,
          valid, task_id, task_status,start_time,end_time,call_lasts_time,
-         review_status, review_msg, reviewer,checked,reviewer_name,work_num
+         review_status, review_msg, reviewer,checked,reviewer_name,work_num, in_valid_msg
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-        info.id cdr_id, answer.label,
+        info.id cdr_id, answer.label, answer.in_valid_msg,
         answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at,
         answer.creator, answer.valid, answer.task_id, answer.review_spent, answer.work_num, answer.reviewer_name,
         answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,
