@@ -73,6 +73,7 @@
         </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
+              ==========================={{current}}
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
                     <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span style="font-size: 12px;"
@@ -335,7 +336,7 @@
                     }
 
                     if (checked && !isNaN(target) && target > 1000) {
-                        that.submit();
+                        that.submitImmediately();
                         if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                             that.tag = 0; //提前结束标签
                         }else{
@@ -606,6 +607,51 @@
                         that.nextIndex = 1;
                         that.showSubmit = false;
                         that.userParamsIndex++;
+                    }
+                });
+            },
+            submitImmediately(question, event) {
+                var that = this;
+                if (!this.validateForm()) {
+                    alert('请完成表单');
+                    return false;
+                }
+                if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
+                    var resultStr = "";
+                    if (question.maxSelect) {
+                        resultStr += '最多只能选择' + question.maxSelect + '条';
+                    }
+                    if (question.minSelect) {
+                        resultStr += '最少选择' + question.minSelect + '条';
+                    }
+                    alert(resultStr);
+                    return;
+                }
+                if(this.tag==1){
+                    this.loadFinalData();
+                }
+                let currentParams = this.pageParams[this.userParamsIndex];
+
+                AJAX.POST_JSON('zsQuestion/answer', {
+                    zsAnswerItemSaves: this.finalData,
+                    surveyId: this.getParams('surveyId'),
+                    phone: this.getParams('phone'),
+                    record: this.getParams('record'),
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID'),
+                    label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null
+                }, function (resp) {
+                    if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        $("#theForm").hide();
+                        $("#end").show();
+                        parent.surveyStatus = 1;
+                        that.survey.endShow = resp.msg;
+                        return false;
+                    } else {
+                        $("#theForm")[0].reset();
+                        that.current = 1;
+                        that.nextIndex = 1;
+                        that.showSubmit = false;
                     }
                 });
             },
