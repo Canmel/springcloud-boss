@@ -183,6 +183,11 @@ public class SysUserController extends BaseCommonController {
 
         if(ObjectUtils.isEmpty(sysUser.getUid())) {
             insertNewUser(sysUser);
+            Wrapper<SysUser> userWrapper1 = new EntityWrapper<>();
+            userWrapper1.eq("id_num", sysUser.getIdNum());
+            SysUser current1 = service.selectOne(userWrapper1);
+            current1.setWorkNum((current1.getUid()+1000)+"");
+            service.updateById(current1);
             return;
         }
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
@@ -191,6 +196,11 @@ public class SysUserController extends BaseCommonController {
         if(ObjectUtils.isEmpty(current)) {
             sysUser.setUid(null);
             insertNewUser(sysUser);
+            Wrapper<SysUser> userWrapper1 = new EntityWrapper<>();
+            userWrapper1.eq("id_num", sysUser.getIdNum());
+            SysUser current1 = service.selectOne(userWrapper1);
+            current1.setWorkNum((current1.getUid()+1000)+"");
+            service.updateById(current1);
             return;
         }
         sysUser.setUid(current.getUid());
