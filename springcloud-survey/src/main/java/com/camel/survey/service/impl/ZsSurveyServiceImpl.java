@@ -20,6 +20,7 @@ import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.ZsAnswerSave;
+import com.camel.survey.vo.ZsDynamicView;
 import com.camel.survey.vo.ZsSendSms;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -309,6 +308,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Result valid(ZsAnswerSave zsAnswerSave) {
         ZsSurvey survey = selectById(zsAnswerSave.getSurveyId());
+        // 是否满配额
         if (survey.isFull()) {
             throw new SurveyNotValidException("我们的（" + survey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
         }
@@ -442,5 +442,14 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             return ResultUtil.success("结算成功");
         }
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "结算失败");
+    }
+
+    @Override
+    public ZsSign selectTotal(Integer surveyId, Integer id, ZsSign zsDynamicView) {
+        Map<String, Object> result = mapper.selectTotal(surveyId, id);
+        zsDynamicView.setTryNum((Long) result.get("try_num"));
+        zsDynamicView.setSuccessNum((BigDecimal) result.get("success_num"));
+        zsDynamicView.setInvalidNum((BigDecimal) result.get("invalid_num"));
+        return zsDynamicView;
     }
 }

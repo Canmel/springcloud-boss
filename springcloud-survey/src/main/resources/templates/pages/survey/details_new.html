@@ -76,6 +76,10 @@
                                     <div class="col-sm-11 form-control-static">
                                         <p class="label">{{question.name}}</p>
                                         <span style="float: right;">
+                                            <span class="label label-warning fa fa-hand-o-right"
+                                                  v-on:click="questionNext(question, $event)">
+                                                <p class="fa" style="display: inline;">下一题</p>
+                                            </span>
                                             <span class="label fa fa-trash"
                                                   v-on:click="questionDelete(question, $event)">
                                                 <p class="fa" style="display: inline;">删除</p>
@@ -140,7 +144,7 @@
                                             <label>
                                                 <input type="checkbox" :value="zsoption.name">{{zsoption.name}}
                                                 <input type="text" style="width: 70px;" disabled
-                                                       v-if="zsoption.hasRemark" value="备注"/>
+                                                       v-if="zsoption.hasRemark"/>
                                             </label>
                                             <span style="float: right;">
                                              <span class="label label-danger" v-if="zsoption.ignoreNum">
@@ -363,6 +367,31 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="questionTargetModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="questionTargetModalLabel">下一题跳转设置</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">下一题</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" v-model="questionTarget">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <button class="btn btn-success" @click="questionNextChange()"><span>确定</span></button>
+                        <button class="btn btn-default" @click="hideModal('questionTargetModal')"><span>取消</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal" id="importModal" ng-controller="KisBpmChoseAssignmentCtrl">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -418,6 +447,7 @@
                 questionType: 0,
                 sattr: -1
             },
+            questionTarget: null,
             survey: null,
             selected: 0,
             selectedIndex: 0
@@ -429,6 +459,19 @@
         mounted() {
         },
         methods: {
+            questionNextChange() {
+                let options = this.getOptionsByQuestion(this.selectedQuestion.orderNum);
+                for (let i = 0; i < options.length; i++) {
+                    options[i].target = this.questionTarget;
+                }
+                this.hideModal('questionTargetModal');
+            },
+            questionNext(q, e) {
+                this.questionTarget = null;
+                this.selectedQuestion = q;
+                this.showModal('questionTargetModal');
+                e.stopPropagation();
+            },
             hasRemarkChangeHandler(o) {
                 this.selectedOption = o;
                 this.$set(this.selectedOption, 'hasRemark', o.hasRemark);

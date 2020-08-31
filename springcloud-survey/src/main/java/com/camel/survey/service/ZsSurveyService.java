@@ -5,8 +5,10 @@ import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.model.ZsSign;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.vo.ZsAnswerSave;
+import com.camel.survey.vo.ZsDynamicView;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,4 +128,6 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
     String reviewRate(Integer id);
 
     Result check(Integer id);
+
+    ZsSign selectTotal(Integer surveyId, Integer id, ZsSign zsDynamicView);
 }

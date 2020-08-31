@@ -70,6 +70,11 @@ public class ZsAnswerSave {
     public String agentUUID;
 
     /**
+     * 样本标签
+     */
+    public String label;
+
+    /**
      * 获取选项ID
      * @return
      */
@@ -86,6 +91,7 @@ public class ZsAnswerSave {
         answer.setSeat(ObjectUtils.isEmpty(this.seat) ? "0" : this.seat);
         answer.setRecord(this.record);
         answer.setAgentUUID(this.agentUUID);
+        answer.setLabel(this.label);
         return answer;
     }
 

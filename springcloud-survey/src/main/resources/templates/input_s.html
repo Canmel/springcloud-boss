@@ -166,7 +166,7 @@
                               v-on:click="previousQuestion(item, $event)">上一题</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span id="nextQuestion" v-if="!showSubmit" class="glyphicon glyphicon-arrow-right" style="font-size: 30px; cursor: pointer;"
                               v-on:click="nextQuestion(item, $event)">下一题</span>
-                        <span  v-if="showSubmit" class="submit btn btn-success" v-on:click="submit(item, $event)">提交</span>
+                        <span  v-if="showSubmit" class="submit btn btn-success" v-on:click="submit(item, $event)">{{submitText()}}</span>
                     </div>
 
                 </div>
@@ -216,20 +216,28 @@
             phoneInformation:{
                 mobile:'',
                 surveyId:'',
-                information:'',
+                information: [],
             },
-            pageParams:{},
+            pageParams:[],
             finalData:[], //存储最终zsAnswerItemSaves
             tag:1,  //问卷提交的时候判断是否提前结束,正常结束为1，提前结束为0
+            userParamsIndex: 0,
+            label: null, // 标签,不同标签可以重复收集
+            validResult: true
         },
         created: function () {
             this.loadParams();
             this.loadSurvey();
-            if(this.survey.informationTemplate!=null&&this.survey.informationTemplate!=""){
-                this.initPageParams();
-            }
+            this.initPageParams();
         },
         methods: {
+            // 逻辑出提交按钮的文字,入提交,提交并继续
+            submitText() {
+                if(this.pageParams.length === this.userParamsIndex + 1) {
+                    return '提交';
+                }
+                return '提交并继续';
+            },
             //将最新问题答案写入最终zsAnswerItemSaves
             loadFinalData(){
                 this.index.push(this.questions[this.current-1].id);
@@ -242,13 +250,21 @@
                 }
             },
             initPageParams() {
+                if(!this.survey.informationTemplate) {
+                    return false;
+                }
                 let that=this;
                 this.phoneInformation.mobile=this.getParams('phone');
                 this.phoneInformation.surveyId=this.survey.id;
                 AJAX.GET('zsPhoneInformation/selectByMobileAndSurvey' ,this.phoneInformation , function (resp) {
                     if(resp.data!=null){
-                        that.phoneInformation.information = resp.data.information;
-                        that.pageParams= JSON.parse(that.phoneInformation.information);
+                        let infos = resp.data;
+                        if(infos) {
+                            for (let i = 0; i < infos.length; i++) {
+                                that.phoneInformation.information.push(infos[i].information);
+                                that.pageParams.push(JSON.parse(infos[i].information));
+                            }
+                        }
                     }
                     else{
                         alert("被访对象数据为空，请联系管理员");
@@ -258,10 +274,14 @@
             textFilter(text){
                 if(text!=null){
                     let that = this;
-                    for(let i=0;i<Object.keys(that.pageParams).length;i++){
-                        let str="{"+Object.keys(that.pageParams)[i]+"}";
+                    let filterParams = that.pageParams[this.userParamsIndex];
+                    if(!filterParams) {
+                        return  text;
+                    }
+                    for(let i=0;i<Object.keys(filterParams).length;i++){
+                        let str="{"+Object.keys(filterParams)[i]+"}";
                         if(text.includes(str)){
-                            text=text.replace(new RegExp(str,'g'),Object.values(that.pageParams)[i]);
+                            text=text.replace(new RegExp(str,'g'),Object.values(filterParams)[i]);
                         }
                     }
                     if(text.includes("{")&&text.includes("}")){
@@ -281,23 +301,58 @@
                     if (checked && content.search("说不清") !=-1) {
                         that.unclear=that.unclear+1;
                         if(that.unclear>=that.survey.unclearCount){
-                            $("#theForm").hide();
-                            that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
-                            $("#end").show();
+                            if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                                $("#theForm").hide();
+                                that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                                $("#end").show();
+                            }else {
+                                $("#theForm")[0].reset();
+                                that.current = 1;
+                                that.nextIndex = 1;
+                                that.showSubmit = false;
+                                that.userParamsIndex++;
+                                that.validResult = false;
+                                that.finalData = [];
+                            }
                         }
+
+
                     }
                     // 选中的项目 target为数字并且小于0
                     if (checked && !isNaN(target) && target < 0) {
-                        $("#theForm").hide();
-                        that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
-                        $("#end").show();
+                        if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                            $("#theForm").hide();
+                            that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                            $("#end").show();
+                        }else{
+                            $("#theForm")[0].reset();
+                            that.current = 1;
+                            that.nextIndex = 1;
+                            that.showSubmit = false;
+                            that.userParamsIndex++;
+                            that.validResult = false;
+                            that.finalData = [];
+                        }
+
                     }
 
                     if (checked && !isNaN(target) && target > 1000) {
                         that.tag = 0; //提前结束标签
-                        that.submit();
+                        that.submitImmediately();
+                        if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        }else{
+                            $("#theForm")[0].reset();
+                            that.current = 1;
+                            that.nextIndex = 1;
+                            that.showSubmit = false;
+                            that.userParamsIndex++;
+                            that.validResult = false;
+                        }
                     }
                 });
+                if(!this.finalData.length>0) {
+                    return;
+                }
                 AJAX.POST_JSON('zsSurvey/valid', {
                     zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),
@@ -307,9 +362,20 @@
                     agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     if (resp.msg != '') {
-                        alert(resp.msg);
-                        // window.close();
-                        $("#nextQuestion").hide();
+                        if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                            alert(resp.msg);
+                            // window.close();
+                            $("#nextQuestion").hide();
+                        }else{
+                            $("#theForm")[0].reset();
+                            that.current = 1;
+                            that.nextIndex = 1;
+                            that.showSubmit = false;
+                            that.userParamsIndex++;
+                            that.validResult = false;
+                            that.finalData = [];
+                        }
+
                     }
                     return true;
                 });
@@ -409,6 +475,10 @@
                 }
                 this.loadFinalData();
                 this.validSurvey();
+                if(!this.validResult) {
+                    this.validResult = true;
+                    return ;
+                }
                 if (this.current === this.nextIndex) {
                     this.nextIndex += 1
                 }
@@ -519,23 +589,78 @@
                 if(this.tag==1){
                     this.loadFinalData();
                 }
+                let currentParams = this.pageParams[this.userParamsIndex];
+
                 AJAX.POST_JSON('zsQuestion/answer', {
                     zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),
                     phone: this.getParams('phone'),
                     record: this.getParams('record'),
                     seat: this.getParams('seat'),
-                    agentUUID: this.getParams('agentUUID')
+                    agentUUID: this.getParams('agentUUID'),
+                    label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null
                 }, function (resp) {
-                    // alert(resp.msg);
-                    $("#theForm").hide();
-                    $("#end").show();
-                    parent.surveyStatus = 1;
-                    that.survey.endShow = resp.msg;
-                    // window.close();
-                    return false;
+                    if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        $("#theForm").hide();
+                        $("#end").show();
+                        parent.surveyStatus = 1;
+                        that.survey.endShow = resp.msg;
+                        return false;
+                    } else {
+                        $("#theForm")[0].reset();
+                        that.current = 1;
+                        that.nextIndex = 1;
+                        that.showSubmit = false;
+                        that.userParamsIndex++;
+                        that.finalData = [];
+                    }
                 });
+            },
+            submitImmediately(question, event) {
+                var that = this;
+                if (!this.validateForm()) {
+                    alert('请完成表单');
+                    return false;
+                }
+                if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
+                    var resultStr = "";
+                    if (question.maxSelect) {
+                        resultStr += '最多只能选择' + question.maxSelect + '条';
+                    }
+                    if (question.minSelect) {
+                        resultStr += '最少选择' + question.minSelect + '条';
+                    }
+                    alert(resultStr);
+                    return;
+                }
+                if(this.tag==1){
+                    this.loadFinalData();
+                }
+                let currentParams = this.pageParams[this.userParamsIndex];
 
+                AJAX.POST_JSON('zsQuestion/answer', {
+                    zsAnswerItemSaves: this.finalData,
+                    surveyId: this.getParams('surveyId'),
+                    phone: this.getParams('phone'),
+                    record: this.getParams('record'),
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID'),
+                    label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null
+                }, function (resp) {
+                    if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        $("#theForm").hide();
+                        $("#end").show();
+                        parent.surveyStatus = 1;
+                        that.survey.endShow = resp.msg;
+                        return false;
+                    } else {
+                        $("#theForm")[0].reset();
+                        that.current = 1;
+                        that.nextIndex = 1;
+                        that.showSubmit = false;
+                        that.finalData = [];
+                    }
+                });
             },
             showOptions(question, option) {
                 if (option.questionOrderNum) {

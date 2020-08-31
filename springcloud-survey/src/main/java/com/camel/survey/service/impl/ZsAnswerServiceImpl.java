@@ -106,6 +106,11 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     }
 
     @Override
+    public ZsAnswer full(Integer id) {
+        return mapper.full(id);
+    }
+
+    @Override
     public ZsAnswer details(String agent) {
         return mapper.detailsA(agent);
     }
@@ -134,6 +139,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
                 addCurrent(answer.getSurveyId(), oIds);
             }
             zsAnswer.setValid(ZsYesOrNo.YES);
+            zsAnswer.setInValidMsg(null);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.YES.getCode());
         } else {
             // 获取所有选项，如果包含不计配额的不需要恢复配额
@@ -156,6 +162,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
                 reduceCurrent(answer.getSurveyId(), oIds);
             }
             zsAnswer.setValid(ZsYesOrNo.NO);
+            zsAnswer.setInValidMsg("作废");
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.NO.getCode());
         }
         /**
@@ -221,14 +228,29 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     }
 
     @Override
-    public ZsAnswer selectByAgentUuid(String agentUuid) {
+    public List<ZsAnswer> selectByAgentUuid(String agentUuid) {
         return mapper.selectByAgentUuid(agentUuid);
     }
 
     @Override
-    public boolean review(Integer answerId, Integer reviewStatus, String reviewMsg) {
+    @Transactional
+    public boolean review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent) {
         SysUser user = applicationToolsUtils.currentUser();
-        return this.updateById(new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid(), user.getUsername()));
+        ZsAnswer answer = selectById(answerId);
+        ZsAnswer tmp = null;
+        if(reviewStatus == 2) {
+            this.invalid(answerId);
+            tmp.setInValidMsg("作废");
+        }else{
+            tmp.setInValidMsg(null);
+        }
+        if(!ObjectUtils.isEmpty(answer.getReviewSpent()) && answer.getReviewSpent() < reviewSpent) {
+            tmp = new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid(), user.getUsername(), reviewSpent);
+        }else{
+            tmp = new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid(), user.getUsername(), answer.getReviewSpent());
+        }
+
+        return this.updateById(tmp);
     }
 
     @Override

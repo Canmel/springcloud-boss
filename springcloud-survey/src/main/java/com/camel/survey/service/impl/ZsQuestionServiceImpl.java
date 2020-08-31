@@ -154,6 +154,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             zsAnswer.setWorkNum((zsAnswer.getUid()+1000)+"");
         }else if(!ObjectUtils.isEmpty(seat)){
             zsAnswer.setUid(seat.getUid());
+            zsAnswer.setWorkNum(seat.getWorkNum());
         }
         answerService.insert(zsAnswer);
         // 获取所有问题
@@ -236,6 +237,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
         zsAnswerWrapper.eq("survey_id", zsAnswerSave.getSurveyId());
+        if(!ObjectUtils.isEmpty(zsAnswerSave.getLabel())) {
+            zsAnswerWrapper.eq("label", zsAnswerSave.getLabel());
+        }
         return answerService.selectCount(zsAnswerWrapper) > 0;
     }
 }

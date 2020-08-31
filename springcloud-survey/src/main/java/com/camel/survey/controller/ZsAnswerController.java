@@ -95,6 +95,14 @@ public class ZsAnswerController extends BaseCommonController {
         return ResultUtil.success("修改成功");
     }
 
+    @GetMapping("/changeRemark")
+    public Result changeRemark(Integer id, String remark) {
+        ZsAnswerItem zsAnswerItem = answerItemService.selectById(id);
+        zsAnswerItem.setValue(remark);
+        answerItemService.updateById(zsAnswerItem);
+        return ResultUtil.success("修改成功");
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/download")
     public void download(ZsAnswer entity, HttpServletResponse response) {
@@ -105,6 +113,16 @@ public class ZsAnswerController extends BaseCommonController {
         List<ZsCdrinfo> cdrinfos = cdrinfoService.selectList(agents);
 
         FileUtils.getInstance().downloadZipFiles(response, cdrinfos, zsSurvey.getName());
+    }
+
+    /**
+     * 获取详情///
+     * @param id
+     * @return
+     */
+    @GetMapping("/full/{id}")
+    public Result full(@PathVariable Integer id) {
+        return ResultUtil.success(service.details(id));
     }
 
     /**
@@ -170,8 +188,8 @@ public class ZsAnswerController extends BaseCommonController {
      * @param reviewMsg
      */
     @PostMapping("/review")
-    public Result review(Integer answerId, Integer reviewStatus, String reviewMsg) {
-        if(service.review(answerId, reviewStatus, reviewMsg)) {
+    public Result review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent) {
+        if(service.review(answerId, reviewStatus, reviewMsg, reviewSpent)) {
             return ResultUtil.success("复核成功");
         }else {
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "复核失败");
