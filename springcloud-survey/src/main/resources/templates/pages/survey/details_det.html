@@ -696,6 +696,7 @@
                 let that = this;
                 AJAX.GET("zsSurvey/avgTime/" + this.survey.id, {}, function (resp) {
                     if (resp.data) {
+                        console.log(resp.data)
                         that.avgTime = resp.data;
                     }
                 })
