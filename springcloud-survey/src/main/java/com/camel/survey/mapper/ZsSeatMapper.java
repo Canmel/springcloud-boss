@@ -41,7 +41,7 @@ public interface ZsSeatMapper extends BaseMapper<ZsSeat> {
      * @param uid
      * @return
      */
-    int assignSeat(String seatNum,Integer uid);
+    boolean assignSeat(String seatNum,Integer uid);
 
     /**
      * 根据用户Id回收坐席，将该坐席的uid清空，state改为0

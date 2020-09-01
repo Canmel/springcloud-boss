@@ -109,3 +109,12 @@ Vue.filter('toNow', function (value) {
     else result.text="刚刚";
     return result.text;
 });
+
+
+Vue.filter('shorter', function (value) {
+    if(!value) return '';
+    if(value.length > 8) {
+        return value.substring(0, 8) +  '...';
+    }
+    return value;
+});

@@ -23,6 +23,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -100,25 +101,28 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     }
 
     @Override
-    public int assignSeat(Integer uid){
+    public boolean assignSeat(Integer uid, Integer surveyId){
         Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
         wrapper.eq("uid",uid);
         if(selectList(wrapper).size()==0){
             Wrapper<ZsSeat> wrapper1 = new EntityWrapper<>();
             wrapper1.eq("state",0);
-            if(selectList(wrapper1).size()>0){
+            if(selectCount(wrapper1)>0){
                 ZsSeat seat = selectList(wrapper1).get(0);
                 seat.setState(ZsYesOrNo.YES);
                 seat.setUid(uid);
                 seat.setWorkNum((seat.getUid()+1000)+"");
+                if(!ObjectUtils.isEmpty(surveyId)) {
+                    seat.setSurveyId(surveyId);
+                }
                 updateById(seat);
-                mapper.assignSeat(seat.getSeatNum(),seat.getUid());
+                return mapper.assignSeat(seat.getSeatNum(),seat.getUid());
             }
             else{
-                return 0;
+                return false;
             }
         }
-        return 1;
+        return true;
     }
 
     @Override

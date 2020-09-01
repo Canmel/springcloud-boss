@@ -126,7 +126,7 @@ public class ZsSeatController extends BaseCommonController {
 
     @PostMapping("/assign/{id}")
     public Result assign(@PathVariable Integer id) throws Exception {
-        return ResultUtil.success(service.assignSeat(id));
+        return ResultUtil.success(service.assignSeat(id, null));
     }
 
     /**

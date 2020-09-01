@@ -1048,6 +1048,7 @@
                 AJAX.GET('zsAnswer/' + item.id, {}, function (resp) {
                     that.zsAnswer = resp.data;
                     that.questions = resp.data.items;
+                    that.review.reviewMsg = that.zsAnswer.reviewMsg;
                     that.currentQId = that.questions[0].questionId;
                     for (let i = 0; i < that.questions.length; i++) {
                         that.questionIds.push(that.questions[i].questionId);

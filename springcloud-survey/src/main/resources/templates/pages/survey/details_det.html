@@ -259,9 +259,8 @@
                                             <th>收集时间</th>
                                             <th>被访者</th>
                                             <th>工号</th>
-                                            <th>通话时间</th>
                                             <th>有效</th>
-                                            <th>复核</th>
+                                            <th>复核状态</th>
                                             <th>复核人</th>
                                             <th>复核意见</th>
                                             <th>复核时间</th>
@@ -285,9 +284,6 @@
                                                 <span>{{item.workNum}}</span>
                                             </td>
                                             <td>
-                                                <span v-if="item.callLastsTime">{{item.callLastsTime}}</span>
-                                            </td>
-                                            <td>
                                                 <span class="text">{{isInValid(item)}}</span>
                                             </td>
                                             <td>
@@ -299,7 +295,7 @@
                                                 <span>{{item.reviewer ? item.reviewer.username: ''}}</span>
                                             </td>
                                             <td>
-                                                <span>{{item.reviewMsg}}</span>
+                                                <span class="reviewer-msg" :title="item.reviewMsg">{{item.reviewMsg | shorter}}</span>
                                             </td>
                                             <td>{{item.reviewerAt}}</td>
                                             <td>{{item.reviewSpent ? item.reviewSpent / 1000 : ''}}</td>
@@ -700,6 +696,7 @@
                 let that = this;
                 AJAX.GET("zsSurvey/avgTime/" + this.survey.id, {}, function (resp) {
                     if (resp.data) {
+                        console.log(resp.data)
                         that.avgTime = resp.data;
                     }
                 })
