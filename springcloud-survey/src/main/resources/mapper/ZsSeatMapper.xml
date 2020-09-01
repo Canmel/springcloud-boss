@@ -11,11 +11,12 @@
         <result column="description" property="description" />
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="work_num" property="workNum" />
+        <result column="survey_id" property="surveyId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, seat_num, password, description,state,work_num
+        id, uid, seat_num, password, description,state,work_num, survey_id
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

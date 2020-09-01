@@ -81,6 +81,7 @@ public class ZsCdrinfoController extends BaseCommonController {
                     if (!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
                         ZsSeat seat = seatService.selectBySeat(cdr.getCaller_agent_num());
                         cdr.setUid(seat.getUid());
+                        cdr.setSurveyId(seat.getSurveyId());
                     }
                     if (StringUtils.isEmpty(cdr.getUuids())) {
                         cdr.setId(UUID.randomUUID().toString());
