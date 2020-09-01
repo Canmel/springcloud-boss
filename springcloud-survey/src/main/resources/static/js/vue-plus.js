@@ -116,5 +116,5 @@ Vue.filter('shorter', function (value) {
     if(value.length > 8) {
         return value.substring(0, 8) +  '...';
     }
-    return result.text;
+    return value;
 });

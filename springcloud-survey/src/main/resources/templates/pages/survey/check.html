@@ -756,6 +756,7 @@
                                 <th>被访人</th>
                                 <th>坐席</th>
                                 <th>通话时间</th>
+                                <th>复核状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -765,6 +766,7 @@
                                 <td>{{item.creator}}</td>
                                 <td>{{item.seat}}</td>
                                 <td>{{item.callLastsTime}}</td>
+                                <td>{{item.reviewStatus ? '已复核': '未复核'}}</td>
                                 <td>
                                     <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id" class="btn btn-info btn-xs" >复核</button>
                                     <span v-if="item.id === selected.id">复核中</span>

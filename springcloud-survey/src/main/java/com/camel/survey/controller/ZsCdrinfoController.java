@@ -75,6 +75,7 @@ public class ZsCdrinfoController extends BaseCommonController {
                 List<ZsCdrinfo> zsCdrinfos = CollectionUtils.arrayToList(params.get(CDR_KEY));
                 LoggerFactory.getLogger(ZsCdrinfoController.class).info("开始保存录音信息" + JSONObject.toJSON(params).toString());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String result = "success";
                 for (int i = 0; i < zsCdrinfos.size(); i++) {
                     ZsAnswer answer = new ZsAnswer();
                     ZsCdrinfo cdr = zsCdrinfos.get(i);
@@ -96,24 +97,35 @@ public class ZsCdrinfoController extends BaseCommonController {
                                 cdr.setId(uuids[j]);
                             }
                         }
-                        for (ZsAnswer zsAnswer: zsAnswers) {
-                            answer.setId(zsAnswer.getId());
-                            answer.setStartTime(cdr.getStart_time());
-                            answer.setCallLastsTime(cdr.getCall_lasts_time());
-                            answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
-                            if (answer.getId() != null) {
-                                answerService.updateById(answer);
+                        if(!CollectionUtils.isEmpty(zsAnswers)) {
+                            for (ZsAnswer zsAnswer: zsAnswers) {
+                                answer.setId(zsAnswer.getId());
+                                answer.setStartTime(cdr.getStart_time());
+                                answer.setCallLastsTime(cdr.getCall_lasts_time());
+                                answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
+                                if (answer.getId() != null) {
+                                    answerService.updateById(answer);
+                                }
                             }
+                        }else{
+                            result = "error";
+                            continue;
                         }
                         if (ObjectUtils.isEmpty(cdr.getId())) {
-                            cdr.setId(UUID.randomUUID().toString());
+                            result = "error";
+                            continue;
                         }
-                        service.insert(cdr);
+                        try {
+                            service.insert(cdr);
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                            continue;
+                        }
 
                     }
 
                 }
-                return "success";
+                return result;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
