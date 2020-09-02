@@ -105,6 +105,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Autowired
     private ZsWorkService zsWorkService;
 
+    @Autowired
+    private ZsWorkShiftService zsWorkShiftService;
+
     public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
     public static final String SMS_SURVEY_URL = "http://127.0.0.1:8080/survey/web_survey.html";
@@ -120,6 +123,12 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             applicationToolsUtils.allUsers().forEach(sysUser -> {
                 if (sysUser.getUid().equals(e.getCreatorId())) {
                     e.setCreator(sysUser);
+                    if(e.getCreatorId().equals(user.getUid())||zsWorkShiftService.selectByUidandSurveyId(user.getUid(),e.getId())!=null){
+                        e.setAuthority(ZsYesOrNo.YES);
+                    }
+                    else{
+                        e.setAuthority(ZsYesOrNo.NO);
+                    }
                 }
             });
             Wrapper<ZsSign> zsSignWrapper = new EntityWrapper<>();

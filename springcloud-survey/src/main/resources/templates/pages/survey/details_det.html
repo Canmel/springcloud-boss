@@ -104,7 +104,7 @@
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 问卷预览</a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
+                <li class="" v-if="result||survey.creatorId===user.userid"><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">正在收集</a>
                 </li>
@@ -661,6 +661,7 @@
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
+            user:{},
         },
         watch: {
             loadData(v, oldVal) {
@@ -1148,7 +1149,8 @@
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
-                        state: resp.data.state ? resp.data.state.value : null
+                        state: resp.data.state ? resp.data.state.value : null,
+                        creatorId:resp.data.creatorId,
                     };
                 })
             },
@@ -1164,7 +1166,21 @@
                     that.monitors = resp.data;
                     console.log(resp.data);
                 })
-            }
+            },
+            loadWorkShift(){
+                let that = this;
+                if(this.result==false&&this.survey.creatorId!=this.user.userid){
+                    AJAX.GET_SYNC("zsWorkShift/current/" + that.survey.id, {}, function (resp) {
+                        if(!resp.data) {
+                            alert("您目前未分配到属于该问卷的班次或时间不在允许的范围内，请先申请对应班次！");
+                            $.pjax({
+                                url: mvm.applicationContextRootPath + 'pages/survey/index.html',
+                                container: '.page-container'
+                            });
+                        }
+                    });
+                }
+            },
         },
         created: function () {
             this.loadEntity();
@@ -1172,6 +1188,9 @@
             this.initZg();
             this.loadMonitors();
             this.loginMaster();
+            var userJsonStr = sessionStorage.getItem('user');
+            this.user = JSON.parse(userJsonStr);
+            this.loadWorkShift();
             this.pageInfo.daterange = (new Date()).getFullYear() + "/" + this.format2(((new Date()).getMonth() + 1)) + "/" + this.format2((new Date()).getDate()) + " 00:00:00 - "
                 + (new Date()).getFullYear() + "/" + this.format2(((new Date()).getMonth() + 1)) + "/" + this.format2((new Date()).getDate()) + " 23:59:59";
         },
