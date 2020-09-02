@@ -241,6 +241,7 @@ function onSipEventStack(e) {
                 if (autoAnswer == "yes") {
                     sipAnswer();
                 } else {
+                    console.log('-------弹窗--------', new Date());
                     $.MsgBox.Confirm("来电通知", "确定接听吗？", function () {
                         sipAnswer();
                         window.openSurvey(openUrl);

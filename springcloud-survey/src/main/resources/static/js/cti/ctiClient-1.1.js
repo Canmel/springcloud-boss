@@ -476,11 +476,14 @@
 				}
 			}else if(methodType=="common_callin_bridge_ring"){//呼入弹屏
 				console.log("呼入弹屏", jsonStr);
+				console.log("-----------------------<><><>><>------", agentno);
+				console.log('------------tttttt---------------', new Date());
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
 					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
 					window.openUrl = url;
+					console.log('实际要跳转的地址', window.openUrl);
 				}
 			}else if(methodType=="manual_callout_agent_ring"){//呼出弹屏
                 console.log("呼入弹屏", jsonStr);
