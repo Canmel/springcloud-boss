@@ -65,8 +65,8 @@ zuul:
   retryable: true
   ignored-services: "*"
   host:
-    connect-timeout-millis: 60000
-    socket-timeout-millis: 60000
+    connect-timeout-millis: 600000
+    socket-timeout-millis: 600000
   add-proxy-headers: true
 
 
@@ -83,8 +83,8 @@ security:
 
 #----------------------超时配置-------------------
 ribbon:
-  ReadTimeout: 60000
-  ConnectTimeout: 60000
+  ReadTimeout: 600000
+  ConnectTimeout: 600000
   MaxAutoRetries: 2             # 对当前实例的重试次数
   MaxAutoRetriesNextServer: 3   # 切换实例重试次数
   eureka:
