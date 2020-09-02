@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,10 +50,14 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
     public boolean importPhoneInformation(MultipartFile file, Integer surveyId) {
         SysUser user = applicationToolsUtils.currentUser();
         List<ZsPhoneInformation> zsPhoneInformations = ExcelUtil.readExcelObject(file, ZsPhoneInformation.class);
+        HashSet h = new HashSet(zsPhoneInformations);
+        zsPhoneInformations.clear();
+        zsPhoneInformations.addAll(h);
         zsPhoneInformations.forEach(pi -> {
             pi.setSurveyId(surveyId);
             pi.setCreatorId(user.getUid());
         });
+        mapper.deleteBySurveyId(surveyId);
         return insertBatch(zsPhoneInformations);
     }
 

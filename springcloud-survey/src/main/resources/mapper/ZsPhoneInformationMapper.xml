@@ -36,4 +36,11 @@
             </if>
         </where>
     </select>
+
+    <delete id="deleteBySurveyId">
+        delete
+        from zs_phone_information
+        where
+        survey_id = #{surveyId}
+    </delete>
 </mapper>
