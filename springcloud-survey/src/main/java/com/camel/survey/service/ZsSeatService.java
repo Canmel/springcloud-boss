@@ -51,7 +51,7 @@ public interface ZsSeatService extends IService<ZsSeat> {
      * @param uid
      * @return
      */
-    int assignSeat(Integer uid);
+    boolean assignSeat(Integer uid, Integer surveyId);
 
 
     /**

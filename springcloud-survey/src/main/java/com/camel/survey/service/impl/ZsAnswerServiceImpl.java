@@ -8,6 +8,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.enums.ZsAnswerReviewerStatus;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.*;
 import com.camel.survey.model.ZsAnswer;
@@ -233,21 +234,22 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public boolean review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent) {
         SysUser user = applicationToolsUtils.currentUser();
         ZsAnswer answer = selectById(answerId);
         ZsAnswer tmp = null;
-        if(reviewStatus == 2) {
-            this.invalid(answerId);
-            tmp.setInValidMsg("作废");
-        }else{
-            tmp.setInValidMsg(null);
-        }
         if(!ObjectUtils.isEmpty(answer.getReviewSpent()) && answer.getReviewSpent() < reviewSpent) {
             tmp = new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid(), user.getUsername(), reviewSpent);
         }else{
             tmp = new ZsAnswer(answerId, reviewMsg, reviewStatus, user.getUid(), user.getUsername(), answer.getReviewSpent());
+        }
+
+        if(ZsAnswerReviewerStatus.REJECT.getCode().equals(reviewStatus)) {
+            this.invalid(answerId);
+            tmp.setInValidMsg("作废");
+        }else{
+            tmp.setInValidMsg(null);
         }
 
         return this.updateById(tmp);

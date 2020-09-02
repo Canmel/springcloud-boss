@@ -756,6 +756,7 @@
                                 <th>被访人</th>
                                 <th>坐席</th>
                                 <th>通话时间</th>
+                                <th>复核状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -765,8 +766,9 @@
                                 <td>{{item.creator}}</td>
                                 <td>{{item.seat}}</td>
                                 <td>{{item.callLastsTime}}</td>
+                                <td>{{item.reviewStatus ? '已复核': '未复核'}}</td>
                                 <td>
-                                    <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id && item.reviewStatus == null" class="btn btn-info btn-xs" >复核</button>
+                                    <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id" class="btn btn-info btn-xs" >复核</button>
                                     <span v-if="item.id === selected.id">复核中</span>
                                     <span v-if="!item.callLastsTime">无数据</span>
                                 </td>
@@ -797,8 +799,7 @@
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10, //每页显示条目个数不传默认10
-                callLastsTime: 1,
-                reviewStatus: 0
+                callLastsTime: 1
             },
             selected: {},
             items: [{}], //待检列表
@@ -825,7 +826,7 @@
                 +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 23:59:59";
         },
         methods: {
-            renderCheck(item) {
+                renderCheck(item) {
                 this.selected = item;
                 document.getElementById('detailIfram').src="check_detail.html";
             },
