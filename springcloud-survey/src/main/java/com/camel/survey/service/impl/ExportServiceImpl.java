@@ -575,6 +575,7 @@ public class ExportServiceImpl implements ExportService {
         answerItemWrapper.eq("survey_id", surveyId);
         answerItemWrapper.eq("question_id", qId);
         answerItemWrapper.eq("`option`", option);
+        answerItemWrapper.eq("`valid`", 1);
         answerItemWrapper.groupBy("`option`");
         return zsAnswerItemService.selectCount(answerItemWrapper);
     }
