@@ -244,7 +244,7 @@ function onSipEventStack(e) {
                     console.log('-------弹窗--------', new Date());
                     $.MsgBox.Confirm("来电通知", "确定接听吗？", function () {
                         sipAnswer();
-                        window.openSurvey(openUrl);
+                        window.openSurvey();
                     }, function () {
                         sipHangUp();
                     });

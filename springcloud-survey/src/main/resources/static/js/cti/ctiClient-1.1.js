@@ -492,14 +492,15 @@
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
 					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					$("#surveyIfram").attr('src', url);
 					window.openUrl = url;
 				}
-				if(eventAgentNo==agentno){
-					var agentUuid = jsonStr.agentUuid;
-					var customerNum = jsonStr.customerNum;
-					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
-					window.openUrl = url;
-				}
+				// if(eventAgentNo==agentno){
+				// 	var agentUuid = jsonStr.agentUuid;
+				// 	var customerNum = jsonStr.customerNum;
+				// 	var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+				// 	window.openUrl = url;
+				// }
 			}else if(methodType=="get_agentgroup_list"){//获取座席组列表
                 console.log("呼入弹屏", jsonStr);
 				var agentGroupNames = jsonStr.agentgroupname;
