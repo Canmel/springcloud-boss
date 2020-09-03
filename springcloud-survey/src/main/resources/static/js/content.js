@@ -92,7 +92,6 @@ jQuery.validator.addMethod("isMobile", function(value, element) {
 }, "请正确填写手机号码");
 
 window.openSurvey = function () {
-    console.log('-----------uuuurrrrllll----', url);
     console.log('-----------uuuuuurrrrlllll-----', new Date());
     window.surveyStatus = 0;
     $("#surveyModal").modal('show');
