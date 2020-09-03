@@ -62,7 +62,7 @@
                             <button type="button" v-on:click="start(item)" v-if="(result || isInValid(item))&&states(item)"
                                     class="btn btn-success btn-xs" >发布
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" v-if="result || isInValid(item)"
+                            <button type="button" v-on:click="deleteItem(item)" v-if="(result || isInValid(item))&&showDelete(item)"
                                     class="btn btn-danger btn-xs" >删除
                             </button>
 <!--                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"-->
@@ -71,8 +71,8 @@
                             <button type="button" v-on:click="changeStatus(item, '回收')" v-if="(result || isInValid(item))&&showBack(item)"
                                     class="btn btn-danger btn-xs">回收
                             </button>
-                            <button type="button" v-on:click="changeStatus(item, '启用')" v-if="(result || isInValid(item))&&showUse(item)"
-                                    class="btn btn-danger btn-xs">启用
+                            <button type="button" v-on:click="changeStatus(item, '收集')" v-if="(result || isInValid(item))&&showUse(item)"
+                                    class="btn btn-danger btn-xs">收集
                             </button>
                             <button type="button" v-on:click="check(item)" v-if="result || isInValid(item)"
                                     class="btn btn-warning btn-xs">结算
@@ -160,6 +160,12 @@
             showUse(item) {
                 if(item.state){
                     return item.state.value === 4 && this.result
+                }
+                return false;
+            },
+            showDelete(item) {
+                if(item.state){
+                    return item.state.value != 2 && this.resultDev
                 }
                 return false;
             },
