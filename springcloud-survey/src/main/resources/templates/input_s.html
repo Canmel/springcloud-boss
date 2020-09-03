@@ -61,6 +61,7 @@
     </div>
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
+        <h2>{{pageInfo.hrefstr}}</h2>
         <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
     <section>
@@ -191,7 +192,9 @@
         el: '#container',
         data: {
             applicationContextRootPath: '/survey/',
-            pageInfo: {},
+            pageInfo: {
+                hrefstr: ''
+            },
             survey: {
                 name: '',
                 endShow: '问卷结束，感谢您的配合！',
@@ -673,6 +676,7 @@
             },
             loadParams() {
                 var params = location.href.split("?")[1];
+                this.pageInfo.hrefstr = params;
                 var paramsPair = params.split("&");
                 this.paramsPair = paramsPair;
             },
