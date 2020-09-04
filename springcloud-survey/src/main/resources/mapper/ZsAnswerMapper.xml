@@ -73,7 +73,7 @@
         answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at,
         answer.creator, answer.valid, answer.task_id, answer.review_spent, answer.work_num, answer.reviewer_name,
         answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,
-        answer.review_status, answer.review_msg, answer.reviewer,answer.checked, answer.reviewer_at
+        answer.review_status, answer.review_msg, answer.reviewer,answer.uid,answer.checked, answer.reviewer_at
         from
         zs_answer answer
         LEFT JOIN zs_cdrinfo info ON info.id = answer.agent_UUID
@@ -100,13 +100,13 @@
             <if test="callLastsTime != null">
                 and answer.call_lasts_time is not null
             </if>
-            <if test="reviewStatus != null and reviewStatus == 0">
+            <if test="reviewStatus != null and reviewStatus > -1 and reviewStatus == 0">
                 and (answer.review_status is null or answer.review_status = 0)
             </if>
-            <if test="reviewStatus != null and reviewStatus == 12">
+            <if test="reviewStatus != null and reviewStatus > -1  and reviewStatus == 12">
                 and answer.review_status in (1,2)
             </if>
-            <if test="reviewStatus != null and reviewStatus != 0 and reviewStatus != 12">
+            <if test="reviewStatus != null and reviewStatus > -1  and reviewStatus != 0 and reviewStatus != 12">
                 and answer.review_status = #{reviewStatus}
             </if>
             <if test="reviewerName != null">

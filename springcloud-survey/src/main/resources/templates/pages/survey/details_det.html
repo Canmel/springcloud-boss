@@ -210,6 +210,7 @@
                                 <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.valid">
+                                        <option value='empty'>所有问卷</option>
                                         <option value='YES'>有效问卷</option>
                                         <option value='NO'>无效问卷</option>
                                     </select>
@@ -217,6 +218,7 @@
                                 <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.reviewStatus">
+                                        <option value=-1>所有状态</option>
                                         <option value=0>未复核</option>
                                         <option value=12>已复核</option>
                                         <option value=1>复核通过</option>
@@ -287,7 +289,7 @@
                                                 <span class="text">{{isInValid(item)}}</span>
                                             </td>
                                             <td>
-                                                <span class="text-input" v-if="!item.reviewStatus">未开始</span>
+                                                <span class="text-input" v-if="!item.reviewStatus">未复核</span>
                                                 <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
                                                 <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
                                             </td>
@@ -337,7 +339,7 @@
                                             <h5 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
                                                    href="tabs_panels.html#collapseOne" aria-expanded="false"
-                                                   class="collapsed">汇总导出</a>
+                                                   class="collapsed">项目答题统计</a>
                                             </h5>
                                         </div>
                                         <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true"
@@ -615,11 +617,12 @@
             answers: [],
             pageInfo: {
                 reviewStatus: 0,
-                valid: 'YES',
+                valid: 'empty',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
-                size: 10//每页显示条目个数不传默认10
+                size: 10,//每页显示条目个数不传默认10
+                reviewStatus: -1,
             },
             crossForm: {
                 firstSelect: null,
@@ -1067,11 +1070,17 @@
                     that.pageInfo.startDate = that.pageInfo.daterange.substring(0, 19);
                     that.pageInfo.endDate = that.pageInfo.daterange.substring(22, 41);
                 }
+                if(that.pageInfo.valid==="empty"){
+                    that.pageInfo.valid = null;
+                }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.answers = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
+                if(that.pageInfo.valid===null){
+                    that.pageInfo.valid = "empty";
+                }
             },
             format2: function (num) {
                 return (Array(2).join("0") + num).slice(-2);
