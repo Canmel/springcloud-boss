@@ -5,12 +5,10 @@
     <link href="/survey/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="/survey/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <style>
-
         a {
             color: #555;
             text-decoration: none;
         }
-
         .container {
             width: 100%;
             position: relative;
@@ -729,7 +727,7 @@
 <div id="vueContainer">
     <div class="" style="height: 60%">
         <div class="col-sm-9" style="height: 100%; padding: 0">
-            <div class="ibox" style="height: 99%">
+            <div class="ibox" style="height: 99%; overflow-y: scroll;">
                 <div class="ibox-content" style="height: 80%" v-if="survey">
                     <div class="text-center">
                         <h2><b>{{survey.name}}</b></h2>
@@ -812,22 +810,23 @@
                                     </label>
                                 </div>
                             </div>
+                            <div style="min-height: 10%" class="form-group row" style="text-align: center;">
+                                <div class="col-sm-6 text-center" style="display: inline-block;">
+                                    <button @click="preQ()" v-bind:disabled="currentIndex === 0">上一题</button>
+                                </div>
+                                <div class="col-sm-6 text-center" style="display: inline-block;">
+                                    <button @click="nextQ()" v-bind:disabled="currentIndex === questionIds.length - 1">下一题
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div style="min-height: 10%" class="form-group row">
-                    <div class="col-sm-6 text-center">
-                        <button @click="preQ()" v-bind:disabled="currentIndex === 0">上一题</button>
-                    </div>
-                    <div class="col-sm-6 text-center">
-                        <button @click="nextQ()" v-bind:disabled="currentIndex === questionIds.length - 1">下一题
-                        </button>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="col-sm-3" style="height: 100%; padding: 0px;">
-            <div class="ibox" style="height: 99%">
+            <div class="ibox" style="height: 99%;">
                 <div class="ibox-content" style="height: 100%">
                     <div style="height: 70%;"></div>
                     <form id="defaultForm" method="post" class="form-horizontal" style="height: 30%;">
