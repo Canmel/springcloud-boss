@@ -266,4 +266,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     public Set<String> selectAgentUuidsByEntity(ZsAnswer entity) {
         return mapper.selectAgentUuidsByEntity(entity);
     }
+
+    @Override
+    public String selectTimeRange(Integer surveyId) {
+        return mapper.selectTimeRange(surveyId);
+    }
 }

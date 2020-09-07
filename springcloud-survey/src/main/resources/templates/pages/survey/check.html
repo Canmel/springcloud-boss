@@ -819,6 +819,7 @@
                 size: 10, //每页显示条目个数不传默认10
                 callLastsTime: 1,
                 reviewStatus: -1,
+                daterange:'',
             },
             selected: {},
             items: [{}], //待检列表
@@ -841,8 +842,7 @@
             }
         },
         created: function () {
-            this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
-                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 23:59:59";
+            this.loadTimeRange();
         },
         methods: {
                 renderCheck(item) {
@@ -928,7 +928,15 @@
             },
             backToListPage() {
                 toPage('pages/survey/details_det.html', this.pageInfo.surveyId);
-            }
+            },
+            loadTimeRange() {
+                let that = this;
+                AJAX.GET('zsAnswer/selectTimeRange/' + sessionStorage.getItem('surveyId'), {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterange = resp.data;
+                    }
+                })
+            },
         }
     });
 </script>
@@ -938,7 +946,8 @@
         updateConfig();
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "endDate":(new Date()).getFullYear()+"/"+((new Date()).getMonth()+1)+"/"+(new Date()).getDate()+" 23:59:59",
+                "startDate": checkVue.$data.pageInfo.daterange.substring(0,19),
+                "endDate": checkVue.$data.pageInfo.daterange.substring(22,41),
                 "timePickerSeconds": true,
                 "timePicker":true,
                 "opens":"center",

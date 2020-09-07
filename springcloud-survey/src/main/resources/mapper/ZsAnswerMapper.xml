@@ -258,4 +258,29 @@
             LIMIT 0,
             10;
     </select>
+
+    <select id="selectTimeRange" resultType="string">
+        select
+            CONCAT(
+                (
+                    SELECT
+                        min(created_at)
+                    FROM
+                        zs_answer
+                    WHERE
+                        STATUS = 1
+                    AND survey_id = #{surveyId}
+                ),
+                ' - ',
+                (
+                    SELECT
+                        max(created_at)
+                    FROM
+                        zs_answer
+                    WHERE
+                        STATUS = 1
+                    AND survey_id = #{surveyId}
+                )
+            )
+    </select>
 </mapper>

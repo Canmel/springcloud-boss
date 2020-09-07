@@ -1160,6 +1160,14 @@
                     };
                 })
             },
+            loadTimeRange() {
+                let that = this;
+                AJAX.GET('zsAnswer/selectTimeRange/' + this.survey.id, {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterange = resp.data;
+                    }
+                })
+            },
             loadQuestions() {
                 let that = this;
                 AJAX.GET('zsSurvey/questionAndOptions/' + sessionStorage.getItem('editParams'), {}, function (resp) {
@@ -1197,8 +1205,7 @@
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
             this.loadWorkShift();
-            this.pageInfo.daterange = (new Date()).getFullYear() + "/" + this.format2(((new Date()).getMonth() + 1)) + "/" + this.format2((new Date()).getDate()) + " 00:00:00 - "
-                + (new Date()).getFullYear() + "/" + this.format2(((new Date()).getMonth() + 1)) + "/" + this.format2((new Date()).getDate()) + " 23:59:59";
+            this.loadTimeRange();
         },
         mounted: function () {
             this.bindEvent();
@@ -1215,7 +1222,8 @@
 
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "endDate": (new Date()).getFullYear() + "/" + ((new Date()).getMonth() + 1) + "/" + (new Date()).getDate() + " 23:59:59",
+                "startDate": currentVue.$data.pageInfo.daterange.substring(0,19),
+                "endDate": currentVue.$data.pageInfo.daterange.substring(22,41),
                 "timePickerSeconds": true,
                 "timePicker": true,
                 "opens": "center",
