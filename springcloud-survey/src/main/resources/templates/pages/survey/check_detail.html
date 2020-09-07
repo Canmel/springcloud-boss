@@ -911,7 +911,8 @@
                 reviewStatus: 0
             },
             selectedOption: null,
-            checkStartAt: null
+            checkStartAt: null,
+            allOptions: null
         },
         watch: {
             recordUrl: function (v, n) {
@@ -926,6 +927,30 @@
             }
         },
         methods: {
+            isSameTarget(o, q) {
+                // 之前被选中的
+                let selectedO = this.getSelectedOption(q);
+                return selectedO.target === o.target
+            },
+            getSelectedOption(q) {
+                if(!this.allOptions) {
+                    this.loadAllOptions();
+                }
+                for (let i = 0; i < this.allOptions.length ; i++) {
+                    if(this.allOptions[i].questionId === q.id) {
+                        return this.allOptions[i]
+                    }
+                }
+            },
+            loadAllOptions() {
+                this.allOptions = [];
+                for (let i = 0; i < this.tquestions.length; i++) {
+                    let q = this.tquestions[i];
+                    for (j = 0; j < q.options.length ; j++) {
+                        this.allOptions.push(q.options[j])
+                    }
+                }
+            },
             recordTime() {
                 if(!this.checkStartAt) {
                     this.checkStartAt = Date.now();
@@ -946,12 +971,17 @@
                 return option.hasRemark && this.selectedOption ? option.id === this.selectedOption.id : false;
             },
             radioChange(d, q) {
+                if(!this.allOptions) {
+                    this.loadAllOptions();
+                }
+
                 let orderNums = this.getQuestions();
-                console.log(orderNums);
-                console.log(d);
                 this.selectedOption = d;
+                for (let i = 0; i < this.questions.length; i++) {
+                    let q = this.questions[i];
+                }
                 let t = d.target ? d.target : q.orderNum + 1;
-                if (orderNums.indexOf(t) > -1) {
+                if (orderNums.indexOf(t) > -1 || this.isSameTarget(d, q)) {
                     AJAX.GET("zsAnswer/changeRadio", {
                         answerId: this.zsAnswer.id,
                         questionId: d.questionId,
