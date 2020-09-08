@@ -261,6 +261,7 @@
                                             <th>收集时间</th>
                                             <th>被访者</th>
                                             <th>工号</th>
+                                            <th>访员姓名</th>
                                             <th>有效</th>
                                             <th>复核状态</th>
                                             <th>复核人</th>
@@ -284,6 +285,9 @@
                                             </td>
                                             <td>
                                                 <span>{{item.workNum}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{item.user ? item.user.username: ''}}</span>
                                             </td>
                                             <td>
                                                 <span class="text">{{isInValid(item)}}</span>

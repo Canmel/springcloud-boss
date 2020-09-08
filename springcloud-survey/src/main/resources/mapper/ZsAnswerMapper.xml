@@ -31,6 +31,7 @@
         <result column="review_spent" property="reviewSpent" />
         <result column="label" property="label" />
         <result column="in_valid_msg" property="inValidMsg" />
+        <result column="username" property="username" />
         <association property="user" javaType="com.camel.core.model.SysUser">
             <result property="uid" column="uid" jdbcType="INTEGER" />
         </association>
@@ -55,6 +56,7 @@
         <result column="work_num" property="workNum" />
         <result column="label" property="label" />
         <result column="in_valid_msg" property="inValidMsg" />
+        <result column="username" property="username" />
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <collection property="items" column="id" select="com.camel.survey.mapper.ZsAnswerItemMapper.selectByAnswerId">
         </collection>
@@ -64,7 +66,7 @@
     <sql id="Base_Column_List">
         id, survey_id, agent_UUID, status, record, seat, created_at, creator,
          valid, task_id, task_status,start_time,end_time,call_lasts_time,
-         review_status, review_msg, reviewer,checked,reviewer_name,work_num, in_valid_msg
+         review_status, review_msg, reviewer,checked,reviewer_name,work_num, in_valid_msg,username
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -73,7 +75,7 @@
         answer.id, answer.survey_id, answer.agent_UUID, answer.status, answer.record, answer.seat, answer.created_at,
         answer.creator, answer.valid, answer.task_id, answer.review_spent, answer.work_num, answer.reviewer_name,
         answer.task_status,answer.start_time,answer.end_time,answer.call_lasts_time,
-        answer.review_status, answer.review_msg, answer.reviewer,answer.uid,answer.checked, answer.reviewer_at
+        answer.review_status, answer.review_msg, answer.reviewer,answer.uid,answer.checked, answer.reviewer_at, answer.username
         from
         zs_answer answer
         LEFT JOIN zs_cdrinfo info ON info.id = answer.agent_UUID

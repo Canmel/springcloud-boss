@@ -185,6 +185,11 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     private String workNum;
 
     /**
+     * 访员姓名
+     */
+    private String username;
+
+    /**
      * 标签
      */
     public String label;
