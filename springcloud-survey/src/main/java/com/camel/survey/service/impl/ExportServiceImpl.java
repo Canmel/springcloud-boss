@@ -578,20 +578,20 @@ public class ExportServiceImpl implements ExportService {
     HSSFCellStyle createHeadStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-//        style.setBorderBottom((short)1);
-//        style.setBorderLeft(2);
-//        style.setBorderRight(BorderStyle.THIN);
-//        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short)1);
+        style.setBorderLeft((short)1);
+        style.setBorderRight((short)1);
+        style.setBorderTop((short)1);
         return style;
     }
 
     HSSFCellStyle createTitleStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-//        style.setBorderBottom(BorderStyle.THIN);
-//        style.setBorderLeft(BorderStyle.THIN);
-//        style.setBorderRight(BorderStyle.THIN);
-//        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short)1);
+        style.setBorderLeft((short)1);
+        style.setBorderRight((short)1);
+        style.setBorderTop((short)1);
 //        style.setFillForegroundColor(HSSFColor.LIME.index);
 //        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return style;
@@ -599,10 +599,10 @@ public class ExportServiceImpl implements ExportService {
 
     HSSFCellStyle createCellStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
-//        style.setBorderBottom(BorderStyle.THIN);
-//        style.setBorderLeft(BorderStyle.THIN);
-//        style.setBorderRight(BorderStyle.THIN);
-//        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
 //        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 //        style.setAlignment(HorizontalAlignment.CENTER);

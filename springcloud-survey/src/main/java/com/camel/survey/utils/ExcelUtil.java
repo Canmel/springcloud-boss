@@ -5,6 +5,7 @@ import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -343,13 +344,16 @@ public class ExcelUtil {
         Row row = sheet.createRow(0);
 
         SXSSFCell cell = (SXSSFCell)row.createCell(0);
-        XSSFCellStyle cellStyle = (XSSFCellStyle)sheet.getWorkbook().createCellStyle();
+        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+        Font font = sheet.getWorkbook().createFont();
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         cellStyle.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         cellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 //        cellStyle.setBorderBottom((short) 2);
 //        cellStyle.setBorderLeft((short) 2);
 //        cellStyle.setBorderRight((short) 2);
 //        cellStyle.setBorderTop((short) 2);
+        cellStyle.setFont(font);
 
         cell.setCellStyle(cellStyle);
         cell.setCellValue(title);
@@ -369,10 +373,10 @@ public class ExcelUtil {
     public static CellStyle createTitleStyle(Workbook wb) {
         CellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-//        style.setBorderBottom((short) 1);
-//        style.setBorderLeft((short) 1);
-//        style.setBorderRight((short) 1);
-//        style.setBorderTop((short) 1);
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.LIME.index);
 //        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 //        style.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -382,10 +386,10 @@ public class ExcelUtil {
 
     public static CellStyle createCellStyle(Workbook wb) {
         CellStyle style = wb.createCellStyle();
-//        style.setBorderBottom((short) 1);
-//        style.setBorderLeft((short) 1);
-//        style.setBorderRight((short) 1);
-//        style.setBorderTop((short) 1);
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
 //        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 //        style.setAlignment(HorizontalAlignment.CENTER);
@@ -395,10 +399,10 @@ public class ExcelUtil {
 
     public static CellStyle createTotalHeadStyle(Workbook wb) {
         CellStyle style = wb.createCellStyle();
-//        style.setBorderBottom((short) 1);
-//        style.setBorderLeft((short) 1);
-//        style.setBorderRight((short) 1);
-//        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_40_PERCENT.index);
 //        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 //        style.setAlignment(HorizontalAlignment.CENTER);
