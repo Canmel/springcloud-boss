@@ -146,6 +146,7 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("收集结束时间");
         headValues.add("通话时长");
         headValues.add("是否有效");
+        headValues.add("标签");
         List<String> titleQList = new ArrayList<>();
         questionList.forEach(que -> {
             if (que.getType().equals(2)) {
@@ -173,6 +174,7 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
             fillCell(row.createCell(cellNum++), style, result.get(i).get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("label"));
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
 
@@ -200,7 +202,7 @@ public class ExportServiceImpl implements ExportService {
                 for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
                     // 全等，即单选
                     if(titleStr.equals(qs.get(qIndex))) {
-                        fillCell(row.createCell(7 + index), style, answersArray[qIndex]);
+                        fillCell(row.createCell(8 + index), style, answersArray[qIndex]);
                         qIndex = qs.size();
                     }else{
                         // 多选， 并且问题和excel当前表头相同
@@ -209,7 +211,7 @@ public class ExportServiceImpl implements ExportService {
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
                             if(org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
-                                fillCell(row.createCell(7 + index), style, answersArray[qIndex]);
+                                fillCell(row.createCell(8 + index), style, answersArray[qIndex]);
                                 qIndex = qs.size();
                             }
                         }
