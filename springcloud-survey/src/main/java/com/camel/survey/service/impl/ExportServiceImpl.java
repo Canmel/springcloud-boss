@@ -4,14 +4,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsAnswerMapper;
-import com.camel.survey.model.ZsAnswer;
-import com.camel.survey.model.ZsAnswerItem;
-import com.camel.survey.model.ZsOption;
-import com.camel.survey.model.ZsQuestion;
-import com.camel.survey.service.ExportService;
-import com.camel.survey.service.ZsAnswerItemService;
-import com.camel.survey.service.ZsOptionService;
-import com.camel.survey.service.ZsQuestionService;
+import com.camel.survey.model.*;
+import com.camel.survey.service.*;
 import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.vo.Excel;
 import com.camel.survey.vo.ZsCrossExport;
@@ -28,8 +22,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +66,9 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     private ZsAnswerItemService zsAnswerItemService;
 
+    @Autowired
+    private ZsSurveyService zsSurveyService;
+
     public static final Integer SELECT_STEP = 100;
 
     public static Logger logger = LoggerFactory.getLogger(ExportService.class);
@@ -109,43 +108,75 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public HSSFWorkbook workNum(Integer id) {
+    public HSSFWorkbook workNum(Integer id) throws ParseException {
         HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet = wb.createSheet("工号收集样本统计");
+        HSSFSheet sheet = wb.createSheet("访员样本统计");
         HSSFCellStyle headStyle = createHeadStyle(wb);
         HSSFCellStyle style = createCellStyle(wb);
+        ZsSurvey survey = zsSurveyService.selectById(id);
+        List<Object> surveyName = new ArrayList<>();
+        surveyName.add("项目名称");
+        surveyName.add(survey.getName());
+        fillRow(sheet.createRow(0), headStyle, surveyName);
+        String timeRange= zsAnswerMapper.selectTimeRange(id);
+        List<Object> startTime = new ArrayList<>();
+        startTime.add("工作开始时间");
+        startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
+        fillRow(sheet.createRow(1), headStyle, startTime);
+        List<Object> endTime = new ArrayList<>();
+        endTime.add("工作开始时间");
+        endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
+        fillRow(sheet.createRow(2), headStyle, endTime);
         List<Object> v = new ArrayList<>();
         v.add("工号");
+        v.add("访员姓名");
         v.add("问题");
         v.add("样本");
-        fillRow(sheet.createRow(0), headStyle, v);
+        fillRow(sheet.createRow(3), headStyle, v);
         List<Map<String, Object>> result = zsAnswerItemService.selectWorkNumTotal(id);
         for (Map<String, Object> map : result) {
             List<Object> rowValue = new ArrayList<>();
             rowValue.add(map.get("work_num"));
+            rowValue.add(map.get("username"));
             rowValue.add(map.get("questionNum"));
             rowValue.add(map.get("surveyNum"));
-            fillRow(sheet.createRow(result.indexOf(map) + 1), style, rowValue);
+            fillRow(sheet.createRow(result.indexOf(map) + 4), style, rowValue);
         }
         return wb;
     }
 
     @Override
-    public HSSFWorkbook answer(Integer surveyId) {
+    public HSSFWorkbook answer(Integer surveyId) throws ParseException {
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet("样本明细");
-        HSSFRow head = sheet.createRow(0);
         HSSFCellStyle headStyle = createHeadStyle(wb);
         HSSFCellStyle style = createCellStyle(wb);
+        ZsSurvey survey = zsSurveyService.selectById(surveyId);
+        List<Object> surveyName = new ArrayList<>();
+        surveyName.add("项目名称");
+        surveyName.add(survey.getName());
+        fillRow(sheet.createRow(0), headStyle, surveyName);
+        String timeRange= zsAnswerMapper.selectTimeRange(surveyId);
+        System.out.println(timeRange);
+        List<Object> startTime = new ArrayList<>();
+        startTime.add("工作开始时间");
+        startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
+        fillRow(sheet.createRow(1), headStyle, startTime);
+        List<Object> endTime = new ArrayList<>();
+        endTime.add("工作开始时间");
+        endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
+        fillRow(sheet.createRow(2), headStyle, endTime);
         List<ZsQuestion> questionList = zsQuestionService.selectBySurveyId(surveyId);
         List<Object> headValues = new ArrayList<>();
         headValues.add("时间");
         headValues.add("电话");
         headValues.add("工号");
+        headValues.add("访员姓名");
         headValues.add("收集开始时间");
         headValues.add("收集结束时间");
         headValues.add("通话时长");
         headValues.add("是否有效");
+        headValues.add("标签");
         List<String> titleQList = new ArrayList<>();
         questionList.forEach(que -> {
             if (que.getType().equals(2)) {
@@ -159,20 +190,22 @@ public class ExportServiceImpl implements ExportService {
         headValues.addAll(titleQList);
         headValues.add("合计");
 
-        fillRow(head, headStyle, headValues);
+        fillRow(sheet.createRow(3), headStyle, headValues);
         List<Map<String, Object>> result = zsAnswerItemService.selectExport(surveyId);
 
 
         for (int i = 0; i < result.size(); i++) {
             int cellNum = 0;
-            HSSFRow row = sheet.createRow(1 + i);
+            HSSFRow row = sheet.createRow(4 + i);
             fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("work_num"));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("username"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
             fillCell(row.createCell(cellNum++), style, result.get(i).get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("label"));
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
 
@@ -200,7 +233,7 @@ public class ExportServiceImpl implements ExportService {
                 for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
                     // 全等，即单选
                     if(titleStr.equals(qs.get(qIndex))) {
-                        fillCell(row.createCell(7 + index), style, answersArray[qIndex]);
+                        fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
                         qIndex = qs.size();
                     }else{
                         // 多选， 并且问题和excel当前表头相同
@@ -209,7 +242,7 @@ public class ExportServiceImpl implements ExportService {
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
                             if(org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
-                                fillCell(row.createCell(7 + index), style, answersArray[qIndex]);
+                                fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
                                 qIndex = qs.size();
                             }
                         }
