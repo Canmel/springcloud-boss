@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsAnswerMapper;
-import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQuestion;
@@ -13,12 +12,17 @@ import com.camel.survey.service.ZsAnswerItemService;
 import com.camel.survey.service.ZsOptionService;
 import com.camel.survey.service.ZsQuestionService;
 import com.camel.survey.utils.ExcelUtil;
-import com.camel.survey.vo.Excel;
 import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.charts.ChartDataSource;
+import org.apache.poi.ss.usermodel.charts.DataSources;
+import org.apache.poi.ss.usermodel.charts.PieChartData;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,6 +146,7 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("时间");
         headValues.add("电话");
         headValues.add("工号");
+        headValues.add("访员姓名");
         headValues.add("收集开始时间");
         headValues.add("收集结束时间");
         headValues.add("通话时长");
@@ -170,6 +175,7 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("work_num"));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("work_num"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
@@ -189,29 +195,28 @@ public class ExportServiceImpl implements ExportService {
 
             // 循环所有标题/表头上的题目
             for (int index = 0; index < titleQList.size(); index++) {
-                System.out.println(titleQList.get(index));
                 // 拆分表头
                 String titleStr = titleQList.get(index);
                 String titleQ = "";
                 String titleO = "";
-                if(titleStr.contains("_")) {
+                if (titleStr.contains("_")) {
                     titleQ = titleStr.split("_")[0];
                     titleO = titleStr.split("_")[1];
                 }
                 // 循环问题
                 for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
                     // 全等，即单选
-                    if(titleStr.equals(qs.get(qIndex))) {
-                        fillCell(row.createCell(8 + index), style, answersArray[qIndex]);
+                    if (titleStr.equals(qs.get(qIndex))) {
+                        fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
                         qIndex = qs.size();
-                    }else{
+                    } else {
                         // 多选， 并且问题和excel当前表头相同
-                        if(titleQ.equals(qs.get(qIndex))) {
+                        if (titleQ.equals(qs.get(qIndex))) {
                             // 根据问题的序号，得出的选项
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
-                            if(org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
-                                fillCell(row.createCell(8 + index), style, answersArray[qIndex]);
+                            if (org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
+                                fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
                                 qIndex = qs.size();
                             }
                         }
@@ -224,27 +229,40 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public HSSFWorkbook total(Integer surveyId) {
+    public SXSSFWorkbook total(Integer surveyId) {
         //创建一个WorkBook,对应一个Excel文件
         List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(surveyId);
-        HSSFWorkbook wb = new HSSFWorkbook();
+        SXSSFWorkbook wb = new SXSSFWorkbook();
         questions.forEach(question -> {
             logger.info("开始第" + questions.indexOf(question) + "个表的数据导出");
             logger.info("组装表头信息");
-            HSSFSheet sheet = wb.createSheet(ExcelUtil.sheetName(question.getName(), question.getOrderNum()));
-            ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question)), sheet);
+            SXSSFSheet sheet = (SXSSFSheet) wb.createSheet("Q" + question.getOrderNum());
+            sheet.setForceFormulaRecalculation(true);
+
+            ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question) + 1), sheet);
             ExcelUtil.creatTotalHead(sheet, 20);
             logger.info("查询数据");
             List<ZsOption> options = zsOptionService.selectBySurveyId(surveyId);
             int rowNum = 21;
             for (ZsOption option : options) {
                 if (!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
-                    HSSFRow row = sheet.createRow(rowNum++);
+                    Row row = sheet.createRow(rowNum++);
                     ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
                 }
             }
+
+            Drawing drawing = sheet.createDrawingPatriarch();
+            ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 2, 15, 18);
+            anchor.setAnchorType(2);
+            XSSFChart chart = (XSSFChart) drawing.createChart(anchor);
+            PieChartData data = chart.getChartDataFactory().createPieChartData();
+            ChartDataSource<Number> xs = DataSources.fromNumericCellRange(sheet, new CellRangeAddress(21, rowNum - 1, 2, 2));
+            ChartDataSource<Number> ys1 = DataSources.fromNumericCellRange(sheet, new CellRangeAddress(21, rowNum - 1, 3, 3));
+            data.addSerie(xs, ys1);
+            chart.plot(data);
+            chart.getOrCreateLegend();
         });
-        System.out.println(ExcelUtil.class);
+
         return wb;
     }
 
@@ -523,35 +541,35 @@ public class ExportServiceImpl implements ExportService {
     HSSFCellStyle createHeadStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+//        style.setBorderBottom((short)1);
+//        style.setBorderLeft(2);
+//        style.setBorderRight(BorderStyle.THIN);
+//        style.setBorderTop(BorderStyle.THIN);
         return style;
     }
 
     HSSFCellStyle createTitleStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setFillForegroundColor(HSSFColor.LIME.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setBorderBottom(BorderStyle.THIN);
+//        style.setBorderLeft(BorderStyle.THIN);
+//        style.setBorderRight(BorderStyle.THIN);
+//        style.setBorderTop(BorderStyle.THIN);
+//        style.setFillForegroundColor(HSSFColor.LIME.index);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return style;
     }
 
     HSSFCellStyle createCellStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+//        style.setBorderBottom(BorderStyle.THIN);
+//        style.setBorderLeft(BorderStyle.THIN);
+//        style.setBorderRight(BorderStyle.THIN);
+//        style.setBorderTop(BorderStyle.THIN);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setAlignment(HorizontalAlignment.CENTER);
+//        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 

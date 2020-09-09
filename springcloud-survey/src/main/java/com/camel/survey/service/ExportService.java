@@ -2,6 +2,7 @@ package com.camel.survey.service;
 
 import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 /**
  *
@@ -27,7 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * @date 2019/12/24
  **/
 public interface ExportService {
-    HSSFWorkbook total(Integer surveyId);
+    SXSSFWorkbook total(Integer surveyId);
 
     HSSFWorkbook cross(ZsCrossExport zsCrossExport);
 

@@ -109,4 +109,4 @@ logging:
   level:
     com:
       camel:
-        system: DEBUG
+        system: ERROR
