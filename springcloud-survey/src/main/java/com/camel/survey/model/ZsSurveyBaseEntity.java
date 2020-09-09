@@ -32,7 +32,7 @@ public class ZsSurveyBaseEntity extends BasePaginationEntity {
      * 创建时间
      */
     @TableField("created_at")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
 
     public ZsSurveyBaseEntity(Integer pageNum, Integer pageSize, Integer creatorId, SysUser creator, ZsStatus status, Date createdAt) {

@@ -35,4 +35,10 @@ public interface HomeService {
      * @return
      */
     List<Map> enabledSurvies();
+
+    /**
+     * 督导自己创建的开启的项目问卷
+     * @return
+     */
+    List<Map> enabledSurviesDev();
 }

@@ -3,6 +3,7 @@ package com.camel.survey.model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -69,6 +70,18 @@ public class ZsSign extends ZsSurveyBaseEntity implements Serializable {
 
     @TableField(exist = false)
     private ZsYesOrNo isApply;
+
+    // 接触量
+    @TableField(exist = false)
+    private Long tryNum;
+
+    // 成功量
+    @TableField(exist = false)
+    private BigDecimal successNum;
+
+    // 作废量
+    @TableField(exist = false)
+    private BigDecimal invalidNum;
 
     public ZsSign(Integer surveyId, String username, Integer creator) {
         this.surveyId = surveyId;

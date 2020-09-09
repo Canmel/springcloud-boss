@@ -89,9 +89,9 @@
                     zs_answer_item ai
                 LEFT JOIN zs_question q ON q.id = ai.question_id
                 WHERE
-                    ai.survey_id = #{surveyId} and question = #{qF}
-                AND ai. STATUS = 1 and ai.creator in (
-                    select creator from zs_answer_item where question = #{qS} and `option` = #{oS}
+                    ai.survey_id = #{surveyId} and question_id = #{qF}
+                AND ai. STATUS = 1 and ai.valid = 1 and ai.creator in (
+                    select creator from zs_answer_item where question_id = #{qS} and option_id = #{oS}
                 )
             )result
         GROUP BY

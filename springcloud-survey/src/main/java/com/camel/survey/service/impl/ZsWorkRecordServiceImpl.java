@@ -6,6 +6,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.*;
 import com.camel.survey.mapper.ZsWorkRecordMapper;
 import com.camel.survey.service.*;
@@ -110,8 +111,12 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
 
     @Override
     public Result updateSignW(ZsWorkRecord entity) {
-        mapper.updateById(entity);
         ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(entity.getWsId());
+        if(!zsSeatService.assignSeat(entity.getCreatorId(), zsWorkShift.getSurveyId())) {
+            throw new SourceDataNotValidException("分配坐席出错,请检查剩余坐席");
+        }
+
+        mapper.updateById(entity);
         ZsSign zsSign = new ZsSign();
         Wrapper<ZsSign> wrapper = new EntityWrapper<>();
         if(zsWorkShift != null){

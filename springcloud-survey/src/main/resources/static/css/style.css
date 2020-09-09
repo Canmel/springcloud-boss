@@ -7971,3 +7971,7 @@ form .survey-optins {
     position: absolute;
     z-index: 9999;
 }
+
+.reviewer-msg {
+    cursor: help;
+}

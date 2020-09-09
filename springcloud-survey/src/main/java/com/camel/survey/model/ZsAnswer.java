@@ -71,7 +71,7 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
     /**
      * 创建人
@@ -90,6 +90,11 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     private ZsYesOrNo valid;
 
     /**
+     * 无效原因
+     */
+    private String inValidMsg;
+
+    /**
      * 开始时间，用于查询
      */
     @TableField(exist = false)
@@ -106,28 +111,64 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     private String taskId;
 
+    /**
+     * 任务状态
+     */
     private ZsTaskStatus taskStatus;
 
+    /**
+     * CDR信息
+     */
     @TableField(exist = false)
     private ZsCdrinfo cdrinfo;
 
+    /**
+     * 开始时间
+     */
     private String startTime;
 
+    /**
+     * 时长
+     */
     private String callLastsTime;
 
+    /**
+     * 结束时间
+     */
     private String endTime;
 
+    /**
+     * 复核意见
+     */
     private String reviewMsg;
 
+    /**
+     * 复核结果
+     */
     private Integer reviewStatus;
 
+    /**
+     * 复核人
+     */
     @TableField(exist = false)
     private SysUser reviewer;
 
+    /**
+     * 复核人ID
+     */
     @TableField("reviewer")
     private Integer reviewerId;
 
+    /**
+     * 复核人名称
+     */
     private String reviewerName;
+
+    /**
+     * 复核时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date reviewerAt;
 
     private Integer uid;
 
@@ -136,7 +177,22 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
 
     private Integer checked;
 
+    private Integer reviewSpent;
+
+    /**
+     * 工号
+     */
     private String workNum;
+
+    /**
+     * 访员姓名
+     */
+    private String username;
+
+    /**
+     * 标签
+     */
+    public String label;
 
     public ZsAnswer() {
     }
@@ -150,12 +206,14 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
         this.creator = creator;
     }
 
-    public ZsAnswer(Integer id, String reviewMsg, Integer reviewStatus, Integer reviewerId, String reviewerName) {
+    public ZsAnswer(Integer id, String reviewMsg, Integer reviewStatus, Integer reviewerId, String reviewerName, Integer reviewSpent) {
         this.id = id;
         this.reviewMsg = reviewMsg;
         this.reviewStatus = reviewStatus;
         this.reviewerId = reviewerId;
         this.reviewerName = reviewerName;
+        this.reviewerAt = new Date();
+        this.reviewSpent = reviewSpent;
     }
 
     @Override

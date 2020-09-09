@@ -64,9 +64,6 @@
         zs_survey zs_survey
         <where>
             status = 1
-            <if test="creatorId != null">
-                AND zs_survey.creator = #{creatorId}
-            </if>
             <if test="name != null and name != ''">
                 AND zs_survey.name like concat('%', #{name}, '%')
             </if>
@@ -161,5 +158,13 @@
             work_date,
             uid,
             seat
+    </select>
+
+    <select id="selectTotal" resultType="hashmap">
+        select
+            COUNT(1) try_num,
+            IFNULL(SUM(case valid WHEN 1 THEN 1 else 0 END), 0) success_num,
+            IFNULL(SUM(case valid WHEN 0 THEN 1 else 0 END), 0) invalid_num
+        from zs_answer where survey_id = #{surveyId} and uid = #{id};
     </select>
 </mapper>

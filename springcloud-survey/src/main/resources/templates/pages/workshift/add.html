@@ -113,15 +113,34 @@
             selectcount: 0,
             selectsurveyid: 0,
             timeregular: 0,
-            dateregular: 0
+            dateregular: 0,
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
         },
         created: function () {
+            this.loginMaster();
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
             this.zs_workshift.creatorId = this.user.userid;
             this.zs_workshift.cuname = this.user.username;
         },
         methods: {
+            loginMaster() {
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if (authority === 'ROLE_ADMIN') {
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if (authority === 'ROLE_DEVOPS') {
+                        that.resultDev = true
+                    }
+                })
+            },
             cancel: function () {
                 this.backToMain();
             },
@@ -177,9 +196,16 @@
             },
             pagequery: function () {
                 let that = this;
-                AJAX.GET('home/enabledSurveys', {}, function (resp) {
-                    that.items = resp.data;
-                })
+                if(that.result){
+                    AJAX.GET('home/enabledSurveys', {}, function (resp) {
+                        that.items = resp.data;
+                    })
+                }
+                else{
+                    AJAX.GET('home/enabledSurveysDev', {}, function (resp) {
+                        that.items = resp.data;
+                    })
+                }
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;

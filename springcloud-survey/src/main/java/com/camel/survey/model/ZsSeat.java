@@ -51,6 +51,8 @@ public class ZsSeat extends BasePaginationEntity {
 
     private String workNum;
 
+    private Integer surveyId;
+
     @Override
     public String toString() {
         return "ZsSeat{" +

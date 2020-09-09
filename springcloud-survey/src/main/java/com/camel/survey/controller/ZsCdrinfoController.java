@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -74,39 +75,57 @@ public class ZsCdrinfoController extends BaseCommonController {
                 List<ZsCdrinfo> zsCdrinfos = CollectionUtils.arrayToList(params.get(CDR_KEY));
                 LoggerFactory.getLogger(ZsCdrinfoController.class).info("开始保存录音信息" + JSONObject.toJSON(params).toString());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String result = "success";
                 for (int i = 0; i < zsCdrinfos.size(); i++) {
                     ZsAnswer answer = new ZsAnswer();
                     ZsCdrinfo cdr = zsCdrinfos.get(i);
                     if (!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
                         ZsSeat seat = seatService.selectBySeat(cdr.getCaller_agent_num());
                         cdr.setUid(seat.getUid());
+                        cdr.setSurveyId(seat.getSurveyId());
                     }
                     if (StringUtils.isEmpty(cdr.getUuids())) {
                         cdr.setId(UUID.randomUUID().toString());
                         service.insert(cdr);
                     } else {
                         String[] uuids = cdr.getUuids().split(",");
+                        List<ZsAnswer> zsAnswers = new ArrayList<>();
                         for (int j = 0; j < uuids.length; j++) {
-                            ZsAnswer zsAnswer = answerService.selectByAgentUuid(uuids[j]);
-                            if (!ObjectUtils.isEmpty(zsAnswer)) {
-                                answer.setId(zsAnswer.getId());
+                            List<ZsAnswer> tmpAnswers = answerService.selectByAgentUuid(uuids[j]);
+                            if(!CollectionUtils.isEmpty(tmpAnswers)) {
+                                zsAnswers = tmpAnswers;
                                 cdr.setId(uuids[j]);
                             }
                         }
+                        if(!CollectionUtils.isEmpty(zsAnswers)) {
+                            for (ZsAnswer zsAnswer: zsAnswers) {
+                                answer.setId(zsAnswer.getId());
+                                answer.setStartTime(cdr.getStart_time());
+                                answer.setCallLastsTime(cdr.getCall_lasts_time());
+                                answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
+                                if (answer.getId() != null) {
+                                    answerService.updateById(answer);
+                                }
+                            }
+                        }else{
+                            result = "error";
+                            continue;
+                        }
                         if (ObjectUtils.isEmpty(cdr.getId())) {
-                            cdr.setId(UUID.randomUUID().toString());
+                            result = "error";
+                            continue;
                         }
-                        service.insert(cdr);
-                        answer.setStartTime(cdr.getStart_time());
-                        answer.setCallLastsTime(cdr.getCall_lasts_time());
-                        answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
-                        if (answer.getId() != null) {
-                            answerService.updateById(answer);
+                        try {
+                            service.insert(cdr);
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                            continue;
                         }
+
                     }
 
                 }
-                return "success";
+                return result;
             }
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -3,6 +3,7 @@ package com.camel.survey.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsStatus;
@@ -14,6 +15,7 @@ import com.camel.survey.model.ZsExam;
 import com.camel.survey.model.ZsWorkRecord;
 import com.camel.survey.model.ZsWorkShift;
 import com.camel.survey.mapper.ZsWorkShiftMapper;
+import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkRecordService;
 import com.camel.survey.service.ZsWorkShiftService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -50,6 +52,9 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
     @Autowired
     private ZsWorkRecordService service;
 
+    @Autowired
+    private ZsSurveyService zsSurveyService;
+
     @Override
     public PageInfo<ZsWorkShift> selectPage(ZsWorkShift entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
@@ -63,6 +68,7 @@ public class ZsWorkShiftServiceImpl extends ServiceImpl<ZsWorkShiftMapper, ZsWor
             String startTime =  ZsWorkShift.getStartTime();
             String endTime =  ZsWorkShift.getEndTime();
             ZsWorkShift.setWtime(startTime+":00 - "+endTime+":00");
+            ZsWorkShift.setSurvey(zsSurveyService.selectById(ZsWorkShift.getSurveyId()));
         });
         return pageInfo;
     }

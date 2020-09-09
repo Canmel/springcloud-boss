@@ -38,6 +38,7 @@
         <result column="exclusivity" property="exclusivity"/>
         <result column="current" property="current"/>
         <result column="configration" property="configration"/>
+        <result column="target" property="target"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>

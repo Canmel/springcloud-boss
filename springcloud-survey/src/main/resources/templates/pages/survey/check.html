@@ -731,11 +731,21 @@
                 </div>
                 <div class="ibox-content" style="height: 90%">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
+                            <select class="form-control m-b" name="type"
+                                    v-model="pageInfo.reviewStatus">
+                                <option value=-1>所有状态</option>
+                                <option value=0>未复核</option>
+                                <option value=12>已复核</option>
+                                <option value=1>复核通过</option>
+                                <option value=2>复核作废</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
                             <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
                                    v-model="pageInfo.creator">
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
                                    v-model="pageInfo.seat">
                         </div>
@@ -754,8 +764,11 @@
                             <tr>
                                 <th>收集时间</th>
                                 <th>被访人</th>
-                                <th>坐席</th>
+                                <th>工号</th>
+                                <th>访员</th>
+                                <th>复核人</th>
                                 <th>通话时间</th>
+                                <th>复核状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -763,10 +776,17 @@
                             <tr v-for="(item, index) in items">
                                 <td>{{item.createdAt}}</td>
                                 <td>{{item.creator}}</td>
-                                <td>{{item.seat}}</td>
+                                <td>{{item.workNum}}</td>
+                                <td>{{item.user ? item.user.username: ''}}</td>
+                                <td>{{item.reviewer ? item.reviewer.username: ''}}</td>
                                 <td>{{item.callLastsTime}}</td>
                                 <td>
-                                    <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id && item.reviewStatus == null" class="btn btn-info btn-xs" >复核</button>
+                                    <span class="text-input" v-if="!item.reviewStatus">未复核</span>
+                                    <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
+                                    <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
+                                </td>
+                                <td>
+                                    <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id" class="btn btn-info btn-xs" >复核</button>
                                     <span v-if="item.id === selected.id">复核中</span>
                                     <span v-if="!item.callLastsTime">无数据</span>
                                 </td>
@@ -798,7 +818,8 @@
                 total: 0,//总页数
                 size: 10, //每页显示条目个数不传默认10
                 callLastsTime: 1,
-                reviewStatus: 0
+                reviewStatus: -1,
+                daterange:'',
             },
             selected: {},
             items: [{}], //待检列表
@@ -821,11 +842,10 @@
             }
         },
         created: function () {
-            this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
-                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 23:59:59";
+            this.loadTimeRange();
         },
         methods: {
-            renderCheck(item) {
+                renderCheck(item) {
                 this.selected = item;
                 document.getElementById('detailIfram').src="check_detail.html";
             },
@@ -894,6 +914,9 @@
                     that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
                     that.pageInfo.endDate=that.pageInfo.daterange.substring(22,41);
                 }
+                // if(that.pageInfo.reviewStatus==1000){
+                //     that.pageInfo.reviewStatus=null;
+                // }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
@@ -905,7 +928,15 @@
             },
             backToListPage() {
                 toPage('pages/survey/details_det.html', this.pageInfo.surveyId);
-            }
+            },
+            loadTimeRange() {
+                let that = this;
+                AJAX.GET('zsAnswer/selectTimeRange/' + sessionStorage.getItem('surveyId'), {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterange = resp.data;
+                    }
+                })
+            },
         }
     });
 </script>
@@ -915,7 +946,8 @@
         updateConfig();
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "endDate":(new Date()).getFullYear()+"/"+((new Date()).getMonth()+1)+"/"+(new Date()).getDate()+" 23:59:59",
+                "startDate": checkVue.$data.pageInfo.daterange.substring(0,19),
+                "endDate": checkVue.$data.pageInfo.daterange.substring(22,41),
                 "timePickerSeconds": true,
                 "timePicker":true,
                 "opens":"center",

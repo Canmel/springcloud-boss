@@ -3,6 +3,7 @@ package com.camel.survey.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsSurveyState;
@@ -11,6 +12,7 @@ import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.HomeService;
 import com.camel.survey.service.ZsProjectService;
 import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsHomeLineChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,9 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private HomeMapper mapper;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @Override
     public Result total() {
         return ResultUtil.success(mapper.total());
@@ -80,5 +85,11 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public List<Map> enabledSurvies() {
         return mapper.enabledSurvies();
+    }
+
+    @Override
+    public List<Map> enabledSurviesDev() {
+        SysUser user = applicationToolsUtils.currentUser();
+        return mapper.enabledSurviesDev(user.getUid());
     }
 }

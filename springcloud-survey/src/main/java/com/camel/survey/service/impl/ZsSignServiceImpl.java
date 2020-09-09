@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.common.enums.ResultEnum;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.mapper.ZsSignMapper;
@@ -13,6 +14,7 @@ import com.camel.survey.model.ZsDelivery;
 import com.camel.survey.model.ZsSign;
 import com.camel.survey.service.ZsDeliveryService;
 import com.camel.survey.service.ZsSignService;
+import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsDynamicView;
 import com.github.pagehelper.PageInfo;
@@ -58,15 +60,22 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
 
     @Autowired
     private ZsDeliveryService zsDeliveryService;
+
+    @Autowired
+    private ZsSurveyService zsSurveyService;
+
     @Override
     public PageInfo<ZsSign> selectPage(ZsSign entity) {
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
+        SysUser sysUser = applicationToolsUtils.currentUser();
         List<ZsSign> deliveries = pageInfo.getList();
-        deliveries.forEach(zsDelivery -> {
+        for (int i = 0; i < deliveries.size(); i++) {
+            ZsSign zsDelivery = deliveries.get(i);
             zsDelivery.setCreator(applicationToolsUtils.getUser(zsDelivery.getCreatorId()));
-        });
+            zsSurveyService.selectTotal(zsDelivery.getSurveyId(), sysUser.getUid(), zsDelivery);
+        }
         return pageInfo;
     }
 
@@ -79,10 +88,11 @@ public class ZsSignServiceImpl extends ServiceImpl<ZsSignMapper, ZsSign> impleme
         });
         List<ZsSign> zsSigns = pageInfo.getList();
 
-        zsSigns.forEach(zsSign -> {
-            ZsDynamicView zsDynamicView = new ZsDynamicView(zsSign.getCreatedAt(), zsSign.getUsername(), "参加了 " + zsSign.getSurvey().getName());
+        for (int i = 0; i < zsSigns.size(); i++) {
+            ZsSign zsSign = zsSigns.get(i);
+            ZsDynamicView zsDynamicView = new ZsDynamicView(zsSign.getCreatedAt(), zsSign.getUsername(), "参加了 " + zsSign.getSurvey().getName(), zsSign.getSurveyId());
             zsDynamicViews.add(zsDynamicView);
-        });
+        }
 
         return ResultUtil.success(zsDynamicViews);
     }

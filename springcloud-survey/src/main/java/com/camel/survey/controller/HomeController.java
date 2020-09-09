@@ -78,4 +78,9 @@ public class HomeController {
     public Result enabledSurvey() {
         return ResultUtil.success(homeService.enabledSurvies());
     }
+
+    @GetMapping("/enabledSurveysDev")
+    public Result enabledSurveyDev() {
+        return ResultUtil.success(homeService.enabledSurviesDev());
+    }
 }

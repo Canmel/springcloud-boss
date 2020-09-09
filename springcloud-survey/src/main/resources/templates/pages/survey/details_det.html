@@ -1,6 +1,6 @@
 <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css" />
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css"/>
 </head>
 <style>
     .droppable-active {
@@ -104,7 +104,7 @@
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 问卷预览</a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
+                <li class="" v-if="result||survey.creatorId===user.userid"><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">正在收集</a>
                 </li>
@@ -210,6 +210,7 @@
                                 <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.valid">
+                                        <option value='empty'>所有问卷</option>
                                         <option value='YES'>有效问卷</option>
                                         <option value='NO'>无效问卷</option>
                                     </select>
@@ -217,6 +218,7 @@
                                 <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.reviewStatus">
+                                        <option value=-1>所有状态</option>
                                         <option value=0>未复核</option>
                                         <option value=12>已复核</option>
                                         <option value=1>复核通过</option>
@@ -237,11 +239,14 @@
                                 </div>
                                 <div class="col-sm-6" style="width: 39%;">
                                     <div class="input-group">
-                                        <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
+                                        <input type="text" id="datePickerSelect" placeholder="请选择时间"
+                                               class="input-sm form-control search-input"><span
                                             class="input-group-btn">
-                                            <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
-                                            <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出</button>
-                                            <button type="button" class="btn btn-warning btn-sm" v-on:click="checkRecord()">复核</button>
+                                            <button type="button" class="btn btn-sm btn-primary"
+                                                    v-on:click="pagequery()"> 搜索</button>
+                                            <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出录音</button>
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                    v-on:click="checkRecord()">复核</button>
                                     </span>
                                     </div>
                                 </div>
@@ -252,20 +257,26 @@
                                         <thead>
                                         <tr>
                                             <th>序号</th>
+                                            <th>标签</th>
                                             <th>收集时间</th>
-                                            <th>填写人(手机号)</th>
+                                            <th>被访者</th>
                                             <th>工号</th>
-                                            <th>通话时间</th>
+                                            <th>访员姓名</th>
                                             <th>有效</th>
-                                            <th>复核</th>
+                                            <th>复核状态</th>
                                             <th>复核人</th>
                                             <th>复核意见</th>
+                                            <th>复核时间</th>
+                                            <th>复核时长</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr v-for="(item, index) in answers">
                                             <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                            <td>
+                                                <span class="label label-info label-important">{{item.label}}</span>
+                                            </td>
                                             <td>
                                                 <span>{{item.createdAt}}</span>
                                             </td>
@@ -276,14 +287,13 @@
                                                 <span>{{item.workNum}}</span>
                                             </td>
                                             <td>
-                                                <span v-if="item.callLastsTime">{{item.callLastsTime}}</span>
+                                                <span>{{item.user ? item.user.username: ''}}</span>
                                             </td>
                                             <td>
-                                                <span class="label-danger label" v-if="item.valid && item.valid.code === 0">否</span>
-                                                <span class="label-success label" v-if="!item.valid || item.valid && item.valid.code === 1">是</span>
+                                                <span class="text">{{isInValid(item)}}</span>
                                             </td>
                                             <td>
-                                                <span class="text-input" v-if="!item.reviewStatus">未开始</span>
+                                                <span class="text-input" v-if="!item.reviewStatus">未复核</span>
                                                 <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
                                                 <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
                                             </td>
@@ -291,8 +301,10 @@
                                                 <span>{{item.reviewer ? item.reviewer.username: ''}}</span>
                                             </td>
                                             <td>
-                                                <span>{{item.reviewMsg}}</span>
+                                                <span class="reviewer-msg" :title="item.reviewMsg">{{item.reviewMsg | shorter}}</span>
                                             </td>
+                                            <td>{{item.reviewerAt}}</td>
+                                            <td>{{item.reviewSpent ? item.reviewSpent / 1000 : ''}}</td>
                                             <td>
                                                 <button type="button" v-on:click="details(item)"
                                                         class="btn btn-primary btn-xs" v-if="resultDev">查看
@@ -301,10 +313,13 @@
                                                         class="btn btn-danger btn-xs" v-if="resultDev">删除
                                                 </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-restore btn-xs" v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">标为无效
+                                                        class="btn btn-restore btn-xs"
+                                                        v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">
+                                                    作废
                                                 </button>
                                                 <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-success btn-xs" v-if="resultDev&&(item.valid && item.valid.code === 0)">恢复为有效
+                                                        class="btn btn-success btn-xs"
+                                                        v-if="resultDev&&(item.valid && item.valid.code === 0)">取消作废
                                                 </button>
                                             </td>
                                         </tr>
@@ -328,14 +343,15 @@
                                             <h5 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
                                                    href="tabs_panels.html#collapseOne" aria-expanded="false"
-                                                   class="collapsed">汇总导出</a>
+                                                   class="collapsed">项目答题统计</a>
                                             </h5>
                                         </div>
                                         <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true"
                                              style="">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <button class="btn btn-primary" v-on:click="exportTotal()"  v-if="resultDev">汇总导出
+                                                    <button class="btn btn-primary" v-on:click="exportTotal()"
+                                                            v-if="resultDev">汇总导出
                                                     </button>
                                                 </div>
                                             </div>
@@ -436,7 +452,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <button class="btn btn-primary" v-on:click="exportCross()"  v-if="resultDev">交叉导出
+                                                    <button class="btn btn-primary" v-on:click="exportCross()"
+                                                            v-if="resultDev">交叉导出
                                                     </button>
                                                 </div>
                                             </div>
@@ -447,14 +464,16 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="tabs_panels.html#collapseFour" class="" aria-expanded="true" v-if="resultDev">明细导出</a>
+                                                   href="tabs_panels.html#collapseFour" class="" aria-expanded="true"
+                                                   v-if="resultDev">明细导出</a>
                                             </h4>
                                         </div>
                                         <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false"
                                              style="height: 0px;">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <button class="btn btn-primary" v-on:click="exportAnswers()" v-if="resultDev">明细导出
+                                                    <button class="btn btn-primary" v-on:click="exportAnswers()"
+                                                            v-if="resultDev">明细导出
                                                     </button>
                                                 </div>
                                             </div>
@@ -572,7 +591,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" v-if="resultDev" class="btn btn-default" data-dismiss="modal" id="leaveRoom">关闭</button>
+                    <button type="button" v-if="resultDev" class="btn btn-default" data-dismiss="modal" id="leaveRoom">
+                        关闭
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -599,12 +620,13 @@
             },
             answers: [],
             pageInfo: {
-                reviewStatus:0,
-                valid:'YES',
+                reviewStatus: 0,
+                valid: 'empty',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
-                size: 10//每页显示条目个数不传默认10
+                size: 10,//每页显示条目个数不传默认10
+                reviewStatus: -1,
             },
             crossForm: {
                 firstSelect: null,
@@ -642,6 +664,7 @@
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
+            user:{},
         },
         watch: {
             loadData(v, oldVal) {
@@ -649,10 +672,22 @@
         },
         computed: {},
         methods: {
+            isInValid(item) {
+                if (item.valid) {
+                    if (item.valid.code === 1) {
+                        return "是";
+                    } else {
+                        let detail = item.inValidMsg ? '(' + item.inValidMsg + ')' : '';
+                        return "否" + detail;
+                    }
+                } else {
+                    return "未知";
+                }
+            },
             getReviewRate() {
                 let that = this;
                 AJAX.GET("zsSurvey/reviewRate/" + this.survey.id, {}, function (resp) {
-                    if(resp.data) {
+                    if (resp.data) {
                         that.reviewRate = resp.data;
                     }
                 })
@@ -668,7 +703,8 @@
             getAvgTime() {
                 let that = this;
                 AJAX.GET("zsSurvey/avgTime/" + this.survey.id, {}, function (resp) {
-                    if(resp.data) {
+                    if (resp.data) {
+                        console.log(resp.data)
                         that.avgTime = resp.data;
                     }
                 })
@@ -678,14 +714,19 @@
                     toastr.success(resp.msg);
                 })
             },
-            loginMaster(){
+            loginMaster() {
                 var that = this;
                 this.master = sessionStorage.getItem('master');
                 var masterJ = JSON.parse(this.master);
                 masterJ.forEach(e => {
                     var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
-                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                    if (authority === 'ROLE_ADMIN') {
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if (authority === 'ROLE_DEVOPS') {
+                        that.resultDev = true
+                    }
                 })
             },
             initZg() {
@@ -961,8 +1002,8 @@
             },
             invalidItem(item) {
                 let that = this;
-                if(!item.valid || item.valid && item.valid.code === 1){
-                    confirm("您确定要将这条数据标为无效吗?", "", function (isConfirm) {
+                if (!item.valid || item.valid && item.valid.code === 1) {
+                    confirm("您确定要将这条数据作废吗?", "", function (isConfirm) {
                         if (isConfirm) {
                             AJAX.GET("zsAnswer/invalid/" + item.id, {}, function (res) {
                                 toastr.success(res.msg);
@@ -972,8 +1013,7 @@
                             });
                         }
                     }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
-                }
-                else{
+                } else {
                     confirm("您确定要将这条数据恢复为有效吗?", "", function (isConfirm) {
                         if (isConfirm) {
                             AJAX.GET("zsAnswer/invalid/" + item.id, {}, function (res) {
@@ -1017,30 +1057,36 @@
             download() {
                 let that = this;
                 let params = Object.keys(this.pageInfo).map(function (key) {
-                    if(that.pageInfo[key]) {
+                    if (that.pageInfo[key]) {
 
 
-                    return encodeURIComponent(key) + "=" + encodeURIComponent(that.pageInfo[key]);
+                        return encodeURIComponent(key) + "=" + encodeURIComponent(that.pageInfo[key]);
                     }
                 }).join("&");
                 window.open('/survey/zsAnswer/download?access_token=' + sessionStorage.getItem('access_token') + "&" + params);
             },
             pagequery: function () {
-                if(document.getElementById("datePickerSelect").value!=null&&document.getElementById("datePickerSelect").value!=""){
-                    this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
+                if (document.getElementById("datePickerSelect").value != null && document.getElementById("datePickerSelect").value != "") {
+                    this.pageInfo.daterange = document.getElementById("datePickerSelect").value;
                 }
                 var that = this;
-                if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
-                    that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
-                    that.pageInfo.endDate=that.pageInfo.daterange.substring(22,41);
+                if (this.pageInfo.daterange != null && this.pageInfo.daterange != "") {
+                    that.pageInfo.startDate = that.pageInfo.daterange.substring(0, 19);
+                    that.pageInfo.endDate = that.pageInfo.daterange.substring(22, 41);
+                }
+                if(that.pageInfo.valid==="empty"){
+                    that.pageInfo.valid = null;
                 }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.answers = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
+                if(that.pageInfo.valid===null){
+                    that.pageInfo.valid = "empty";
+                }
             },
-            format2: function(num) {
+            format2: function (num) {
                 return (Array(2).join("0") + num).slice(-2);
             },
             showOption(question, option) {
@@ -1113,8 +1159,17 @@
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
-                        state: resp.data.state ? resp.data.state.value : null
+                        state: resp.data.state ? resp.data.state.value : null,
+                        creatorId:resp.data.creatorId,
                     };
+                })
+            },
+            loadTimeRange() {
+                let that = this;
+                AJAX.GET('zsAnswer/selectTimeRange/' + this.survey.id, {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterange = resp.data;
+                    }
                 })
             },
             loadQuestions() {
@@ -1129,7 +1184,21 @@
                     that.monitors = resp.data;
                     console.log(resp.data);
                 })
-            }
+            },
+            loadWorkShift(){
+                let that = this;
+                if(this.result==false&&this.survey.creatorId!=this.user.userid){
+                    AJAX.GET_SYNC("zsWorkShift/current/" + that.survey.id, {}, function (resp) {
+                        if(!resp.data) {
+                            alert("您目前未分配到属于该问卷的班次或时间不在允许的范围内，请先申请对应班次！");
+                            $.pjax({
+                                url: mvm.applicationContextRootPath + 'pages/survey/index.html',
+                                container: '.page-container'
+                            });
+                        }
+                    });
+                }
+            },
         },
         created: function () {
             this.loadEntity();
@@ -1137,8 +1206,10 @@
             this.initZg();
             this.loadMonitors();
             this.loginMaster();
-            this.pageInfo.daterange=(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 00:00:00 - "
-                +(new Date()).getFullYear()+"/"+this.format2(((new Date()).getMonth()+1))+"/"+this.format2((new Date()).getDate())+" 23:59:59";
+            var userJsonStr = sessionStorage.getItem('user');
+            this.user = JSON.parse(userJsonStr);
+            this.loadWorkShift();
+            this.loadTimeRange();
         },
         mounted: function () {
             this.bindEvent();
@@ -1150,22 +1221,24 @@
 </script>
 
 <script type="text/javascript">
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
         updateConfig();
+
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "endDate":(new Date()).getFullYear()+"/"+((new Date()).getMonth()+1)+"/"+(new Date()).getDate()+" 23:59:59",
+                "startDate": currentVue.$data.pageInfo.daterange.substring(0,19),
+                "endDate": currentVue.$data.pageInfo.daterange.substring(22,41),
                 "timePickerSeconds": true,
-                "timePicker":true,
-                "opens":"center",
-                "buttonClasses":'btn btn-sm',
-                "applyClass":'btn-success',
-                "cancelClass":'btn-default',
-                "timePicker24Hour":true,
-                "linkedCalendars":false,
-                "autoUpdateInput":true,
+                "timePicker": true,
+                "opens": "center",
+                "buttonClasses": 'btn btn-sm',
+                "applyClass": 'btn-success',
+                "cancelClass": 'btn-default',
+                "timePicker24Hour": true,
+                "linkedCalendars": false,
+                "autoUpdateInput": true,
                 locale: { //汉化
-                    format:"YYYY/MM/DD HH:mm:ss",
+                    format: "YYYY/MM/DD HH:mm:ss",
                     applyLabel: '确定', //确定按钮文本
                     cancelLabel: '取消', //取消按钮文本
                     customRangeLabel: '自定义范围',
@@ -1173,8 +1246,8 @@
                     monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
                         '七月', '八月', '九月', '十月', '十一月', '十二月'],
                 },
-            }, function(start, end, label) {
-                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
+            }, function (start, end, label) {
+                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss') + "-" + end.format('YYYY-MM-DD:HH:mm:ss'));
                 console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
             });
         }

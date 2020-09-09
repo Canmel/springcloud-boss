@@ -42,6 +42,7 @@ public class ZsCdrinfo extends BasePaginationEntity {
     private String taskname;
     private String ivr_dtmf;
     private Integer uid;
+    private Integer surveyId;
 
 
     @Override

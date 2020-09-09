@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -19,6 +21,6 @@ public interface ZsPhoneInformationService extends IService<ZsPhoneInformation> 
 
     boolean  importPhoneInformation(MultipartFile file, Integer surveyId);
 
-    ZsPhoneInformation selectByMobileAndSurvey(ZsPhoneInformation zsPhoneInformation);
+    List<ZsPhoneInformation> selectByMobileAndSurvey(ZsPhoneInformation zsPhoneInformation);
 
 }

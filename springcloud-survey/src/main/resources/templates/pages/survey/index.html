@@ -50,31 +50,31 @@
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
                         <td>
-                            <button type="button" v-on:click="copy(item)" v-if="resultDev"
+                            <button type="button" v-on:click="copy(item)" v-if="result||isInValid(item)"
                                     class="btn btn-info btn-xs" >复制
                             </button>
-                            <button type="button" v-on:click="edit(item)" v-if="states(item)"
+                            <button type="button" v-on:click="edit(item)" v-if="(result || isInValid(item))&&states(item)"
                                     class="btn btn-primary btn-xs" >修改
                             </button>
-                            <button type="button" v-on:click="editSimple(item)" v-if="states(item)==false"
+                            <button type="button" v-on:click="editSimple(item)" v-if="(result || isInValid(item))&&states(item) == false"
                                     class="btn btn-primary btn-xs" >修改
                             </button>
-                            <button type="button" v-on:click="start(item)" v-if="states(item)"
-                                    class="btn btn-success btn-xs" >开始调查
+                            <button type="button" v-on:click="start(item)" v-if="(result || isInValid(item))&&states(item)"
+                                    class="btn btn-success btn-xs" >发布
                             </button>
-                            <button type="button" v-on:click="deleteItem(item)" v-if="states(item)"
+                            <button type="button" v-on:click="deleteItem(item)" v-if="(result || isInValid(item))&&showDelete(item)"
                                     class="btn btn-danger btn-xs" >删除
                             </button>
 <!--                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"-->
 <!--                                    class="btn btn-danger btn-xs">查看申请记录-->
 <!--                            </button>-->
-                            <button type="button" v-on:click="changeStatus(item, '回收')" v-if="showBack(item)"
+                            <button type="button" v-on:click="changeStatus(item, '回收')" v-if="(result || isInValid(item))&&showBack(item)"
                                     class="btn btn-danger btn-xs">回收
                             </button>
-                            <button type="button" v-on:click="changeStatus(item, '启用')" v-if="showUse(item)"
-                                    class="btn btn-danger btn-xs">启用
+                            <button type="button" v-on:click="changeStatus(item, '收集')" v-if="(result || isInValid(item))&&showUse(item)"
+                                    class="btn btn-danger btn-xs">收集
                             </button>
-                            <button type="button" v-on:click="check(item)" v-if="resultDev"
+                            <button type="button" v-on:click="check(item)" v-if="result || isInValid(item)"
                                     class="btn btn-warning btn-xs">结算
                             </button>
                         </td>
@@ -121,12 +121,25 @@
             copySurveyId:0,
             new_questions: [],
             new_options: [],
+            user:{},
         },
         created: function () {
             // this.pagequery();
             this.loginMaster();
+            var userJsonStr = sessionStorage.getItem('user');
+            this.user = JSON.parse(userJsonStr);
         },
         methods: {
+            isInValid(item) {
+                if(item.authority){
+                    if (item.authority.code === 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return false;
+            },
             changeStatus(item, opt) {
                 let that = this;
                 confirm("您确定"+ opt +"该问卷吗?", "", function (isConfirm) {
@@ -147,6 +160,12 @@
             showUse(item) {
                 if(item.state){
                     return item.state.value === 4 && this.result
+                }
+                return false;
+            },
+            showDelete(item) {
+                if(item.state){
+                    return item.state.value != 2 && this.resultDev
                 }
                 return false;
             },
@@ -193,9 +212,6 @@
             },
             pagequery: function () {
                 var that = this;
-                if(this.result==false){
-                    this.pageInfo.creatorId=JSON.parse(sessionStorage.getItem('user')).userid;
-                }
                 AJAX.GET('zsSurvey', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
