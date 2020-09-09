@@ -60,8 +60,8 @@ docker-build:
 #    - docker push $auth_service
     - docker build -t $survey_service ./sartifacts/survey_service/
     - docker push $survey_service
-    - docker build -t $stock_service ./sartifacts/stock_service/
-    - docker push $stock_service
+#    - docker build -t $stock_service ./sartifacts/stock_service/
+#    - docker push $stock_service
 #    - docker build -t $viewer_service ./sartifacts/viewer_service/
 #    - docker push $viewer_service
 #    - docker build -t $sms_service ./sartifacts/sms_service/
@@ -84,7 +84,7 @@ docker-deploy:
 #    - cd springcloud-system && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-auth-server && docker-compose up -d && cd .. && pwd
     - cd springcloud-survey && docker-compose up -d && cd .. && pwd
-    - cd springcloud-stock-operation && docker-compose up -d && cd .. && pwd
+#    - cd springcloud-stock-operation && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-interviewer && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-sms-server && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-access-control && docker-compose up -d && cd .. && pwd
