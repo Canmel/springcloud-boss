@@ -207,6 +207,16 @@ public class ZsAnswerController extends BaseCommonController {
     }
 
     /**
+     * 获取样本时间范围
+     * @param id
+     * @return
+     */
+    @GetMapping("/selectTimeRange/{id}")
+    public Result selectTimeRange(@PathVariable Integer id) {
+        return ResultUtil.success("",service.selectTimeRange(id));
+    }
+
+    /**
      * 获取service
      */
     @Override

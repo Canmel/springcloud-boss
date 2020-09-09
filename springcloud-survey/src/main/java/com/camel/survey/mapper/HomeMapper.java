@@ -32,4 +32,6 @@ public interface HomeMapper {
     List<Map> pieChart();
 
     List<Map> enabledSurvies();
+
+    List<Map> enabledSurviesDev(Integer uid);
 }

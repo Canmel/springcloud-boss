@@ -90,6 +90,8 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
             ZsAnswer answer = (ZsAnswer) obj;
             SysUser reviewer = applicationToolsUtils.getUser(answer.getReviewerId());
             answer.setReviewer(reviewer);
+            SysUser user = applicationToolsUtils.getUser(answer.getUid());
+            answer.setUser(user);
         }
         return pageInfo;
     }
@@ -263,5 +265,10 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     @Override
     public Set<String> selectAgentUuidsByEntity(ZsAnswer entity) {
         return mapper.selectAgentUuidsByEntity(entity);
+    }
+
+    @Override
+    public String selectTimeRange(Integer surveyId) {
+        return mapper.selectTimeRange(surveyId);
     }
 }

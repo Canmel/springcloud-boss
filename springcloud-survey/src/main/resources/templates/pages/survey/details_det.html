@@ -104,7 +104,7 @@
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 问卷预览</a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
+                <li class="" v-if="result||survey.creatorId===user.userid"><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">正在收集</a>
                 </li>
@@ -210,6 +210,7 @@
                                 <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.valid">
+                                        <option value='empty'>所有问卷</option>
                                         <option value='YES'>有效问卷</option>
                                         <option value='NO'>无效问卷</option>
                                     </select>
@@ -217,6 +218,7 @@
                                 <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.reviewStatus">
+                                        <option value=-1>所有状态</option>
                                         <option value=0>未复核</option>
                                         <option value=12>已复核</option>
                                         <option value=1>复核通过</option>
@@ -259,6 +261,7 @@
                                             <th>收集时间</th>
                                             <th>被访者</th>
                                             <th>工号</th>
+                                            <th>访员姓名</th>
                                             <th>有效</th>
                                             <th>复核状态</th>
                                             <th>复核人</th>
@@ -284,10 +287,13 @@
                                                 <span>{{item.workNum}}</span>
                                             </td>
                                             <td>
+                                                <span>{{item.user ? item.user.username: ''}}</span>
+                                            </td>
+                                            <td>
                                                 <span class="text">{{isInValid(item)}}</span>
                                             </td>
                                             <td>
-                                                <span class="text-input" v-if="!item.reviewStatus">未开始</span>
+                                                <span class="text-input" v-if="!item.reviewStatus">未复核</span>
                                                 <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
                                                 <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
                                             </td>
@@ -337,7 +343,7 @@
                                             <h5 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
                                                    href="tabs_panels.html#collapseOne" aria-expanded="false"
-                                                   class="collapsed">汇总导出</a>
+                                                   class="collapsed">项目答题统计</a>
                                             </h5>
                                         </div>
                                         <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true"
@@ -615,11 +621,12 @@
             answers: [],
             pageInfo: {
                 reviewStatus: 0,
-                valid: 'YES',
+                valid: 'empty',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
-                size: 10//每页显示条目个数不传默认10
+                size: 10,//每页显示条目个数不传默认10
+                reviewStatus: -1,
             },
             crossForm: {
                 firstSelect: null,
@@ -657,6 +664,7 @@
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
+            user:{},
         },
         watch: {
             loadData(v, oldVal) {
@@ -1066,11 +1074,17 @@
                     that.pageInfo.startDate = that.pageInfo.daterange.substring(0, 19);
                     that.pageInfo.endDate = that.pageInfo.daterange.substring(22, 41);
                 }
+                if(that.pageInfo.valid==="empty"){
+                    that.pageInfo.valid = null;
+                }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.answers = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
+                if(that.pageInfo.valid===null){
+                    that.pageInfo.valid = "empty";
+                }
             },
             format2: function (num) {
                 return (Array(2).join("0") + num).slice(-2);
@@ -1145,8 +1159,17 @@
                         currentNum: resp.data.currentNum,
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
-                        state: resp.data.state ? resp.data.state.value : null
+                        state: resp.data.state ? resp.data.state.value : null,
+                        creatorId:resp.data.creatorId,
                     };
+                })
+            },
+            loadTimeRange() {
+                let that = this;
+                AJAX.GET('zsAnswer/selectTimeRange/' + this.survey.id, {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterange = resp.data;
+                    }
                 })
             },
             loadQuestions() {
@@ -1161,7 +1184,21 @@
                     that.monitors = resp.data;
                     console.log(resp.data);
                 })
-            }
+            },
+            loadWorkShift(){
+                let that = this;
+                if(this.result==false&&this.survey.creatorId!=this.user.userid){
+                    AJAX.GET_SYNC("zsWorkShift/current/" + that.survey.id, {}, function (resp) {
+                        if(!resp.data) {
+                            alert("您目前未分配到属于该问卷的班次或时间不在允许的范围内，请先申请对应班次！");
+                            $.pjax({
+                                url: mvm.applicationContextRootPath + 'pages/survey/index.html',
+                                container: '.page-container'
+                            });
+                        }
+                    });
+                }
+            },
         },
         created: function () {
             this.loadEntity();
@@ -1169,8 +1206,10 @@
             this.initZg();
             this.loadMonitors();
             this.loginMaster();
-            this.pageInfo.daterange = (new Date()).getFullYear() + "/" + this.format2(((new Date()).getMonth() + 1)) + "/" + this.format2((new Date()).getDate()) + " 00:00:00 - "
-                + (new Date()).getFullYear() + "/" + this.format2(((new Date()).getMonth() + 1)) + "/" + this.format2((new Date()).getDate()) + " 23:59:59";
+            var userJsonStr = sessionStorage.getItem('user');
+            this.user = JSON.parse(userJsonStr);
+            this.loadWorkShift();
+            this.loadTimeRange();
         },
         mounted: function () {
             this.bindEvent();
@@ -1187,7 +1226,8 @@
 
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "endDate": (new Date()).getFullYear() + "/" + ((new Date()).getMonth() + 1) + "/" + (new Date()).getDate() + " 23:59:59",
+                "startDate": currentVue.$data.pageInfo.daterange.substring(0,19),
+                "endDate": currentVue.$data.pageInfo.daterange.substring(22,41),
                 "timePickerSeconds": true,
                 "timePicker": true,
                 "opens": "center",

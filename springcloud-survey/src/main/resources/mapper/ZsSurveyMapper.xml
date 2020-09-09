@@ -64,9 +64,6 @@
         zs_survey zs_survey
         <where>
             status = 1
-            <if test="creatorId != null">
-                AND zs_survey.creator = #{creatorId}
-            </if>
             <if test="name != null and name != ''">
                 AND zs_survey.name like concat('%', #{name}, '%')
             </if>
