@@ -130,7 +130,7 @@
 
     <select id="selectWorkNumTotal" resultType="hashmap">
         SELECT
-            a.work_num,
+            a.work_num,a.username,
             count( DISTINCT a.id, ai.question_id ) questionNum,
             COUNT( DISTINCT a.id ) surveyNum
         FROM

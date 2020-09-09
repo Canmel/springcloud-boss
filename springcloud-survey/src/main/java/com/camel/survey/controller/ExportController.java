@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 
 /**
  *
@@ -67,7 +68,7 @@ public class ExportController {
     public void total(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
         ZsSurvey survey = zsSurveyService.selectById(id);
         //导出用户相关信息
-        ExportExcelUtils.export(service.total(id), survey.getName(), response);
+        ExportExcelUtils.export(service.total(id), "项目答题统计_" + survey.getName(), response);
     }
 
     /**
@@ -79,7 +80,7 @@ public class ExportController {
     @GetMapping("/survey/cross")
     public void cross(ZsCrossExport zsCrossExport, HttpServletResponse response) {
         ZsSurvey survey = zsSurveyService.selectById(zsCrossExport.getSurveyId());
-        ExportExcelUtils.export(service.cross(zsCrossExport), "交叉_" + survey.getName(), response);
+        ExportExcelUtils.export(service.cross(zsCrossExport), "问题交叉统计_" + survey.getName(), response);
     }
 
     /**
@@ -102,9 +103,9 @@ public class ExportController {
      * @return
      */
     @GetMapping("/survey/answers/{id}")
-    public void answers(@PathVariable Integer id, HttpServletResponse response) {
+    public void answers(@PathVariable Integer id, HttpServletResponse response) throws ParseException {
         ZsSurvey survey = zsSurveyService.selectById(id);
-        ExportExcelUtils.export(service.answer(id), "样本明细_" + survey.getName(), response);
+        ExportExcelUtils.export(service.answer(id), "收集样本明细_" + survey.getName(), response);
     }
 
     /**
@@ -114,9 +115,9 @@ public class ExportController {
      * @return
      */
     @GetMapping("/survey/workNum/{id}")
-    public void seat(@PathVariable Integer id, HttpServletResponse response) {
+    public void seat(@PathVariable Integer id, HttpServletResponse response) throws ParseException {
         ZsSurvey survey = zsSurveyService.selectById(id);
-        ExportExcelUtils.export(service.workNum(id), "工号收集统计_" + survey.getName(), response);
+        ExportExcelUtils.export(service.workNum(id), "访员样本统计_" + survey.getName(), response);
     }
 
 }
