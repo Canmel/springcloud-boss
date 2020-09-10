@@ -136,7 +136,7 @@ public class ExportServiceImpl implements ExportService {
         startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
         fillRow(sheet.createRow(1), headStyle, startTime);
         List<Object> endTime = new ArrayList<>();
-        endTime.add("工作开始时间");
+        endTime.add("工作结束时间");
         endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
         fillRow(sheet.createRow(2), headStyle, endTime);
         List<Object> v = new ArrayList<>();
@@ -175,7 +175,7 @@ public class ExportServiceImpl implements ExportService {
         startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
         fillRow(sheet.createRow(1), headStyle, startTime);
         List<Object> endTime = new ArrayList<>();
-        endTime.add("工作开始时间");
+        endTime.add("工作结束时间");
         endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
         fillRow(sheet.createRow(2), headStyle, endTime);
         List<ZsQuestion> questionList = zsQuestionService.selectBySurveyId(surveyId);
