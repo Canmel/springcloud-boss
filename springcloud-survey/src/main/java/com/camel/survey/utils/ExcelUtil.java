@@ -338,26 +338,13 @@ public class ExcelUtil {
      * 合计表的表头
      *
      * @param title
-     * @param sheet
+     * @param row
      */
-    public static void setTotalTitle(String title, Sheet sheet) {
-        Row row = sheet.createRow(0);
-
-        SXSSFCell cell = (SXSSFCell)row.createCell(0);
-        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
-        Font font = sheet.getWorkbook().createFont();
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        cellStyle.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        cellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-//        cellStyle.setBorderBottom((short) 2);
-//        cellStyle.setBorderLeft((short) 2);
-//        cellStyle.setBorderRight((short) 2);
-//        cellStyle.setBorderTop((short) 2);
-        cellStyle.setFont(font);
-
-        cell.setCellStyle(cellStyle);
-        cell.setCellValue(title);
+    public static void setTotalTitle(String title, Row row, Sheet sheet) {
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 14));
+        Cell cell = row.createCell(0);
+        cell.setCellStyle(createTitleHeadStyle(sheet.getWorkbook()));
+        cell.setCellValue(title);
     }
 
     public static HSSFCellStyle createHeadStyle(HSSFWorkbook wb) {
@@ -378,9 +365,9 @@ public class ExcelUtil {
         style.setBorderRight((short) 1);
         style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.LIME.index);
-//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-//        style.setVerticalAlignment(VerticalAlignment.CENTER);
-//        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         return style;
     }
 
@@ -391,9 +378,9 @@ public class ExcelUtil {
         style.setBorderRight((short) 1);
         style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-//        style.setAlignment(HorizontalAlignment.CENTER);
-//        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         return style;
     }
 
@@ -404,11 +391,31 @@ public class ExcelUtil {
         style.setBorderRight((short) 1);
         style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_40_PERCENT.index);
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 //        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 //        style.setAlignment(HorizontalAlignment.CENTER);
 //        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
+
+    public static CellStyle createTitleHeadStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
+        style.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setAlignment(HorizontalAlignment.CENTER);
+//        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        return style;
+    }
+
 
     public static void creatTotalHead(Sheet sheet, Integer startRow) {
         String[] titles = {"序号", "选项", "样本情况"};
@@ -420,10 +427,6 @@ public class ExcelUtil {
             cell.setCellValue(title);
         }
     }
-
-//    public static void creatTotalBody(HSSFSheet sheet, Integer startRow, List<ZsOption> options) {
-//
-//    }
 
     public static void creatTotalRow(Row row, String oName, Integer oCount, Integer index) {
         creatTableCell(row, 1).setCellValue(index);

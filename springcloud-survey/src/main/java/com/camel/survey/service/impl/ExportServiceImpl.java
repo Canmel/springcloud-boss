@@ -18,9 +18,7 @@ import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.charts.ChartDataSource;
-import org.apache.poi.ss.usermodel.charts.DataSources;
-import org.apache.poi.ss.usermodel.charts.PieChartData;
+import org.apache.poi.ss.usermodel.charts.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -275,15 +273,17 @@ public class ExportServiceImpl implements ExportService {
             logger.info("组装表头信息");
             SXSSFSheet sheet = (SXSSFSheet) wb.createSheet("Q" + question.getOrderNum());
             sheet.setForceFormulaRecalculation(true);
-
-            ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question) + 1), sheet);
+            Row titleRow = sheet.createRow(0);
+            ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question) + 1), titleRow, sheet);
             ExcelUtil.creatTotalHead(sheet, 20);
             logger.info("查询数据");
             List<ZsOption> options = zsOptionService.selectBySurveyId(surveyId);
             int rowNum = 21;
+            int oNum = 0;
             for (ZsOption option : options) {
                 if (!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
                     Row row = sheet.createRow(rowNum++);
+                    oNum++;
                     ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
                 }
             }
@@ -291,15 +291,25 @@ public class ExportServiceImpl implements ExportService {
             Drawing drawing = sheet.createDrawingPatriarch();
             ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 2, 15, 18);
             anchor.setAnchorType(2);
-            XSSFChart chart = (XSSFChart) drawing.createChart(anchor);
-            PieChartData data = chart.getChartDataFactory().createPieChartData();
             ChartDataSource<Number> xs = DataSources.fromNumericCellRange(sheet, new CellRangeAddress(21, rowNum - 1, 2, 2));
             ChartDataSource<Number> ys1 = DataSources.fromNumericCellRange(sheet, new CellRangeAddress(21, rowNum - 1, 3, 3));
-            data.addSerie(xs, ys1);
-            chart.plot(data);
-            chart.getOrCreateLegend();
+            if(oNum > 6) {
+                XSSFChart chart = (XSSFChart) drawing.createChart(anchor);
+                BarChartData data = chart.getChartDataFactory().createBarChartData();
+                ChartAxis bottomAxis = chart.getChartAxisFactory().createCategoryAxis(AxisPosition.BOTTOM);
+                ValueAxis leftAxis = chart.getChartAxisFactory().createValueAxis(AxisPosition.LEFT);
+                leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+                data.addSerie(xs, ys1);
+                chart.plot(data, bottomAxis, leftAxis);
+                chart.getOrCreateLegend();
+            } else {
+                XSSFChart chart = (XSSFChart) drawing.createChart(anchor);
+                PieChartData data = chart.getChartDataFactory().createPieChartData();
+                data.addSerie(xs, ys1);
+                chart.plot(data);
+                chart.getOrCreateLegend();
+            }
         });
-        System.out.println(ExcelUtil.class);
         return wb;
     }
 
