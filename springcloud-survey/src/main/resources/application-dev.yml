@@ -123,8 +123,8 @@ logging:
     file: '%d{yyyy-MM-dd HH:mm:ss.SSS}=== [%thread]=== %-5level === %logger{50} === %ms%n'
   level:
     com:
-      camel:
-        system: DEBUG
+      camel: OFF
+
 qiniu:
   acount:
     access_key: ${ACCESS_KEY}

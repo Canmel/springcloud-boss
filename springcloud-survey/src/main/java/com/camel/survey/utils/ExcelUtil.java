@@ -1,27 +1,30 @@
 package com.camel.survey.utils;
 
-import java.io.*;
+import com.baomidou.mybatisplus.toolkit.MapUtils;
+import com.camel.survey.annotation.ExcelAnnotation;
+import com.camel.survey.exceptions.ExcelImportException;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.baomidou.mybatisplus.toolkit.MapUtils;
-import com.camel.survey.annotation.ExcelAnnotation;
-import com.camel.survey.exceptions.ExcelImportException;
-import com.camel.survey.model.ZsOption;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.TextAlign;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 public class ExcelUtil {
 
@@ -80,12 +83,12 @@ public class ExcelUtil {
             if (ObjectUtils.isEmpty(cell0)) {
                 continue;
             }
-            cell0.setCellType(CellType.STRING);
+//            cell0.setCellType(CellType.STRING);
             Cell cell1 = row.getCell(1);
             if(ObjectUtils.isEmpty(cell1)) {
                 continue;
             }
-            cell1.setCellType(CellType.STRING);
+//            cell1.setCellType(CellType.STRING);
             if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
                 continue;
             }
@@ -121,7 +124,7 @@ public class ExcelUtil {
         }
         try {
             //释放资源
-            wookbook.close();
+//            wookbook.close();
             inputStream.close();
 
         } catch (IOException e) {
@@ -174,9 +177,9 @@ public class ExcelUtil {
             if (ObjectUtils.isEmpty(cell0)) {
                 continue;
             }
-            cell0.setCellType(CellType.STRING);
+//            cell0.setCellType(CellType.STRING);
             Cell cell1 = row.getCell(1);
-            cell1.setCellType(CellType.STRING);
+//            cell1.setCellType(CellType.STRING);
             if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
                 continue;
             }
@@ -212,7 +215,7 @@ public class ExcelUtil {
         }
         try {
             //释放资源
-            wookbook.close();
+//            wookbook.close();
             inputStream.close();
 
         } catch (IOException e) {
@@ -239,7 +242,7 @@ public class ExcelUtil {
             values = translater.get("values");
         }
         try {
-            cell.setCellType(CellType.STRING);
+//            cell.setCellType(CellType.STRING);
             if (f.getType() == byte.class || f.getType() == Byte.class) {
                 f.set(obj, Byte.parseByte(cell.getStringCellValue()));
             } else if (f.getType() == int.class || f.getType() == Integer.class) {
@@ -337,70 +340,82 @@ public class ExcelUtil {
      * @param title
      * @param sheet
      */
-    public static void setTotalTitle(String title, HSSFSheet sheet) {
-        HSSFRow row = sheet.createRow(0);
-        HSSFCell cell = row.createCell(0);
+    public static void setTotalTitle(String title, Sheet sheet) {
+        Row row = sheet.createRow(0);
+
+        SXSSFCell cell = (SXSSFCell)row.createCell(0);
+        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+        Font font = sheet.getWorkbook().createFont();
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        cellStyle.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        cellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+//        cellStyle.setBorderBottom((short) 2);
+//        cellStyle.setBorderLeft((short) 2);
+//        cellStyle.setBorderRight((short) 2);
+//        cellStyle.setBorderTop((short) 2);
+        cellStyle.setFont(font);
+
+        cell.setCellStyle(cellStyle);
         cell.setCellValue(title);
-        cell.setCellStyle(createTitleStyle(sheet.getWorkbook()));
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 14));
     }
 
     public static HSSFCellStyle createHeadStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         return style;
     }
 
-    public static HSSFCellStyle createTitleStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
+    public static CellStyle createTitleStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.LIME.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setAlignment(HorizontalAlignment.CENTER);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setVerticalAlignment(VerticalAlignment.CENTER);
+//        style.setAlignment(HorizontalAlignment.CENTER);
         return style;
     }
 
-    public static HSSFCellStyle createCellStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+    public static CellStyle createCellStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setAlignment(HorizontalAlignment.CENTER);
+//        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 
-    public static HSSFCellStyle createTotalHeadStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+    public static CellStyle createTotalHeadStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_40_PERCENT.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setAlignment(HorizontalAlignment.CENTER);
+//        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 
-    public static void creatTotalHead(HSSFSheet sheet, Integer startRow) {
+    public static void creatTotalHead(Sheet sheet, Integer startRow) {
         String[] titles = {"序号", "选项", "样本情况"};
         int columIndex = 1;
-        HSSFRow row = sheet.createRow(startRow);
+        Row row = sheet.createRow(startRow);
         for (String title : titles) {
-            HSSFCell cell = row.createCell(columIndex++);
+            Cell cell = row.createCell(columIndex++);
             cell.setCellStyle(createTotalHeadStyle(sheet.getWorkbook()));
             cell.setCellValue(title);
         }
@@ -410,14 +425,14 @@ public class ExcelUtil {
 //
 //    }
 
-    public static void creatTotalRow(HSSFRow row, String oName, Integer oCount, Integer index) {
+    public static void creatTotalRow(Row row, String oName, Integer oCount, Integer index) {
         creatTableCell(row, 1).setCellValue(index);
         creatTableCell(row, 2).setCellValue(oName);
         creatTableCell(row, 3).setCellValue(oCount);
     }
 
-    public static HSSFCell creatTableCell(HSSFRow row, Integer cIndex) {
-        HSSFCell cell = row.createCell(cIndex);
+    public static Cell creatTableCell(Row row, Integer cIndex) {
+        Cell cell = row.createCell(cIndex);
         cell.setCellStyle(createCellStyle(row.getSheet().getWorkbook()));
         return cell;
     }
