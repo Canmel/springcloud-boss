@@ -84,12 +84,12 @@ public class ExcelUtil {
             if (ObjectUtils.isEmpty(cell0)) {
                 continue;
             }
-//            cell0.setCellType(CellType.STRING);
+            cell0.setCellType(Cell.CELL_TYPE_STRING);
             Cell cell1 = row.getCell(1);
             if(ObjectUtils.isEmpty(cell1)) {
                 continue;
             }
-//            cell1.setCellType(CellType.STRING);
+            cell1.setCellType(Cell.CELL_TYPE_STRING);
             if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
                 continue;
             }
@@ -178,9 +178,9 @@ public class ExcelUtil {
             if (ObjectUtils.isEmpty(cell0)) {
                 continue;
             }
-//            cell0.setCellType(CellType.STRING);
+            cell0.setCellType(Cell.CELL_TYPE_STRING);
             Cell cell1 = row.getCell(1);
-//            cell1.setCellType(CellType.STRING);
+            cell1.setCellType(Cell.CELL_TYPE_STRING);
             if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
                 continue;
             }
