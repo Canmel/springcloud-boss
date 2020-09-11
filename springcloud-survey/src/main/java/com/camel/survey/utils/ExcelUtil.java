@@ -7,6 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.examples.CellTypes;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -242,7 +243,7 @@ public class ExcelUtil {
             values = translater.get("values");
         }
         try {
-//            cell.setCellType(CellType.STRING);
+            cell.setCellType(Cell.CELL_TYPE_STRING);
             if (f.getType() == byte.class || f.getType() == Byte.class) {
                 f.set(obj, Byte.parseByte(cell.getStringCellValue()));
             } else if (f.getType() == int.class || f.getType() == Integer.class) {

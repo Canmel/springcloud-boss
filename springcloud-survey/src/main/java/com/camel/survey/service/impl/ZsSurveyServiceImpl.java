@@ -459,6 +459,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         zsDynamicView.setTryNum((Long) result.get("try_num"));
         zsDynamicView.setSuccessNum((BigDecimal) result.get("success_num"));
         zsDynamicView.setInvalidNum((BigDecimal) result.get("invalid_num"));
+        zsDynamicView.setCallLastsTime((Double) result.get("call_lasts_time"));
         return zsDynamicView;
     }
 }
