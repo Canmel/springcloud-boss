@@ -4,15 +4,25 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsAnswerMapper;
+import com.camel.survey.model.ZsAnswerItem;
+import com.camel.survey.model.ZsOption;
+import com.camel.survey.model.ZsQuestion;
+import com.camel.survey.service.ExportService;
+import com.camel.survey.service.ZsAnswerItemService;
+import com.camel.survey.service.ZsOptionService;
+import com.camel.survey.service.ZsQuestionService;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ExcelUtil;
-import com.camel.survey.vo.Excel;
 import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.charts.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +134,7 @@ public class ExportServiceImpl implements ExportService {
         startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
         fillRow(sheet.createRow(1), headStyle, startTime);
         List<Object> endTime = new ArrayList<>();
-        endTime.add("工作开始时间");
+        endTime.add("工作结束时间");
         endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
         fillRow(sheet.createRow(2), headStyle, endTime);
         List<Object> v = new ArrayList<>();
@@ -163,7 +173,7 @@ public class ExportServiceImpl implements ExportService {
         startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
         fillRow(sheet.createRow(1), headStyle, startTime);
         List<Object> endTime = new ArrayList<>();
-        endTime.add("工作开始时间");
+        endTime.add("工作结束时间");
         endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
         fillRow(sheet.createRow(2), headStyle, endTime);
         List<ZsQuestion> questionList = zsQuestionService.selectBySurveyId(surveyId);
@@ -220,28 +230,27 @@ public class ExportServiceImpl implements ExportService {
 
             // 循环所有标题/表头上的题目
             for (int index = 0; index < titleQList.size(); index++) {
-                System.out.println(titleQList.get(index));
                 // 拆分表头
                 String titleStr = titleQList.get(index);
                 String titleQ = "";
                 String titleO = "";
-                if(titleStr.contains("_")) {
+                if (titleStr.contains("_")) {
                     titleQ = titleStr.split("_")[0];
                     titleO = titleStr.split("_")[1];
                 }
                 // 循环问题
                 for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
                     // 全等，即单选
-                    if(titleStr.equals(qs.get(qIndex))) {
+                    if (titleStr.equals(qs.get(qIndex))) {
                         fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
                         qIndex = qs.size();
-                    }else{
+                    } else {
                         // 多选， 并且问题和excel当前表头相同
-                        if(titleQ.equals(qs.get(qIndex))) {
+                        if (titleQ.equals(qs.get(qIndex))) {
                             // 根据问题的序号，得出的选项
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
-                            if(org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
+                            if (org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
                                 fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
                                 qIndex = qs.size();
                             }
@@ -255,27 +264,52 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public HSSFWorkbook total(Integer surveyId) {
+    public SXSSFWorkbook total(Integer surveyId) {
         //创建一个WorkBook,对应一个Excel文件
         List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(surveyId);
-        HSSFWorkbook wb = new HSSFWorkbook();
+        SXSSFWorkbook wb = new SXSSFWorkbook();
         questions.forEach(question -> {
             logger.info("开始第" + questions.indexOf(question) + "个表的数据导出");
             logger.info("组装表头信息");
-            HSSFSheet sheet = wb.createSheet(ExcelUtil.sheetName(question.getName(), question.getOrderNum()));
-            ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question)), sheet);
+            SXSSFSheet sheet = (SXSSFSheet) wb.createSheet("Q" + question.getOrderNum());
+            sheet.setForceFormulaRecalculation(true);
+            Row titleRow = sheet.createRow(0);
+            ExcelUtil.setTotalTitle(ExcelUtil.sheetName(question.getName(), questions.indexOf(question) + 1), titleRow, sheet);
             ExcelUtil.creatTotalHead(sheet, 20);
             logger.info("查询数据");
             List<ZsOption> options = zsOptionService.selectBySurveyId(surveyId);
             int rowNum = 21;
+            int oNum = 0;
             for (ZsOption option : options) {
                 if (!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
-                    HSSFRow row = sheet.createRow(rowNum++);
+                    Row row = sheet.createRow(rowNum++);
+                    oNum++;
                     ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
                 }
             }
+
+            Drawing drawing = sheet.createDrawingPatriarch();
+            ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 2, 15, 18);
+            anchor.setAnchorType(2);
+            ChartDataSource<Number> xs = DataSources.fromNumericCellRange(sheet, new CellRangeAddress(21, rowNum - 1, 2, 2));
+            ChartDataSource<Number> ys1 = DataSources.fromNumericCellRange(sheet, new CellRangeAddress(21, rowNum - 1, 3, 3));
+            if(oNum > 6) {
+                XSSFChart chart = (XSSFChart) drawing.createChart(anchor);
+                BarChartData data = chart.getChartDataFactory().createBarChartData();
+                ChartAxis bottomAxis = chart.getChartAxisFactory().createCategoryAxis(AxisPosition.BOTTOM);
+                ValueAxis leftAxis = chart.getChartAxisFactory().createValueAxis(AxisPosition.LEFT);
+                leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+                data.addSerie(xs, ys1);
+                chart.plot(data, bottomAxis, leftAxis);
+                chart.getOrCreateLegend();
+            } else {
+                XSSFChart chart = (XSSFChart) drawing.createChart(anchor);
+                PieChartData data = chart.getChartDataFactory().createPieChartData();
+                data.addSerie(xs, ys1);
+                chart.plot(data);
+                chart.getOrCreateLegend();
+            }
         });
-        System.out.println(ExcelUtil.class);
         return wb;
     }
 
@@ -290,6 +324,20 @@ public class ExportServiceImpl implements ExportService {
             crossSingle(wb, zsCrossExport);
         } else {
             crossMuilty(wb, zsCrossExport);
+        }
+        return wb;
+    }
+
+    @Override
+    public HSSFWorkbook crossSimple(ZsCrossExport zsCrossExport) {
+        // 创建一个WorkBook,对应一个Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        // 首选和次选问题
+        ZsQuestion questionS = zsQuestionService.selectById(zsCrossExport.getSecondSelect());
+        if (!ObjectUtils.isEmpty(questionS)) {
+            crossSingleSimple(wb, zsCrossExport);
+        } else {
+            crossMuiltySimple(wb, zsCrossExport);
         }
         return wb;
     }
@@ -391,6 +439,74 @@ public class ExportServiceImpl implements ExportService {
 
     }
 
+    /**
+     * 单一两表交叉导出不带%
+     *
+     * @param wb
+     */
+    public void crossSingleSimple(HSSFWorkbook wb, ZsCrossExport zsCrossExport) {
+        HSSFCellStyle style = createCellStyle(wb);
+        ZsQuestion questionF = zsQuestionService.selectById(zsCrossExport.getFirstSelect());
+        ZsQuestion questionS = zsQuestionService.selectById(zsCrossExport.getSecondSelect());
+        List<ZsOption> optionListF = getAllOption(zsCrossExport.getFirstOption(), zsCrossExport.getFirstSelect());
+        List<ZsOption> optionListS = getAllOption(zsCrossExport.getSecondOption(), zsCrossExport.getSecondSelect());
+        HSSFSheet sheet = wb.createSheet("Q" + questionF.getOrderNum() + "--Q" + questionS.getOrderNum());
+        HSSFRow rowQ1 = sheet.createRow(0);
+        fillCell(rowQ1.createCell(0), createHeadStyle(wb), "Q" + questionF.getOrderNum() + "." + questionF.getName());
+        sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 2 * optionListF.size() + 3));
+        List optionStrs = getCrossFeild(optionListF);
+        fillRow(sheet.createRow(2), style, optionStrs, 2, true);
+        HSSFRow rowQ2 = sheet.createRow(3);
+        fillCell(rowQ2.createCell(0), createHeadStyle(wb), "Q" + questionS.getOrderNum() + "." + questionS.getName());
+        sheet.addMergedRegion(new CellRangeAddress(3, 4, 0, 2 * optionListF.size() + 3));
+        Long totalNum = 0L;
+        for (ZsOption os : optionListS) {
+            int indexS = optionListS.indexOf(os);
+            List<Map<String, Object>> results = zsAnswerItemService.selectCrossCounts(questionF, questionS, os, zsCrossExport.getSurveyId());
+            HSSFRow row = sheet.createRow(5 + 2 * optionListS.indexOf(os));
+            HSSFRow rowSpace = sheet.createRow(5 + 2 * optionListS.indexOf(os) + 1);
+            setDefaultStyle(row, style, optionListF.size() * 2 + 4);
+            setDefaultStyle(rowSpace, style, optionListF.size() * 2 + 4);
+            fillCell(row.createCell(0), style, os.getName());
+            Long totalX = 0L;
+            for (Map<String, Object> res : results) {
+                for (ZsOption option : optionListF) {
+                    int index = optionListF.indexOf(option);
+                    if (option.getName().equals(res.get("option").toString())) {
+                        if (index > -1) {
+                            fillCell(row.createCell(2 + 2 * index), style, res.get("count").toString());
+                            totalX += (Long) res.get("count");
+                        }
+                        option.setCount(option.getCount() + ((Long) res.get("count")).intValue());
+                    }
+                }
+            }
+
+            totalNum += totalX;
+            fillCell(row.createCell(2 + 2 * optionListF.size()), style, totalX.toString());
+            sheet.addMergedRegion(new CellRangeAddress(5 + 2 * indexS, 6 + 2 * indexS, 2 * optionListF.size() + 2, 2 * optionListF.size() + 3));
+            row.getSheet().addMergedRegion(new CellRangeAddress(row.getRowNum(), rowSpace.getRowNum(), 0, 1));
+            for(int i=0;i<optionListF.size();i++){
+                row.getSheet().addMergedRegion(new CellRangeAddress(row.getRowNum(), rowSpace.getRowNum(), 2 + 2 * i, 3 + 2 * i));
+            }
+        }
+
+        HSSFRow total = sheet.createRow(5 + optionListS.size() * 2);
+        HSSFRow totalPlus = sheet.createRow(6 + optionListS.size() * 2);
+        setDefaultStyle(total, style, optionListF.size() * 2 + 4);
+        setDefaultStyle(totalPlus, style, optionListF.size() * 2 + 4);
+        fillCell(total.createCell(0), style, "合计");
+        for (ZsOption option : optionListF) {
+            int index = optionListF.indexOf(option);
+            fillCell(total.createCell(2 + 2 * optionListF.indexOf(option)), style, option.getCount());
+            sheet.addMergedRegion(new CellRangeAddress(5 + 2 * optionListS.size(), 6 + 2 * optionListS.size(), 2 + 2 * index, 3 + 2 * index));
+        }
+        fillCell(total.createCell(optionListF.size() * 2 + 2), style, totalNum.intValue());
+        sheet.addMergedRegion(new CellRangeAddress(5 + 2 * optionListS.size(), 6 + 2 * optionListS.size(), 2 * optionListF.size() + 2, 2 * optionListF.size() + 3));
+        total.getSheet().addMergedRegion(new CellRangeAddress(total.getRowNum(), totalPlus.getRowNum(), 0, 1));
+
+    }
+
     void fillValueStart(HSSFRow row, CellStyle style, String value, Integer total, Integer start, Integer step) {
         for (int i = 0; i < total; i++) {
             HSSFCell cell = row.createCell(start + step * i);
@@ -484,6 +600,25 @@ public class ExportServiceImpl implements ExportService {
     }
 
     /**
+     * 多表交叉导出不带%
+     *
+     * @param wb
+     */
+    public void crossMuiltySimple(HSSFWorkbook wb, ZsCrossExport crossExport) {
+        List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(crossExport.getSurveyId());
+        ZsQuestion questionF = zsQuestionService.selectById(crossExport.getFirstSelect());
+        for (ZsQuestion question : questions) {
+            if (question.getId().equals(questionF.getId())) {
+                continue;
+            }
+//            需要设置一下qF qS oF oS
+            crossExport.setSecondSelect(question.getId());
+            crossExport.setSecondOption(null);
+            crossSingleSimple(wb, crossExport);
+        }
+    }
+
+    /**
      * 通过选项id 或者 问题id获取选项
      *
      * @param optionIds
@@ -554,35 +689,35 @@ public class ExportServiceImpl implements ExportService {
     HSSFCellStyle createHeadStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short)1);
+        style.setBorderLeft((short)1);
+        style.setBorderRight((short)1);
+        style.setBorderTop((short)1);
         return style;
     }
 
     HSSFCellStyle createTitleStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setFillForegroundColor(HSSFColor.LIME.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setBorderBottom((short)1);
+        style.setBorderLeft((short)1);
+        style.setBorderRight((short)1);
+        style.setBorderTop((short)1);
+//        style.setFillForegroundColor(HSSFColor.LIME.index);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return style;
     }
 
     HSSFCellStyle createCellStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom((short) 1);
+        style.setBorderLeft((short) 1);
+        style.setBorderRight((short) 1);
+        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setAlignment(HorizontalAlignment.CENTER);
+//        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 

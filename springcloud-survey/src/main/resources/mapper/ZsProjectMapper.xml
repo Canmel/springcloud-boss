@@ -34,18 +34,18 @@
         select
         <include refid="Base_Column_List"></include>
         from
-        zs_project
+        zs_project p
         WHERE
-        id IN (
+        (id IN (
         SELECT DISTINCT
         project_id
         FROM
-        zs_survey
+        zs_survey s
         WHERE
-        creator = #{uid}
+        s.creator = #{uid}
         AND STATUS = 1
         )
-        AND STATUS = 1
+        AND STATUS = 1) or p.creator = #{uid}
     </select>
 
     <select id="selectProjectById" resultMap="BaseResultMap">

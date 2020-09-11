@@ -4,6 +4,7 @@ import com.camel.survey.exceptions.ExportFillDataException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,7 @@ import java.util.Map;
 public class ExportExcelUtils {
     private static final Logger logger = LoggerFactory.getLogger(ExportExcelUtils.class);
 
-    public static <T> void export(HSSFWorkbook wb, String excelName, HttpServletResponse response) {
+    public static <T> void export(Workbook wb, String excelName, HttpServletResponse response) {
 
         // 设置默认文件名为当前时间：年月日时分秒
         if (excelName == null || excelName == "") {
@@ -82,7 +83,7 @@ public class ExportExcelUtils {
         //创建单元格，并设置值表头 设置表头居中
         HSSFCellStyle style = wb.createCellStyle();
         //创建一个居中格式
-        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setAlignment((short)1);
         // 填充工作表
         try {
             fillSheet(sheet, list, fieldMap, style);

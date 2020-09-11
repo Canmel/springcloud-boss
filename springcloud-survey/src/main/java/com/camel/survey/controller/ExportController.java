@@ -84,6 +84,18 @@ public class ExportController {
     }
 
     /**
+     * 问卷交叉导出不带%
+     * @param zsCrossExport
+     * @param response
+     * @return
+     */
+    @GetMapping("/survey/crossSimple")
+    public void crossSimple(ZsCrossExport zsCrossExport, HttpServletResponse response) {
+        ZsSurvey survey = zsSurveyService.selectById(zsCrossExport.getSurveyId());
+        ExportExcelUtils.export(service.crossSimple(zsCrossExport), "问题交叉统计_" + survey.getName(), response);
+    }
+
+    /**
      * 问卷问题导出
      * @param id
      * @param response

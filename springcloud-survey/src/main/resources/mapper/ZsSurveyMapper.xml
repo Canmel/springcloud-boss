@@ -77,6 +77,7 @@
                 AND zs_survey.project_id = #{projectId}
             </if>
         </where>
+        order by id desc
     </select>
 
     <select id="all" resultMap="BaseResultMap">

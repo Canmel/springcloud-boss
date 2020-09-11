@@ -453,6 +453,9 @@
                                                         </div>
                                                     </div>
                                                     <button class="btn btn-primary" v-on:click="exportCross()"
+                                                            v-if="resultDev">问卷交叉统计(%)
+                                                    </button>
+                                                    <button class="btn btn-primary" v-on:click="exportCrossSimple()"
                                                             v-if="resultDev">问卷交叉统计
                                                     </button>
                                                 </div>
@@ -1039,6 +1042,16 @@
             },
             exportCross() {
                 window.open('/survey/export/survey/cross?' + $.jsonUrlEncode({
+                    surveyId: this.survey.id,
+                    firstSelect: this.crossForm.firstSelect ? this.crossForm.firstSelect.id : null,
+                    secondSelect: this.crossForm.secondSelect ? this.crossForm.secondSelect.id : null,
+                    firstOption: this.crossForm.firstOption,
+                    secondOption: this.crossForm.secondOption,
+                    access_token: sessionStorage.getItem('access_token')
+                }));
+            },
+            exportCrossSimple() {
+                window.open('/survey/export/survey/crossSimple?' + $.jsonUrlEncode({
                     surveyId: this.survey.id,
                     firstSelect: this.crossForm.firstSelect ? this.crossForm.firstSelect.id : null,
                     secondSelect: this.crossForm.secondSelect ? this.crossForm.secondSelect.id : null,

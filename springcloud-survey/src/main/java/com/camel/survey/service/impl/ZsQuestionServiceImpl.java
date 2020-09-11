@@ -174,6 +174,10 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             if(!ObjectUtils.isEmpty(opt)) {
                 if(opt.getIgnoreNum() && opt.getTarget().equals(10000)) {
                     zsAnswer.setValid(ZsYesOrNo.NO);
+                    zsAnswer.setInValidMsg("逻辑无效");
+                    for(int j=0;j<zsAnswerItemList.size();j++){
+                        zsAnswerItemList.get(j).setValid(ZsYesOrNo.NO);
+                    }
                     // 有立即结束， 并且忽略配额的选项 那么 样本无效
                     answerService.updateById(zsAnswer);
                 }

@@ -83,7 +83,7 @@
 
     <select id="selectBySurveyId" resultMap="BaseResultMap">
         select
-          o.id, o.name, o.order_num, o.question_id, o.configration, o.has_remark, o.target, o.status, o.created_at, o.creator, o.current, o.exclusivity as current
+          o.id, o.name, o.order_num, o.question_id, o.configration, o.has_remark, o.target, o.status, o.created_at, o.creator, o.current, o.exclusivity as exclusivity
         from zs_option o left join zs_question q on q.id = o.question_id where q.survey_id = #{id} and o.status = 1;
     </select>
 
