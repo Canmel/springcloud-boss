@@ -34,6 +34,8 @@ public interface ExportService {
 
     HSSFWorkbook cross(ZsCrossExport zsCrossExport);
 
+    HSSFWorkbook crossSimple(ZsCrossExport zsCrossExport);
+
     HSSFWorkbook items(Integer surveyId, Integer qId);
 
     HSSFWorkbook answer(Integer surveyId) throws ParseException;
