@@ -174,7 +174,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             if(!ObjectUtils.isEmpty(opt)) {
                 if(opt.getIgnoreNum() && opt.getTarget().equals(10000)) {
                     zsAnswer.setValid(ZsYesOrNo.NO);
-                    zsAnswer.setInValidMsg("否");
+                    zsAnswer.setInValidMsg("逻辑无效");
                     for(int j=0;j<zsAnswerItemList.size();j++){
                         zsAnswerItemList.get(j).setValid(ZsYesOrNo.NO);
                     }
