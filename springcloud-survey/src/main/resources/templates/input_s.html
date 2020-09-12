@@ -264,7 +264,9 @@
                         if(infos) {
                             for (let i = 0; i < infos.length; i++) {
                                 that.phoneInformation.information.push(infos[i].information);
-                                that.pageParams.push(JSON.parse(infos[i].information));
+                                let info = infos[i].information;
+                                info = info.replace(/[\r\n]/g,"")
+                                that.pageParams.push(JSON.parse(info));
                             }
                         }
                     }
