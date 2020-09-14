@@ -35,17 +35,9 @@
         <include refid="Base_Column_List"></include>
         from
         zs_project
-        WHERE
-        id IN (
-        SELECT DISTINCT
-        project_id
-        FROM
-        zs_survey
-        WHERE
-        creator = #{uid}
-        AND STATUS = 1
-        )
-        AND STATUS = 1
+        <where>
+            STATUS = 1
+        </where>
     </select>
 
     <select id="selectProjectById" resultMap="BaseResultMap">

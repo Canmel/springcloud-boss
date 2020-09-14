@@ -1,6 +1,8 @@
 package com.camel.survey.utils;
 
+import com.camel.common.entity.Role;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysRole;
 import com.camel.core.model.SysUser;
 import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import com.camel.survey.model.ZsSurveyBaseEntity;
@@ -9,14 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -125,5 +130,15 @@ public class ApplicationToolsUtils {
         }catch (Exception e) {
             return null;
         }
+    }
+
+    public boolean hasRole(OAuth2Authentication authentication, String roleName) {
+        Collection<GrantedAuthority> auths = authentication.getAuthorities();
+        for (GrantedAuthority authority: auths) {
+            if(authority.getAuthority().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
