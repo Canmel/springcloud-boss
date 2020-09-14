@@ -134,7 +134,7 @@ public class ExportServiceImpl implements ExportService {
         startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
         fillRow(sheet.createRow(1), headStyle, startTime);
         List<Object> endTime = new ArrayList<>();
-        endTime.add("工作开始时间");
+        endTime.add("工作结束时间");
         endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
         fillRow(sheet.createRow(2), headStyle, endTime);
         List<Object> v = new ArrayList<>();
@@ -173,7 +173,7 @@ public class ExportServiceImpl implements ExportService {
         startTime.add(sf.format(new Date(sf.parse(timeRange.substring(0,19)).getTime()-300000)));
         fillRow(sheet.createRow(1), headStyle, startTime);
         List<Object> endTime = new ArrayList<>();
-        endTime.add("工作开始时间");
+        endTime.add("工作结束时间");
         endTime.add(sf.format(new Date(sf.parse(timeRange.substring(22,41)).getTime()+300000)));
         fillRow(sheet.createRow(2), headStyle, endTime);
         List<ZsQuestion> questionList = zsQuestionService.selectBySurveyId(surveyId);
@@ -328,6 +328,20 @@ public class ExportServiceImpl implements ExportService {
         return wb;
     }
 
+    @Override
+    public HSSFWorkbook crossSimple(ZsCrossExport zsCrossExport) {
+        // 创建一个WorkBook,对应一个Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        // 首选和次选问题
+        ZsQuestion questionS = zsQuestionService.selectById(zsCrossExport.getSecondSelect());
+        if (!ObjectUtils.isEmpty(questionS)) {
+            crossSingleSimple(wb, zsCrossExport);
+        } else {
+            crossMuiltySimple(wb, zsCrossExport);
+        }
+        return wb;
+    }
+
     public void setDefaultStyle(HSSFRow row, HSSFCellStyle style, Integer colum) {
         for (int i = 0; i < colum; i++) {
             row.createCell(i).setCellStyle(style);
@@ -425,6 +439,74 @@ public class ExportServiceImpl implements ExportService {
 
     }
 
+    /**
+     * 单一两表交叉导出不带%
+     *
+     * @param wb
+     */
+    public void crossSingleSimple(HSSFWorkbook wb, ZsCrossExport zsCrossExport) {
+        HSSFCellStyle style = createCellStyle(wb);
+        ZsQuestion questionF = zsQuestionService.selectById(zsCrossExport.getFirstSelect());
+        ZsQuestion questionS = zsQuestionService.selectById(zsCrossExport.getSecondSelect());
+        List<ZsOption> optionListF = getAllOption(zsCrossExport.getFirstOption(), zsCrossExport.getFirstSelect());
+        List<ZsOption> optionListS = getAllOption(zsCrossExport.getSecondOption(), zsCrossExport.getSecondSelect());
+        HSSFSheet sheet = wb.createSheet("Q" + questionF.getOrderNum() + "--Q" + questionS.getOrderNum());
+        HSSFRow rowQ1 = sheet.createRow(0);
+        fillCell(rowQ1.createCell(0), createHeadStyle(wb), "Q" + questionF.getOrderNum() + "." + questionF.getName());
+        sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 2 * optionListF.size() + 3));
+        List optionStrs = getCrossFeild(optionListF);
+        fillRow(sheet.createRow(2), style, optionStrs, 2, true);
+        HSSFRow rowQ2 = sheet.createRow(3);
+        fillCell(rowQ2.createCell(0), createHeadStyle(wb), "Q" + questionS.getOrderNum() + "." + questionS.getName());
+        sheet.addMergedRegion(new CellRangeAddress(3, 4, 0, 2 * optionListF.size() + 3));
+        Long totalNum = 0L;
+        for (ZsOption os : optionListS) {
+            int indexS = optionListS.indexOf(os);
+            List<Map<String, Object>> results = zsAnswerItemService.selectCrossCounts(questionF, questionS, os, zsCrossExport.getSurveyId());
+            HSSFRow row = sheet.createRow(5 + 2 * optionListS.indexOf(os));
+            HSSFRow rowSpace = sheet.createRow(5 + 2 * optionListS.indexOf(os) + 1);
+            setDefaultStyle(row, style, optionListF.size() * 2 + 4);
+            setDefaultStyle(rowSpace, style, optionListF.size() * 2 + 4);
+            fillCell(row.createCell(0), style, os.getName());
+            Long totalX = 0L;
+            for (Map<String, Object> res : results) {
+                for (ZsOption option : optionListF) {
+                    int index = optionListF.indexOf(option);
+                    if (option.getName().equals(res.get("option").toString())) {
+                        if (index > -1) {
+                            fillCell(row.createCell(2 + 2 * index), style, res.get("count").toString());
+                            totalX += (Long) res.get("count");
+                        }
+                        option.setCount(option.getCount() + ((Long) res.get("count")).intValue());
+                    }
+                }
+            }
+
+            totalNum += totalX;
+            fillCell(row.createCell(2 + 2 * optionListF.size()), style, totalX.toString());
+            sheet.addMergedRegion(new CellRangeAddress(5 + 2 * indexS, 6 + 2 * indexS, 2 * optionListF.size() + 2, 2 * optionListF.size() + 3));
+            row.getSheet().addMergedRegion(new CellRangeAddress(row.getRowNum(), rowSpace.getRowNum(), 0, 1));
+            for(int i=0;i<optionListF.size();i++){
+                row.getSheet().addMergedRegion(new CellRangeAddress(row.getRowNum(), rowSpace.getRowNum(), 2 + 2 * i, 3 + 2 * i));
+            }
+        }
+
+        HSSFRow total = sheet.createRow(5 + optionListS.size() * 2);
+        HSSFRow totalPlus = sheet.createRow(6 + optionListS.size() * 2);
+        setDefaultStyle(total, style, optionListF.size() * 2 + 4);
+        setDefaultStyle(totalPlus, style, optionListF.size() * 2 + 4);
+        fillCell(total.createCell(0), style, "合计");
+        for (ZsOption option : optionListF) {
+            int index = optionListF.indexOf(option);
+            fillCell(total.createCell(2 + 2 * optionListF.indexOf(option)), style, option.getCount());
+            sheet.addMergedRegion(new CellRangeAddress(5 + 2 * optionListS.size(), 6 + 2 * optionListS.size(), 2 + 2 * index, 3 + 2 * index));
+        }
+        fillCell(total.createCell(optionListF.size() * 2 + 2), style, totalNum.intValue());
+        sheet.addMergedRegion(new CellRangeAddress(5 + 2 * optionListS.size(), 6 + 2 * optionListS.size(), 2 * optionListF.size() + 2, 2 * optionListF.size() + 3));
+        total.getSheet().addMergedRegion(new CellRangeAddress(total.getRowNum(), totalPlus.getRowNum(), 0, 1));
+
+    }
+
     void fillValueStart(HSSFRow row, CellStyle style, String value, Integer total, Integer start, Integer step) {
         for (int i = 0; i < total; i++) {
             HSSFCell cell = row.createCell(start + step * i);
@@ -514,6 +596,25 @@ public class ExportServiceImpl implements ExportService {
             crossExport.setSecondSelect(question.getId());
             crossExport.setSecondOption(null);
             crossSingle(wb, crossExport);
+        }
+    }
+
+    /**
+     * 多表交叉导出不带%
+     *
+     * @param wb
+     */
+    public void crossMuiltySimple(HSSFWorkbook wb, ZsCrossExport crossExport) {
+        List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(crossExport.getSurveyId());
+        ZsQuestion questionF = zsQuestionService.selectById(crossExport.getFirstSelect());
+        for (ZsQuestion question : questions) {
+            if (question.getId().equals(questionF.getId())) {
+                continue;
+            }
+//            需要设置一下qF qS oF oS
+            crossExport.setSecondSelect(question.getId());
+            crossExport.setSecondOption(null);
+            crossSingleSimple(wb, crossExport);
         }
     }
 
