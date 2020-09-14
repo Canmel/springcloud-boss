@@ -50,6 +50,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public PageInfo<SysUser> pageQuery(SysUser entity) {
         PageInfo pageInfo = PageHelper.startPage(entity.getPageNum(), entity.getPageSize()).doSelectPageInfo(()-> mapper.list(entity));
+        mapper.loadWorkNum();
         return pageInfo;
     }
 

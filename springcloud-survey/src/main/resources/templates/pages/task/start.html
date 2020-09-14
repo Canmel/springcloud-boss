@@ -748,6 +748,7 @@
                 var that = this;
                 AJAX.GET('/system/sysUser/'+that.user.userid, {}, function (resp) {
                     that.user = resp.data;
+                    that.user.workNum = (that.user.uid + 1000) + '';
                 });
             },
         },

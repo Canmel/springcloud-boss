@@ -405,10 +405,7 @@
                 console.log(item);
             },
             loadUserWorkNum(){
-                var that = this;
-                AJAX.GET('/system/sysUser/'+that.user.userid, {}, function (resp) {
-                    that.user.workNum = resp.data.workNum;
-                });
+                this.user.workNum = (this.user.userid + 1000) + '';
             },
             toWorkList() {
                 toPage('pages/work/list.html');
