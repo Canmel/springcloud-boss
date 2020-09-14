@@ -185,7 +185,7 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("收集开始时间");
         headValues.add("收集结束时间");
         headValues.add("通话时长");
-        headValues.add("是否有效");
+        headValues.add("样本状态");
         headValues.add("标签");
         List<String> titleQList = new ArrayList<>();
         questionList.forEach(que -> {
@@ -214,7 +214,12 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
-            fillCell(row.createCell(cellNum++), style, result.get(i).get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
+            if(result.get(i).get("in_valid_msg") !=null){
+                fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("in_valid_msg"));
+            }
+            else{
+                fillCell(row.createCell(cellNum++), style, "有效");
+            }
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("label"));
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
