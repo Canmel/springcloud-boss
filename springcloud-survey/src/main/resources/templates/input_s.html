@@ -61,7 +61,6 @@
     </div>
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
-        <h2>{{pageInfo.hrefstr}}</h2>
         <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
     <section>
@@ -265,7 +264,9 @@
                         if(infos) {
                             for (let i = 0; i < infos.length; i++) {
                                 that.phoneInformation.information.push(infos[i].information);
-                                that.pageParams.push(JSON.parse(infos[i].information));
+                                let info = infos[i].information;
+                                info = info.replace(/[\r\n]/g,"")
+                                that.pageParams.push(JSON.parse(info));
                             }
                         }
                     }

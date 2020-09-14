@@ -104,7 +104,8 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     public boolean assignSeat(Integer uid, Integer surveyId){
         Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
         wrapper.eq("uid",uid);
-        if(selectList(wrapper).size()==0){
+        List<ZsSeat> seats = selectList(wrapper);
+        if(seats.size()==0){
             Wrapper<ZsSeat> wrapper1 = new EntityWrapper<>();
             wrapper1.eq("state",0);
             if(selectCount(wrapper1)>0){
@@ -121,6 +122,10 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
             else{
                 return false;
             }
+        } else {
+            ZsSeat seat = seats.get(0);
+            seat.setSurveyId(surveyId);
+            updateById(seat);
         }
         return true;
     }
