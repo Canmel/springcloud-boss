@@ -222,7 +222,6 @@
             },
             pageParams:[],
             finalData:[], //存储最终zsAnswerItemSaves
-            tag:1,  //问卷提交的时候判断是否提前结束,正常结束为1，提前结束为0
             userParamsIndex: 0,
             label: null, // 标签,不同标签可以重复收集
             validResult: true
@@ -341,12 +340,10 @@
                     }
 
                     if (checked && !isNaN(target) && target > 1000) {
-                        that.tag = 0; //提前结束标签
                         that.submitImmediately();
                         if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         }else{
                             $("#theForm")[0].reset();
-                            that.tag = 1;
                             that.current = 1;
                             that.nextIndex = 1;
                             that.showSubmit = false;
@@ -636,11 +633,7 @@
                     alert(resultStr);
                     return;
                 }
-                if(this.tag==1){
-                    this.loadFinalData();
-                }
                 let currentParams = this.pageParams[this.userParamsIndex];
-
                 AJAX.POST_JSON('zsQuestion/answer', {
                     zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),
