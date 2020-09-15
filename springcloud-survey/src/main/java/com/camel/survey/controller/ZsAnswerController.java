@@ -97,6 +97,7 @@ public class ZsAnswerController extends BaseCommonController {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
         }
         zsAnswerItem.setOptionId(optionId);
+        zsAnswerItem.setValue(n.getName());
         answerItemService.updateById(zsAnswerItem);
         return ResultUtil.success("修改成功");
     }
@@ -156,14 +157,15 @@ public class ZsAnswerController extends BaseCommonController {
         }
         selectedQuestionFullId.remove(option.getQuestionId());
         List<Integer> myList = selectedQuestionFullId.stream().distinct().collect(Collectors.toList());
-
-
-        if(myList.size() != selectedQuestionId.size()) {
+        wrapper.eq("option_id", optionId);
+        if(!myList.containsAll(selectedQuestionId)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
         }
-        answerItemService.insert(new ZsAnswerItem(answerId, surveyId, questionId, question.getName(), ObjectUtil.isEmpty(value) ? option.getName() : value, 2, answer.getCreator(), option.getName(), optionId, 1));
+        answerItemService.delete(wrapper);
         return ResultUtil.success("修改成功");
     }
+
+
 
     @GetMapping("/changeRemark")
     public Result changeRemark(Integer id, String remark) {
