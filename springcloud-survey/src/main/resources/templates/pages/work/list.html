@@ -234,7 +234,9 @@
                 })
             },
             pageFn: function (val) {
+                console.log(val)
                 this.pageInfo.pageNum = val;
+                // this.pageInfo.size = 10;
                 this.pagequery();
             },
         }

@@ -2,8 +2,10 @@ package com.camel.survey.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsSurveyState;
@@ -14,6 +16,7 @@ import com.camel.survey.service.ZsProjectService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsHomeLineChart;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,13 +86,19 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public List<Map> enabledSurvies() {
-        return mapper.enabledSurvies();
+    public PageInfo enabledSurvies(boolean isAll, BasePaginationEntity entity) {
+        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+            mapper.enabledSurvies(isAll);
+        });
+        return pageInfo;
     }
 
     @Override
-    public List<Map> enabledSurviesDev() {
+    public PageInfo enabledSurviesDev(boolean isAll, BasePaginationEntity entity) {
         SysUser user = applicationToolsUtils.currentUser();
-        return mapper.enabledSurviesDev(user.getUid());
+        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+            mapper.enabledSurviesDev(isAll, user.getUid());
+        });
+        return pageInfo;
     }
 }

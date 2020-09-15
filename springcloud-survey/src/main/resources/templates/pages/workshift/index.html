@@ -105,9 +105,6 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-
-
-
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
@@ -195,7 +192,6 @@
             },
             pagequery: function () {
                 var that = this;
-
                 AJAX.GET('zsWorkShift', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;

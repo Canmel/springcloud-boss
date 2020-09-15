@@ -8,6 +8,8 @@
                        data-pjax class="btn btn-primary btn-xs" v-if="resultDev">导入记录</a>
                     <a :href="applicationContextRootPath + 'pages/project/add.html'"
                        data-pjax class="btn btn-success btn-xs" v-if="resultDev">下载模板</a>
+                    <a v-on:click="agreeBatch()"
+                       data-pjax class="btn btn-info btn-xs" v-if="resultDev">批量同意</a>
                 </div>
             </div>
         </div>
@@ -29,6 +31,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th><input type="checkbox" @click="selectedAll($event)"> 全选</th>
                         <th>序号</th>
                         <th>姓名</th>
                         <th>日期</th>
@@ -47,7 +50,8 @@
                     </thead>
                     <tbody>
                     <tr v-for="(item, index) in items">
-                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td><input type="checkbox" :value="item.id" name="work"></td>
+                        <td scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</td>
                         <td><span>{{item.uname}}</span></td>
                         <td><span>{{item.workDate | formatOnlyDate}}</span></td>
                         <td><span>{{item.pname}}</span></td>
@@ -226,6 +230,39 @@
             this.loginMaster();
         },
         methods: {
+            getSelectedRow() {
+                let result = [];
+                for (let i = 0; i < $('input[name="work"]').length; i++) {
+                    if($($('input[name="work"]')[i]).prop("checked")) {
+                        result.push($($('input[name="work"]')[i]).val())
+                    }
+                }
+                return result;
+            },
+            agreeBatch() {
+                let that = this;
+                if(this.getSelectedRow().length === 0) {
+                    return toastr.error('请选择要操作的数据', '错误')
+                }
+                confirm("您确定要同意"+ this.getSelectedRow().length +"条数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.POST('zsWork/pass/batch', {idstr: that.getSelectedRow().join(',')}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            selectedAll(e) {
+                console.log(e.target.checked);
+                if(e.target.checked){
+                    $('input[name="work"]').prop("checked", true);
+                }else {
+                    $('input[name="work"]').prop("checked", false);
+                }
+            },
             updateInvalidNum(item) {
                 let that = this;
                 AJAX.PUT("zsWork", JSON.stringify({id: item.id, invalidNum: item.invalidNum}), function (resp) {

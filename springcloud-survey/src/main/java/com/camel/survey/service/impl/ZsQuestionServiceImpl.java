@@ -156,7 +156,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         }else if(!ObjectUtils.isEmpty(seat)){
             zsAnswer.setUid(seat.getUid());
             zsAnswer.setWorkNum((zsAnswer.getUid()+1000)+"");
-            zsAnswer.setUsername(user.getUsername());
+            zsAnswer.setUsername("222");
         }
         answerService.insert(zsAnswer);
         // 获取所有问题

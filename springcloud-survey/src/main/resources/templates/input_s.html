@@ -187,7 +187,7 @@
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
 <script>
-    new Vue({
+    mvm = new Vue({
         el: '#container',
         data: {
             applicationContextRootPath: '/survey/',
@@ -346,6 +346,7 @@
                         if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         }else{
                             $("#theForm")[0].reset();
+                            that.tag = 1;
                             that.current = 1;
                             that.nextIndex = 1;
                             that.showSubmit = false;
@@ -590,9 +591,7 @@
                     alert(resultStr);
                     return;
                 }
-                if(this.tag==1){
-                    this.loadFinalData();
-                }
+                this.loadFinalData();
                 let currentParams = this.pageParams[this.userParamsIndex];
 
                 AJAX.POST_JSON('zsQuestion/answer', {

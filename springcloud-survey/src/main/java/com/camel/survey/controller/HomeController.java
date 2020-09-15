@@ -1,5 +1,6 @@
 package com.camel.survey.controller;
 
+import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.service.HomeService;
@@ -75,12 +76,12 @@ public class HomeController {
     }
 
     @GetMapping("/enabledSurveys")
-    public Result enabledSurvey() {
-        return ResultUtil.success(homeService.enabledSurvies());
+    public Result enabledSurvey(boolean isAll, BasePaginationEntity entity) {
+        return ResultUtil.success(homeService.enabledSurvies(isAll, entity));
     }
 
     @GetMapping("/enabledSurveysDev")
-    public Result enabledSurveyDev() {
-        return ResultUtil.success(homeService.enabledSurviesDev());
+    public Result enabledSurveyDev(boolean isAll, BasePaginationEntity entity) {
+        return ResultUtil.success(homeService.enabledSurviesDev(isAll, entity));
     }
 }
