@@ -50,4 +50,6 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
     List<ZsAnswer> randomList(Integer surveyId);
 
     String selectTimeRange(Integer surveyId);
+
+    Integer selectAnswerCreatorCount(@Param("surveyId") Integer surveyId, @Param("qId") Integer qId);
 }

@@ -293,9 +293,15 @@ public class ExportServiceImpl implements ExportService {
                 if (!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
                     Row row = sheet.createRow(rowNum++);
                     oNum++;
-                    ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
+                    ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getId()), option.getOrderNum());
                 }
             }
+
+            Integer creatorCount = zsAnswerMapper.selectAnswerCreatorCount(surveyId, question.getId());
+
+            Row totalRow = sheet.createRow(rowNum);
+            totalRow.createCell(2).setCellValue("答题人数");
+            totalRow.createCell(3).setCellValue(creatorCount);
 
             Drawing drawing = sheet.createDrawingPatriarch();
             ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 2, 15, 18);
@@ -747,14 +753,9 @@ public class ExportServiceImpl implements ExportService {
         return zsAnswerMapper.selectRateBySurveyQuestion(id, question);
     }
 
-    public Integer selectAnswerItemCount(Integer surveyId, Integer qId, String option) {
-        Wrapper<ZsAnswerItem> answerItemWrapper = new EntityWrapper<>();
-        answerItemWrapper.eq("survey_id", surveyId);
-        answerItemWrapper.eq("question_id", qId);
-        answerItemWrapper.eq("`option`", option);
-        answerItemWrapper.eq("`valid`", 1);
-        answerItemWrapper.groupBy("`option`");
-        return zsAnswerItemService.selectCount(answerItemWrapper);
+    public Integer selectAnswerItemCount(Integer surveyId, Integer qId, Integer optionId) {
+        Integer result = zsAnswerItemService.selectAnswerItemCount(surveyId, qId, optionId);
+        return result;
     }
 
     public static String renderInvalidMsg(Map<String, Object> map) {
