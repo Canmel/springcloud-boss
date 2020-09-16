@@ -186,6 +186,10 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("收集结束时间");
         headValues.add("通话时长");
         headValues.add("是否有效");
+        headValues.add("无效原因");
+        headValues.add("复核人");
+        headValues.add("复核时间");
+        headValues.add("复核意见");
         headValues.add("标签");
         List<String> titleQList = new ArrayList<>();
         questionList.forEach(que -> {
@@ -215,6 +219,11 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
             fillCell(row.createCell(cellNum++), style, result.get(i).get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
+            fillCell(row.createCell(cellNum++), style, renderInvalidMsg(result.get(i)));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("reviewer_name"));
+            Date reviewAt = (Date) result.get(i).get("reviewer_at");
+            fillCell(row.createCell(cellNum++), style, ObjectUtils.isEmpty(result.get(i).get("reviewer_at")) ? "" : sf.format(new Date(reviewAt.getTime())));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("review_msg"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("label"));
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
@@ -242,7 +251,7 @@ public class ExportServiceImpl implements ExportService {
                 for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
                     // 全等，即单选
                     if (titleStr.equals(qs.get(qIndex))) {
-                        fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
+                        fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
                         qIndex = qs.size();
                     } else {
                         // 多选， 并且问题和excel当前表头相同
@@ -251,7 +260,7 @@ public class ExportServiceImpl implements ExportService {
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
                             if (org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
-                                fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
+                                fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
                                 qIndex = qs.size();
                             }
                         }
@@ -746,5 +755,15 @@ public class ExportServiceImpl implements ExportService {
         answerItemWrapper.eq("`valid`", 1);
         answerItemWrapper.groupBy("`option`");
         return zsAnswerItemService.selectCount(answerItemWrapper);
+    }
+
+    public static String renderInvalidMsg(Map<String, Object> map) {
+        if(map.get("valid").equals(ZsYesOrNo.YES.getCode())) {
+            // 有效
+            return "";
+        } else {
+            // 无效
+            return map.get("in_valid_msg").equals("") ? "逻辑无效" : "作废";
+        }
     }
 }
