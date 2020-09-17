@@ -65,6 +65,10 @@ public class Document extends ZsSurveyBaseEntity implements Serializable {
     public Document() {
     }
 
+    public Document(String dname) {
+        this.dname = dname;
+    }
+
     public Document(Integer id, ZsStatus status) {
         this.id = id;
     }

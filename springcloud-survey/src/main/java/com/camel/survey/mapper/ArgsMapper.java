@@ -22,4 +22,6 @@ public interface ArgsMapper extends BaseMapper<Args> {
      * @return
      */
     List<Args> list(Args entity);
+
+    Args selectByCode(String code);
 }

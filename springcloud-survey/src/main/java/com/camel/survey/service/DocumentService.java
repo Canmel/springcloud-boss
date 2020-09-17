@@ -1,6 +1,7 @@
 package com.camel.survey.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.entity.Result;
 import com.camel.survey.model.Document;
 import com.github.pagehelper.PageInfo;
 import com.qiniu.common.QiniuException;
@@ -48,6 +49,14 @@ public interface DocumentService extends IService<Document> {
      * @throws FileNotFoundException
      */
     String url(Integer id) throws FileNotFoundException;
+
+    /**
+     * 获取文档地址
+     * @param code
+     * @return
+     * @throws FileNotFoundException
+     */
+    String url(String code) throws FileNotFoundException;
 
     /**
      * 分页查询
