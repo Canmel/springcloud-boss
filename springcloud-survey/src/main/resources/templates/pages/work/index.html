@@ -1,3 +1,7 @@
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css"/>
+</head>
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
@@ -14,13 +18,41 @@
             </div>
         </div>
         <div class="ibox-content">
-
             <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
+                    <select class="form-control m-b" name="type"
+                            v-model="pageInfo.state">
+                        <option value='empty'>所有状态</option>
+                        <option value='APPLYED'>未审核</option>
+                        <option value='SUCCESS'>审核通过</option>
+                        <option value='FAILD'>审核驳回</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control m-b" name="type"
+                            v-model="pageInfo.gain">
+                        <option value= -1>所有状态</option>
+                        <option value= 0>未提取</option>
+                        <option value=1>已提取</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入项目名称" class="input-sm form-control search-input"
+                               v-model="pageInfo.pname">
+                    </div>
+                </div>
+                <div class="col-sm-2">
                     <div class="input-group">
                         <input type="text" placeholder="请输入姓名" class="input-sm form-control search-input"
-                               v-model="pageInfo.uname"> <span
+                               v-model="pageInfo.uname">
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        <input type="text" id="datePickerSelect" placeholder="请选择时间"
+                               class="input-sm form-control search-input"> <span
                             class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
                     </div>
@@ -209,11 +241,14 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                state:'empty',
+                gain:-1,
                 zsWorkId: [0],
                 uname: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
+                daterange:'',
             },
             file: null,
             items: [],
@@ -228,8 +263,17 @@
         },
         created: function () {
             this.loginMaster();
+            this.loadTimeRange();
         },
         methods: {
+            loadTimeRange() {
+                let that = this;
+                AJAX.GET('zsWork/selectTimeRange', {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterange = resp.data;
+                    }
+                })
+            },
             getSelectedRow() {
                 let result = [];
                 for (let i = 0; i < $('input[name="work"]').length; i++) {
@@ -385,16 +429,63 @@
             },
             pagequery: function () {
                 var that = this;
+                if (document.getElementById("datePickerSelect").value != null && document.getElementById("datePickerSelect").value != "") {
+                    this.pageInfo.daterange = document.getElementById("datePickerSelect").value;
+                }
+                var that = this;
+                if (this.pageInfo.daterange != null && this.pageInfo.daterange != "") {
+                    that.pageInfo.startDate = that.pageInfo.daterange.substring(0, 10);
+                    that.pageInfo.endDate = that.pageInfo.daterange.substring(13, 23);
+                }
+                if(that.pageInfo.state==="empty"){
+                    that.pageInfo.state = null;
+                }
                 AJAX.GET('zsWork', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
+                if(that.pageInfo.state===null){
+                    that.pageInfo.state = "empty";
+                }
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
                 this.pagequery();
             },
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        updateConfig();
+
+        function updateConfig() {
+            jQuery('#datePickerSelect').daterangepicker({
+                "startDate": currentVue.$data.pageInfo.daterange.substring(0,10),
+                "endDate": currentVue.$data.pageInfo.daterange.substring(13,23),
+                // "timePickerSeconds": true,
+                // "timePicker": true,
+                "opens": "center",
+                "buttonClasses": 'btn btn-sm',
+                "applyClass": 'btn-success',
+                "cancelClass": 'btn-default',
+                // "timePicker24Hour": true,
+                "linkedCalendars": false,
+                "autoUpdateInput": true,
+                locale: { //汉化
+                    format: "YYYY/MM/DD",
+                    applyLabel: '确定', //确定按钮文本
+                    cancelLabel: '取消', //取消按钮文本
+                    customRangeLabel: '自定义范围',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            }, function (start, end, label) {
+                console.log("New date range selected: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ")");
+            });
         }
     });
 </script>
