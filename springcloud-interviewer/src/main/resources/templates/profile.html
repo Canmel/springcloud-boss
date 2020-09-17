@@ -112,7 +112,7 @@
                 <div class="weui-form__desc">您的个人信息已经完善</div>
             </div>
             <div class="weui-form__opr-area">
-                <a class="weui-btn weui-btn_primary" href="javascript:" >修改</a>
+                <a class="weui-btn weui-btn_primary" href="javascript:" v-on:click="updateInfo()">修改</a>
             </div>
         </div>
         <div class="page__ft j_bottom">
@@ -229,6 +229,9 @@
                 this.initUserInfo();
             },
             methods: {
+                updateInfo() {
+                    this.isComplete = false;
+                },
                 clearCount() {
                     window.clearInterval(this.counter);
                 },
@@ -305,6 +308,7 @@
                             async: false,
                             success: function (resp) {
                                 if(resp.data) {
+                                    that.isComplete = true;
                                     let user = resp.data;
                                     that.userinfo.id = user.id;
                                     that.userinfo.openid = user.openid;
