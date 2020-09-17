@@ -83,7 +83,7 @@
             <if test="entity.state != null">
                 AND state = #{entity.state.code}
             </if>
-            <if test="entity.gain != null and entity.gain != -1">
+            <if test="entity.gain != null">
                 AND gain = #{entity.gain}
             </if>
             <if test="entity.startDate != null and entity.startDate != ''">

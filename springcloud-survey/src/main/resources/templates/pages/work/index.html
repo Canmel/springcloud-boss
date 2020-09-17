@@ -22,7 +22,7 @@
                 <div class="col-sm-2">
                     <select class="form-control m-b" name="type"
                             v-model="pageInfo.state">
-                        <option value='empty'>所有状态</option>
+                        <option value=''>所有状态</option>
                         <option value='APPLYED'>未审核</option>
                         <option value='SUCCESS'>审核通过</option>
                         <option value='FAILD'>审核驳回</option>
@@ -31,7 +31,7 @@
                 <div class="col-sm-2">
                     <select class="form-control m-b" name="type"
                             v-model="pageInfo.gain">
-                        <option value= -1>所有状态</option>
+                        <option value= ''>所有状态</option>
                         <option value= 0>未提取</option>
                         <option value=1>已提取</option>
                     </select>
@@ -241,8 +241,8 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
-                state:'empty',
-                gain:-1,
+                state:'',
+                gain:'',
                 zsWorkId: [0],
                 uname: '',
                 pageNum: 1,
@@ -437,17 +437,11 @@
                     that.pageInfo.startDate = that.pageInfo.daterange.substring(0, 10);
                     that.pageInfo.endDate = that.pageInfo.daterange.substring(13, 23);
                 }
-                if(that.pageInfo.state==="empty"){
-                    that.pageInfo.state = null;
-                }
                 AJAX.GET('zsWork', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
                 })
-                if(that.pageInfo.state===null){
-                    that.pageInfo.state = "empty";
-                }
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
