@@ -125,7 +125,31 @@
     </select>
 
     <select id="selectExport" resultType="hashmap">
-            select a.username, a.label,a.valid, a.work_num,a.creator,a.created_at,a.start_time,a.end_time,a.call_lasts_time,a.in_valid_msg,GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers, GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options from zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id where a.survey_id=#{id} and ai.status = 1 group by ai.answer_id
+        SELECT
+            IFNULL(a.in_valid_msg,'') in_valid_msg,
+            a.review_msg,
+            a.reviewer_name,
+            a.reviewer_at,
+            a.username,
+            a.label,
+            a.valid,
+            a.work_num,
+            a.creator,
+            a.created_at,
+            a.start_time,
+            a.end_time,
+            a.call_lasts_time,
+            GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,
+            GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers,
+            GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options
+        FROM
+            zs_answer_item ai
+        LEFT JOIN zs_answer a ON a.id = ai.answer_id
+        WHERE
+            a.survey_id=#{id}
+            AND ai.status = 1
+            AND a.status = 1
+        GROUP BY ai.answer_id
     </select>
 
     <select id="selectWorkNumTotal" resultType="hashmap">
@@ -177,4 +201,13 @@
     <update id="chageInvalidByAnswer">
         update zs_answer_item set valid = #{valid} where answer_id = #{id}
     </update>
+
+    <select id="selectAnswerItemCount" resultType="integer">
+        SELECT
+            IFNULL(COUNT(DISTINCT ai.creator, a.label), 0) c
+        FROM
+            zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id
+        WHERE
+            ai.survey_id = #{surveyId} and ai.question_id = #{qId} and ai.option_id = #{oId} and a.valid = 1
+    </select>
 </mapper>

@@ -185,7 +185,11 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("收集开始时间");
         headValues.add("收集结束时间");
         headValues.add("通话时长");
-        headValues.add("样本状态");
+        headValues.add("是否有效");
+        headValues.add("无效原因");
+        headValues.add("复核人");
+        headValues.add("复核时间");
+        headValues.add("复核意见");
         headValues.add("标签");
         List<String> titleQList = new ArrayList<>();
         questionList.forEach(que -> {
@@ -214,12 +218,12 @@ public class ExportServiceImpl implements ExportService {
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
-            if(result.get(i).get("in_valid_msg") !=null){
-                fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("in_valid_msg"));
-            }
-            else{
-                fillCell(row.createCell(cellNum++), style, "有效");
-            }
+            fillCell(row.createCell(cellNum++), style, result.get(i).get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
+            fillCell(row.createCell(cellNum++), style, renderInvalidMsg(result.get(i)));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("reviewer_name"));
+            Date reviewAt = (Date) result.get(i).get("reviewer_at");
+            fillCell(row.createCell(cellNum++), style, ObjectUtils.isEmpty(result.get(i).get("reviewer_at")) ? "" : sf.format(new Date(reviewAt.getTime())));
+            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("review_msg"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("label"));
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
@@ -247,7 +251,7 @@ public class ExportServiceImpl implements ExportService {
                 for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
                     // 全等，即单选
                     if (titleStr.equals(qs.get(qIndex))) {
-                        fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
+                        fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
                         qIndex = qs.size();
                     } else {
                         // 多选， 并且问题和excel当前表头相同
@@ -256,7 +260,7 @@ public class ExportServiceImpl implements ExportService {
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
                             if (org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
-                                fillCell(row.createCell(9 + index), style, answersArray[qIndex]);
+                                fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
                                 qIndex = qs.size();
                             }
                         }
@@ -289,9 +293,15 @@ public class ExportServiceImpl implements ExportService {
                 if (!ObjectUtils.isEmpty(option.getQuestionId()) && option.getQuestionId().equals(question.getId())) {
                     Row row = sheet.createRow(rowNum++);
                     oNum++;
-                    ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getName()), option.getOrderNum());
+                    ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getId()), option.getOrderNum());
                 }
             }
+
+            Integer creatorCount = zsAnswerMapper.selectAnswerCreatorCount(surveyId, question.getId());
+
+            Row totalRow = sheet.createRow(rowNum);
+            totalRow.createCell(2).setCellValue("答题人数");
+            totalRow.createCell(3).setCellValue(creatorCount);
 
             Drawing drawing = sheet.createDrawingPatriarch();
             ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 2, 15, 18);
@@ -743,13 +753,18 @@ public class ExportServiceImpl implements ExportService {
         return zsAnswerMapper.selectRateBySurveyQuestion(id, question);
     }
 
-    public Integer selectAnswerItemCount(Integer surveyId, Integer qId, String option) {
-        Wrapper<ZsAnswerItem> answerItemWrapper = new EntityWrapper<>();
-        answerItemWrapper.eq("survey_id", surveyId);
-        answerItemWrapper.eq("question_id", qId);
-        answerItemWrapper.eq("`option`", option);
-        answerItemWrapper.eq("`valid`", 1);
-        answerItemWrapper.groupBy("`option`");
-        return zsAnswerItemService.selectCount(answerItemWrapper);
+    public Integer selectAnswerItemCount(Integer surveyId, Integer qId, Integer optionId) {
+        Integer result = zsAnswerItemService.selectAnswerItemCount(surveyId, qId, optionId);
+        return result;
+    }
+
+    public static String renderInvalidMsg(Map<String, Object> map) {
+        if(map.get("valid").equals(ZsYesOrNo.YES.getCode())) {
+            // 有效
+            return "";
+        } else {
+            // 无效
+            return map.get("in_valid_msg").equals("") ? "逻辑无效" : "作废";
+        }
     }
 }

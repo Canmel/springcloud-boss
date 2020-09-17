@@ -210,7 +210,7 @@
                                 <div class="col-sm-2" style="width: 11%;">
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.valid">
-                                        <option value='empty'>所有问卷</option>
+                                        <option value=''>所有问卷</option>
                                         <option value='YES'>有效问卷</option>
                                         <option value='NO'>无效问卷</option>
                                     </select>
@@ -624,7 +624,7 @@
             answers: [],
             pageInfo: {
                 reviewStatus: 0,
-                valid: 'empty',
+                valid: '',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
                 total: 0,//总页数
@@ -1071,8 +1071,6 @@
                 let that = this;
                 let params = Object.keys(this.pageInfo).map(function (key) {
                     if (that.pageInfo[key]) {
-
-
                         return encodeURIComponent(key) + "=" + encodeURIComponent(that.pageInfo[key]);
                     }
                 }).join("&");
