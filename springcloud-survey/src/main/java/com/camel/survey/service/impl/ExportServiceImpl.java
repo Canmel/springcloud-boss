@@ -763,7 +763,6 @@ public class ExportServiceImpl implements ExportService {
             // 有效
             return "";
         } else {
-            System.out.println(map.get("in_valid_msg"));
             if(StringUtils.isEmpty(map.get("in_valid_msg"))) {
                 return "逻辑无效";
             }else{
