@@ -26,5 +26,32 @@
         <include refid="Base_Column_List"></include>
         from
         zs_cash_apply
+        where created_at &gt;= #{startDate}
+        and created_at &lt;= #{endDate}
+        <if test="uname != null and uname !=''">
+            and uname like concat('%', #{uname}, '%')
+        </if>
+        <if test="status != null">
+            and status = #{status.code}
+        </if>
+    </select>
+
+    <select id="selectTimeRange" resultType="string">
+        select
+            CONCAT(
+                (
+                    SELECT
+                        min(created_at)
+                    FROM
+                        zs_cash_apply
+                ),
+                ' - ',
+                (
+                    SELECT
+                        max(created_at)
+                    FROM
+                        zs_cash_apply
+                )
+            )
     </select>
 </mapper>

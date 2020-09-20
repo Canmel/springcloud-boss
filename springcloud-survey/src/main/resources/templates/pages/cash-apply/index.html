@@ -1,3 +1,8 @@
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css"/>
+</head>
+
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
@@ -10,13 +15,26 @@
             </div>
         </div>
         <div class="ibox-content">
-
             <div class="row">
-                <div class="col-sm-9"></div>
                 <div class="col-sm-3">
+                    <select class="form-control m-b" name="type"
+                            v-model="pageInfo.status">
+                        <option value=''>所有状态</option>
+                        <option value='NORMAL'>正常</option>
+                        <option value='APPLY'>发起申请</option>
+                        <option value='SUCESS'>申请成功</option>
+                        <option value='FAILD'>申请失败</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-3">
+                    <input type="text" placeholder="请输入申请人" class="input-sm form-control search-input"
+                           v-model="pageInfo.uname">
+                </div>
+                <div class="col-sm-6">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
-                               v-model="pageInfo.dname"> <span
+                        <input type="text" id="datePickerSelect" placeholder="请选择时间"
+                               class="input-sm form-control search-input"> <span
                             class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
                     </div>
@@ -120,8 +138,8 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
-                dname: '',
-                state: 'COLLECTING',
+                status: '',
+                uname:'',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -140,8 +158,17 @@
         },
         created: function () {
             this.loginMaster();
+            this.loadTimeRange();
         },
         methods: {
+            loadTimeRange() {
+                let that = this;
+                AJAX.GET('zsCashApply/selectTimeRange', {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterange = resp.data;
+                    }
+                })
+            },
             loginMaster(){
                 var that = this;
                 this.master = sessionStorage.getItem('master');
@@ -163,7 +190,14 @@
                 toPage("pages/project/details.html");
             },
             pagequery: function () {
-                var that = this;
+                let that = this;
+                if (document.getElementById("datePickerSelect").value != null && document.getElementById("datePickerSelect").value != "") {
+                    this.pageInfo.daterange = document.getElementById("datePickerSelect").value;
+                }
+                if (this.pageInfo.daterange != null && this.pageInfo.daterange != "") {
+                    that.pageInfo.startDate = that.pageInfo.daterange.substring(0, 19);
+                    that.pageInfo.endDate = that.pageInfo.daterange.substring(22, 41);
+                }
                 AJAX.GET('zsCashApply', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
@@ -222,6 +256,40 @@
                 });
 
             }
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        updateConfig();
+
+        function updateConfig() {
+            jQuery('#datePickerSelect').daterangepicker({
+                "startDate": vue.$data.pageInfo.daterange.substring(0,19),
+                "endDate": vue.$data.pageInfo.daterange.substring(22,41),
+                "timePickerSeconds": true,
+                "timePicker": true,
+                "opens": "center",
+                "buttonClasses": 'btn btn-sm',
+                "applyClass": 'btn-success',
+                "cancelClass": 'btn-default',
+                "timePicker24Hour": true,
+                "linkedCalendars": false,
+                "autoUpdateInput": true,
+                locale: { //汉化
+                    format: "YYYY/MM/DD HH:mm:ss",
+                    applyLabel: '确定', //确定按钮文本
+                    cancelLabel: '取消', //取消按钮文本
+                    customRangeLabel: '自定义范围',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            }, function (start, end, label) {
+                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss') + "-" + end.format('YYYY-MM-DD:HH:mm:ss'));
+                console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
+            });
         }
     });
 </script>

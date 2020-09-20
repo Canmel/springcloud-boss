@@ -22,4 +22,11 @@ public interface ZsCashApplyService extends IService<ZsCashApply> {
     Result pass(Integer id);
 
     Result reject(Integer id);
+
+    /**
+     * 查询时间范围
+     *
+     * @return
+     */
+    String selectTimeRange();
 }
