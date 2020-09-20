@@ -18,7 +18,7 @@
 <body>
 <div class="container" id="container">
     <div class="page form_page js_show" id="wrapper">
-        <div class="weui-form">
+        <div class="weui-form" v-if="!isComplete">
             <div class="weui-form__text-area">
                 <h2 class="weui-form__title">用户信息完善</h2>
                 <div class="weui-form__desc">请完善你的个人信息，完成后就可以开始你的调查之路</div>
@@ -103,6 +103,16 @@
                     </p>
                     <p class="weui-footer__text">Copyright © 2008-2019 diaocha.cn</p>
                 </div>
+            </div>
+        </div>
+
+        <div class="weui-form" v-if="isComplete">
+            <div class="weui-form__text-area">
+                <h2 class="weui-form__title">用户信息完善</h2>
+                <div class="weui-form__desc">您的个人信息已经完善</div>
+            </div>
+            <div class="weui-form__opr-area">
+                <a class="weui-btn weui-btn_primary" href="javascript:" v-on:click="updateInfo()">修改</a>
             </div>
         </div>
         <div class="page__ft j_bottom">
@@ -209,6 +219,7 @@
                     email: '',
                     validCode: ''
                 },
+                isComplete: false,
                 submitActive: true,
                 countNum: 60,
                 counter: null,
@@ -218,6 +229,9 @@
                 this.initUserInfo();
             },
             methods: {
+                updateInfo() {
+                    this.isComplete = false;
+                },
                 clearCount() {
                     window.clearInterval(this.counter);
                 },
@@ -263,13 +277,16 @@
                         if(this.userinfo.id) {
                             AJAX.PUT("wxUser", this.userinfo, function (resp) {
                                 $.toast(resp.msg, function () {
+                                    that.isComplete = true;
                                 })
                             });
                         }else{
                             AJAX.POST_JSON("wxUser", this.userinfo, function (resp) {
                                 that.userinfo = resp.data;
                                 $.toast(resp.msg, function () {
+                                    that.isComplete = true;
                                 })
+
                             });
                         }
                     }
@@ -291,6 +308,7 @@
                             async: false,
                             success: function (resp) {
                                 if(resp.data) {
+                                    that.isComplete = true;
                                     let user = resp.data;
                                     that.userinfo.id = user.id;
                                     that.userinfo.openid = user.openid;

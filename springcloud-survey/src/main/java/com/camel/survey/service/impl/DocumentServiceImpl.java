@@ -1,14 +1,22 @@
 package com.camel.survey.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.common.entity.Member;
+import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.config.QiNiuConfig;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.mapper.ArgsMapper;
 import com.camel.survey.mapper.DocumentMapper;
+import com.camel.survey.model.Args;
 import com.camel.survey.model.Document;
 import com.camel.survey.service.DocumentService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -73,6 +81,9 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
     private QiNiuConfig qiNiuConfig;
 
     @Autowired
+    private ArgsMapper argsMapper;
+
+    @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
 
     @Override
@@ -96,17 +107,29 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
 
     @Override
     public int save(MultipartFile file, OAuth2Authentication authentication) {
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, authentication.getName());
+        SysUser currentUser = applicationToolsUtils.currentUser();
         Long size = file.getSize();
         String originalFilename = file.getOriginalFilename();
+        Wrapper wrapper = new EntityWrapper();
+        wrapper.eq("dname", originalFilename);
+        Integer c = mapper.selectCount(wrapper);
         List<String> list = Arrays.asList(originalFilename.split("\\."));
         String dtype = list.get(list.size() - 1);
         int result;
         JSONObject jsonObject = upload(file);
         if (!ObjectUtils.isEmpty(jsonObject)) {
             String uploadHashName = jsonObject.getString("hash");
-            Document document = new Document(originalFilename, uploadHashName, size.doubleValue(), dtype, member.getId());
-            result = mapper.insert(document);
+            if(!ObjectUtils.isEmpty(c) && c > 0) {
+                Document d = mapper.selectOne(new Document(originalFilename));
+                d.setAddress(uploadHashName);
+                d.setDsize(size.doubleValue());
+                d.setDtype(dtype);
+                d.setCreatorId(currentUser.getUid());
+                return mapper.updateById(d);
+            } else{
+                Document document = new Document(originalFilename, uploadHashName, size.doubleValue(), dtype, currentUser.getUid());
+                result = mapper.insert(document);
+            }
         } else {
             result = -1;
         }
@@ -199,6 +222,33 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         // 1小时，可以自定义链接过期时间
         return auth.privateDownloadUrl(publicUrl, 3600);
     }
+
+    @Override
+    public String url(String code) throws FileNotFoundException {
+        Args args = argsMapper.selectByCode(code);
+        Document d = new Document();
+        d.setDname(args.getValue());
+        Document document = mapper.selectOne(d);
+        if (ObjectUtils.isEmpty(document)) {
+            throw new FileNotFoundException();
+        }
+        String fileName = document.getAddress();
+        String encodedFileName = null;
+        try {
+            encodedFileName = URLEncoder.encode(fileName, "utf-8").replace("+", "%20");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (StringUtils.isNullOrEmpty(encodedFileName)) {
+            return null;
+        }
+        String publicUrl = String.format("%s/%s", BUCKET_NAME_URL, encodedFileName);
+        Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
+        // 1小时，可以自定义链接过期时间
+        return auth.privateDownloadUrl(publicUrl, 3600);
+    }
+
+
 
     /**
      * 删除

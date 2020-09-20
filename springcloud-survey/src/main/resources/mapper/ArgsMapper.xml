@@ -32,4 +32,14 @@
             </if>
         </where>
     </select>
+
+    <select id="selectByCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        args
+        <where>
+            status = 1 and code = #{code} limit 1
+        </where>
+    </select>
 </mapper>

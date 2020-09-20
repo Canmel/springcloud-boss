@@ -16,27 +16,9 @@
 
 </head>
 <body ontouchstart>
-<div class="container" id="container" style="height: 100%;">
-    <div style="height: 100%;">
-        <div style="height: 100%;">
-            <div style="height: 81.5%; background-image: url('/viewer/wx/img/share01.png'); background-size:100% 100%; background-repeat: no-repeat;">
-
-            </div>
-            <div style="height: 11.5%; background-color: #ffffff;">
-                <div class="weui-row weui-no-gutter" style="height: 100%;">
-                    <div style="width: 39%; height: 100%; background-image: url('/viewer/wx/img/share02.png'); background-size: 100% 100%;">
-                    </div>
-                    <div style="width: 25%; height: 100%;">
-                        <img v-bind:src="qrCodeSrc()" v-if="ticket" style="width: 100%;">
-                    </div>
-                    <div style="width: 36%; height: 100%; background-image: url('/viewer/wx/img/share03.png'); background-size: 100% 100%;">
-                    </div>
-                </div>
-            </div>
-            <div style="height: 7%; background-image: url('/viewer/wx/img/share04.png'); background-size: 100% 100%;">
-            </div>
-        </div>
-
+<div class="container" id="container" style="height: 100%;background-size:100% 100%;background-repeat: no-repeat; ">
+    <div style="width: 100px; height: 100px; position:fixed; z-index: 999; display: inline-block; right: 20px; bottom: 20px;">
+        <img v-bind:src="qrCodeSrc()" v-if="ticket" style="width: 100%;">
     </div>
 </div>
 <script src="/viewer/wx/js/fastclick.js"></script>
@@ -56,12 +38,32 @@
             ticket: null,
             qrCode: "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=",
             signature: null,
-            viewModel: false
+            viewModel: false,
+            bgAddr: ''
         },
         created: function () {
             this.initQRCode();
+            this.bgImage();
         },
         methods: {
+            bgImage() {
+                let that = this;
+                $.ajax({
+                    url: '/survey/document/code/WX_SHARE_IMAGE',
+                    type: 'GET',
+                    async: false,
+                    timeout:30000,
+                    success: function (resp) {
+                        if (resp.code == 200 && resp.data) {
+                            that.bgAddr = resp.data;
+                            $("#container").css("background-image", "url('"+ resp.data +"')");
+                        }
+                    },
+                    error: function (err) {
+                        that.signature = null;
+                    }
+                });
+            },
             qrCodeSrc() {
                 return this.qrCode + this.ticket;
             },
