@@ -93,6 +93,19 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
         this.creator = creator;
     }
 
+    public ZsAnswerItem(Integer answerId, Integer surveyId, Integer questionId, String question, String value, Integer type, String creator, String option, Integer optionId, Integer uid) {
+        this.answerId = answerId;
+        this.surveyId = surveyId;
+        this.questionId = questionId;
+        this.question = question;
+        this.value = value;
+        this.type = type;
+        this.creator = creator;
+        this.option = option;
+        this.optionId = optionId;
+        this.uid = uid;
+    }
+
     @Override
     public String toString() {
         return "ZsAnswerItem{" +

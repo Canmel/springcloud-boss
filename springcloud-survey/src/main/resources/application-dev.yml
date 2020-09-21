@@ -140,3 +140,9 @@ wx:
     appkey: d4ahjqulmuvuzyna2lj00nv1a40ww54u
     mchid: 1511764991
     mchname: 赛炜大数据服务有限公司
+
+cti:
+  record-file:
+    url: http://tj.svdata.cn/yscrm/servlet/filedown?filename=
+  system:
+    url: http://tj.svdata.cn/yscrm/servlet/filedown?filename=

@@ -23,7 +23,7 @@ import java.util.*;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author baily
@@ -31,6 +31,9 @@ import java.util.*;
  */
 @Service
 public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsWorkRecord> implements ZsWorkRecordService {
+
+    // 督导角色
+    public static final String CODE_DEVOPS = "ROLE_DEVOPS";
 
     @Autowired
     private ZsWorkRecordMapper mapper;
@@ -66,43 +69,46 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
     @Override
     public List<ZsWorkRecord> selectZsWorkRListByUid(Integer id) {
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
-        wrapper.eq("creator",id);
-        wrapper.eq("result",1);
+        wrapper.eq("creator", id);
+        wrapper.eq("result", 1);
         return mapper.selectList(wrapper);
     }
 
     @Override
     public Result start(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication) {
-        ZsWorkShift zsWorkShift=zsWorkShiftservice.selectById(entity.getWsId());
+        ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(entity.getWsId());
         Wrapper<ZsWorkRecord> wrapper1 = new EntityWrapper<>();
-        wrapper1.eq("creator",entity.getCreatorId());
-        List<ZsWorkRecord> workRecordList=mapper.selectList(wrapper1);
+        wrapper1.eq("creator", entity.getCreatorId());
+        List<ZsWorkRecord> workRecordList = mapper.selectList(wrapper1);
         List<ZsWorkShift> workShiftList = new ArrayList<>();
         workRecordList.forEach(workRecord -> {
-            if(zsWorkShiftservice.selectById(workRecord.getWsId())!=null){
+            if (zsWorkShiftservice.selectById(workRecord.getWsId()) != null) {
                 workShiftList.add(zsWorkShiftservice.selectById(workRecord.getWsId()));
             }
         });
 
-        for(int i=0;i<workShiftList.size();i++){
-            if(workShiftList.get(i).getStartDate().equals(zsWorkShift.getStartDate())){
-                if(workShiftList.get(i).getStartTime().compareTo(zsWorkShift.getEndTime())<0&&workShiftList.get(i).getEndTime().compareTo(zsWorkShift.getStartTime())>0){
-                    return ResultUtil.success("该时间范围内您已申请了相关班次，不可重复申请");
+        if(!applicationToolsUtils.hasRole(oAuth2Authentication, CODE_DEVOPS)) {
+            for (int i = 0; i < workShiftList.size(); i++) {
+                if (workShiftList.get(i).getStartDate().equals(zsWorkShift.getStartDate())) {
+                    if (workShiftList.get(i).getStartTime().compareTo(zsWorkShift.getEndTime()) < 0 && workShiftList.get(i).getEndTime().compareTo(zsWorkShift.getStartTime()) > 0) {
+                        return ResultUtil.success("该时间范围内您已申请了相关班次，不可重复申请");
+                    }
                 }
             }
         }
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
-        wrapper.eq("ws_id",entity.getWsId());
-        wrapper.eq("cid_num",entity.getCIdNum());
-        if(mapper.selectCount(wrapper)>0){
+        wrapper.eq("ws_id", entity.getWsId());
+        wrapper.eq("cid_num", entity.getCIdNum());
+        if (mapper.selectCount(wrapper) > 0) {
             return ResultUtil.success("您已提交过了，请勿重复提交");
-        };
+        }
+        ;
         Result result = service.sign(entity.getSurveyId(), oAuth2Authentication);
-        if(result.getMsg().equals("投递成功")){
+        if (result.getMsg().equals("投递成功")) {
             mapper.insert(entity);
 
         }
-        if(result.getMsg().equals("您已经投递过了，无需重复提交") || result.getMsg().equals("您已经投递过了，并且已经审核通过，无需重复提交")){
+        if (result.getMsg().equals("您已经投递过了，无需重复提交") || result.getMsg().equals("您已经投递过了，并且已经审核通过，无需重复提交")) {
             result.setMsg("投递成功");
             mapper.insert(entity);
         }
@@ -112,144 +118,146 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
     @Override
     public Result updateSignW(ZsWorkRecord entity) {
         ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(entity.getWsId());
-        if(!zsSeatService.assignSeat(entity.getCreatorId(), zsWorkShift.getSurveyId())) {
+        if (!zsSeatService.assignSeat(entity.getCreatorId(), zsWorkShift.getSurveyId())) {
             throw new SourceDataNotValidException("分配坐席出错,请检查剩余坐席");
         }
 
         mapper.updateById(entity);
         ZsSign zsSign = new ZsSign();
         Wrapper<ZsSign> wrapper = new EntityWrapper<>();
-        if(zsWorkShift != null){
+        if (zsWorkShift != null) {
             zsSign.setResult(entity.getResult());
-            wrapper.eq("survey_id",zsWorkShift.getSurveyId());
-            wrapper.eq("creator",entity.getCreatorId());
+            wrapper.eq("survey_id", zsWorkShift.getSurveyId());
+            wrapper.eq("creator", entity.getCreatorId());
         }
-        return ResultUtil.success("修改成功",zsSignService.update(zsSign,wrapper));
+        return ResultUtil.success("修改成功", zsSignService.update(zsSign, wrapper));
     }
 
     @Override
     public Result deleteSingW(ZsWorkRecord entity) {
         SysUser user = applicationToolsUtils.getUser(entity.getCreatorId());
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
-        wrapper.eq("ws_id",entity.getWsId());
-        wrapper.eq("cid_num",user.getIdNum());
+        wrapper.eq("ws_id", entity.getWsId());
+        wrapper.eq("cid_num", user.getIdNum());
         Wrapper<ZsSign> wrapper1 = new EntityWrapper<>();
         ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(entity.getWsId());
-        wrapper1.eq("survey_id",zsWorkShift.getSurveyId());
-        wrapper1.eq("creator",entity.getCreatorId());
+        wrapper1.eq("survey_id", zsWorkShift.getSurveyId());
+        wrapper1.eq("creator", entity.getCreatorId());
         zsSignService.delete(wrapper1);
-        return ResultUtil.success("退出成功",mapper.delete(wrapper));
+        return ResultUtil.success("退出成功", mapper.delete(wrapper));
     }
 
     @Override
     public Result selectWorkR(String idNum) {
         Wrapper<ZsWorkRecord> wrapper = new EntityWrapper<>();
-        wrapper.eq("cid_num",idNum);
-        wrapper.eq("result",1);
+        wrapper.eq("cid_num", idNum);
+        wrapper.eq("result", 1);
         List<ZsWorkRecord> zsWorkRecords = mapper.selectList(wrapper);
-        if(zsWorkRecords.size()<1){
+        if (zsWorkRecords.size() < 1) {
             return ResultUtil.success("没有预约班次");
         }
         List<ZsWorkShift> zsWorkShifts = new ArrayList<>();
         //便利班次-预约表，拿到用户预约的所有的班次
         for (ZsWorkRecord zsWorkRecord : zsWorkRecords) {
             ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(zsWorkRecord.getWsId());
-            if(!ObjectUtils.isEmpty(zsWorkShift)){
+            if (!ObjectUtils.isEmpty(zsWorkShift)) {
                 zsWorkShifts.add(zsWorkShift);
             }
         }
         //当成功预约后，班次被删除，提示信息
-        if(zsWorkShifts.size()<1){
+        if (zsWorkShifts.size() < 1) {
             return ResultUtil.success("班次已移除");
         }
-        Map<Integer,ZsWorkShift> zsWorkShiftMap = new HashMap<>();
+        Map<Integer, ZsWorkShift> zsWorkShiftMap = new HashMap<>();
         for (int i = 0; i < zsWorkShifts.size(); i++) {
-            zsWorkShiftMap.put(i+1,zsWorkShifts.get(i));
+            zsWorkShiftMap.put(i + 1, zsWorkShifts.get(i));
         }
         Map<Integer, ZsWorkShift> shiftMap = dateCompare(zsWorkShiftMap);
-        if(shiftMap.get(0).getZsAccessMsg().equals("日期校验通过")){
+        if (shiftMap.get(0).getZsAccessMsg().equals("日期校验通过")) {
             Map<Integer, String> stringMap = timeCompare(shiftMap);
-            if(stringMap.get(0).equals("认证成功")){
+            if (stringMap.get(0).equals("认证成功")) {
                 return ResultUtil.success("认证成功");
-            }else if(stringMap.get(0).equals("班次时间尚未开始")){
+            } else if (stringMap.get(0).equals("班次时间尚未开始")) {
                 return ResultUtil.success("班次时间尚未开始");
-            }else{
+            } else {
                 return ResultUtil.success("班次已超时");
             }
-        } else if(shiftMap.get(0).getZsAccessMsg().equals("班次日期尚未开始")){
+        } else if (shiftMap.get(0).getZsAccessMsg().equals("班次日期尚未开始")) {
             return ResultUtil.success("班次日期尚未开始");
-        } else{
+        } else {
             return ResultUtil.success("班次已过期");
         }
     }
-    private Map<Integer,ZsWorkShift> dateCompare(Map<Integer,ZsWorkShift> zsWorkShiftMap){
+
+    private Map<Integer, ZsWorkShift> dateCompare(Map<Integer, ZsWorkShift> zsWorkShiftMap) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date now = new Date();
         String nowDate = dateFormat.format(now);
         ZsWorkShift workShift = new ZsWorkShift();
         int mapSize = zsWorkShiftMap.size();
-        for (int i = 0; i <mapSize; i++) {
+        for (int i = 0; i < mapSize; i++) {
             //比较日期
-            long l = Long.valueOf(zsWorkShiftMap.get(i+1).getStartDate().replaceAll("-", "")) - Long.parseLong(nowDate.replaceAll("-", ""));
-            if(l==0){
+            long l = Long.valueOf(zsWorkShiftMap.get(i + 1).getStartDate().replaceAll("-", "")) - Long.parseLong(nowDate.replaceAll("-", ""));
+            if (l == 0) {
                 workShift.setZsAccessMsg("日期校验通过");
-                zsWorkShiftMap.put(0,workShift);
-            }else if(l>0){
-                zsWorkShiftMap.remove(i+1);
-                if(zsWorkShiftMap.get(0) == null) {
+                zsWorkShiftMap.put(0, workShift);
+            } else if (l > 0) {
+                zsWorkShiftMap.remove(i + 1);
+                if (zsWorkShiftMap.get(0) == null) {
                     workShift.setZsAccessMsg("班次日期尚未开始");
-                    zsWorkShiftMap.put(0,workShift);
+                    zsWorkShiftMap.put(0, workShift);
                 }
-                if(!"日期校验通过".equals(zsWorkShiftMap.get(0).getZsAccessMsg())){
+                if (!"日期校验通过".equals(zsWorkShiftMap.get(0).getZsAccessMsg())) {
                     workShift.setZsAccessMsg("班次日期尚未开始");
-                    zsWorkShiftMap.put(0,workShift);
+                    zsWorkShiftMap.put(0, workShift);
                 }
-            }else{
-                zsWorkShiftMap.remove(i+1);
-                if(zsWorkShiftMap.get(0) == null){
+            } else {
+                zsWorkShiftMap.remove(i + 1);
+                if (zsWorkShiftMap.get(0) == null) {
                     workShift.setZsAccessMsg("班次已过期");
-                    zsWorkShiftMap.put(0,workShift);
-                }else if(zsWorkShiftMap.get(0) == null&&!"日期校验通过".equals(zsWorkShiftMap.get(0).getZsAccessMsg()) && !"班次日期尚未开始".equals(zsWorkShiftMap.get(0).getZsAccessMsg())){
+                    zsWorkShiftMap.put(0, workShift);
+                } else if (zsWorkShiftMap.get(0) == null && !"日期校验通过".equals(zsWorkShiftMap.get(0).getZsAccessMsg()) && !"班次日期尚未开始".equals(zsWorkShiftMap.get(0).getZsAccessMsg())) {
                     workShift.setZsAccessMsg("班次已过期");
-                    zsWorkShiftMap.put(0,workShift);
+                    zsWorkShiftMap.put(0, workShift);
                 }
             }
         }
         return zsWorkShiftMap;
     }
-    private Map<Integer,String> timeCompare(Map<Integer,ZsWorkShift> zsWorkShiftMap){
+
+    private Map<Integer, String> timeCompare(Map<Integer, ZsWorkShift> zsWorkShiftMap) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         Date now = new Date();
-        long time = 30*60*1000;//30分钟
+        long time = 30 * 60 * 1000;//30分钟
         String format = timeFormat.format(now);
-        Map<Integer,String> map = new HashMap<>();
-        for (Map.Entry<Integer,ZsWorkShift> zsWorkShift:zsWorkShiftMap.entrySet()) {
+        Map<Integer, String> map = new HashMap<>();
+        for (Map.Entry<Integer, ZsWorkShift> zsWorkShift : zsWorkShiftMap.entrySet()) {
 
             try {
                 //比较时间
-                Date nowtime =  timeFormat.parse(format);
-                Date compareTimeS = timeFormat.parse(zsWorkShift.getValue().getStartTime()+":00");
-                Date compareTimeE = timeFormat.parse(zsWorkShift.getValue().getEndTime()+":00");
+                Date nowtime = timeFormat.parse(format);
+                Date compareTimeS = timeFormat.parse(zsWorkShift.getValue().getStartTime() + ":00");
+                Date compareTimeE = timeFormat.parse(zsWorkShift.getValue().getEndTime() + ":00");
                 //拿当前时间和开始时间作比较
-                if(nowtime.getTime()<compareTimeS.getTime()){
-                    Date sumTime = new Date(nowtime.getTime()+time);
+                if (nowtime.getTime() < compareTimeS.getTime()) {
+                    Date sumTime = new Date(nowtime.getTime() + time);
                     //当前时间小于开始时间，则当前时间加30分钟，继续比较
-                    if(sumTime.getTime()<compareTimeS.getTime()){
-                        map.put(0,"班次时间尚未开始");
-                    }else{
-                        map.put(0,"认证成功");
+                    if (sumTime.getTime() < compareTimeS.getTime()) {
+                        map.put(0, "班次时间尚未开始");
+                    } else {
+                        map.put(0, "认证成功");
                         break;
                     }
-                }else{
+                } else {
                     //当前时间大于开始时间，则当前时间和结束时间比较
-                    if(nowtime.getTime()>compareTimeE.getTime()){
-                        if (zsWorkShiftMap.get(0) == null){
-                            map.put(0,"班次时间已经结束");
-                        }else if(!"班次时间尚未开始".equals(map.get(0))){
-                            map.put(0,"班次已超时");
+                    if (nowtime.getTime() > compareTimeE.getTime()) {
+                        if (zsWorkShiftMap.get(0) == null) {
+                            map.put(0, "班次时间已经结束");
+                        } else if (!"班次时间尚未开始".equals(map.get(0))) {
+                            map.put(0, "班次已超时");
                         }
-                    }else{
-                        map.put(0,"认证成功");
+                    } else {
+                        map.put(0, "认证成功");
                         break;
                     }
                 }

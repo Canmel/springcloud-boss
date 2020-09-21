@@ -26,6 +26,7 @@ import com.camel.survey.vo.ProjectReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -205,6 +206,17 @@ public class ZsWorkController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity, null, oAuth2Authentication));
     }
 
+    @PostMapping("/pass/batch")
+    @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
+    public Result passBatch(String idstr) throws UnknownHostException {
+        List<ZsWork> ws = service.selectBatchIds(CollectionUtils.arrayToList(idstr.split(",")));
+        for (ZsWork word: ws) {
+            word.setState(ZsWorkState.SUCCESS);
+        }
+        service.updateBatchById(ws);
+        return ResultUtil.success("批量审核成功");
+    }
+
     /**
      * 通过审核
      * @param id
@@ -319,6 +331,15 @@ public class ZsWorkController extends BaseCommonController {
             zsWork.resetSalary();
         }
         return ResultUtil.success(zsWork);
+    }
+
+    /**
+     * 获取工作记录时间范围
+     * @return
+     */
+    @GetMapping("/selectTimeRange")
+    public Result selectTimeRange() {
+        return ResultUtil.success("",service.selectTimeRange());
     }
 
     /**

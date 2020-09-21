@@ -90,7 +90,7 @@
             <if test="seat != null">
                 and answer.seat like concat('%', #{seat}, '%')
             </if>
-            <if test="creator != null">
+            <if test="creator != null and creator != ''">
                 and answer.creator like concat('%', #{creator}, '%')
             </if>
             <if test="startDate != null">
@@ -102,19 +102,19 @@
             <if test="callLastsTime != null">
                 and answer.call_lasts_time is not null
             </if>
-            <if test="reviewStatus != null and reviewStatus > -1 and reviewStatus == 0">
+            <if test="reviewStatus != null and reviewStatus == 0">
                 and (answer.review_status is null or answer.review_status = 0)
             </if>
-            <if test="reviewStatus != null and reviewStatus > -1  and reviewStatus == 12">
+            <if test="reviewStatus != null and reviewStatus == 12">
                 and answer.review_status in (1,2)
             </if>
-            <if test="reviewStatus != null and reviewStatus > -1  and reviewStatus != 0 and reviewStatus != 12">
+            <if test="reviewStatus != null and reviewStatus != 0 and reviewStatus != 12">
                 and answer.review_status = #{reviewStatus}
             </if>
-            <if test="reviewerName != null">
+            <if test="reviewerName != null and reviewerName != ''">
                 and answer.reviewer_name like concat('%', #{reviewerName}, '%')
             </if>
-            <if test="workNum != null">
+            <if test="workNum != null and workNum != ''">
                 and answer.work_num like concat('%', #{workNum}, '%')
             </if>
         </where>
@@ -284,5 +284,14 @@
                     AND survey_id = #{surveyId}
                 )
             )
+    </select>
+
+    <select id="selectAnswerCreatorCount" resultType="integer">
+        SELECT
+            IFNULL(COUNT(DISTINCT ai.creator, a.label), 0) c
+        FROM
+            zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id
+        WHERE
+            ai.survey_id = #{surveyId} and ai.question_id = #{qId} and a.valid = 1
     </select>
 </mapper>

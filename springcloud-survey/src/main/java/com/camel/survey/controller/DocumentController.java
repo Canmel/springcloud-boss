@@ -5,6 +5,8 @@ import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.Document;
 import com.camel.survey.service.DocumentService;
 import com.qiniu.common.QiniuException;
@@ -76,7 +78,10 @@ public class DocumentController extends BaseCommonController {
     @PostMapping
     public Result upload(@RequestParam("file") MultipartFile file, Principal principal) {
         OAuth2Authentication authentication = (OAuth2Authentication) principal;
-        return ResultUtil.success(service.save(file, authentication));
+        if(service.save(file, authentication) > 0) {
+            return ResultUtil.success("操作成功");
+        }
+        throw new SourceDataNotValidException("文件已经存在");
     }
 
     /**
@@ -127,6 +132,12 @@ public class DocumentController extends BaseCommonController {
     }
     @GetMapping("/{id}")
     public Result url(@PathVariable("id") Integer id) throws FileNotFoundException {
+        return ResultUtil.success((Object) service.url(id));
+    }
+
+    @AuthIgnore
+    @GetMapping("/code/{id}")
+    public Result code(@PathVariable("id") String id) throws FileNotFoundException {
         return ResultUtil.success((Object) service.url(id));
     }
 

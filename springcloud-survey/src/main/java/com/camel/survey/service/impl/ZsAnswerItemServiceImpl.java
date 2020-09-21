@@ -83,4 +83,9 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
     public List<Map<String, Object>> selectWorkNumTotal(Integer id) {
         return mapper.selectWorkNumTotal(id);
     }
+
+    @Override
+    public Integer selectAnswerItemCount(Integer surveyId, Integer qId, Integer oId) {
+        return mapper.selectAnswerItemCount(surveyId, qId, oId);
+    }
 }

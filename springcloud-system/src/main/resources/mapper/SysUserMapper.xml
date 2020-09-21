@@ -89,4 +89,10 @@
         sys_user
         set seat_num = '' where seat_num = #{seatNum}
     </update>
+
+    <update id="loadWorkNum">
+        update
+        sys_user
+        set work_num = '' + (uid+1000) + ''
+    </update>
 </mapper>

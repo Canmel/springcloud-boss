@@ -83,6 +83,9 @@ public class ZsSign extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private BigDecimal invalidNum;
 
+    @TableField(exist = false)
+    private Double callLastsTime;
+
     public ZsSign(Integer surveyId, String username, Integer creator) {
         this.surveyId = surveyId;
         this.username = username;

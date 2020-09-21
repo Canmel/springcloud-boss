@@ -1,6 +1,8 @@
 package com.camel.survey.service;
 
+import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.entity.Result;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -34,11 +36,11 @@ public interface HomeService {
      * 开启的项目问卷
      * @return
      */
-    List<Map> enabledSurvies();
+    PageInfo enabledSurvies(boolean isAll, BasePaginationEntity entity);
 
     /**
      * 督导自己创建的开启的项目问卷
      * @return
      */
-    List<Map> enabledSurviesDev();
+    PageInfo enabledSurviesDev(boolean isAll, BasePaginationEntity entity);
 }

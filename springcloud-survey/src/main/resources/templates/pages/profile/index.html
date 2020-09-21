@@ -331,6 +331,7 @@
                                     <th>成功量</th>
                                     <th>无效量</th>
                                     <th>作废量</th>
+                                    <th>总通话时长</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -341,10 +342,11 @@
                                     <td v-if="item.result.value == 1"><span class="badge badge-info">{{item.result.name}}</span></td>
                                     <td v-if="item.result.value == 0"><span class="badge badge-danger">{{item.result.name}}</span></td>
                                     <td v-if="item.result.value == 2"><span class="badge">{{item.result.name}}</span></td>
-                                    <td>{{item.tryNum}}</td>
+                                    <td>未知</td>
                                     <td>{{item.successNum}}</td>
                                     <td>{{item.invalidNum}}</td>
                                     <td>{{item.invalidNum}}</td>
+                                    <td>{{item.callLastsTime | sToTime}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -405,10 +407,7 @@
                 console.log(item);
             },
             loadUserWorkNum(){
-                var that = this;
-                AJAX.GET('/system/sysUser/'+that.user.userid, {}, function (resp) {
-                    that.user.workNum = resp.data.workNum;
-                });
+                this.user.workNum = (this.user.userid + 1000) + '';
             },
             toWorkList() {
                 toPage('pages/work/list.html');

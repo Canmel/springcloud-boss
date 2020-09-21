@@ -29,4 +29,6 @@ public interface ZsWorkMapper extends BaseMapper<ZsWork> {
     ProjectReport projectReport(Integer proId);
 
     ProjectReport selectTotalInfoByWork(ZsWork entity);
+
+    String selectTimeRange();
 }

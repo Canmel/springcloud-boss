@@ -70,6 +70,19 @@ public class ZsCashApply extends BasePaginationEntity {
 
     @TableField(exist = false)
     private String[] zsWorkId;
+
+    /**
+     * 开始时间，用于查询
+     */
+    @TableField(exist = false)
+    private String startDate;
+
+    /**
+     * 结束时间，用于查询
+     */
+    @TableField(exist = false)
+    private String endDate;
+
     @Override
     public String toString() {
         return "ZsCashApply{" +

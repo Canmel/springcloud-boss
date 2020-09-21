@@ -24,4 +24,11 @@ public interface ZsCashApplyMapper extends BaseMapper<ZsCashApply> {
      * @return
      */
     List<ZsCashApply> list(ZsCashApply entity);
+
+    /**
+     * 查询时间范围
+     *
+     * @return
+     */
+    String selectTimeRange();
 }

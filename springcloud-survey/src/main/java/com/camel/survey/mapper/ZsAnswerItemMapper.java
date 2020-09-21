@@ -42,4 +42,6 @@ public interface ZsAnswerItemMapper extends BaseMapper<ZsAnswerItem> {
     List<Map<String, Object>> selectWorkNumTotal(Integer id);
 
     int chageInvalidByAnswer(Integer id, Integer valid);
+
+    Integer selectAnswerItemCount(Integer surveyId, Integer qId, Integer oId);
 }

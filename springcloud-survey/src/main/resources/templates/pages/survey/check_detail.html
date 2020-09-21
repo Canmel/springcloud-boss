@@ -759,7 +759,7 @@
                                     <label class="checkbox-inline"
                                            v-if="item.type === 2 && showOption(item, option)">
                                         <input type="checkbox" :value="Math.random()"
-                                               :checked="isSelected(option)">
+                                               :checked="isSelected(option)" @change="checkBoxChange(option, item, $event)">
                                         <span class="editable question-option">{{option.name}}</span>
                                         <span>{{getAnswer(option.id) ? option.name === getAnswer(option.id).value ? '' : '(' + getAnswer(option.id).value + ')' : ''}}</span>
                                         <input type="text" v-if="isShowEdit(option)"
@@ -974,7 +974,6 @@
                 if(!this.allOptions) {
                     this.loadAllOptions();
                 }
-
                 let orderNums = this.getQuestions();
                 this.selectedOption = d;
                 for (let i = 0; i < this.questions.length; i++) {
@@ -992,6 +991,28 @@
                 } else {
                     toastr.error('跳题逻辑不同，不可切换', '错误');
                 }
+            },
+            checkBoxChange(d, q, e) {
+                if(e.target.checked) {
+                    AJAX.GET("zsAnswer/addCheckbox", {
+                        answerId: this.zsAnswer.id,
+                        questionId: d.questionId,
+                        optionId: d.id,
+                        value: d.hasRemark ? this.tmpRemark : null,
+                    }, function (resp) {
+                        toastr.success(resp['msg'], '操作成功');
+                    });
+                } else {
+                    AJAX.GET("zsAnswer/reduceCheckbox", {
+                        answerId: this.zsAnswer.id,
+                        questionId: d.questionId,
+                        optionId: d.id,
+                        value: d.hasRemark ? this.tmpRemark : null,
+                    }, function (resp) {
+                        toastr.success(resp['msg'], '操作成功');
+                    });
+                }
+
             },
             refuse() {
                 this.review.reviewStatus = 2;

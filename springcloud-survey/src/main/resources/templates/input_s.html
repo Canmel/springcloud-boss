@@ -61,7 +61,6 @@
     </div>
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
-        <h2>{{pageInfo.hrefstr}}</h2>
         <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
     <section>
@@ -188,7 +187,7 @@
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
 <script>
-    new Vue({
+    mvm = new Vue({
         el: '#container',
         data: {
             applicationContextRootPath: '/survey/',
@@ -223,7 +222,6 @@
             },
             pageParams:[],
             finalData:[], //存储最终zsAnswerItemSaves
-            tag:1,  //问卷提交的时候判断是否提前结束,正常结束为1，提前结束为0
             userParamsIndex: 0,
             label: null, // 标签,不同标签可以重复收集
             validResult: true
@@ -265,7 +263,9 @@
                         if(infos) {
                             for (let i = 0; i < infos.length; i++) {
                                 that.phoneInformation.information.push(infos[i].information);
-                                that.pageParams.push(JSON.parse(infos[i].information));
+                                let info = infos[i].information;
+                                info = info.replace(/[\r\n]/g,"")
+                                that.pageParams.push(JSON.parse(info));
                             }
                         }
                     }
@@ -340,7 +340,6 @@
                     }
 
                     if (checked && !isNaN(target) && target > 1000) {
-                        that.tag = 0; //提前结束标签
                         that.submitImmediately();
                         if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         }else{
@@ -589,9 +588,7 @@
                     alert(resultStr);
                     return;
                 }
-                if(this.tag==1){
-                    this.loadFinalData();
-                }
+                this.loadFinalData();
                 let currentParams = this.pageParams[this.userParamsIndex];
 
                 AJAX.POST_JSON('zsQuestion/answer', {
@@ -636,11 +633,7 @@
                     alert(resultStr);
                     return;
                 }
-                if(this.tag==1){
-                    this.loadFinalData();
-                }
                 let currentParams = this.pageParams[this.userParamsIndex];
-
                 AJAX.POST_JSON('zsQuestion/answer', {
                     zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),

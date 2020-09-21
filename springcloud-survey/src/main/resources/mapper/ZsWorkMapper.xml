@@ -80,6 +80,18 @@
             <if test="entity.idNum != null and entity.idNum != ''">
                 AND id_num = #{entity.idNum}
             </if>
+            <if test="entity.state != null">
+                AND state = #{entity.state.code}
+            </if>
+            <if test="entity.gain != null">
+                AND gain = #{entity.gain}
+            </if>
+            <if test="entity.startDate != null and entity.startDate != ''">
+                and work_date &gt;= #{entity.startDate}
+            </if>
+            <if test="entity.endDate != null and entity.endDate != ''">
+                and work_date &lt;= #{entity.endDate}
+            </if>
             <if test="ids != null">
                 AND id in
                 <foreach collection="ids" open="(" close=")" separator="," item="item">
@@ -105,5 +117,28 @@
 
     <select id="selectTotalInfoByWork" resultMap="ProjectReportResultMap">
         select avg_top_num avg_num, work_hours work_hours FROM zs_survey_benchmark where pid = #{projectId} and work_date = #{workDate} limit 1
+    </select>
+
+    <select id="selectTimeRange" resultType="string">
+        SELECT
+            CONCAT(
+                (
+                    SELECT
+                        min(work_date)
+                    FROM
+                        zs_work
+                    WHERE
+                        STATUS = 1
+                ),
+                ' - ',
+                (
+                    SELECT
+                        max(work_date)
+                    FROM
+                        zs_work
+                    WHERE
+                        STATUS = 1
+                )
+            )
     </select>
 </mapper>

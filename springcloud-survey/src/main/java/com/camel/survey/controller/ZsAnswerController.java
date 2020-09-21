@@ -1,11 +1,13 @@
 package com.camel.survey.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -66,10 +69,17 @@ public class ZsAnswerController extends BaseCommonController {
     private ZsAnswerItemService answerItemService;
 
     @Autowired
+    private ZsAnswerService answerService;
+
+    @Autowired
     private ZsCdrinfoService cdrinfoService;
+
+    @Autowired
+    private FileUtils fileUtils;
 
     /**
      * 分页查询
+     *
      * @param entity
      * @return
      */
@@ -87,13 +97,78 @@ public class ZsAnswerController extends BaseCommonController {
         ZsAnswerItem zsAnswerItem = answerItemService.selectOne(wrapper);
         ZsOption n = optionService.selectById(optionId);
         ZsOption o = optionService.selectById(zsAnswerItem.getOptionId());
-        if(ObjectUtils.notEqual(n.getTarget(), o.getTarget())) {
+        if (ObjectUtils.notEqual(n.getTarget(), o.getTarget())) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
         }
         zsAnswerItem.setOptionId(optionId);
+        zsAnswerItem.setValue(n.getName());
         answerItemService.updateById(zsAnswerItem);
         return ResultUtil.success("修改成功");
     }
+
+    @GetMapping("/addCheckbox")
+    public Result addCheckbox(Integer answerId, Integer questionId, Integer optionId, String value) {
+        // 先找到这个问卷的所有回答选项
+        ZsQuestion question = questionService.selectById(questionId);
+        ZsAnswer answer = answerService.selectById(answerId);
+        ZsOption option = optionService.selectById(optionId);
+        if (ObjectUtil.isNull(question)) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "参数错误");
+        }
+        Integer surveyId = question.getSurveyId();
+        Wrapper wrapper = new EntityWrapper<ZsAnswerItem>();
+        wrapper.eq("answer_id", answerId);
+        wrapper.eq("survey_id", question.getSurveyId());
+        List<ZsAnswerItem> zsAnswerItemList = answerItemService.selectList(wrapper);
+        Set<Integer> selectedQuestionId = new HashSet<>();
+        for (ZsAnswerItem item : zsAnswerItemList) {
+            selectedQuestionId.add(item.getQuestionId());
+        }
+        ZsOption n = optionService.selectById(optionId);
+        if (ObjectUtil.isNull(n)) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "参数错误");
+        }
+        if (!selectedQuestionId.contains(n.getQuestionId())) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
+        }
+        answerItemService.insert(new ZsAnswerItem(answerId, surveyId, questionId, question.getName(), ObjectUtil.isEmpty(value) ? option.getName() : value, 2, answer.getCreator(), option.getName(), optionId, 1));
+        return ResultUtil.success("修改成功");
+    }
+
+    @GetMapping("/reduceCheckbox")
+    public Result reduceCheckbox(Integer answerId, Integer questionId, Integer optionId, String value) {
+        // 先找到这个问卷的所有回答选项
+        ZsQuestion question = questionService.selectById(questionId);
+        ZsAnswer answer = answerService.selectById(answerId);
+        ZsOption option = optionService.selectById(optionId);
+        if (ObjectUtil.isNull(question)) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "参数错误");
+        }
+        Integer surveyId = question.getSurveyId();
+        Wrapper wrapper = new EntityWrapper<ZsAnswerItem>();
+        wrapper.eq("answer_id", answerId);
+        wrapper.eq("survey_id", question.getSurveyId());
+        List<ZsAnswerItem> zsAnswerItemList = answerItemService.selectList(wrapper);
+        Set<Integer> selectedQuestionId = new HashSet<>();
+        List<Integer> selectedQuestionFullId = new ArrayList<>();
+        for (ZsAnswerItem item : zsAnswerItemList) {
+            selectedQuestionId.add(item.getQuestionId());
+            selectedQuestionFullId.add(item.getQuestionId());
+        }
+        ZsOption n = optionService.selectById(optionId);
+        if (ObjectUtil.isNull(n)) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "参数错误");
+        }
+        selectedQuestionFullId.remove(option.getQuestionId());
+        List<Integer> myList = selectedQuestionFullId.stream().distinct().collect(Collectors.toList());
+        wrapper.eq("option_id", optionId);
+        if (!myList.containsAll(selectedQuestionId)) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
+        }
+        answerItemService.delete(wrapper);
+        return ResultUtil.success("修改成功");
+    }
+
 
     @GetMapping("/changeRemark")
     public Result changeRemark(Integer id, String remark) {
@@ -109,14 +184,15 @@ public class ZsAnswerController extends BaseCommonController {
         ZsSurvey zsSurvey = surveyService.selectById(entity.getSurveyId());
         entity.setPageSize(null);
         entity.setPageNum(null);
-        Set<String> agents=  service.selectAgentUuidsByEntity(entity);
+        Set<String> agents = service.selectAgentUuidsByEntity(entity);
         List<ZsCdrinfo> cdrinfos = cdrinfoService.selectList(agents);
 
-        FileUtils.getInstance().downloadZipFiles(response, cdrinfos, zsSurvey.getName());
+        fileUtils.downloadZipFiles(response, cdrinfos, zsSurvey.getName());
     }
 
     /**
      * 获取详情///
+     *
      * @param id
      * @return
      */
@@ -127,6 +203,7 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 获取详情
+     *
      * @param id
      * @return
      */
@@ -137,6 +214,7 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 获取复核答卷
+     *
      * @param agent
      * @return
      */
@@ -147,6 +225,7 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 新建保存
+     *
      * @param entity
      */
     @PostMapping
@@ -156,6 +235,7 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 编辑 更新
+     *
      * @param entity
      */
     @PutMapping
@@ -165,15 +245,17 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 删除
+     *
      * @param id
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
-        return  service.deleteAnswer(id);
+        return service.deleteAnswer(id);
     }
 
     /**
      * 更改答卷状态
+     *
      * @param id
      */
     @GetMapping("/invalid/{id}")
@@ -183,21 +265,23 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 复核答卷
+     *
      * @param answerId
      * @param reviewStatus
      * @param reviewMsg
      */
     @PostMapping("/review")
     public Result review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent) {
-        if(service.review(answerId, reviewStatus, reviewMsg, reviewSpent)) {
+        if (service.review(answerId, reviewStatus, reviewMsg, reviewSpent)) {
             return ResultUtil.success("复核成功");
-        }else {
+        } else {
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "复核失败");
         }
     }
 
     /**
      * 获取待复核列表
+     *
      * @param entity
      * @return
      */
@@ -208,12 +292,13 @@ public class ZsAnswerController extends BaseCommonController {
 
     /**
      * 获取样本时间范围
+     *
      * @param id
      * @return
      */
     @GetMapping("/selectTimeRange/{id}")
     public Result selectTimeRange(@PathVariable Integer id) {
-        return ResultUtil.success("",service.selectTimeRange(id));
+        return ResultUtil.success("", service.selectTimeRange(id));
     }
 
     /**

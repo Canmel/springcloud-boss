@@ -1,20 +1,23 @@
 package com.camel.survey.utils;
 
 import com.camel.survey.model.ZsCdrinfo;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+@Component
 public class FileUtils {
-    public static final String BASE_FILE_PATH="http://192.168.0.110/yscrm/servlet/filedown?filename=";
+    @Value("${cti.record-file.url}")
+    public String BASE_FILE_PATH;
 
     private static FileUtils fileUtils = new FileUtils();
 

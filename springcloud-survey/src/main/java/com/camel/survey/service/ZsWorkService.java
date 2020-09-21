@@ -34,4 +34,6 @@ public interface ZsWorkService extends IService<ZsWork> {
     void addLog(List<Object> log);
 
     ProjectReport selectTotalInfoByWork(ZsWork zsWork);
+
+    String selectTimeRange();
 }
