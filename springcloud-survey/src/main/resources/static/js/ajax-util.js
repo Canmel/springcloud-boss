@@ -38,7 +38,7 @@ function simpleSuccess(result) {
     }else{
         //其他错误情况，直接弹出提示框
         if(result.msg!=null){
-            alert(result.msg);
+            toastr.error(result.msg, '错误');
         }
     }
     return null;
