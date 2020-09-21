@@ -52,4 +52,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     int updateSeat(Integer userId, String seatNum);
 
     int deleteSeat(String seatNum);
+
+    int loadWorkNum();
 }

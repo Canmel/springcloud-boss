@@ -162,6 +162,11 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
         return mapper.selectTotalInfoByWork(zsWork);
     }
 
+    @Override
+    public String selectTimeRange() {
+        return mapper.selectTimeRange();
+    }
+
     public boolean isReported(ZsWork zsWork) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Wrapper<ZsWork> workWrapper = new EntityWrapper<>();

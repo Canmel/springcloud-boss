@@ -215,6 +215,18 @@ public class ZsWork extends BasePaginationEntity {
     @TableField(exist = false)
     private Double examRatio;
 
+    /**
+     * 开始时间，用于查询
+     */
+    @TableField(exist = false)
+    private String startDate;
+
+    /**
+     * 结束时间，用于查询
+     */
+    @TableField(exist = false)
+    private String endDate;
+
     public ZsWork(Integer id, Integer gain) {
         this.id = id;
         this.gain = gain;

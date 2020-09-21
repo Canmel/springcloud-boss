@@ -129,4 +129,9 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
         mapper.updateById(apply);
         return ResultUtil.success("驳回申请成功");
     }
+
+    @Override
+    public String selectTimeRange() {
+        return mapper.selectTimeRange();
+    }
 }

@@ -143,6 +143,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
             }
             zsAnswer.setValid(ZsYesOrNo.YES);
             zsAnswer.setInValidMsg(null);
+            zsAnswer.setReviewStatus(0);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.YES.getCode());
         } else {
             // 获取所有选项，如果包含不计配额的不需要恢复配额
@@ -166,6 +167,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
             }
             zsAnswer.setValid(ZsYesOrNo.NO);
             zsAnswer.setInValidMsg("作废");
+            zsAnswer.setReviewStatus(2);
             answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.NO.getCode());
         }
         /**

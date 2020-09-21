@@ -67,6 +67,15 @@ public class ZsCashApplyController extends BaseCommonController {
     }
 
     /**
+     * 获取时间范围
+     * @return
+     */
+    @GetMapping("/selectTimeRange")
+    public Result selectTimeRange() {
+        return ResultUtil.success("",service.selectTimeRange());
+    }
+
+    /**
      * 获取service
      */
     @Override

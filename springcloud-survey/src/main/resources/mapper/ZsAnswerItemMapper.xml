@@ -154,17 +154,48 @@
 
     <select id="selectWorkNumTotal" resultType="hashmap">
         SELECT
-            a.work_num,a.username,
-            count( DISTINCT a.id, ai.question_id ) questionNum,
-            COUNT( DISTINCT a.id ) surveyNum
+            m.work_num,
+            m.username,
+            n.questionNum,
+            m.surveyNum
         FROM
-            zs_answer_item ai
-            LEFT JOIN zs_answer a ON ai.answer_id = a.id
+            (
+                SELECT
+                    a.work_num,
+                    a.username,
+                    COUNT(DISTINCT a.id) surveyNum
+                FROM
+                    zs_answer_item ai
+                LEFT JOIN zs_answer a ON ai.answer_id = a.id
+                WHERE
+                    a.`status` = 1
+                AND a.valid = 1
+                AND a.survey_id = #{id}
+                GROUP BY
+                    a.work_num
+            ) m,
+            (
+                SELECT
+                    a.work_num,
+                    count(
+                        DISTINCT a.id,
+                        ai.question_id
+                    ) questionNum
+                FROM
+                    zs_answer_item ai
+                LEFT JOIN zs_answer a ON ai.answer_id = a.id
+                WHERE
+                    a.`status` = 1
+                AND (
+                    a.valid = 1
+                    OR a.in_valid_msg = '逻辑无效'
+                )
+                AND a.survey_id = #{id}
+                GROUP BY
+                    a.work_num
+            ) n
         WHERE
-            a.`status` = 1 and a.valid = 1
-            AND a.survey_id = #{id}
-        GROUP BY
-            a.work_num;
+            m.work_num = n.work_num
     </select>
 
     <update id="chageInvalidByAnswer">

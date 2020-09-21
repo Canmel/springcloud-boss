@@ -334,6 +334,15 @@ public class ZsWorkController extends BaseCommonController {
     }
 
     /**
+     * 获取工作记录时间范围
+     * @return
+     */
+    @GetMapping("/selectTimeRange")
+    public Result selectTimeRange() {
+        return ResultUtil.success("",service.selectTimeRange());
+    }
+
+    /**
      * 获取service
      */
     @Override
