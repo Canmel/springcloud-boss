@@ -120,6 +120,39 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
 
     @Override
     @Transactional
+    public Result toInvalid(Integer id ) {
+        // 获取所有选项，如果包含不计配额的不需要恢复配额
+        ZsAnswer answer = selectById(id);
+        Boolean ignoreNum = false;
+        List<Integer> oIds = new ArrayList<>();
+        // 查询本次回答所有的内容选项
+        if(answer.getValid().equals(ZsYesOrNo.YES)) {
+            List<ZsAnswerItem> answerItems = answerItemMapper.selectByAnswerId(id);
+            if (!ObjectUtils.isEmpty(answer)) {
+                List<ZsOption> option = optionMapper.selectBySurveyId(answer.getSurveyId());
+                for (int i = 0; i < answerItems.size(); i++) {
+                    ZsOption option1 = optionMapper.selectById(answerItems.get(i).getOptionId());
+                    if(!ObjectUtils.isEmpty(option1.getIgnoreNum())&&option1.getIgnoreNum()){
+                        ignoreNum = true;
+                    }
+                    oIds.add(option1.getId());
+                }
+            }
+        }
+        if (!ignoreNum) {
+            reduceCurrent(answer.getSurveyId(), oIds);
+        }
+        answer.setValid(ZsYesOrNo.NO);
+        answer.setInValidMsg("作废");
+        answer.setReviewStatus(2);
+        answerItemMapper.chageInvalidByAnswer(id, ZsYesOrNo.NO.getCode());
+        mapper.updateById(answer);
+        return ResultUtil.success("样本状态已更改为无效");
+    }
+
+
+    @Override
+    @Transactional
     public Result invalid(Integer id) {
         ZsAnswer zsAnswer = this.selectById(id);
         if (!ObjectUtils.isEmpty(zsAnswer.getValid()) && zsAnswer.getValid() == ZsYesOrNo.NO) {
@@ -250,7 +283,7 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
         }
 
         if(ZsAnswerReviewerStatus.REJECT.getCode().equals(reviewStatus)) {
-            this.invalid(answerId);
+            this.toInvalid(answerId);
             tmp.setInValidMsg("作废");
         }else{
             tmp.setInValidMsg(null);
