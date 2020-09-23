@@ -59,6 +59,8 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
 
     Result toInvalid(Integer id);
 
+    Result toValid(Integer id);
+
     Result invalid(Integer id);
 
     Result deleteAnswer(Integer id);
