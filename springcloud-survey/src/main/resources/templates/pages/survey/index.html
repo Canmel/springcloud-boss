@@ -3,8 +3,6 @@
         <div class="ibox-title">
             <h5>问卷管理</h5>
             <div class="ibox-tools">
-                <a :href="applicationContextRootPath + 'pages/project/add.html'"
-                   data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新建问卷</a>
             </div>
         </div>
         <div class="ibox-content">
@@ -28,6 +26,7 @@
                         <th>序号</th>
                         <th>问卷名称</th>
                         <th>所属项目</th>
+                        <th>已收集</th>
                         <th>状态</th>
                         <th>收集方式</th>
                         <th>创建人</th>
@@ -43,6 +42,7 @@
                         </td>
                         <td><span class="click-span" v-on:click="projectDetails(item)">{{item.project ? item.project.name : ''}}</span>
                         </td>
+                        <td><span>{{item.currentNum}}</span></td>
                         <td>
                             <span class="badge badge" v-if="item.state">{{item.state.name}}</span>
                         </td>

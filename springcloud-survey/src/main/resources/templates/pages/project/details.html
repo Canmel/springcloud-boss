@@ -5,7 +5,8 @@
                 <div>
                     <div class="ibox-content profile-content">
                         <h4>项目名称: <strong>{{zs_project.name}}</strong></h4>
-                        <p><b style="color: #000000">项目状态: </b><span class="badge badge-info">{{zs_project.status ? zs_project.status.name : ''}}</span></p>
+                        <p><b style="color: #000000">项目状态: </b><span class="badge badge-info">{{zs_project.status ? zs_project.status.name : ''}}</span>
+                        </p>
                         <p><b style="color: #000000">项目编号: </b> {{zs_project.code}}</p>
                         <h5>
                             <b style="color: #000000">项目描述:</b>
@@ -21,7 +22,8 @@
                                     </button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="button" v-on:click="backToList()" class="btn btn-default btn-sm btn-block"><i
+                                    <button type="button" v-on:click="backToList()"
+                                            class="btn btn-default btn-sm btn-block"><i
                                             class="fa fa-mail-reply"></i> 返回列表
                                     </button>
                                 </div>
@@ -68,16 +70,19 @@
                                 </div>
                                 <div class="panel-body" v-on:click="showSurveyDetails(item)">
                                     <dd>名称: {{item['name']}}</dd>
-                                    <dd>状态: <span class="badge badge-info">{{item.state ? item.state.name : ''}}</span></dd>
+                                    <dd>状态: <span class="badge badge-info">{{item.state ? item.state.name : ''}}</span>
+                                    </dd>
                                     <dd>收集份数: {{item['collectNum']}}</dd>
                                     <dd>当前份数: {{item['currentNum']}}</dd>
                                     <dd>收集方式: <span class="badge badge-info">{{item.collectType.name}}</span></dd>
                                     <dd>创建人: {{item['creator'] ? item['creator']['nickname'] : ''}}</dd>
                                     <dd>创建时间: {{item['createdAt'] | formatDate}}</dd>
 
-                                    <small>当前进度： {{item['collectNum'] ? (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0}}%</small>
+                                    <small>当前进度： {{item['collectNum'] ?
+                                        (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0}}%</small>
                                     <div class="progress progress-mini">
-                                        <div :style="'width: ' + item['collectNum'] ? (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0 + '%;'" class="progress-bar"></div>
+                                        <div :style="'width: ' + item['collectNum'] ? (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0 + '%;'"
+                                             class="progress-bar"></div>
                                     </div>
                                 </div>
 
@@ -108,13 +113,13 @@
                     <form class="form-horizontal m-t" id="signupForm">
                         <input type="hidden" v-model="new_survey.id" v-if="edit_mode">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">问卷名称：</label>
+                            <label class="col-sm-3 control-label"><span style="color: red;">*</span>问卷名称：</label>
                             <div class="col-sm-8">
                                 <input name="name" class="form-control" type="text" v-model="new_survey.name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">收集份数：</label>
+                            <label class="col-sm-3 control-label"><span style="color: red;">*</span>收集份数：</label>
                             <div class="col-sm-8">
                                 <input name="collect_num" class="form-control" type="text" aria-required="true"
                                        aria-invalid="true" v-model="new_survey.collectNum">
@@ -139,7 +144,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group"  v-if="edit_mode==false">
+                        <div class="form-group" v-if="edit_mode==false">
                             <label class="col-sm-3 control-label">视频监控：</label>
                             <div class="col-sm-8">
                                 <select name="collect_num" aria-required="true"
@@ -200,11 +205,59 @@
                                        aria-invalid="true" v-model="new_survey.informationTemplate">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">计价方式：</label>
+                            <div class="col-sm-8">
+                                <select name="calType" aria-required="true"
+                                        aria-invalid="true" class="form-control m-b"
+                                        v-model="new_survey.calType">
+                                    <option value="1">单一计价</option>
+                                    <option value="0">阶梯计价</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="new_survey.calType === '1'">
+                            <label class="col-sm-3 control-label">计费单价：</label>
+                            <div class="col-sm-8">
+                                <input name="price" class="form-control" type="number" aria-required="true"
+                                       aria-invalid="true" v-model="new_survey.price">
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="new_survey.calType === '0'">
+                            <label class="col-sm-3 control-label">计费单价：</label>
+                            <div class="col-sm-8">
+                                <div v-for="(item, index) in calTypeStage" class="row">
+                                    <div class="col-sm-4">
+                                        从<input class="form-control" style="width: 80%; display: inline-block;" type="number" aria-required="true" readonly
+                                               aria-invalid="true" :value="calValueFrom(item, index)">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        至<input class="form-control" style="width: 80%; display: inline-block;" type="number" aria-required="true"
+                                               aria-invalid="true" v-model="item.to">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        费用<input class="form-control" style="width: 70%; display: inline-block;" type="number" aria-required="true"
+                                               aria-invalid="true" v-model="item.v">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    其他<input class="form-control" style="width: 70px; display: inline-block;" type="number">
+                                </div>
+                                <div>
+                                    <button class="btn btn-info" type="button" @click="addCalLine($event)">添加一行</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" v-on:click="submitSurvey()" v-if="resultDev">提交{{edit_mode ? '更改' : '保存'}}</button>
+                    <button type="button" class="btn btn-primary" v-on:click="submitSurvey()" v-if="resultDev">
+                        提交{{edit_mode ? '更改' : '保存'}}
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -226,6 +279,13 @@
                 status: ''
             },
             surveies: [],
+            calTypeStage: [
+                {
+                    from: 0,
+                    to: 10,
+                    v: 5
+                }
+            ],
             new_survey: {
                 id: '',
                 name: '',
@@ -237,8 +297,10 @@
                 endShow: '',
                 collectPhone: '0',
                 monit: '0',
-                informationTemplate:'',
-                unclearCount:'',
+                informationTemplate: '',
+                unclearCount: '',
+                calType: 1,
+                price: 0
             },
             edit_mode: false,
             exams_options: [],
@@ -253,14 +315,47 @@
             this.loadProjects();
         },
         methods: {
-            loginMaster(){
+            calValueFrom(item, index){
+                if(index > 0) {
+                    let preData = this.calTypeStage[index - 1];
+                    return preData.to;
+                }
+                return 0;
+            },
+            addCalLine(e) {
+                for (let i = 0; i < this.calTypeStage.length; i++) {
+                    let cal = this.calTypeStage[i];
+                    if(!cal.hasOwnProperty("from")) {
+                        return toastr.error("请完成现有的规则", "错误")
+                    }
+                    if(!cal.hasOwnProperty("to")) {
+                        return toastr.error("请完成现有的规则", "错误")
+                    }
+                    if(!cal.hasOwnProperty("v")) {
+                        return toastr.error("请完成现有的规则", "错误")
+                    }
+                    for(let key in cal){
+                        console.log(key, cal[key])
+                        if(cal[key] == null || (cal[key] + "").trim() == '') {
+                            return toastr.error("请完成现有的规则", "错误")
+                        }
+                    }
+                }
+                this.calTypeStage.push({});
+            },
+            loginMaster() {
                 var that = this;
                 this.master = sessionStorage.getItem('master');
                 var masterJ = JSON.parse(this.master);
                 masterJ.forEach(e => {
                     var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
-                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                    if (authority === 'ROLE_ADMIN') {
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if (authority === 'ROLE_DEVOPS') {
+                        that.resultDev = true
+                    }
                 })
             },
             loadExam() {
@@ -280,12 +375,11 @@
             },
             loadProjects() {
                 var that = this;
-                if(this.result==true){
+                if (this.result == true) {
                     AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams') + '/projects', {}, function (resp) {
                         that.surveies = resp.data;
                     })
-                }
-                else{
+                } else {
                     AJAX.GET('zsSurvey/' + sessionStorage.getItem('editParams') + '/projectsDev', {}, function (resp) {
                         that.surveies = resp.data;
                     })
@@ -295,7 +389,7 @@
             addSurvey() {
                 this.edit_mode = false;
                 $("#myModal").modal('show');
-               this.new_survey = {
+                this.new_survey = {
                     id: '',
                     name: '',
                     projectId: '',
@@ -305,9 +399,11 @@
                     startShow: '',
                     endShow: '',
                     monit: 0,
-                    informationTemplate:'',
-                    unclearCount:'',
-               };
+                    informationTemplate: '',
+                    unclearCount: '',
+                    calType: '1',
+                    price: 0
+                };
                 this.new_survey.collectType = '1';
             },
             submitSurvey() {
@@ -339,7 +435,7 @@
             },
             editSurvey(item) {
                 item.exams = [];
-                if(item.examList) {
+                if (item.examList) {
                     item.examList.forEach(function (d) {
                         item.exams.push(d.id);
                     });
@@ -356,14 +452,14 @@
                     startShow: item.startShow,
                     endShow: item.endShow,
                     monit: 0,
-                    informationTemplate:item.informationTemplate,
-                    unclearCount:item.unclearCount,
+                    informationTemplate: item.informationTemplate,
+                    unclearCount: item.unclearCount,
                 }
             },
             showSurveyDetails(item) {
-                if(item.state && item.state.value === 1) {
+                if (item.state && item.state.value === 1) {
                     toPage('pages/survey/details_new.html', item.id);
-                }else {
+                } else {
                     toPage('pages/survey/details_det.html', item.id);
                 }
             },
@@ -385,7 +481,7 @@
                 }
             },
             messages: {
-                collect_num: icon + "请输入问卷名称",
+                collect_num: icon + "请输入问卷需要收集的数量",
                 name: {
                     required: icon + "请输入需要收集份数",
                     minlength: icon + "请输入2-17个字",
