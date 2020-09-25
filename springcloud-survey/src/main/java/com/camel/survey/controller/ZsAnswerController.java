@@ -314,7 +314,7 @@ public class ZsAnswerController extends BaseCommonController {
     }
 
     /**
-     * 获取样本时间范围
+     * 获取样本收集时间范围
      *
      * @param id
      * @return
@@ -322,6 +322,17 @@ public class ZsAnswerController extends BaseCommonController {
     @GetMapping("/selectTimeRange/{id}")
     public Result selectTimeRange(@PathVariable Integer id) {
         return ResultUtil.success("", service.selectTimeRange(id));
+    }
+
+    /**
+     * 获取样本复核时间范围
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/selectTimeRangeReview/{id}")
+    public Result selectTimeRangeReview(@PathVariable Integer id) {
+        return ResultUtil.success("", service.selectTimeRangeReview(id));
     }
 
     /**

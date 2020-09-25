@@ -95,16 +95,28 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     private String inValidMsg;
 
     /**
-     * 开始时间，用于查询
+     * 开始收集时间，用于查询
      */
     @TableField(exist = false)
     private String startDate;
 
     /**
-     * 结束时间，用于查询
+     * 结束收集时间，用于查询
      */
     @TableField(exist = false)
     private String endDate;
+
+    /**
+     * 开始复核时间，用于查询
+     */
+    @TableField(exist = false)
+    private String startDateReview;
+
+    /**
+     * 结束复核时间，用于查询
+     */
+    @TableField(exist = false)
+    private String endDateReview;
 
     /**
      * 任务ID

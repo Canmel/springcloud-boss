@@ -337,4 +337,9 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     public String selectTimeRange(Integer surveyId) {
         return mapper.selectTimeRange(surveyId);
     }
+
+    @Override
+    public String selectTimeRangeReview(Integer surveyId) {
+        return mapper.selectTimeRangeReview(surveyId);
+    }
 }

@@ -731,9 +731,9 @@
                 </div>
                 <div class="ibox-content" style="height: 90%">
                     <div class="row">
-                        <div class="col-sm-2">
-                            <select class="form-control m-b" name="type"
-                                    v-model="pageInfo.reviewStatus">
+                        <div class="col-sm-3">
+                              <select class="form-control m-b" name="type"
+                                    v-model="pageInfo.reviewStatus" id="select" onchange="select()">
                                 <option value=''>所有状态</option>
                                 <option value=0>未复核</option>
                                 <option value=12>已复核</option>
@@ -741,17 +741,28 @@
                                 <option value=2>复核作废</option>
                             </select>
                         </div>
-                        <div class="col-sm-2">
-                            <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
-                                   v-model="pageInfo.creator">
-                        </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-4">
                             <input type="text" placeholder="请输入工号" class="input-sm form-control search-input"
                                    v-model="pageInfo.workNum">
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="请输入手机号" class="input-sm form-control search-input"
+                                   v-model="pageInfo.creator">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1" style="width: 5%; display: none;" id="review">
+                            <span>复核</span>
+                        </div>
+                        <div class="col-sm-5" style="display: none; width: 43%;" id="reviewInput">
+                            <input type="text" id="datePickerSelect1" placeholder="请选择复核时间" class="input-sm form-control search-input">
+                        </div>
+                        <div class="col-sm-1"  style="width: 5%;">
+                            <span>收集</span>
+                        </div>
+                        <div class="col-sm-5"  style="width: 47%;">
                             <div class="input-group">
-                                <input type="text" id="datePickerSelect" placeholder="请选择时间" class="input-sm form-control search-input"><span
+                                <input type="text" id="datePickerSelect" placeholder="请选择收集时间" class="input-sm form-control search-input"><span
                                     class="input-group-btn">
                                             <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
                                     </span>
@@ -824,6 +835,7 @@
                 callLastsTime: 1,
                 reviewStatus: '',
                 daterange:'',
+                daterangeReview:'',
             },
             selected: {},
             items: [{}], //待检列表
@@ -847,9 +859,10 @@
         },
         created: function () {
             this.loadTimeRange();
+            this.loadTimeRangeReview();
         },
         methods: {
-                renderCheck(item) {
+            renderCheck(item) {
                 this.selected = item;
                 document.getElementById('detailIfram').src="check_detail.html";
             },
@@ -910,17 +923,29 @@
                 return newArr
             },
             pagequery: function () {
+                var that = this;
                 if(document.getElementById("datePickerSelect").value!=null&&document.getElementById("datePickerSelect").value!=""){
                     this.pageInfo.daterange=document.getElementById("datePickerSelect").value;
                 }
-                var that = this;
+                if(document.getElementById("datePickerSelect1").value!=null&&document.getElementById("datePickerSelect1").value!=""){
+                    this.pageInfo.daterangeReview=document.getElementById("datePickerSelect1").value;
+                }
                 if(this.pageInfo.daterange!=null&&this.pageInfo.daterange!=""){
                     that.pageInfo.startDate=that.pageInfo.daterange.substring(0,19);
                     that.pageInfo.endDate=that.pageInfo.daterange.substring(22,41);
                 }
-                // if(that.pageInfo.reviewStatus==1000){
-                //     that.pageInfo.reviewStatus=null;
-                // }
+                if(this.pageInfo.daterangeReview!=null&&this.pageInfo.daterangeReview!=""&&(this.pageInfo.reviewStatus==1||this.pageInfo.reviewStatus==12||this.pageInfo.reviewStatus==2)){
+                    $("#review").show();
+                    $("#reviewInput").show();
+                    that.pageInfo.startDateReview=that.pageInfo.daterangeReview.substring(0,19);
+                    that.pageInfo.endDateReview=that.pageInfo.daterangeReview.substring(22,41);
+                }
+                else{
+                    $("#review").hide();
+                    $("#reviewInput").hide();
+                    that.pageInfo.startDateReview=null;
+                    that.pageInfo.endDateReview=null;
+                }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
@@ -941,13 +966,49 @@
                     }
                 })
             },
+            loadTimeRangeReview() {
+                let that = this;
+                AJAX.GET('zsAnswer/selectTimeRangeReview/' + sessionStorage.getItem('surveyId'), {}, function (resp) {
+                    if (resp.data) {
+                        that.pageInfo.daterangeReview = resp.data;
+                    }
+                })
+            },
         }
     });
 </script>
 
 <script type="text/javascript">
     jQuery(document).ready(function() {
+        updateConfig1();
         updateConfig();
+        function updateConfig1() {
+            jQuery('#datePickerSelect1').daterangepicker({
+                "startDate": checkVue.$data.pageInfo.daterangeReview.substring(0,19),
+                "endDate": checkVue.$data.pageInfo.daterangeReview.substring(22,41),
+                "timePickerSeconds": true,
+                "timePicker":true,
+                "opens":"center",
+                "buttonClasses":'btn btn-sm',
+                "applyClass":'btn-success',
+                "cancelClass":'btn-default',
+                "timePicker24Hour":true,
+                "linkedCalendars":false,
+                "autoUpdateInput":true,
+                locale: { //汉化
+                    format:"YYYY/MM/DD HH:mm:ss",
+                    applyLabel: '确定', //确定按钮文本
+                    cancelLabel: '取消', //取消按钮文本
+                    customRangeLabel: '自定义范围',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            }, function(start, end, label) {
+                jQuery("datePickerSelect1").val(start.format('YYYY-MM-DD:HH:mm:ss')+" - "+end.format('YYYY-MM-DD:HH:mm:ss'));
+                console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
+            });
+        }
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
                 "startDate": checkVue.$data.pageInfo.daterange.substring(0,19),
@@ -971,9 +1032,23 @@
                         '七月', '八月', '九月', '十月', '十一月', '十二月'],
                 },
             }, function(start, end, label) {
-                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+"-"+end.format('YYYY-MM-DD:HH:mm:ss'));
+                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss')+" - "+end.format('YYYY-MM-DD:HH:mm:ss'));
                 console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
             });
         }
     });
+</script>
+
+<script>
+    function select() {
+        let v=document.getElementById("select").value;
+        if( v == 1 || v == 2 || v == 12){
+            $("#review").show();
+            $("#reviewInput").show();
+        }
+        else{
+            $("#review").hide();
+            $("#reviewInput").hide();
+        }
+    }
 </script>
