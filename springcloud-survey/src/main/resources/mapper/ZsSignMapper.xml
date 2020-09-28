@@ -48,14 +48,13 @@
 
     <select id="allInSurvey" resultMap="BaseResultMap">
         select
-          DISTINCT creator, id, username, status, created_at, result, survey_id
+        DISTINCT creator, id, username, status, created_at, result, survey_id
         from
         zs_sign
         <where>
             status = 1 AND
             survey_id = #{id}
         </where>
-        group by survey_id
     </select>
 
     <select id="selectLastByUser" resultMap="BaseResultMap">

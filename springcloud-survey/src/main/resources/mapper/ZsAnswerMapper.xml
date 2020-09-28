@@ -93,11 +93,17 @@
             <if test="creator != null and creator != ''">
                 and answer.creator like concat('%', #{creator}, '%')
             </if>
-            <if test="startDate != null">
+            <if test="startDate != null and startDate!=''">
                 and answer.created_at &gt;= #{startDate}
             </if>
-            <if test="endDate != null">
+            <if test="endDate != null and endDate!=''">
                 and answer.created_at &lt;= #{endDate}
+            </if>
+            <if test="startDateReview != null and startDateReview != ''">
+                and answer.reviewer_at &gt;= #{startDateReview}
+            </if>
+            <if test="endDateReview != null and endDateReview != ''">
+                and answer.reviewer_at &lt;= #{endDateReview}
             </if>
             <if test="callLastsTime != null">
                 and answer.call_lasts_time is not null
@@ -286,6 +292,31 @@
             )
     </select>
 
+    <select id="selectTimeRangeReview" resultType="string">
+        select
+            CONCAT(
+                (
+                    SELECT
+                        min(reviewer_at)
+                    FROM
+                        zs_answer
+                    WHERE
+                        STATUS = 1
+                    AND survey_id = #{surveyId}
+                ),
+                ' - ',
+                (
+                    SELECT
+                        max(reviewer_at)
+                    FROM
+                        zs_answer
+                    WHERE
+                        STATUS = 1
+                    AND survey_id = #{surveyId}
+                )
+            )
+    </select>
+
     <select id="selectAnswerCreatorCount" resultType="integer">
         SELECT
             IFNULL(COUNT(DISTINCT ai.creator, a.label), 0) c
@@ -294,4 +325,8 @@
         WHERE
             ai.survey_id = #{surveyId} and ai.question_id = #{qId} and a.valid = 1
     </select>
+
+    <update id="addUsername">
+        update zs_answer set username = (select username from dw_oauth2.sys_user where uid =zs_answer.uid) where uid is not null
+    </update>
 </mapper>

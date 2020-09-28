@@ -1,5 +1,6 @@
 package com.camel.survey.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -12,10 +13,12 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.FileUtils;
+import com.camel.survey.utils.StockUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.tomcat.util.modeler.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,25 +31,25 @@ import java.util.stream.Collectors;
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
- * 　　　　　　　┃         ┃ 　
+ * 　　　　　　　┃         ┃
  * 　　　　　　　┃    ━    ┃
  * 　　　　　　　┃  >   <  ┃
  * 　　　　　　　┃         ┃
  * 　　　　　　　┃... ⌒ ...┃
  * 　　　　　　　┃         ┃
- *             ┗━┓     ┏━┛
- *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
- *               ┃     ┃   神兽保佑,代码无bug
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 前端控制器>
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┗━━━━┓   @author baily
- *               ┃          ┣┓
- *               ┃          ┏┛  @since 1.0
- *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-12-17
- *                ┗┻┛    ┗┻┛
+ * ┗━┓     ┏━┛
+ * ┃     ┃　Code is far away from bug with the animal protecting
+ * ┃     ┃   神兽保佑,代码无bug
+ * ┃     ┃
+ * ┃     ┃
+ * ┃     ┃        < 前端控制器>
+ * ┃     ┃
+ * ┃     ┗━━━━┓   @author baily
+ * ┃          ┣┓
+ * ┃          ┏┛  @since 1.0
+ * ┗┓┓┏━━━━┳┓┏┛
+ * ┃┫┫    ┃┫┫    @date 2019-12-17
+ * ┗┻┛    ┗┻┛
  */
 @RestController
 @RequestMapping("/zsAnswer")
@@ -77,6 +80,9 @@ public class ZsAnswerController extends BaseCommonController {
     @Autowired
     private FileUtils fileUtils;
 
+    @Autowired
+    private StockUtils stockUtils;
+
     /**
      * 分页查询
      *
@@ -90,12 +96,18 @@ public class ZsAnswerController extends BaseCommonController {
 
     @GetMapping("/changeRadio")
     public Result changeRadio(Integer answerId, Integer questionId, Integer optionId) {
+        // target option
+        ZsOption n = optionService.selectById(optionId);
+        // 验证配额
+        if (ObjectUtil.isNotEmpty(n.getCurrent()) && ObjectUtil.isNotEmpty(n.getConfigration()) && n.getCurrent() >= n.getConfigration()) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "目标选项暂无空闲配额");
+        }
+
         Wrapper wrapper = new EntityWrapper<ZsAnswerItem>();
         wrapper.eq("answer_id", answerId);
         wrapper.eq("question_id", questionId);
         wrapper.eq("type", 1);
         ZsAnswerItem zsAnswerItem = answerItemService.selectOne(wrapper);
-        ZsOption n = optionService.selectById(optionId);
         ZsOption o = optionService.selectById(zsAnswerItem.getOptionId());
         if (ObjectUtils.notEqual(n.getTarget(), o.getTarget())) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
@@ -103,6 +115,13 @@ public class ZsAnswerController extends BaseCommonController {
         zsAnswerItem.setOptionId(optionId);
         zsAnswerItem.setValue(n.getName());
         answerItemService.updateById(zsAnswerItem);
+
+        // 修改配额
+        List<Integer> reduceOption = new ArrayList<>();
+        List<Integer> addOption = new ArrayList<>();
+        reduceOption.add(o.getId());
+        addOption.add(optionId);
+        stockUtils.changeOption(reduceOption, addOption);
         return ResultUtil.success("修改成功");
     }
 
@@ -132,6 +151,8 @@ public class ZsAnswerController extends BaseCommonController {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
         }
         answerItemService.insert(new ZsAnswerItem(answerId, surveyId, questionId, question.getName(), ObjectUtil.isEmpty(value) ? option.getName() : value, 2, answer.getCreator(), option.getName(), optionId, 1));
+        Integer[] addOption = {optionId};
+        stockUtils.addCurrent(CollectionUtils.arrayToList(addOption));
         return ResultUtil.success("修改成功");
     }
 
@@ -166,6 +187,8 @@ public class ZsAnswerController extends BaseCommonController {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "逻辑关系不一致，重选失败");
         }
         answerItemService.delete(wrapper);
+        Integer[] reduceOption = {optionId};
+        stockUtils.reduceCurrent(CollectionUtils.arrayToList(reduceOption));
         return ResultUtil.success("修改成功");
     }
 
@@ -291,7 +314,7 @@ public class ZsAnswerController extends BaseCommonController {
     }
 
     /**
-     * 获取样本时间范围
+     * 获取样本收集时间范围
      *
      * @param id
      * @return
@@ -299,6 +322,17 @@ public class ZsAnswerController extends BaseCommonController {
     @GetMapping("/selectTimeRange/{id}")
     public Result selectTimeRange(@PathVariable Integer id) {
         return ResultUtil.success("", service.selectTimeRange(id));
+    }
+
+    /**
+     * 获取样本复核时间范围
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/selectTimeRangeReview/{id}")
+    public Result selectTimeRangeReview(@PathVariable Integer id) {
+        return ResultUtil.success("", service.selectTimeRangeReview(id));
     }
 
     /**

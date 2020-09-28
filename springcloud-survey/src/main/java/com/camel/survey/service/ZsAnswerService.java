@@ -57,6 +57,10 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
 
     ZsAnswer details(String agent);
 
+    Result toInvalid(Integer id);
+
+    Result toValid(Integer id);
+
     Result invalid(Integer id);
 
     Result deleteAnswer(Integer id);
@@ -72,4 +76,6 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     Set<String> selectAgentUuidsByEntity(ZsAnswer entity);
 
     String selectTimeRange(Integer surveyId);
+
+    String selectTimeRangeReview(Integer surveyId);
 }

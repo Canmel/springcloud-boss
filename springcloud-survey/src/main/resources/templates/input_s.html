@@ -59,11 +59,25 @@
         <span style="color: green;">计时：</span>
         <span style="color: green;" id="time">00:00</span>
     </div>
+    <div class="panel padder-v item" style="position:fixed; top: 150px; width: 200px; text-align: center;background-color: sandybrown; border-radius: 0 40px 40px 0;">
+        <div class="font-thin"><span style="font-size: 50px; color: navy; font-family: 'Microsoft YaHei',微软雅黑,'MicrosoftJhengHei',华文细黑,STHeiti,MingLiu">{{userParamsIndex + 1}} </span> <span style="font-size: 30px;">/{{pageParams.length ? pageParams.length : 1 }}</span> </div>
+        <span class="text-muted text-xs">所有问卷进度</span>
+    </div>
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
         <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
     <section>
+        <div style="position: fixed; width: 100%; bottom: 0px;" >
+            <div class="progress progress-striped active">
+                <div :style="{width: getPercentage()}" :aria-valuemax="questions.length" aria-valuemin="0" :aria-valuenow="current" role="progressbar" class="progress-bar progress-bar-danger">
+                    <span class="sr-only" style="position: relative; font-size: 20px;">当前进度： {{current}} / {{questions.length}} </span>
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="row question-welcome" v-if="current === 1">
             <div class="text-center">
                 <span>
@@ -93,6 +107,8 @@
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
                                        v-model="opt.name">
                             </label>
+
+                            <span class="badge" style="background-color: #f0ad4e" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
 
@@ -112,6 +128,8 @@
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
                                        v-model="opt.name">
                             </label>
+
+                            <span class="badge badge-warning" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
 
@@ -166,7 +184,7 @@
                               v-on:click="previousQuestion(item, $event)">上一题</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span id="nextQuestion" v-if="!showSubmit" class="glyphicon glyphicon-arrow-right" style="font-size: 30px; cursor: pointer;"
                               v-on:click="nextQuestion(item, $event)">下一题</span>
-                        <span  v-if="showSubmit" class="submit btn btn-success" v-on:click="submit(item, $event)">{{submitText()}}</span>
+                        <span  v-if="showSubmit" class="submit btn" :class="{'btn-warning': isLastParams(), 'btn-danger': !isLastParams()}" v-on:click="submit(item, $event)">{{submitText()}}</span>
                     </div>
 
                 </div>
@@ -232,12 +250,34 @@
             this.initPageParams();
         },
         methods: {
+            getPercentage() {
+                if(this.pageParams) {
+                    let p = this.current / this.questions.length;
+                    if(p) {
+                        let percent = Number(p*100).toFixed(1) + "%";
+                        return percent;
+                    }else{
+                        return "0%";
+                    }
+
+                }else{
+                    return null;
+                }
+            },
             // 逻辑出提交按钮的文字,入提交,提交并继续
             submitText() {
-                if(this.pageParams.length === this.userParamsIndex + 1) {
-                    return '提交';
+                if(this.isLastParams()) {
+                    return '保存问卷结束';
                 }
-                return '提交并继续';
+                return '保存问卷继续';
+            },
+            isLastParams() {
+                if(this.pageParams.length) {
+                    return this.pageParams.length === this.userParamsIndex + 1;
+                } else {
+                    return true;
+                }
+
             },
             //将最新问题答案写入最终zsAnswerItemSaves
             loadFinalData(){
@@ -307,6 +347,7 @@
                             if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                                 $("#theForm").hide();
                                 that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                                // that.userParamsIndex++;
                                 $("#end").show();
                             }else {
                                 $("#theForm")[0].reset();
@@ -326,6 +367,7 @@
                         if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                             $("#theForm").hide();
                             that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                            // that.userParamsIndex++;
                             $("#end").show();
                         }else{
                             $("#theForm")[0].reset();
@@ -544,7 +586,6 @@
                     return false;
                 }
                 return $inputs.length < question.minSelect || $inputs.length > question.maxSelect;
-
             },
             isInputed(question, event) {
                 if (question.type === 1) {
@@ -605,6 +646,7 @@
                         $("#end").show();
                         parent.surveyStatus = 1;
                         that.survey.endShow = resp.msg;
+                        // that.userParamsIndex++;
                         return false;
                     } else {
                         $("#theForm")[0].reset();
