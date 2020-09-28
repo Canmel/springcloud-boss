@@ -157,6 +157,8 @@
                 WHERE
                     u.username = #{uname}
                 AND u.id_num = #{idNum}
+                AND sub.status = 1
+		        limit 1
             )
     </select>
 </mapper>
