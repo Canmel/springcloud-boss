@@ -179,6 +179,11 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
 
     @Override
     public Map<String, String> selectSharer(String uname, String idNum) {
-        return mapper.selectSharer(uname, idNum);
+        try{
+            return mapper.selectSharer(uname, idNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
