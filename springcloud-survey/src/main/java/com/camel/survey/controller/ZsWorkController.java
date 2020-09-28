@@ -14,10 +14,7 @@ import com.camel.survey.enums.ZsGain;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
-import com.camel.survey.model.ZsAgencyFee;
-import com.camel.survey.model.ZsOtherSurvey;
-import com.camel.survey.model.ZsWork;
-import com.camel.survey.model.ZsWorkShift;
+import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ProjectReport;
@@ -66,8 +63,10 @@ public class ZsWorkController extends BaseCommonController {
     private ZsOtherSurveyService zsOtherSurveyService;
 
     @Autowired
-    private ZsWorkShiftService workShiftService;
+    private ArgsService argsService;
 
+    @Autowired
+    private ZsWorkShiftService workShiftService;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -81,37 +80,36 @@ public class ZsWorkController extends BaseCommonController {
                     throw new SourceDataNotValidException("请不要更新已经提交或审核的数据");
                 }
                 // 设置餐费与作废量
-                if(!ObjectUtils.isEmpty(entity.getInvalidNum())) {
+                if (!ObjectUtils.isEmpty(entity.getInvalidNum())) {
                     zsWork.setInvalidNum(entity.getInvalidNum());
                     zsWork.setValidNum(zsWork.getSuccessNum() - zsWork.getInvalidNum());
                 }
-                if(!ObjectUtils.isEmpty(entity.getMeals())) {
+                if (!ObjectUtils.isEmpty(entity.getMeals())) {
                     zsWork.setMeals(entity.getMeals());
                 }
-                if(!ObjectUtils.isEmpty(entity.getBenchmark())) {
+                if (!ObjectUtils.isEmpty(entity.getBenchmark())) {
                     zsWork.setBenchmark(entity.getBenchmark());
                 }
                 zsWork.resetSuccessRate();
                 entity.setSuccessRate(zsWork.getSuccessRate());
-                if(!ObjectUtils.isEmpty(entity.getAvgNum()) && !entity.getAvgNum().equals(new Double(0))) {
+                if (!ObjectUtils.isEmpty(entity.getAvgNum()) && !entity.getAvgNum().equals(new Double(0))) {
                     entity.setAvgNum(entity.getAvgNum());
-                }else {
+                } else {
                     entity.setAvgNum(zsWork.getAvgNum());
                 }
                 super.update(zsWork);
-                long time = System.currentTimeMillis()-beginTime;
+                long time = System.currentTimeMillis() - beginTime;
                 SysUser sysUser = applicationUtils.currentUser();
-                String arg=null;
-                String num ="";
-                if(entity.getInvalidNum()!=null){
-                    arg="作废量";
-                    num=entity.getInvalidNum().toString();
+                String arg = null;
+                String num = "";
+                if (entity.getInvalidNum() != null) {
+                    arg = "作废量";
+                    num = entity.getInvalidNum().toString();
+                } else {
+                    arg = "餐补";
+                    num = entity.getMeals().toString();
                 }
-                else{
-                    arg="餐补";
-                    num=entity.getMeals().toString();
-                }
-                String operation =sysUser.getUsername()+" 修改 "+zsWork.getUname()+" 在 "+sdf.format(zsWork.getWorkDate())+" 关于 "+zsWork.getPname()+" 的 "+arg+" 为 "+num;
+                String operation = sysUser.getUsername() + " 修改 " + zsWork.getUname() + " 在 " + sdf.format(zsWork.getWorkDate()) + " 关于 " + zsWork.getPname() + " 的 " + arg + " 为 " + num;
                 InetAddress ip4 = Inet4Address.getLocalHost();
                 List<Object> log = new ArrayList<>();
                 log.add(sysUser.getUid());
@@ -130,6 +128,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 上报记录总列表
+     *
      * @param entity
      * @param zsWorkId
      * @param oAuth2Authentication
@@ -142,6 +141,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 上报记录
+     *
      * @param work
      * @param bindingResult
      * @return
@@ -156,6 +156,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 我的上报记录
+     *
      * @param entity
      * @return
      */
@@ -165,8 +166,8 @@ public class ZsWorkController extends BaseCommonController {
     }
 
     /**
-     *
      * 查询可提现记录
+     *
      * @param idNum
      * @param uname
      * @return
@@ -184,6 +185,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 上传工作记录
+     *
      * @param file
      */
     @PostMapping("/upload")
@@ -194,6 +196,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 获取当前用户收支查询
+     *
      * @param entity
      * @param oAuth2Authentication
      */
@@ -212,8 +215,9 @@ public class ZsWorkController extends BaseCommonController {
     @PreAuthorize("hasAnyRole('ADMIN','DEVOPS')")
     public Result passBatch(String idstr) throws UnknownHostException {
         List<ZsWork> ws = service.selectBatchIds(CollectionUtils.arrayToList(idstr.split(",")));
-        for (ZsWork word: ws) {
-            word.setState(ZsWorkState.SUCCESS);
+        for (ZsWork work : ws) {
+            work.setState(ZsWorkState.SUCCESS);
+            saveNewAgencyFee(work);
         }
         service.updateBatchById(ws);
         return ResultUtil.success("批量审核成功");
@@ -221,6 +225,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 通过审核
+     *
      * @param id
      */
     @GetMapping("/pass/{id}")
@@ -229,12 +234,12 @@ public class ZsWorkController extends BaseCommonController {
         long beginTime = System.currentTimeMillis();
         ZsWork work = service.selectById(id);
         ZsOtherSurvey survey = zsOtherSurveyService.selectById(work.getProjectId());
-        if(!ObjectUtils.isEmpty(survey)) {
-            if(ObjectUtils.isEmpty(survey.getRatio())) {
+        if (!ObjectUtils.isEmpty(survey)) {
+            if (ObjectUtils.isEmpty(survey.getRatio())) {
                 throw new SourceDataNotValidException("该问卷还没有设置难度系数");
             }
             ProjectReport projectReport = service.selectTotalInfoByWork(work);
-            if(ObjectUtils.isEmpty(projectReport)) {
+            if (ObjectUtils.isEmpty(projectReport)) {
                 throw new SourceDataNotValidException("暂未设置项目基准数据");
             }
             work.setBenchmark(projectReport.loadBenchmark(survey));
@@ -243,7 +248,7 @@ public class ZsWorkController extends BaseCommonController {
         // 平均
         work.setAvgNum(work.getAvgNum());
         // 基本工资
-        if(ObjectUtils.isEmpty(work.getBaseSalary())) {
+        if (ObjectUtils.isEmpty(work.getBaseSalary())) {
             work.setBaseSalary(work.loadBaseSalary());
         }
         // 工资
@@ -255,9 +260,9 @@ public class ZsWorkController extends BaseCommonController {
         // 保存一条介绍费
         saveNewAgencyFee(work);
 
-        long time = System.currentTimeMillis()-beginTime;
+        long time = System.currentTimeMillis() - beginTime;
         SysUser sysUser = applicationUtils.currentUser();
-        String operation =sysUser.getUsername()+" 通过 "+work.getUname()+" 在 "+sdf.format(work.getWorkDate())+" 关于 "+work.getPname()+" 的工作记录审核";
+        String operation = sysUser.getUsername() + " 通过 " + work.getUname() + " 在 " + sdf.format(work.getWorkDate()) + " 关于 " + work.getPname() + " 的工作记录审核";
         InetAddress ip4 = Inet4Address.getLocalHost();
         List<Object> log = new ArrayList<>();
         log.add(sysUser.getUid());
@@ -274,6 +279,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 驳回审核
+     *
      * @param id
      */
     @GetMapping("/reject/{id}")
@@ -283,9 +289,9 @@ public class ZsWorkController extends BaseCommonController {
         ZsWork work = service.selectById(id);
         work.setState(ZsWorkState.FAILD);
         service.updateById(work);
-        long time = System.currentTimeMillis()-beginTime;
+        long time = System.currentTimeMillis() - beginTime;
         SysUser sysUser = applicationUtils.currentUser();
-        String operation =sysUser.getUsername()+" 驳回 "+work.getUname()+" 在 "+sdf.format(work.getWorkDate())+" 关于 "+work.getPname()+" 的工作记录审核";
+        String operation = sysUser.getUsername() + " 驳回 " + work.getUname() + " 在 " + sdf.format(work.getWorkDate()) + " 关于 " + work.getPname() + " 的工作记录审核";
         InetAddress ip4 = Inet4Address.getLocalHost();
         List<Object> log = new ArrayList<>();
         log.add(sysUser.getUid());
@@ -302,6 +308,7 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 删除
+     *
      * @param id
      */
     @DeleteMapping("/{id}")
@@ -313,20 +320,20 @@ public class ZsWorkController extends BaseCommonController {
     @GetMapping("/precaculate/{id}")
     public Result pre(@PathVariable Integer id) {
         ZsWork zsWork = service.selectById(id);
-        if(zsWork.getState().equals(ZsWorkState.APPLYED)) {
+        if (zsWork.getState().equals(ZsWorkState.APPLYED)) {
             ProjectReport projectReport = service.selectTotalInfoByWork(zsWork);
-            if(ObjectUtils.isEmpty(projectReport) && ObjectUtils.isEmpty(zsWork.getBenchmark())) {
+            if (ObjectUtils.isEmpty(projectReport) && ObjectUtils.isEmpty(zsWork.getBenchmark())) {
                 throw new SourceDataNotValidException("暂未设置项目基准数据");
             }
             ZsOtherSurvey otherSurvey = zsOtherSurveyService.selectById(zsWork.getProjectId());
             // 基准
-            if(ObjectUtils.isEmpty(zsWork.getBenchmark())) {
+            if (ObjectUtils.isEmpty(zsWork.getBenchmark())) {
                 zsWork.setBenchmark(projectReport.loadBenchmark(otherSurvey));
             }
             // 平均
             zsWork.setAvgNum(zsWork.getAvgNum());
             // 基本工资
-            if(ObjectUtils.isEmpty(zsWork.getBaseSalary())) {
+            if (ObjectUtils.isEmpty(zsWork.getBaseSalary())) {
                 zsWork.setBaseSalary(zsWork.loadBaseSalary());
             }
             // 工资
@@ -340,11 +347,12 @@ public class ZsWorkController extends BaseCommonController {
 
     /**
      * 获取工作记录时间范围
+     *
      * @return
      */
     @GetMapping("/selectTimeRange")
     public Result selectTimeRange() {
-        return ResultUtil.success("",service.selectTimeRange());
+        return ResultUtil.success("", service.selectTimeRange());
     }
 
     /**
@@ -364,9 +372,15 @@ public class ZsWorkController extends BaseCommonController {
     }
 
     void saveNewAgencyFee(ZsWork zsWork) {
+        Wrapper<Args> argsWrapper = new EntityWrapper<>();
+        argsWrapper.eq("code", "SUEVRY_AGENCY_PERCENT");
+        Args args = argsService.selectOne(argsWrapper);
+        if (ObjectUtils.isEmpty(args)) {
+            throw new SourceDataNotValidException("SUEVRY_AGENCY_PERCENT 参数未设置");
+        }
         Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
-        if(!ObjectUtils.isEmpty(res)) {
-            ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"));
+        if (!ObjectUtils.isEmpty(res)) {
+            ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), Double.parseDouble(args.getValue()));
             agencyFeeService.insert(agencyFee);
         }
     }

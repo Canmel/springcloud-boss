@@ -69,11 +69,11 @@ public class ZsAgencyFee extends BasePaginationEntity {
     public ZsAgencyFee() {
     }
 
-    public ZsAgencyFee(ZsWork zsWork, String username, String phone, String idNum) {
+    public ZsAgencyFee(ZsWork zsWork, String username, String phone, String idNum, Double p) {
         this.username = username;
         this.phone = phone;
         this.idNum = idNum;
-        this.salary = zsWork.getSalary() * 0.05;
+        this.salary = zsWork.getSalary() * p;
         this.workId = zsWork.getId();
         this.workSalary = zsWork.getSalary();
         this.workName = zsWork.getUname();
