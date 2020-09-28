@@ -329,7 +329,7 @@
                                     <th>状态(是否通过)</th>
                                     <th>接触量</th>
                                     <th>成功量</th>
-                                    <th>无效量</th>
+                                    <th>逻辑无效量</th>
                                     <th>作废量</th>
                                     <th>总通话时长</th>
                                     </tr>
@@ -344,7 +344,7 @@
                                     <td v-if="item.result.value == 2"><span class="badge">{{item.result.name}}</span></td>
                                     <td>未知</td>
                                     <td>{{item.successNum}}</td>
-                                    <td>{{item.invalidNum}}</td>
+                                    <td>{{item.logicInvalidNum}}</td>
                                     <td>{{item.invalidNum}}</td>
                                     <td>{{item.callLastsTime | sToTime}}</td>
                                 </tr>

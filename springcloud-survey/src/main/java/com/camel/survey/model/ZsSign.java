@@ -79,6 +79,10 @@ public class ZsSign extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private BigDecimal successNum;
 
+    // 逻辑无效量
+    @TableField(exist = false)
+    private BigDecimal logicInvalidNum;
+
     // 作废量
     @TableField(exist = false)
     private BigDecimal invalidNum;
