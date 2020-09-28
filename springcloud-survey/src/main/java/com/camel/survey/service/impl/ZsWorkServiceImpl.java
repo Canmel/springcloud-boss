@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -174,5 +175,10 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
         workWrapper.eq("project_id", zsWork.getProjectId());
         workWrapper.eq("work_date", simpleDateFormat.format(zsWork.getWorkDate()));
         return selectCount(workWrapper) > 0;
+    }
+
+    @Override
+    public Map<String, String> selectSharer(String uname, String idNum) {
+        return mapper.selectSharer(uname, idNum);
     }
 }

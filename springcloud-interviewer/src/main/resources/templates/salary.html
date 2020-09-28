@@ -37,6 +37,13 @@
                         <span class="weui-form-preview__value">￥{{item.salary}}</span>
                     </div>
                 </div>
+                <div class="weui-form-preview__bd" v-if="zsAgencyFees.length > 0">
+                    <div class="weui-form-preview__item" v-for="item in zsAgencyFees">
+                        <label class="weui-form-preview__label">{{item.username}}</label>
+                        <label class="weui-form-preview__label">￥{{item.workSalary}}</label>
+                        <span class="weui-form-preview__value">￥{{item.salary}}</span>
+                    </div>
+                </div>
                 <div class="weui-form-preview__ft">
                     <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" v-on:click="cashout()">提现</a>
                 </div>
@@ -70,6 +77,7 @@
                 validCode: ''
             },
             works: [],
+            zsAgencyFees: [],
             balance: 0
         },
         created: function () {
@@ -78,12 +86,16 @@
         methods: {
             cashout() {
                 let work_ids = [];
+                let agencyFees = [];
                 let that = this;
                 $.each(this.works, function (index, item ) {
                     work_ids.push(item.id)
                 });
-                console.log(work_ids);
-                AJAX.POST("/survey/zsCashApply", {uid: this.userinfo.id, openid: this.userinfo.openid, uname: this.userinfo.username, works: work_ids.join(",")},function (res) {
+                $.each(that.zsAgencyFees, function (index, item) {
+                    agencyFees.push(item.id)
+                })
+                AJAX.POST("/survey/zsCashApply", {uid: this.userinfo.id, openid: this.userinfo.openid, uname: this.userinfo.username,
+                    works: work_ids.join(","), agency: agencyFees.join(",")},function (res) {
                     if(res.code === 200) {
                         $.toast(res.msg);
                     } else {
@@ -93,12 +105,19 @@
                 })
             },
             loadWorks() {
+                this.balance = 0;
                 let that =this;
                 AJAX.GET("/survey/zsWork/cash", {uname: this.userinfo.username, idNum: this.userinfo.idNum}, function (resp) {
                     that.works = resp.data;
-                    that.balance = 0;
                     $.each(that.works, function (index, item) {
-                        that.balance += item.salary
+                        that.balance += item.salary;
+                    })
+                });
+
+                AJAX.GET("/survey/zsAgencyFee/cash", {uname: this.userinfo.username, idNum: this.userinfo.idNum}, function (resp) {
+                    that.zsAgencyFees = resp.data;
+                    $.each(that.zsAgencyFees, function (index, item) {
+                        that.balance += item.salary;
                     })
                 });
             },

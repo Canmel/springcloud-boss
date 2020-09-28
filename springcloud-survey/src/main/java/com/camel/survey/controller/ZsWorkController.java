@@ -14,13 +14,11 @@ import com.camel.survey.enums.ZsGain;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.model.ZsAgencyFee;
 import com.camel.survey.model.ZsOtherSurvey;
 import com.camel.survey.model.ZsWork;
 import com.camel.survey.model.ZsWorkShift;
-import com.camel.survey.service.ZsOtherSurveyService;
-import com.camel.survey.service.ZsSurveyService;
-import com.camel.survey.service.ZsWorkService;
-import com.camel.survey.service.ZsWorkShiftService;
+import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ProjectReport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +37,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -53,6 +52,9 @@ import java.util.List;
 public class ZsWorkController extends BaseCommonController {
     @Autowired
     private ZsWorkService service;
+
+    @Autowired
+    private ZsAgencyFeeService agencyFeeService;
 
     @Autowired
     private ApplicationToolsUtils applicationUtils;
@@ -250,6 +252,9 @@ public class ZsWorkController extends BaseCommonController {
         work.setInvalidCost(work.loadInvalidCost());
         work.resetSalary();
         service.updateById(work);
+        // 保存一条介绍费
+        saveNewAgencyFee(work);
+
         long time = System.currentTimeMillis()-beginTime;
         SysUser sysUser = applicationUtils.currentUser();
         String operation =sysUser.getUsername()+" 通过 "+work.getUname()+" 在 "+sdf.format(work.getWorkDate())+" 关于 "+work.getPname()+" 的工作记录审核";
@@ -356,6 +361,12 @@ public class ZsWorkController extends BaseCommonController {
     @Override
     public String getMouduleName() {
         return "工作记录";
+    }
+
+    void saveNewAgencyFee(ZsWork zsWork) {
+        Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
+        ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"));
+        agencyFeeService.insert(agencyFee);
     }
 }
 

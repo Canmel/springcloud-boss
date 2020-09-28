@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import feign.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -31,4 +32,6 @@ public interface ZsWorkMapper extends BaseMapper<ZsWork> {
     ProjectReport selectTotalInfoByWork(ZsWork entity);
 
     String selectTimeRange();
+
+    Map<String, String> selectSharer(@Param("uname") String uname, @Param("idNum") String idNum);
 }

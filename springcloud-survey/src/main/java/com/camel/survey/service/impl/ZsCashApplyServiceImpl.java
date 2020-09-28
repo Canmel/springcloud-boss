@@ -10,9 +10,11 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.config.WxConstants;
 import com.camel.survey.enums.ZsApply;
 import com.camel.survey.enums.ZsGain;
+import com.camel.survey.model.ZsAgencyFee;
 import com.camel.survey.model.ZsCashApply;
 import com.camel.survey.mapper.ZsCashApplyMapper;
 import com.camel.survey.model.ZsWork;
+import com.camel.survey.service.ZsAgencyFeeService;
 import com.camel.survey.service.ZsCashApplyService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.survey.service.ZsWorkService;
@@ -55,13 +57,25 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
     @Autowired
     private WxConstants wxConstants;
 
+    @Autowired
+    private ZsAgencyFeeService agencyFeeService;
+
     @Override
     @Transactional
     public Result apply(ZsCashApply apply) {
         String [] works = apply.getWorks().split(",");
-        if(StringUtils.isBlank(apply.getWorks())) {
+        String [] fees = apply.getAgency().split(",");
+        if(StringUtils.isBlank(apply.getWorks()) && StringUtils.isBlank(apply.getAgency())) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您没有可提现额度");
         }
+        Wrapper<ZsAgencyFee> feeWrapper = new EntityWrapper<>();
+        feeWrapper.eq("gain", 0);
+        feeWrapper.in("id", fees);
+        int countFee = agencyFeeService.selectCount(feeWrapper);
+        if(countFee != fees.length) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您申请的提现数据不正常");
+        }
+
         Wrapper<ZsWork> workWrapper = new EntityWrapper<>();
         workWrapper.eq("gain", 0);
         workWrapper.in("id", works);
@@ -70,14 +84,12 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
         if(count < works.length) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您申请的提现数据不正常");
         }
-        List<ZsWork> zwList = new ArrayList<>();
-        for (String w: works) {
-            zwList.add(new ZsWork(Integer.parseInt(w), ZsGain.APPLY.getCode()));
-        }
         List<ZsWork> workList = zsWorkService.selectList(workWrapper);
+        List<ZsAgencyFee> agencyFeeList = agencyFeeService.selectList(feeWrapper);
         Double balance = workList.stream().mapToDouble(ZsWork::getSalary).sum();
+        balance = balance + agencyFeeList.stream().mapToDouble(ZsAgencyFee::getSalary).sum();
         apply.setAmount(balance);
-        if ((mapper.insert(apply) > 0) && zsWorkService.updateBatchById(zwList)) {
+        if ((mapper.insert(apply) > 0) && updateWorks(works, fees)) {
             return ResultUtil.success("发起提现申请成功！审核成功后即可通过本公众号领取佣金");
         }else{
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "发起申请失败！");
@@ -133,5 +145,23 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
     @Override
     public String selectTimeRange() {
         return mapper.selectTimeRange();
+    }
+
+    boolean updateWorks(String [] works, String[] fees) {
+        List<ZsWork> zwList = new ArrayList<>();
+        List<ZsAgencyFee> feeList = new ArrayList<>();
+        for (String w: works) {
+            if(StringUtils.isNotBlank(w)) {
+                zwList.add(new ZsWork(Integer.parseInt(w), ZsGain.APPLY.getCode()));
+            }
+        }
+        for (String f: fees) {
+            if(StringUtils.isNotBlank(f)) {
+                feeList.add(new ZsAgencyFee(Integer.parseInt(f), ZsGain.APPLY.getCode()));
+            }
+        }
+        zsWorkService.updateBatchById(zwList);
+        agencyFeeService.updateBatchById(feeList);
+        return true;
     }
 }
