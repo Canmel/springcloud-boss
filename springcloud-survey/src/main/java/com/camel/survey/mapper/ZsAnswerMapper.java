@@ -51,5 +51,13 @@ public interface ZsAnswerMapper extends BaseMapper<ZsAnswer> {
 
     String selectTimeRange(Integer surveyId);
 
+    String selectTimeRangeReview(Integer surveyId);
+
     Integer selectAnswerCreatorCount(@Param("surveyId") Integer surveyId, @Param("qId") Integer qId);
+
+    /**
+     * 补充未知的username
+     * @return
+     */
+    Integer addUsername();
 }

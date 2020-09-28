@@ -205,9 +205,8 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("合计");
 
         fillRow(sheet.createRow(3), headStyle, headValues);
+        zsAnswerMapper.addUsername();
         List<Map<String, Object>> result = zsAnswerItemService.selectExport(surveyId);
-
-
         for (int i = 0; i < result.size(); i++) {
             int cellNum = 0;
             HSSFRow row = sheet.createRow(4 + i);

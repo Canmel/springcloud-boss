@@ -76,4 +76,6 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     Set<String> selectAgentUuidsByEntity(ZsAnswer entity);
 
     String selectTimeRange(Integer surveyId);
+
+    String selectTimeRangeReview(Integer surveyId);
 }
