@@ -8,6 +8,7 @@ import lombok.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * <p>
@@ -70,6 +71,8 @@ public class ZsCdrinfo extends BasePaginationEntity {
             stringBuilder.append(yyyyMMdd.format(date));
             stringBuilder.append("_");
             stringBuilder.append(hhmmss.format(date));
+            stringBuilder.append("_");
+            stringBuilder.append(UUID.randomUUID());
             return stringBuilder.toString();
         }catch (ParseException e) {
             e.printStackTrace();
