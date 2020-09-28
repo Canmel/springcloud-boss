@@ -365,8 +365,10 @@ public class ZsWorkController extends BaseCommonController {
 
     void saveNewAgencyFee(ZsWork zsWork) {
         Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
-        ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"));
-        agencyFeeService.insert(agencyFee);
+        if(!ObjectUtils.isEmpty(res)) {
+            ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"));
+            agencyFeeService.insert(agencyFee);
+        }
     }
 }
 

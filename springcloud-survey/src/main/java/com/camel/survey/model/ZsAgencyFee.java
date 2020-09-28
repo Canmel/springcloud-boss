@@ -82,5 +82,6 @@ public class ZsAgencyFee extends BasePaginationEntity {
     public ZsAgencyFee(Integer id, Integer gain) {
         this.id = id;
         this.gain = gain;
+        this.gainTime = new Date();
     }
 }
