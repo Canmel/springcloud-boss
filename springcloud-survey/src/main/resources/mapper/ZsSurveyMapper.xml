@@ -164,9 +164,9 @@
     <select id="selectTotal" resultType="hashmap">
         select
             COUNT(1) try_num,
-            IFNULL(SUM(case valid WHEN 1 THEN 1 else 0 END), 0) AS success_num,
-            IFNULL(SUM(case when in_valid_msg = '作废' and valid = 0 then 1  else 0 end),0) AS invalid_num,
-            IFNULL(SUM(case when in_valid_msg = '逻辑无效' and valid = 0 then 1  else 0 end),0) AS logic_invalid_num,
+            IFNULL(SUM(case when valid = 1 and status = 1 THEN 1 else 0 END), 0) AS success_num,
+            IFNULL(SUM(case when in_valid_msg = '作废' and valid = 0 and status = 1 then 1  else 0 end),0) AS invalid_num,
+            IFNULL(SUM(case when in_valid_msg = '逻辑无效' and valid = 0 and status = 1 then 1  else 0 end),0) AS logic_invalid_num,
             IFNULL(SUM(call_lasts_time), 0) AS call_lasts_time
         from zs_answer where survey_id = #{surveyId} and uid = #{id};
     </select>
