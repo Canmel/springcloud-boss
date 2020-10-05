@@ -12,11 +12,12 @@
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="work_num" property="workNum" />
         <result column="survey_id" property="surveyId" />
+        <result column="last_submit" property="lastSubmit"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, seat_num, password, description,state,work_num, survey_id
+        id, uid, seat_num, password, description,state,work_num, survey_id, last_submit
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -27,6 +28,7 @@
         <where>
             <if test="seatNum !=null and seatNum != ''">and zs_seat.seat_num like CONCAT('%', #{seatNum}, '%')</if>
         </where>
+        ORDER BY last_submit desc
     </select>
 
     <select id="selectLastByUser" resultMap="BaseResultMap">
