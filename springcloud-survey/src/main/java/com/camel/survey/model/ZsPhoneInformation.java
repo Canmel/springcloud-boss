@@ -70,7 +70,7 @@ public class ZsPhoneInformation extends ZsSurveyBaseEntity implements Serializab
     /**
      * 事项，用于导入
      */
-    @ExcelAnnotation(columnName = "事项", columnIndex = 5)
+    @ExcelAnnotation(columnName = "事项", columnIndex = 6)
     @TableField(exist = false)
     private String item;
 
