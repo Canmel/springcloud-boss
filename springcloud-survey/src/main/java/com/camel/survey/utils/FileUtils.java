@@ -1,6 +1,7 @@
 package com.camel.survey.utils;
 
 import com.camel.survey.model.ZsCdrinfo;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -86,20 +87,21 @@ public class FileUtils {
     }
 
     /**
-      * 根据地址获得数据的字节流
-      *
-      * @param strUrl
-      *            网络连接地址
-      * @return
-      */
+     *  * 根据地址获得数据的字节流
+     *  *
+     *  * @param strUrl
+     *  *            网络连接地址
+     *  * @return
+     *  
+     */
     public static InputStream getInputStreamFromNetFileByUrl(String strUrl) {
-        try{
+        try {
             URL url = new URL(strUrl);
+            LoggerFactory.getLogger(FileUtils.class).info(strUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
             conn.setConnectTimeout(5 * 1000);
             return conn.getInputStream();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

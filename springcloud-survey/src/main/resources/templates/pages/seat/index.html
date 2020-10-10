@@ -32,8 +32,10 @@
                         <th>坐席密码</th>
                         <th>描述信息</th>
                         <th>用户</th>
+                        <th>用户号码</th>
                         <th>工号</th>
                         <th>是否在用</th>
+                        <th>上次提交时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -44,10 +46,12 @@
                         <td>{{item.password}}</td>
                         <td>{{item.description}}</td>
                         <td>{{item.user ? item.user.username : ''}}</td>
+                        <td>{{item.user ? item.user.mobile : ''}}</td>
                         <td>{{item.workNum}}</td>
                         <td>
                             <span class="label-restore label" v-if="item.state && item.state.code === 0">否</span>
                             <span class="label-success label" v-if="item.state && item.state.code === 1">是</span></td>
+                        <td>{{item.lastSubmit | toNow}}</td>
                         <td>
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
                                 编辑

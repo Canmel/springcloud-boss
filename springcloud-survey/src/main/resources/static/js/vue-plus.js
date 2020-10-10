@@ -3,7 +3,13 @@ Vue.filter('formatDate', function (value, fmt) {
     if(!value) {
         return '';
     }
-    var getDate = new Date(value);
+        var getDate = null;
+        if(value.length === 28) {
+            getDate = new Date(value.substr(0, 19));
+        }else {
+            getDate = new Date(value);
+        }
+
     var o = {
         'M+': getDate.getMonth() + 1,
          'd+': getDate.getDate(),
@@ -29,7 +35,12 @@ Vue.filter('formatOnlyDate', function (value, fmt) {
     if(!value) {
         return '';
     }
-    var getDate = new Date(value);
+    var getDate = null;
+    if(value.length === 28) {
+        getDate = new Date(value.substr(0, 19));
+    }else {
+        getDate = new Date(value);
+    }
     var o = {
         'M+': getDate.getMonth() + 1,
         'd+': getDate.getDate(),
@@ -55,7 +66,12 @@ Vue.filter('formatOnlyTime', function (value, fmt) {
     if(!value) {
         return '';
     }
-    var getDate = new Date(value);
+    var getDate = null;
+    if(value.length === 28) {
+        getDate = new Date(value.substr(0, 19));
+    }else {
+        getDate = new Date(value);
+    }
     var o = {
         'M+': getDate.getMonth() + 1,
         'd+': getDate.getDate(),
@@ -78,8 +94,15 @@ Vue.filter('formatOnlyTime', function (value, fmt) {
 
 Vue.filter('toNow', function (value) {
     if(!value) return '';
-    var now = new Date().getTime(),
-        diffValue = now - new Date(value),
+    let getDate = null;
+    if(value.length === 28) {
+        getDate = new Date(value.substr(0, 19));
+    }else {
+        getDate = new Date(value);
+    }
+    let now = new Date().getTime(),
+
+        diffValue = now - getDate,
         result={
             isToday:false
         },

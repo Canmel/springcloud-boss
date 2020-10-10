@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,9 +82,6 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     @Autowired
     private ZsSeatMapper zsSeatMapper;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
@@ -137,6 +135,16 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
+        // 坐席更新提交时间
+        if(StringUtils.isEmpty(zsAnswerSave.seat)) {
+            throw new SurveyNotValidException("无效的坐席");
+        }
+        ZsSeat seat = zsSeatMapper.searchBySeatNum(zsAnswerSave.seat);
+        if(ObjectUtils.isEmpty(seat)) {
+            throw new SurveyNotValidException("无效的坐席");
+        }
+        seat.setLastSubmit(new Date());
+        zsSeatMapper.updateById(seat);
         // 验证配额以及样本数量是否已经满额
         surveyService.valid(zsAnswerSave);
         ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
@@ -148,7 +156,6 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         }
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         SysUser user = applicationToolsUtils.currentUser();
-        ZsSeat seat = zsSeatMapper.searchBySeatNum(zsAnswerSave.getSeat());
         if(!ObjectUtils.isEmpty(user)) {
             zsAnswer.setUid(user.getUid());
             zsAnswer.setWorkNum((zsAnswer.getUid()+1000)+"");

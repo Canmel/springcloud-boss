@@ -8,6 +8,8 @@ import com.camel.core.model.SysUser;
 import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * <p>
  * 
@@ -52,6 +54,8 @@ public class ZsSeat extends BasePaginationEntity {
     private String workNum;
 
     private Integer surveyId;
+
+    private Date lastSubmit;
 
     @Override
     public String toString() {
