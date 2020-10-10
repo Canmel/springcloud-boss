@@ -29,48 +29,48 @@ public class ZsPhoneInformation extends ZsSurveyBaseEntity implements Serializab
     /**
      * 手机号码
      */
-    @ExcelAnnotation(columnName = "手机号", columnIndex = 0)
+    @ExcelAnnotation(columnName = "phone", columnIndex = 0)
     private String mobile;
 
     /**
      * 姓名，用于导入
      */
-    @ExcelAnnotation(columnName = "姓名", columnIndex = 1)
+    @ExcelAnnotation(columnName = "name", columnIndex = 1)
     @TableField(exist = false)
     private String name;
 
     /**
      * 城市，用于导入
      */
-    @ExcelAnnotation(columnName = "城市", columnIndex = 2)
+    @ExcelAnnotation(columnName = "city", columnIndex = 2)
     @TableField(exist = false)
     private String city;
 
     /**
      * 地址，用于导入
      */
-    @ExcelAnnotation(columnName = "地址", columnIndex = 3)
+    @ExcelAnnotation(columnName = "address", columnIndex = 3)
     @TableField(exist = false)
     private String address;
 
     /**
      *日期，用于导入
      */
-    @ExcelAnnotation(columnName = "日期", columnIndex = 4)
+    @ExcelAnnotation(columnName = "date", columnIndex = 4)
     @TableField(exist = false)
     private String date;
 
     /**
      * 类型，用于导入
      */
-    @ExcelAnnotation(columnName = "类型", columnIndex = 5)
+    @ExcelAnnotation(columnName = "type", columnIndex = 5)
     @TableField(exist = false)
     private String type;
 
     /**
      * 事项，用于导入
      */
-    @ExcelAnnotation(columnName = "事项", columnIndex = 6)
+    @ExcelAnnotation(columnName = "item", columnIndex = 6)
     @TableField(exist = false)
     private String item;
 
