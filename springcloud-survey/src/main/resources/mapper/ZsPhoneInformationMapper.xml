@@ -67,8 +67,4 @@
         and zs_phone_information.id >t2.id
         and survey_id = #{surveyId}
     </delete>
-
-    <delete id="deleteBySurveyId">
-        DELETE from zs_phone_information where survey_id = #{surveyId}
-    </delete>
 </mapper>
