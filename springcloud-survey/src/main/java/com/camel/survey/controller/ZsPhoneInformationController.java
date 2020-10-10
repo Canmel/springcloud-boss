@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
+import com.camel.survey.mapper.ZsPhoneInformationMapper;
 import com.camel.survey.model.ZsPhoneInformation;
 import com.camel.survey.service.ZsPhoneInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class ZsPhoneInformationController extends BaseCommonController {
     @Autowired
     private ZsPhoneInformationService service;
 
+    @Autowired
+    private ZsPhoneInformationMapper mapper;
+
     /**
      * 分页查询
      * @param entity
@@ -48,6 +52,17 @@ public class ZsPhoneInformationController extends BaseCommonController {
     public Result importPhoneInformation(@RequestParam("file") MultipartFile file, @PathVariable("id") Integer surveyId) {
         service.importPhoneInformation(file, surveyId);
         return ResultUtil.success("成功");
+    }
+
+    /**
+     * 根据问卷ID清空号码信息
+     * @param surveyId
+     * @return
+     */
+    @PostMapping("/deleteBySurveyId/{id}")
+    public Result deleteBySurveyId(@PathVariable("id") Integer surveyId) {
+        mapper.deleteBySurveyId(surveyId);
+        return ResultUtil.success("清空成功");
     }
 
     /**

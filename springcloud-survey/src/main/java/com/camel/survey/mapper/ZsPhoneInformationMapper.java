@@ -32,5 +32,12 @@ public interface ZsPhoneInformationMapper extends BaseMapper<ZsPhoneInformation>
      */
     int deleteBySurveyId(Integer surveyId);
 
+    /**
+     * 根据surveyId去重号码信息
+     * @param surveyId
+     * @return
+     */
+    int removeBySurveyId(Integer surveyId);
+
 
 }
