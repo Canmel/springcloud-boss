@@ -143,6 +143,7 @@ public class ExportServiceImpl implements ExportService {
         v.add("问题");
         v.add("样本");
         fillRow(sheet.createRow(3), headStyle, v);
+        zsAnswerMapper.addUsername();
         List<Map<String, Object>> result = zsAnswerItemService.selectWorkNumTotal(id);
         for (Map<String, Object> map : result) {
             List<Object> rowValue = new ArrayList<>();

@@ -4,6 +4,8 @@
             <h5>{{survey.name}}：号码信息查看</h5>
             <div class="ibox-tools">
                 <div class="ibox-tools">
+                    <a v-on:click="deleteBySurveyId()"
+                       data-pjax class="btn btn-danger btn-xs">清空</a>
                     <a v-on:click="importPhoneInformation()"
                        data-pjax class="btn btn-success btn-xs">导入</a>
                     <a v-on:click="backToMain()"
@@ -155,6 +157,18 @@
             },
             importPhoneInformation() {
                 $("#importModal").modal('show');
+            },
+            deleteBySurveyId(){
+                let that = this;
+                confirm("您确定要清空该问卷的号码信息吗?该操作数据不可恢复！", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.POST('zsPhoneInformation/deleteBySurveyId/' + that.survey.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+
             },
             loginMaster(){
                 var that = this;

@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,4 +37,6 @@ public interface ZsWorkService extends IService<ZsWork> {
     ProjectReport selectTotalInfoByWork(ZsWork zsWork);
 
     String selectTimeRange();
+
+    Map<String, String> selectSharer(String uname, String idNum);
 }

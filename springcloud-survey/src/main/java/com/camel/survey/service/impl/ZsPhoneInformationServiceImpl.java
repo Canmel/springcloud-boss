@@ -50,14 +50,34 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
     public boolean importPhoneInformation(MultipartFile file, Integer surveyId) {
         SysUser user = applicationToolsUtils.currentUser();
         List<ZsPhoneInformation> zsPhoneInformations = ExcelUtil.readExcelObject(file, ZsPhoneInformation.class);
-        HashSet h = new HashSet(zsPhoneInformations);
-        zsPhoneInformations.clear();
-        zsPhoneInformations.addAll(h);
+//        HashSet h = new HashSet(zsPhoneInformations);
+//        zsPhoneInformations.clear();
+//        zsPhoneInformations.addAll(h);
         zsPhoneInformations.forEach(pi -> {
+            if(pi.getName() == null)
+                pi.setName("");
+            if(pi.getCity() == null)
+                pi.setCity("");
+            if(pi.getAddress() == null)
+                pi.setAddress("");
+            if(pi.getDate() == null)
+                pi.setDate("");
+            if(pi.getType() == null)
+                pi.setType("");
+            if(pi.getItem() == null)
+                pi.setItem("");
+            pi.setInformation("{\"name\":\""+pi.getName()+"\",\"city\":\""+pi.getCity()+"\",\"address\":\""+pi.getAddress()+
+                    "\",\"date\":\""+pi.getDate()+"\",\"type\":\""+ pi.getType()+"\",\"item\":\""+pi.getItem()+"\"}");
             pi.setSurveyId(surveyId);
             pi.setCreatorId(user.getUid());
         });
-        return insertBatch(zsPhoneInformations);
+        if(insertBatch(zsPhoneInformations)){
+            mapper.removeBySurveyId(surveyId);
+        }
+        else{
+            return false;
+        }
+        return true;
     }
 
     @Override

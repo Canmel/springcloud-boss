@@ -20,7 +20,7 @@ spring:
         max-idle: 8
         min-idle: 0
   datasource:
-    url: jdbc:mysql://${DATABASE_IP}:${DATABASE_PORT}/dw_interviewer?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://${DATABASE_IP}:${DATABASE_PORT}/dw_survey?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -134,8 +134,8 @@ logging:
 
 wx:
   account:
-    appid: wx40d4fe2c2c03a2f3
-    appsecret: c5f6da5b695d372321c9a46b792ec8f0
-#    appsecret: a0eb49319937944512d1fcf65b3216c0
-#    appid: wx0a2efc77aac2a84b
+#    appid: wx40d4fe2c2c03a2f3
+#    appsecret: c5f6da5b695d372321c9a46b792ec8f0
+    appsecret: a0eb49319937944512d1fcf65b3216c0
+    appid: wx0a2efc77aac2a84b
 

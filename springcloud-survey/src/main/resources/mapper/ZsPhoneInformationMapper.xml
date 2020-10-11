@@ -43,4 +43,28 @@
         where
         survey_id = #{surveyId}
     </delete>
+
+    <delete id="removeBySurveyId">
+        DELETE zs_phone_information
+        FROM
+            zs_phone_information,
+            (SELECT
+        min(id) id,
+        mobile,
+        information
+        FROM
+        zs_phone_information
+        where survey_id = #{surveyId}
+        GROUP BY
+        mobile,
+        information
+        HAVING
+        count(1) > 1
+        ) t2
+        where
+        zs_phone_information.mobile = t2.mobile
+        and zs_phone_information.information = t2.information
+        and zs_phone_information.id >t2.id
+        and survey_id = #{surveyId}
+    </delete>
 </mapper>

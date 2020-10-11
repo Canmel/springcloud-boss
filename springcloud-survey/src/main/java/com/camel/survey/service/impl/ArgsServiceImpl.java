@@ -78,11 +78,11 @@ public class ArgsServiceImpl extends ServiceImpl<ArgsMapper, Args> implements Ar
 
     @Override
     public Result save(Args entity, OAuth2Authentication oAuth2Authentication) {
-        Member member = (Member) SessionContextUtils.getInstance().currentUser(redisTemplate, oAuth2Authentication.getName());
-        entity.setCreator(new SysUser(member.getId()));
-        entity.setCreatorId(member.getId());
-        entity.setUpdator(new SysUser(member.getId()));
-        entity.setUpdatorId(member.getId());
+        SysUser member = applicationToolsUtils.currentUser();
+        entity.setCreator(new SysUser(member.getUid()));
+        entity.setCreatorId(member.getUid());
+        entity.setUpdator(new SysUser(member.getUid()));
+        entity.setUpdatorId(member.getUid());
         if (insert(entity)) {
             return ResultUtil.success("新增成功");
         }

@@ -124,7 +124,6 @@
             user:{},
         },
         created: function () {
-            // this.pagequery();
             this.loginMaster();
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
@@ -256,6 +255,7 @@
                     monit: item.monit.value,
                     collectPhone:item.collectPhone,
                     exams:item.exams,
+                    informationTemplate:item.informationTemplate,
                 };
                 AJAX.POST_JSON('zsSurvey', this.new_survey
                     , function (resp) {

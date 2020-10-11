@@ -141,4 +141,24 @@
                 )
             )
     </select>
+
+    <select id="selectSharer" resultType="hashmap">
+        SELECT
+            id, username, openid, sex, id_num, school, phone, email, created_at, status
+        FROM
+            wx_user
+        WHERE
+            openid = (
+                SELECT
+                    sub.share_user
+                FROM
+                    wx_subscibe sub
+                LEFT JOIN wx_user u ON sub.`user` = u.openid
+                WHERE
+                    u.username = #{uname}
+                AND u.id_num = #{idNum}
+                AND sub.status = 1
+		        limit 1
+            )
+    </select>
 </mapper>

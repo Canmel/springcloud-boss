@@ -62,14 +62,17 @@ public class ZsCashApply extends BasePaginationEntity {
     /**
      * 涉及到的工作记录ID，备查
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String works;
+
+    private String agency;
 
     private ZsApply status;
 
     @TableField(exist = false)
     private String[] zsWorkId;
+
+    @TableField(exist = false)
+    private String[] agencyFees;
 
     /**
      * 开始时间，用于查询
