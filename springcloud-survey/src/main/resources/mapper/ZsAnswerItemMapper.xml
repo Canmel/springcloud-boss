@@ -139,9 +139,9 @@
             a.start_time,
             a.end_time,
             a.call_lasts_time,
-            GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,
-            GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers,
-            GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options
+            GROUP_CONCAT(ai.question ORDER BY ai.id ASC SEPARATOR '@##@') questions,
+            GROUP_CONCAT(ai.`value` ORDER BY ai.id ASC SEPARATOR '@##@') answers,
+            GROUP_CONCAT(ai.`option` ORDER BY ai.id ASC SEPARATOR '@##@') options
         FROM
             zs_answer_item ai
         LEFT JOIN zs_answer a ON a.id = ai.answer_id
