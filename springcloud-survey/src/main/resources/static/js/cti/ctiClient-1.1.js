@@ -488,7 +488,8 @@
 					console.log('实际要跳转的地址', window.openUrl);
 				}
 			}else if(methodType=="manual_callout_agent_ring"){//呼出弹屏
-                console.log("呼入弹屏", jsonStr);
+                console.log("呼入弹屏", jsonStr.customerNum);
+                sessionStorage.setItem("customerNum", jsonStr.customerNum);
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
@@ -791,6 +792,14 @@
 	function submitAdvanceReason(){
   		$("#earlyEndResonModal").modal("hide");
 		$("#surveyModal").modal("hide");
+		var reason = $("#earlyEndReason").val();
+		AJAX.POST("hangUp", {
+			surveyId: sessionStorage.getItem('editParams'),
+			reason: reason,
+			phone: sessionStorage.getItem('customerNum')
+		}, function (resp) {
+			console.log(resp);
+		});
 		hangUp();
 	}
 
