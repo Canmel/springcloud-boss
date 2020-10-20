@@ -11,11 +11,11 @@ public class WxConstants {
     /**
      * 测试账号
      */
-    private String appid = "wx40d4fe2c2c03a2f3";
+    private String appid = "wx0a2efc77aac2a84b";
     /**
      * 测试账号密钥
      */
-    private String appsecret = "c5f6da5b695d372321c9a46b792ec8f0";
+    private String appsecret = "a0eb49319937944512d1fcf65b3216c0";
     /**
      * js安全域名
      * 不带http:// 或者https:// 以及项目名称
