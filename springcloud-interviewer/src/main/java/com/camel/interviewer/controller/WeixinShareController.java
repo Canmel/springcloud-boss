@@ -66,6 +66,7 @@ public class WeixinShareController {
     @GetMapping("/getQRCode")
     private Result qrCode(String code) {
         WxUser wxUser = weixinStartService.getUser(code);
+        System.out.println("wxUser       ======:   " + wxUser.toString() );
         if(ObjectUtils.isEmpty(wxUser)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");
         }
@@ -76,11 +77,12 @@ public class WeixinShareController {
             String  json = "{\"expire_seconds\": 604800, \"action_name\": \"QR_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \""+ wxUser.getOpenid() +"\"}}}";;
             Response responseBody = HttpUtils.httpPostResponse(url, new HashMap<String, String>(), json);
             tokenBody = JSONObject.parseObject(responseBody.body().string());
+            System.out.println(tokenBody.toJSONString());
             if(StringUtils.isNotBlank(tokenBody.getString("errcode"))) {
                 throw new NotWxExplorerException();
             }
-            System.out.println(tokenBody.toJSONString());
         } catch (IOException e) {
+            e.printStackTrace();
             throw new WxServerConnectException();
         }
         return ResultUtil.success(tokenBody);
