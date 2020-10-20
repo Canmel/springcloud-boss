@@ -31,9 +31,12 @@ public class WxTokenUtil {
     }
 
     public String getTocken(String appId, String appSecret, RedisTemplate redisTemplate) {
+        System.out.println("appID = " + appId + "  appSecret = " + appSecret);
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
         HashMap<String, String> token = (HashMap<String, String>) operations.get(WX_ACCESS_TOKEN_RKEY);
+        System.out.println("------------ttttttoooookkkkkkennnn" + token);
         if(!ObjectUtils.isEmpty(token) && token.containsKey("access_token")) {
+            System.out.println(token.get("access_token"));
             return token.get("access_token");
         }
         String requestUrl = GetPageAccessTokenUrl.replace("APPID", appId).replace("SECRET", appSecret);
