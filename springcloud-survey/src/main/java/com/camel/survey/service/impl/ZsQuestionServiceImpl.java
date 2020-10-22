@@ -198,6 +198,8 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
         if (!zsOptionService.contanisIgnore(oIds)) {
             updateCurrent(zsSurvey.getId(), oIds);
+        } else{
+            zsSurvey.setEndShow("对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！");
         }
         if (answerItemService.insertBatch(zsAnswerItemList)) {
             return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
