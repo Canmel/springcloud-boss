@@ -140,8 +140,10 @@
             a.end_time,
             a.call_lasts_time,
             GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,
+            GROUP_CONCAT(ai.question_id SEPARATOR '@##@') questionIds,
             GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers,
-            GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options
+            GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options,
+            GROUP_CONCAT(ai.option_id SEPARATOR '@##@') optionIds
         FROM
             zs_answer_item ai
         LEFT JOIN zs_answer a ON a.id = ai.answer_id
@@ -204,7 +206,7 @@
 
     <select id="selectAnswerItemCount" resultType="integer">
         SELECT
-            IFNULL(COUNT(DISTINCT ai.creator, a.label), 0) c
+            IFNULL(COUNT(CONCAT(ai.creator, IFNULL(a.label,''))), 0) c
         FROM
             zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id
         WHERE

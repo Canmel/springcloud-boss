@@ -479,6 +479,7 @@
 				console.log("呼入弹屏", jsonStr);
 				console.log("-----------------------<><><>><>------", agentno);
 				console.log('------------tttttt---------------', new Date());
+				sessionStorage.setItem("customerNum", jsonStr.customerNum);
 				if(eventAgentNo==agentno){
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
