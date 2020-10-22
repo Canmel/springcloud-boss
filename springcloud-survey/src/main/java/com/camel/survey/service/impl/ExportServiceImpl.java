@@ -193,13 +193,16 @@ public class ExportServiceImpl implements ExportService {
         headValues.add("复核意见");
         headValues.add("标签");
         List<String> titleQList = new ArrayList<>();
+        List<String> titleIdList = new ArrayList<>();
         questionList.forEach(que -> {
             if (que.getType().equals(2)) {
                 for (int i = 0; i < que.getOptions().size(); i++) {
                     titleQList.add(que.getName() + "_" + que.getOptions().get(i).getName());
+                    titleIdList.add(que.getId() + "_" + que.getOptions().get(i).getId());
                 }
             } else {
                 titleQList.add(que.getName());
+                titleIdList.add(que.getId() + "");
             }
         });
         headValues.addAll(titleQList);
@@ -228,19 +231,23 @@ public class ExportServiceImpl implements ExportService {
             String answers = (String) result.get(i).get("answers");
             String[] answersArray = answers.split("@##@", -1);
 
-            String options = (String) result.get(i).get("options");
+            String options = (String) result.get(i).get("optionIds");
             String[] optionsArray = options.split("@##@", -1);
             List<String> optionList = CollectionUtils.arrayToList(optionsArray);
 
             String ques = "";
+            String queIds = "";
             ques = (String) result.get(i).get("questions");
+            queIds = (String) result.get(i).get("questionIds");
             String[] questions = ques.split("@##@", -1);
+            String[] questionIds = queIds.split("@##@", -1);
             List<String> qs = CollectionUtils.arrayToList(questions);
+            List<String> qIds = CollectionUtils.arrayToList(questionIds);
 
             // 循环所有标题/表头上的题目
-            for (int index = 0; index < titleQList.size(); index++) {
+            for (int index = 0; index < titleIdList.size(); index++) {
                 // 拆分表头
-                String titleStr = titleQList.get(index);
+                String titleStr = titleIdList.get(index);
                 String titleQ = "";
                 String titleO = "";
                 if (titleStr.contains("_")) {
@@ -248,20 +255,20 @@ public class ExportServiceImpl implements ExportService {
                     titleO = titleStr.split("_")[1];
                 }
                 // 循环问题
-                for (int qIndex = 0; qIndex < qs.size(); qIndex++) {
+                for (int qIndex = 0; qIndex < qIds.size(); qIndex++) {
                     // 全等，即单选
-                    if (titleStr.equals(qs.get(qIndex))) {
+                    if (titleStr.equals(qIds.get(qIndex))) {
                         fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
-                        qIndex = qs.size();
+                        qIndex = qIds.size();
                     } else {
                         // 多选， 并且问题和excel当前表头相同
-                        if (titleQ.equals(qs.get(qIndex))) {
+                        if (titleQ.equals(qIds.get(qIndex))) {
                             // 根据问题的序号，得出的选项
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
                             if (org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
                                 fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
-                                qIndex = qs.size();
+                                qIndex = qIds.size();
                             }
                         }
                     }
