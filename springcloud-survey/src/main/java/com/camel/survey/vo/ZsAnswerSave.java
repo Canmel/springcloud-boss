@@ -87,7 +87,12 @@ public class ZsAnswerSave {
     }
 
     public ZsAnswer buildAnswer() {
-        ZsAnswer answer = new ZsAnswer(this.surveyId, this.phone);
+        ZsAnswer answer = null;
+        if(this.phone.length() > 6) {
+            answer = new ZsAnswer(this.surveyId, this.seat);
+        } else {
+            answer = new ZsAnswer(this.surveyId, this.phone);
+        }
         answer.setSeat(ObjectUtils.isEmpty(this.seat) ? "0" : this.seat);
         answer.setRecord(this.record);
         answer.setAgentUUID(this.agentUUID);
