@@ -196,7 +196,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
                 zsAnswerItem.setUid(seat.getUid());
             }
         }
-
+        boolean isUpdateCurrent = true;
         if(zsAnswer.getCreator().length() < 6) {
             if(StringUtil.isNotEmpty(zsAnswer.getInValidMsg())) {
                 zsAnswer.setInValidMsg(zsAnswer.getInValidMsg() + "," + "试访数据");
@@ -205,10 +205,13 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             }
             zsAnswer.setValid(ZsYesOrNo.NO);
             answerService.updateById(zsAnswer);
+            isUpdateCurrent = false;
         }
 
-        if (!zsOptionService.contanisIgnore(oIds)) {
-            updateCurrent(zsSurvey.getId(), oIds);
+        if (!zsOptionService.contanisIgnore(oIds) || isUpdateCurrent) {
+            if (isUpdateCurrent) {
+                updateCurrent(zsSurvey.getId(), oIds);
+            }
         } else{
             zsSurvey.setEndShow("对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！");
         }
@@ -260,6 +263,9 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     }
 
     boolean isAnswered(ZsAnswerSave zsAnswerSave) {
+        if(zsAnswerSave.getPhone().length() < 6) {
+            return false;
+        }
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
         zsAnswerWrapper.eq("survey_id", zsAnswerSave.getSurveyId());
