@@ -210,6 +210,6 @@
         FROM
             zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id
         WHERE
-            ai.survey_id = #{surveyId} and ai.question_id = #{qId} and ai.option_id = #{oId} and a.valid = 1
+            ai.survey_id = #{surveyId} and ai.question_id = #{qId} and ai.option_id = #{oId} and a.valid = 1 and a.status = 1
     </select>
 </mapper>
