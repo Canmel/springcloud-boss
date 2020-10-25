@@ -88,7 +88,7 @@ public class ZsAnswerSave {
 
     public ZsAnswer buildAnswer() {
         ZsAnswer answer = null;
-        if(this.phone.length() > 6) {
+        if(this.phone.length() < 6) {
             answer = new ZsAnswer(this.surveyId, this.seat);
         } else {
             answer = new ZsAnswer(this.surveyId, this.phone);
