@@ -1,5 +1,8 @@
 package com.camel.survey.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.model.SysUser;
@@ -49,33 +52,9 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
     @Override
     public boolean importPhoneInformation(MultipartFile file, Integer surveyId) {
         SysUser user = applicationToolsUtils.currentUser();
-        List<ZsPhoneInformation> zsPhoneInformations = ExcelUtil.readExcelObject(file, ZsPhoneInformation.class);
-//        HashSet h = new HashSet(zsPhoneInformations);
-//        zsPhoneInformations.clear();
-//        zsPhoneInformations.addAll(h);
-        zsPhoneInformations.forEach(pi -> {
-            if(pi.getName() == null)
-                pi.setName("");
-            if(pi.getCity() == null)
-                pi.setCity("");
-            if(pi.getAddress() == null)
-                pi.setAddress("");
-            if(pi.getDate() == null)
-                pi.setDate("");
-            if(pi.getType() == null)
-                pi.setType("");
-            if(pi.getItem() == null)
-                pi.setItem("");
-            pi.setInformation("{\"name\":\""+pi.getName()+"\",\"city\":\""+pi.getCity()+"\",\"address\":\""+pi.getAddress()+
-                    "\",\"date\":\""+pi.getDate()+"\",\"type\":\""+ pi.getType()+"\",\"item\":\""+pi.getItem()+"\"}");
-            pi.setSurveyId(surveyId);
-            pi.setCreatorId(user.getUid());
-        });
+        List<ZsPhoneInformation> zsPhoneInformations = ExcelUtil.readExcelPI(file, surveyId, user);
         if(insertBatch(zsPhoneInformations)){
-            mapper.removeBySurveyId(surveyId);
-        }
-        else{
-            return false;
+            return mapper.removeBySurveyId(surveyId) > 0;
         }
         return true;
     }

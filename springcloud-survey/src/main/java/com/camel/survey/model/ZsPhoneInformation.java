@@ -82,6 +82,15 @@ public class ZsPhoneInformation extends ZsSurveyBaseEntity implements Serializab
 //    @ExcelAnnotation(columnName = "电话号码信息", columnIndex = 1)
     private String information;
 
+    public ZsPhoneInformation() {
+    }
+
+    public ZsPhoneInformation(String mobile, String information, Integer surveyId, Integer uid) {
+        this.mobile = mobile;
+        this.information = information;
+        this.surveyId = surveyId;
+        super.setCreatorId(uid);
+    }
 
     @Override
     public String toString() {

@@ -1,8 +1,12 @@
 package com.camel.survey.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.toolkit.MapUtils;
+import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
+import com.camel.survey.model.ZsPhoneInformation;
+import com.github.pagehelper.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -18,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.DocFlavor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -28,6 +33,89 @@ import java.util.List;
 import java.util.Map;
 
 public class ExcelUtil {
+    public static List<ZsPhoneInformation> readExcelPI(MultipartFile file, Integer surveyId, SysUser user) {
+        // 存储excel数据
+        List<ZsPhoneInformation> list = new ArrayList<>();
+        Workbook wookbook = null;
+        InputStream inputStream = null;
+
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            throw new ExcelImportException("文件读取异常");
+        }
+
+        // 根据excel文件版本获取工作簿
+        if (file.getOriginalFilename().endsWith(".xls")) {
+            wookbook = xls(inputStream);
+        } else if (file.getOriginalFilename().endsWith(".xlsx")) {
+            wookbook = xlsx(inputStream);
+        } else {
+            throw new ExcelImportException("非excel文件");
+        }
+
+        // 得到一个工作表
+        Sheet sheet = wookbook.getSheetAt(0);
+        Row row0 = sheet.getRow(0);
+        List<String> head = new ArrayList<>();
+        boolean hasNext = true;
+        int headIndex = 0;
+        while (hasNext) {
+            Cell cellHead = row0.getCell(headIndex);
+            if(ObjectUtils.isEmpty(cellHead)) {
+                hasNext = false;
+                headIndex++;
+                continue;
+            }
+            cellHead.setCellType(Cell.CELL_TYPE_STRING);
+            String hValue = cellHead.getStringCellValue();
+            if (StringUtil.isNotEmpty(hValue)) {
+                head.add(hValue);
+            } else {
+                hasNext = false;
+            }
+            headIndex++;
+        }
+        // 获取行总数
+        int rows = sheet.getLastRowNum() + 1;
+        for (int i = 1; i < rows; i++) {
+            Row row = sheet.getRow(i);
+
+            Cell cell0 = row.getCell(0);
+            if (ObjectUtils.isEmpty(cell0)) {
+                continue;
+            }
+            cell0.setCellType(Cell.CELL_TYPE_STRING);
+            Cell cell1 = row.getCell(1);
+            if (ObjectUtils.isEmpty(cell1)) {
+                continue;
+            }
+            cell1.setCellType(Cell.CELL_TYPE_STRING);
+            if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
+                continue;
+            }
+            JSONObject jsonObject = new JSONObject();
+            String phone = "";
+            for (int j = 0; j < head.size(); j++) {
+                Cell c = row.getCell(j);
+                String cValue = "";
+                if(ObjectUtils.isEmpty(c)) {
+                    cValue = "";
+                }else {
+                    c.setCellType(Cell.CELL_TYPE_STRING);
+                    cValue = c.getStringCellValue();
+                }
+                if(j == 0) {
+                    phone = cValue;
+                }else {
+                    jsonObject.put(head.get(j), cValue);
+                }
+            }
+            list.add(new ZsPhoneInformation(phone, jsonObject.toJSONString(), surveyId, user.getUid()));
+        }
+        return list;
+    }
+
 
     /**
      * 读取excel反射实体
@@ -76,7 +164,7 @@ public class ExcelUtil {
         for (int i = 1; i < rows; i++) {
             // 获取excel行
             row = sheet.getRow(i);
-            if(ObjectUtils.isEmpty(row)) {
+            if (ObjectUtils.isEmpty(row)) {
                 continue;
             }
             //此处用来过滤空行
@@ -86,7 +174,7 @@ public class ExcelUtil {
             }
             cell0.setCellType(Cell.CELL_TYPE_STRING);
             Cell cell1 = row.getCell(1);
-            if(ObjectUtils.isEmpty(cell1)) {
+            if (ObjectUtils.isEmpty(cell1)) {
                 continue;
             }
             cell1.setCellType(Cell.CELL_TYPE_STRING);

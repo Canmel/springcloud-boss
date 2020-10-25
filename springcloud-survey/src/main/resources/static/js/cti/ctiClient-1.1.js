@@ -420,6 +420,7 @@
 	//响应事件 
 	function onEvent(eventType,state,methodType,code,jsonStr){
   		console.log('onEvent---json--------->', jsonStr);
+  		console.log('methodType----', methodType);
   		$(".my-loading").hide();
 		var seatState = $('#seat_state');
 		var signInOrOut = $('#signInOrOut');
@@ -495,6 +496,22 @@
 					var agentUuid = jsonStr.agentUuid;
 					var customerNum = jsonStr.customerNum;
 					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					$("#surveyIfram").attr('src', url);
+					window.openUrl = url;
+				}
+				if(eventAgentNo==agentno){
+					var agentUuid = jsonStr.agentUuid;
+					var customerNum = jsonStr.customerNum;
+					var url=popupUrl+"&phone="+customerNum+"&seat="+eventAgentNo+"&agentUUID="+agentUuid;
+					window.openUrl = url;
+				}
+			}else if(methodType=="bridge"){//bridge
+				console.log("内呼入弹屏", jsonStr.customerNum);
+				sessionStorage.setItem("customerNum", jsonStr.customerNum);
+				if(eventAgentNo==agentno){
+					var agentUuid = jsonStr.agentUuid;
+					var customerNum = jsonStr.customerNum;
+					var url=popupUrl+"&phone=0&seat="+eventAgentNo+"&agentUUID=0000";
 					$("#surveyIfram").attr('src', url);
 					window.openUrl = url;
 				}

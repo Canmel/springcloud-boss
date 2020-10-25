@@ -22,6 +22,7 @@ import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsQuestionSave;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -194,6 +195,16 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             } else if(!ObjectUtils.isEmpty(seat)) {
                 zsAnswerItem.setUid(seat.getUid());
             }
+        }
+
+        if(zsAnswer.getCreator().equals("0")) {
+            if(StringUtil.isNotEmpty(zsAnswer.getInValidMsg())) {
+                zsAnswer.setInValidMsg(zsAnswer.getInValidMsg() + "," + "试访数据");
+            }else {
+                zsAnswer.setInValidMsg("试访数据");
+            }
+            zsAnswer.setValid(ZsYesOrNo.NO);
+            answerService.updateById(zsAnswer);
         }
 
         if (!zsOptionService.contanisIgnore(oIds)) {
