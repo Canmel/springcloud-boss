@@ -236,7 +236,10 @@ function onSipEventStack(e) {
 
                 var sRemoteNumber = (oSipSessionCall.getRemoteFriendlyName() || "unknown");
                 //txtRegStatus.innerHTML = "<b>" + "来电：" +sRemoteNumber+ "</b>";
-
+                console.log("----------------------------------------")
+                var url = popupUrl + "&phone=" + sRemoteNumber + "&seat=" + agentno + "&agentUUID=" + 'xx';
+                $("#surveyIfram").attr('src', url);
+                window.openUrl = url;
                 //来电自动接听
                 if (autoAnswer == "yes") {
                     sipAnswer();

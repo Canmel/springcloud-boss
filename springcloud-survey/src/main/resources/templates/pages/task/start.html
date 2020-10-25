@@ -184,6 +184,10 @@
                                                                     href="javascript:void(0)"
                                                                     iconcls="icon2-external-call" plain="true">外呼
                                                             </button>
+                                                            <button class="btn btn-rounded btn-warning"
+                                                                    style="display: none;" id="calloutInternal"
+                                                                    v-on:click="calloutInternalModal()" plain="true"><span class="fa fa-square"></span>内呼
+                                                            </button>
                                                             <button class="btn btn-rounded btn-primary" id="hangUp"
                                                                     onClick="hangUp()" style="display: none;"
                                                                     href="javascript:void(0)" iconcls="icon2-hangup"
@@ -378,6 +382,31 @@
         </div><!-- /.modal -->
     </div>
 
+    <div class="modal fade" id="calloutInternalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="calloutInternalModallLabel">内呼</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">座席号:</label>
+                            <div class="col-sm-9">
+                                <input name="phone" id="calloutInternalModalAgentNum" class="form-control" type="text"
+                                       style="height: auto;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="calloutInternal()">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 
     <div class="modal fade" id="myPhoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -574,7 +603,9 @@
             }
         },
         methods: {
-
+            calloutInternalModal() {
+                $("#calloutInternalModal").modal("show");
+            },
             calloutExternalModal() {
                 $("#myPhoneModal").modal("show");
             },
