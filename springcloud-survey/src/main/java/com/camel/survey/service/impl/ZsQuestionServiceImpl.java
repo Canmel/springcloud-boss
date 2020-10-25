@@ -197,7 +197,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             }
         }
 
-        if(zsAnswer.getCreator().equals("0")) {
+        if(zsAnswer.getCreator().length() < 6) {
             if(StringUtil.isNotEmpty(zsAnswer.getInValidMsg())) {
                 zsAnswer.setInValidMsg(zsAnswer.getInValidMsg() + "," + "试访数据");
             }else {
