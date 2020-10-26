@@ -162,12 +162,13 @@
     </select>
 
     <select id="selectTotal" resultType="hashmap">
-        select
-            COUNT(1) try_num,
+        SELECT
+            (SELECT * FROM zs_cdrinfo WHERE survey_id = #{surveyId} AND uid = #{id}) AS try_num,
             IFNULL(SUM(case when valid = 1 and status = 1 THEN 1 else 0 END), 0) AS success_num,
             IFNULL(SUM(case when in_valid_msg = '作废' and valid = 0 and status = 1 then 1  else 0 end),0) AS invalid_num,
             IFNULL(SUM(case when in_valid_msg = '逻辑无效' and valid = 0 and status = 1 then 1  else 0 end),0) AS logic_invalid_num,
-            IFNULL(SUM(call_lasts_time), 0) AS call_lasts_time
-        from zs_answer where survey_id = #{surveyId} and uid = #{id};
+            IFNULL(SUM(call_lasts_time), 0) AS call_lasts_time,
+            (SELECT COUNT(1) FROM zs_cdrinfo WHERE survey_id = #{surveyId} AND uid = #{id}) AS try_num
+        FROM zs_answer WHERE survey_id = #{surveyId} AND uid = #{id};
     </select>
 </mapper>

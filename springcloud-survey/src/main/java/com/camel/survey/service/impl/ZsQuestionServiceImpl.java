@@ -196,7 +196,6 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
                 zsAnswerItem.setUid(seat.getUid());
             }
         }
-        boolean isUpdateCurrent = true;
         if(zsAnswer.getCreator().length() < 6) {
             if(StringUtil.isNotEmpty(zsAnswer.getInValidMsg())) {
                 zsAnswer.setInValidMsg(zsAnswer.getInValidMsg() + "," + "试访数据");
@@ -205,11 +204,10 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             }
             zsAnswer.setValid(ZsYesOrNo.NO);
             answerService.updateById(zsAnswer);
-            isUpdateCurrent = false;
         }
 
-        if (!zsOptionService.contanisIgnore(oIds) || isUpdateCurrent) {
-            if (isUpdateCurrent) {
+        if (!zsOptionService.contanisIgnore(oIds)) {
+            if (zsAnswer.getValid().equals(ZsYesOrNo.YES)) {
                 updateCurrent(zsSurvey.getId(), oIds);
             }
         } else{
