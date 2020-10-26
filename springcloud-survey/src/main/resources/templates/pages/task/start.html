@@ -234,12 +234,12 @@
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
-                                            <div class="contact-box">
-                                                <div class="col-sm">
-                                                    <button type="button" v-on:click="openRoom()" class="btn btn-primary btn-sm">打开摄像头</button>
-                                                    <button type="button" v-on:click="leaveRoom()" class="btn btn-secondary btn-sm">退出</button>
-                                                </div>
-                                            </div>
+<!--                                            <div class="contact-box">-->
+<!--                                                <div class="col-sm">-->
+<!--                                                    <button type="button" v-on:click="openRoom()" class="btn btn-primary btn-sm">打开摄像头</button>-->
+<!--                                                    <button type="button" v-on:click="leaveRoom()" class="btn btn-secondary btn-sm">退出</button>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
                                             <div class="contact-box" id="previewContext" style="display: none;">
                                                 <div class="col-sm">
                                                     <label id="previewLabel" class="text-white"></label>
@@ -564,18 +564,6 @@
             socketServer: 0,
             profile: {},
             user:{},
-            zg: null,
-            config: {
-                "appid": 2696647174,    // 必填，应用id，请从 即构管理控制台-https://console.zego.im/acount/register 获取
-                "idName": new Date().getTime() + '',    // 必填，用户自定义id，全局唯一
-                "nickName": 'u' + new Date().getTime(),    // 必填，用户自定义昵称
-                "server": "wss://webliveroom-test.zego.im/ws",    // 必填，接入服务器地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
-                "logLevel": 0,    //日志级别，debug:0,info:1,warn:2,error:3,report:99,disable:100（数字越大，日志越少），建议选择 1
-                "logUrl": "",    // 必填，logServer 地址，请从 即构管理控制台-https://console.zego.im/acount/register 获取
-                "remoteLogLevel": 0,    // 上传日志最低级别，建议跟 logLevel 一致
-                "testEnvironment": true, // 是否开启测试环境，默认为正式环境
-                "audienceCreateRoom": false //是否允许观众创建房间
-            },
             seat:{
 
             },
@@ -761,19 +749,19 @@
                     }
                 });
             },
-            initZg() {
-
-            },
-            openRoom() {
-                $('#previewContext').show();
-                $('#signalUrl').val() && zg.setCustomSignalUrl($('#signalUrl').val())
-                zg.setUserStateUpdate(true);
-                openRoom(this.connectInfo.seatNum + '', 1);
-            },
-            leaveRoom() {
-                $('#previewContext').hide();
-                leaveRoom();
-            },
+            // initZg() {
+            //
+            // },
+            // openRoom() {
+            //     $('#previewContext').show();
+            //     $('#signalUrl').val() && zg.setCustomSignalUrl($('#signalUrl').val())
+            //     zg.setUserStateUpdate(true);
+            //     openRoom(this.connectInfo.seatNum + '', 1);
+            // },
+            // leaveRoom() {
+            //     $('#previewContext').hide();
+            //     leaveRoom();
+            // },
             loadUser(){
                 var that = this;
                 AJAX.GET('/system/sysUser/'+that.user.userid, {}, function (resp) {
@@ -783,7 +771,7 @@
             },
         },
         created: function () {
-            this.initZg();
+            // this.initZg();
             this.loadEntity();
             this.loadConnectInfo();
             this.loadSeat();
@@ -831,11 +819,6 @@
         },
         mounted: function () {
             this.bindEvent();
-        },
-        beforeCreate: function () {
-        },
-        beforeDestroy: function () {
-            leaveRoom();
         }
     });
 
