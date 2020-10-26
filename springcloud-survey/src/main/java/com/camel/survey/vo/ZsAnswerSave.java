@@ -1,5 +1,6 @@
 package com.camel.survey.vo;
 
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsAnswerItem;
@@ -97,6 +98,7 @@ public class ZsAnswerSave {
         answer.setRecord(this.record);
         answer.setAgentUUID(this.agentUUID);
         answer.setLabel(this.label);
+        answer.setValid(ZsYesOrNo.YES);
         return answer;
     }
 

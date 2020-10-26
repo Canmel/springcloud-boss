@@ -205,7 +205,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             zsAnswer.setValid(ZsYesOrNo.NO);
             answerService.updateById(zsAnswer);
         }
-
+        // 不包含忽略配额，并且是有效的就更新配额
         if (!zsOptionService.contanisIgnore(oIds)) {
             if (zsAnswer.getValid().equals(ZsYesOrNo.YES)) {
                 updateCurrent(zsSurvey.getId(), oIds);
