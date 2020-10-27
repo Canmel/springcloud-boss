@@ -353,7 +353,7 @@ public class ExcelUtil {
                 f.set(obj, value);
             }
         }catch (NumberFormatException e) {
-            throw ExcelImportException.build("ExcelImportException", cell.getRow(), cell);
+            throw ExcelImportException.build("NumberFormatException", cell.getRow(), cell);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExcelImportException(e.getMessage());

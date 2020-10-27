@@ -33,7 +33,7 @@ public class ExcelImportException extends RuntimeException {
         } if(StringUtils.contains(msg, "For input string")) {
             stringBuffer.append("格式不正确，请检查");
             return new ExcelImportException(stringBuffer.toString());
-        } if(StringUtils.contains(msg, "ExcelImportException")) {
+        } if(StringUtils.contains(msg, "NumberFormatException")) {
             stringBuffer.append("读取文件的文件内容转换为数字时出错");
             return new ExcelImportException(stringBuffer.toString());
         } else {
