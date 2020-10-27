@@ -77,6 +77,7 @@
                         <th>薪资</th>
                         <th>审核</th>
                         <th>状态</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -104,6 +105,7 @@
                             <span v-if="item.gain === 0">未提取</span>
                             <span v-if="item.gain === 1">已提取</span>
                         </td>
+                        <td>{{item.createdAt}}</td>
                         <td>
                             <a class="btn btn-circle btn-warning" @click="addSurveyShow(item)" v-if="resultDev">查看</a>
                             <a class="btn btn-circle btn-danger" @click="deleteItem(item)" v-if="result">删除</a>

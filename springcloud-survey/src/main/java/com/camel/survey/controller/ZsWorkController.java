@@ -190,8 +190,7 @@ public class ZsWorkController extends BaseCommonController {
      */
     @PostMapping("/upload")
     public Result upLoad(@RequestParam MultipartFile file) {
-        service.importExcel(file);
-        return ResultUtil.success("上传成功");
+        return service.importExcel(file);
     }
 
     /**

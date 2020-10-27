@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.toolkit.MapUtils;
 import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.ZsPhoneInformation;
 import com.github.pagehelper.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -62,7 +64,7 @@ public class ExcelUtil {
         int headIndex = 0;
         while (hasNext) {
             Cell cellHead = row0.getCell(headIndex);
-            if(ObjectUtils.isEmpty(cellHead)) {
+            if (ObjectUtils.isEmpty(cellHead)) {
                 hasNext = false;
                 headIndex++;
                 continue;
@@ -99,15 +101,15 @@ public class ExcelUtil {
             for (int j = 0; j < head.size(); j++) {
                 Cell c = row.getCell(j);
                 String cValue = "";
-                if(ObjectUtils.isEmpty(c)) {
+                if (ObjectUtils.isEmpty(c)) {
                     cValue = "";
-                }else {
+                } else {
                     c.setCellType(Cell.CELL_TYPE_STRING);
                     cValue = c.getStringCellValue();
                 }
-                if(j == 0) {
+                if (j == 0) {
                     phone = cValue;
-                }else {
+                } else {
                     jsonObject.put(head.get(j), cValue);
                 }
             }
@@ -208,7 +210,7 @@ public class ExcelUtil {
                 e1.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new ExcelImportException("excel文件内容出错");
+                throw ExcelImportException.build(e.getMessage(), row, cell);
             }
         }
         try {
@@ -350,8 +352,11 @@ public class ExcelUtil {
                 Object value = cell.getStringCellValue();
                 f.set(obj, value);
             }
+        }catch (NumberFormatException e) {
+            throw ExcelImportException.build("ExcelImportException", cell.getRow(), cell);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new ExcelImportException(e.getMessage());
         }
     }
 

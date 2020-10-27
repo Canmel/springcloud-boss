@@ -222,6 +222,13 @@ public class ZsWork extends BasePaginationEntity {
     private String startDate;
 
     /**
+     * 创建时间
+     */
+    @TableField("created_at")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date createdAt;
+
+    /**
      * 结束时间，用于查询
      */
     @TableField(exist = false)
