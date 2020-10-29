@@ -119,21 +119,13 @@
     </select>
 
     <select id="avgTime" resultType="integer">
-        SELECT DISTINCT
-            IFNULL(AVG(cdr.call_lasts_time),0)
+        SELECT
+            IFNULL(AVG(TIMESTAMPDIFF(SECOND, start_time, end_time)),0)
         FROM
-            (
-                SELECT
-                    *
-                FROM
-                    zs_answer
-                WHERE
-                    survey_id = #{id}
-                AND agent_UUID != '0'
-            ) answer
-        LEFT JOIN zs_cdrinfo cdr ON cdr.uuids LIKE CONCAT('%', answer.agent_UUID, '%')
+            zs_answer
         WHERE
-            cdr.call_lasts_time > 0
+            survey_id = #{id}
+        AND agent_UUID != '0'
     </select>
 
     <select id="checkAnswers"  resultType="com.camel.survey.model.ZsWork">
