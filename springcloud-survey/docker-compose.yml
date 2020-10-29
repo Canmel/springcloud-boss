@@ -23,6 +23,7 @@ services:
       SECRET_KEY: pBd3_ZsNh1jfb4DhGo6cn1OHHLpW2k7Qd1PEY1R3
       AUTH_PORT: 4200
       SURVEY_ENV: dev
+      TZ: Asia/Shanghai
     networks:
     - survey-net
 networks:
