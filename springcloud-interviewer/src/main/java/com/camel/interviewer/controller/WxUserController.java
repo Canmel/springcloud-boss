@@ -58,6 +58,12 @@ public class WxUserController extends BaseCommonController {
             if(count > 0) {
                 return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "身份证号已经被注册，如果被占用请联系管理员");
             }
+            Wrapper wrapperEmail = new EntityWrapper();
+            wrapperEmail.eq("email", wxUser.getEmail());
+            int c = service.selectCount(wrapperEmail);
+            if(c > 0) {
+                return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "邮箱已经被使用了");
+            }
         }
         boolean insert = service.insert(wxUser);
         if (insert) {

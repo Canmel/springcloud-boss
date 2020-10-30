@@ -39,6 +39,7 @@
         <result column="call_time" property="callTime"/>
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="avg_num" property="avgNum"/>
+        <result column="created_at" property="createdAt"/>
     </resultMap>
 
     <resultMap id="ProjectReportResultMap" type="com.camel.survey.vo.ProjectReport">
@@ -51,14 +52,14 @@
         <result column="salary" property="salary"/>
         <result column="call_time" property="callTime"/>
         <result column="success_num" property="successNum"/>
-        <result column="invalid_num" property="invalidNum" />
-        <result column="valid_num" property="validNum" />
-        <result column="work_hours" property="workHours" />
+        <result column="invalid_num" property="invalidNum"/>
+        <result column="valid_num" property="validNum"/>
+        <result column="work_hours" property="workHours"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, project_id, pname, uname, ptime, work_date, phone, id_num, job_number, try_num, success_num, invalid_num, valid_num, success_rate, start_time, end_time, eat_time, work_hours, benchmark, base_salary, royalty, meals, salary, place, gain, gain_time, source, uid, state, call_time, avg_num
+        id, project_id, pname, uname, ptime, work_date, phone, id_num, job_number, try_num, success_num, invalid_num, valid_num, success_rate, start_time, end_time, eat_time, work_hours, benchmark, base_salary, royalty, meals, salary, place, gain, gain_time, source, uid, state, call_time, avg_num, created_at
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

@@ -19,6 +19,7 @@ services:
       REDIS_HOST: 192.168.0.180
       AUTH_PORT: 4200
       SURVEY_ENV: prod
+      TZ: Asia/Shanghai
     networks:
       - survey-net
 networks:

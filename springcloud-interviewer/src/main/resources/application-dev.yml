@@ -20,7 +20,7 @@ spring:
         max-idle: 8
         min-idle: 0
   datasource:
-    url: jdbc:mysql://${DATABASE_IP}:${DATABASE_PORT}/dw_survey?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://${DATABASE_IP}:${DATABASE_PORT}/dw_survey?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
