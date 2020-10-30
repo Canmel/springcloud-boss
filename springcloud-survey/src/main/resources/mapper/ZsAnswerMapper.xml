@@ -318,7 +318,7 @@
 
     <select id="selectAnswerCreatorCount" resultType="integer">
         SELECT
-            IFNULL(COUNT(CONCAT(ai.creator, IFNULL(a.label,''))), 0) c
+            IFNULL(COUNT(distinct CONCAT(ai.creator, IFNULL(a.label,''))), 0) c
         FROM
             zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id
         WHERE
