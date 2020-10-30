@@ -90,7 +90,7 @@
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
                     <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span style="font-size: 12px;"
-                          v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
+                                                                                                   v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 1 && showOptions(item, opt)">
@@ -617,11 +617,7 @@
                     alert('请完成表单');
                     return false;
                 }
-<<<<<<< HEAD
                 if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
-=======
-                if (question.type === 2 && this.isOutOfBounds(question, event)) {
->>>>>>> submit 校验选择数量
                     var resultStr = "";
                     if (question.maxSelect) {
                         resultStr += '最多只能选择' + question.maxSelect + '条';
@@ -632,12 +628,9 @@
                     alert(resultStr);
                     return;
                 }
-<<<<<<< HEAD
                 this.loadFinalData();
                 let currentParams = this.pageParams[this.userParamsIndex];
 
-=======
->>>>>>> submit 校验选择数量
                 AJAX.POST_JSON('zsQuestion/answer', {
                     zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),
