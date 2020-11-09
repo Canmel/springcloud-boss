@@ -1,0 +1,221 @@
+<style>
+    .transfer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .transfer > .list {
+        width: 250px;
+        height: 500px;
+        border: 1px solid #000;
+        list-style: none;
+        padding: 0px;
+    }
+
+    .content {
+        font-size: 30px;
+        margin: 0 20px;
+    }
+
+    .list > li {
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+        padding-left: 50px;
+        box-sizing: border-box;
+    }
+
+    .selected-item {
+        background-color: burlywood;
+    }
+</style>
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+
+            <div class="transfer">
+                <!-- 左框 -->
+                <ul class="list left" style="overflow-y: scroll">
+                    <template v-for="(item, index) in info">
+                        <li :key="index" :class="{'selected-item': item.select}">
+                            <span :id=`checkbox${item.id}` name="checkbox" :checked="item.select"
+                                  @click="selected(item)" class="fa fa-phone-square">
+                                <label :for=`checkbox${item.id}`>{{ item.seatNum }} </label>
+                            </span>
+                        </li>
+                    </template>
+                </ul>
+
+                <!-- 添加/删除 -->
+                <div class="content">
+                    <p class="push" @click='push'>>>></p>
+                    <p class="del" @click='del'><<<</p>
+                </div>
+
+                <!-- 右框 -->
+                <ul class="list right" style="overflow-y: scroll;">
+                    <template v-for="(item, index) in new_info">
+                        <li :key="index" :class="{'selected-item': item.select}">
+                            <span :id=`newcheckbox${item.id}` name="newcheckbox" :checked="item.select"
+                                  @click="selected(item)" class="fa fa-phone-square">
+                                <label :for=`newcheckbox${item.id}`>{{ item.seatNum }} </label>
+                            </span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
+            <div class="transfer">
+                <div class="left" style="padding-right: 20%;">未分配</div>
+                <div class="content"></div>
+                <div class="right">选中</div>
+            </div>
+
+            <div class="form-group" style="padding-top: 5%; text-align: center;">
+                <div>
+                    <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
+                    <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            entity: {
+                id: sessionStorage.getItem("editParams"),
+                name: ''
+            },
+            info: [],
+            new_info: [],// 新数据，右框数据
+        },
+        created: function () {
+            this.loadSeat();
+        },
+        methods: {
+            changeItem(item) {
+                if(item.select) {
+                    item.seatNum += "(√)"
+                }else {
+                    if(item.seatNum.indexOf("(√)") > 0) {
+                        item.seatNum = item.seatNum.substr(0, item.seatNum.length - 3);
+                    }
+
+                }
+            },
+            selected(item) {
+                item.select=!item.select;
+                this.changeItem(item);
+            },
+            loadSeat() {
+                let that = this;
+                AJAX.GET("zsSeat/all", {}, function (resp) {
+                    that.info = resp.data;
+                    that.loadSelectedSeat();
+                })
+            },
+            loadSelectedSeat() {
+                let that = this;
+                AJAX.GET("zsSeat/queue/" + that.entity.id, {}, function (resp) {
+                    if (resp.data) {
+                        that.new_info = resp.data;
+                        for (let i = (that.info.length - 1); i >= 0; i--) {
+                            let skip = false;
+                            for (let j = 0; j < that.new_info.length; j++) {
+                                if (skip) {
+                                    continue;
+                                }
+                                if (that.info[i]["id"] === that.new_info[j]["id"]) {
+                                    that.info.splice(i, 1);
+                                    skip = true;
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                })
+            },
+            push() {
+                let that = this;
+                let info = JSON.parse(JSON.stringify(that.info)); // 拷贝原数据, 深拷贝
+                info.forEach((item, index) => {
+                    // 执行 select 为true 的数据
+                    if (item.select) {
+                        that.new_info = that.new_info.concat(item).sort((a, b) => {
+                            return a.id - b.id
+                        }); // 添加到新数据框, 排序
+                        delete info[index];    // 删除数据
+                        item.select = false;
+                        that.changeItem(item);
+                    }
+                });
+                info = info.filter(function (val) {
+                    return val
+                }); // 过滤 undefined
+                that.info = info; // 更新原数据\
+            },
+            // 移除数据
+            del() {
+                let that = this;
+                let info = JSON.parse(JSON.stringify(that.new_info)); // 拷贝原数据, 深拷贝
+                info.forEach((item, index) => {
+                    // 执行 select 为true 的数据
+                    if (item.select) {
+                        that.info = that.info.concat(item).sort((a, b) => {
+                            return a.id - b.id
+                        }); // 添加到新数据框, 排序
+                        delete info[index];    // 删除数据
+                        item.select = false;
+                    }
+                    that.changeItem(item);
+                })
+                info = info.filter(function (val) {
+                    return val
+                }); // 过滤 undefined
+                that.new_info = info; // 更新原数据
+            },
+
+            cancel: function () {
+                this.backToMain();
+            },
+            save: function () {
+                if (this.new_info.length === 0) {
+                    return toastr.error("您还未选中任何坐席");
+                }
+                let that = this;
+                let ids = [];
+                for (let i = 0; i < this.new_info.length; i++) {
+                    ids.push(this.new_info[i]["id"]);
+                }
+                AJAX.POST('zsQueue/add/' + this.entity.id, {ids: ids.join(",")}, function (resp) {
+                    toastr.success(resp.msg);
+                    that.backToMain();
+                });
+            },
+            backToMain: function () {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/queue/list.html',
+                    container: '.page-container'
+                });
+            }
+        }
+    });
+
+    $().ready(function () {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                name: "required"
+            },
+            messages: {
+                name: icon + "请输入用户名称",
+            }
+        });
+    });
+</script>

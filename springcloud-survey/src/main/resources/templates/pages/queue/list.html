@@ -1,0 +1,117 @@
+    <div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>队列</h5>
+            <div class="ibox-tools">
+                <div class="ibox-tools">
+                    <a :href="applicationContextRootPath + 'pages/queue/add.html'"
+                       data-pjax class="btn btn-success btn-xs">新建队列</a>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入姓名" class="input-sm form-control search-input"
+                               v-model="pageInfo.name"> <span
+                            class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>队列名称</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in items">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td><span>{{item.name}}</span></td>
+                        <td><span>{{item.createdAt}}</span></td>
+                        <td>
+                            <a class="btn btn-xs btn-warning" @click="addQueue(item)" v-if="resultDev">查看队列</a>
+                            <a class="btn btn-xs btn-danger" @click="deleteItem(item)" v-if="result">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
+        </div>
+    </div>
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    currentVue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                uname: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
+            items: [],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
+        },
+        created: function () {
+           this.loginMaster();
+        },
+        methods: {
+            addQueue(item) {
+                toPage("pages/queue/addQueue.html", item.id)
+            },
+            deleteItem(item) {
+                let that = this;
+                confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        console.log(item);
+                        AJAX.DELETE('zsQueue', {id: item.id}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            loginMaster(){
+                var that = this;
+                this.master = sessionStorage.getItem('master');
+                var masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                })
+            },
+            pagequery: function () {
+                let that = this;
+                AJAX.GET('zsQueue', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+        }
+    });
+</script>
