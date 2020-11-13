@@ -1,10 +1,21 @@
 package com.camel.interviewer.entity.wx;
 
 public class BaseMessage {
-    private String ToUserName;
-    private String FromUserName;
-    private long CreateTime;
-    private String MsgType;
+    public String ToUserName;
+    public String FromUserName;
+    public long CreateTime;
+    public String MsgType;
+
+    public BaseMessage(String toUserName, String fromUserName, long createTime, String msgType) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+    }
+
+    public BaseMessage() {
+    }
+
     public String getToUserName() {
         return ToUserName;
     }

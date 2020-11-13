@@ -92,7 +92,7 @@ public class WeixinStartController {
                 //处理订阅事件
                 if (MessageUtil.MESSAGE_SUBSCIBE.equals(eventType)) {
                     logger.info("订阅事件推送");
-                    message = MessageUtil.subscribeForText(toUserName, fromUserName);
+                    message = MessageUtil.subscribeForImageText(toUserName, fromUserName);
                     wxSubscibeService.save(fromUserName, eventKey);
                     //处理取消订阅事件
                 } else if (MessageUtil.MESSAGE_UNSUBSCIBE.equals(eventType)) {
