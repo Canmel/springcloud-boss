@@ -88,14 +88,14 @@ public class WeixinStartController {
             String eventKey = map.get("EventKey");//自定义参数
             String eventType = map.get("Event");
             //如果为事件类型
-            if (MessageUtil.MSGTYPE_EVENT.equals(msgType)) {
+            if (MessageUtil.REQ_MESSAGE_TYPE_EVENT.equals(msgType)) {
                 //处理订阅事件
-                if (MessageUtil.MESSAGE_SUBSCIBE.equals(eventType)) {
+                if (MessageUtil.EVENT_TYPE_SUBSCRIBE.equals(eventType)) {
                     logger.info("订阅事件推送");
                     message = MessageUtil.subscribeForImageText(toUserName, fromUserName);
                     wxSubscibeService.save(fromUserName, eventKey);
                     //处理取消订阅事件
-                } else if (MessageUtil.MESSAGE_UNSUBSCIBE.equals(eventType)) {
+                } else if (MessageUtil.EVENT_TYPE_UNSUBSCRIBE.equals(eventType)) {
                     message = MessageUtil.unsubscribe(toUserName, fromUserName);
                     logger.info("取消订阅事件推送");
                     wxSubscibeService.unsave(fromUserName);
