@@ -53,7 +53,7 @@
 
     <select id="lineChartCollect" resultType="hashmap">
         select
-            DATE_FORMAT(ymd.date, '%m%d') as xkey,
+            DATE_FORMAT(ymd.date, '%m月%d日') as xkey,
             sum(case za.id > 0 when true then 1 else 0 end) value
         from (
             SELECT DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (ac - 1) DAY), '%Y%m%d') as date
