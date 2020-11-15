@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>完善资料</title>
+    <title>正在跳转...</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
     <script src="/viewer/wx/js/jquery-2.1.4.js"></script>
 
@@ -41,7 +41,7 @@
             created: function () {
                 this.initUserInfo();
                 window.location.href = "http://fy.svdata.cn/webroot/decision/view/report?viewlet=%E5%85%BC%E8%81%8C%E6%8A%A5%E5%90%8D%E8%A1%A8.cpt&op=write" +
-                    "username=" + this.userinfo.username + "&idNUm=" + this.userinfo.idNum;
+                    "&username=" + this.userinfo.username + "&idNUm=" + this.userinfo.idNum;
             },
             methods: {
                 getQueryString(name) {
