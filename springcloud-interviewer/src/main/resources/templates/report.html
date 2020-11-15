@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>完善资料</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <script src="/viewer/wx/js/jquery-2.1.4.js"></script>
+
+    <script src="/viewer/wx/js/vue.js"></script>
+</head>
+<body>
+<div class="container" id="container">
+
+</div>
+<script src="/viewer/wx/js/ajax-util.js"></script>
+</body>
+<script type="application/javascript">
+    $(function () {
+    })
+    new Vue(
+        {
+            el: '#wrapper',
+            data: {
+                userinfo: {
+                    id: '',
+                    openid: '',
+                    username: '',
+                    idNum: '',
+                    school: '',
+                    phone: '',
+                    sex: '0',
+                    email: '',
+                    validCode: ''
+                },
+                isComplete: false,
+                submitActive: true,
+                countNum: 60,
+                counter: null,
+                isEdit: false
+            },
+            created: function () {
+                this.initUserInfo();
+                window.location.href = "http://fy.svdata.cn/webroot/decision/view/report?viewlet=%E5%85%BC%E8%81%8C%E6%8A%A5%E5%90%8D%E8%A1%A8.cpt&op=write" +
+                    "username=" + this.userinfo.username + "&idNUm=" + this.userinfo.idNum;
+            },
+            methods: {
+                getQueryString(name) {
+                    let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+                    let r = window.location.search.substr(1).match(reg);
+                    if (r != null) {
+                        return unescape(r[2]);
+                    }
+                    return null;
+                },
+                initUserInfo() {
+                    let that = this;
+                    if (this.getQueryString("code") || true) {
+                        $.ajax({
+                            url: '/viewer/getUserInfo?code=' + this.getQueryString("code"),
+                            type: 'GET',
+                            async: false,
+                            success: function (resp) {
+                                if (resp.data) {
+                                    that.isComplete = true;
+                                    let user = resp.data;
+                                    that.userinfo.id = user.id;
+                                    that.userinfo.openid = user.openid;
+                                    that.userinfo.username = user.username;
+                                    that.userinfo.idNum = user.idNum;
+                                    that.userinfo.school = user.school;
+                                    that.userinfo.phone = user.phone;
+                                    that.userinfo.email = user.email;
+                                    that.userinfo.sex = user.sex;
+                                    if (that.userinfo.id) {
+                                        that.isEdit = true;
+                                    }
+                                }
+                            },
+                            error: function (err) {
+                            }
+                        });
+                    } else {
+                        $.toast("未获取到用户信息", "cancel", function (toast) {
+                        });
+                    }
+                }
+            }
+        }
+    );
+</script>
+</html>
