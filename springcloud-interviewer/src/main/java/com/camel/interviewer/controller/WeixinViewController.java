@@ -31,4 +31,10 @@ public class WeixinViewController {
     public String share() {
         return "share";
     }
+
+    @AuthIgnore
+    @GetMapping("/report")
+    public String report() {
+        return "report";
+    }
 }
