@@ -16,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,39 +71,25 @@ public class WeixinStartController {
 
     @AuthIgnore
     @PostMapping
-    private void event(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-        String message = "success";
-        try {
-            Map<String, String> map = XmlUtil.xmlToMap(request);
-            String fromUserName = map.get("FromUserName");//消息来源用户标识
-            String toUserName = map.get("ToUserName");//消息目的用户标识
-            String msgType = map.get("MsgType");//消息类型
-            String content = map.get("Content");//消息内容
-            String eventKey = map.get("EventKey");//自定义参数
-            String eventType = map.get("Event");
-            //如果为事件类型
-            if (MessageUtil.REQ_MESSAGE_TYPE_EVENT.equals(msgType)) {
-                //处理订阅事件
-                if (MessageUtil.EVENT_TYPE_SUBSCRIBE.equals(eventType)) {
-                    logger.info("订阅事件推送");
-                    message = MessageUtil.subscribeForImageText(toUserName, fromUserName);
-                    wxSubscibeService.save(fromUserName, eventKey);
-                    //处理取消订阅事件
-                } else if (MessageUtil.EVENT_TYPE_UNSUBSCRIBE.equals(eventType)) {
-                    message = MessageUtil.unsubscribe(toUserName, fromUserName);
-                    logger.info("取消订阅事件推送");
-                    wxSubscibeService.unsave(fromUserName);
-                }
-            }
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } finally {
-            out.println(message);
-            if (out != null) {
-                out.close();
+    private void event(@RequestBody Map<String, String> map, HttpServletResponse response) throws IOException {
+        String fromUserName = map.get("FromUserName");//消息来源用户标识
+        String toUserName = map.get("ToUserName");//消息目的用户标识
+        String msgType = map.get("MsgType");//消息类型
+        String content = map.get("Content");//消息内容
+        String eventKey = map.get("EventKey");//自定义参数
+        String eventType = map.get("Event");
+        //如果为事件类型
+        if (MessageUtil.REQ_MESSAGE_TYPE_EVENT.equals(msgType)) {
+            //处理订阅事件
+            if (MessageUtil.EVENT_TYPE_SUBSCRIBE.equals(eventType)) {
+                logger.info("订阅事件推送");
+                MessageUtil.subscribeForImageText(toUserName, fromUserName);
+                wxSubscibeService.save(fromUserName, eventKey);
+                //处理取消订阅事件
+            } else if (MessageUtil.EVENT_TYPE_UNSUBSCRIBE.equals(eventType)) {
+                MessageUtil.unsubscribe(toUserName, fromUserName);
+                logger.info("取消订阅事件推送");
+                wxSubscibeService.unsave(fromUserName);
             }
         }
     }
@@ -115,7 +98,7 @@ public class WeixinStartController {
     @GetMapping("/getToken")
     private Result qrCode(String code) {
         WxUser wxUser = weixinStartService.getUser(code);
-        if(ObjectUtils.isEmpty(wxUser)) {
+        if (ObjectUtils.isEmpty(wxUser)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");
         }
         String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
@@ -179,19 +162,14 @@ public class WeixinStartController {
                 "&url=" + url;
         System.out.println(string1);
 
-        try
-        {
+        try {
             MessageDigest crypt = MessageDigest.getInstance("SHA-1");
             crypt.reset();
             crypt.update(string1.getBytes("UTF-8"));
             signature = byteToHex(crypt.digest());
-        }
-        catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -206,8 +184,7 @@ public class WeixinStartController {
 
     private static String byteToHex(final byte[] hash) {
         Formatter formatter = new Formatter();
-        for (byte b : hash)
-        {
+        for (byte b : hash) {
             formatter.format("%02x", b);
         }
         String result = formatter.toString();
