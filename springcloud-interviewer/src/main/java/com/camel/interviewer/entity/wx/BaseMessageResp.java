@@ -1,21 +1,20 @@
 package com.camel.interviewer.entity.wx;
-
-public class BaseMessage {
-    public String ToUserName;
-    public String FromUserName;
-    public long CreateTime;
-    public String MsgType;
-
-    public BaseMessage(String toUserName, String fromUserName, long createTime, String msgType) {
-        ToUserName = toUserName;
-        FromUserName = fromUserName;
-        CreateTime = createTime;
-        MsgType = msgType;
-    }
-
-    public BaseMessage() {
-    }
-
+/**
+ * 回复消息基类
+ * 开发账号->普通用户
+ * @author Administrator
+ *
+ */
+public class BaseMessageResp {
+	// 接收方帐号（收到的OpenID）
+    private String ToUserName;
+    // 开发者微信号
+    private String FromUserName;
+    // 消息创建时间 （整型）
+    private long CreateTime;
+    // 消息类型（text/music/news）
+    private String MsgType;
+  
     public String getToUserName() {
         return ToUserName;
     }
@@ -40,4 +39,5 @@ public class BaseMessage {
     public void setMsgType(String msgType) {
         MsgType = msgType;
     }
+   
 }

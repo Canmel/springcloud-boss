@@ -1,5 +1,6 @@
 package com.camel.interviewer.utils;
 
+import cn.hutool.core.date.DateUtil;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONString;
 import org.apache.http.client.HttpClient;
@@ -13,11 +14,16 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class WxTokenUtil {
+
+    public static String WX_TOKEN;
+
+    public static Date WX_TOKEN_DATE;
 
     public static final String WX_ACCESS_TOKEN_RKEY = "wx_access_token";
 
@@ -32,12 +38,11 @@ public class WxTokenUtil {
 
     public String getTocken(String appId, String appSecret, RedisTemplate redisTemplate) {
         System.out.println("appID = " + appId + "  appSecret = " + appSecret);
-        ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
-        HashMap<String, String> token = (HashMap<String, String>) operations.get(WX_ACCESS_TOKEN_RKEY);
-        System.out.println("------------ttttttoooookkkkkkennnn" + token);
-        if(!ObjectUtils.isEmpty(token) && token.containsKey("access_token")) {
-            System.out.println(token.get("access_token"));
-            return token.get("access_token");
+
+        System.out.println("------------ttttttoooookkkkkkennnn" + WX_TOKEN);
+        if(!ObjectUtils.isEmpty(WX_TOKEN) && new Date().getTime() > WX_TOKEN_DATE.getTime() && DateUtil.nanosToSeconds(new Date().getTime() - WX_TOKEN_DATE.getTime()) > 7200) {
+            System.out.println(WX_TOKEN);
+            return WX_TOKEN;
         }
         String requestUrl = GetPageAccessTokenUrl.replace("APPID", appId).replace("SECRET", appSecret);
         HttpClient client = null;
@@ -50,7 +55,8 @@ public class WxTokenUtil {
             String response = client.execute(httpget, responseHandler);
             Map<String, Object> map = new GsonJsonParser().parseMap(response);
             accessToken = String.valueOf(map.get("access_token"));
-            operations.set(WX_ACCESS_TOKEN_RKEY, map, 7200, TimeUnit.SECONDS);
+            WX_TOKEN = accessToken;
+            WX_TOKEN_DATE = new Date();
             result = accessToken;
         } catch (Exception e) {
             e.printStackTrace();
