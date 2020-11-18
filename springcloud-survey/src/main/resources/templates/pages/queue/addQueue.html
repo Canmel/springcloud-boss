@@ -37,7 +37,7 @@
             <div class="transfer">
                 <!-- 左框 -->
                 <ul class="list left" style="overflow-y: scroll">
-                    <template v-for="(item, index) in info">
+                    <template v-for="(item, index) in info" v-if="!item.queueId">
                         <li :key="index" :class="{'selected-item': item.select}">
                             <span :id=`checkbox${item.id}` name="checkbox" :checked="item.select"
                                   @click="selected(item)" class="fa fa-phone-square">

@@ -57,6 +57,14 @@ public class ZsSeat extends BasePaginationEntity {
 
     private Date lastSubmit;
 
+    private Integer queueId;
+
+    @TableField(exist = false)
+    private ZsQueue queue;
+
+    @TableField(exist = false)
+    private String queueName;
+
     @Override
     public String toString() {
         return "ZsSeat{" +

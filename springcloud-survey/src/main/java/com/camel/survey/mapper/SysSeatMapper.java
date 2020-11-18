@@ -3,6 +3,7 @@ package com.camel.survey.mapper;
 import com.camel.survey.model.Args;
 import com.camel.survey.model.SysSeat;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @author baily
  * @since 2020-05-30
  */
+@Repository
 public interface SysSeatMapper extends BaseMapper<SysSeat> {
     /**
      * 查询列表

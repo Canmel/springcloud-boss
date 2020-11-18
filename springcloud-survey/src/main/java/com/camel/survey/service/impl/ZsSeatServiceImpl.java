@@ -6,13 +6,14 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.mapper.ZsSeatMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
-import com.camel.survey.model.Args;
-import com.camel.survey.model.ZsSeat;
+import com.camel.survey.model.*;
+import com.camel.survey.service.RelSeatQueueService;
 import com.camel.survey.service.ZsSeatService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageHelper;
@@ -23,6 +24,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -42,11 +45,16 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     public ZsSeatMapper mapper;
 
     @Autowired
+    private RelSeatQueueService relSeatQueueService;
+
+    @Autowired
     public ApplicationToolsUtils applicationToolsUtils;
 
     @Override
     public PageInfo<ZsSeat> pageQuery(ZsSeat zsSeat) {
-        PageInfo pageInfo = PageHelper.startPage(zsSeat.getPageNum(), zsSeat.getPageSize()).doSelectPageInfo(()-> mapper.list(zsSeat));
+        PageInfo pageInfo = PaginationUtil.startPage(zsSeat, () -> {
+            mapper.list(zsSeat);
+        });
         List<ZsSeat> seats = (List<ZsSeat>) pageInfo.getList();
         seats.forEach(record -> {
             record.setUser(applicationToolsUtils.getUser(record.getUid()));
@@ -68,15 +76,15 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
 
     @Override
     public Result save(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
-        if(entity.getSeatNum()==null||entity.getSeatNum().equals("")){
+        if (entity.getSeatNum() == null || entity.getSeatNum().equals("")) {
             return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "坐席号不可为空");
         }
-        if(entity.getPassword()==null||entity.getPassword().equals("")){
+        if (entity.getPassword() == null || entity.getPassword().equals("")) {
             return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "坐席号密码不可为空");
         }
         Wrapper<ZsSeat> zsSeatWrapper = new EntityWrapper<>();
         zsSeatWrapper.eq("seat_num", entity.getSeatNum());
-        if(selectList(zsSeatWrapper).size()>0){
+        if (selectList(zsSeatWrapper).size() > 0) {
             return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "该坐席号已存在");
         }
         if (insert(entity)) {
@@ -101,58 +109,82 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
     }
 
     @Override
-    public boolean assignSeat(Integer uid, Integer surveyId){
-        Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
-        wrapper.eq("uid",uid);
-        List<ZsSeat> seats = selectList(wrapper);
-        if(seats.size()==0){
-            Wrapper<ZsSeat> wrapper1 = new EntityWrapper<>();
-            wrapper1.eq("state",0);
-            if(selectCount(wrapper1)>0){
-                ZsSeat seat = selectList(wrapper1).get(0);
-                seat.setState(ZsYesOrNo.YES);
-                seat.setUid(uid);
-                seat.setWorkNum((seat.getUid()+1000)+"");
-                if(!ObjectUtils.isEmpty(surveyId)) {
-                    seat.setSurveyId(surveyId);
-                }
-                updateById(seat);
-                return mapper.assignSeat(seat.getSeatNum(),seat.getUid());
-            }
-            else{
-                return false;
-            }
-        } else {
-            ZsSeat seat = seats.get(0);
-            seat.setSurveyId(surveyId);
+    @Transactional
+    public boolean assignSeat(Integer uid, ZsWorkShift zsWorkShift) {
+        Integer surveyId = zsWorkShift.getSurveyId();
+        // 1. 把坐席去掉
+        ZsSeat seat = selectByUid(uid);
+        if(!ObjectUtils.isEmpty(seat)) {
+            seat.setState(ZsYesOrNo.NO);
             updateById(seat);
         }
-        return true;
+        // 2. 从指定坐席队列中获取坐席
+        ZsSeat newSeat = selectFreeSeat(zsWorkShift.getQueueId());
+        if (ObjectUtils.isEmpty(newSeat)) {
+            return false;
+        }
+        // 3. 设置坐席信息,将最新信息写入坐席
+        newSeat.setState(ZsYesOrNo.YES);
+        newSeat.setUid(uid);
+        newSeat.setWorkNum((uid + 1000) + "");
+        if (!ObjectUtils.isEmpty(surveyId)) {
+            newSeat.setSurveyId(surveyId);
+        }
+        updateById(newSeat);
+        // 4. 更新用户表，使得可以在用户表中看见更新
+        return mapper.assignSeat(seat.getSeatNum(), seat.getUid());
     }
 
     @Override
     public Result manualAssign(ZsSeat entity, OAuth2Authentication oAuth2Authentication) {
         Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
-        wrapper.eq("seat_num",entity.getSeatNum());
+        wrapper.eq("seat_num", entity.getSeatNum());
         ZsSeat seat = selectOne(wrapper);
-        if(seat!=null){
-            if(seat.getState().getCode()==0){
+        if (seat != null) {
+            if (seat.getState().getCode() == 0) {
                 callbackByUser(entity.getUid());
-            }
-            else{
+            } else {
                 return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "该坐席已分配，不可重复分配");
             }
-        }
-        else{
+        } else {
             return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "该坐席号不存在，请先新建坐席");
         }
         seat.setState(ZsYesOrNo.YES);
         seat.setUid(entity.getUid());
-        seat.setWorkNum((seat.getUid()+1000)+"");
+        seat.setWorkNum((seat.getUid() + 1000) + "");
         seat.setPassword(entity.getPassword());
         if (updateById(seat)) {
             return ResultUtil.success("分配成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "分配失败");
+    }
+
+    @Override
+    public ZsSeat selectFreeSeat(ZsQueue queue) {
+        Wrapper<ZsSeat> seatWrapper = new EntityWrapper<>();
+        seatWrapper.eq("queue_id", queue.getId());
+        seatWrapper.eq("state", ZsYesOrNo.NO.getValue());
+        List<ZsSeat> seats = selectList(seatWrapper);
+        if (CollectionUtils.isEmpty(seats)) {
+            return null;
+        }
+        return seats.get(0);
+    }
+
+    @Override
+    public ZsSeat selectFreeSeat(Integer queueId) {
+        Wrapper<ZsSeat> seatWrapper = new EntityWrapper<>();
+        seatWrapper.eq("queue_id", queueId);
+        seatWrapper.eq("state", ZsYesOrNo.NO.getValue());
+        List<ZsSeat> seats = selectList(seatWrapper);
+        if (CollectionUtils.isEmpty(seats)) {
+            return null;
+        }
+        return seats.get(0);
+    }
+
+    @Override
+    public void clearQueue(Integer id) {
+        mapper.clearQueue(id);
     }
 }

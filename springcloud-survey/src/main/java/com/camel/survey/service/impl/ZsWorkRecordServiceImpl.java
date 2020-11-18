@@ -118,7 +118,7 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
     @Override
     public Result updateSignW(ZsWorkRecord entity) {
         ZsWorkShift zsWorkShift = zsWorkShiftservice.selectById(entity.getWsId());
-        if (!zsSeatService.assignSeat(entity.getCreatorId(), zsWorkShift.getSurveyId())) {
+        if (!zsSeatService.assignSeat(entity.getCreatorId(), zsWorkShift)) {
             throw new SourceDataNotValidException("分配坐席出错,请检查剩余坐席");
         }
 

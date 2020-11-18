@@ -1,6 +1,8 @@
 package com.camel.survey.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.common.entity.Member;
 import com.camel.core.entity.Result;
@@ -8,19 +10,25 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.ApplicationUtils;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.Args;
+import com.camel.survey.model.RelSeatQueue;
+import com.camel.survey.model.ZsQueue;
 import com.camel.survey.model.ZsSeat;
+import com.camel.survey.service.RelSeatQueueService;
 import com.camel.survey.service.ZsSeatService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -38,6 +46,21 @@ public class ZsSeatController extends BaseCommonController {
 
     @Autowired
     private ApplicationToolsUtils applicationUtils;
+
+    @Autowired
+    private RelSeatQueueService seatQueueService;
+
+    @GetMapping("/all")
+    public Result all(Integer queueId) {
+        return ResultUtil.success(service.selectList(new EntityWrapper<>()));
+    }
+
+    @GetMapping("/queue/{id}")
+    public Result queue(@PathVariable Integer id) {
+        Wrapper<ZsSeat> seatWrapper = new EntityWrapper<>();
+        seatWrapper.eq("queue_id", id);
+        return ResultUtil.success(service.selectList(seatWrapper));
+    }
 
     /**
      * 分页查询
@@ -118,6 +141,11 @@ public class ZsSeatController extends BaseCommonController {
         return super.delete(id);
     }
 
+    /**
+     * 回收座席号
+     * @param id
+     * @return
+     */
     @PostMapping("/callback/{id}")
     public Result callback(@PathVariable Integer id) {
         service.callback(id);

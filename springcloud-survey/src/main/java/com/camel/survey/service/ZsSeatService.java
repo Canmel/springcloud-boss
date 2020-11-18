@@ -2,10 +2,8 @@ package com.camel.survey.service;
 
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
-import com.camel.survey.model.Args;
-import com.camel.survey.model.ZsSeat;
+import com.camel.survey.model.*;
 import com.baomidou.mybatisplus.service.IService;
-import com.camel.survey.model.ZsSign;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
@@ -51,7 +49,11 @@ public interface ZsSeatService extends IService<ZsSeat> {
      * @param uid
      * @return
      */
-    boolean assignSeat(Integer uid, Integer surveyId);
+    boolean assignSeat(Integer uid, ZsWorkShift zsWorkShift);
+
+    ZsSeat selectFreeSeat(ZsQueue queue);
+
+    ZsSeat selectFreeSeat(Integer queueId);
 
 
     /**
@@ -61,4 +63,6 @@ public interface ZsSeatService extends IService<ZsSeat> {
      * @return
      */
     Result manualAssign(ZsSeat entity, OAuth2Authentication oAuth2Authentication);
+
+    void clearQueue(Integer id);
 }

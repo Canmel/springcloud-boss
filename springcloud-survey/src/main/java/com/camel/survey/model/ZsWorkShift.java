@@ -50,6 +50,9 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private ZsYesOrNo statusUser;
 
+    @TableField(exist = false)
+    private ZsQueue queue;
+
     /**
      * 问卷id
      */
@@ -64,6 +67,8 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
     private String startDate;
 
     private Integer stype;
+
+    private Integer queueId;
 
     /**
      * 状态

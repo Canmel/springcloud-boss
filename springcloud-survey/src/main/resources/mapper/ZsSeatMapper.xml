@@ -13,22 +13,39 @@
         <result column="work_num" property="workNum" />
         <result column="survey_id" property="surveyId" />
         <result column="last_submit" property="lastSubmit"/>
+        <result column="queue_id" property="queueId"/>
+        <association property="queue" javaType="com.camel.survey.model.ZsQueue">
+            <result column="queue_id" property="id"/>
+            <result column="name" property="name"/>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, seat_num, password, description,state,work_num, survey_id, last_submit
+        id, uid, seat_num, password, description,state,work_num, survey_id, last_submit, queue_id
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
-        select
-         <include refid="Base_Column_List"></include>
-        from
-        zs_seat
+        SELECT
+            seat.id,
+            seat.uid,
+            seat.seat_num,
+            seat.PASSWORD,
+            seat.description,
+            seat.state,
+            seat.work_num,
+            seat.survey_id,
+            seat.last_submit,
+            seat.queue_id,
+            queue.name
+        FROM
+            zs_seat seat
+            LEFT JOIN zs_queue queue ON queue.id = seat.queue_id
         <where>
-            <if test="seatNum !=null and seatNum != ''">and zs_seat.seat_num like CONCAT('%', #{seatNum}, '%')</if>
+            <if test="seatNum !=null and seatNum != ''">AND seat.seat_num LIKE CONCAT('%', #{seatNum}, '%')</if>
+            <if test="queueName !=null and queueName != ''">AND queue.name LIKE CONCAT('%', #{queueName}, '%')</if>
         </where>
-        ORDER BY last_submit desc
+        ORDER BY seat.last_submit DESC
     </select>
 
     <select id="selectLastByUser" resultMap="BaseResultMap">
@@ -74,5 +91,9 @@
         state = 0,
         work_num = null
         where uid = #{userId}
+    </update>
+
+    <update id="clearQueue">
+        update zs_seat set queue_id = null where queue_id = #{id}
     </update>
 </mapper>
