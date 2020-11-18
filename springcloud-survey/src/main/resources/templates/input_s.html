@@ -612,13 +612,13 @@
 
             },
             submit(question, event) {
-                var that = this;
+                let that = this;
                 if (!this.validateForm()) {
                     alert('请完成表单');
                     return false;
                 }
                 if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
-                    var resultStr = "";
+                    let resultStr = "";
                     if (question.maxSelect) {
                         resultStr += '最多只能选择' + question.maxSelect + '条';
                     }
@@ -628,7 +628,7 @@
                     alert(resultStr);
                     return;
                 }
-                this.loadFinalData();
+                // this.loadFinalData();
                 let currentParams = this.pageParams[this.userParamsIndex];
 
                 AJAX.POST_JSON('zsQuestion/answer', {
@@ -709,13 +709,13 @@
                 return false;
             },
             loadParams() {
-                var params = location.href.split("?")[1];
+                let params = location.href.split("?")[1];
                 this.pageInfo.hrefstr = params;
-                var paramsPair = params.split("&");
+                let paramsPair = params.split("&");
                 this.paramsPair = paramsPair;
             },
             getParams(paramName) {
-                var result = null;
+                let result = null;
                 this.paramsPair.forEach(function (value) {
                     if (value.includes(paramName)) {
                         result = value.split("=")[1]
@@ -725,7 +725,7 @@
                 return result;
             },
             loadSurvey() {
-                var that = this;
+                let that = this;
                 AJAX.GET('zsSurvey/questions/' + this.getParams('surveyId'), {}, function (resp) {
                     that.questions = resp.data;
                     if (that.questions.length === 1) {
