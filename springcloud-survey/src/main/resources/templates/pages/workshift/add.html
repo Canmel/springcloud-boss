@@ -15,6 +15,17 @@
                         <span class="click-span"  v-on:click="showSurveys()">{{zs_workshift.surveyId==0?msg[0]:surveyname}}</span>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">选择队列：</label>
+                    <div class="col-sm-8">
+                        <select name="type" aria-required="true"
+                                aria-invalid="true" class="form-control m-b"
+                                v-model="zs_workshift.queueId">
+                            <option :value="item.id" v-for="item in queues">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">地址：</label>
                     <div class="col-sm-8">
@@ -94,7 +105,8 @@
                 endTime: '',
                 startDate:'',
                 surveyId:0,
-                stype: 0
+                stype: 0,
+                queueId: null
             },
             pageInfo: {
                 name: '',
@@ -118,15 +130,23 @@
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
+            queues: []
         },
         created: function () {
             this.loginMaster();
+            this.loadQueues();
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
             this.zs_workshift.creatorId = this.user.userid;
             this.zs_workshift.cuname = this.user.username;
         },
         methods: {
+            loadQueues() {
+                let that = this;
+                AJAX.GET("zsQueue/all", {}, function (resp) {
+                    that.queues = resp.data;
+                })
+            },
             all() {
                 this.pageInfo.isAll = !this.pageInfo.isAll;
                 this.pagequery();

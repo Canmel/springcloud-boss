@@ -12,11 +12,16 @@
         <div class="ibox-content">
 
             <div class="row">
-                <div class="col-sm-9"></div>
+                <div class="col-sm-6"></div>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="请输入队列名称" class="input-sm form-control search-input"
+                           v-model="pageInfo.queueName">
+                </div>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
-                               v-model="pageInfo.seatNum"> <span
+                               v-model="pageInfo.seatNum">
+                        <span
                             class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
                     </div>
@@ -35,6 +40,8 @@
                         <th>用户号码</th>
                         <th>工号</th>
                         <th>是否在用</th>
+                        <th>所在队列</th>
+
                         <th>上次提交时间</th>
                         <th>操作</th>
                     </tr>
@@ -51,6 +58,7 @@
                         <td>
                             <span class="label-restore label" v-if="item.state && item.state.code === 0">否</span>
                             <span class="label-success label" v-if="item.state && item.state.code === 1">是</span></td>
+                        <td>{{item.queue ? item.queue.name : "" }}</td>
                         <td>{{item.lastSubmit | toNow}}</td>
                         <td>
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
@@ -82,6 +90,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                queueName: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10

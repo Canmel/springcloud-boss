@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -114,7 +115,12 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
         Integer surveyId = zsWorkShift.getSurveyId();
         // 1. 把坐席去掉
         ZsSeat seat = selectByUid(uid);
+        // 1.1 如果当前人有坐席
         if(!ObjectUtils.isEmpty(seat)) {
+            // 1.2 如果当前人的坐席就在该队列
+            if(ObjectUtil.isNotEmpty(seat.getQueueId()) && seat.getQueueId().equals(zsWorkShift.getQueueId())) {
+                return true;
+            }
             seat.setState(ZsYesOrNo.NO);
             updateById(seat);
         }
@@ -132,7 +138,7 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
         }
         updateById(newSeat);
         // 4. 更新用户表，使得可以在用户表中看见更新
-        return mapper.assignSeat(seat.getSeatNum(), seat.getUid());
+        return mapper.assignSeat(ObjectUtil.isNotEmpty(seat) ? seat.getSeatNum() : newSeat.getSeatNum(), uid);
     }
 
     @Override
