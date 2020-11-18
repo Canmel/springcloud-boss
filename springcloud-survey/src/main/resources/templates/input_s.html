@@ -103,8 +103,8 @@
                                                                   :value="opt.id + '_' +  opt.name"
                                                                   :content="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
-                                <span>{{textFilter(opt.name)}}</span>
-                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
+                                <span>{{textFilter(opt.text)}}</span>
+                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
                                        v-model="opt.name">
                             </label>
 
@@ -124,8 +124,8 @@
                                                                   :value="opt.id + '_' +  opt.name"
                                                                   :content="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
-                                <span :value="opt.id + '_' +  opt.name">{{textFilter(opt.name)}}</span>
-                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
+                                <span :value="opt.id + '_' +  opt.name">{{textFilter(opt.text)}}</span>
+                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
                                        v-model="opt.name">
                             </label>
 

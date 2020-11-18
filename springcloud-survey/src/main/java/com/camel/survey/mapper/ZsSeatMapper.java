@@ -49,4 +49,6 @@ public interface ZsSeatMapper extends BaseMapper<ZsSeat> {
      * @return
      */
     int callbackByUid(int userId);
+
+    void clearQueue(Integer id);
 }

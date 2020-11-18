@@ -58,6 +58,12 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     private String name;
 
     /**
+     * 名称，显示作用,让前段多个字段，避免双向绑定
+     */
+    @TableField(exist = false)
+    private String text;
+
+    /**
      * 有没有备注
      */
     @ExcelAnnotation(columnName = "是否有备注", columnIndex = 9)

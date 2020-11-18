@@ -1,0 +1,68 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="signupForm">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">队列名称：</label>
+                    <div class="col-sm-8">
+                        <input id="roleName" name="roleName" class="form-control" type="text" v-model="entity.name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-3">
+                        <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
+                        <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            entity: {
+                name: ''
+            }
+        },
+        created: function () {
+
+        },
+        methods: {
+            cancel: function () {
+                this.backToMain();
+            },
+            save: function () {
+                if(!$("#signupForm").valid()){
+                    return false;
+                }
+                let that = this;
+                AJAX.POST('zsQueue', this.entity, function (resp) {
+                    toastr.success(resp.msg);
+                    that.backToMain();
+                });
+            },
+            backToMain: function () {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/queue/list.html',
+                    container: '.page-container'
+                });
+            }
+        }
+    });
+
+    $().ready(function () {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                name: "required"
+            },
+            messages: {
+                name: icon + "请输入用户名称",
+            }
+        });
+    });
+</script>
