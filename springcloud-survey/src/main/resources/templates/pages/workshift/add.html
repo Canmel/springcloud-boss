@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">选择队列：</label>
                     <div class="col-sm-8">
-                        <select name="type" aria-required="true"
+                        <select name="queueId" aria-required="true"
                                 aria-invalid="true" class="form-control m-b"
                                 v-model="zs_workshift.queueId">
                             <option :value="item.id" v-for="item in queues">{{item.name}}</option>
@@ -271,14 +271,16 @@
                 address: "required",
                 starttime: "required",
                 endtime: "required",
-                startdate:"required"
+                startdate:"required",
+                queueId: "required"
             },
             messages: {
                 cname: icon + "请输入班次名称",
                 address: icon + "请输入地址",
                 starttime: icon + "请选择开始时间",
                 endtime: icon + "请选择结束时间",
-                startdate: icon + "请选择开始日期"
+                startdate: icon + "请选择开始日期",
+                queueId: "请选择队列"
             }
         });
 
