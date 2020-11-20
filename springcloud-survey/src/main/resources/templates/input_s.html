@@ -525,10 +525,6 @@
                 if (this.current === this.nextIndex) {
                     this.nextIndex += 1
                 }
-                console.log(this.questions.length);
-                console.log(this.nextIndex);
-                console.log(this.current);
-
                 if (this.questions.length < this.nextIndex) {
                     return;
                 }
@@ -537,11 +533,10 @@
                     this.nextIndex = nextQIndex;
                 }
                 this.current = this.nextIndex;
-                this.nextIndex += 1;
-                console.log('22-->', this.nextIndex);
                 if (this.questions.length <= this.nextIndex) {
                     this.showSubmit = true;
                 }
+                this.nextIndex += 1;
             },
             //删除前一题的作答
             deletePreviousQuestion(){
