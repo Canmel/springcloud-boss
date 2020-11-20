@@ -37,4 +37,10 @@ public class WeixinViewController {
     public String report() {
         return "report";
     }
+
+    @AuthIgnore
+    @GetMapping("/signIn")
+    public String signIn() {
+        return "signIn";
+    }
 }
