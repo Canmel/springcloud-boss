@@ -525,9 +525,10 @@
                 if (this.current === this.nextIndex) {
                     this.nextIndex += 1
                 }
-                if (this.questions.length <= this.nextIndex) {
-                    this.showSubmit = true;
-                }
+                console.log(this.questions.length);
+                console.log(this.nextIndex);
+                console.log(this.current);
+
                 if (this.questions.length < this.nextIndex) {
                     return;
                 }
@@ -537,6 +538,10 @@
                 }
                 this.current = this.nextIndex;
                 this.nextIndex += 1;
+                console.log('22-->', this.nextIndex);
+                if (this.questions.length <= this.nextIndex) {
+                    this.showSubmit = true;
+                }
             },
             //删除前一题的作答
             deletePreviousQuestion(){
@@ -628,7 +633,7 @@
                     alert(resultStr);
                     return;
                 }
-                // this.loadFinalData();
+                this.loadFinalData();
                 let currentParams = this.pageParams[this.userParamsIndex];
 
                 AJAX.POST_JSON('zsQuestion/answer', {
