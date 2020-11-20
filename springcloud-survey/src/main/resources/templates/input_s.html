@@ -105,7 +105,7 @@
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{textFilter(opt.text)}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
-                                       v-model="opt.name">
+                                       @blur="markBlueHandler($event, opt)" >
                             </label>
 
                             <span class="badge" style="background-color: #f0ad4e" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
@@ -126,7 +126,7 @@
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{textFilter(opt.text)}}</span>
                                 <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
-                                       v-model="opt.name">
+                                       @blur="markBlueHandler($event, opt)">
                             </label>
 
                         </div>
@@ -249,6 +249,9 @@
             this.initPageParams();
         },
         methods: {
+            markBlueHandler(event, opt) {
+                opt.name = event.target.value;
+            },
             getPercentage() {
                 if(this.pageParams) {
                     let p = this.current / this.questions.length;
