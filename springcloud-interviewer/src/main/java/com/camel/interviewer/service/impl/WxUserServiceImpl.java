@@ -1,11 +1,15 @@
 package com.camel.interviewer.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.model.SysUser;
+import com.camel.core.utils.PaginationUtil;
 import com.camel.interviewer.feign.SpringCloudSystemFeignClient;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.mapper.WxUserMapper;
 import com.camel.interviewer.service.WxUserService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -35,5 +39,14 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     @Override
     public void updateSystem(SysUser sysUser) {
         springCloudSystemFeignClient.newNormal(sysUser);
+    }
+
+    @Override
+    public PageInfo<WxUser> pageQuery(WxUser wxUser) {
+        Wrapper<WxUser> wxUserWrapper = new EntityWrapper<>();
+        PageInfo pageInfo = PaginationUtil.startPage(wxUser, () -> {
+            wxUserMapper.list(wxUser);
+        });
+        return pageInfo;
     }
 }

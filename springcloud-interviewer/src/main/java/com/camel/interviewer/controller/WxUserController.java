@@ -1,6 +1,7 @@
 package com.camel.interviewer.controller;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
@@ -8,7 +9,9 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
+import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
+import com.camel.interviewer.service.WxSubscibeService;
 import com.camel.interviewer.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,6 +26,9 @@ import com.camel.core.controller.BaseCommonController;
 import org.thymeleaf.postprocessor.PostProcessor;
 
 import javax.jms.TextMessage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -42,7 +48,39 @@ public class WxUserController extends BaseCommonController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private WxSubscibeService subscibeService;
+
     public static final String QUEUE_NAME = "ActiveMQ.System.New.User";
+
+    @GetMapping
+    private Result index(WxUser wxUser) {
+        return ResultUtil.success(service.pageQuery(wxUser));
+    }
+
+    @PutMapping("/{id}")
+    private Result changeShareUser(@PathVariable Integer id, @RequestBody Map<String, String> params) {
+        String openid = params.get("openid");
+        WxUser wxUser = service.selectById(id);
+        Wrapper<WxSubscibe> wrapper = new EntityWrapper<>();
+        wrapper.eq("user", wxUser.getOpenid());
+        wrapper.eq("status", 1);
+        List<WxSubscibe> wxSubscibes = subscibeService.selectList(wrapper);
+        WxSubscibe wxSubscibe = null;
+        if(!CollectionUtil.isEmpty(wxSubscibes)) {
+            wxSubscibe = wxSubscibes.get(0);
+        }
+        if(!ObjectUtils.isEmpty(wxSubscibe)) {
+            wxSubscibe.setShareUser(openid);
+            subscibeService.updateById(wxSubscibe);
+            return ResultUtil.success("修改推荐人成功");
+        }
+        wxSubscibe = new WxSubscibe();
+        wxSubscibe.setUser(wxUser.getOpenid());
+        wxSubscibe.setShareUser(openid);
+        subscibeService.insert(wxSubscibe);
+        return ResultUtil.success("修改推荐人成功");
+    }
 
     @AuthIgnore
     @PostMapping

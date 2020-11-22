@@ -1,0 +1,201 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>微信用户关注信息管理</h5>
+        </div>
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入姓名" class="input-sm form-control search-input"
+                               v-model="pageInfo.username"> <span
+                            class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>学校</th>
+                        <th>联系电话</th>
+                        <th>邮箱</th>
+                        <th>openid</th>
+                        <th>推荐人</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in items">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td>{{item.username}}</td>
+                        <td>{{item.sex == 0 ? '女': '男'}}</td>
+                        <td>{{item.school}}</td>
+                        <td>{{item.phone}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.openid}}</td>
+                        <td><span class="click-span">{{item.tjUser ? item.tjUser.username : ''}}</span></td>
+                        <td>
+                            <button type="button" v-on:click="applyMenu(item)" class="btn btn-info btn-xs"
+                                    v-if="resultDev">
+                                修改推荐人
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
+
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">修改推荐人</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>学校</th>
+                                <th>联系电话</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, index) in itemsShare">
+                                <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                <td>{{item.username}}</td>
+                                <td>{{item.sex == 0 ? '女': '男'}}</td>
+                                <td>{{item.school}}</td>
+                                <td>{{item.phone}}</td>
+                                <td>
+                                    <button class="btn btn-success btn-xs" @click="selectShareUser(item)">选择</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <pageination :total="pageInfoShare.total" :size="pageInfoShare.size" :page="pageInfoShare.pageNum"
+                                 :changge="pageFnShre"></pageination>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" v-on:click="saveMenus()">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                username: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
+            pageInfoShare: {
+                name: '',
+                openid: '',
+                userId: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
+            items: [{}],
+            itemsShare: [{}],
+            allMenus: [],
+            menuIds: [],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
+        },
+        created: function () {
+            this.getMenus();
+            this.loginMaster();
+        },
+        methods: {
+            loginMaster() {
+                let that = this;
+                this.master = sessionStorage.getItem('master');
+                let masterJ = JSON.parse(this.master);
+                masterJ.forEach(e => {
+                    var authority = e.authority;
+                    if (authority === 'ROLE_ADMIN') {
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if (authority === 'ROLE_DEVOPS') {
+                        that.resultDev = true;
+                    }
+
+                })
+            },
+            getMenus() {
+                let that = this;
+                AJAX.GET('/system/sysMenu/all/list', {}, function (resp) {
+                    that.allMenus = resp.data;
+                });
+            },
+            applyMenu(item) {
+                this.pageInfoShare.openid = item.openid;
+                this.pageInfoShare.userId = item.id;
+                this.pageQueryShareUser();
+                $('#myModal').modal('show');
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('/viewer/wxUser', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            pageFnShre: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            pageQueryShareUser() {
+                let that = this;
+                AJAX.GET('/viewer/wxUser', this.pageInfoShare, function (resp) {
+                    that.itemsShare = resp.data.list;
+                    that.pageInfoShare.pageNum = resp.data.pageNum;
+                    that.pageInfoShare.total = resp.data.total;
+                })
+            },
+            selectShareUser(item) {
+                let that = this;
+                AJAX.PUT('/viewer/wxUser/' + this.pageInfoShare.userId, JSON.stringify({openid: item.openid}), function (resp) {
+                    toastr.success(resp.msg, "操作成功");
+                    that.pagequery();
+                    $('#myModal').modal('hide');
+                })
+            }
+        }
+    });
+</script>

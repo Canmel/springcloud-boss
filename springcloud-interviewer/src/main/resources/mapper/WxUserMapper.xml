@@ -4,27 +4,60 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.interviewer.model.WxUser">
-        <id column="id" property="id" />
-        <result column="username" property="username" />
-        <result column="openid" property="openid" />
-        <result column="sex" property="sex" />
-        <result column="id_num" property="idNum" />
-        <result column="school" property="school" />
-        <result column="phone" property="phone" />
-        <result column="email" property="email" />
-        <result column="created_at" property="createdAt" />
-        <result column="status" property="status" />
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="openid" property="openid"/>
+        <result column="sex" property="sex"/>
+        <result column="id_num" property="idNum"/>
+        <result column="school" property="school"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="status" property="status"/>
+        <association property="tjUser" column="share_user" select="selectTjUser">
+        </association>
+    </resultMap>
+
+    <resultMap id="ShareUserResultMap" type="com.camel.interviewer.model.WxUser">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="openid" property="openid"/>
+        <result column="sex" property="sex"/>
+        <result column="id_num" property="idNum"/>
+        <result column="school" property="school"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, username, openid, sex, id_num, school, phone, email, created_at, status
+        wx_user.id, wx_user.username, wx_user.openid, wx_user.sex, wx_user.id_num, wx_user.school, wx_user.phone, wx_user.email, wx_user.created_at, wx_user.status,
+        b.share_user
     </sql>
+
+    <select id="selectTjUser" resultMap="ShareUserResultMap">
+        select wx_user.id, wx_user.username, wx_user.openid, wx_user.sex, wx_user.id_num, wx_user.school, wx_user.phone, wx_user.email, wx_user.created_at, wx_user.status
+        from wx_user
+        where
+        wx_user.openid = #{openid}
+        order by id DESC limit 1;
+
+    </select>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
-        wx_user
+        wx_user wx_user left join
+        (select * from wx_subscibe where status = 1) b
+        on wx_user.openid = b.`user` where wx_user.status = 1
+        <if test="openid != null and openid != ''">
+            and wx_user.openid != #{openid}
+        </if>
+        <if test="username != null and username != ''">
+            and wx_user.username like concat('%', #{username}, '%')
+        </if>
     </select>
 </mapper>

@@ -70,6 +70,9 @@ public class WxUser extends BasePaginationEntity {
     @TableField(exist = false)
     private String validCode;
 
+    @TableField(exist = false)
+    private WxUser tjUser;
+
     public WxUser(String openid) {
         this.openid = openid;
     }
