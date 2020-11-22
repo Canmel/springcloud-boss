@@ -52,13 +52,20 @@ public class ZsSeatController extends BaseCommonController {
 
     @GetMapping("/all")
     public Result all(Integer queueId) {
-        return ResultUtil.success(service.selectList(new EntityWrapper<>()));
+        List<String> oderColums = new ArrayList<>();
+        oderColums.add("seat_num");
+        Wrapper<ZsSeat> wrapper = new EntityWrapper<>();
+        wrapper.orderDesc(oderColums);
+        return ResultUtil.success(service.selectList(wrapper));
     }
 
     @GetMapping("/queue/{id}")
     public Result queue(@PathVariable Integer id) {
+        List<String> oderColums = new ArrayList<>();
+        oderColums.add("seat_num");
         Wrapper<ZsSeat> seatWrapper = new EntityWrapper<>();
         seatWrapper.eq("queue_id", id);
+        seatWrapper.orderDesc(oderColums);
         return ResultUtil.success(service.selectList(seatWrapper));
     }
 
