@@ -9,4 +9,5 @@ public class WxZc {
     private String zcname;
     private String address;
     private Double rixin;
+    private String sceneId;
 }

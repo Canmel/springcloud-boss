@@ -37,6 +37,7 @@
         <result column="nickname" property="nickname"></result>
         <result column="zcname" property="zcname"></result>
         <result column="rixin" property="rixin"></result>
+        <result column="scene_id" property="sceneId"></result>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -70,6 +71,6 @@
     </select>
 
     <select id="allWxZc" resultMap="allWxZcMap">
-        select id, nickname, zcname, address, rixin from sys_zc
+        select id, nickname, zcname, address, rixin, scene_id from sys_zc
     </select>
 </mapper>
