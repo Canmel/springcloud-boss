@@ -1,5 +1,8 @@
 package com.camel.interviewer.controller;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
@@ -10,6 +13,9 @@ import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.service.WeixinStartService;
 import com.camel.interviewer.service.WxSubscibeService;
 import com.camel.interviewer.utils.*;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,6 +186,22 @@ public class WeixinStartController {
         ret.put("signature", signature);
 
         return ret;
+    }
+
+    @AuthIgnore
+    @GetMapping("/sendMsg")
+    private Result sendMsg(String msg, String openid) {
+        String token = WxTokenUtil.getInstance().getTocken(wxConstants.getAppid(), wxConstants.getAppsecret(), redisTemplate);
+        JSONObject jsonObject = JSONUtil.createObj();
+        jsonObject.put("touser", openid);
+        jsonObject.put("msgtype", "text");
+        JSONObject content = JSONUtil.createObj();
+        content.put("content", "Hello World");
+        jsonObject.put("text", content);
+        HttpRequest.post("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token).header("Content-Type","application/json")
+                .body(jsonObject.toString()).execute();
+        return null;
+
     }
 
     private static String byteToHex(final byte[] hash) {

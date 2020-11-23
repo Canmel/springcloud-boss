@@ -1,5 +1,6 @@
 package com.camel.interviewer.mapper;
 
+import com.camel.interviewer.entity.wx.WxZc;
 import com.camel.interviewer.model.WxUser;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
@@ -20,4 +21,6 @@ public interface WxUserMapper extends BaseMapper<WxUser> {
      * @return
      */
     List<WxUser> list(WxUser entity);
+
+    List<WxZc> allWxZc();
 }

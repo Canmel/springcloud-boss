@@ -30,6 +30,14 @@
         <result column="created_at" property="createdAt"/>
         <result column="status" property="status"/>
     </resultMap>
+    
+    <resultMap id="allWxZcMap" type="com.camel.interviewer.entity.wx.WxZc">
+        <id column="id" property="id"></id>
+        <result column="address" property="address"></result>
+        <result column="nickname" property="nickname"></result>
+        <result column="zcname" property="zcname"></result>
+        <result column="rixin" property="rixin"></result>
+    </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
@@ -59,5 +67,9 @@
         <if test="username != null and username != ''">
             and wx_user.username like concat('%', #{username}, '%')
         </if>
+    </select>
+
+    <select id="allWxZc" resultMap="allWxZcMap">
+        select id, nickname, zcname, address, rixin from sys_zc
     </select>
 </mapper>

@@ -11,6 +11,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
+import com.camel.interviewer.service.InterviewerService;
 import com.camel.interviewer.service.WxSubscibeService;
 import com.camel.interviewer.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,9 @@ public class WxUserController extends BaseCommonController {
 
     @Autowired
     private WxSubscibeService subscibeService;
+
+    @Autowired
+    private InterviewerService interviewerService;
 
     public static final String QUEUE_NAME = "ActiveMQ.System.New.User";
 
@@ -125,6 +129,12 @@ public class WxUserController extends BaseCommonController {
             return ResultUtil.success("修改" + getMouduleName() + "成功");
         }
         return ResultUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(),"修改" + getMouduleName() + "失败");
+    }
+
+    @AuthIgnore
+    @GetMapping("/allZc")
+    private Result allZc() {
+        return ResultUtil.success(interviewerService.AllZc());
     }
 
     @Autowired
