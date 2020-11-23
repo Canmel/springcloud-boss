@@ -77,6 +77,8 @@ spring:
     servlet:
       content-type: text/html
     cache: false
+  mvc:
+    static-path-pattern: /**
 #  jms:
 #    pub-sub-domain: true
 
