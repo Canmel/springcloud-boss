@@ -40,8 +40,8 @@
             },
             created: function () {
                 this.initUserInfo();
-                window.location.href = "http://fy.svdata.cn/webroot/decision/view/report?viewlet=%E5%85%BC%E8%81%8C%E6%8A%A5%E5%90%8D%E8%A1%A8.cpt&op=write" +
-                    "&zhichang=" + this.getQueryString("zc") + "&idNUm=" + this.userinfo.idNum;
+                window.location.href = "http://fy.svdata.cn:8088/webroot/decision/view/report?viewlet=%E6%89%AB%E7%A0%81%E7%AD%BE%E5%88%B0.cpt&ref_t=design&op=write&ref_c=0ad78208-22c5-4a66-a021-28e43b0122fb" +
+                    "&zc=" + this.getQueryString("zc") + "&idNUm=" + this.userinfo.idNum;
             },
             methods: {
                 getQueryString(name) {
