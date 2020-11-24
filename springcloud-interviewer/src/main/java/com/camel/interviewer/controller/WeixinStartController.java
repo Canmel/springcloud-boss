@@ -196,7 +196,7 @@ public class WeixinStartController {
         jsonObject.put("touser", openid);
         jsonObject.put("msgtype", "text");
         JSONObject content = JSONUtil.createObj();
-        content.put("content", "Hello World");
+        content.put("content", msg);
         jsonObject.put("text", content);
         HttpRequest.post("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token).header("Content-Type","application/json")
                 .body(jsonObject.toString()).execute();
