@@ -1,8 +1,6 @@
 package com.camel.gateway.controller;
 
 import cn.hutool.http.HttpUtil;
-import com.netflix.zuul.util.HTTPRequestUtils;
-import com.sun.deploy.net.HttpUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
