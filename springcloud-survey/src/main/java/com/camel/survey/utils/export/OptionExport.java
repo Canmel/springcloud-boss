@@ -14,7 +14,9 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.examples.CellTypes;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -81,7 +83,6 @@ public class OptionExport {
         }
         Integer rowIndex = 1;
         HSSFCellStyle cellStyle = (HSSFCellStyle) HSSFUtils.createStyle(sheet.getWorkbook());
-        cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
         for (ZsQuestion q : questionList) {
             String type = "[" +
                     (q.getType().equals(1) ? "单选题" : q.getType() == 2 ? "多选题" : "问答题") +
@@ -102,9 +103,10 @@ public class OptionExport {
                 sheet.getRow(rowIndex).getCell(14).setCellValue(NumberUtil.formatPercent(s, 2));
                 rowIndex++;
             }
-            Integer creatorCount = zsAnswerMapper.selectAnswerCreatorCount(q.getSurveyId(), q.getId());
             ExcelUtil.setUserCont("本题答题人数：", sheet.createRow(rowIndex), sheet);
-            sheet.getRow(rowIndex++).createCell(13).setCellValue(q.getAnswerCount());;
+            sheet.getRow(rowIndex).createCell(13).setCellValue(q.getAnswerCount());
+            sheet.getRow(rowIndex).getCell(13).setCellStyle(cellStyle);
+            sheet.getRow(rowIndex++).createCell(14).setCellStyle(cellStyle);
         }
     }
 }

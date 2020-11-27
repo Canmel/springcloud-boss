@@ -17,6 +17,7 @@
         <result column="configration" property="configration"/>
         <result column="creator" property="creatorId"/>
         <result column="exclusivity" property="exclusivity"/>
+        <result column="score" property="score"/>
         <association property="zsQuestion" column="question_id"
                      select="com.camel.survey.mapper.ZsQuestionMapper.selectQuestionById"></association>
         <association property="creator" javaType="com.camel.core.model.SysUser">
@@ -40,6 +41,7 @@
         <result column="current" property="current"/>
         <result column="configration" property="configration"/>
         <result column="target" property="target"/>
+        <result column="score" property="score"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -47,7 +49,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, order_num, ignore_num, question_id, configration, has_remark, target, status, created_at, creator, exclusivity, current
+        id, name, order_num, ignore_num, question_id, configration, has_remark, target, status, created_at, creator, exclusivity, current, score
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -84,7 +86,7 @@
 
     <select id="selectBySurveyId" resultMap="BaseResultMap">
         select
-          o.id, o.name, o.order_num, o.question_id, o.configration, o.has_remark, o.target, o.status, o.created_at, o.creator, o.current, o.exclusivity as exclusivity
+          o.id, o.name, o.order_num, o.question_id, o.configration, o.has_remark, o.target, o.status, o.created_at, o.creator, o.current, o.exclusivity as exclusivity, score
         from zs_option o left join zs_question q on q.id = o.question_id where q.survey_id = #{id} and o.status = 1;
     </select>
 

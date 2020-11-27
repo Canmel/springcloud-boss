@@ -7,12 +7,10 @@ import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.ZsPhoneInformation;
+import com.camel.survey.utils.export.HSSFUtils;
 import com.github.pagehelper.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.usermodel.examples.CellTypes;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -466,10 +464,10 @@ public class ExcelUtil {
      * @param title
      * @param row
      */
-    public static void setOption(String title, Row row, Sheet sheet) {
+    public static void setOption(String title, Row row, HSSFSheet sheet) {
         sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 12));
         Cell cell = row.createCell(0);
-        HSSFCellStyle cellStyle = (HSSFCellStyle) createStyle(sheet.getWorkbook());
+        HSSFCellStyle cellStyle = (HSSFCellStyle) HSSFUtils.createStyle(sheet.getWorkbook());
         cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
         cell.setCellStyle(cellStyle);
         cell.setCellValue(title);
@@ -481,12 +479,12 @@ public class ExcelUtil {
      * @param title
      * @param row
      */
-    public static void setUserCont(String title, Row row, Sheet sheet) {
+    public static void setUserCont(String title, Row row, HSSFSheet sheet) {
         sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 12));
         Cell cell = row.createCell(0);
         Font font = sheet.getWorkbook().createFont();
         font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        HSSFCellStyle cellStyle = (HSSFCellStyle) createStyle(sheet.getWorkbook());
+        HSSFCellStyle cellStyle = (HSSFCellStyle) HSSFUtils.createStyle(sheet.getWorkbook());
         cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
         cellStyle.setFont(font);
         cell.setCellStyle(cellStyle);
@@ -554,17 +552,10 @@ public class ExcelUtil {
 
     public static CellStyle createTitleHeadStyle(Workbook wb) {
         CellStyle style = wb.createCellStyle();
-        style.setBorderBottom((short) 1);
-        style.setBorderLeft((short) 1);
-        style.setBorderRight((short) 1);
-        style.setBorderTop((short) 1);
-        style.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
+        style.setFillForegroundColor(HSSFColor.GREY_40_PERCENT.index);
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-//        style.setAlignment(HorizontalAlignment.CENTER);
-//        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 

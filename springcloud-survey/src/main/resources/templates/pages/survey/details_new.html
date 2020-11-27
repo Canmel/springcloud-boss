@@ -121,6 +121,11 @@
                                              <span class="label label-danger" v-if="zsoption.ignoreNum">
                                                <p class="fa fa-battery-empty">忽略配额</p>
                                              </span>
+                                            <span class="label label-primary" v-if="zsoption.score">
+                                                <b style="color: #000000">
+                                                    {{zsoption.score + "分"}}
+                                                </b>
+                                             </span>
                                              <span class="label" v-if="zsoption.target">
                                                 <p class="fa fa-hand-o-right">
                                                     <b style="color: #000000">
@@ -149,6 +154,11 @@
                                             <span style="float: right;">
                                              <span class="label label-danger" v-if="zsoption.ignoreNum">
                                                <p class="fa fa-battery-empty">忽略配额</p>
+                                             </span>
+                                            <span class="label label-primary" v-if="zsoption.score">
+                                                <b style="color: #000000">
+                                                    {{zsoption.score + "分"}}
+                                                </b>
                                              </span>
                                              <span class="label" v-if="zsoption.target">
                                               <p class="fa fa-hand-o-right">
@@ -357,6 +367,13 @@
                                     v-model="selectedOption.exclusivity">
                                 <option v-for="val in [1, 0]" :value="val">{{ val ? '是' : '否' }}</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">计分数量</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control m-b" name="score" v-model="selectedOption.score">
                         </div>
                     </div>
 
@@ -574,7 +591,8 @@
                                 exclusivity: o.exclusivity.value,
                                 ignoreNum: o.ignoreNum,
                                 configration: o.configration, // 选项配额
-                                questionOrderNum: item.orderNum
+                                questionOrderNum: item.orderNum,
+                                score: o.score
                             };
                             that.zsoptions.push(opt);
                         }
