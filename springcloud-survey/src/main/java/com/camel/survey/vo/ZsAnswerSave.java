@@ -105,6 +105,7 @@ public class ZsAnswerSave {
     public ZsAnswerItem buildAnswerItem(ZsQuestion question, ZsOption zsOption, Integer answerId, String value) {
         ZsAnswerItem zsAnswerItem = new ZsAnswerItem(question.getName(), ObjectUtils.isEmpty(zsOption) ? "" : zsOption.getName(), answerId, value, question.getType(), this.phone);
         zsAnswerItem.setSurveyId(surveyId);
+        zsAnswerItem.setScore(ObjectUtils.isEmpty(zsOption) ? null : zsOption.getScore());
         zsAnswerItem.setQuestionId(question.getId());
         zsAnswerItem.setOptionId(ObjectUtils.isEmpty(zsOption) ? null : zsOption.getId());
         zsAnswerItem.setZsOption(zsOption);

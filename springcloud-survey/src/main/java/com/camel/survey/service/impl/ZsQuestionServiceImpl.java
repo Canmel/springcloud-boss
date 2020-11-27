@@ -40,25 +40,25 @@ import java.util.stream.Collectors;
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
- * 　　　　　　　┃         ┃ 　
+ * 　　　　　　　┃         ┃
  * 　　　　　　　┃    ━    ┃
  * 　　　　　　　┃  >   <  ┃
  * 　　　　　　　┃         ┃
  * 　　　　　　　┃... ⌒ ...┃
  * 　　　　　　　┃         ┃
- *             ┗━┓     ┏━┛
- *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
- *               ┃     ┃   神兽保佑,代码无bug
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 服务实现类>
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┗━━━━┓   @author baily
- *               ┃          ┣┓
- *               ┃          ┏┛  @since 1.0
- *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-12-09
- *                ┗┻┛    ┗┻┛
+ * ┗━┓     ┏━┛
+ * ┃     ┃　Code is far away from bug with the animal protecting
+ * ┃     ┃   神兽保佑,代码无bug
+ * ┃     ┃
+ * ┃     ┃
+ * ┃     ┃        < 服务实现类>
+ * ┃     ┃
+ * ┃     ┗━━━━┓   @author baily
+ * ┃          ┣┓
+ * ┃          ┏┛  @since 1.0
+ * ┗┓┓┏━━━━┳┓┏┛
+ * ┃┫┫    ┃┫┫    @date 2019-12-09
+ * ┗┻┛    ┗┻┛
  */
 @Service
 public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuestion> implements ZsQuestionService {
@@ -137,11 +137,11 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     @Transactional(rollbackFor = Exception.class)
     public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
         // 坐席更新提交时间
-        if(StringUtils.isEmpty(zsAnswerSave.seat)) {
+        if (StringUtils.isEmpty(zsAnswerSave.seat)) {
             throw new SurveyNotValidException("无效的坐席");
         }
         ZsSeat seat = zsSeatMapper.searchBySeatNum(zsAnswerSave.seat);
-        if(ObjectUtils.isEmpty(seat)) {
+        if (ObjectUtils.isEmpty(seat)) {
             throw new SurveyNotValidException("无效的坐席");
         }
         seat.setLastSubmit(new Date());
@@ -157,14 +157,14 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         }
         ZsAnswer zsAnswer = zsAnswerSave.buildAnswer();
         SysUser user = applicationToolsUtils.currentUser();
-        if(!ObjectUtils.isEmpty(user)) {
+        if (!ObjectUtils.isEmpty(user)) {
             zsAnswer.setUid(user.getUid());
-            zsAnswer.setWorkNum((zsAnswer.getUid()+1000)+"");
+            zsAnswer.setWorkNum((zsAnswer.getUid() + 1000) + "");
             zsAnswer.setUsername(user.getUsername());
-        }else if(!ObjectUtils.isEmpty(seat)){
+        } else if (!ObjectUtils.isEmpty(seat)) {
             zsAnswer.setUid(seat.getUid());
-            zsAnswer.setWorkNum((zsAnswer.getUid()+1000)+"");
-            zsAnswer.setUsername(ObjectUtils.isEmpty(seat.getUser()) ? "未知":seat.getUser().getUsername());
+            zsAnswer.setWorkNum((zsAnswer.getUid() + 1000) + "");
+            zsAnswer.setUsername(ObjectUtils.isEmpty(seat.getUser()) ? "未知" : seat.getUser().getUsername());
         }
         answerService.insert(zsAnswer);
         // 获取所有问题
@@ -176,30 +176,38 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<Integer> oIds = zsAnswerSave.getOptIds();
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
-        for(int i=0;i<zsAnswerItemList.size();i++){
+        Integer scoreTotal = 0;
+        for (int i = 0; i < zsAnswerItemList.size(); i++) {
+            if(!ObjectUtils.isEmpty(zsAnswerItemList.get(i).getScore())) {
+                scoreTotal += zsAnswerItemList.get(i).getScore();
+            }
+            if(scoreTotal > 0) {
+                zsAnswer.setScore(scoreTotal);
+            }
             ZsAnswerItem zsAnswerItem = zsAnswerItemList.get(i);
             ZsOption opt = zsAnswerItem.getZsOption();
-            if(!ObjectUtils.isEmpty(opt)) {
-                if(opt.getIgnoreNum() && opt.getTarget().equals(10000)) {
+            if (!ObjectUtils.isEmpty(opt)) {
+                if (opt.getIgnoreNum() && opt.getTarget().equals(10000)) {
                     zsAnswer.setValid(ZsYesOrNo.NO);
                     zsAnswer.setInValidMsg("逻辑无效");
-                    for(int j=0;j<zsAnswerItemList.size();j++){
+                    for (int j = 0; j < zsAnswerItemList.size(); j++) {
                         zsAnswerItemList.get(j).setValid(ZsYesOrNo.NO);
                     }
                     // 有立即结束， 并且忽略配额的选项 那么 样本无效
                     answerService.updateById(zsAnswer);
                 }
             }
-            if(!ObjectUtils.isEmpty(user)) {
+            if (!ObjectUtils.isEmpty(user)) {
                 zsAnswerItem.setUid(user.getUid());
-            } else if(!ObjectUtils.isEmpty(seat)) {
+            } else if (!ObjectUtils.isEmpty(seat)) {
                 zsAnswerItem.setUid(seat.getUid());
             }
         }
-        if(zsAnswer.getCreator().length() < 6) {
-            if(StringUtil.isNotEmpty(zsAnswer.getInValidMsg())) {
+        answerService.updateById(zsAnswer);
+        if (zsAnswer.getCreator().length() < 6) {
+            if (StringUtil.isNotEmpty(zsAnswer.getInValidMsg())) {
                 zsAnswer.setInValidMsg(zsAnswer.getInValidMsg() + "," + "试访数据");
-            }else {
+            } else {
                 zsAnswer.setInValidMsg("试访数据");
             }
             zsAnswer.setValid(ZsYesOrNo.NO);
@@ -210,7 +218,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             if (zsAnswer.getValid().equals(ZsYesOrNo.YES)) {
                 updateCurrent(zsSurvey.getId(), oIds);
             }
-        } else{
+        } else {
             zsSurvey.setEndShow("对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！");
         }
         if (answerItemService.insertBatch(zsAnswerItemList)) {
@@ -222,6 +230,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     /**
      * 根据所选的选项判断是否需要忽略配额的增加
+     *
      * @param zsOptions
      * @return
      */
@@ -237,6 +246,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     /**
      * 更新选项配额
+     *
      * @param optionIds
      */
     public void updateCurrent(List<Integer> optionIds) {
@@ -245,6 +255,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
 
     /**
      * 使用MQ配合配额库存服务增加配额
+     *
      * @param surveyId
      * @param optIds
      */
@@ -261,13 +272,13 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     }
 
     boolean isAnswered(ZsAnswerSave zsAnswerSave) {
-        if(zsAnswerSave.getPhone().length() < 6) {
+        if (zsAnswerSave.getPhone().length() < 6) {
             return false;
         }
         Wrapper<ZsAnswer> zsAnswerWrapper = new EntityWrapper<>();
         zsAnswerWrapper.eq("creator", zsAnswerSave.getPhone());
         zsAnswerWrapper.eq("survey_id", zsAnswerSave.getSurveyId());
-        if(!ObjectUtils.isEmpty(zsAnswerSave.getLabel())) {
+        if (!ObjectUtils.isEmpty(zsAnswerSave.getLabel())) {
             zsAnswerWrapper.eq("label", zsAnswerSave.getLabel());
         }
         return answerService.selectCount(zsAnswerWrapper) > 0;

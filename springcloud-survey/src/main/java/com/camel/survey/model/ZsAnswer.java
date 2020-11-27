@@ -206,6 +206,11 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
      */
     public String label;
 
+    /**
+     * 样本得分
+     */
+    public Integer score;
+
     public ZsAnswer() {
     }
 

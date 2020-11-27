@@ -108,6 +108,7 @@
                                        @blur="markBlueHandler($event, opt)" >
                             </label>
 
+                            <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
                             <span class="badge" style="background-color: #f0ad4e" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
@@ -129,6 +130,8 @@
                                        @blur="markBlueHandler($event, opt)">
                             </label>
 
+                            <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
+                            <span class="badge" style="background-color: #f0ad4e" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
 

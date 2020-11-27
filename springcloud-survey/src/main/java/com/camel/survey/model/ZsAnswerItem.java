@@ -81,6 +81,11 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     public String seat;
 
+    /**
+     * 单题得分
+     */
+    public Integer score;
+
     public ZsAnswerItem() {
     }
 

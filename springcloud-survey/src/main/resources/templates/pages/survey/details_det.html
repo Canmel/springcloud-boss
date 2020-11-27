@@ -321,7 +321,7 @@
                                         </td>
                                         <td>{{item.reviewerAt}}</td>
                                         <td>{{item.reviewSpent ? item.reviewSpent / 1000 : ''}}</td>
-                                        <td>{{item.score}}</td>
+                                        <td>{{item.score ? item.score : ''}}</td>
                                         <td>
                                             <button type="button" v-on:click="details(item)"
                                                     class="btn btn-primary btn-xs" v-if="resultDev">查看
