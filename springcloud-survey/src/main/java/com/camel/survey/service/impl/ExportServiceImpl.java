@@ -14,6 +14,7 @@ import com.camel.survey.service.ZsQuestionService;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ExcelUtil;
+import com.camel.survey.utils.export.AnswerFormExportUtil;
 import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -303,9 +304,7 @@ public class ExportServiceImpl implements ExportService {
                     ExcelUtil.creatTotalRow(row, option.getName(), selectAnswerItemCount(surveyId, option.getQuestionId(), option.getId()), option.getOrderNum());
                 }
             }
-
             Integer creatorCount = zsAnswerMapper.selectAnswerCreatorCount(surveyId, question.getId());
-
             Row totalRow = sheet.createRow(rowNum);
             totalRow.createCell(2).setCellValue("答题人数");
             totalRow.createCell(3).setCellValue(creatorCount);
@@ -776,5 +775,13 @@ public class ExportServiceImpl implements ExportService {
                 return (String) map.get("in_valid_msg");
             }
         }
+    }
+
+    @Autowired
+    private AnswerFormExportUtil answerFormExportUtil;
+
+    @Override
+    public HSSFWorkbook form(ZsAnswer zsAnswer) throws Exception {
+        return answerFormExportUtil.export(zsAnswer);
     }
 }

@@ -441,6 +441,58 @@ public class ExcelUtil {
         cell.setCellValue(title);
     }
 
+    /**
+     * 浅色表头
+     *
+     * @param title
+     * @param row
+     */
+    public static void setTitle(String title, Row row, Sheet sheet) {
+        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 12));
+        Cell cell = row.createCell(0);
+        HSSFCellStyle cellStyle = (HSSFCellStyle) createTitleStyle(sheet.getWorkbook());
+        cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(title);
+        row.createCell(13).setCellStyle(cellStyle);
+        row.getCell(13).setCellValue("小计");
+        row.createCell(14).setCellStyle(cellStyle);
+        row.getCell(14).setCellValue("比例");
+    }
+
+    /**
+     * 无色
+     *
+     * @param title
+     * @param row
+     */
+    public static void setOption(String title, Row row, Sheet sheet) {
+        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 12));
+        Cell cell = row.createCell(0);
+        HSSFCellStyle cellStyle = (HSSFCellStyle) createStyle(sheet.getWorkbook());
+        cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(title);
+    }
+
+    /**
+     * 答题人数
+     *
+     * @param title
+     * @param row
+     */
+    public static void setUserCont(String title, Row row, Sheet sheet) {
+        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 12));
+        Cell cell = row.createCell(0);
+        Font font = sheet.getWorkbook().createFont();
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        HSSFCellStyle cellStyle = (HSSFCellStyle) createStyle(sheet.getWorkbook());
+        cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
+        cellStyle.setFont(font);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(title);
+    }
+
     public static HSSFCellStyle createHeadStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
@@ -454,11 +506,17 @@ public class ExcelUtil {
     public static CellStyle createTitleStyle(Workbook wb) {
         CellStyle style = wb.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-        style.setBorderBottom((short) 1);
-        style.setBorderLeft((short) 1);
-        style.setBorderRight((short) 1);
-        style.setBorderTop((short) 1);
         style.setFillForegroundColor(HSSFColor.LIME.index);
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        return style;
+    }
+
+    public static CellStyle createStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+//        style.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
+//        style.setFillForegroundColor(HSSFColor.LIME.index);
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);

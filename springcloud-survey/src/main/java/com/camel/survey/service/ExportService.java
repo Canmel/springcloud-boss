@@ -1,5 +1,6 @@
 package com.camel.survey.service;
 
+import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.vo.ZsCrossExport;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -41,4 +42,6 @@ public interface ExportService {
     HSSFWorkbook answer(Integer surveyId) throws ParseException;
 
     HSSFWorkbook workNum(Integer id) throws ParseException;
+
+    HSSFWorkbook form(ZsAnswer zsAnswer) throws Exception;
 }

@@ -1,5 +1,8 @@
 package com.camel.survey.controller;
 
+import com.camel.core.entity.Result;
+import com.camel.core.utils.ResultUtil;
+import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsQuestion;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.*;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  *
@@ -52,10 +56,15 @@ public class ExportController {
     private ZsOptionService zsOptionService;
 
     @Autowired
-    private ZsAnswerItemService zsAnswerItemService;
+    private ZsAnswerService answerService;
 
     @Autowired
     private ExportService service;
+
+    @GetMapping("/survey/form")
+    public void index(ZsAnswer entity, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ExportExcelUtils.export(service.form(entity), "样本分析", response);
+    }
 
     /**
      * 问卷汇总导出

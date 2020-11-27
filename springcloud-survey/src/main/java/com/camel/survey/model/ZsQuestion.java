@@ -81,6 +81,9 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
     //必答性
     private ZsYesOrNo compulsory;
 
+    @TableField(exist = false)
+    private Integer answerCount;
+
     /**
      * 选项
      */

@@ -104,7 +104,8 @@
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 问卷预览</a>
                 </li>
-                <li class="" v-if="result||survey.creatorId===user.userid"><a data-toggle="tab" href="#tab-3" aria-expanded="false">数据导出</a>
+                <li class="" v-if="result||survey.creatorId===user.userid"><a data-toggle="tab" href="#tab-3"
+                                                                              aria-expanded="false">数据导出</a>
                 </li>
                 <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">正在收集</a>
                 </li>
@@ -239,107 +240,109 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-1" style="display: none; width: 2%;" id="review">
-                                    <span>复核</span>
-                                </div>
-                                <div class="col-sm-5" style="display: none;width: 48%;" id="reviewInput">
-                                    <input type="text" id="datePickerSelect1" placeholder="请选择复核时间" class="input-sm form-control search-input">
-                                </div>
-                                <div class="col-sm-1"  style="width: 2%;">
-                                    <span>收集</span>
-                                </div>
-                                <div class="col-sm-5"  style="width: 48%;">
-                                    <div class="input-group">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-2 no-padding control-label">
+                                        <span>收集时间</span>
+                                    </label>
+                                    <div class="col-sm-10">
                                         <input type="text" id="datePickerSelect" placeholder="请选择时间"
-                                               class="input-sm form-control search-input"><span
-                                            class="input-group-btn">
-                                            <button type="button" class="btn btn-sm btn-primary"
-                                                    v-on:click="pagequery()"> 搜索</button>
-                                            <button type="button" class="btn btn-sm btn-info" v-on:click="download()"> 导出录音</button>
-                                            <button type="button" class="btn btn-warning btn-sm"
-                                                    v-on:click="checkRecord()">复核</button>
-                                    </span>
+                                               class="input-sm form-control search-input no-padding">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>标签</th>
-                                            <th>收集时间</th>
-                                            <th>被访者</th>
-                                            <th>工号</th>
-                                            <th>访员姓名</th>
-                                            <th>有效</th>
-                                            <th>复核状态</th>
-                                            <th>复核人</th>
-                                            <th>复核意见</th>
-                                            <th>复核时间</th>
-                                            <th>复核时长</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="(item, index) in answers">
-                                            <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                                            <td>
-                                                <span class="label label-info label-important">{{item.label}}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{item.createdAt}}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{item.creator}}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{item.workNum}}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{item.user ? item.user.username: ''}}</span>
-                                            </td>
-                                            <td>
-                                                <span class="text">{{isInValid(item)}}</span>
-                                            </td>
-                                            <td>
-                                                <span class="text-input" v-if="!item.reviewStatus">未复核</span>
-                                                <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
-                                                <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
-                                            </td>
-                                            <td>
-                                                <span>{{item.reviewer ? item.reviewer.username: ''}}</span>
-                                            </td>
-                                            <td>
-                                                <span class="reviewer-msg" :title="item.reviewMsg">{{item.reviewMsg | shorter}}</span>
-                                            </td>
-                                            <td>{{item.reviewerAt}}</td>
-                                            <td>{{item.reviewSpent ? item.reviewSpent / 1000 : ''}}</td>
-                                            <td>
-                                                <button type="button" v-on:click="details(item)"
-                                                        class="btn btn-primary btn-xs" v-if="resultDev">查看
-                                                </button>
-                                                <button type="button" v-on:click="deleteItem(item)"
-                                                        class="btn btn-danger btn-xs" v-if="resultDev">删除
-                                                </button>
-                                                <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-restore btn-xs"
-                                                        v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">
-                                                    作废
-                                                </button>
-                                                <button type="button" v-on:click="invalidItem(item)"
-                                                        class="btn btn-success btn-xs"
-                                                        v-if="resultDev&&(item.valid && item.valid.code === 0)">取消作废
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                            v-on:click="pagequery()"> 搜索
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-info" v-on:click="download()">
+                                        导出录音
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-sm"
+                                            v-on:click="checkRecord()">复核
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm"
+                                            v-on:click="exportForm()">报表导出
+                                    </button>
                                 </div>
-                                <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
-                                             :changge="pageFn"></pageination>
                             </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>标签</th>
+                                        <th>收集时间</th>
+                                        <th>被访者</th>
+                                        <th>工号</th>
+                                        <th>访员姓名</th>
+                                        <th>有效</th>
+                                        <th>复核状态</th>
+                                        <th>复核人</th>
+                                        <th>复核意见</th>
+                                        <th>复核时间</th>
+                                        <th>复核时长</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(item, index) in answers">
+                                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                                        <td>
+                                            <span class="label label-info label-important">{{item.label}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{item.createdAt}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{item.creator}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{item.workNum}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{item.user ? item.user.username: ''}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">{{isInValid(item)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-input" v-if="!item.reviewStatus">未复核</span>
+                                            <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
+                                            <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
+                                        </td>
+                                        <td>
+                                            <span>{{item.reviewer ? item.reviewer.username: ''}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="reviewer-msg" :title="item.reviewMsg">{{item.reviewMsg | shorter}}</span>
+                                        </td>
+                                        <td>{{item.reviewerAt}}</td>
+                                        <td>{{item.reviewSpent ? item.reviewSpent / 1000 : ''}}</td>
+                                        <td>
+                                            <button type="button" v-on:click="details(item)"
+                                                    class="btn btn-primary btn-xs" v-if="resultDev">查看
+                                            </button>
+                                            <button type="button" v-on:click="deleteItem(item)"
+                                                    class="btn btn-danger btn-xs" v-if="resultDev">删除
+                                            </button>
+                                            <button type="button" v-on:click="invalidItem(item)"
+                                                    class="btn btn-restore btn-xs"
+                                                    v-if="resultDev&&(!item.valid || item.valid && item.valid.code === 1)">
+                                                作废
+                                            </button>
+                                            <button type="button" v-on:click="invalidItem(item)"
+                                                    class="btn btn-success btn-xs"
+                                                    v-if="resultDev&&(item.valid && item.valid.code === 0)">取消作废
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                                         :changge="pageFn"></pageination>
                         </div>
                     </div>
                 </div>
@@ -405,7 +408,8 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="tabs_panels.html#collapseThree" class="" aria-expanded="true">问卷交叉统计</a>
+                                                   href="tabs_panels.html#collapseThree" class=""
+                                                   aria-expanded="true">问卷交叉统计</a>
                                             </h4>
                                         </div>
                                         <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false"
@@ -498,7 +502,8 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="tabs_panels.html#collapseFive" class="" aria-expanded="true">访员样本统计</a>
+                                                   href="tabs_panels.html#collapseFive" class=""
+                                                   aria-expanded="true">访员样本统计</a>
                                             </h4>
                                         </div>
                                         <div id="collapseFive" class="panel-collapse collapse" aria-expanded="false"
@@ -574,7 +579,8 @@
                         <div class="form-group" v-for="item in selectAnswer.items">
                             <label class="col-sm-3 control-label">标题:</label>
                             <div class="col-sm-8">
-                                <span name="name" class="form-control" type="text" style="border: none; height: max-content;">{{item.question}}</span>
+                                <span name="name" class="form-control" type="text"
+                                      style="border: none; height: max-content;">{{item.question}}</span>
                             </div>
                             <label class="col-sm-3 control-label">样本:</label>
                             <div class="col-sm-8">
@@ -677,7 +683,7 @@
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
-            user:{},
+            user: {},
         },
         watch: {
             loadData(v, oldVal) {
@@ -1091,24 +1097,9 @@
                 if (document.getElementById("datePickerSelect").value != null && document.getElementById("datePickerSelect").value != "") {
                     this.pageInfo.daterange = document.getElementById("datePickerSelect").value;
                 }
-                if(document.getElementById("datePickerSelect1").value!=null&&document.getElementById("datePickerSelect1").value!=""){
-                    this.pageInfo.daterangeReview=document.getElementById("datePickerSelect1").value;
-                }
                 if (this.pageInfo.daterange != null && this.pageInfo.daterange != "") {
                     that.pageInfo.startDate = that.pageInfo.daterange.substring(0, 19);
                     that.pageInfo.endDate = that.pageInfo.daterange.substring(22, 41);
-                }
-                if(this.pageInfo.daterangeReview!=null&&this.pageInfo.daterangeReview!=""&&(this.pageInfo.reviewStatus==1||this.pageInfo.reviewStatus==12||this.pageInfo.reviewStatus==2)){
-                    $("#review").show();
-                    $("#reviewInput").show();
-                    that.pageInfo.startDateReview=that.pageInfo.daterangeReview.substring(0,19);
-                    that.pageInfo.endDateReview=that.pageInfo.daterangeReview.substring(22,41);
-                }
-                else{
-                    $("#review").hide();
-                    $("#reviewInput").hide();
-                    that.pageInfo.startDateReview=null;
-                    that.pageInfo.endDateReview=null;
                 }
                 AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
                     that.answers = resp.data.list;
@@ -1190,7 +1181,7 @@
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
                         state: resp.data.state ? resp.data.state.value : null,
-                        creatorId:resp.data.creatorId,
+                        creatorId: resp.data.creatorId,
                     };
                 })
             },
@@ -1223,11 +1214,11 @@
                     console.log(resp.data);
                 })
             },
-            loadWorkShift(){
+            loadWorkShift() {
                 let that = this;
-                if(this.result==false&&this.survey.creatorId!=this.user.userid){
+                if (this.result == false && this.survey.creatorId != this.user.userid) {
                     AJAX.GET_SYNC("zsWorkShift/current/" + that.survey.id, {}, function (resp) {
-                        if(!resp.data) {
+                        if (!resp.data) {
                             alert("您目前未分配到属于该问卷的班次或时间不在允许的范围内，请先申请对应班次！");
                             $.pjax({
                                 url: mvm.applicationContextRootPath + 'pages/survey/index.html',
@@ -1237,6 +1228,20 @@
                     });
                 }
             },
+            exportForm() {
+                console.log('lllloooogg')
+                let that = this;
+                let pageInfoStr = Object.keys(this.pageInfo).map(function (key) {
+                    // body...
+                    if (key === 'pageNum' || key === 'total' || key === 'size') {
+                        return "";
+                    }
+                    return encodeURIComponent(key) + "=" + encodeURIComponent(that.pageInfo[key]);
+                }).join("&");
+
+                console.log(pageInfoStr)
+                window.open('/survey/export/survey/form?' + pageInfoStr);
+            }
         },
         created: function () {
             this.loadEntity();
@@ -1262,22 +1267,22 @@
 <script type="text/javascript">
     jQuery(document).ready(function () {
         updateConfig();
-        updateConfig1();
+
         function updateConfig1() {
             jQuery('#datePickerSelect1').daterangepicker({
-                "startDate": currentVue.$data.pageInfo.daterangeReview.substring(0,19),
-                "endDate": currentVue.$data.pageInfo.daterangeReview.substring(22,41),
+                "startDate": currentVue.$data.pageInfo.daterangeReview.substring(0, 19),
+                "endDate": currentVue.$data.pageInfo.daterangeReview.substring(22, 41),
                 "timePickerSeconds": true,
-                "timePicker":true,
-                "opens":"center",
-                "buttonClasses":'btn btn-sm',
-                "applyClass":'btn-success',
-                "cancelClass":'btn-default',
-                "timePicker24Hour":true,
-                "linkedCalendars":false,
-                "autoUpdateInput":true,
+                "timePicker": true,
+                "opens": "center",
+                "buttonClasses": 'btn btn-sm',
+                "applyClass": 'btn-success',
+                "cancelClass": 'btn-default',
+                "timePicker24Hour": true,
+                "linkedCalendars": false,
+                "autoUpdateInput": true,
                 locale: { //汉化
-                    format:"YYYY/MM/DD HH:mm:ss",
+                    format: "YYYY/MM/DD HH:mm:ss",
                     applyLabel: '确定', //确定按钮文本
                     cancelLabel: '取消', //取消按钮文本
                     customRangeLabel: '自定义范围',
@@ -1285,15 +1290,16 @@
                     monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
                         '七月', '八月', '九月', '十月', '十一月', '十二月'],
                 },
-            }, function(start, end, label) {
-                jQuery("datePickerSelect1").val(start.format('YYYY-MM-DD:HH:mm:ss')+" - "+end.format('YYYY-MM-DD:HH:mm:ss'));
+            }, function (start, end, label) {
+                jQuery("datePickerSelect1").val(start.format('YYYY-MM-DD:HH:mm:ss') + " - " + end.format('YYYY-MM-DD:HH:mm:ss'));
                 console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
             });
         }
+
         function updateConfig() {
             jQuery('#datePickerSelect').daterangepicker({
-                "startDate": currentVue.$data.pageInfo.daterange.substring(0,19),
-                "endDate": currentVue.$data.pageInfo.daterange.substring(22,41),
+                "startDate": currentVue.$data.pageInfo.daterange.substring(0, 19),
+                "endDate": currentVue.$data.pageInfo.daterange.substring(22, 41),
                 "timePickerSeconds": true,
                 "timePicker": true,
                 "opens": "center",
@@ -1322,12 +1328,11 @@
 
 <script>
     function select() {
-        let v=document.getElementById("select").value;
-        if( v == 1 || v == 2 || v == 12){
+        let v = document.getElementById("select").value;
+        if (v == 1 || v == 2 || v == 12) {
             $("#review").show();
             $("#reviewInput").show();
-        }
-        else{
+        } else {
             $("#review").hide();
             $("#reviewInput").hide();
         }

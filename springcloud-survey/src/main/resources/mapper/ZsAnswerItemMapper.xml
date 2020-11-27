@@ -16,8 +16,8 @@
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="seat" property="seat"/>
         <result column="option_id" property="optionId"/>
-        <result column="option" property="option" />
-        <result column="uid" property="uid" />
+        <result column="option" property="option"/>
+        <result column="uid" property="uid"/>
         <association property="user" javaType="com.camel.core.model.SysUser">
             <id property="id" column="uid" jdbcType="INTEGER"></id>
         </association>
@@ -36,6 +36,22 @@
         <where>
             status = 1
         </where>
+    </select>
+
+    <select id="listByAnswers" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_answer_item
+        <where>
+            <if test="list.size > 0">
+                answer_id in
+                <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
     </select>
 
     <select id="selectCrossCount" resultType="hashmap">
