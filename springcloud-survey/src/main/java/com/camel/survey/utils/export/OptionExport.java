@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -84,10 +85,10 @@ public class OptionExport {
         Integer rowIndex = 1;
         HSSFCellStyle cellStyle = (HSSFCellStyle) HSSFUtils.createStyle(sheet.getWorkbook());
         for (ZsQuestion q : questionList) {
-            String type = "[" +
-                    (q.getType().equals(1) ? "单选题" : q.getType() == 2 ? "多选题" : "问答题") +
-                    "]";
-            ExcelUtil.setTitle(type + " 第" + q.getOrderNum() + "题: " + q.getName().trim(), sheet.createRow(rowIndex++), sheet);
+            StringBuilder type = new StringBuilder();
+            type.append("[").append((q.getType().equals(1) ? "单选题" : q.getType() == 2 ? "多选题" : "问答题")).append("]");
+            type.append(" 第").append(q.getOrderNum()).append("题： ").append(q.getName().trim());
+            ExcelUtil.setTitle(type.toString(), sheet.createRow(rowIndex++), sheet);
             Integer allNum = 0;
             for (ZsOption o : q.getOptions()) {
                 allNum += ObjectUtil.isNotEmpty(o.getCurrent()) ? o.getCurrent() : 0;
@@ -95,8 +96,12 @@ public class OptionExport {
             for (ZsOption o : q.getOptions()) {
                 Integer c = ObjectUtil.isEmpty(o.getCurrent()) ? 0 : o.getCurrent();
                 Double s = (1.0 * c) / allNum;
-
-                ExcelUtil.setOption(o.getOrderNum() + ": " + o.getName(), sheet.createRow(rowIndex), sheet);
+                StringBuilder option = new StringBuilder();
+                option.append(o.getOrderNum()).append(": ").append(o.getName());
+                if(!ObjectUtils.isEmpty(o.getScore())) {
+                    option.append("(计").append(o.getScore()).append("分)");
+                }
+                ExcelUtil.setOption(option.toString(), sheet.createRow(rowIndex), sheet);
                 sheet.getRow(rowIndex).createCell(13).setCellStyle(cellStyle);
                 sheet.getRow(rowIndex).getCell(13).setCellValue(c);
                 sheet.getRow(rowIndex).createCell(14).setCellStyle(cellStyle);
