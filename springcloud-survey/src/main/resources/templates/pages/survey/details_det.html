@@ -262,6 +262,9 @@
                                     <button type="button" class="btn btn-success btn-sm"
                                             v-on:click="exportForm()">报表导出
                                     </button>
+                                    <button type="button" class="btn btn-white btn-sm"
+                                            v-on:click="customExport()">自定义导出
+                                    </button>
                                 </div>
                             </div>
 
@@ -641,7 +644,7 @@
                 zsQuestions: []
             },
             answers: [],
-            pageInfo: {
+                pageInfo: {
                 valid: '',
                 surveyId: sessionStorage.getItem('editParams'),
                 pageNum: 1,
@@ -693,6 +696,9 @@
         },
         computed: {},
         methods: {
+            customExport() {
+                toPage("pages/export/index.html", this.pageInfo);
+            },
             isInValid(item) {
                 if (item.valid) {
                     if (item.valid.code === 1) {
