@@ -269,6 +269,10 @@
                 },
                 submit() {
                     let that = this;
+                    if(!that.userinfo.openid) {
+                        return $.toast("从微信获取信息失败，请稍后重试，或重新关注公众号", function () {
+                        });
+                    }
                     if(!isCardNo(this.userinfo.idNum)) {
                         return $.toast("身份证号码不正确", function () {
                         });
@@ -321,6 +325,10 @@
                                     if(that.userinfo.id) {
                                         that.isEdit = true;
                                     }
+                                }
+                                if(!that.userinfo.openid) {
+                                    return $.toast("暂未从微信获取到您的信息，请稍等重试，或重新关注公众号", function () {
+                                    });
                                 }
                             },
                             error: function (err) {
