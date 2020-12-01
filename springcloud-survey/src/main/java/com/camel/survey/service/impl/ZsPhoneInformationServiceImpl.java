@@ -53,7 +53,7 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
     public boolean importPhoneInformation(MultipartFile file, Integer surveyId) {
         SysUser user = applicationToolsUtils.currentUser();
         List<ZsPhoneInformation> zsPhoneInformations = ExcelUtil.readExcelPI(file, surveyId, user);
-        if(insertBatch(zsPhoneInformations)){
+        if(insertBatch(zsPhoneInformations, 200)){
             return mapper.removeBySurveyId(surveyId) > 0;
         }
         return true;

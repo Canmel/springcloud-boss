@@ -1,0 +1,119 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>导出信息</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>标签</th>
+                        <th>收集时间</th>
+                        <th>被访者</th>
+                        <th>工号</th>
+                        <th>访员姓名</th>
+                        <th>有效</th>
+                        <th>复核状态</th>
+                        <th>复核人</th>
+                        <th>复核意见</th>
+                        <th>复核时间</th>
+                        <th>复核时长</th>
+                        <th>得分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in answers">
+                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                        <td>
+                            <span class="label label-info label-important">{{item.label}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.createdAt}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.creator}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.workNum}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.user ? item.user.username: ''}}</span>
+                        </td>
+                        <td>
+                            <span class="text">{{isInValid(item)}}</span>
+                        </td>
+                        <td>
+                            <span class="text-input" v-if="!item.reviewStatus">未复核</span>
+                            <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
+                            <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
+                        </td>
+                        <td>
+                            <span>{{item.reviewer ? item.reviewer.username: ''}}</span>
+                        </td>
+                        <td>
+                            <span class="reviewer-msg" :title="item.reviewMsg">{{item.reviewMsg | shorter}}</span>
+                        </td>
+                        <td>{{item.reviewerAt}}</td>
+                        <td>{{item.reviewSpent ? item.reviewSpent / 1000 : ''}}</td>
+                        <td>{{item.score ? item.score : ''}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                         :changge="pageFn"></pageination>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            pageInfo: {
+                name: '',
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
+            answers: []
+        },
+        mounted() {
+            console.log(this)
+        },
+        created: function () {
+        },
+        methods: {
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            isInValid(item) {
+                if (item.valid) {
+                    if (item.valid.code === 1) {
+                        return "是";
+                    } else {
+                        let detail = item.inValidMsg ? '(' + item.inValidMsg + ')' : '';
+                        return "否" + detail;
+                    }
+                } else {
+                    return "未知";
+                }
+            },
+            pagequery() {
+                let that = this;
+                AJAX.GET('zsAnswer', this.pageInfo, function (resp) {
+                    that.answers = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            }
+        }
+    });
+</script>
