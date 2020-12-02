@@ -4,21 +4,58 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.AreaAddress">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="pinyin" property="pinyin" />
-        <result column="area_id" property="areaId" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pinyin" property="pinyin"/>
+        <result column="area_id" property="areaId"/>
+        <result column="initials" property="initials"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, pinyin, area_id
+        id, name, pinyin, area_id, initials
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         area_address
+        <where>
+            <if test="areaId != null">
+                and area_id = #{areaId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMatch" resultMap="BaseResultMap">
+        SELECT * from (
+        select * from area_address where name like concat('%', #{text}, '%') and area_id = #{areaId}
+        UNION all
+        select * from area_address where pinyin like concat('%', #{text}, '%') and area_id = #{areaId}
+        UNION ALL
+        select * from area_address where initials like concat('%', #{text}, '%') and area_id = #{areaId}
+        ) result
+        LIMIT 10
+    </select>
+
+    <select id="selectMatchList" resultMap="BaseResultMap">
+        SELECT * from (
+        select * from area_address where area_id = #{areaId}
+        <foreach collection="collection" item="item">
+            and name like concat('%', #{item}, '%')
+        </foreach>
+        UNION all
+        select * from area_address where area_id = #{areaId}
+        <foreach collection="collection" item="item">
+            and pinyin like concat('%', #{item}, '%')
+        </foreach>
+        UNION ALL
+        select * from area_address where area_id = #{areaId}
+        <foreach collection="collection" item="item">
+            and initials like concat('%', #{item}, '%')
+        </foreach>
+        ) result
+        LIMIT 10
     </select>
 </mapper>

@@ -57,9 +57,9 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>com.baomidou</groupId>-->
-            <!--<artifactId>mybatis-plus-boot-starter</artifactId>-->
-            <!--<version>3.3.0</version>-->
+        <!--<groupId>com.baomidou</groupId>-->
+        <!--<artifactId>mybatis-plus-boot-starter</artifactId>-->
+        <!--<version>3.3.0</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -196,11 +196,11 @@
         </dependency>
 
         <!-- excel转对象       -->
-<!--        <dependency>-->
-<!--            <groupId>com.sargeraswang.util</groupId>-->
-<!--            <artifactId>excel-util</artifactId>-->
-<!--            <version>1.2.1</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.sargeraswang.util</groupId>-->
+        <!--            <artifactId>excel-util</artifactId>-->
+        <!--            <version>1.2.1</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>com.aliyun</groupId>
@@ -208,13 +208,20 @@
             <version>3.7.1</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.alibaba</groupId>-->
-            <!--<artifactId>fastjson</artifactId>-->
-            <!--<version>1.2.49</version>-->
+        <!--<groupId>com.alibaba</groupId>-->
+        <!--<artifactId>fastjson</artifactId>-->
+        <!--<version>1.2.49</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- 汉子转拼音 -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
         </dependency>
     </dependencies>
 

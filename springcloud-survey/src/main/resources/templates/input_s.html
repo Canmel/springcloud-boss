@@ -59,8 +59,11 @@
         <span style="color: green;">计时：</span>
         <span style="color: green;" id="time">00:00</span>
     </div>
-    <div class="panel padder-v item" style="position:fixed; top: 150px; width: 200px; text-align: center;background-color: sandybrown; border-radius: 0 40px 40px 0;">
-        <div class="font-thin"><span style="font-size: 50px; color: navy; font-family: 'Microsoft YaHei',微软雅黑,'MicrosoftJhengHei',华文细黑,STHeiti,MingLiu">{{userParamsIndex + 1}} </span> <span style="font-size: 30px;">/{{pageParams.length ? pageParams.length : 1 }}</span> </div>
+    <div class="panel padder-v item"
+         style="position:fixed; top: 150px; width: 200px; text-align: center;background-color: sandybrown; border-radius: 0 40px 40px 0;">
+        <div class="font-thin"><span
+                style="font-size: 50px; color: navy; font-family: 'Microsoft YaHei',微软雅黑,'MicrosoftJhengHei',华文细黑,STHeiti,MingLiu">{{userParamsIndex + 1}} </span>
+            <span style="font-size: 30px;">/{{pageParams.length ? pageParams.length : 1 }}</span></div>
         <span class="text-muted text-xs">所有问卷进度</span>
     </div>
     <header class="codrops-header">
@@ -68,9 +71,10 @@
         <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
     <section>
-        <div style="position: fixed; width: 100%; bottom: 0px;" >
+        <div style="position: fixed; width: 100%; bottom: 0px;">
             <div class="progress progress-striped active">
-                <div :style="{width: getPercentage()}" :aria-valuemax="questions.length" aria-valuemin="0" :aria-valuenow="current" role="progressbar" class="progress-bar progress-bar-danger">
+                <div :style="{width: getPercentage()}" :aria-valuemax="questions.length" aria-valuemin="0"
+                     :aria-valuenow="current" role="progressbar" class="progress-bar progress-bar-danger">
                     <span class="sr-only" style="position: relative; font-size: 20px;">当前进度： {{current}} / {{questions.length}} </span>
                 </div>
             </div>
@@ -86,8 +90,9 @@
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
                      :data-type="item.type">
-                    <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span style="font-size: 12px;"
-                                                                                                   v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
+                    <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span
+                            style="font-size: 12px;"
+                            v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 1 && showOptions(item, opt)">
@@ -102,16 +107,23 @@
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{textFilter(opt.text)}}</span>
                             </label>
-                            <div style="display: inline-block;" v-if="opt.hasRemark">
-                                <input class="form-control"  style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
-                                       @blur="markBlueHandler($event, opt)" @change="areaChange($event)" @focus="foucusAreaHandler()">
+                            <div style="display: inline-block; width: 300px;" v-if="opt.hasRemark">
+                                <input class="form-control" style="display: inherit; width: 100%;"
+                                       :placeholder="textFilter(opt.text)"
+                                       @input="areaChange($event, opt)" @focus="foucusAreaHandler()"
+                                       @blur="markBlueHandler($event, opt)">
                                 <div id="areaSelectors" style="display: none;">
-                                    <option :value="s" v-for="s in areaSelectors" style="background-color: rgba(128,128,128,0.4); border: 1px solid gray;">
+                                    <div v-for="s in areaSelectors"
+                                         @click="areaSelectHandler(s, opt)"
+                                         style="border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0,0,0,.075);font-size: 14px; padding: 5px; cursor: pointer;">
+                                        {{s.name}}
+                                    </div>
                                 </div>
                             </div>
 
                             <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
-                            <span class="badge" style="background-color: #f0ad4e" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
+                            <span class="badge" style="background-color: #f0ad4e"
+                                  v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
 
@@ -128,12 +140,14 @@
                                                                   :content="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{textFilter(opt.text)}}</span>
-                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
+                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
+                                       :placeholder="textFilter(opt.text)"
                                        @blur="markBlueHandler($event, opt)">
                             </label>
 
                             <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
-                            <span class="badge" style="background-color: #f0ad4e" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
+                            <span class="badge" style="background-color: #f0ad4e"
+                                  v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
 
@@ -184,11 +198,15 @@
                         </div>
                     </div>
                     <div class="row text-center">
-                        <span class="glyphicon glyphicon-arrow-left" style="font-size: 30px; cursor: pointer;" v-if="current!=1"
+                        <span class="glyphicon glyphicon-arrow-left" style="font-size: 30px; cursor: pointer;"
+                              v-if="current!=1"
                               v-on:click="previousQuestion(item, $event)">上一题</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span id="nextQuestion" v-if="!showSubmit" class="glyphicon glyphicon-arrow-right" style="font-size: 30px; cursor: pointer;"
+                        <span id="nextQuestion" v-if="!showSubmit" class="glyphicon glyphicon-arrow-right"
+                              style="font-size: 30px; cursor: pointer;"
                               v-on:click="nextQuestion(item, $event)">下一题</span>
-                        <span  v-if="showSubmit" class="submit btn" :class="{'btn-warning': isLastParams(), 'btn-danger': !isLastParams()}" v-on:click="submit(item, $event)">{{submitText()}}</span>
+                        <span v-if="showSubmit" class="submit btn"
+                              :class="{'btn-warning': isLastParams(), 'btn-danger': !isLastParams()}"
+                              v-on:click="submit(item, $event)">{{submitText()}}</span>
                     </div>
 
                 </div>
@@ -219,7 +237,7 @@
             survey: {
                 name: '',
                 endShow: '问卷结束，感谢您的配合！',
-                informationTemplate:'',
+                informationTemplate: '',
             },
             paramsPair: [],
             questions: [],
@@ -229,25 +247,26 @@
             phone: '',
             current: 1,
             nextIndex: 1,
-            index:[], //按顺序存储answersave的问题id
-            order:[], //按顺序存储answersave的问题orderNum
+            index: [], //按顺序存储answersave的问题id
+            order: [], //按顺序存储answersave的问题orderNum
             tmpNext: [],
             tmpNextRadio: null,
             showSubmit: false,
             endInfo: '问卷结束，感谢您的配合！',
-            unclear:0,
+            unclear: 0,
             tmpNextAll: [],
-            phoneInformation:{
-                mobile:'',
-                surveyId:'',
+            phoneInformation: {
+                mobile: '',
+                surveyId: '',
                 information: [],
             },
-            pageParams:[],
-            finalData:[], //存储最终zsAnswerItemSaves
+            pageParams: [],
+            finalData: [], //存储最终zsAnswerItemSaves
             userParamsIndex: 0,
             label: null, // 标签,不同标签可以重复收集
             validResult: true,
-            areaSelectors: ['ada', 'asd']
+            areaSelectors: [],
+            currentRemark: ''
         },
         created: function () {
             this.loadParams();
@@ -255,44 +274,64 @@
             this.initPageParams();
         },
         methods: {
+            areaSelectHandler(s, opt) {
+                this.currentRemark = s.name;
+            },
             foucusAreaHandler() {
                 $("#areaSelectors").show();
             },
-            areaChange(e) {
-                if(e.target.value) {
-                    this.areaSelectors = ['浙江省西湖区', '浙江省西湖区登新公寓34幢'];
-                }else {
-                    this.areaSelectors = [];
+            areaChange(e, o) {
+                let that = this;
+                console.log(e);
+                if (o.otype == 1) {
+                    if (e.target.value) {
+                        AJAX.GET("areaAddress/match", {areaId: o.dataId, text: e.target.value}, function (resp) {
+                            that.areaSelectors = resp.data;
+                        })
+                    } else {
+                        this.areaSelectors = [];
+                    }
                 }
-                $("#areaSelectors").show();
+
             },
             markBlueHandler(event, opt) {
-                opt.name = event.target.value;
-                $("#areaSelectors").hide();
+                setTimeout(()=>{
+                    //执行离开焦点操作
+                    console.log(this.currentRemark);
+                    if(this.currentRemark) {
+                        // $("#areaSelectors").hide();
+                        event.target.value = this.currentRemark;
+                        opt.name = this.currentRemark;
+                        return this.currentRemark = '';
+
+                    }
+                    opt.name = event.target.value;
+                    // $("#areaSelectors").hide();
+                },200);
             },
             getPercentage() {
-                if(this.pageParams) {
+                if (this.pageParams) {
                     let p = this.current / this.questions.length;
-                    if(p) {
-                        let percent = Number(p*100).toFixed(1) + "%";
+                    if (p) {
+                        let percent = Number(p * 100).toFixed(1) + "%";
                         return percent;
-                    }else{
+                    } else {
                         return "0%";
                     }
 
-                }else{
+                } else {
                     return null;
                 }
             },
             // 逻辑出提交按钮的文字,入提交,提交并继续
             submitText() {
-                if(this.isLastParams()) {
+                if (this.isLastParams()) {
                     return '保存问卷结束';
                 }
                 return '保存问卷继续';
             },
             isLastParams() {
-                if(this.pageParams.length) {
+                if (this.pageParams.length) {
                     return this.pageParams.length === this.userParamsIndex + 1;
                 } else {
                     return true;
@@ -300,54 +339,53 @@
 
             },
             //将最新问题答案写入最终zsAnswerItemSaves
-            loadFinalData(){
-                this.index.push(this.questions[this.current-1].id);
+            loadFinalData() {
+                this.index.push(this.questions[this.current - 1].id);
                 this.order.push(this.current);
-                let array =$('#theForm').serializeArray();
-                for(let j=0;j<array.length;j++){
-                    if(array[j].name.split("_")[1]===(""+this.questions[this.current-1].id)){
+                let array = $('#theForm').serializeArray();
+                for (let j = 0; j < array.length; j++) {
+                    if (array[j].name.split("_")[1] === ("" + this.questions[this.current - 1].id)) {
                         this.finalData.push(array[j]);
                     }
                 }
             },
             initPageParams() {
-                if(!this.survey.informationTemplate) {
+                if (!this.survey.informationTemplate) {
                     return false;
                 }
-                let that=this;
-                this.phoneInformation.mobile=this.getParams('phone');
-                this.phoneInformation.surveyId=this.survey.id;
-                AJAX.GET('zsPhoneInformation/selectByMobileAndSurvey' ,this.phoneInformation , function (resp) {
-                    if(resp.data!=null){
+                let that = this;
+                this.phoneInformation.mobile = this.getParams('phone');
+                this.phoneInformation.surveyId = this.survey.id;
+                AJAX.GET('zsPhoneInformation/selectByMobileAndSurvey', this.phoneInformation, function (resp) {
+                    if (resp.data != null) {
                         let infos = resp.data;
-                        if(infos) {
+                        if (infos) {
                             for (let i = 0; i < infos.length; i++) {
                                 that.phoneInformation.information.push(infos[i].information);
                                 let info = infos[i].information;
-                                info = info.replace(/[\r\n]/g,"")
+                                info = info.replace(/[\r\n]/g, "")
                                 that.pageParams.push(JSON.parse(info));
                             }
                         }
-                    }
-                    else{
+                    } else {
                         alert("被访对象数据为空，请联系管理员");
                     }
                 });
             },
-            textFilter(text){
-                if(text!=null){
+            textFilter(text) {
+                if (text != null) {
                     let that = this;
                     let filterParams = that.pageParams[this.userParamsIndex];
-                    if(!filterParams) {
-                        return  text;
+                    if (!filterParams) {
+                        return text;
                     }
-                    for(let i=0;i<Object.keys(filterParams).length;i++){
-                        let str="{"+Object.keys(filterParams)[i]+"}";
-                        if(text.includes(str)){
-                            text=text.replace(new RegExp(str,'g'),Object.values(filterParams)[i]);
+                    for (let i = 0; i < Object.keys(filterParams).length; i++) {
+                        let str = "{" + Object.keys(filterParams)[i] + "}";
+                        if (text.includes(str)) {
+                            text = text.replace(new RegExp(str, 'g'), Object.values(filterParams)[i]);
                         }
                     }
-                    if(text.includes("{")&&text.includes("}")){
+                    if (text.includes("{") && text.includes("}")) {
                         alert("被访对象数据不正确，请联系管理员");
                     }
                 }
@@ -361,15 +399,15 @@
                     var checked = $(item).is(':checked');
                     var content = $(item).attr('content');
                     // 选中说不清数量到达限额
-                    if (checked && content.search("说不清") !=-1) {
-                        that.unclear=that.unclear+1;
-                        if(that.unclear>=that.survey.unclearCount){
-                            if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                    if (checked && content.search("说不清") != -1) {
+                        that.unclear = that.unclear + 1;
+                        if (that.unclear >= that.survey.unclearCount) {
+                            if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                                 $("#theForm").hide();
                                 that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
                                 // that.userParamsIndex++;
                                 $("#end").show();
-                            }else {
+                            } else {
                                 $("#theForm")[0].reset();
                                 that.current = 1;
                                 that.nextIndex = 1;
@@ -384,12 +422,12 @@
                     }
                     // 选中的项目 target为数字并且小于0
                     if (checked && !isNaN(target) && target < 0) {
-                        if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                             $("#theForm").hide();
                             that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
                             // that.userParamsIndex++;
                             $("#end").show();
-                        }else{
+                        } else {
                             $("#theForm")[0].reset();
                             that.current = 1;
                             that.nextIndex = 1;
@@ -403,8 +441,8 @@
 
                     if (checked && !isNaN(target) && target > 1000) {
                         that.submitImmediately();
-                        if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
-                        }else{
+                        if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        } else {
                             $("#theForm")[0].reset();
                             that.current = 1;
                             that.nextIndex = 1;
@@ -414,7 +452,7 @@
                         }
                     }
                 });
-                if(!this.finalData.length>0) {
+                if (!this.finalData.length > 0) {
                     return;
                 }
                 AJAX.POST_JSON('zsSurvey/valid', {
@@ -426,11 +464,11 @@
                     agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     if (resp.msg != '') {
-                        if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                             alert(resp.msg);
                             // window.close();
                             $("#nextQuestion").hide();
-                        }else{
+                        } else {
                             $("#theForm")[0].reset();
                             that.current = 1;
                             that.nextIndex = 1;
@@ -505,7 +543,7 @@
                         this.tmpNext = [];
                         $(event.target).parents('.question').find('input').not(event.target).attr('checked', false);
                     }
-                }else{
+                } else {
                     $(event.target).parents('.question').find("[dexclusivity=1]").attr('checked', false);
                 }
                 if (opt.target > 0) {
@@ -539,9 +577,9 @@
                 }
                 this.loadFinalData();
                 this.validSurvey();
-                if(!this.validResult) {
+                if (!this.validResult) {
                     this.validResult = true;
-                    return ;
+                    return;
                 }
                 if (this.current === this.nextIndex) {
                     this.nextIndex += 1
@@ -560,12 +598,12 @@
                 this.nextIndex += 1;
             },
             //删除前一题的作答
-            deletePreviousQuestion(){
+            deletePreviousQuestion() {
                 let that = this;
-                let length=this.finalData.length;
-                for(let j=length-1;j>=0;j--){
-                    if(this.finalData[j].name.split("_")[1]===(""+this.index[this.index.length-1])){
-                        if(this.finalData[j].value.split("_")[1].search("说不清")!=-1){
+                let length = this.finalData.length;
+                for (let j = length - 1; j >= 0; j--) {
+                    if (this.finalData[j].name.split("_")[1] === ("" + this.index[this.index.length - 1])) {
+                        if (this.finalData[j].value.split("_")[1].search("说不清") != -1) {
                             that.unclear -= 1;
                         }
                         this.finalData.pop(this.finalData[j]);
@@ -576,10 +614,10 @@
                 this.deletePreviousQuestion();
                 this.index.pop();
                 let end = this.order.pop();
-                this.nextIndex= end;
+                this.nextIndex = end;
                 this.current = this.nextIndex;
                 this.nextIndex += 1;
-                this.showSubmit= false;
+                this.showSubmit = false;
                 $("input").attr('checked', false);
                 $("input").val(null);
             },
@@ -661,7 +699,7 @@
                     agentUUID: this.getParams('agentUUID'),
                     label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null
                 }, function (resp) {
-                    if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                    if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         $("#theForm").hide();
                         $("#end").show();
                         parent.surveyStatus = 1;
@@ -705,7 +743,7 @@
                     agentUUID: this.getParams('agentUUID'),
                     label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null
                 }, function (resp) {
-                    if(that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                    if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         $("#theForm").hide();
                         $("#end").show();
                         parent.surveyStatus = 1;
@@ -774,37 +812,39 @@
     //然后需要一个变量来存储我的定时器
     var int;
 
-    function timer(){  //声明一个timer函数，在这个函数里实现我的功能。
+    function timer() {  //声明一个timer函数，在这个函数里实现我的功能。
         second += 1;  //秒数加1
-        if(second > 59){
+        if (second > 59) {
             second = 0;  //当秒数大于59的时候，让秒数重新归零。
             minute += 1;  //分钟数加1
         }
         //然后将秒和分钟追加到dom里，为了保持00:00这样的格式，我们需要做一些简单的判断
-        if(minute < 10){
+        if (minute < 10) {
             document.getElementById('time').innerHTML = '0' + minute + ":0" + second;
-            if(second < 10){
+            if (second < 10) {
                 document.getElementById('time').innerHTML = '0' + minute + ":0" + second;
-            }else{
+            } else {
                 document.getElementById('time').innerHTML = '0' + minute + ":" + second;
             }
-        }else{
+        } else {
             document.getElementById('time').innerHTML = minute + ":0" + second;
-            if(second < 10){
+            if (second < 10) {
                 document.getElementById('time').innerHTML = minute + ":0" + second;
-            }else{
+            } else {
                 document.getElementById('time').innerHTML = minute + ":" + second;
             }
         }
     }
+
     //然后我创建一个定时器来执行timer函数，在js中，1000毫秒等于1秒。我可以让这个定时器每隔1000毫秒执行一次timer函数。我想要的效果是点击开始按钮的时候再执行这个定时器。
     //我可以把这个定时器放在一个函数里，在我点击开始按钮的时候运行这个函数即可。
-    function start(){
+    function start() {
         //在每次点击开始按钮时，我们需要先清除一下定时器，然后再执行定时器，原因是如果不清除，每次点击开始按钮，定时器都会累加，会导致计时越来越快的bug
         clearInterval(int);
-        int = setInterval(timer,1000);
+        int = setInterval(timer, 1000);
     }
-    jQuery(document).ready(function(){
+
+    jQuery(document).ready(function () {
         start();
     });
 
