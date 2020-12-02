@@ -23,6 +23,7 @@
                            multiple="multiplt" v-on:change="toSubmit" style="display: none;">
                     <a class="btn btn-success" v-on:click="selectFile">选择文件</a>
                 </form>
+                <button class="btn btn-danger" @click="deleteArea()">清空</button>
             </div>
         </div>
 
@@ -73,18 +74,33 @@
             this.loadP();
         },
         methods: {
+            deleteArea() {
+                let that = this;
+                let areaId = this.getAreaId();
+                if (!areaId) {
+                    return toastr.error('请选择对应的地区', '错误');
+                }
+                confirm("您确定要清空这些数据吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.DELETE("areaAddress", {id: areaId}, function (resp) {
+                            toastr.success(resp.msg, '成功');
+                            that.pagequery()
+                        })
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
             selectFile() {
                 $("#fileSelector").click();
             },
             getAreaId() {
                 let areaId = null;
-                if(this.dataIdp) {
+                if (this.dataIdp) {
                     areaId = this.dataIdp;
                 }
-                if(this.dataIds) {
+                if (this.dataIds) {
                     areaId = this.dataIds;
                 }
-                if(this.dataIdx) {
+                if (this.dataIdx) {
                     areaId = this.dataIdx;
                 }
                 console.log(areaId)
@@ -94,8 +110,8 @@
                 let areaId = this.getAreaId();
                 let that = this;
                 let formData = new FormData($('#signupForm')[0]);
-                if(!areaId) {
-                    return toastr.error('错误', '请选择对应的地区')
+                if (!areaId) {
+                    return toastr.error('请选择对应的地区', '错误')
                 }
                 formData.append("areaId", areaId);
                 let url = "/survey/areaAddress/upload";

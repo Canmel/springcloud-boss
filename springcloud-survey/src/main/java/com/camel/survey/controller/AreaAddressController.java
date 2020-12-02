@@ -1,6 +1,8 @@
 package com.camel.survey.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
@@ -38,6 +40,14 @@ public class AreaAddressController extends BaseCommonController {
     @GetMapping
     public Result index(AreaAddress entity) {
         return ResultUtil.success(service.pageQuery(entity));
+    }
+
+    @DeleteMapping("/{id}")
+    public Result del(@PathVariable Integer id) {
+        Wrapper<AreaAddress> areaAddressWrapper = new EntityWrapper<>();
+        areaAddressWrapper.eq("area_id", id);
+        service.delete(areaAddressWrapper);
+        return ResultUtil.success("情况指定区域内的地址成功");
     }
 
     @AuthIgnore
