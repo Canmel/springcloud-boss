@@ -67,7 +67,7 @@ docker-build:
 #    - docker build -t $sms_service ./sartifacts/sms_service/
 #    - docker push $sms_service
 #    - docker build -t $control_service ./sartifacts/control_service/
-    - docker push $control_service
+#    - docker push $control_service
     - docker build -t $zuul_service ./sartifacts/zuul_service/
     - docker push $zuul_service
 
