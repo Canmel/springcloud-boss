@@ -75,9 +75,6 @@
                 </div>
             </div>
         </div>
-
-
-
         <div class="row question-welcome" v-if="current === 1">
             <div class="text-center">
                 <span>
@@ -104,9 +101,14 @@
                                                                   :content="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
                                 <span>{{textFilter(opt.text)}}</span>
-                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
-                                       @blur="markBlueHandler($event, opt)" >
                             </label>
+                            <div style="display: inline-block;" v-if="opt.hasRemark">
+                                <input class="form-control"  style="display: inherit; width: auto;" :placeholder="textFilter(opt.text)"
+                                       @blur="markBlueHandler($event, opt)" @change="areaChange($event)" @focus="foucusAreaHandler()">
+                                <div id="areaSelectors" style="display: none;">
+                                    <option :value="s" v-for="s in areaSelectors" style="background-color: rgba(128,128,128,0.4); border: 1px solid gray;">
+                                </div>
+                            </div>
 
                             <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
                             <span class="badge" style="background-color: #f0ad4e" v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
@@ -244,7 +246,8 @@
             finalData:[], //存储最终zsAnswerItemSaves
             userParamsIndex: 0,
             label: null, // 标签,不同标签可以重复收集
-            validResult: true
+            validResult: true,
+            areaSelectors: ['ada', 'asd']
         },
         created: function () {
             this.loadParams();
@@ -252,8 +255,20 @@
             this.initPageParams();
         },
         methods: {
+            foucusAreaHandler() {
+                $("#areaSelectors").show();
+            },
+            areaChange(e) {
+                if(e.target.value) {
+                    this.areaSelectors = ['浙江省西湖区', '浙江省西湖区登新公寓34幢'];
+                }else {
+                    this.areaSelectors = [];
+                }
+                $("#areaSelectors").show();
+            },
             markBlueHandler(event, opt) {
                 opt.name = event.target.value;
+                $("#areaSelectors").hide();
             },
             getPercentage() {
                 if(this.pageParams) {

@@ -1,0 +1,153 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="col-sm-3">
+                <select class="form-control m-b" v-model="dataIdp" @change="loadS">
+                    <option v-for="pro in p" :value="pro.baseAreaid">{{pro.name}}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control m-b" v-model="dataIds" @change="loadX">
+                    <option v-for="pro in s" :value="pro.baseAreaid">{{pro.name}}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control m-b" v-model="dataIdx" @change="selectX">
+                    <option v-for="pro in x" :value="pro.baseAreaid">{{pro.name}}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <form class="form-horizontal m-t" id="signupForm" action="survey/upload" method=post
+                      enctype="multipart/form-data">
+                    <input type="file" name="file" class="form-control" id="fileSelector"
+                           multiple="multiplt" v-on:change="toSubmit" style="display: none;">
+                    <a class="btn btn-success" v-on:click="selectFile">选择文件</a>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive" style="width: 100%;">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>智慧资格</th>
+                    <th>描述</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, index) in items">
+                    <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
+                    <td>{{item.name}}</td>
+                    <td>{{item.desc}}</td>
+                    <td>{{item.createdAt | formatDate}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <pageination :total="pageInfo.total" :size="pageInfo.size" :page="pageInfo.pageNum"
+                     :changge="pageFn"></pageination>
+
+    </div>
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            dataIdp: null,
+            dataIds: null,
+            dataIdx: null,
+            p: [],
+            s: [],
+            x: [],
+            items: [],
+            pageInfo: {
+                pageNum: 1,
+                total: 0,//总页数
+                size: 10,//每页显示条目个数不传默认10
+            },
+
+        },
+        created: function () {
+            this.loadP();
+        },
+        methods: {
+            selectFile() {
+                $("#fileSelector").click();
+            },
+            toSubmit(v) {
+                let that = this;
+                let formData = new FormData($('#signupForm')[0]);
+                let url = "/survey/areaAddress/upload";
+                if (sessionStorage.getItem("access_token")) {
+                    url = url + '?access_token=' + sessionStorage.getItem("access_token");
+                }
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                }).success(function (resp) {
+                    alert(resp.msg);
+                    $("#myModal").modal("hide");
+                    that.pageQuery();
+                }).error(function () {
+                    alert("上传失败");
+                    $("#myModal").modal("hide");
+                });
+
+            },
+            pagequery: function () {
+                var that = this;
+                AJAX.GET('zsExam', this.pageInfo, function (resp) {
+                    that.items = resp.data.list;
+                    that.pageInfo.pageNum = resp.data.pageNum;
+                    that.pageInfo.total = resp.data.total;
+                })
+            },
+            pageFn: function (val) {
+                this.pageInfo.pageNum = val;
+                this.pagequery();
+            },
+            selectX(e) {
+                let v = event.target.value;
+            },
+            // 省市县
+            loadP() {
+                let that = this;
+                this.p = [];
+                this.s = [];
+                this.x = [];
+                AJAX.GET("baseArea/0", {}, function (resp) {
+                    that.p = resp.data;
+                })
+            },
+            loadS(event) {
+                this.dataIds = undefined;
+                this.dataIdx = undefined;
+                let that = this;
+                this.s = [];
+                this.x = [];
+                AJAX.GET("baseArea/" + event.target.value, {}, function (resp) {
+                    that.s = resp.data;
+                });
+            },
+            loadX(event) {
+                this.dataIdx = undefined;
+                let that = this;
+                this.x = [];
+                AJAX.GET("baseArea/" + event.target.value, {}, function (resp) {
+                    that.x = resp.data;
+                });
+            },
+
+        }
+    });
+</script>

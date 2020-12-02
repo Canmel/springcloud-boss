@@ -116,6 +116,7 @@
                                                 <input type="radio" :value="zsoption.name">{{zsoption.name}}
                                                 <input type="text" style="width: 70px;" disabled
                                                        v-if="zsoption.hasRemark" value="备注"/>
+                                                <span class="badge-info">{{zsoption.dataStr}}</span>
                                             </label>
                                             <span style="float: right;">
                                              <span class="label label-danger" v-if="zsoption.ignoreNum">
@@ -341,10 +342,20 @@
                         </div>
                     </div>
                     <div class="form-group" v-if="selectedOption.hasRemark">
-                        <label class="col-sm-3 control-label">备注提示</label>
+                        <label class="col-sm-3 control-label">备注类型</label>
                         <div class="col-sm-9">
-                            <input class="form-control" type="text" name="remark" v-model="selectedOption.remark"
-                                   placeholder="备注的提示信息"/>
+                            <select class="form-control m-b" text="text" name="otype"
+                                    v-model="selectedOption.otype" placeholder="备注类型">
+                                <option v-for="val in [0, 1]" :value="val">{{ val == 0 ? '无差别键入' : '地址' }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" v-if="selectedOption.hasRemark && selectedOption.otype === 1">
+                        <label class="col-sm-3 control-label">地址位置</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" name="dataId" @click="areaClickHandler()"
+                                   :value="translateData(selectedOption.dataIdp, selectedOption.dataIds, selectedOption.dataIdx)">
                         </div>
                     </div>
 
@@ -403,7 +414,8 @@
                     </form>
                     <div class="text-center">
                         <button class="btn btn-success" @click="questionNextChange()"><span>确定</span></button>
-                        <button class="btn btn-default" @click="hideModal('questionTargetModal')"><span>取消</span></button>
+                        <button class="btn btn-default" @click="hideModal('questionTargetModal')"><span>取消</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -446,6 +458,37 @@
         </div>
     </div>
 
+    <div class="modal" id="areaSelector" ng-controller="KisBpmChoseAssignmentCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="areaSelectorLabel">地区选择</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <div class="col-sm-4">
+                            <select class="form-control m-b" v-model="selectedOption.dataIdp" @change="loadS">
+                                <option v-for="pro in p" :value="pro.baseAreaid">{{pro.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control m-b" v-model="selectedOption.dataIds" @change="loadX">
+                                <option v-for="pro in s" :value="pro.baseAreaid">{{pro.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control m-b" v-model="selectedOption.dataIdx" @change="selectX">
+                                <option v-for="pro in x" :value="pro.baseAreaid">{{pro.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input v-model="selectedOption.dataIdxbe">
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
 <script src="/survey/js/validateIsMain.js"></script>
@@ -467,15 +510,87 @@
             questionTarget: null,
             survey: null,
             selected: 0,
-            selectedIndex: 0
+            selectedIndex: 0,
+            p: [],
+            s: [],
+            x: []
         },
         created: function () {
             this.loadSurvey();
             this.loadQuestions();
+            this.loadP();
         },
         mounted() {
         },
         methods: {
+            translateData(p, s, x) {
+                console.log(p, s, x);
+                if (x) {
+
+                    for (let i = 0; i < this.x.length; i++) {
+                        if (this.x && this.x[i]['baseAreaid'] == x) {
+                            return this.x[i]['name'];
+                        }
+                    }
+                }
+                if (s) {
+                    for (let i = 0; i < this.s.length; i++) {
+                        if (this.s && this.s[i]['baseAreaid'] == s) {
+                            return this.s[i]['name'];
+                        }
+                    }
+                }
+                if (p) {
+                    for (let i = 0; i < this.p.length; i++) {
+                        if (this.p && this.p[i]['baseAreaid'] == p) {
+                            return this.p[i]['name'];
+                        }
+                    }
+                }
+                return '';
+            },
+            areaClickHandler() {
+                $("#areaSelector").modal('show');
+            },
+            // 省市县
+            loadP() {
+                let that = this;
+                this.p = [];
+                this.s = [];
+                this.x = [];
+                AJAX.GET("baseArea/0", {}, function (resp) {
+                    that.p = resp.data;
+                })
+            },
+            loadS(event) {
+                this.selectedOption.dataIds = undefined;
+                this.selectedOption.dataIdx = undefined;
+                let that = this;
+                this.s = [];
+                this.x = [];
+                AJAX.GET("baseArea/" + event.target.value, {}, function (resp) {
+                    that.s = resp.data;
+                });
+                this.selectedOption.dataStr = this.translateData(event.target.value, null, null);
+                this.selectedOption.dataId = event.target.value;
+                console.log(this.selectedOption.dataStr);
+            },
+            loadX(event) {
+                this.selectedOption.dataIdx = undefined;
+                let that = this;
+                this.x = [];
+                AJAX.GET("baseArea/" + event.target.value, {}, function (resp) {
+                    that.x = resp.data;
+                });
+                this.selectedOption.dataStr = this.translateData(null, event.target.value, null);
+                this.selectedOption.dataId = event.target.value;
+                console.log(this.selectedOption.dataStr);
+            },
+            selectX(event) {
+                this.selectedOption.dataStr = this.translateData(null, null, event.target.value);
+                this.selectedOption.dataId = event.target.value;
+                this.selectedOption.dateTime = new Date();
+            },
             questionNextChange() {
                 let options = this.getOptionsByQuestion(this.selectedQuestion.orderNum);
                 for (let i = 0; i < options.length; i++) {
@@ -592,7 +707,9 @@
                                 ignoreNum: o.ignoreNum,
                                 configration: o.configration, // 选项配额
                                 questionOrderNum: item.orderNum,
-                                score: o.score
+                                score: o.score,
+                                otype: o.otype,
+                                dataId: o.dataId
                             };
                             that.zsoptions.push(opt);
                         }

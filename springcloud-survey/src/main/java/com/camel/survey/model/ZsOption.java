@@ -114,6 +114,17 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
 
     private Integer score;
 
+    /**
+     * 选项类型
+     * 默认为字符串+人工输入
+     */
+    private Integer otype;
+
+    /**
+     * 类型对应的数据ID
+     */
+    private Integer dataId;
+
     @ExcelAnnotation(columnName = "题目", columnIndex = 1)
     @TableField(exist = false)
     private String question;
