@@ -162,6 +162,7 @@
 
             },
             loadS(event) {
+                this.dataIdp = event.target.value;
                 this.dataIds = undefined;
                 this.dataIdx = undefined;
                 let that = this;
@@ -176,9 +177,11 @@
                 this.dataIdx = undefined;
                 let that = this;
                 this.x = [];
-                AJAX.GET("baseArea/" + event.target.value, {}, function (resp) {
-                    that.x = resp.data;
-                });
+                if(event.target.value) {
+                    AJAX.GET("baseArea/" + event.target.value, {}, function (resp) {
+                        that.x = resp.data;
+                    });
+                }
                 this.pagequery();
             },
 
