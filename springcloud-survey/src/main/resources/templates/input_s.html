@@ -110,9 +110,9 @@
                             <div style="display: inline-block; width: 300px;" v-if="opt.hasRemark">
                                 <input class="form-control" style="display: inherit; width: 100%;"
                                        :placeholder="textFilter(opt.text)"
-                                       @input="areaChange($event, opt)" @focus="foucusAreaHandler()"
-                                       @blur="markBlueHandler($event, opt)">
-                                <div id="areaSelectors" style="display: none;">
+                                       @input="areaChange($event, opt)" @focus="foucusAreaHandler($event, opt, item)"
+                                       @blur="markBlueHandler($event, opt, item)">
+                                <div v-show="sigleInputShow">
                                     <div v-for="s in areaSelectors"
                                          @click="areaSelectHandler(s, opt)"
                                          style="border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0,0,0,.075);font-size: 14px; padding: 5px; cursor: pointer;">
@@ -140,10 +140,21 @@
                                                                   :content="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
                                 <span :value="opt.id + '_' +  opt.name">{{textFilter(opt.text)}}</span>
-                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
-                                       :placeholder="textFilter(opt.text)"
-                                       @blur="markBlueHandler($event, opt)">
+
                             </label>
+                            <div style="display: inline-block; width: 300px;" v-if="opt.hasRemark">
+                                <input class="form-control" style="display: inherit; width: 100%;"
+                                       :placeholder="textFilter(opt.text)"
+                                       @input="areaChange($event, opt)" @focus="foucusAreaHandler($event, opt, item)"
+                                       @blur="markBlueHandler($event, opt, item)">
+                                <div v-show="multipleInputShow">
+                                    <div v-for="s in areaSelectors"
+                                         @click="areaSelectHandler(s, opt)"
+                                         style="border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0,0,0,.075);font-size: 14px; padding: 5px; cursor: pointer;">
+                                        {{s.name}}
+                                    </div>
+                                </div>
+                            </div>
 
                             <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
                             <span class="badge" style="background-color: #f0ad4e"
@@ -266,7 +277,9 @@
             label: null, // 标签,不同标签可以重复收集
             validResult: true,
             areaSelectors: [],
-            currentRemark: ''
+            currentRemark: '',
+            multipleInputShow: false,
+            sigleInputShow: false
         },
         created: function () {
             this.loadParams();
@@ -277,8 +290,15 @@
             areaSelectHandler(s, opt) {
                 this.currentRemark = s.name;
             },
-            foucusAreaHandler() {
-                $("#areaSelectors").show();
+            foucusAreaHandler(e, o, q) {
+                if (o.otype == 1) {
+                    if(q.type == 2) {
+                        $($(e.target).next().get(0)).show()
+                    }
+                    if(q.type == 1) {
+                        $($(e.target).next().get(0)).show()
+                    }
+                }
             },
             areaChange(e, o) {
                 let that = this;
@@ -294,10 +314,15 @@
                 }
 
             },
-            markBlueHandler(event, opt) {
+            markBlueHandler(event, opt, q) {
                 setTimeout(()=>{
                     //执行离开焦点操作
-                    console.log(this.currentRemark);
+                    if(q.type == 2) {
+                        $($(event.target).next().get(0)).hide();
+                    }
+                    if(q.type == 1) {
+                        $($(event.target).next().get(0)).hide()
+                    }
                     if(this.currentRemark) {
                         // $("#areaSelectors").hide();
                         event.target.value = this.currentRemark;
@@ -306,7 +331,7 @@
 
                     }
                     opt.name = event.target.value;
-                    // $("#areaSelectors").hide();
+
                 },200);
             },
             getPercentage() {
