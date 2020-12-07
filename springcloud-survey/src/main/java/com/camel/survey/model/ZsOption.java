@@ -112,7 +112,7 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     //排他性
     private ZsYesOrNo exclusivity;
 
-    private Integer score;
+    private Double score;
 
     /**
      * 选项类型

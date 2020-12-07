@@ -176,7 +176,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         List<Integer> oIds = zsAnswerSave.getOptIds();
 
         List<ZsAnswerItem> zsAnswerItemList = zsAnswerSave.buildAnswerItems(zsQuestions, zsOptions, zsAnswer.getId());
-        Integer scoreTotal = 0;
+        Double scoreTotal = 0.0;
         for (int i = 0; i < zsAnswerItemList.size(); i++) {
             if(!ObjectUtils.isEmpty(zsAnswerItemList.get(i).getScore())) {
                 scoreTotal += zsAnswerItemList.get(i).getScore();

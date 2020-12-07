@@ -209,7 +209,7 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     /**
      * 样本得分
      */
-    public Integer score;
+    public Double score;
 
     public ZsAnswer() {
     }

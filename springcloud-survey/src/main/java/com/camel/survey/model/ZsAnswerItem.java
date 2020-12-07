@@ -84,7 +84,7 @@ public class ZsAnswerItem extends BasePaginationEntity implements Serializable {
     /**
      * 单题得分
      */
-    public Integer score;
+    public Double score;
 
     public ZsAnswerItem() {
     }
