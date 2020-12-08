@@ -380,7 +380,7 @@ public class ZsWorkController extends BaseCommonController {
         Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
         if (!ObjectUtils.isEmpty(res)) {
             ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), Double.parseDouble(args.getValue()));
-            agencyFeeService.insert(agencyFee);
+//            agencyFeeService.insert(agencyFee);
         }
     }
 }
