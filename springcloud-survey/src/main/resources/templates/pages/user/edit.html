@@ -51,6 +51,15 @@
                         <input id="remark" name="remark" class="form-control" type="text" v-model="user.remark"></input>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">备注：</label>
+                    <div class="col-sm-8">
+                        <select id="agency" name="agency" class="form-control" type="text" v-model="user.agency.id">
+                            <option v-for="item in agencies" :value="item.id">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3">
                         <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
@@ -75,13 +84,22 @@
                 mobile: '',
                 orgName: '',
                 remark: '',
-                idNum: ''
-            }
+                idNum: '',
+                agencyId: null
+            },
+            agencies: []
         },
         created: function () {
             this.loadEntity();
+            this.loadAgency();
         },
         methods: {
+            loadAgency() {
+                let that = this;
+                AJAX.GET('zsAgency/all', {}, function (resp) {
+                    that.agencies = resp.data;
+                });
+            },
             loadEntity() {
                 let that = this;
                 AJAX.GET('/system/sysUser/' + sessionStorage.getItem('editParams'), {}, function (resp) {
@@ -94,7 +112,8 @@
                         mobile: resp.data.mobile,
                         orgName: resp.data.orgName,
                         remark: resp.data.remark,
-                        idNum: resp.data.idNum
+                        idNum: resp.data.idNum,
+                        agency: resp.data.agency
                     };
                 });
             },
@@ -106,6 +125,7 @@
                     return false;
                 }
                 let that = this;
+                this.user.agencyId = this.user.agency.id;
                 AJAX.PUT('/system/sysUser', JSON.stringify(this.user), function (resp) {
                     toastr.success(resp.msg);
                     that.backToMain();
@@ -130,7 +150,7 @@
                     maxlength: 24
                 },
                 password: {
-                    required: true,
+                    required: false,
                     minlength: 6,
                     maxlength: 24
                 },

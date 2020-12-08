@@ -1,6 +1,7 @@
 package com.camel.survey.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
@@ -37,6 +38,11 @@ public class ZsAgencyController extends BaseCommonController {
     @GetMapping
     private Result index(ZsAgency entity) {
         return ResultUtil.success(zsAgencyService.selectPage(entity));
+    }
+
+    @GetMapping("/all")
+    private Result all() {
+        return ResultUtil.success(zsAgencyService.list());
     }
 
     /**

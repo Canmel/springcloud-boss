@@ -93,8 +93,7 @@ public class SysUserController extends BaseCommonController {
 
     @GetMapping("/{id}")
     public Result save(@PathVariable(required = true) Integer id) {
-        Result result = super.details(id);
-        SysUser user = (SysUser) result.getData();
+        SysUser user = service.detail(id);
         service.getRolesByUser(user).setPassword("");
         return ResultUtil.success(user);
     }
@@ -170,9 +169,7 @@ public class SysUserController extends BaseCommonController {
 
     @GetMapping("/byIdNum/{idNum}")
     public SysUser oneUser(@PathVariable String idNum){
-        Wrapper<SysUser> userWrapper = new EntityWrapper<>();
-        userWrapper.eq("id_num", idNum);
-        return service.selectOne(userWrapper);
+        return service.selectByIdNum(idNum);
     }
 
     public static final String QUEUE_NAME = "ActiveMQ.System.New.User";

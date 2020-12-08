@@ -75,6 +75,7 @@
                         <th>成功率</th>
                         <th>餐补</th>
                         <th>薪资</th>
+                        <th>工作时长</th>
                         <th>审核</th>
                         <th>状态</th>
                         <th>创建时间</th>
@@ -99,6 +100,7 @@
                         <td><input v-model="item.meals" style="max-width: 50px;" type="number"
                                    v-on:change="updateMeals(item)"/></td>
                         <td><span>{{item.salary}}</span></td>
+                        <td><span>{{item.workHours}}</span></td>
                         <td><span class="label" :class="item.state.code === 1 ? 'label-info' : 'label-danger'">{{item.state ? item.state.name : ''}}</span>
                         </td>
                         <td>

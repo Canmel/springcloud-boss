@@ -8,12 +8,14 @@ import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
+import com.camel.core.model.ZsAgency;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
 import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsWorkState;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import com.camel.survey.model.*;
 import com.camel.survey.service.*;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -370,18 +372,22 @@ public class ZsWorkController extends BaseCommonController {
         return "工作记录";
     }
 
+    @Autowired
+    private SpringCloudSystemFeignClient springCloudSurveyFeignClient;
+
     void saveNewAgencyFee(ZsWork zsWork) {
-        Wrapper<Args> argsWrapper = new EntityWrapper<>();
-        argsWrapper.eq("code", "SUEVRY_AGENCY_PERCENT");
-        Args args = argsService.selectOne(argsWrapper);
-        if (ObjectUtils.isEmpty(args)) {
-            throw new SourceDataNotValidException("SUEVRY_AGENCY_PERCENT 参数未设置");
+        SysUser sysUser = springCloudSurveyFeignClient.oneUser(zsWork.getIdNum());
+        ZsAgency agency = sysUser.getAgency();
+        if (!ObjectUtils.isEmpty(sysUser) && !ObjectUtils.isEmpty(sysUser.getAgency())) {
+            Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
+            if (!ObjectUtils.isEmpty(res)) {
+                ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), agency);
+            agencyFeeService.insert(agencyFee);
+            }
+        }else {
+            throw new SourceDataNotValidException(" 参数未设置");
         }
-        Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
-        if (!ObjectUtils.isEmpty(res)) {
-            ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), Double.parseDouble(args.getValue()));
-//            agencyFeeService.insert(agencyFee);
-        }
+
     }
 }
 

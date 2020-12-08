@@ -23,6 +23,8 @@ public interface SysUserService extends IService<SysUser> {
      */
     PageInfo<SysUser> pageQuery(SysUser user);
 
+    SysUser detail(Integer id);
+
     /**
      * 判断用户是否存在
      * @param name
@@ -70,4 +72,6 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     boolean emptySeat(String seatNum);
+
+    SysUser selectByIdNum(String idNum);
 }

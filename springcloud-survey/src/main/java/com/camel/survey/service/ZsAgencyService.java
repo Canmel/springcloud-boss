@@ -4,6 +4,8 @@ import com.camel.core.model.ZsAgency;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -14,4 +16,6 @@ import com.github.pagehelper.PageInfo;
  */
 public interface ZsAgencyService extends IService<ZsAgency> {
     PageInfo<ZsAgency> selectPage(ZsAgency entity);
+
+    List<ZsAgency> list();
 }

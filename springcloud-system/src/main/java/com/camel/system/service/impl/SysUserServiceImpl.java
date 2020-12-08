@@ -55,6 +55,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public SysUser detail(Integer id) {
+        return mapper.detail(id);
+    }
+
+    @Override
     public boolean exist(String name, Integer id) {
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
         userWrapper.eq("username", name);
@@ -134,5 +139,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean emptySeat(String seatNum) {
         mapper.deleteSeat(seatNum);
         return true;
+    }
+
+    @Override
+    public SysUser selectByIdNum(String idNum) {
+        return mapper.selectByIdNum(idNum);
     }
 }

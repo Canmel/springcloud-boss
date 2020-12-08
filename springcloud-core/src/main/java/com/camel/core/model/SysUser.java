@@ -145,6 +145,7 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     private ZsAgency agency;
 
+    private Integer agencyId;
 
     @TableField(exist = false)
     private List roleIds;

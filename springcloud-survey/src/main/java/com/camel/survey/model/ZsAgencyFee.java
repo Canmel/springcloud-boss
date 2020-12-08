@@ -2,10 +2,12 @@ package com.camel.survey.model;
 
 import java.util.Date;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.ZsAgency;
 import com.camel.survey.enums.ZsStatus;
 import lombok.Data;
 
@@ -69,11 +71,19 @@ public class ZsAgencyFee extends BasePaginationEntity {
     public ZsAgencyFee() {
     }
 
-    public ZsAgencyFee(ZsWork zsWork, String username, String phone, String idNum, Double p) {
+    public ZsAgencyFee(ZsWork zsWork, String username, String phone, String idNum, ZsAgency agency) {
         this.username = username;
         this.phone = phone;
         this.idNum = idNum;
-        this.salary = zsWork.getSalary() * p;
+        if(ObjectUtil.isNotEmpty(agency)) {
+            if(agency.getType().equals(1)) {
+                this.salary = zsWork.getSalary() * agency.getSvalue();
+            }
+            if(agency.getType().equals(0)) {
+                this.salary = zsWork.getWorkHours() * agency.getSvalue();
+            }
+        }
+
         this.workId = zsWork.getId();
         this.workSalary = zsWork.getSalary();
         this.workName = zsWork.getUname();

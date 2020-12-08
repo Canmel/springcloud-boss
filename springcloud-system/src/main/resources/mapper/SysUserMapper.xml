@@ -21,6 +21,7 @@
         <result column="org_name" property="orgName" jdbcType="VARCHAR"></result>
         <result column="address" property="address" jdbcType="VARCHAR"></result>
         <result column="remark" property="remark" jdbcType="VARCHAR"></result>
+        <result column="id_num" property="idNum" jdbcType="VARCHAR"></result>
         <result column="seat_num" property="seatNum" jdbcType="VARCHAR"></result>
         <result column="work_num" property="workNum" jdbcType="VARCHAR"></result>
         <association property="agency" javaType="com.camel.core.model.ZsAgency">
@@ -53,6 +54,7 @@
         sys_user.org_name,
         sys_user.address,
         sys_user.remark,
+        sys_user.id_num,
         sys_user.seat_num,
         sys_user.work_num
     </sql>
@@ -106,4 +108,37 @@
         sys_user
         set work_num = '' + (uid+1000) + ''
     </update>
+
+    <select id="detail" resultMap="BaseResultMap">
+        SELECT
+        zs_agency.id zs_agency_id,
+        zs_agency.name zs_agency_name,
+        zs_agency.type zs_agency_type,
+        zs_agency.svalue zs_agency_svalue,
+        <include refid="BASE_SQL"></include>
+        FROM
+        sys_user sys_user left join zs_agency zs_agency on sys_user.agency_id = zs_agency.id
+
+        <where>
+            sys_user.status = 1
+            and sys_user.uid = #{id}
+        </where>
+    </select>
+
+    <select id="selectByIdNum" resultMap="BaseResultMap">
+        SELECT
+        zs_agency.id zs_agency_id,
+        zs_agency.name zs_agency_name,
+        zs_agency.type zs_agency_type,
+        zs_agency.svalue zs_agency_svalue,
+        <include refid="BASE_SQL"></include>
+        FROM
+        sys_user sys_user left join zs_agency zs_agency on sys_user.agency_id = zs_agency.id
+
+        <where>
+            sys_user.status = 1
+            and sys_user.id_num = #{idNum}
+        </where>
+        limit 1
+    </select>
 </mapper>

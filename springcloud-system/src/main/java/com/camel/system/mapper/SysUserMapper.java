@@ -54,4 +54,8 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     int deleteSeat(String seatNum);
 
     int loadWorkNum();
+
+    SysUser detail(Integer id);
+
+    SysUser selectByIdNum(String idNum);
 }
