@@ -140,7 +140,7 @@
             u.id_num AS id_num,
             s.name AS pname
         from
-            dw_oauth2.sys_user AS u
+            sys_user AS u
         LEFT JOIN zs_answer AS a ON a.uid = u.uid
         LEFT JOIN zs_survey AS s ON a.survey_id = s.id
         where

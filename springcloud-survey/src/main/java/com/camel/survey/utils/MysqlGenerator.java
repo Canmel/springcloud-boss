@@ -58,7 +58,7 @@ public class MysqlGenerator {
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"area_address"});
+        strategyConfig.setInclude(new String[] {"rel_user_agency"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)

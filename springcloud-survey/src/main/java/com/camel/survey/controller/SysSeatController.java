@@ -12,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
 
 import java.util.Date;
@@ -25,7 +24,7 @@ import java.util.Date;
  * @author baily
  * @since 2020-05-30
  */
-@Controller
+@RestController
 @RequestMapping("/sysSeat")
 public class SysSeatController extends BaseCommonController {
     @Autowired

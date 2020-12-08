@@ -23,6 +23,12 @@
         <result column="remark" property="remark" jdbcType="VARCHAR"></result>
         <result column="seat_num" property="seatNum" jdbcType="VARCHAR"></result>
         <result column="work_num" property="workNum" jdbcType="VARCHAR"></result>
+        <association property="agency" javaType="com.camel.core.model.ZsAgency">
+            <id column="zs_agency_id" property="id"></id>
+            <result column="zs_agency_name" property="name"></result>
+            <result column="zs_agency_type" property="type"></result>
+            <result column="zs_agency_svalue" property="svalue"></result>
+        </association>
         <collection property="roleIds" fetchType="eager" column="uid"
                     select="findRoleIdsByUserId"></collection>
     </resultMap>
@@ -57,9 +63,14 @@
 
     <select id="list" resultMap="BaseResultMap" parameterType="com.camel.core.model.SysUser">
         SELECT
+        zs_agency.id zs_agency_id,
+        zs_agency.name zs_agency_name,
+        zs_agency.type zs_agency_type,
+        zs_agency.svalue zs_agency_svalue,
         <include refid="BASE_SQL"></include>
         FROM
-        sys_user
+        sys_user sys_user left join zs_agency zs_agency on sys_user.agency_id = zs_agency.id
+
         <where>
             sys_user.status = 1
             <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%')</if>

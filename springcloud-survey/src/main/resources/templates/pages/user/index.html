@@ -44,7 +44,7 @@
                         <th>序号</th>
                         <th>用户名</th>
                         <th>坐标地</th>
-                        <th>昵称</th>
+                        <th>推荐费结算方式</th>
                         <th>邮箱</th>
                         <th>电话</th>
                         <th>工号</th>
@@ -57,7 +57,7 @@
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
                         <td>{{item.username}}</td>
                         <td>{{item.address}}</td>
-                        <td>{{item.nickname}}</td>
+                        <td>{{item.agency.name}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.mobile}}</td>
                         <td>{{item.workNum}}</td>

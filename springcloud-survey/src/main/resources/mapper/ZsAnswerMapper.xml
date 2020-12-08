@@ -329,6 +329,6 @@
     </select>
 
     <update id="addUsername">
-        update zs_answer set username = (select username from dw_oauth2.sys_user where uid =zs_answer.uid) where uid is not null
+        update zs_answer set username = (select username from sys_user where uid =zs_answer.uid) where uid is not null
     </update>
 </mapper>

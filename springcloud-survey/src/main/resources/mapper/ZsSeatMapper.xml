@@ -77,7 +77,7 @@
 
     <update id="assignSeat">
         update
-        dw_oauth2.sys_user
+        sys_user
         set
         seat_num=#{seatNum}
         where uid = #{uid}
