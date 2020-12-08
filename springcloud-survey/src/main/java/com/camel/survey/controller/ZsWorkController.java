@@ -376,18 +376,20 @@ public class ZsWorkController extends BaseCommonController {
     private SpringCloudSystemFeignClient springCloudSurveyFeignClient;
 
     void saveNewAgencyFee(ZsWork zsWork) {
-        SysUser sysUser = springCloudSurveyFeignClient.oneUser(zsWork.getIdNum());
-        ZsAgency agency = sysUser.getAgency();
-        if (!ObjectUtils.isEmpty(sysUser) && !ObjectUtils.isEmpty(sysUser.getAgency())) {
-            Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
-            if (!ObjectUtils.isEmpty(res)) {
+        Map<String, String> res = service.selectSharer(zsWork.getUname(), zsWork.getIdNum());
+        if (!ObjectUtils.isEmpty(res)) {
+            // 有推荐人 获取推荐人的计费方式
+            SysUser sysUser = springCloudSurveyFeignClient.oneUser(res.get("id_num"));
+            ZsAgency agency = sysUser.getAgency();
+            if (!ObjectUtils.isEmpty(sysUser) && !ObjectUtils.isEmpty(sysUser.getAgency())) {
                 ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), agency);
-            agencyFeeService.insert(agencyFee);
+                agencyFeeService.insert(agencyFee);
             }
-        }else {
-            throw new SourceDataNotValidException(" 参数未设置");
-        }
+            else {
+                throw new SourceDataNotValidException(" 参数未设置");
+            }
 
+        }
     }
 }
 
