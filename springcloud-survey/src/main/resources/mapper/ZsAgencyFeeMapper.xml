@@ -15,11 +15,12 @@
         <result column="work_id" property="workId" />
         <result column="work_salary" property="workSalary" />
         <result column="work_name" property="workName" />
+        <result column="work_hours" property="workHours" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, username, phone, id_num, salary, status, gain, gain_time, work_id, work_salary, work_name
+        id, username, phone, id_num, salary, status, gain, gain_time, work_id, work_salary, work_name, work_hours
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

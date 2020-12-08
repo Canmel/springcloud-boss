@@ -6,7 +6,7 @@
 <div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>推荐费用模板</h5>
+            <h5>推荐费用列表</h5>
             <div class="ibox-tools">
                 <div class="ibox-tools">
                     <a :href="applicationContextRootPath + 'pages/agency/add.html'"
@@ -20,27 +20,29 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>模板名称</th>
-                        <th>结算方式</th>
-                        <th>时长单价/工资比例</th>
-                        <th>操作</th>
+                        <th>推荐人</th>
+                        <th>身份证</th>
+                        <th>电话</th>
+                        <th>推荐薪资</th>
+                        <th>被推荐人</th>
+                        <th>被推荐人工作薪资</th>
+                        <th>被推荐人工作时长</th>
+                        <th>是否提取</th>
+                        <th>提取时间</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>{{item.name}}</td>
-                        <td>{{item.type === 0 ? '按被推荐人工作时长' : '按被推荐人工资比例'}}</td>
-                        <td>{{item.svalue}}</td>
-                        <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" >
-                                修改
-                            </button>
-
-                            <button type="button" v-on:click="del(item)" class="btn btn-danger btn-xs" >
-                                删除
-                            </button>
-                        </td>
+                        <td>{{item.username}}</td>
+                        <td>{{item.idNum}}</td>
+                        <td>{{item.phone}}</td>
+                        <td>{{item.salary}}</td>
+                        <td>{{item.workName}}</td>
+                        <td>{{item.workSalary}}</td>
+                        <td>{{item.workHours}}</td>
+                        <td>{{item.gain === 1 ? '是' : '否'}}</td>
+                        <td>{{item.gainTime | formatDate}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -65,17 +67,10 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            pageInfoWork: {
-                zsWorkId:[0],
-                pageNum: 1,
-                total: 0,//总页数
-                size: 10,//每页显示条目个数不传默认10
-            },
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
             items: [{}],
-            itemsWork: [{}]
         },
         created: function () {
             this.loginMaster();
@@ -110,7 +105,7 @@
             },
             pagequery: function () {
                 let that = this;
-                AJAX.GET('zsAgency', this.pageInfo, function (resp) {
+                AJAX.GET('zsAgencyFee', this.pageInfo, function (resp) {
                     that.items = resp.data.list;
                     that.pageInfo.pageNum = resp.data.pageNum;
                     that.pageInfo.total = resp.data.total;
@@ -119,9 +114,6 @@
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
                 this.pagequery();
-            },
-            edit(item) {
-                toPage("pages/agency/edit.html", item.id);
             }
         }
     });

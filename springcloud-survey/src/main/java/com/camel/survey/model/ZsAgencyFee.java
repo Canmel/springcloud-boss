@@ -63,6 +63,11 @@ public class ZsAgencyFee extends BasePaginationEntity {
      * 被介绍人工资
      */
     private Double workSalary;
+
+    /**
+     * 被介绍人工作时长
+     */
+    private Double workHours;
     /**
      * 被介绍人
      */
@@ -87,6 +92,7 @@ public class ZsAgencyFee extends BasePaginationEntity {
         this.workId = zsWork.getId();
         this.workSalary = zsWork.getSalary();
         this.workName = zsWork.getUname();
+        this.workHours = zsWork.getWorkHours();
     }
 
     public ZsAgencyFee(Integer id, Integer gain) {

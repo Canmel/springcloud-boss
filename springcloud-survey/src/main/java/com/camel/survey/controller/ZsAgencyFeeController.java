@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.core.model.ZsAgency;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsGain;
@@ -34,6 +35,12 @@ public class ZsAgencyFeeController extends BaseCommonController {
 
     @Autowired
     private ZsAgencyFeeService service;
+
+    @GetMapping
+    public Result index(ZsAgencyFee entity) {
+        return ResultUtil.success(service.selectPage(entity));
+    }
+
 
     /**
      *
