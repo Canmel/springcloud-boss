@@ -6,7 +6,9 @@ import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
 import com.camel.survey.exceptions.SourceDataNotValidException;
+import com.camel.survey.model.Customer;
 import com.camel.survey.model.ZsPhoneInformation;
+import com.camel.survey.model.ZsSurveyBaseEntity;
 import com.camel.survey.utils.export.HSSFUtils;
 import com.github.pagehelper.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
@@ -116,6 +118,113 @@ public class ExcelUtil {
         return list;
     }
 
+    /**
+     * 读取excel反射实体
+     *
+     * @param file  MultipartFile
+     * @param clazz entity
+     * @return
+     * @throws RuntimeException
+     */
+    public static <T extends Object> List<T> readExcelCustomer(MultipartFile file, Class<T> clazz, SysUser user) {
+
+        // 存储excel数据
+        List<T> list = new ArrayList<>();
+        Workbook wookbook = null;
+        InputStream inputStream = null;
+
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            throw new ExcelImportException("文件读取异常");
+        }
+
+        // 根据excel文件版本获取工作簿
+        if (file.getOriginalFilename().endsWith(".xls")) {
+            wookbook = xls(inputStream);
+        } else if (file.getOriginalFilename().endsWith(".xlsx")) {
+            wookbook = xlsx(inputStream);
+        } else {
+            throw new ExcelImportException("非excel文件");
+        }
+
+        // 得到一个工作表
+        Sheet sheet = wookbook.getSheetAt(0);
+
+        // 获取行总数
+        int rows = sheet.getLastRowNum() + 1;
+        Row row;
+
+        // 获取类所有属性
+        Field[] fields = clazz.getDeclaredFields();
+
+        T obj = null;
+        int coumnIndex = 0;
+        Cell cell = null;
+        ExcelAnnotation excelAnnotation = null;
+        for (int i = 1; i < rows; i++) {
+            // 获取excel行
+            row = sheet.getRow(i);
+            if (ObjectUtils.isEmpty(row)) {
+                continue;
+            }
+            //此处用来过滤空行
+            Cell cell0 = row.getCell(0);
+            if (ObjectUtils.isEmpty(cell0)) {
+                continue;
+            }
+            cell0.setCellType(Cell.CELL_TYPE_STRING);
+            Cell cell1 = row.getCell(1);
+            if (ObjectUtils.isEmpty(cell1)) {
+                continue;
+            }
+            cell1.setCellType(Cell.CELL_TYPE_STRING);
+            if (cell0.getStringCellValue() == "" && cell1.getStringCellValue() == "") {
+                continue;
+            }
+            try {
+                // 创建实体
+                obj = clazz.newInstance();
+                for (Field f : fields) {
+                    // 设置属性可访问
+                    f.setAccessible(true);
+                    // 判断是否是注解
+                    if (f.isAnnotationPresent(ExcelAnnotation.class)) {
+                        // 获取注解
+                        excelAnnotation = f.getAnnotation(ExcelAnnotation.class);
+                        // 获取列索引
+                        coumnIndex = excelAnnotation.columnIndex();
+                        // 获取单元格
+                        cell = row.getCell(coumnIndex);
+                        // 设置属性
+                        setFieldValue(obj, f, wookbook, cell, null);
+                    }
+                }
+                System.out.println(obj);
+
+                ((Customer) obj).setCreatorId(user.getUid());
+                ((Customer) obj).setOpen(0);
+                // 添加到集合中
+                list.add(obj);
+            } catch (InstantiationException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw ExcelImportException.build(e.getMessage(), row, cell);
+            }
+        }
+        try {
+            //释放资源
+//            wookbook.close();
+            inputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     /**
      * 读取excel反射实体
