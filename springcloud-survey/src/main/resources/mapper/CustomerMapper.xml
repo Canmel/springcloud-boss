@@ -4,12 +4,11 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.Customer">
-        <id column="id" property="id" />
+        <id column="tel" property="tel" />
         <result column="username" property="username" />
         <result column="company" property="company" />
         <result column="position" property="position" />
         <result column="dept" property="dept" />
-        <result column="tel" property="tel" />
         <result column="city" property="city" />
         <result column="county" property="county" />
         <result column="street" property="street" />
@@ -19,6 +18,7 @@
         <result column="liabler_tel" property="liablerTel" />
         <result column="created_at" property="createdAt" />
         <result column="open" property="open" />
+        <result column="version" property="version" />
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -26,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, username, company, position, dept, tel, city, county, street, addr, industry, liabler, liabler_tel, created_at, creator, open
+        username, company, position, dept, tel, city, county, street, addr, industry, liabler, liabler_tel, created_at, creator, open, version
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -34,5 +34,14 @@
          <include refid="Base_Column_List"></include>
         from
         customer
+        <where>
+            1=1
+            <if test="createdAtStart != null and createdAtStart != ''">
+                and DATE_FORMAT(created_at,'%Y-%m-%d') <![CDATA[ >=]]> #{createdAtStart}
+            </if>
+            <if test="createdAtEnd != null and createdAtEnd != ''">
+                and DATE_FORMAT(created_at,'%Y-%m-%d') <![CDATA[ <=]]> #{createdAtEnd}
+            </if>
+        </where>
     </select>
 </mapper>

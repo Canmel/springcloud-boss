@@ -9,24 +9,76 @@
             </div>
         </div>
         <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+
+                        <input type="text" placeholder="请输入所在城市" class="input-sm form-control search-input"
+                               v-model="pageInfo.queueName">
+                        <div class="input-group-btn">
+                            <!-- Buttons -->
+                            <input type="number" class="form-control input-sm" style="width: 80px;"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" class="input-sm form-control" name="start" autocomplete="off"
+                               v-model="pageInfo.createdAtStart"/>
+                        <span class="input-group-addon">到</span>
+                        <input type="text" class="input-sm form-control" name="end" autocomplete="off"
+                               v-model="pageInfo.createdAtEnd"/>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
+                               v-model="pageInfo.seatNum">
+                        <span
+                                class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>姓名</th>
-                        <th>文件后缀</th>
-                        <th>上传人员</th>
-                        <th>创建时间</th>
+                        <th>所在城市</th>
+                        <th>区县</th>
+                        <th>街道/社区</th>
+                        <th>地址</th>
+                        <th>公司名称</th>
+                        <th>行业</th>
+                        <th>部门</th>
+                        <th>职位</th>
+                        <th>客户名称</th>
+                        <th>电话号码</th>
+                        <th>包保人姓名</th>
+                        <th>包保人电话</th>
+                        <th>导入时间</th>
+                        <th>版本号</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>{{item.dname}}</td>
-                        <td>{{item.dtype}}</td>
-                        <td>{{item.creator ? item.creator.username : ''}}</td>
-                        <td>{{item.createdAt | formatDate}}</td>
+                        <td>{{item.city}}</td>
+                        <td>{{item.county}}</td>
+                        <td>{{item.street}}</td>
+                        <td>{{item.addr}}</td>
+                        <td>{{item.company}}</td>
+                        <td>{{item.industry}}</td>
+                        <td>{{item.dept}}</td>
+                        <td>{{item.position}}</td>
+                        <td>{{item.username}}</td>
+                        <td>{{item.tel}}</td>
+                        <td>{{item.liabler}}</td>
+                        <td>{{item.liablerTel}}</td>
+                        <td>{{item.createdAt}}</td>
+                        <td>{{item.version}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -81,15 +133,33 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                createdAtStart: '',
+                createdAtEnd: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
-            items: []
+            items: [],
+            isInitPicker: false
         },
         created: function () {
+            this.pageInfo.createdAtStart = dateFormat("YYYY-mm-dd", moment(new Date().getTime() - 3600 * 1000 * 24 * 7));
+            this.pageInfo.createdAtEnd = dateFormat("YYYY-mm-dd", new Date());
+        },
+        mounted: function () {
+            this.initPicker();
         },
         methods: {
+            initPicker() {
+                if (!this.isInitPicker) {
+                    $('#datepicker').datepicker({
+                        keyboardNavigation: false,
+                        forceParse: false,
+                        autoclose: true
+                    });
+                    this.isInitPicker = true;
+                }
+            },
             uploadPhone() {
                 $("#importModal").modal('show');
             },
