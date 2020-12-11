@@ -29,10 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExcelUtil {
     public static List<ZsPhoneInformation> readExcelPI(MultipartFile file, Integer surveyId, SysUser user) {
@@ -132,7 +129,7 @@ public class ExcelUtil {
         List<T> list = new ArrayList<>();
         Workbook wookbook = null;
         InputStream inputStream = null;
-
+        String uuid = UUID.randomUUID().toString();
         try {
             inputStream = file.getInputStream();
         } catch (IOException e) {
@@ -204,6 +201,8 @@ public class ExcelUtil {
 
                 ((Customer) obj).setCreatorId(user.getUid());
                 ((Customer) obj).setOpen(0);
+                ((Customer) obj).setVersion(uuid);
+
                 // 添加到集合中
                 list.add(obj);
             } catch (InstantiationException e1) {

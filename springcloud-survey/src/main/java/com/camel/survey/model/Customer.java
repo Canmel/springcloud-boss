@@ -19,35 +19,31 @@ public class Customer extends ZsSurveyBaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键
+     * 电话号码
      */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @ExcelAnnotation(columnName = "电话号码", columnIndex = 1)
+    @TableId(value = "tel", type = IdType.ID_WORKER_STR)
+    private String tel;
     /**
      * 客户名称
      */
-    @ExcelAnnotation(columnName = "客户名称", columnIndex = 1)
+    @ExcelAnnotation(columnName = "客户名称", columnIndex = 2)
     private String username;
     /**
      * 公司名称
      */
-    @ExcelAnnotation(columnName = "公司名称", columnIndex = 2)
+    @ExcelAnnotation(columnName = "公司名称", columnIndex = 3)
     private String company;
     /**
      * 职位
      */
-    @ExcelAnnotation(columnName = "职位", columnIndex = 3)
+    @ExcelAnnotation(columnName = "职位", columnIndex = 4)
     private String position;
     /**
      * 部门
      */
-    @ExcelAnnotation(columnName = "部门", columnIndex = 4)
+    @ExcelAnnotation(columnName = "部门", columnIndex = 5)
     private String dept;
-    /**
-     * 电话号码
-     */
-    @ExcelAnnotation(columnName = "电话号码", columnIndex = 5)
-    private String tel;
     /**
      * 所在城市
      */
@@ -88,10 +84,14 @@ public class Customer extends ZsSurveyBaseEntity {
      */
     private Integer open;
 
+    /**
+     * 版本
+     */
+    private String version;
+
     @Override
     public String toString() {
         return "Customer{" +
-                ", id=" + id +
                 ", username=" + username +
                 ", company=" + company +
                 ", position=" + position +

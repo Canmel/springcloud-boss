@@ -1,11 +1,14 @@
 package com.camel.survey.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.Customer;
+import com.camel.survey.model.CustomerForm;
 import com.camel.survey.service.CustomerService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.ExcelUtil;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +39,7 @@ public class CustomerController extends BaseCommonController {
     private ApplicationToolsUtils applicationToolsUtils;
 
     @GetMapping
-    public Result index(Customer entity) {
+    public Result index(CustomerForm entity) {
         return ResultUtil.success(service.selectPage(entity));
     }
 
@@ -47,8 +51,8 @@ public class CustomerController extends BaseCommonController {
     public Result importInfo(@RequestParam("file") MultipartFile file) {
         SysUser currentUser = applicationToolsUtils.currentUser();
         List<Customer> customers = ExcelUtil.readExcelCustomer(file, Customer.class, currentUser);
-        service.insertBatch(customers, 200);
-        return ResultUtil.success("成功");
+        service.insertOrUpdateBatch(customers);
+        return ResultUtil.success("导入客户信息成功");
     }
 
     @Override
