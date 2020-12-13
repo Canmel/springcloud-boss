@@ -3,11 +3,14 @@ package com.camel.survey.service.impl;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.survey.model.Customer;
 import com.camel.survey.mapper.CustomerMapper;
+import com.camel.survey.model.CustomerForm;
 import com.camel.survey.service.CustomerService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,5 +31,10 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             mapper.list(entity);
         });
         return pageInfo;
+    }
+
+    @Override
+    public List<Customer> list(CustomerForm entity) {
+        return mapper.list(entity);
     }
 }

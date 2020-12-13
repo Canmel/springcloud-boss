@@ -129,7 +129,6 @@ public class ExcelUtil {
         List<T> list = new ArrayList<>();
         Workbook wookbook = null;
         InputStream inputStream = null;
-        String uuid = UUID.randomUUID().toString();
         try {
             inputStream = file.getInputStream();
         } catch (IOException e) {
@@ -201,7 +200,6 @@ public class ExcelUtil {
 
                 ((Customer) obj).setCreatorId(user.getUid());
                 ((Customer) obj).setOpen(0);
-                ((Customer) obj).setVersion(uuid);
 
                 // 添加到集合中
                 list.add(obj);

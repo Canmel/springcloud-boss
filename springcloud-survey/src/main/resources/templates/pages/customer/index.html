@@ -9,13 +9,13 @@
             </div>
         </div>
         <div class="ibox-content">
-            <div class="row">
+            <div class="row search-form">
                 <div class="col-sm-6"></div>
                 <div class="col-sm-3">
                     <div class="input-group">
 
                         <input type="text" placeholder="请输入所在城市" class="input-sm form-control search-input"
-                               v-model="pageInfo.queueName">
+                               v-model="pageInfo.city   ">
                         <div class="input-group-btn">
                             <!-- Buttons -->
                             <input type="number" class="form-control input-sm" style="width: 80px;"/>
@@ -24,11 +24,9 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="input-daterange input-group" id="datepicker">
-                        <input type="text" class="input-sm form-control" name="start" autocomplete="off"
-                               v-model="pageInfo.createdAtStart"/>
+                        <input type="text" class="input-sm form-control" name="start" autocomplete="off"/>
                         <span class="input-group-addon">到</span>
-                        <input type="text" class="input-sm form-control" name="end" autocomplete="off"
-                               v-model="pageInfo.createdAtEnd"/>
+                        <input type="text" class="input-sm form-control" name="end" autocomplete="off"/>
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -38,6 +36,10 @@
                         <span
                                 class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                        <span
+                                class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-info"
+                                                v-on:click="preSaveAsVersion()"> 打捆</button> </span>
                     </div>
                 </div>
             </div>
@@ -59,7 +61,6 @@
                         <th>包保人姓名</th>
                         <th>包保人电话</th>
                         <th>导入时间</th>
-                        <th>版本号</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -78,7 +79,6 @@
                         <td>{{item.liabler}}</td>
                         <td>{{item.liablerTel}}</td>
                         <td>{{item.createdAt}}</td>
-                        <td>{{item.version}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -88,7 +88,7 @@
         </div>
     </div>
 
-    <div class="modal" id="importModal" ng-controller="KisBpmChoseAssignmentCtrl">
+    <div class="modal" id="importModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -124,6 +124,33 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="saveAsVersionModal" ng-controller="KisBpmChoseAssignmentCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="saveAsVersionModalLabel">请输入打捆名称</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <form>
+                            <div class="form-group">
+                                <label class="col-sm-3">打捆名称</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" v-model="pageInfo.versionName">
+                                </div>
+                            </div>
+                        </form>
+
+                        <div style="text-align: center;">
+                            <button class="btn btn-success" style="margin-top: 10px;" @click="saveAsVersion">开始打捆</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="/survey/js/validateIsMain.js"></script>
@@ -135,6 +162,7 @@
             pageInfo: {
                 createdAtStart: '',
                 createdAtEnd: '',
+                versionName: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -143,13 +171,34 @@
             isInitPicker: false
         },
         created: function () {
-            this.pageInfo.createdAtStart = dateFormat("YYYY-mm-dd", moment(new Date().getTime() - 3600 * 1000 * 24 * 7));
-            this.pageInfo.createdAtEnd = dateFormat("YYYY-mm-dd", new Date());
         },
         mounted: function () {
             this.initPicker();
         },
         methods: {
+            preSaveAsVersion() {
+                $("#saveAsVersionModal").modal('show');
+            },
+            saveAsVersion() {
+                if(!this.pageInfo.versionName) {
+                    return toastr.error('打捆名称不能为空', '错误')
+                }
+                this.pageInfo.createdAtStart = $($("input[name='start']").get(0)).val();
+                this.pageInfo.createdAtEnd = $($("input[name='end']").get(0)).val();
+                let that = this;
+                AJAX.GET('customer', this.pageInfo, function (resp) {
+                    confirm("您确定要打捆这" + resp.data.total + "条数据吗?", "", function (isConfirm) {
+                        if (isConfirm) {
+                            AJAX.GET('customerGroup/save', that.pageInfo, function (resp) {
+                                toastr.success(resp['msg'], '操作成功');
+                                $("#saveAsVersionModal").modal('hide');
+                            })
+                        } else {
+                            //after click the cancel
+                        }
+                    }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+                });
+            },
             initPicker() {
                 if (!this.isInitPicker) {
                     $('#datepicker').datepicker({
@@ -164,6 +213,8 @@
                 $("#importModal").modal('show');
             },
             pagequery: function () {
+                this.pageInfo.createdAtStart = $($("input[name='start']").get(0)).val();
+                this.pageInfo.createdAtEnd = $($("input[name='end']").get(0)).val();
                 let that = this;
                 AJAX.GET('customer', this.pageInfo, function (resp) {
                     that.items = resp.data.list;

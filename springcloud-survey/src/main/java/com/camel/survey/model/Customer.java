@@ -84,10 +84,6 @@ public class Customer extends ZsSurveyBaseEntity {
      */
     private Integer open;
 
-    /**
-     * 版本
-     */
-    private String version;
 
     @Override
     public String toString() {

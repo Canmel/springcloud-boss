@@ -7,4 +7,6 @@ public class CustomerForm extends Customer {
     private String createdAtStart;
 
     private String createdAtEnd;
+
+    private String versionName;
 }
