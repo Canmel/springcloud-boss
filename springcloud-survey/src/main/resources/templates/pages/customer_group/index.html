@@ -26,6 +26,8 @@
                         <th>名称</th>
                         <th>创建人</th>
                         <th>创建时间</th>
+                        <th>是否可选</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,6 +36,12 @@
                         <td>{{item.name}}</td>
                         <td>{{item.creator ? item.creator.nickname : ''}}</td>
                         <td>{{item.createdAt}}</td>
+                        <td><span class="badge" :class="item.state.code === 1 ? 'badge-primary' : 'badge-danger'">{{item.state.name}}</span></td>
+                        <td>
+                            <button class="btn btn-primary" @click="changeState(item)">切换状态</button>
+
+                            <button class="btn btn-success" @click="exportGroup(item)">导出</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -62,6 +70,16 @@
         mounted: function () {
         },
         methods: {
+            exportGroup(item) {
+                window.open('/survey/customerGroup/export/' + item.id + '?access_token=' + sessionStorage.getItem('access_token'));
+            },
+            changeState(item) {
+                let that = this;
+                AJAX.GET('customerGroup/change', {id: item.id}, function (resp) {
+                    toastr.success(resp.msg, '成功');
+                    that.pagequery();
+                })
+            },
             pagequery: function () {
                 let that = this;
                 AJAX.GET('customerGroup', this.pageInfo, function (resp) {

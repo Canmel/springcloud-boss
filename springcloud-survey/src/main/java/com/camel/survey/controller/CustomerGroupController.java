@@ -8,6 +8,7 @@ import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.model.Customer;
 import com.camel.survey.model.CustomerForm;
 import com.camel.survey.model.CustomerGroup;
@@ -16,11 +17,18 @@ import com.camel.survey.service.CustomerGroupItemService;
 import com.camel.survey.service.CustomerGroupService;
 import com.camel.survey.service.CustomerService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.ExportExcelUtils;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +60,46 @@ public class CustomerGroupController extends BaseCommonController {
         return ResultUtil.success(service.selectPage(entity));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'MANAGER')")
+    @GetMapping("/export/{id}")
+    public void export(@PathVariable Integer id, HttpServletResponse response) {
+        Wrapper<CustomerGroupItem> itemWrapper = new EntityWrapper<>();
+        itemWrapper.eq("group_id", id);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        List<CustomerGroupItem> customers =  itemService.selectList(itemWrapper);
+        HSSFSheet sheet = wb.createSheet("客户信息");
+        HSSFRow headRow = sheet.createRow(0);
+        headRow.createCell(0).setCellValue("电话号码(必填)");
+        headRow.createCell(1).setCellValue("客户名称");
+        for (int i = 1; i<=customers.size();i++) {
+            HSSFRow row = sheet.createRow(i);
+            row.createCell(0).setCellValue(customers.get(i-1).getTel());
+            row.createCell(1).setCellValue(customers.get(i-1).getUsername());
+        }
+        ExportExcelUtils.export(wb, "客户信息", response);
+    }
+
+    /**
+     * 获取能用的号码打捆库
+     * @return
+     */
+    @GetMapping("/active")
+    public Result active() {
+        Wrapper<CustomerGroup> customerGroupWrapper = new EntityWrapper<>();
+        customerGroupWrapper.eq("state", ZsYesOrNo.YES.getCode());
+        return ResultUtil.success(service.selectList(customerGroupWrapper));
+    }
+
     @GetMapping("/change")
     public Result change(CustomerGroup entity) {
         CustomerGroup group = service.selectById(entity.getId());
+        if(group.getState().equals(ZsYesOrNo.YES)) {
+            group.setState(ZsYesOrNo.NO);
+        }else {
+            group.setState(ZsYesOrNo.YES);
+        }
+        service.updateById(group);
         return ResultUtil.success("切换成功");
     }
 
