@@ -24,6 +24,9 @@ public class CustomerGroupItem extends Customer {
      */
     private Integer groupId;
 
+    public CustomerGroupItem() {
+    }
+
     public CustomerGroupItem(Customer customer, Integer groupId) {
         setTel(customer.getTel());
         setUsername(customer.getUsername());
