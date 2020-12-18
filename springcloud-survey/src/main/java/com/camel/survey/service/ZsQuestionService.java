@@ -68,4 +68,10 @@ public interface ZsQuestionService extends IService<ZsQuestion> {
      * 通过问卷ID获取问题
      */
     List<ZsQuestion> selectBySurveyId(Integer id);
+
+    /**
+     * 一次查出全路径：
+     *  包含问题与选项
+     */
+    List<ZsQuestion> selectFullBySurveyId(Integer surveyId);
 }

@@ -271,6 +271,11 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         return mapper.selectBySurveyId(id);
     }
 
+    @Override
+    public List<ZsQuestion> selectFullBySurveyId(Integer id) {
+        return mapper.selectFullBySurveyId(id);
+    }
+
     boolean isAnswered(ZsAnswerSave zsAnswerSave) {
         if (zsAnswerSave.getPhone().length() < 6) {
             return false;

@@ -1,5 +1,7 @@
 package com.camel.survey.vo;
 
+import com.camel.survey.model.ZsOption;
+import com.camel.survey.model.ZsQuestion;
 import lombok.Data;
 
 import java.util.List;
@@ -38,4 +40,12 @@ public class ZsCrossExport {
     private List<Integer> secondOption;
 
     private Integer surveyId;
+
+    private ZsQuestion questionF;
+
+    private ZsQuestion questionS;
+
+    private List<ZsOption> optionsS;
+
+    private List<ZsOption> optionsF;
 }

@@ -31,6 +31,13 @@ public interface ZsQuestionMapper extends BaseMapper<ZsQuestion> {
     List<ZsQuestion> selectBySurveyId(Integer id);
 
     /**
+     * 通过问卷ID查询题目
+     * @param id
+     * @return
+     */
+    List<ZsQuestion> selectFullBySurveyId(Integer id);
+
+    /**
      * 通过ID查询问题
      * @param id
      * @return

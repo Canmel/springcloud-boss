@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.survey.enums.ZsYesOrNo;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * ___====-_  _-====___
@@ -467,10 +469,10 @@ public class ExportServiceImpl implements ExportService {
      */
     public void crossSingleSimple(HSSFWorkbook wb, ZsCrossExport zsCrossExport) {
         HSSFCellStyle style = createCellStyle(wb);
-        ZsQuestion questionF = zsQuestionService.selectById(zsCrossExport.getFirstSelect());
-        ZsQuestion questionS = zsQuestionService.selectById(zsCrossExport.getSecondSelect());
-        List<ZsOption> optionListF = getAllOption(zsCrossExport.getFirstOption(), zsCrossExport.getFirstSelect());
-        List<ZsOption> optionListS = getAllOption(zsCrossExport.getSecondOption(), zsCrossExport.getSecondSelect());
+        ZsQuestion questionF = zsCrossExport.getQuestionF();
+        ZsQuestion questionS = zsCrossExport.getQuestionS();
+        List<ZsOption> optionListF = zsCrossExport.getOptionsF();
+        List<ZsOption> optionListS = zsCrossExport.getOptionsS();
         HSSFSheet sheet = wb.createSheet("Q" + questionF.getOrderNum() + "--Q" + questionS.getOrderNum());
         HSSFRow rowQ1 = sheet.createRow(0);
         fillCell(rowQ1.createCell(0), createHeadStyle(wb), "Q" + questionF.getOrderNum() + "." + questionF.getName());
@@ -627,14 +629,28 @@ public class ExportServiceImpl implements ExportService {
      */
     public void crossMuiltySimple(HSSFWorkbook wb, ZsCrossExport crossExport) {
         List<ZsQuestion> questions = zsQuestionService.selectBySurveyId(crossExport.getSurveyId());
-        ZsQuestion questionF = zsQuestionService.selectById(crossExport.getFirstSelect());
+
+        // 设置甄选
         for (ZsQuestion question : questions) {
-            if (question.getId().equals(questionF.getId())) {
+            if (question.getId().equals(crossExport.getFirstSelect())) {
+                crossExport.setQuestionF(question);
+                if(ObjectUtil.isNotNull(question.getOptions())) {
+                    List<ZsOption> optionsF = question.getOptions().stream().filter(o -> crossExport.getFirstOption().contains(o.getId())).collect(Collectors.toList());
+                    crossExport.setOptionsF(optionsF);
+                }
+
+            }
+        }
+
+        // 循环交叉
+        for (ZsQuestion question : questions) {
+            if (question.getId().equals(crossExport.getFirstSelect())) {
                 continue;
             }
 //            需要设置一下qF qS oF oS
             crossExport.setSecondSelect(question.getId());
-            crossExport.setSecondOption(null);
+            crossExport.setQuestionS(question);
+            crossExport.setOptionsS(question.getOptions());
             crossSingleSimple(wb, crossExport);
         }
     }
