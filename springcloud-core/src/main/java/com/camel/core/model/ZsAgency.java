@@ -33,6 +33,11 @@ public class ZsAgency extends BasePaginationEntity {
      */
     private Integer type;
     private Date createdAt;
+
+    /**
+     * 最大提取量
+     */
+    private Double maxValue;
     /**
      * 值
      */
