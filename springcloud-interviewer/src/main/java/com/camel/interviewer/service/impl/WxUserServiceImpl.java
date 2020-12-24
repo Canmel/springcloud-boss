@@ -1,10 +1,13 @@
 package com.camel.interviewer.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.interviewer.feign.SpringCloudSystemFeignClient;
+import com.camel.interviewer.mapper.WxSubscibeMapper;
+import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.mapper.WxUserMapper;
 import com.camel.interviewer.service.WxUserService;
@@ -13,6 +16,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -26,6 +32,9 @@ import org.springframework.util.ObjectUtils;
 public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> implements WxUserService {
     @Autowired
     private WxUserMapper wxUserMapper;
+
+    @Autowired
+    private WxSubscibeMapper wxSubscibeMapper;
 
     @Autowired
     private SpringCloudSystemFeignClient springCloudSystemFeignClient;
@@ -43,7 +52,12 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 
     @Override
     public PageInfo<WxUser> pageQuery(WxUser wxUser) {
-        Wrapper<WxUser> wxUserWrapper = new EntityWrapper<>();
+        if(ObjectUtil.isNotNull(wxUser.getTjUser()) && ObjectUtil.isNotNull(wxUser.getTjUser().getUsername())) {
+            Wrapper<WxUser> wxUserWrapper = new EntityWrapper<>();
+            wxUserWrapper.like("username", wxUser.getTjUser().getUsername());
+            List<WxUser> wxUsers = wxUserMapper.selectList(wxUserWrapper);
+            wxUser.setOpenIds(wxUsers.stream().map(WxUser::getOpenid).collect(Collectors.toList()));
+        }
         PageInfo pageInfo = PaginationUtil.startPage(wxUser, () -> {
             wxUserMapper.list(wxUser);
         });

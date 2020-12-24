@@ -68,6 +68,12 @@
         <if test="username != null and username != ''">
             and wx_user.username like concat('%', #{username}, '%')
         </if>
+        <if test="openIds != null">
+            and b.share_user in
+            <foreach collection="openIds" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
     </select>
 
     <select id="allWxZc" resultMap="allWxZcMap">

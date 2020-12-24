@@ -9,11 +9,12 @@
         <result column="type" property="type" />
         <result column="created_at" property="createdAt" />
         <result column="svalue" property="svalue" />
+        <result column="max_value" property="maxValue" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, type, created_at, svalue
+        id, name, type, created_at, svalue, max_value
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

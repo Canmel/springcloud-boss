@@ -2,6 +2,7 @@ package com.camel.interviewer.controller;
 
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
@@ -11,6 +12,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
+import com.camel.interviewer.model.WxUserForm;
 import com.camel.interviewer.service.InterviewerService;
 import com.camel.interviewer.service.WxSubscibeService;
 import com.camel.interviewer.service.WxUserService;
@@ -58,7 +60,12 @@ public class WxUserController extends BaseCommonController {
     public static final String QUEUE_NAME = "ActiveMQ.System.New.User";
 
     @GetMapping
-    private Result index(WxUser wxUser) {
+    private Result index(WxUserForm wxUser) {
+        if(StrUtil.isNotBlank(wxUser.getTjName())) {
+            WxUser tjUser = new WxUser();
+            tjUser.setUsername(wxUser.getTjName());
+            wxUser.setTjUser(tjUser);
+        }
         return ResultUtil.success(service.pageQuery(wxUser));
     }
 

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
+import java.util.List;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.interviewer.enums.ZsStatus;
@@ -72,6 +74,12 @@ public class WxUser extends BasePaginationEntity {
 
     @TableField(exist = false)
     private WxUser tjUser;
+
+    /**
+     * 查找被推荐人  模糊查询
+     */
+    @TableField(exist = false)
+    private List<String> openIds;
 
     public WxUser(String openid) {
         this.openid = openid;

@@ -36,3 +36,7 @@
 
 ### Springcloud-oa-server 
 > springcloud-oa-server 是一个依赖其他模块的一个办公室oa系统，包含流程审批，定制，出差，请假等单据的打印与流转
+>
+> ALTER TABLE `zs_agency`
+ ADD COLUMN `max_value`  double(11,2) NOT NULL DEFAULT 300 AFTER `agency_id`;
+ 
