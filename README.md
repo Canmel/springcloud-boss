@@ -40,3 +40,9 @@
 > ALTER TABLE `zs_agency`
  ADD COLUMN `max_value`  double(11,2) NOT NULL DEFAULT 300 AFTER `agency_id`;
  
+ALTER TABLE `zs_agency_fee`
+ADD COLUMN `state`  int(2) NOT NULL DEFAULT 0 COMMENT '审核状态' AFTER `work_hours`;
+
+ALTER TABLE `zs_agency_fee`
+ADD COLUMN `work_id_num`  varchar(50) NOT NULL DEFAULT '' COMMENT '工作人员身份证号码' AFTER `state`;
+

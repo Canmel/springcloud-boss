@@ -29,6 +29,7 @@
             <result column="zs_agency_name" property="name"></result>
             <result column="zs_agency_type" property="type"></result>
             <result column="zs_agency_svalue" property="svalue"></result>
+            <result column="zs_agency_max_value" property="maxValue"></result>
         </association>
         <collection property="roleIds" fetchType="eager" column="uid"
                     select="findRoleIdsByUserId"></collection>
@@ -131,6 +132,7 @@
         zs_agency.name zs_agency_name,
         zs_agency.type zs_agency_type,
         zs_agency.svalue zs_agency_svalue,
+        zs_agency.max_value zs_agency_max_value,
         <include refid="BASE_SQL"></include>
         FROM
         sys_user sys_user left join zs_agency zs_agency on sys_user.agency_id = zs_agency.id

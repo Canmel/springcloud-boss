@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.ZsAgency;
 import com.camel.survey.enums.ZsStatus;
+import com.camel.survey.enums.ZsWorkFeeState;
+import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
 /**
@@ -73,10 +75,24 @@ public class ZsAgencyFee extends BasePaginationEntity {
      */
     private String workName;
 
+    /**
+     * 审核是否通过
+     */
+    private ZsWorkFeeState state;
+
+    /**
+     * 工作人 身份证
+     */
+    private String workIdNum;
+
     public ZsAgencyFee() {
     }
 
-    public ZsAgencyFee(ZsWork zsWork, String username, String phone, String idNum, ZsAgency agency) {
+    public ZsAgencyFee(Integer id) {
+        this.id = id;
+    }
+
+    public ZsAgencyFee(ZsWork zsWork, String username, String phone, String idNum, ZsAgency agency, String workIdNum) {
         this.username = username;
         this.phone = phone;
         this.idNum = idNum;
@@ -93,6 +109,7 @@ public class ZsAgencyFee extends BasePaginationEntity {
         this.workSalary = zsWork.getSalary();
         this.workName = zsWork.getUname();
         this.workHours = zsWork.getWorkHours();
+        this.workIdNum = workIdNum;
     }
 
     public ZsAgencyFee(Integer id, Integer gain) {

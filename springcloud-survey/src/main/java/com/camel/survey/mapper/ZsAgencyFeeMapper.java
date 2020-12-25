@@ -23,5 +23,5 @@ public interface ZsAgencyFeeMapper extends BaseMapper<ZsAgencyFee> {
      * @param entity
      * @return
      */
-    List<SysSeat> list(ZsAgencyFee entity);
+    List<ZsAgencyFee> list(ZsAgencyFee entity);
 }

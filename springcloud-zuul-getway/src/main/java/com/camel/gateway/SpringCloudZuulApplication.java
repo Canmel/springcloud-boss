@@ -1,5 +1,7 @@
 package com.camel.gateway;
 
+import com.netflix.client.ClientException;
+import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.MultipartConfigElement;
 
@@ -67,6 +71,4 @@ public class SpringCloudZuulApplication implements CommandLineRunner {
         factory.setMaxRequestSize("1024000KB");
         return factory.createMultipartConfig();
     }
-
-
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/main.css" type="text/css" media="screen, projection"/> <!-- main stylesheet -->
+    <link rel="stylesheet" type="text/css" media="all" href="/css/tipsy.css"/> <!-- Tipsy implementation -->
+    <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script> <!-- uiToTop implementation -->
+    <script type="text/javascript" src="/js/custom-scripts.js"></script>
+    <script type="text/javascript" src="/js/jquery.tipsy.js"></script> <!-- Tipsy -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            universalPreloader();
+        });
+        $(window).load(function () {
+            universalPreloaderRemove();
+            rotate();
+            dogRun();
+            dogTalk();
+            $('.with-tooltip').tipsy({gravity: $.fn.tipsy.autoNS});
+        });
+    </script>
+    <title>404 - Not found</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<div id="universal-preloader">
+    <div class="preloader">
+        <img src="/images/universal-preloader.gif" alt="universal-preloader" class="universal-preloader-preloader"/>
+    </div>
+</div>
+<div id="wrapper">
+    <div class="graphic"></div>
+    <div class="not-found-text">
+        <h1 class="not-found-text">您需要的文件似乎找不到了... 请稍等片刻，万一它回来了呢</h1>
+    </div>
+    <div class="top-menu">
+        <a href="#" class="with-tooltip" title="Return to the home page">Home</a> | <a href="#" class="with-tooltip"
+                                                                                       title="Navigate through our sitemap">Sitemap</a>
+        | <a href="#" class="with-tooltip" title="Contact us!">Contact</a> | <a href="#" class="with-tooltip"
+                                                                                title="Request additional help">Help</a>
+    </div>
+    <div class="dog-wrapper">
+        <div class="dog"></div>
+        <div class="dog-bubble">
+        </div>
+        <div class="bubble-options">
+            <p class="dog-bubble">
+                <br/>
+                汪! 汪!
+            </p>
+            <p class="dog-bubble">
+                <br/>
+                别慌，我马上到
+            </p>
+            <p class="dog-bubble">
+                迷路了吗, bud? 别慌, 我们聊聊关于404的古诗词吧!
+            </p>
+            <p class="dog-bubble">
+                <br/>
+                青山终是慰人心，到处相逢不用寻
+            </p>
+            <p class="dog-bubble">
+                <br/>
+                骚人可煞无情思,何事当年不见收
+            </p>
+            <p class="dog-bubble">
+                一日不见兮，思之如狂。
+            </p>
+            <p class="dog-bubble">
+                <br/>
+                云中君不见，竟夕自悲秋。
+            </p>
+            <p class="dog-bubble">
+                要是来点饼干就真的是太好了<br/><img style="margin-top:8px" src="/images/cookie.png" alt="cookie"/>
+            </p>
+            <p class="dog-bubble">
+                等下， 我是不是看见了什么 <br/><img style="margin-top:8px" src="/images/cat.png" alt="cat"/>
+            </p>
+            <p class="dog-bubble">
+                >_<
+            </p>
+        </div>
+    </div>
+    <div class="planet"></div>
+</div>
+</body>
+</html>

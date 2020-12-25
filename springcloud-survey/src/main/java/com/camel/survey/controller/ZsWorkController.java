@@ -1,6 +1,7 @@
 package com.camel.survey.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
@@ -11,9 +12,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.model.ZsAgency;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
-import com.camel.survey.enums.ZsGain;
-import com.camel.survey.enums.ZsStatus;
-import com.camel.survey.enums.ZsWorkState;
+import com.camel.survey.enums.*;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.feign.SpringCloudSystemFeignClient;
 import com.camel.survey.model.*;
@@ -382,14 +381,30 @@ public class ZsWorkController extends BaseCommonController {
             SysUser sysUser = springCloudSurveyFeignClient.oneUser(res.get("id_num"));
             ZsAgency agency = sysUser.getAgency();
             if (!ObjectUtils.isEmpty(sysUser) && !ObjectUtils.isEmpty(sysUser.getAgency())) {
-                ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), agency);
-                agencyFeeService.insert(agencyFee);
+                ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), agency, zsWork.getIdNum());
+                if(isMAX(zsWork.getIdNum(), agency, agencyFee.getSalary())) {
+                    agencyFee.setState(ZsWorkFeeState.MAX);
+                }
+                    agencyFeeService.insert(agencyFee);
             }
             else {
                 throw new SourceDataNotValidException(" 参数未设置");
             }
 
         }
+    }
+
+    public boolean isMAX(String idNum, ZsAgency agency, Double salary) {
+        Wrapper<ZsAgencyFee> wrapper = new EntityWrapper<>();
+        wrapper.eq("work_id_num", idNum);
+        wrapper.eq("state", ZsWorkFeeState.SUCCESS);
+        Double maxValue = agency.getMaxValue();
+        List<ZsAgencyFee> agencyFeeList = agencyFeeService.selectList(wrapper);
+        Double c = agencyFeeList.stream().mapToDouble(ZsAgencyFee::getSalary).sum();
+        if(ObjectUtil.isNotNull(maxValue) && ObjectUtil.isNotNull(c)) {
+            return salary + c > agency.getMaxValue();
+        }
+        return false;
     }
 }
 

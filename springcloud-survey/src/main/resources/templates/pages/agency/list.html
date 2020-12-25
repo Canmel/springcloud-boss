@@ -25,24 +25,38 @@
                         <th>电话</th>
                         <th>推荐薪资</th>
                         <th>被推荐人</th>
+                        <th>被推荐人身份证号</th>
                         <th>被推荐人工作薪资</th>
                         <th>被推荐人工作时长</th>
                         <th>是否提取</th>
                         <th>提取时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>{{item.username}}</td>
+                        <td><span class="badge badge-success">{{item.username}}</span></td>
                         <td>{{item.idNum}}</td>
                         <td>{{item.phone}}</td>
                         <td>{{item.salary}}</td>
                         <td>{{item.workName}}</td>
+                        <td>{{item.workIdNum}}</td>
                         <td>{{item.workSalary}}</td>
                         <td>{{item.workHours}}</td>
                         <td>{{item.gain === 1 ? '是' : '否'}}</td>
                         <td>{{item.gainTime | formatDate}}</td>
+                        <td>
+                            <span class="badge badge-success" v-if="item.state && item.state.code == 1">{{item.state.name}}</span>
+                            <span class="badge badge-warning" v-if="item.state && item.state.code == 2">{{item.state.name}}</span>
+                            <span class="badge badge-warning" v-if="item.state && item.state.code == 0">{{item.state.name}}</span>
+                            <span class="badge badge-warning" v-if="item.state && item.state.code == 3">{{item.state.name}}</span>
+                        </td>
+                        <td>
+                            <button type="button" v-on:click="agree(item)" class="btn btn-primary btn-xs" v-if="item.state && item.state.code == 0">通过</button>
+                            <button type="button" v-on:click="refuse(item)" class="btn btn-danger btn-xs" v-if="item.state && item.state.code == 0  ">拒绝</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -76,6 +90,34 @@
             this.loginMaster();
         },
         methods: {
+            agree(item) {
+                let that = this;
+                confirm("您确定要处理这条费用吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET("zsAgencyFee/agree/" + item.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            refuse(item) {
+                let that = this;
+                confirm("您确定要处理这条费用吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET("zsAgencyFee/refuse/" + item.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
             loginMaster(){
                 var that = this;
                 this.master = sessionStorage.getItem('master');
@@ -115,40 +157,6 @@
                 this.pageInfo.pageNum = val;
                 this.pagequery();
             }
-        }
-    });
-</script>
-
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        updateConfig();
-
-        function updateConfig() {
-            jQuery('#datePickerSelect').daterangepicker({
-                "startDate": vue.$data.pageInfo.daterange.substring(0,19),
-                "endDate": vue.$data.pageInfo.daterange.substring(22,41),
-                "timePickerSeconds": true,
-                "timePicker": true,
-                "opens": "center",
-                "buttonClasses": 'btn btn-sm',
-                "applyClass": 'btn-success',
-                "cancelClass": 'btn-default',
-                "timePicker24Hour": true,
-                "linkedCalendars": false,
-                "autoUpdateInput": true,
-                locale: { //汉化
-                    format: "YYYY/MM/DD HH:mm:ss",
-                    applyLabel: '确定', //确定按钮文本
-                    cancelLabel: '取消', //取消按钮文本
-                    customRangeLabel: '自定义范围',
-                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
-                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
-                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
-                },
-            }, function (start, end, label) {
-                jQuery("datePickerSelect").val(start.format('YYYY-MM-DD:HH:mm:ss') + "-" + end.format('YYYY-MM-DD:HH:mm:ss'));
-                console.log("New date range selected: " + start.format('YYYY-MM-DD:HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD:HH:mm:ss') + ' (predefined range: ' + label + ")");
-            });
         }
     });
 </script>

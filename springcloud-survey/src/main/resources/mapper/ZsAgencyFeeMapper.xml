@@ -10,23 +10,26 @@
         <result column="id_num" property="idNum" />
         <result column="salary" property="salary" />
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="gain" property="gain" />
         <result column="gain_time" property="gainTime" />
         <result column="work_id" property="workId" />
         <result column="work_salary" property="workSalary" />
         <result column="work_name" property="workName" />
         <result column="work_hours" property="workHours" />
+        <result column="work_id_num" property="workIdNum" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, username, phone, id_num, salary, status, gain, gain_time, work_id, work_salary, work_name, work_hours
+        id, username, phone, id_num, salary, status, gain, gain_time, work_id, work_salary, work_name, work_hours, state, work_id_num
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
-        select
+        SELECT
          <include refid="Base_Column_List"></include>
-        from
+        FROM
         zs_agency_fee
+        ORDER BY id DESC
     </select>
 </mapper>
