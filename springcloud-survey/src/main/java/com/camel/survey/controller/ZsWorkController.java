@@ -379,8 +379,11 @@ public class ZsWorkController extends BaseCommonController {
         if (!ObjectUtils.isEmpty(res)) {
             // 有推荐人 获取推荐人的计费方式
             SysUser sysUser = springCloudSurveyFeignClient.oneUser(res.get("id_num"));
-            ZsAgency agency = sysUser.getAgency();
-            if (!ObjectUtils.isEmpty(sysUser) && !ObjectUtils.isEmpty(sysUser.getAgency())) {
+            if(ObjectUtils.isEmpty(sysUser)) {
+                throw new SourceDataNotValidException("推荐人身份证不正确");
+            }
+            if (!ObjectUtils.isEmpty(sysUser.getAgency())) {
+                ZsAgency agency = sysUser.getAgency();
                 ZsAgencyFee agencyFee = new ZsAgencyFee(zsWork, (String) res.get("username"), (String) res.get("phone"), (String) res.get("id_num"), agency, zsWork.getIdNum());
                 if(isMAX(zsWork.getIdNum(), agency, agencyFee.getSalary())) {
                     agencyFee.setState(ZsWorkFeeState.MAX);
@@ -388,7 +391,7 @@ public class ZsWorkController extends BaseCommonController {
                     agencyFeeService.insert(agencyFee);
             }
             else {
-                throw new SourceDataNotValidException(" 参数未设置");
+                throw new SourceDataNotValidException("有参数未设置");
             }
 
         }
