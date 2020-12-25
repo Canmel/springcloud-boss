@@ -388,7 +388,7 @@ public class ZsWorkController extends BaseCommonController {
                 if(isMAX(zsWork.getIdNum(), agency, agencyFee.getSalary())) {
                     agencyFee.setState(ZsWorkFeeState.MAX);
                 }
-                    agencyFeeService.insert(agencyFee);
+                agencyFeeService.insert(agencyFee);
             }
             else {
                 throw new SourceDataNotValidException("有参数未设置");
