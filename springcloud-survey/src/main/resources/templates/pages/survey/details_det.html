@@ -262,6 +262,9 @@
                                     <button type="button" class="btn btn-success btn-sm"
                                             v-on:click="exportForm()">报表导出
                                     </button>
+                                    <button type="button" class="btn btn-info btn-sm"
+                                            v-on:click="editForm()">自主导出
+                                    </button>
 <!--                                    <button type="button" class="btn btn-white btn-sm"-->
 <!--                                            v-on:click="customExport()">自定义导出-->
 <!--                                    </button>-->
@@ -696,6 +699,9 @@
         },
         computed: {},
         methods: {
+            editForm() {
+                toPage("pages/export/edit.html", this.pageInfo);
+            },
             customExport() {
                 toPage("pages/export/index.html", this.pageInfo);
             },
