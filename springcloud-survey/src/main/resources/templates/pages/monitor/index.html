@@ -1,0 +1,57 @@
+<!--<script src="js/SIPml-api.js?svn=250" type="text/javascript"></script>-->
+<script src="/survey/js/cti/webrtc-1.0.js"></script>
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>话务监控</h5>
+        </div>
+        <div class="ibox-content">
+            <monitor></monitor>
+        </div>
+    </div>
+</div>
+
+<script src="/survey/js/validateIsMain.js"></script>
+<script type="text/javascript">
+    /**
+     * 一些基本配置，如服务器地址、座席信息、使用的外线号码、弹屏地址
+     */
+    websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
+    agentno = '8888';//座席号码
+    password = 'svdata123';//座席密码
+    exten = '8888';//座席分机
+    pstnnumber = '82312340';//外线号码
+    popupUrl = 'http://www.baidu.com'//来电弹屏地址;
+    useMonitor = 'yes';//如是班长可以启用话务监控
+
+    var useWebrtc = 'yes';//是否使用浏览器内置软电话，需要浏览器支持webrtc，如chrome
+    var sipServer = 'tj.svdata.cn';//软电话注册地址，不启用内置软电话可以不配置
+    var sipPort = '7067';//软电话注册端口，不启用内置软电话可以不配置
+    var extenPwd = 'svdata123';//分机密码，不启用内置软电话可以不配置
+    var autoAnswer = 'no';//是否自动接听电话，只有启用内置软电话才生效
+
+</script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+        },
+        created: function () {
+        },
+        methods: {
+            initWebSocket() {
+                websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
+                agentno = '8888';//座席号码
+                password = 'svdata123';//座席密码
+                exten = '8888';//座席分机
+                pstnnumber = '82312340';//外线号码
+                popupUrl = 'http://www.baidu.com'//来电弹屏地址;
+                useMonitor = 'yes';//如是班长可以启用话务监控
+
+
+
+            }
+        }
+    });
+</script>

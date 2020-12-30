@@ -361,7 +361,9 @@ function timeout() {
         var signInOrOut = $('#signInOrOut');
         var signInOrOutHtml = signInOrOut.html();
         signin = false;
-        signInOrOut.html(signInOrOutHtml.replace("签出", "签入"));
+        if(signInOrOutHtml) {
+            signInOrOut.html(signInOrOutHtml.replace("签出", "签入"));
+        }
         if (heartbeatId >= 0) {
             clearInterval(heartbeatId);
         }
@@ -429,7 +431,9 @@ function onEvent(eventType, state, methodType, code, jsonStr) {
         if (methodType == 'signin') {
             if (code == '0') {
                 signin = true;
-                signInOrOut.html(signInOrOutHtml.replace("签入", "签出"));
+                if(signInOrOut) {
+                    signInOrOut.html(signInOrOutHtml.replace("签入", "签出"));
+                }
                 agentstatus = "1";
                 method = "setAcsType";//通话结束后座席状态默认空闲
                 send();
