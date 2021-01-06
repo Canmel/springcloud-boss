@@ -87,6 +87,7 @@ function sipRegister() {
             return;
         }
     } catch (e) {
+        console.error(e)
         //txtRegStatus.innerHTML = "<b>" + e + "</b>";
         //tsk_utils_log_info("<b>2:" + e + "</b>");
     }

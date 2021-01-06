@@ -1,14 +1,52 @@
 var monitor='<script type="text/x-template" id="monitor">\n' +
+    '<div>\n' +
     '<a class="btn btn-primary btn-xs" onclick="signInOrOut()" id="signInOrOut">签入</a>\n' +
-    '</script>'
+    '<div> \n' +
+    '<ul class="nav nav-tabs">\n' +
+    '   <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">坐席组</a></li>\n' +
+    '   <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false"> 队列</a></li>\n' +
+    '</ul>' +
+    '</div>\n' +
+    '<div class="tab-content">\n' +
+    '   <div id="tab-1" class="tab-pane active">\n' +
+    '       <div class="panel-body">\n' +
+    '           <div class="ibox-content"> \n' +
+    '               <div class="col-sm-3"> \n' +
+    '                  <div class="ibox float-e-margins">\n' +
+    '                    <div class="ibox-content">\n' +
+    '                        <div class="file-manager">\n' +
+    '                            <h5>坐席组</h5>\n' +
+    '                            <ul class="folder-list" style="padding: 0">\n' +
+    '                                <li v-for="item in agentGroups"><a href="file_manager.html"><i class="fa fa-folder"></i> {{item}}</a>\n' +
+    '                                </li>\n' +
+    '                            </ul>\n' +
+    '                            <div class="clearfix"></div>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </div>' +
+    '               </div>\n' +
+    '               <div class="col-sm-9"> \n' +
+    '               </div>\n' +
+    '           </div>\n' +
+    '       </div>\n' +
+    '   </div>\n' +
+    '   <div id="tab-2" class="tab-pane active">\n' +
+    '       <div class="panel-body">\n' +
+    '           <div class="ibox-content"> \n' +
+    '           </div>\n' +
+    '       </div>\n' +
+    '   </div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</script>';
 var dom = document.querySelector("body");
 dom.innerHTML += monitor;
 
 
 websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
-agentno = '8888';//座席号码
+agentno = '8889';//座席号码
 password = 'svdata123';//座席密码
-exten = '8888';//座席分机
+exten = '8889';//座席分机
 pstnnumber = '82312340';//外线号码
 popupUrl = 'http://www.baidu.com'//来电弹屏地址;
 useMonitor = 'yes';//如是班长可以启用话务监控
@@ -41,7 +79,11 @@ Vue.component('monitor', {
     template: '#monitor',
     data() {
         return {
-
+            agentGroups: [],
+            cti: {
+                status: 0,
+                server: 0
+            },
         }
     },
     methods: {
@@ -50,33 +92,34 @@ Vue.component('monitor', {
             //注册WebSocket服务
             if('WebSocket' in window){
                 websocket = new WebSocket(websocketUrl);
+                websocket.onerror = function(){
+                    setMessageInnerHTML("error");
+                };
+
+                $ctiserver = this;
+                websocket.onopen = function (event) {
+                    $ctiserver.cti.server = 1
+                }
+                websocket.onmessage = function(){
+                    try {
+                        var jsonStr=JSON.parse(event.data);
+                        that.onEvent(jsonStr.type,jsonStr.status,jsonStr.method,jsonStr.retCode,jsonStr);
+                    } catch (e) {
+                        return false;
+                    }
+                };
+
+                websocket.onclose = function(){
+                    setMessageInnerHTML("close");
+                };
             }else {
                 alert('当前浏览器不支持WebSocket通信，座席功能将不能使用！')
             }
 
-            websocket.onerror = function(){
-                setMessageInnerHTML("error");
-            };
 
-            websocket.onopen = function(event){
-                setMessageInnerHTML("open");
-            };
-
-            websocket.onmessage = function(){
-                try {
-                    var jsonStr=JSON.parse(event.data);
-                    that.onEvent(jsonStr.type,jsonStr.status,jsonStr.method,jsonStr.retCode,jsonStr);
-                } catch (e) {
-                    return false;
-                }
-            };
-
-            websocket.onclose = function(){
-                setMessageInnerHTML("close");
-            };
         },
-
         onEvent(eventType, state, methodType, code, jsonStr) {
+            let that = this;
             console.log('onEvent---json--------->', jsonStr);
             console.log('methodType----', methodType);
             $(".my-loading").hide();
@@ -102,6 +145,8 @@ Vue.component('monitor', {
                         method = "getDefinedRoleRights";//获取座席权限
                         send();
                         alert("签入成功");
+                        method = "getAgentGroupList";
+                        send();
                         $("#notsignin").hide();
                         $("#signin").show();
                     } else if (code == '-53') {
@@ -160,24 +205,15 @@ Vue.component('monitor', {
                         window.openUrl = url;
                     }
                 } else if (methodType == "get_agentgroup_list") {//获取座席组列表
-                    console.log("呼入弹屏", jsonStr);
+                    console.log("获取座席组列表", jsonStr);
                     var agentGroupNames = jsonStr.agentgroupname;
                     var agentGroupNums = jsonStr.agentgroupnum.split(",");
-                    agentGroupStr = '[{"id":1,"pId":0,"name":"座席组","open":true,"isParent":true,"busid":"-1"}';//座席组信息
-                    var idx = 100;
                     var tempAgentGroup = ',' + roleAgentGroupNum + ',';
+                    that.agentGroups = [];
                     $.each(agentGroupNames.split(","), function (i, groupName) {
-                        if (tempAgentGroup.indexOf(agentGroupNums[i]) > 0) {
-                            idx = idx + 1;
-                            agentGroupStr = agentGroupStr + ',{"id":' + idx + ',"pId":1,"name":"' + groupName + '","open":false,"isParent":false,"busid":"' + agentGroupNums[i] + '"}';
-                        }
+                        that.agentGroups.push(agentGroupNames.split(",")[i]);
+
                     });
-                    var zNodesStr = agentGroupStr + queueStr + ']';
-                    var zNodes = JSON.parse(zNodesStr);
-                    if ($("#doctree").length > 0) {
-                        $.fn.zTree.init($("#doctree"), setting, zNodes);
-                        var treeObj = $.fn.zTree.getZTreeObj("doctree");
-                    }
                 } else if (methodType == "get_queue_list") {//获取队列列表
                     var queueNames = jsonStr.queuename;
                     var queueNums = jsonStr.queuenum.split(",");

@@ -311,6 +311,7 @@ function send() {
 
 //签入或签出
 function signInOrOut() {
+    console.log("-----------------------------------------1")
     if (heartbeatId >= 0) {
         clearInterval(heartbeatId);
     }
