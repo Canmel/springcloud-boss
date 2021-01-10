@@ -246,11 +246,15 @@ function onSipEventStack(e) {
                     sipAnswer();
                 } else {
                     console.log('-------弹窗--------', new Date());
-                    $.MsgBox.Confirm("来电通知", "确定接听吗？", function () {
-                        sipAnswer();
-                        window.openSurvey();
-                    }, function () {
-                        sipHangUp();
+                    confirm("来电通知", "确定接听吗？", function (isConfirm) {
+                        if (isConfirm) {
+                            sipAnswer();
+                            window.openSurvey();
+                        } else {
+                            sipHangUp();
+                        }
+
+
                     });
                 }
 
