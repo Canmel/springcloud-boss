@@ -17,7 +17,7 @@ var monitor='<script type="text/x-template" id="monitor">\n' +
     '                        <div class="file-manager">\n' +
     '                            <h5>坐席组</h5>\n' +
     '                            <ul class="folder-list" style="padding: 0">\n' +
-    '                                <li v-for="item in agentGroups"><a href="file_manager.html"><i class="fa fa-folder"></i> {{item}}</a>\n' +
+    '                                <li v-for="item in agentGroups"><span @click="groupSelectedHandler(item)"><i class="fa fa-folder"></i> {{item}}</span>\n' +
     '                                </li>\n' +
     '                            </ul>\n' +
     '                            <div class="clearfix"></div>\n' +
@@ -26,6 +26,13 @@ var monitor='<script type="text/x-template" id="monitor">\n' +
     '                </div>' +
     '               </div>\n' +
     '               <div class="col-sm-9"> \n' +
+    '                  <div class="ibox float-e-margins">\n' +
+    '                    <div class="ibox-title">\n' +
+    '                    <h5>坐席列表</h5>\n' +
+    '                    </div>' +
+    '                    <div class="ibox-content">\n' +
+    '                    </div>' +
+    '                  </div>' +
     '               </div>\n' +
     '           </div>\n' +
     '       </div>\n' +
@@ -44,9 +51,9 @@ dom.innerHTML += monitor;
 
 
 websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
-agentno = '8889';//座席号码
+agentno = '8888';//座席号码
 password = 'svdata123';//座席密码
-exten = '8889';//座席分机
+exten = '8888';//座席分机
 pstnnumber = '82312340';//外线号码
 popupUrl = 'http://www.baidu.com'//来电弹屏地址;
 useMonitor = 'yes';//如是班长可以启用话务监控
@@ -87,6 +94,9 @@ Vue.component('monitor', {
         }
     },
     methods: {
+        groupSelectedHandler(item) {
+            console.log(item);
+        },
         initWebsocket() {
             let that = this;
             //注册WebSocket服务
