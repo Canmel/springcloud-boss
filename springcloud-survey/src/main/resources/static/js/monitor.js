@@ -1,4 +1,4 @@
-var monitor='<script type="text/x-template" id="monitor">\n' +
+var monitor = '<script type="text/x-template" id="monitor">\n' +
     '<div>\n' +
     '<a class="btn btn-primary btn-xs" onclick="signInOrOut()" id="signInOrOut">签入</a>\n' +
     '<div> \n' +
@@ -17,7 +17,7 @@ var monitor='<script type="text/x-template" id="monitor">\n' +
     '                        <div class="file-manager">\n' +
     '                            <h5>坐席组</h5>\n' +
     '                            <ul class="folder-list" style="padding: 0">\n' +
-    '                                <li v-for="item in agentGroups"><a href="file_manager.html"><i class="fa fa-folder"></i> {{item}}</a>\n' +
+    '                                <li v-for="(item, index) in agentGroups" @click="showUserAgent(index)"><a href="##"><i class="fa fa-folder"></i> {{item}}</a>\n' +
     '                                </li>\n' +
     '                            </ul>\n' +
     '                            <div class="clearfix"></div>\n' +
@@ -26,13 +26,61 @@ var monitor='<script type="text/x-template" id="monitor">\n' +
     '                </div>' +
     '               </div>\n' +
     '               <div class="col-sm-9"> \n' +
+    '                   <div class="file-box" v-for="item in agentInfos">\n' +
+    '                          <div class="file">\n' +
+    '                                <a href="##" >\n' +
+    '                                    <span class="corner"></span>\n' +
+    '                                    <div class="icon">\n' +
+    '                                        <i v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{item.agentNum}}</i>\n' +
+    '                                        <span style="position: absolute; left: 10px; top: 10px;" v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{agentStatusHandler(item.agentstatusInfo)}}</span>\n' +
+    '                                    </div>\n' +
+    '                                    <div class="file-name">\n' +
+    '                                        <span v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{item.agentName}}</span>\n' +
+    '                                        <br>\n' +
+    '                                        <small>累计在线：{{item.agentChangeTime | sToTime}}</small>\n' +
+    '                                    </div>\n' +
+    '                                </a>\n' +
+    '                            </div>\n' +
+    '                        </div>\n' +
     '               </div>\n' +
     '           </div>\n' +
     '       </div>\n' +
     '   </div>\n' +
-    '   <div id="tab-2" class="tab-pane active">\n' +
+    '   <div id="tab-2" class="tab-pane">\n' +
     '       <div class="panel-body">\n' +
     '           <div class="ibox-content"> \n' +
+    '               <div class="col-sm-3"> \n' +
+    '                  <div class="ibox float-e-margins">\n' +
+    '                    <div class="ibox-content">\n' +
+    '                        <div class="file-manager">\n' +
+    '                            <h5>队列</h5>\n' +
+    '                            <ul class="folder-list" style="padding: 0">\n' +
+    '                                <li v-for="(item, index) in agentQueues" @click="showQueueUserAgent(item.queueNum)"><a href="##"><i class="fa fa-folder"></i> {{item.queueName}}</a>\n' +
+    '                                </li>\n' +
+    '                            </ul>\n' +
+    '                            <div class="clearfix"></div>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </div>' +
+    '               </div>\n' +
+    '               <div class="col-sm-9"> \n' +
+    '                   <div class="file-box" v-for="item in agentInfos">\n' +
+    '                          <div class="file">\n' +
+    '                                <a href="##" >\n' +
+    '                                    <span class="corner"></span>\n' +
+    '                                    <div class="icon">\n' +
+    '                                        <i v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{item.agentNum}}</i>\n' +
+    '                                        <span style="position: absolute; left: 10px; top: 10px;" v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{agentStatusHandler(item.agentstatusInfo)}}</span>\n' +
+    '                                    </div>\n' +
+    '                                    <div class="file-name">\n' +
+    '                                        <span v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{item.agentName}}</span>\n' +
+    '                                        <br>\n' +
+    '                                        <small>累计在线：{{item.agentChangeTime | sToTime}}</small>\n' +
+    '                                    </div>\n' +
+    '                                </a>\n' +
+    '                            </div>\n' +
+    '                        </div>\n' +
+    '               </div>\n' +
     '           </div>\n' +
     '       </div>\n' +
     '   </div>\n' +
@@ -44,9 +92,9 @@ dom.innerHTML += monitor;
 
 
 websocketUrl = 'wss://tj.svdata.cn/yscrm/websocket'//呼叫中心服务器websocket请求地址
-agentno = '8889';//座席号码
+agentno = '8888';//座席号码
 password = 'svdata123';//座席密码
-exten = '8889';//座席分机
+exten = '8888';//座席分机
 pstnnumber = '82312340';//外线号码
 popupUrl = 'http://www.baidu.com'//来电弹屏地址;
 useMonitor = 'yes';//如是班长可以启用话务监控
@@ -58,17 +106,15 @@ var extenPwd = 'svdata123';//分机密码，不启用内置软电话可以不配
 var autoAnswer = 'no';//是否自动接听电话，只有启用内置软电话才生效
 
 
-
-
 //离开或刷新页面
-window.onbeforeunload = function(){
+window.onbeforeunload = function () {
     //return '确认要退出页面吗?';
-    if(websocket!=null){
+    if (websocket != null) {
         method = "signout";
         send();
         websocket.close();
     }
-    if(useWebrtc=="yes"){
+    if (useWebrtc == "yes") {
         sipUnRegister();
     }
 }
@@ -80,6 +126,10 @@ Vue.component('monitor', {
     data() {
         return {
             agentGroups: [],
+            agentGroupIds: [],
+            agentInfos: [],
+            agentQueues: [],
+            agentQueueInfos: [],
             cti: {
                 status: 0,
                 server: 0
@@ -87,12 +137,55 @@ Vue.component('monitor', {
         }
     },
     methods: {
+        agentStatusHandler(state) {
+            if (state == "-1") {
+                return "离线";
+            } else if (state == "0") {
+                return "空闲";
+            } else if (state == "1") {
+                return "振铃";
+            } else if (state == "2") {
+                return "通话";
+            } else if (state == "3") {
+                return "保持";
+            } else if (state == "4") {
+                return "后处理";
+            } else if (state == "5") {
+                return "被占用";
+            } else if (state == "6") {
+                return "忙碌";
+            } else if (state == "7") {
+                return "离开";
+            } else if (state == "8") {
+                return "仅呼出";
+            }
+        },
+        agentStatusColor(s) {
+            if (s == '-1') {
+                return "#dadada";
+            } else if (s == '0') {
+                return "#3c763d";
+            } else if (s == "1") {
+                return "#8a6d3b";
+            } else {
+                return "#e44c49";
+            }
+        },
+        showQueueUserAgent(n) {
+            let message = "{'method':'getAgentsOfQueue','agentno':'" + agentno + "','param1':'" + n + "'}";
+            websocket.send(message);
+        },
+        showUserAgent(index) {
+            let groupId = this.agentGroupIds[index];
+            let message = "{'method':'getAgentsOfAgentgroup','agentno':'" + agentno + "','param1':'" + groupId + "'}";
+            websocket.send(message);
+        },
         initWebsocket() {
             let that = this;
             //注册WebSocket服务
-            if('WebSocket' in window){
+            if ('WebSocket' in window) {
                 websocket = new WebSocket(websocketUrl);
-                websocket.onerror = function(){
+                websocket.onerror = function () {
                     setMessageInnerHTML("error");
                 };
 
@@ -100,19 +193,19 @@ Vue.component('monitor', {
                 websocket.onopen = function (event) {
                     $ctiserver.cti.server = 1
                 }
-                websocket.onmessage = function(){
+                websocket.onmessage = function () {
                     try {
-                        var jsonStr=JSON.parse(event.data);
-                        that.onEvent(jsonStr.type,jsonStr.status,jsonStr.method,jsonStr.retCode,jsonStr);
+                        var jsonStr = JSON.parse(event.data);
+                        that.onEvent(jsonStr.type, jsonStr.status, jsonStr.method, jsonStr.retCode, jsonStr);
                     } catch (e) {
                         return false;
                     }
                 };
 
-                websocket.onclose = function(){
+                websocket.onclose = function () {
                     setMessageInnerHTML("close");
                 };
-            }else {
+            } else {
                 alert('当前浏览器不支持WebSocket通信，座席功能将不能使用！')
             }
 
@@ -131,7 +224,7 @@ Vue.component('monitor', {
                 if (methodType == 'signin') {
                     if (code == '0') {
                         signin = true;
-                        if(signInOrOut) {
+                        if (signInOrOut) {
                             signInOrOut.html(signInOrOutHtml.replace("签入", "签出"));
                         }
                         agentstatus = "1";
@@ -145,7 +238,10 @@ Vue.component('monitor', {
                         method = "getDefinedRoleRights";//获取座席权限
                         send();
                         alert("签入成功");
+                        changeStatus(6);
                         method = "getAgentGroupList";
+                        send();
+                        method = "getQueueList";
                         send();
                         $("#notsignin").hide();
                         $("#signin").show();
@@ -206,36 +302,35 @@ Vue.component('monitor', {
                     }
                 } else if (methodType == "get_agentgroup_list") {//获取座席组列表
                     console.log("获取座席组列表", jsonStr);
-                    var agentGroupNames = jsonStr.agentgroupname;
-                    var agentGroupNums = jsonStr.agentgroupnum.split(",");
-                    var tempAgentGroup = ',' + roleAgentGroupNum + ',';
+                    let agentGroupNames = jsonStr.agentgroupname;
+                    let agentGroupNums = jsonStr.agentgroupnum;
+                    let tempAgentGroup = ',' + roleAgentGroupNum + ',';
                     that.agentGroups = [];
                     $.each(agentGroupNames.split(","), function (i, groupName) {
                         that.agentGroups.push(agentGroupNames.split(",")[i]);
 
                     });
-                } else if (methodType == "get_queue_list") {//获取队列列表
-                    var queueNames = jsonStr.queuename;
-                    var queueNums = jsonStr.queuenum.split(",");
-                    queueStr = ',{"id":2,"pId":0,"name":"队列","open":true,"isParent":true,"busid":"-1"}';//队列信息
-                    var idx = 200;
-                    var tempQueue = ',' + roleQueueNum + ',';
-                    $.each(queueNames.split(","), function (i, queueName) {
-                        if (tempQueue.indexOf(queueNums[i]) > 0) {
-                            idx = idx + 1;
-                            queueStr = queueStr + ',{"id":' + idx + ',"pId":2,"name":"' + queueName + '","open":false,"isParent":false,"busid":"' + queueNums[i] + '"}';
-                        }
+                    that.agentGroupIds = [];
+                    $.each(agentGroupNums.split(","), function (i, groupName) {
+                        that.agentGroupIds.push(agentGroupNums.split(",")[i]);
                     });
-                    var zNodesStr = agentGroupStr + queueStr + ']';
-                    var zNodes = JSON.parse(zNodesStr);
-                    if ($("#doctree").length > 0) {
-                        $.fn.zTree.init($("#doctree"), setting, zNodes);
-                        var treeObj = $.fn.zTree.getZTreeObj("doctree");
+                } else if (methodType == "get_queue_list") {//获取队列列表
+                    let that = this;
+                    var queueNames = jsonStr.queuename.split(",");
+                    var queueNums = jsonStr.queuenum.split(",");
+                    that.agentQueues = [];
+                    for (let i = 0; i < queueNums.length; i++) {
+                        let tmp = {
+                            queueNum: queueNums[i],
+                            queueName: queueNames[i]
+                        };
+                        that.agentQueues.push(tmp);
                     }
                 } else if (methodType == "get_agents_of_agentgroup") {//获取座席组中座席列表
-                    var agentNums = jsonStr.agentnum;
+                    let agentNums = jsonStr.agentnum;
                     monitorAgents = jsonStr.agentnum;
-                    var message = "{'method':'getAgentInfo','agentno':'" + agentno + "','callee':'" + agentNums + "'}";
+
+                    let message = "{'method':'getAgentInfo','agentno':'" + agentno + "','callee':'" + agentNums + "'}";
                     websocket.send(message);
                 } else if (methodType == "get_agents_of_queue") {//获取队列中座席列表
                     var agentNums = jsonStr.agentnum;
@@ -245,55 +340,25 @@ Vue.component('monitor', {
                 } else if (methodType == "get_agents_monitor_info") {//获取所有座席信息
                     selectAgent = "";
                     setMonitorbarEnabled(selectAgent);
-                    var agentNames = jsonStr.agentname.split(",");
-                    var agentNums = jsonStr.agentnum.split(",");
-                    var agentGroupNums = jsonStr.agentgroupnum.split(",");
-                    var agentStatus = jsonStr.agentstatus.split(",");
-                    var statusChangeTime = jsonStr.statuschangetime.split(",");
-                    if ($("#tab_monitor").length > 0) {
-                        var tab_monitor = $("#tab_monitor");
-                        tab_monitor.empty();
-                        var idx = 1;
-                        var vTr = "<tr style='background:#CECEFF'><th width='70px' style='border:1px solid #eee;'>状态</th><th width='70px' style='border:1px solid #eee;'>工号</th>" +
-                            "<th width='115px' style='border:1px solid #eee;'>姓名</th><th width='95px' style='border:1px solid #eee;'>时长</th>" +
-                            "</tr>";
-                        tab_monitor.append(vTr);
-                        $.each(agentNums, function (i, agentNum) {
-                            vTr = "<tr id='tr_" + agentNum + "'><input type='hidden' id='tdacttime_" + agentNum + "' value='" + statusChangeTime[i] + "'><td id='tdstatus_" + agentNum + "' style='border:1px solid #eee;'>" +
-                                statusMap.get(agentStatus[i]) + "</td><td style='border:1px solid #eee;'>" + agentNum + "</td><td style='border:1px solid #eee;'>" + agentNames[i] +
-                                "</td><td id='tdtime_" + agentNum + "' style='border:1px solid #eee;'></td></tr>";
-                            tab_monitor.append(vTr);
-                            idx = idx + 1;
-                        });
-
-                        var tbList = $("#tab_monitor");
-                        tbList.each(function () {
-                            var self = this;
-
-                            // 鼠标经过的行变色
-                            $("tr:not(:first)", $(self)).hover(
-                                function () {
-                                    $(this).addClass('hoverTD');
-                                    $(this).removeClass('table-td-content');
-                                },
-                                function () {
-                                    $(this).removeClass('hoverTD');
-                                    $(this).addClass('table-td-content');
-                                });
-
-                            // 选择行变色
-                            $("tr", $(self)).click(function () {
-                                var trThis = this;
-                                if ($(trThis).attr("id").indexOf("tr_") < 0) {
-                                    return;
-                                }
-                                $(self).find(".trSelected").removeClass('trSelected');
-                                $(trThis).addClass('trSelected');
-                                selectAgent = $(trThis).attr("id").split("_")[1];
-                                setMonitorbarEnabled(selectAgent);
-
-                            });
-                        });
+                    let agentNames = jsonStr.agentname.split(",");
+                    let agentNums = jsonStr.agentnum.split(",");
+                    let agentGroupNums = jsonStr.agentgroupnum.split(",");
+                    let agentStatusList = jsonStr.agentstatus.split(",");
+                    let statusChangeTime = jsonStr.statuschangetime.split(",");
+                    this.agentInfos = [];
+                    let that = this;
+                    if (agentNames.length == agentNums.length) {
+                        for (let i = 0; i < agentNums.length; i++) {
+                            let tem = {
+                                agentName: agentNames[i],
+                                agentNum: agentNums[i],
+                                agentstatusInfo: agentStatusList[i],
+                                agentChangeTime: statusChangeTime[i]
+                            };
+                            that.agentInfos.push(tem);
+                        }
+                    } else {
+                        alert("服务器错误")
                     }
 
                     if (changeStatusId >= 0) {
@@ -401,8 +466,6 @@ Vue.component('monitor', {
     created() {
         this.initWebsocket();
     },
-    watch: {
-
-    }
+    watch: {}
 })
 

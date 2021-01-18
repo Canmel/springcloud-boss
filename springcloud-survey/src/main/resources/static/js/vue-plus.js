@@ -143,6 +143,9 @@ Vue.filter('shorter', function (value) {
 });
 
 Vue.filter('sToTime', function (value) {
+    if(value < 0 ) {
+        return "0"
+    }
     let theTime = parseInt(value);// 需要转换的时间秒
     let theTime1 = 0;// 分
     let theTime2 = 0;// 小时
