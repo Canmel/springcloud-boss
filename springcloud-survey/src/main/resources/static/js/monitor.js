@@ -33,6 +33,13 @@ var monitor = '<script type="text/x-template" id="monitor">\n' +
     '                                    <div class="icon">\n' +
     '                                        <i v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{item.agentNum}}</i>\n' +
     '                                        <span style="position: absolute; left: 10px; top: 10px;" v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{agentStatusHandler(item.agentstatusInfo)}}</span>\n' +
+    '                                        <a style="position:absolute; top: 10px; right: 10px;" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-wrench" style="font-size: 18px;"></i></a>\n' +
+    '                                        <ul style="position: absolute; top: 30px;" class="dropdown-menu dropdown-user">\n' +
+    '                                                 <li @click="monitot(item)" style="text-align: center; border: 1px grey solid; border-top-left-radius: 5px; border-top-right-radius: 5px;" ><a href="##"></a>监听</li> \n' +
+    '                                                 <li @click="forceBusy(item)" style="text-align: center; border: 1px grey solid;" ><a href="##"></a>置忙</li> \n' +
+    '                                                 <li @click="forceFree(item)" style="text-align: center; border: 1px grey solid;"><a href="##"></a>置闲</li> \n' +
+    '                                                 <li @click="forceOffLine(item)" style="text-align: center; border: 1px grey solid; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;"><a href="##"></a>下线</li> \n' +
+    '                                        </ul>\n' +
     '                                    </div>\n' +
     '                                    <div class="file-name">\n' +
     '                                        <span v-bind:style="{ color: agentStatusColor(item.agentstatusInfo) }">{{item.agentName}}</span>\n' +
@@ -134,9 +141,35 @@ Vue.component('monitor', {
                 status: 0,
                 server: 0
             },
+            selectedAgentgroup: '',
+            selectedQueue: ''
         }
     },
     methods: {
+        monitot(item) {
+            selectAgent = item.agentNum;
+            eavesdrop();
+            this.showQueueUserAgent();
+            this.showUserAgent();
+        },
+        forceBusy(item) {
+            selectAgent = item.agentNum;
+            forceBusy();
+            this.showQueueUserAgent();
+            this.showUserAgent();
+        },
+        forceFree(item) {
+            selectAgent = item.agentNum;
+            forceIdle();
+            this.showQueueUserAgent();
+            this.showUserAgent();
+        },
+        forceOffLine(item) {
+            selectAgent = item.agentNum;
+            forceOffline();
+            this.showQueueUserAgent();
+            this.showUserAgent();
+        },
         agentStatusHandler(state) {
             if (state == "-1") {
                 return "离线";
@@ -172,12 +205,18 @@ Vue.component('monitor', {
             }
         },
         showQueueUserAgent(n) {
-            let message = "{'method':'getAgentsOfQueue','agentno':'" + agentno + "','param1':'" + n + "'}";
+            if(n) {
+                this.selectedQueue = n;
+            }
+            let message = "{'method':'getAgentsOfQueue','agentno':'" + agentno + "','param1':'" + this.selectedQueue + "'}";
             websocket.send(message);
         },
         showUserAgent(index) {
             let groupId = this.agentGroupIds[index];
-            let message = "{'method':'getAgentsOfAgentgroup','agentno':'" + agentno + "','param1':'" + groupId + "'}";
+            if(groupId) {
+                this.selectedAgentgroup = groupId;
+            }
+            let message = "{'method':'getAgentsOfAgentgroup','agentno':'" + agentno + "','param1':'" + this.selectedAgentgroup + "'}";
             websocket.send(message);
         },
         initWebsocket() {
@@ -237,8 +276,7 @@ Vue.component('monitor', {
 
                         method = "getDefinedRoleRights";//获取座席权限
                         send();
-                        alert("签入成功");
-                        changeStatus(6);
+                        toastr.success("签入成功");
                         method = "getAgentGroupList";
                         send();
                         method = "getQueueList";
@@ -246,9 +284,9 @@ Vue.component('monitor', {
                         $("#notsignin").hide();
                         $("#signin").show();
                     } else if (code == '-53') {
-                        alert("用户名或密码错误，签入失败");
+                        toastr.error("用户名或密码错误，签入失败");
                     } else {
-                        alert("签入失败[ErrorCode:" + code + "]");
+                        toastr.error("签入失败[ErrorCode:" + code + "]");
                     }
                 } else if (methodType == 'disconnect') {
                     hasResponse = true;
