@@ -1,7 +1,7 @@
 var monitor = '<script type="text/x-template" id="monitor">\n' +
     '<div>\n' +
     '<audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"></audio>\n' +
-    '<a class="btn btn-primary btn-xs" onclick="signInOrOut()" id="signInOrOut">签入1</a>\n' +
+    '<a class="btn btn-primary btn-xs" onclick="signInOrOut()" id="signInOrOut">签入</a>\n' +
     '<div> \n' +
     '<ul class="nav nav-tabs">\n' +
     '   <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">坐席组</a></li>\n' +
