@@ -1,6 +1,7 @@
 var monitor = '<script type="text/x-template" id="monitor">\n' +
     '<div>\n' +
-    '<a class="btn btn-primary btn-xs" onclick="signInOrOut()" id="signInOrOut">签入</a>\n' +
+    '<audio id="audio_remote" src="/survey/sounds/ringbacktone.wav" autoplay="autoplay"></audio>\n' +
+    '<a class="btn btn-primary btn-xs" onclick="signInOrOut()" id="signInOrOut">签入1</a>\n' +
     '<div> \n' +
     '<ul class="nav nav-tabs">\n' +
     '   <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">坐席组</a></li>\n' +
@@ -148,6 +149,7 @@ Vue.component('monitor', {
     methods: {
         monitot(item) {
             selectAgent = item.agentNum;
+            debugger;
             eavesdrop();
             this.showQueueUserAgent();
             this.showUserAgent();
@@ -205,7 +207,7 @@ Vue.component('monitor', {
             }
         },
         showQueueUserAgent(n) {
-            if(n) {
+            if (n) {
                 this.selectedQueue = n;
             }
             let message = "{'method':'getAgentsOfQueue','agentno':'" + agentno + "','param1':'" + this.selectedQueue + "'}";
@@ -213,7 +215,7 @@ Vue.component('monitor', {
         },
         showUserAgent(index) {
             let groupId = this.agentGroupIds[index];
-            if(groupId) {
+            if (groupId) {
                 this.selectedAgentgroup = groupId;
             }
             let message = "{'method':'getAgentsOfAgentgroup','agentno':'" + agentno + "','param1':'" + this.selectedAgentgroup + "'}";
