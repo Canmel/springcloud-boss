@@ -61,7 +61,7 @@ var monitor = '<script type="text/x-template" id="monitor">\n' +
     '                  <div class="ibox float-e-margins">\n' +
     '                    <div class="ibox-content">\n' +
     '                        <div class="file-manager">\n' +
-    '                            <h5>队列</h5>\n' +
+    '                            <h5>队列<a style="position: absolute; right: 50px;" @click="syncQueue()">同步</a></h5>\n' +
     '                            <ul class="folder-list" style="padding: 0">\n' +
     '                                <li v-for="(item, index) in agentQueues" @click="showQueueUserAgent(item.queueNum)"><a href="##"><i class="fa fa-folder"></i> {{item.queueName}}</a>\n' +
     '                                </li>\n' +
@@ -147,6 +147,14 @@ Vue.component('monitor', {
         }
     },
     methods: {
+        /**
+         * 同步队列
+         */
+        syncQueue() {
+            AJAX.POST_JSON("zsQueue/doSync", {queues: this.agentQueues}, function (resp) {
+                toastr.success(resp['msg'], '操作成功');
+            });
+        },
         monitot(item) {
             selectAgent = item.agentNum;
             debugger;

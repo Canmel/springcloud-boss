@@ -2,26 +2,24 @@ package com.camel.survey.controller;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.exceptions.SurveyNotValidException;
-import com.camel.survey.model.RelSeatQueue;
 import com.camel.survey.model.ZsQueue;
 import com.camel.survey.model.ZsSeat;
+import com.camel.survey.model.cti.Queue;
+import com.camel.survey.model.cti.QueueVO;
 import com.camel.survey.service.RelSeatQueueService;
 import com.camel.survey.service.ZsQueueService;
 import com.camel.survey.service.ZsSeatService;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
-import com.camel.core.controller.BaseCommonController;
-
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +75,41 @@ public class ZsQueueController extends BaseCommonController {
         }
         seatService.updateBatchById(seats);
         return ResultUtil.success("操作完成");
+    }
+
+    /**
+     * 同步队列信息
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @GetMapping("/doSync")
+    public Result syncQueue() throws UnsupportedEncodingException {
+        service.syncQueue();
+        return ResultUtil.success("同步队列成功");
+    }
+
+    /**
+     * 将本地队列推送到CTI
+     * @param id
+     * @return
+     */
+    @GetMapping("/push/{id}")
+    public Result push(@PathVariable Integer id) {
+        ZsQueue queue = service.selectById(id);
+        service.push(queue);
+        return ResultUtil.success("提交队列成功");
+    }
+
+    /**
+     * 拉取CTI队列
+     * @param id
+     * @return
+     */
+    @GetMapping("/pull/{id}")
+    public Result pull(@PathVariable Integer id) {
+        ZsQueue queue = service.selectById(id);
+        service.pull(queue);
+        return ResultUtil.success("拉取队列成功");
     }
 
     @PostMapping

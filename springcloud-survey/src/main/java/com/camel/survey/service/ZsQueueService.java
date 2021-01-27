@@ -3,7 +3,11 @@ package com.camel.survey.service;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQueue;
 import com.baomidou.mybatisplus.service.IService;
+import com.camel.survey.model.cti.Queue;
 import com.github.pagehelper.PageInfo;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * <p>
@@ -20,4 +24,12 @@ public interface ZsQueueService extends IService<ZsQueue> {
      @return
      */
     PageInfo<ZsOption> selectPage(ZsQueue entity);
+
+    void syncQueue(List<Queue> queues) throws UnsupportedEncodingException;
+
+    void syncQueue() throws UnsupportedEncodingException;
+
+    void push(ZsQueue queue);
+
+    void pull(ZsQueue queue);
 }

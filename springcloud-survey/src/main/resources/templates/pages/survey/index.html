@@ -77,9 +77,9 @@
 <!--                            <button type="button" v-on:click="check(item)" v-if="result || isInValid(item)"-->
 <!--                                    class="btn btn-warning btn-xs">结算-->
 <!--                            </button>-->
-                            <button type="button" @click="monitor(item)"
-                                    class="btn btn-warning btn-xs">话务监控
-                            </button>
+<!--                            <button type="button" @click="monitor(item)"-->
+<!--                                    class="btn btn-warning btn-xs">话务监控-->
+<!--                            </button>-->
                         </td>
                     </tr>
                     </tbody>
@@ -132,9 +132,6 @@
             this.user = JSON.parse(userJsonStr);
         },
         methods: {
-            monitor(item) {
-                toPage('pages/monitor/index.html', item.id)
-            },
             isInValid(item) {
                 if(item.authority){
                     if (item.authority.code === 1) {
