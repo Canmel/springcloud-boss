@@ -129,7 +129,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
         }
         params.put("operType", "2");
         params.put("agentNum", String.join(",", agentList));
-        String deleteResult = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
+        String deleteResult = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
         System.out.println(deleteResult);
         JSONObject deleteResultObject = JSONUtil.parseObj(deleteResult);
         if("000000".equals(deleteResultObject.getStr("statuscode"))) {
@@ -137,7 +137,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
             params.put("queueNum", queue.getNum());
             params.put("operType", "1");
             params.put("agentNum", String.join(",", paramsSeatNums  ));
-            String r = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
+            String r = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
             System.out.println(r);
         }
     }
