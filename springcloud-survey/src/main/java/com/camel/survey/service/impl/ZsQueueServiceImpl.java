@@ -27,6 +27,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,9 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
 
     @Autowired
     private ZsSeatService seatService;
+
+    @Value("${cti.baseUrl}")
+    public String baseUrl;
 
     @Override
     public PageInfo<ZsOption> selectPage(ZsQueue entity) {
@@ -81,7 +85,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
         String resp = "";
         try {
             JSONObject jsonObject = JSONUtil.createObj();
-            resp = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(jsonObject.toString(), "application/json").execute().body();
+            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(jsonObject.toString(), "application/json").execute().body();
             JSONObject respObject = JSONUtil.parseObj(resp);
             JSONArray array = respObject.getJSONArray("info");
             for (int i = 0; i < array.size(); i++) {
@@ -118,7 +122,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
             throw new SourceDataNotValidException("队列暂无CTI信息");
         }
         params.put("queueNum", queue.getNum());
-        resp = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
+        resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
         JSONObject respObject = JSONUtil.parseObj(resp);
         JSONObject q = respObject.getJSONArray("info").getJSONObject(0);
         JSONArray agents = q.getJSONArray("agents");
@@ -129,7 +133,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
         }
         params.put("operType", "2");
         params.put("agentNum", String.join(",", agentList));
-        String deleteResult = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
+        String deleteResult = HttpUtil.createPost("http://" + baseUrl + "/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
         System.out.println(deleteResult);
         JSONObject deleteResultObject = JSONUtil.parseObj(deleteResult);
         if("000000".equals(deleteResultObject.getStr("statuscode"))) {
@@ -137,7 +141,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
             params.put("queueNum", queue.getNum());
             params.put("operType", "1");
             params.put("agentNum", String.join(",", paramsSeatNums  ));
-            String r = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
+            String r = HttpUtil.createPost("http://" + baseUrl + "/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
             System.out.println(r);
         }
     }
@@ -150,7 +154,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
             throw new SourceDataNotValidException("队列暂无CTI信息");
         }
         params.put("queueNum", queue.getNum());
-        resp = HttpUtil.createPost("http://tj.svdata.cn/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
+        resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/v2/infs/getQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
         JSONObject respObject = JSONUtil.parseObj(resp);
         JSONObject q = respObject.getJSONArray("info").getJSONObject(0);
         JSONArray agents = q.getJSONArray("agents");
