@@ -1,0 +1,125 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>外呼计划</h5>
+            <div class="ibox-tools">
+                <a :href="applicationContextRootPath + 'pages/project/add.html'"
+                   data-pjax class="btn btn-primary btn-xs" v-if="resultDev">创建外呼计划</a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="signupForm">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">外呼计划名称：</label>
+                    <div class="col-sm-8">
+                        <input name="name" class="form-control" type="text">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">外呼接入号：</label>
+                    <div class="col-sm-8">
+                        <input name="pstnNumber" class="form-control" type="text">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">最大并发数：</label>
+                    <div class="col-sm-8">
+                        <input name="maxConcurrentNum" type="number" class="form-control" type="text">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">转接类型：</label>
+                    <div class="col-sm-4">
+                        <select name="transType" class="form-control" type="text" @change="transTypeChange">
+                            <option :value="1">队列</option>
+                            <option :value="2">IVR</option>
+                            <option :value="4">AI外呼</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select name="transName" type="number" class="form-control" type="text">
+                            <option :value="item.name" v-for="item in trans">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-3">
+                        <button type="button" class="btn btn-success" @click="save">提交</button>
+                        <button type="button" class="btn" @click="cancel">取消</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            entity: {
+                transName: "",
+                taskid: "",
+                tel: "",
+                cusData: "",
+                transType: "",
+                pstnNumber: "123"
+            },
+            trans: [],
+            queues: [],
+            ivrs: [],
+            items: [{}],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
+        },
+        created: function () {
+            this.loadQueues();
+        },
+        methods: {
+            transTypeChange(v) {
+                if(v.target.value === "1") {
+                    return this.loadQueues();
+                }
+                if(v.target.value === "2") {
+                    return this.loadIVRs();
+                }
+                if(v.target.value === "4") {
+                    return this.trans = [];
+                }
+            },
+            loadQueues() {
+                let that = this;
+                AJAX.GET("zsQueue/all", {}, function (resp) {
+                    that.trans = resp.data;
+                })
+            },
+            loadIVRs() {
+                let that = this;
+                AJAX.GET("zsQueue/ivrs", {}, function (resp) {
+                    that.trans = resp.data;
+                })
+            },
+            cancel: function () {
+                this.backToMain();
+            },
+            save: function () {
+                AJAX.POST("zsCallPlan", this.entity, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                })
+            },
+            backToMain: function () {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/call-plan/index.html',
+                    container: '.page-container'
+                });
+            }
+        }
+    });
+</script>

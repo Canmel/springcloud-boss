@@ -54,6 +54,11 @@ public class ZsQueueController extends BaseCommonController {
         return ResultUtil.success(service.selectList(new EntityWrapper<ZsQueue>()));
     }
 
+    @GetMapping("/ivrs")
+    public Result ivrs() {
+        return ResultUtil.success(service.selectIVRS());
+    }
+
     @PostMapping("/add/{id}")
     @Transactional
     public Result add(String ids, @PathVariable Integer id) {

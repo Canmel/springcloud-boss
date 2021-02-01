@@ -162,4 +162,13 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
             seatService.insertOrUpdate(seat);
         }
     }
+
+    @Override
+    public JSONArray selectIVRS() {
+        String r = HttpUtil.get("http://tj.svdata.cn/yscrm/v2/infs/getivr.json");
+        r = r.replaceAll("ivr_name", "name");
+        JSONObject o = JSONUtil.parseObj(r);
+        JSONArray array = o.getJSONArray("info");
+        return array;
+    }
 }
