@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.survey.enums.TaskStatus;
 import com.camel.survey.enums.TransType;
 import lombok.Data;
 
@@ -25,6 +26,8 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    private String name;
     /**
      * 转接队列名称或IVR名称
      */
@@ -32,7 +35,7 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
     /**
      * 任务ID
      */
-    private Integer taskId;
+    private String taskId;
     /**
      * 转接类型
      */
@@ -44,7 +47,7 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
     /**
      * 任务状态
      */
-    private String taskStatus;
+    private TaskStatus taskStatus;
     /**
      * 最大并发数
      */
@@ -57,6 +60,56 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
      * AI话术名称
      */
     private String roName;
+
+    /**
+     * 外呼数
+     */
+    private String totCust;
+
+    /**
+     * 已呼数
+     */
+    private String totCallsuc;
+
+    /**
+     * 未呼数
+     */
+    private String totUncall;
+
+    /**
+     * 未接数
+     */
+    private String totFailure;
+
+    /**
+     * 已接数
+     */
+    private String totSuccess;
+
+    /**
+     * 转接数
+     */
+    private String totTocustomer;
+
+    /**
+     * 已呼率
+     */
+    private String totCallsucRate;
+
+    /**
+     * 未呼率
+     */
+    private String totUncallRate;
+
+    /**
+     * 已接通率
+     */
+    private String totSuccessRate;
+
+    /**
+     * 转接率
+     */
+    private String totTocustomerRate;
 
     @Override
     public String toString() {

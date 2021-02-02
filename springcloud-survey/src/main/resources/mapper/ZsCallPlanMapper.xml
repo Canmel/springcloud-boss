@@ -4,17 +4,29 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsCallPlan">
-        <id column="id" property="id" />
-        <result column="trans_name" property="transName" />
-        <result column="task_id" property="taskId" />
-        <result column="pstn_number" property="pstnNumber" />
-        <result column="task_status" property="taskStatus" />
-        <result column="max_concurrent_num" property="maxConcurrentNum" />
-        <result column="playfile_url" property="playfileUrl" />
-        <result column="ro_name" property="roName" />
-        <result column="created_at" property="createdAt" />
+        <id column="id" property="id"/>
+        <result column="trans_name" property="transName"/>
+        <result column="name" property="name"/>
+        <result column="task_id" property="taskId"/>
+        <result column="pstn_number" property="pstnNumber"/>
+        <result column="task_status" property="taskStatus"/>
+        <result column="max_concurrent_num" property="maxConcurrentNum"/>
+        <result column="playfile_url" property="playfileUrl"/>
+        <result column="ro_name" property="roName"/>
+        <result column="created_at" property="createdAt"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="trans_type" property="transType" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="trans_type" property="transType"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="tot_cust" property="totCust" />
+        <result column="tot_callsuc" property="totCallsuc"/>
+        <result column="tot_uncall" property="totUncall"/>
+        <result column="tot_failure" property="totFailure" />
+        <result column="tot_success" property="totSuccess" />
+        <result column="tot_tocustomer" property="totTocustomer" />
+        <result column="tot_callsuc_rate" property="totCallsucRate" />
+        <result column="tot_uncall_rate" property="totUncallRate" />
+        <result column="tot_success_rate" property="totSuccessRate" />
+        <result column="tot_tocustomer_rate" property="totTocustomerRate" />
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -22,12 +34,13 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, trans_name, task_id, trans_type, pstn_number, task_status, max_concurrent_num, playfile_url, ro_name, created_at, creator
+        id, name, trans_name, task_id, trans_type, pstn_number, task_status, max_concurrent_num, playfile_url, ro_name, created_at, creator, status,
+        tot_cust, tot_callsuc, tot_uncall, tot_failure, tot_success, tot_tocustomer, tot_callsuc_rate, tot_uncall_rate, tot_success_rate, tot_tocustomer_rate
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"></include>
         from
         zs_call_plan
     </select>

@@ -25,23 +25,52 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>项目名称</th>
+                        <th>任务标识</th>
                         <th>外呼计划类型</th>
-                        <th>项目编号</th>
+                        <th>外线接入号</th>
+                        <th>状态</th>
                         <th>创建时间</th>
+                        <th>外呼数</th>
+                        <th>已呼数</th>
+                        <th>未呼数</th>
+                        <th>已接数</th>
+                        <th>转接数</th>
+                        <th>已呼率</th>
+                        <th>未呼率</th>
+                        <th>已接通率</th>
+                        <th>转接率</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(item, index) in items">
                         <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td><span class="click-span" v-on:click="details(item)">{{item.name}}</span></td>
-                        <td>{{item.transType.name}}</td>
-                        <td>{{item.code}}</td>
+                        <td>{{item.taskId}}</td>
+                        <td>{{item.transType ? item.transType.name : ""}}</td>
+                        <td>{{item.pstnNumber}}</td>
+                        <td>{{item.taskStatus ? item.taskStatus.name : ""}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
+                        <td>{{item.totCust}}</td>
+                        <td>{{item.totCallsuc}}</td>
+                        <td>{{item.totUncall}}</td>
+                        <td>{{item.totFailure}}</td>
+                        <td>{{item.totTocustomer}}</td>
+                        <td>{{item.totCallsucRate}}</td>
+                        <td>{{item.totUncallRate}}</td>
+                        <td>{{item.totSuccessRate}}</td>
+                        <td>{{item.totTocustomerRate}}</td>
                         <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-primary btn-xs" v-if="resultDev">修改</button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">删除
+                            <button type="button" v-on:click="startUp(item)" class="btn btn-primary btn-xs"
+                                    v-if="resultDev">启动
+                            </button>
+                            <button type="button" v-on:click="refresh(item)" class="btn btn-info btn-xs"
+                                    v-if="resultDev">更新
+                            </button>
+                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs"
+                                    v-if="resultDev">删除
+                            </button>
+                            <button type="button" v-on:click="importNumbers(item)" class="btn btn-success btn-xs"
+                                    v-if="resultDev">导入号码
                             </button>
                         </td>
                     </tr>
@@ -52,6 +81,30 @@
                          :changge="pageFn"></pageination>
 
         </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">导入号码信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="uploadForm">
+                        <div id="file-pretty">
+                            <div class="form-group">
+                                <label class="font-noraml">文件选择（单选）</label>
+                                <input type="file" name="file" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" v-on:click="saveNumber()">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
 </div>
 <script src="/survey/js/validateIsMain.js"></script>
@@ -65,24 +118,77 @@
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
             },
+            selectedItem: null,
             items: [{}],
             master: [],//接受权限数组
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
         },
         created: function () {
-            this.pagequery();
             this.loginMaster();
         },
+        mounted: function () {
+            $('#file-pretty input[type="file"]').prettyFile();
+        },
         methods: {
-            loginMaster(){
-                var that = this;
+            refresh(item) {
+                let that = this;
+                AJAX.GET("zsCallPlan/refresh/" + item.id, {}, function (resp) {
+                    toastr.success(resp.msg);
+                    that.pagequery();
+                })
+            },
+            saveNumber() {
+                let that = this;
+                let formData = new FormData($('#uploadForm')[0]);
+                let url = "/survey/zsCallPlan/upload/" + this.selectedItem.id;
+                if (sessionStorage.getItem("access_token")) {
+                    url = url + '?access_token=' + sessionStorage.getItem("access_token");
+                }
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                }).success(function (resp) {
+                    toastr.success(resp.msg);
+                    $("#myModal").modal('hide');
+                    that.pagequery();
+                }).error(function () {
+                    alert("上传失败");
+                    $("#myModal").modal("hide");
+                });
+            },
+            importNumbers(item) {
+                this.selectedItem = item;
+                $("#myModal").modal('show');
+            },
+            startUp(item) {
+                let that = this;
+                confirm("您确定要启动这个外呼计划吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET('zsCallPlan/start/' + item.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+            },
+            loginMaster() {
+                let that = this;
                 this.master = sessionStorage.getItem('master');
-                var masterJ = JSON.parse(this.master);
+                let masterJ = JSON.parse(this.master);
                 masterJ.forEach(e => {
                     var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
-                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                    if (authority === 'ROLE_ADMIN') {
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if (authority === 'ROLE_DEVOPS') {
+                        that.resultDev = true
+                    }
                 })
             },
             pagequery: function () {
@@ -106,14 +212,13 @@
                 var that = this;
                 confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
                     if (isConfirm) {
-                        AJAX.DELETE('zsProject', item, function (resp) {
+                        AJAX.DELETE('zsCallPlan', item, function (resp) {
                             toastr.success(resp.msg);
                             that.pagequery();
                         })
 
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
-
             },
             details: function (item) {
                 sessionStorage.setItem('editParams', item.id);

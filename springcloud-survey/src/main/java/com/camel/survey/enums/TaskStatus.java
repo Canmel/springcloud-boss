@@ -28,8 +28,8 @@ import java.io.Serializable;
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum TransType implements MyEnum {
-    IVR(1, "IVR"), QUEUE(2, "队列"), OTHER(3, "其他"), AI(4, "AI外呼");
+public enum TaskStatus implements MyEnum {
+    WAITING(1, "待执行"), IMMEDIATELY(2, "立即执行");
 
     /**
      * 状态码
@@ -41,7 +41,7 @@ public enum TransType implements MyEnum {
      */
     private String name;
 
-    TransType(Integer code, String name) {
+    TaskStatus(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -68,8 +68,8 @@ public enum TransType implements MyEnum {
         return this.code;
     }
 
-    public static TransType getEnumByValue(Integer value) {
-        for (TransType enums : TransType.values()) {
+    public static TaskStatus getEnumByValue(Integer value) {
+        for (TaskStatus enums : TaskStatus.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

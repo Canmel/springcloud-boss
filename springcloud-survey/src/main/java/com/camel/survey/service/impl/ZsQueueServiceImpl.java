@@ -94,16 +94,11 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
                 String queueName = item.getStr("queueName");
                 Wrapper<ZsQueue> queueWrapper = new EntityWrapper<>();
                 queueWrapper.eq("name", queueName);
-                if(mapper.selectCount(queueWrapper) < 1) {
+                if (mapper.selectCount(queueWrapper) < 1) {
                     mapper.insert(new ZsQueue(queueName, queueNum));
                 }
-//                JSONArray agentArray = item.getJSONArray("agents");
-//                for (int j = 0; j < agentArray.size(); j++) {
-//                    JSONObject object = (JSONObject) agentArray.get(j);
-//
-//                }
             }
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             throw new SourceDataNotValidException("同步队列信息失败");
@@ -118,7 +113,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
         List<String> paramsSeatNums = seats.stream().map(ZsSeat::getSeatNum).collect(Collectors.toList());
         String resp = "";
         com.alibaba.fastjson.JSONObject params = new com.alibaba.fastjson.JSONObject();
-        if(ObjectUtil.isEmpty(queue.getNum())) {
+        if (ObjectUtil.isEmpty(queue.getNum())) {
             throw new SourceDataNotValidException("队列暂无CTI信息");
         }
         params.put("queueNum", queue.getNum());
@@ -136,11 +131,11 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
         String deleteResult = HttpUtil.createPost("http://" + baseUrl + "/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
         System.out.println(deleteResult);
         JSONObject deleteResultObject = JSONUtil.parseObj(deleteResult);
-        if("000000".equals(deleteResultObject.getStr("statuscode"))) {
+        if ("000000".equals(deleteResultObject.getStr("statuscode"))) {
             params = new com.alibaba.fastjson.JSONObject();
             params.put("queueNum", queue.getNum());
             params.put("operType", "1");
-            params.put("agentNum", String.join(",", paramsSeatNums  ));
+            params.put("agentNum", String.join(",", paramsSeatNums));
             String r = HttpUtil.createPost("http://" + baseUrl + "/yscrm/v2/infs/setQueueAgentInfo.json").header("Content-Type", "application/json").body(params.toJSONString(), "application/json").execute().body();
             System.out.println(r);
         }
@@ -150,7 +145,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
     public void pull(ZsQueue queue) {
         String resp = "";
         com.alibaba.fastjson.JSONObject params = new com.alibaba.fastjson.JSONObject();
-        if(ObjectUtil.isEmpty(queue.getNum())) {
+        if (ObjectUtil.isEmpty(queue.getNum())) {
             throw new SourceDataNotValidException("队列暂无CTI信息");
         }
         params.put("queueNum", queue.getNum());
@@ -169,7 +164,7 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
 
     @Override
     public JSONArray selectIVRS() {
-        String r = HttpUtil.get("http://tj.svdata.cn/yscrm/v2/infs/getivr.json");
+        String r = HttpUtil.get("http://" + baseUrl + "/yscrm/v2/infs/getivr.json");
         r = r.replaceAll("ivr_name", "name");
         JSONObject o = JSONUtil.parseObj(r);
         JSONArray array = o.getJSONArray("info");

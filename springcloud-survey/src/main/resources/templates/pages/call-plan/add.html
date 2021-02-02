@@ -10,37 +10,39 @@
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="signupForm">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">外呼计划名称：</label>
+                    <label class="col-sm-3 control-label">任务标识：</label>
                     <div class="col-sm-8">
-                        <input name="name" class="form-control" type="text">
+                        <input name="name" class="form-control" type="text" v-model="entity.name">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label">外呼接入号：</label>
                     <div class="col-sm-8">
-                        <input name="pstnNumber" class="form-control" type="text">
+                        <select name="pstnNumber" class="form-control" type="text" v-model="entity.pstnNumber">
+                            <option v-for="item in pstnnumbers" :value="item">{{item}}</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label">最大并发数：</label>
                     <div class="col-sm-8">
-                        <input name="maxConcurrentNum" type="number" class="form-control" type="text">
+                        <input name="maxConcurrentNum" type="number" class="form-control" type="text" v-model="entity.maxConcurrentNum">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label">转接类型：</label>
                     <div class="col-sm-4">
-                        <select name="transType" class="form-control" type="text" @change="transTypeChange">
-                            <option :value="1">队列</option>
-                            <option :value="2">IVR</option>
-                            <option :value="4">AI外呼</option>
+                        <select name="transType" class="form-control" type="text" @change="transTypeChange" v-model="entity.transType">
+                            <option :value="'QUEUE'">队列</option>
+                            <option :value="'IVR'">IVR</option>
+                            <option :value="'AI'">AI外呼</option>
                         </select>
                     </div>
                     <div class="col-sm-4">
-                        <select name="transName" type="number" class="form-control" type="text">
+                        <select name="transName" type="number" class="form-control" type="text" v-model="entity.transName">
                             <option :value="item.name" v-for="item in trans">{{item.name}}</option>
                         </select>
                     </div>
@@ -64,13 +66,16 @@
         data: {
             applicationContextRootPath: '/survey/',
             entity: {
+                name: "",
                 transName: "",
                 taskid: "",
                 tel: "",
                 cusData: "",
-                transType: "",
-                pstnNumber: "123"
+                transType: "QUEUE",
+                pstnNumber: "",
+                maxConcurrentNum: 1
             },
+            pstnnumbers: [],
             trans: [],
             queues: [],
             ivrs: [],
@@ -80,17 +85,25 @@
             resultDev: false,//表示操作人员权限
         },
         created: function () {
+            this.loadPstnnumber();
             this.loadQueues();
         },
         methods: {
+            loadPstnnumber() {
+                let that = this;
+                AJAX.GET("pstnnumber/all", {}, function (resp) {
+                    that.pstnnumbers = resp.data;
+                })
+            },
             transTypeChange(v) {
-                if(v.target.value === "1") {
+                debugger;
+                if(v.target.value === "QUEUE") {
                     return this.loadQueues();
                 }
-                if(v.target.value === "2") {
+                if(v.target.value === "IVR") {
                     return this.loadIVRs();
                 }
-                if(v.target.value === "4") {
+                if(v.target.value === "AI") {
                     return this.trans = [];
                 }
             },
@@ -110,8 +123,10 @@
                 this.backToMain();
             },
             save: function () {
+                let that = this;
                 AJAX.POST("zsCallPlan", this.entity, function (resp) {
                     toastr.success(resp['msg'], '操作成功');
+                    that.backToMain();
                 })
             },
             backToMain: function () {
