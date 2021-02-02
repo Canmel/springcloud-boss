@@ -47,12 +47,25 @@ public class ZsCallPlanController extends BaseCommonController {
      */
     @GetMapping("/start/{id}")
     public Result startUp(@PathVariable Integer id) {
-        return ResultUtil.success(service.start(id));
+        service.start(id);
+        return ResultUtil.success("外呼计划已启动");
+    }
+
+    /**
+     * 停止外呼计划
+     * @param id
+     * @return
+     */
+    @GetMapping("/end/{id}")
+    public Result shutDown(@PathVariable Integer id) {
+        service.end(id);
+        return ResultUtil.success("外呼计划已停止");
     }
 
     @DeleteMapping("/{id}")
     public Result del(@PathVariable Integer id) {
-        return ResultUtil.success(service.del(id));
+        service.del(id);
+        return ResultUtil.success("删除任务成功");
     }
 
     @PostMapping("/upload/{id}")

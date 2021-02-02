@@ -101,13 +101,54 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     }
 
     @Override
-    public Boolean start(Integer id) {
-        return null;
+    public void start(Integer id) {
+        ZsCallPlan entity = selectById(id);
+        String resp = "";
+        try {
+            JSONObject jsonObject = JSONUtil.createObj();
+            jsonObject.set("taskid", entity.getTaskId());
+            jsonObject.set("status", "2");
+            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/20150101/setting/settaskstatus.json").header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
+            JSONObject respObject = JSONUtil.parseObj(resp);
+            String statuscode = respObject.getStr("statuscode");
+            if(!statuscode.equals(CtiResult.SUCCESS.getCode())) {
+                throw new SourceDataNotValidException(respObject.getStr("body"));
+            }
+            entity.setTaskStatus(TaskStatus.STARTED);
+            refresh(id);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new SourceDataNotValidException(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean del(Integer id) {
-        return null;
+    public void end(Integer id) {
+        ZsCallPlan entity = selectById(id);
+        String resp = "";
+        try {
+            JSONObject jsonObject = JSONUtil.createObj();
+            jsonObject.set("taskid", entity.getTaskId());
+            jsonObject.set("status", "1");
+            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/20150101/setting/settaskstatus.json").header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
+            JSONObject respObject = JSONUtil.parseObj(resp);
+            String statuscode = respObject.getStr("statuscode");
+            if(!statuscode.equals(CtiResult.SUCCESS.getCode())) {
+                throw new SourceDataNotValidException(respObject.getStr("body"));
+            }
+            entity.setTaskStatus(TaskStatus.STARTED);
+            refresh(id);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new SourceDataNotValidException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void del(Integer id) {
+
     }
 
     @Override
@@ -159,6 +200,7 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
             entity.setTotSuccess(object.getStr("tot_success"));
             entity.setTotTocustomer(object.getStr("tot_tocustomer"));
             entity.setTotTocustomerRate(object.getStr("tot_tocustomer_rate"));
+            entity.setTaskStatus(TaskStatus.getEnum(object.getStr("task_status")));
             updateById(entity);
             return true;
         } catch (RuntimeException e) {

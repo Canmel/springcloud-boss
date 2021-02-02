@@ -61,7 +61,10 @@
                         <td>{{item.totTocustomerRate}}</td>
                         <td>
                             <button type="button" v-on:click="startUp(item)" class="btn btn-primary btn-xs"
-                                    v-if="resultDev">启动
+                                    v-if="resultDev && item.taskStatus && item.taskStatus.code !== 4">启动
+                            </button>
+                            <button type="button" v-on:click="shutDown(item)" class="btn btn-warning btn-xs"
+                                    v-if="resultDev && item.taskStatus && item.taskStatus.code == 4">暂停
                             </button>
                             <button type="button" v-on:click="refresh(item)" class="btn btn-info btn-xs"
                                     v-if="resultDev">更新
@@ -164,6 +167,17 @@
             importNumbers(item) {
                 this.selectedItem = item;
                 $("#myModal").modal('show');
+            },
+            shutDown(item) {
+                let that = this;
+                confirm("您确定要暂停这个外呼计划吗?", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET('zsCallPlan/end/' + item.id, {}, function (resp) {
+                            toastr.success(resp.msg);
+                            that.pagequery();
+                        })
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
             },
             startUp(item) {
                 let that = this;

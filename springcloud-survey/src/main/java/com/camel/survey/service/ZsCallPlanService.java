@@ -21,11 +21,13 @@ public interface ZsCallPlanService extends IService<ZsCallPlan> {
 
     Result save(ZsCallPlan entity);
 
-    Boolean start(Integer id);
+    void start(Integer id);
 
-    Boolean del(Integer id);
+    void del(Integer id);
 
     void uploadNumers(MultipartFile file, Integer id);
 
     Boolean refresh(Integer id);
+
+    void end(Integer id);
 }

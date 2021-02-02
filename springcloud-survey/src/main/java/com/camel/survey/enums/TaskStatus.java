@@ -29,7 +29,7 @@ import java.io.Serializable;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TaskStatus implements MyEnum {
-    WAITING(1, "待执行"), IMMEDIATELY(2, "立即执行");
+    WAITING(1, "待执行"), IMMEDIATELY(2, "立即执行"), NOT_START(3, "未启动"), STARTED(4, "已启动"), STOPED(5, "已停止");
 
     /**
      * 状态码
@@ -44,6 +44,15 @@ public enum TaskStatus implements MyEnum {
     TaskStatus(Integer code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static TaskStatus getEnum(String name) {
+        for (TaskStatus enums : TaskStatus.values()) {
+            if (enums.getName().equals(name)) {
+                return enums;
+            }
+        }
+        return null;
     }
 
     public Integer getCode() {
