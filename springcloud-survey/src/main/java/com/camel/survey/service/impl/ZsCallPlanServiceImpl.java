@@ -17,6 +17,7 @@ import com.camel.survey.mapper.ZsCallPlanMapper;
 import com.camel.survey.model.ZsCallPlan;
 import com.camel.survey.service.ZsCallPlanService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.HttpUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,10 +59,9 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     public Result save(ZsCallPlan entity) {
         entity.setTaskStatus(TaskStatus.WAITING);
         entity.setTaskId(entity.getName());
-        String object = uploadCallPlan(entity);
+        uploadCallPlan(entity);
         SysUser currentUser = applicationToolsUtils.currentUser();
         entity.setCreatorId(currentUser.getUid());
-        System.out.println(object);
         if (insert(entity)) {
             return ResultUtil.success("保存成功");
         }
@@ -74,102 +74,66 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
      * @param entity
      * @return
      */
-    public String uploadCallPlan(ZsCallPlan entity) {
-        String resp = "";
-        try {
-            JSONObject jsonObject = JSONUtil.createObj();
-            jsonObject.set("taskid", entity.getName());
-            jsonObject.set("tel", "");
-            jsonObject.set("transType", entity.getTransType().getValue().toString());
-            jsonObject.set("taskStatus", entity.getTaskStatus().getValue().toString());
-            jsonObject.set("pstnNumber", entity.getPstnNumber());
-            jsonObject.set("max_concurrent_num", entity.getMaxConcurrentNum().toString());
-            jsonObject.set("transName", entity.getTransName());
-            String jsonStr = jsonObject.toJSONString(1);
-            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/20150101/setting/createtask.json").header("Content-Type", "application/json; charset=UTF-8").body(jsonStr, "application/json").execute().body();
-            JSONObject respObject = JSONUtil.parseObj(resp);
-            String statuscode = respObject.getStr("statuscode");
-            if(!statuscode.equals(CtiResult.SUCCESS.getCode())) {
-                throw new SourceDataNotValidException(respObject.getStr("body"));
-            }
-            return respObject.getStr("body");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-            throw new SourceDataNotValidException(e.getMessage());
-        }
+    public void uploadCallPlan(ZsCallPlan entity) {
+        JSONObject jsonObject = JSONUtil.createObj();
+        jsonObject.set("taskid", entity.getName());
+        jsonObject.set("tel", "");
+        jsonObject.set("transType", entity.getTransType().getValue().toString());
+        jsonObject.set("taskStatus", entity.getTaskStatus().getValue().toString());
+        jsonObject.set("pstnNumber", entity.getPstnNumber());
+        jsonObject.set("max_concurrent_num", entity.getMaxConcurrentNum().toString());
+        jsonObject.set("transName", entity.getTransName());
+        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/createtask.json");
     }
 
     @Override
     public void start(Integer id) {
         ZsCallPlan entity = selectById(id);
-        String resp = "";
-        try {
-            JSONObject jsonObject = JSONUtil.createObj();
-            jsonObject.set("taskid", entity.getTaskId());
-            jsonObject.set("status", "2");
-            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/20150101/setting/settaskstatus.json").header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
-            JSONObject respObject = JSONUtil.parseObj(resp);
-            String statuscode = respObject.getStr("statuscode");
-            if(!statuscode.equals(CtiResult.SUCCESS.getCode())) {
-                throw new SourceDataNotValidException(respObject.getStr("body"));
-            }
-            entity.setTaskStatus(TaskStatus.STARTED);
-            refresh(id);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-            throw new SourceDataNotValidException(e.getMessage());
-        }
+        JSONObject jsonObject = JSONUtil.createObj();
+        jsonObject.set("taskid", entity.getTaskId());
+        jsonObject.set("status", TaskStatus.IMMEDIATELY.getValue().toString());
+        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/settaskstatus.json");
+        entity.setTaskStatus(TaskStatus.STARTED);
+        refresh(id);
     }
 
     @Override
     public void end(Integer id) {
         ZsCallPlan entity = selectById(id);
-        String resp = "";
-        try {
-            JSONObject jsonObject = JSONUtil.createObj();
-            jsonObject.set("taskid", entity.getTaskId());
-            jsonObject.set("status", "1");
-            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/20150101/setting/settaskstatus.json").header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
-            JSONObject respObject = JSONUtil.parseObj(resp);
-            String statuscode = respObject.getStr("statuscode");
-            if(!statuscode.equals(CtiResult.SUCCESS.getCode())) {
-                throw new SourceDataNotValidException(respObject.getStr("body"));
-            }
-            entity.setTaskStatus(TaskStatus.STARTED);
-            refresh(id);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-            throw new SourceDataNotValidException(e.getMessage());
-        }
+        JSONObject jsonObject = JSONUtil.createObj();
+        jsonObject.set("taskid", entity.getTaskId());
+        jsonObject.set("status", "1");
+        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/settaskstatus.json");
+        entity.setTaskStatus(TaskStatus.STARTED);
+        refresh(id);
     }
 
     @Override
     public void del(Integer id) {
-
+        ZsCallPlan entity = selectById(id);
+        try {
+            JSONObject jsonObject = JSONUtil.createObj();
+            jsonObject.set("taskid", entity.getTaskId());
+            HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/deletetask.json");
+            deleteById(id);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            if ("任务标识不存在".equals(e.getMessage())) {
+                deleteById(id);
+            }else{
+                throw new SourceDataNotValidException(e.getMessage());
+            }
+        }
     }
 
     @Override
     public void uploadNumers(MultipartFile file, Integer id) {
         ZsCallPlan entity = selectById(id);
-        String resp = "";
-        try {
-            JSONObject jsonObject = JSONUtil.createObj();
-            jsonObject.set("taskid", entity.getTaskId());
-            jsonObject.set("telList", "018357162602");
-            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/20150101/setting/importtel.json").header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
-            JSONObject respObject = JSONUtil.parseObj(resp);
-            String statuscode = respObject.getStr("statuscode");
-            if(!statuscode.equals(CtiResult.SUCCESS.getCode())) {
-                throw new SourceDataNotValidException(respObject.getStr("body"));
-            }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-            throw new SourceDataNotValidException(e.getMessage());
-        }
+        JSONObject jsonObject = JSONUtil.createObj();
+        jsonObject.set("taskid", entity.getTaskId());
+        jsonObject.set("telList", "018357162602");
+        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
     }
 
     @Override
@@ -180,13 +144,11 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
         try {
             JSONObject jsonObject = JSONUtil.createObj();
             jsonObject.set("taskid", entity.getTaskId());
-            resp = HttpUtil.createPost("http://" + baseUrl + "/yscrm/20150101/query/gettask.json").header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
-            JSONObject respObject = JSONUtil.parseObj(resp);
-            String statuscode = respObject.getStr("statuscode");
-            if(!statuscode.equals(CtiResult.SUCCESS.getCode())) {
-                throw new SourceDataNotValidException(respObject.getStr("body"));
+            JSON json = HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/query/gettask.json");
+            JSONArray jsonArray = (JSONArray) json;
+            if (jsonArray.size() == 0) {
+                throw new SourceDataNotValidException("未获取到相关外呼计划");
             }
-            JSONArray jsonArray = respObject.getJSONArray("body");
             JSONObject object = (JSONObject) jsonArray.get(0);
             System.out.println(object.toString());
             entity.setTotCallsuc(object.getStr("tot_callsuc"));

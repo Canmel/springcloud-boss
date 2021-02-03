@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
-import com.camel.survey.enums.TaskStatus;
-import com.camel.survey.enums.TransType;
+import com.camel.survey.enums.*;
 import lombok.Data;
 
 /**
@@ -110,6 +109,36 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
      * 转接率
      */
     private String totTocustomerRate;
+
+    /**
+     * 命中率
+     */
+    private TaskHitRate hitRate;
+
+    /**
+     * 后处理时长
+     */
+    private Integer acwTime;
+
+    /**
+     * 重拨次数
+     */
+    private Integer redialTimes;
+
+    /**
+     * 重播间隔时长
+     */
+    private TaskRedialInterval minRedialInterval;
+
+    /**
+     * 最大振铃时长
+     */
+    private TaskRingTime maxRingTime;
+
+    /**
+     * 第三方校验URL
+     */
+    private Integer xintf;
 
     @Override
     public String toString() {

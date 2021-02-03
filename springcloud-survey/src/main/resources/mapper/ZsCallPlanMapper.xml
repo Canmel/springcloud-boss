@@ -17,16 +17,24 @@
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="trans_type" property="transType"
                 typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
-        <result column="tot_cust" property="totCust" />
+        <result column="tot_cust" property="totCust"/>
         <result column="tot_callsuc" property="totCallsuc"/>
         <result column="tot_uncall" property="totUncall"/>
-        <result column="tot_failure" property="totFailure" />
-        <result column="tot_success" property="totSuccess" />
-        <result column="tot_tocustomer" property="totTocustomer" />
-        <result column="tot_callsuc_rate" property="totCallsucRate" />
-        <result column="tot_uncall_rate" property="totUncallRate" />
-        <result column="tot_success_rate" property="totSuccessRate" />
-        <result column="tot_tocustomer_rate" property="totTocustomerRate" />
+        <result column="tot_failure" property="totFailure"/>
+        <result column="tot_success" property="totSuccess"/>
+        <result column="tot_tocustomer" property="totTocustomer"/>
+        <result column="tot_callsuc_rate" property="totCallsucRate"/>
+        <result column="tot_uncall_rate" property="totUncallRate"/>
+        <result column="tot_success_rate" property="totSuccessRate"/>
+        <result column="tot_tocustomer_rate" property="totTocustomerRate"/>
+        <result column="hit_rate" property="hitRate" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="acw_time" property="acwTime"/>
+        <result column="redial_times" property="redialTimes"/>
+        <result column="min_redial_interval" property="minRedialInterval"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="max_ring_time" property="maxRingTime"
+                typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="xintf" property="xintf"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -35,7 +43,8 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, trans_name, task_id, trans_type, pstn_number, task_status, max_concurrent_num, playfile_url, ro_name, created_at, creator, status,
-        tot_cust, tot_callsuc, tot_uncall, tot_failure, tot_success, tot_tocustomer, tot_callsuc_rate, tot_uncall_rate, tot_success_rate, tot_tocustomer_rate
+        tot_cust, tot_callsuc, tot_uncall, tot_failure, tot_success, tot_tocustomer, tot_callsuc_rate, tot_uncall_rate, tot_success_rate, tot_tocustomer_rate,
+        hit_rate, acw_time, redial_times, min_redial_interval, max_ring_time, xintf
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -43,5 +52,11 @@
         <include refid="Base_Column_List"></include>
         from
         zs_call_plan
+        <where>
+            status = 1
+            <if test="taskId != null and taskId != ''">
+                AND task_id like concat("%", #{taskId}, "%")
+            </if>
+        </where>
     </select>
 </mapper>

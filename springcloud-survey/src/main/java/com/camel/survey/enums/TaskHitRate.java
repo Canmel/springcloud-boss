@@ -23,18 +23,22 @@ import java.io.Serializable;
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
  * <状态>
+ *     命中率
  * @author baily
  * @since 1.0
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum TaskStatus implements MyEnum {
-    WAITING(1, "待执行"),
-    IMMEDIATELY(2, "立即执行"),
-    NOT_START(3, "未启动"),
-    STARTED(4, "已启动"),
-    STOPED(5, "已停止"),
-    COMPLETED(6, "全部完成");
+public enum TaskHitRate implements MyEnum {
+    AUTO(0, "自动计算"),
+    PERCENT_30(1, "30%命中率"),
+    PERCENT_40(2, "40%命中率"),
+    PERCENT_50(3, "50%命中率"),
+    PERCENT_60(4, "60%命中率"),
+    PERCENT_70(5, "70%命中率"),
+    PERCENT_80(6, "80%命中率"),
+    PERCENT_90(7, "90%命中率"),
+    PERCENT_100(8, "100%命中率");
 
     /**
      * 状态码
@@ -46,13 +50,13 @@ public enum TaskStatus implements MyEnum {
      */
     private String name;
 
-    TaskStatus(Integer code, String name) {
+    TaskHitRate(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static TaskStatus getEnum(String name) {
-        for (TaskStatus enums : TaskStatus.values()) {
+    public static TaskHitRate getEnum(String name) {
+        for (TaskHitRate enums : TaskHitRate.values()) {
             if (enums.getName().equals(name)) {
                 return enums;
             }
@@ -82,8 +86,8 @@ public enum TaskStatus implements MyEnum {
         return this.code;
     }
 
-    public static TaskStatus getEnumByValue(Integer value) {
-        for (TaskStatus enums : TaskStatus.values()) {
+    public static TaskHitRate getEnumByValue(Integer value) {
+        for (TaskHitRate enums : TaskHitRate.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

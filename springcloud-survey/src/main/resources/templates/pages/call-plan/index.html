@@ -8,14 +8,15 @@
             </div>
         </div>
         <div class="ibox-content">
-
             <div class="row">
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span
+                        <input type="text" placeholder="请输入任务名称" class="input-sm form-control"
+                               v-model="pageInfo.taskId"> <span
                             class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                                @click="search()"> 搜索</button> </span>
                     </div>
                 </div>
             </div>
@@ -25,8 +26,9 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>任务标识</th>
-                        <th>外呼计划类型</th>
+                        <th>任务名称</th>
+                        <th>转接类型</th>
+                        <th>转接对象</th>
                         <th>外线接入号</th>
                         <th>状态</th>
                         <th>创建时间</th>
@@ -44,9 +46,10 @@
                     </thead>
                     <tbody>
                     <tr v-for="(item, index) in items">
-                        <th scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</th>
-                        <td>{{item.taskId}}</td>
+                        <td scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</td>
+                        <td><span class="click-span" v-on:click="details(item)">{{item.taskId}}</span></td>
                         <td>{{item.transType ? item.transType.name : ""}}</td>
+                        <td>{{item.transName}}</td>
                         <td>{{item.pstnNumber}}</td>
                         <td>{{item.taskStatus ? item.taskStatus.name : ""}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
@@ -61,10 +64,12 @@
                         <td>{{item.totTocustomerRate}}</td>
                         <td>
                             <button type="button" v-on:click="startUp(item)" class="btn btn-primary btn-xs"
-                                    v-if="resultDev && item.taskStatus && item.taskStatus.code !== 4">启动
+                                    v-if="resultDev && item.taskStatus && item.taskStatus.code !== 4 && item.taskStatus.code !== 6">
+                                启动
                             </button>
                             <button type="button" v-on:click="shutDown(item)" class="btn btn-warning btn-xs"
-                                    v-if="resultDev && item.taskStatus && item.taskStatus.code == 4">暂停
+                                    v-if="resultDev && item.taskStatus && item.taskStatus.code == 4 && item.taskStatus.code !== 6">
+                                暂停
                             </button>
                             <button type="button" v-on:click="refresh(item)" class="btn btn-info btn-xs"
                                     v-if="resultDev">更新
@@ -109,6 +114,88 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+
+    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="detailModalLabel">计划详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" v-if="selectedItem">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">任务名称：</label>
+                            <div class="col-sm-8">
+                                <input name="name" disabled class="form-control" type="text" v-model="selectedItem.name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">命中率：</label>
+                            <div class="col-sm-8">
+                                <select name="name" class="form-control" @change="hitRateChangeHandler" type="text" v-model="selectedItem.hitRate && selectedItem.hitRate.value">
+                                    <option value="0">自动计算</option>
+                                    <option value="1">30%命中率</option>
+                                    <option value="2">40%命中率</option>
+                                    <option value="3">50%命中率</option>
+                                    <option value="4">60%命中率</option>
+                                    <option value="5">70%命中率</option>
+                                    <option value="6">80%命中率</option>
+                                    <option value="7">90%命中率</option>
+                                    <option value="8">100%命中率</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">后处理时长：</label>
+                            <div class="col-sm-8">
+                                <input name="name" class="form-control" @blur="acwTimeChangeBlur" type="number" max="60" min="0" v-model="selectedItem.acwTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">重拨次数：</label>
+                            <div class="col-sm-8">
+                                <input name="name" class="form-control" @blur="redialTimesBlurHandler" type="number" min="0" max="5" v-model="selectedItem.redialTimes">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">重拨间隔时长：</label>
+                            <div class="col-sm-8">
+                                <select name="name" class="form-control" type="text" @change="minRedialIntervalChange" v-model="selectedItem.minRedialInterval && selectedItem.minRedialInterval.value">
+                                    <option value="1">60秒</option>
+                                    <option value="2">120秒</option>
+                                    <option value="3">180秒</option>
+                                    <option value="4">240秒</option>
+                                    <option value="5">300秒</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">最大振铃时长：</label>
+                            <div class="col-sm-8">
+                                <select name="name" class="form-control" type="text" @change="maxRingTimeHandler" v-model="selectedItem.maxRingTime && selectedItem.maxRingTime.value">
+                                    <option value="30">30秒</option>
+                                    <option value="35">35秒</option>
+                                    <option value="40">40秒</option>
+                                    <option value="45">45秒</option>
+                                    <option value="50">50秒</option>
+                                    <option value="55">55秒</option>
+                                    <option value="60">60秒</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">校验URL：</label>
+                            <div class="col-sm-8">
+                                <input name="name" class="form-control" type="text" v-model="selectedItem.xintf">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
 <script src="/survey/js/validateIsMain.js"></script>
 <script>
@@ -117,6 +204,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                taskId: "",
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
@@ -134,6 +222,105 @@
             $('#file-pretty input[type="file"]').prettyFile();
         },
         methods: {
+            // 最大振铃时长
+            maxRingTimeHandler(event) {
+                let v = "";
+                if(event.target.value == 30) {
+                    v = "RING_TIME_30";
+                }
+                if(event.target.value == 35) {
+                    v = "RING_TIME_35";
+                }
+                if(event.target.value == 40) {
+                    v = "RING_TIME_40";
+                }
+                if(event.target.value == 45) {
+                    v = "RING_TIME_45";
+                }
+                if(event.target.value == 50) {
+                    v = "RING_TIME_50";
+                }
+                if(event.target.value == 55) {
+                    v = "RING_TIME_55";
+                }
+                if(event.target.value == 60) {
+                    v = "RING_TIME_60";
+                }
+                AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, maxRingTime: v}), function (resp) {
+                    console.log(resp);
+                });
+            },
+            // 重拨次数
+            redialTimesBlurHandler(event) {
+                AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, redialTimes: event.target.value}), function (resp) {
+                    console.log(resp);
+                });
+            },
+            // 重拨间隔时长
+            minRedialIntervalChange(event) {
+                let v = "";
+                if(event.target.value == 1) {
+                    v = "SECOND_60";
+                }
+                if(event.target.value == 2) {
+                    v = "SECOND_120";
+                }
+                if(event.target.value == 3) {
+                    v = "SECOND_180";
+                }
+                if(event.target.value == 4) {
+                    v = "SECOND_240";
+                }
+                if(event.target.value == 5) {
+                    v = "SECOND_300";
+                }
+                AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, minRedialInterval: v}), function (resp) {
+                    console.log(resp);
+                });
+            },
+            // 后处理时长
+            acwTimeChangeBlur(event) {
+                AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, acwTime: event.target.value}), function (resp) {
+                    console.log(resp);
+                });
+            },
+            // 命中率
+            hitRateChangeHandler(event) {
+                let v = "";
+                if(event.target.value == 0) {
+                    v = "AUTO";
+                }
+                if(event.target.value == 1) {
+                    v = "PERCENT_30";
+                }
+                if(event.target.value == 2) {
+                    v = "PERCENT_40";
+                }
+                if(event.target.value == 3) {
+                    v = "PERCENT_50";
+                }
+                if(event.target.value == 4) {
+                    v = "PERCENT_60";
+                }
+                if(event.target.value == 5) {
+                    v = "PERCENT_70";
+                }
+                if(event.target.value == 6) {
+                    v = "PERCENT_80";
+                }
+                if(event.target.value == 7) {
+                    v = "PERCENT_90";
+                }
+                if(event.target.value == 8) {
+                    v = "PERCENT_100";
+                }
+                AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, hitRate: v}), function (resp) {
+                    console.log(resp);
+                });
+            },
+            search() {
+                this.pagequery();
+            },
             refresh(item) {
                 let that = this;
                 AJAX.GET("zsCallPlan/refresh/" + item.id, {}, function (resp) {
@@ -163,6 +350,10 @@
                     alert("上传失败");
                     $("#myModal").modal("hide");
                 });
+            },
+            details(item) {
+                this.selectedItem = item;
+                $("#detailModal").modal('show');
             },
             importNumbers(item) {
                 this.selectedItem = item;
@@ -223,7 +414,7 @@
                 toPage('pages/project/edit.html');
             },
             deleteItem: function (item) {
-                var that = this;
+                let that = this;
                 confirm("您确定要删除这条数据吗?", "", function (isConfirm) {
                     if (isConfirm) {
                         AJAX.DELETE('zsCallPlan', item, function (resp) {
@@ -233,10 +424,6 @@
 
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
-            },
-            details: function (item) {
-                sessionStorage.setItem('editParams', item.id);
-                toPage('pages/project/details.html')
             }
         }
     });

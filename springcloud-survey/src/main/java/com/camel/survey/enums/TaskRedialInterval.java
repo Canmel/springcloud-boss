@@ -23,18 +23,18 @@ import java.io.Serializable;
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
  * <状态>
+ *     重拨间隔时长
  * @author baily
  * @since 1.0
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum TaskStatus implements MyEnum {
-    WAITING(1, "待执行"),
-    IMMEDIATELY(2, "立即执行"),
-    NOT_START(3, "未启动"),
-    STARTED(4, "已启动"),
-    STOPED(5, "已停止"),
-    COMPLETED(6, "全部完成");
+public enum TaskRedialInterval implements MyEnum {
+    SECOND_60(1, "60秒"),
+    SECOND_120(2, "120秒"),
+    SECOND_180(3, "180秒"),
+    SECOND_240(4, "240秒"),
+    SECOND_300(5, "300秒");
 
     /**
      * 状态码
@@ -46,13 +46,13 @@ public enum TaskStatus implements MyEnum {
      */
     private String name;
 
-    TaskStatus(Integer code, String name) {
+    TaskRedialInterval(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static TaskStatus getEnum(String name) {
-        for (TaskStatus enums : TaskStatus.values()) {
+    public static TaskRedialInterval getEnum(String name) {
+        for (TaskRedialInterval enums : TaskRedialInterval.values()) {
             if (enums.getName().equals(name)) {
                 return enums;
             }
@@ -82,8 +82,8 @@ public enum TaskStatus implements MyEnum {
         return this.code;
     }
 
-    public static TaskStatus getEnumByValue(Integer value) {
-        for (TaskStatus enums : TaskStatus.values()) {
+    public static TaskRedialInterval getEnumByValue(Integer value) {
+        for (TaskRedialInterval enums : TaskRedialInterval.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

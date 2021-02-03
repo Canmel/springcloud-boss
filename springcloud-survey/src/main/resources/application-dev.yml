@@ -148,5 +148,4 @@ cti:
     url: http://122.226.162.131/yscrm/servlet/filedown?filename=
   system:
     url: http://122.226.162.131/yscrm/servlet/filedown?filename=
-#  baseUrl: 192.168.0.110
-  baseUrl: tj.svdata.cn
+  baseUrl: ${CTI_SERVER}

@@ -23,18 +23,20 @@ import java.io.Serializable;
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
  * <状态>
+ *     最大振铃时长
  * @author baily
  * @since 1.0
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum TaskStatus implements MyEnum {
-    WAITING(1, "待执行"),
-    IMMEDIATELY(2, "立即执行"),
-    NOT_START(3, "未启动"),
-    STARTED(4, "已启动"),
-    STOPED(5, "已停止"),
-    COMPLETED(6, "全部完成");
+public enum TaskRingTime implements MyEnum {
+    RING_TIME_30(30, "30秒"),
+    RING_TIME_35(35, "35秒"),
+    RING_TIME_40(40, "40秒"),
+    RING_TIME_45(45, "45秒"),
+    RING_TIME_50(50, "50秒"),
+    RING_TIME_55(55, "55秒"),
+    RING_TIME_60(60, "60秒");
 
     /**
      * 状态码
@@ -46,13 +48,13 @@ public enum TaskStatus implements MyEnum {
      */
     private String name;
 
-    TaskStatus(Integer code, String name) {
+    TaskRingTime(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static TaskStatus getEnum(String name) {
-        for (TaskStatus enums : TaskStatus.values()) {
+    public static TaskRingTime getEnum(String name) {
+        for (TaskRingTime enums : TaskRingTime.values()) {
             if (enums.getName().equals(name)) {
                 return enums;
             }
@@ -82,8 +84,8 @@ public enum TaskStatus implements MyEnum {
         return this.code;
     }
 
-    public static TaskStatus getEnumByValue(Integer value) {
-        for (TaskStatus enums : TaskStatus.values()) {
+    public static TaskRingTime getEnumByValue(Integer value) {
+        for (TaskRingTime enums : TaskRingTime.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

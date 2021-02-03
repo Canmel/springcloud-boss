@@ -62,16 +62,32 @@ public class ZsCallPlanController extends BaseCommonController {
         return ResultUtil.success("外呼计划已停止");
     }
 
+    /**
+     * 删除任务
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public Result del(@PathVariable Integer id) {
         service.del(id);
         return ResultUtil.success("删除任务成功");
     }
 
+    /**
+     * 上传号码信息
+     * @param file
+     * @param id
+     * @return
+     */
     @PostMapping("/upload/{id}")
     public Result upload(@RequestParam MultipartFile file, @PathVariable Integer id) {
         service.uploadNumers(file, id);
         return ResultUtil.success("号码信息上传成功！");
+    }
+
+    @PutMapping
+    public Result edit(@RequestBody ZsCallPlan zsCallPlan) {
+        return ResultUtil.success("修改外呼任务成功！");
     }
 
     @Override
