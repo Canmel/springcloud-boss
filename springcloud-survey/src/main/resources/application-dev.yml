@@ -142,6 +142,7 @@ wx:
     appkey: d4ahjqulmuvuzyna2lj00nv1a40ww54u
     mchid: 1511764991
     mchname: 赛炜大数据服务有限公司
+  apiclient_cert_path: apiclient_cert.p12
 
 cti:
   record-file:
