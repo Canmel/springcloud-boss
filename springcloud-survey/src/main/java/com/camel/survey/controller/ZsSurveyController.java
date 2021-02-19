@@ -261,7 +261,7 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     /**
-     * 获取复核率
+     * 获取审核率
      * @param id
      */
     @GetMapping("/reviewRate/{id}")

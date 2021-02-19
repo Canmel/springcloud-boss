@@ -72,9 +72,9 @@ public class AnswerListExport {
         headValues.add("通话时长");
         headValues.add("是否有效");
         headValues.add("无效原因");
-        headValues.add("复核人");
-        headValues.add("复核时间");
-        headValues.add("复核意见");
+        headValues.add("审核人");
+        headValues.add("审核时间");
+        headValues.add("审核意见");
         headValues.add("标签");
         List<String> titleQList = new ArrayList<>();
         List<String> titleIdList = new ArrayList<>();

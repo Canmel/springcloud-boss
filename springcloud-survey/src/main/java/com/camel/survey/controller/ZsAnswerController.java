@@ -236,7 +236,7 @@ public class ZsAnswerController extends BaseCommonController {
     }
 
     /**
-     * 获取复核答卷
+     * 获取审核答卷
      *
      * @param agent
      * @return
@@ -287,7 +287,7 @@ public class ZsAnswerController extends BaseCommonController {
     }
 
     /**
-     * 复核答卷
+     * 审核答卷
      *
      * @param answerId
      * @param reviewStatus
@@ -296,14 +296,14 @@ public class ZsAnswerController extends BaseCommonController {
     @PostMapping("/review")
     public Result review(Integer answerId, Integer reviewStatus, String reviewMsg, Integer reviewSpent) {
         if (service.review(answerId, reviewStatus, reviewMsg, reviewSpent)) {
-            return ResultUtil.success("复核成功");
+            return ResultUtil.success("审核成功");
         } else {
-            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "复核失败");
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(), "审核失败");
         }
     }
 
     /**
-     * 获取待复核列表
+     * 获取待审核列表
      *
      * @param entity
      * @return
@@ -325,7 +325,7 @@ public class ZsAnswerController extends BaseCommonController {
     }
 
     /**
-     * 获取样本复核时间范围
+     * 获取样本审核时间范围
      *
      * @param id
      * @return

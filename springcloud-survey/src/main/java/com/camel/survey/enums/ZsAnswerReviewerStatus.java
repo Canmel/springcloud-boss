@@ -29,7 +29,7 @@ import java.io.Serializable;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ZsAnswerReviewerStatus implements MyEnum {
-    INVALID(0, "未复核"), PASS(1, "通过"), REJECT(2, "驳回");
+    INVALID(0, "未审核"), PASS(1, "通过"), REJECT(2, "驳回");
 
     /**
      * 状态码

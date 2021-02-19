@@ -724,7 +724,7 @@
         <div class="col-sm-6" style="height: 100%; padding-right: 0px;">
             <div class="ibox" style="height: 99%">
                 <div class="ibox-title">
-                    <h5>待复核列表</h5>
+                    <h5>待审核列表</h5>
                     <div class="ibox-tools">
                         <a v-on:click=backToListPage() class="btn btn-success btn-xs">返回</a>
                     </div>
@@ -735,10 +735,10 @@
                               <select class="form-control m-b" name="type"
                                     v-model="pageInfo.reviewStatus" id="select" onchange="select()">
                                 <option value=''>所有状态</option>
-                                <option value=0>未复核</option>
-                                <option value=12>已复核</option>
-                                <option value=1>复核通过</option>
-                                <option value=2>复核作废</option>
+                                <option value=0>未审核</option>
+                                <option value=12>已审核</option>
+                                <option value=1>审核通过</option>
+                                <option value=2>审核作废</option>
                             </select>
                         </div>
                         <div class="col-sm-4">
@@ -752,10 +752,10 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-1" style="width: 5%; display: none;" id="review">
-                            <span>复核</span>
+                            <span>审核</span>
                         </div>
                         <div class="col-sm-5" style="display: none; width: 43%;" id="reviewInput">
-                            <input type="text" id="datePickerSelect1" placeholder="请选择复核时间" class="input-sm form-control search-input">
+                            <input type="text" id="datePickerSelect1" placeholder="请选择审核时间" class="input-sm form-control search-input">
                         </div>
                         <div class="col-sm-1"  style="width: 5%;">
                             <span>收集</span>
@@ -778,9 +778,9 @@
                                 <th>被访人</th>
                                 <th>工号</th>
                                 <th>访员</th>
-                                <th>复核人</th>
+                                <th>审核人</th>
                                 <th>通话时间</th>
-                                <th>复核状态</th>
+                                <th>审核状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -796,13 +796,13 @@
                                 <td>{{item.reviewer ? item.reviewer.username: ''}}</td>
                                 <td>{{item.callLastsTime}}</td>
                                 <td>
-                                    <span class="text-input" v-if="!item.reviewStatus">未复核</span>
+                                    <span class="text-input" v-if="!item.reviewStatus">未审核</span>
                                     <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
                                     <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
                                 </td>
                                 <td>
-                                    <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id" class="btn btn-info btn-xs" >复核</button>
-                                    <span v-if="item.id === selected.id">复核中</span>
+                                    <button type="button" v-on:click="renderCheck(item)" v-if="item.callLastsTime && item.id != selected.id" class="btn btn-info btn-xs" >审核</button>
+                                    <span v-if="item.id === selected.id">审核中</span>
                                     <span v-if="!item.callLastsTime">无数据</span>
                                 </td>
                             </tr>
