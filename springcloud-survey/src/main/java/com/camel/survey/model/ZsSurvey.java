@@ -114,6 +114,8 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private ZsYesOrNo authority;
 
+    private String pstnNumber;
+
     public ZsSurvey(Integer id) {
         this.id = id;
     }

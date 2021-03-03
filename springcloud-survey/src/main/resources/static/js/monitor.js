@@ -151,7 +151,7 @@ Vue.component('monitor', {
          * 同步队列
          */
         syncQueue() {
-            AJAX.POST_JSON("zsQueue/doSync", {queues: this.agentQueues}, function (resp) {
+            AJAX.GET("zsQueue/doSync", {queues: this.agentQueues}, function (resp) {
                 toastr.success(resp['msg'], '操作成功');
             });
         },

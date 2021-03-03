@@ -674,8 +674,13 @@
                         collectNum: resp.data.collectNum,
                         projectId: resp.data.projectId,
                         monit: resp.data.monit,
-                        state: resp.data.state
+                        state: resp.data.state,
+                        pstnNumber: resp.data.pstnNumber
                     };
+                    debugger;
+                    if(that.survey.pstnNumber) {
+                        window.pstnnumber = that.survey.pstnNumber;
+                    }
                     if(resp.data.state.value!=2){
                         alert("该问卷目前不处于收集状态！");
                         $.pjax({
