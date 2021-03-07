@@ -2,12 +2,6 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>日志管理</h5>
-            <div class="ibox-tools">
-                <div class="ibox-tools">
-                    <a :href="applicationContextRootPath + 'pages/log/add.html'"
-                       data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新增日志</a>
-                </div>
-            </div>
         </div>
         <div class="ibox-content">
 
@@ -36,7 +30,6 @@
                         <th>请求参数</th>
                         <th>创建时间</th>
                         <th>模块名称</th>
-                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,14 +43,6 @@
                         <td>{{item.params}}</td>
                         <td>{{item.gmtCreate}}</td>
                         <td>{{item.module}}</td>
-                        <td>
-                            <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
-                                编辑
-                            </button>
-                            <button type="button" v-on:click="deleteItem(item)" class="btn btn-danger btn-xs" v-if="resultDev">
-                                删除
-                            </button>
-                        </td>
                     </tr>
                     </tbody>
                 </table>

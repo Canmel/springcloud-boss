@@ -1,6 +1,7 @@
 package com.camel.system.aop;
 
 
+import cn.hutool.json.JSONUtil;
 import com.camel.system.annotation.Log;
 import com.camel.core.model.SysLog;
 import com.camel.system.service.MqService;
@@ -16,6 +17,10 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**@author baily */
 @Aspect
@@ -40,6 +45,9 @@ public class LogAspect {
 
     @Around(("execution(* com.camel..*.*(..)) && @annotation(log)"))
     public Object doAfterAdvice(ProceedingJoinPoint joinPoint, Log log) throws Throwable {
+
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
         LOGGER.info("==============================================用户操作日志-通知开始执行......==========================================");
         long beginTime = System.currentTimeMillis();
         //执行方法
@@ -53,7 +61,7 @@ public class LogAspect {
         } catch (Exception e) {
             throw new RedisConnectionFailureException("未发现可用的Redis服务器！请检查");
         }
-        SysLog sysLog = new SysLog(null, username, log.option(), time, joinPoint.getArgs().toString(), joinPoint.getSignature().toShortString(), joinPoint.getArgs().toString(), log.moduleName());
+        SysLog sysLog = new SysLog(null, username, log.option(), time, request.getRemoteAddr(), joinPoint.getSignature().toShortString(), JSONUtil.parse(joinPoint.getArgs()).toString(), log.moduleName());
         sysLogService.insert(sysLog);
         mqService.sendMsg(sysLog.toString());
         LOGGER.info("==============================================用户操作日志-通知结束执行......==========================================");
