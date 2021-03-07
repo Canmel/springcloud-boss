@@ -36,4 +36,8 @@ public interface SysUserDao {
      * @return 会员
      */
     SysUser findByUserName(String memberName);
+
+    void addFaile(String memberName);
+
+    void clearFaile(String memberName);
 }

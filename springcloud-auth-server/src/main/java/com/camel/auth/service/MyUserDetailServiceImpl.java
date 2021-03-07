@@ -73,7 +73,7 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
         // 有效性 :true:凭证有效 false:凭证无效
         boolean credentialsNonExpired = true;
         // 锁定性 :true:未锁定 false:已锁定
-        boolean accountNonLocked = true;
+        boolean accountNonLocked = sysUser.getLoginFailureCount() < 3;
         for (SysRole role : sysUser.getSysRoles()) {
             //角色必须是ROLE_开头，可以在数据库中设置
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + role.getRoleName().toUpperCase());

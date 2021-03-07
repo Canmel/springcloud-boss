@@ -1,5 +1,6 @@
 package com.camel.auth.config.oauth;
 
+import com.camel.auth.config.security.BootOAuth2WebResponseExceptionTranslator;
 import com.camel.auth.service.MyUserDetailServiceImpl;
 import com.camel.auth.config.error.MssWebResponseExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +97,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public WebResponseExceptionTranslator webResponseExceptionTranslator(){
-        return new MssWebResponseExceptionTranslator();
+        return new BootOAuth2WebResponseExceptionTranslator();
     }
 
     @Override

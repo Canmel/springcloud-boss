@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div style="text-align: center;color: red; display: none;" class="error_message">
-                <span>用户名密码不正确，请确认后重新提交</span>
+                <span id="error_msg">用户名密码不正确，请确认后重新提交</span>
             </div>
             <div class="login-button">
                 登陆
@@ -112,6 +112,7 @@
                 }
             },
             error: function (resp) {
+                $("#error_msg").text(resp.responseJSON.message);
                 $(".error_message").show();
             }
         })

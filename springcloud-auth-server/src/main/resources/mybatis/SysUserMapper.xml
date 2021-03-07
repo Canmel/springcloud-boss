@@ -54,4 +54,12 @@
         </where>
         ORDER BY sys_user.uid
     </select>
+
+    <update id="addFaile">
+        UPDATE sys_user SET sys_user.login_failure_count = sys_user.login_failure_count+1 WHERE sys_user.email=#{memberName};
+    </update>
+
+    <update id="clearFaile">
+        UPDATE sys_user SET sys_user.login_failure_count = 0 WHERE sys_user.email=#{memberName};
+    </update>
 </mapper>
