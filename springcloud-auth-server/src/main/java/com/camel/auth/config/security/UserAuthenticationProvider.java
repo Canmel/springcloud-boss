@@ -1,5 +1,6 @@
 package com.camel.auth.config.security;
 
+import com.camel.auth.dao.SysUserDao;
 import com.camel.auth.model.MyUserDetails;
 import com.camel.auth.service.MyUserDetailServiceImpl;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,9 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     private UserDetailsService userDetailService;
 
     @Autowired
+    private SysUserDao sysUserDao;
+
+    @Autowired
     private ApplicationEventPublisher publisher;
 
     @Override
@@ -49,6 +53,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         //获取用户权限信息
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, password, authorities);;
+        sysUserDao.clearFaile(username);
         return usernamePasswordAuthenticationToken;
     }
 
