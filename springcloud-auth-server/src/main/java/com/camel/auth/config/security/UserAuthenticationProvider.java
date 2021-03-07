@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -44,6 +45,9 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         }
         //获取用户信息
         UserDetails user = userDetailService.loadUserByUsername(username);
+        if(!user.isAccountNonLocked()) {
+            throw new LockedException("账户已锁定，请联系管理员");
+        }
         //比较前端传入的密码明文和数据库中加密的密码是否相等
         if (!password.equals(user.getPassword())) {
             //发布密码不正确事件

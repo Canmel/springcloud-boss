@@ -51,6 +51,11 @@ public class BootOAuth2WebResponseExceptionTranslator implements WebResponseExce
                 result.setCode(400);
                 return status.body(result);
             }
+            if (StringUtils.containsIgnoreCase(e.getMessage(), "账户已锁定，请联系管理员")) {
+                result.setMessage("用户已被锁定，请联系管理员");
+                result.setCode(400);
+                return status.body(result);
+            }
             result.setMessage("用户名或密码错误");
             result.setCode(400);
             return status.body(result);
