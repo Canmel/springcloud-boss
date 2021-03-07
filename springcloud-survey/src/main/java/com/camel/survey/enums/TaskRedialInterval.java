@@ -23,13 +23,18 @@ import java.io.Serializable;
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
  * <状态>
+ *     重拨间隔时长
  * @author baily
  * @since 1.0
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsAnswerReviewerStatus implements MyEnum {
-    INVALID(0, "未审核"), PASS(1, "通过"), REJECT(2, "驳回");
+public enum TaskRedialInterval implements MyEnum {
+    SECOND_60(1, "60秒"),
+    SECOND_120(2, "120秒"),
+    SECOND_180(3, "180秒"),
+    SECOND_240(4, "240秒"),
+    SECOND_300(5, "300秒");
 
     /**
      * 状态码
@@ -41,9 +46,18 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
      */
     private String name;
 
-    ZsAnswerReviewerStatus(Integer code, String name) {
+    TaskRedialInterval(Integer code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static TaskRedialInterval getEnum(String name) {
+        for (TaskRedialInterval enums : TaskRedialInterval.values()) {
+            if (enums.getName().equals(name)) {
+                return enums;
+            }
+        }
+        return null;
     }
 
     public Integer getCode() {
@@ -68,8 +82,8 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
         return this.code;
     }
 
-    public static ZsAnswerReviewerStatus getEnumByValue(Integer value) {
-        for (ZsAnswerReviewerStatus enums : ZsAnswerReviewerStatus.values()) {
+    public static TaskRedialInterval getEnumByValue(Integer value) {
+        for (TaskRedialInterval enums : TaskRedialInterval.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

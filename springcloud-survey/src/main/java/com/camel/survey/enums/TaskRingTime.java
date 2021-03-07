@@ -23,13 +23,20 @@ import java.io.Serializable;
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
  * <状态>
+ *     最大振铃时长
  * @author baily
  * @since 1.0
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsAnswerReviewerStatus implements MyEnum {
-    INVALID(0, "未审核"), PASS(1, "通过"), REJECT(2, "驳回");
+public enum TaskRingTime implements MyEnum {
+    RING_TIME_30(30, "30秒"),
+    RING_TIME_35(35, "35秒"),
+    RING_TIME_40(40, "40秒"),
+    RING_TIME_45(45, "45秒"),
+    RING_TIME_50(50, "50秒"),
+    RING_TIME_55(55, "55秒"),
+    RING_TIME_60(60, "60秒");
 
     /**
      * 状态码
@@ -41,9 +48,18 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
      */
     private String name;
 
-    ZsAnswerReviewerStatus(Integer code, String name) {
+    TaskRingTime(Integer code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static TaskRingTime getEnum(String name) {
+        for (TaskRingTime enums : TaskRingTime.values()) {
+            if (enums.getName().equals(name)) {
+                return enums;
+            }
+        }
+        return null;
     }
 
     public Integer getCode() {
@@ -68,8 +84,8 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
         return this.code;
     }
 
-    public static ZsAnswerReviewerStatus getEnumByValue(Integer value) {
-        for (ZsAnswerReviewerStatus enums : ZsAnswerReviewerStatus.values()) {
+    public static TaskRingTime getEnumByValue(Integer value) {
+        for (TaskRingTime enums : TaskRingTime.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

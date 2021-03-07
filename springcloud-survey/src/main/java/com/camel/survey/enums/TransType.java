@@ -28,8 +28,8 @@ import java.io.Serializable;
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsAnswerReviewerStatus implements MyEnum {
-    INVALID(0, "未审核"), PASS(1, "通过"), REJECT(2, "驳回");
+public enum TransType implements MyEnum {
+    IVR(1, "IVR"), QUEUE(2, "队列"), OTHER(3, "其他"), AI(4, "AI外呼");
 
     /**
      * 状态码
@@ -41,7 +41,7 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
      */
     private String name;
 
-    ZsAnswerReviewerStatus(Integer code, String name) {
+    TransType(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -68,8 +68,8 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
         return this.code;
     }
 
-    public static ZsAnswerReviewerStatus getEnumByValue(Integer value) {
-        for (ZsAnswerReviewerStatus enums : ZsAnswerReviewerStatus.values()) {
+    public static TransType getEnumByValue(Integer value) {
+        for (TransType enums : TransType.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

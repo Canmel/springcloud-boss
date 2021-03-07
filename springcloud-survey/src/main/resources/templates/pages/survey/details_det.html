@@ -89,7 +89,7 @@
                         <a class="col-sm-6 control-label" v-if="!avgTime" v-on:click="getAvgTime()">点击获取</a>
                     </div>
                     <div class="col-sm-3">
-                        <label class="col-sm-6 control-label">复核率:</label>
+                        <label class="col-sm-6 control-label">审核率:</label>
                         <label class="col-sm-6 control-label" v-if="reviewRate">{{reviewRate}}</label>
                         <a class="col-sm-6 control-label" v-if="!reviewRate" v-on:click="getReviewRate()">点击获取</a>
                     </div>
@@ -220,14 +220,14 @@
                                     <select class="form-control m-b" name="type"
                                             v-model="pageInfo.reviewStatus" id="select" onchange="select()">
                                         <option value=''>所有状态</option>
-                                        <option value=0>未复核</option>
-                                        <option value=12>已复核</option>
-                                        <option value=1>复核通过</option>
-                                        <option value=2>复核作废</option>
+                                        <option value=0>未审核</option>
+                                        <option value=12>已审核</option>
+                                        <option value=1>审核通过</option>
+                                        <option value=2>审核作废</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-2">
-                                    <input type="text" placeholder="请输入复核人" class="input-sm form-control search-input"
+                                    <input type="text" placeholder="请输入审核人" class="input-sm form-control search-input"
                                            v-model="pageInfo.reviewerName">
                                 </div>
                                 <div class="col-sm-3">
@@ -257,7 +257,7 @@
                                         导出录音
                                     </button>
                                     <button type="button" class="btn btn-warning btn-sm"
-                                            v-on:click="checkRecord()">复核
+                                            v-on:click="checkRecord()">审核
                                     </button>
                                     <button type="button" class="btn btn-success btn-sm"
                                             v-on:click="exportForm()">报表导出
@@ -284,11 +284,11 @@
                                         <th>工号</th>
                                         <th>访员姓名</th>
                                         <th>有效</th>
-                                        <th>复核状态</th>
-                                        <th>复核人</th>
-                                        <th>复核意见</th>
-                                        <th>复核时间</th>
-                                        <th>复核时长</th>
+                                        <th>审核状态</th>
+                                        <th>审核人</th>
+                                        <th>审核意见</th>
+                                        <th>审核时间</th>
+                                        <th>审核时长</th>
                                         <th>得分</th>
                                         <th>操作</th>
                                     </tr>
@@ -315,7 +315,7 @@
                                             <span class="text">{{isInValid(item)}}</span>
                                         </td>
                                         <td>
-                                            <span class="text-input" v-if="!item.reviewStatus">未复核</span>
+                                            <span class="text-input" v-if="!item.reviewStatus">未审核</span>
                                             <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
                                             <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
                                         </td>
@@ -725,7 +725,7 @@
                     }
                 })
             },
-            // 复核
+            // 审核
             checkRecord() {
                 sessionStorage.setItem('surveyId', this.survey.id);
                 $.pjax({

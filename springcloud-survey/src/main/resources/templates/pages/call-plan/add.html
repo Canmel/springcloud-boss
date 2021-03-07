@@ -1,0 +1,140 @@
+<div id="subContainer" class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>外呼计划</h5>
+            <div class="ibox-tools">
+                <a :href="applicationContextRootPath + 'pages/project/add.html'"
+                   data-pjax class="btn btn-primary btn-xs" v-if="resultDev">创建外呼计划</a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="signupForm">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">任务标识：</label>
+                    <div class="col-sm-8">
+                        <input name="name" class="form-control" type="text" v-model="entity.name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">外呼接入号：</label>
+                    <div class="col-sm-8">
+                        <select name="pstnNumber" class="form-control" type="text" v-model="entity.pstnNumber">
+                            <option v-for="item in pstnnumbers" :value="item">{{item}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">最大并发数：</label>
+                    <div class="col-sm-8">
+                        <input name="maxConcurrentNum" type="number" class="form-control" type="text" v-model="entity.maxConcurrentNum">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">转接类型：</label>
+                    <div class="col-sm-4">
+                        <select name="transType" class="form-control" type="text" @change="transTypeChange" v-model="entity.transType">
+                            <option :value="'QUEUE'">队列</option>
+                            <option :value="'IVR'">IVR</option>
+                            <option :value="'AI'">AI外呼</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select name="transName" type="number" class="form-control" type="text" v-model="entity.transName">
+                            <option :value="item.name" v-for="item in trans">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-3">
+                        <button type="button" class="btn btn-success" @click="save">提交</button>
+                        <button type="button" class="btn" @click="cancel">取消</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="/survey/js/validateIsMain.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#subContainer',
+        data: {
+            applicationContextRootPath: '/survey/',
+            entity: {
+                name: "",
+                transName: "",
+                taskid: "",
+                tel: "",
+                cusData: "",
+                transType: "QUEUE",
+                pstnNumber: "",
+                maxConcurrentNum: 1
+            },
+            pstnnumbers: [],
+            trans: [],
+            queues: [],
+            ivrs: [],
+            items: [{}],
+            master: [],//接受权限数组
+            result: false,//表示超级管理员权限
+            resultDev: false,//表示操作人员权限
+        },
+        created: function () {
+            this.loadPstnnumber();
+            this.loadQueues();
+        },
+        methods: {
+            loadPstnnumber() {
+                let that = this;
+                AJAX.GET("pstnnumber/all", {}, function (resp) {
+                    that.pstnnumbers = resp.data;
+                })
+            },
+            transTypeChange(v) {
+                debugger;
+                if(v.target.value === "QUEUE") {
+                    return this.loadQueues();
+                }
+                if(v.target.value === "IVR") {
+                    return this.loadIVRs();
+                }
+                if(v.target.value === "AI") {
+                    return this.trans = [];
+                }
+            },
+            loadQueues() {
+                let that = this;
+                AJAX.GET("zsQueue/all", {}, function (resp) {
+                    that.trans = resp.data;
+                })
+            },
+            loadIVRs() {
+                let that = this;
+                AJAX.GET("zsQueue/ivrs", {}, function (resp) {
+                    that.trans = resp.data;
+                })
+            },
+            cancel: function () {
+                this.backToMain();
+            },
+            save: function () {
+                let that = this;
+                AJAX.POST("zsCallPlan", this.entity, function (resp) {
+                    toastr.success(resp['msg'], '操作成功');
+                    that.backToMain();
+                })
+            },
+            backToMain: function () {
+                $.pjax({
+                    url: mvm.applicationContextRootPath + 'pages/call-plan/index.html',
+                    container: '.page-container'
+                });
+            }
+        }
+    });
+</script>

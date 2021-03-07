@@ -23,13 +23,22 @@ import java.io.Serializable;
  *                   __\ | |  | | /__
  *                  (vvv(VVV)(VVV)vvv)
  * <状态>
+ *     命中率
  * @author baily
  * @since 1.0
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsAnswerReviewerStatus implements MyEnum {
-    INVALID(0, "未审核"), PASS(1, "通过"), REJECT(2, "驳回");
+public enum TaskHitRate implements MyEnum {
+    AUTO(0, "自动计算"),
+    PERCENT_30(1, "30%命中率"),
+    PERCENT_40(2, "40%命中率"),
+    PERCENT_50(3, "50%命中率"),
+    PERCENT_60(4, "60%命中率"),
+    PERCENT_70(5, "70%命中率"),
+    PERCENT_80(6, "80%命中率"),
+    PERCENT_90(7, "90%命中率"),
+    PERCENT_100(8, "100%命中率");
 
     /**
      * 状态码
@@ -41,9 +50,18 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
      */
     private String name;
 
-    ZsAnswerReviewerStatus(Integer code, String name) {
+    TaskHitRate(Integer code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static TaskHitRate getEnum(String name) {
+        for (TaskHitRate enums : TaskHitRate.values()) {
+            if (enums.getName().equals(name)) {
+                return enums;
+            }
+        }
+        return null;
     }
 
     public Integer getCode() {
@@ -68,8 +86,8 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
         return this.code;
     }
 
-    public static ZsAnswerReviewerStatus getEnumByValue(Integer value) {
-        for (ZsAnswerReviewerStatus enums : ZsAnswerReviewerStatus.values()) {
+    public static TaskHitRate getEnumByValue(Integer value) {
+        for (TaskHitRate enums : TaskHitRate.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

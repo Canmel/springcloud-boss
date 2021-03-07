@@ -15,11 +15,11 @@
                         <th>工号</th>
                         <th>访员姓名</th>
                         <th>有效</th>
-                        <th>复核状态</th>
-                        <th>复核人</th>
-                        <th>复核意见</th>
-                        <th>复核时间</th>
-                        <th>复核时长</th>
+                        <th>审核状态</th>
+                        <th>审核人</th>
+                        <th>审核意见</th>
+                        <th>审核时间</th>
+                        <th>审核时长</th>
                         <th>得分</th>
                     </tr>
                     </thead>
@@ -45,7 +45,7 @@
                             <span class="text">{{isInValid(item)}}</span>
                         </td>
                         <td>
-                            <span class="text-input" v-if="!item.reviewStatus">未复核</span>
+                            <span class="text-input" v-if="!item.reviewStatus">未审核</span>
                             <span class="text-success" v-if="item.reviewStatus === 1">通过</span>
                             <span class="text-danger" v-if="item.reviewStatus === 2">作废</span>
                         </td>

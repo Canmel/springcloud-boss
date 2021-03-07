@@ -107,13 +107,13 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     private String endDate;
 
     /**
-     * 开始复核时间，用于查询
+     * 开始审核时间，用于查询
      */
     @TableField(exist = false)
     private String startDateReview;
 
     /**
-     * 结束复核时间，用于查询
+     * 结束审核时间，用于查询
      */
     @TableField(exist = false)
     private String endDateReview;
@@ -150,34 +150,34 @@ public class ZsAnswer extends BasePaginationEntity implements Serializable {
     private String endTime;
 
     /**
-     * 复核意见
+     * 审核意见
      */
     private String reviewMsg;
 
     /**
-     * 复核结果
+     * 审核结果
      */
     private Integer reviewStatus;
 
     /**
-     * 复核人
+     * 审核人
      */
     @TableField(exist = false)
     private SysUser reviewer;
 
     /**
-     * 复核人ID
+     * 审核人ID
      */
     @TableField("reviewer")
     private Integer reviewerId;
 
     /**
-     * 复核人名称
+     * 审核人名称
      */
     private String reviewerName;
 
     /**
-     * 复核时间
+     * 审核时间
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date reviewerAt;

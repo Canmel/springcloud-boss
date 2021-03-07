@@ -73,6 +73,7 @@
         WHERE
         record.status = 1
         AND shift.status = 1
+        AND record.result = 1
         AND record.creator = #{creatorId}
         AND shift.start_date = DATE_FORMAT(now(), '%Y-%m-%d')
         AND TIME_TO_SEC(now()) <![CDATA[ > ]]> TIME_TO_SEC(shift.start_time)

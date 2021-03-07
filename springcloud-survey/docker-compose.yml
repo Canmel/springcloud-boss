@@ -24,6 +24,7 @@ services:
       AUTH_PORT: 4200
       SURVEY_ENV: dev
       TZ: Asia/Shanghai
+      CTI_SERVER: 192.168.0.110
     networks:
     - survey-net
 networks:

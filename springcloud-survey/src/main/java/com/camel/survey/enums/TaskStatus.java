@@ -28,8 +28,13 @@ import java.io.Serializable;
  * @date 2019/12/6
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ZsAnswerReviewerStatus implements MyEnum {
-    INVALID(0, "未审核"), PASS(1, "通过"), REJECT(2, "驳回");
+public enum TaskStatus implements MyEnum {
+    WAITING(1, "待执行"),
+    IMMEDIATELY(2, "立即执行"),
+    NOT_START(3, "未启动"),
+    STARTED(4, "已启动"),
+    STOPED(5, "已停止"),
+    COMPLETED(6, "全部完成");
 
     /**
      * 状态码
@@ -41,9 +46,18 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
      */
     private String name;
 
-    ZsAnswerReviewerStatus(Integer code, String name) {
+    TaskStatus(Integer code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static TaskStatus getEnum(String name) {
+        for (TaskStatus enums : TaskStatus.values()) {
+            if (enums.getName().equals(name)) {
+                return enums;
+            }
+        }
+        return null;
     }
 
     public Integer getCode() {
@@ -68,8 +82,8 @@ public enum ZsAnswerReviewerStatus implements MyEnum {
         return this.code;
     }
 
-    public static ZsAnswerReviewerStatus getEnumByValue(Integer value) {
-        for (ZsAnswerReviewerStatus enums : ZsAnswerReviewerStatus.values()) {
+    public static TaskStatus getEnumByValue(Integer value) {
+        for (TaskStatus enums : TaskStatus.values()) {
             if (enums.getValue().equals(value)) {
                 return enums;
             }

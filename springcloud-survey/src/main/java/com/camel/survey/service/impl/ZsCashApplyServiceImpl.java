@@ -25,6 +25,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -60,6 +61,9 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
 
     @Autowired
     private ZsAgencyFeeService agencyFeeService;
+
+    @Value("wx.apiclient_cert_path")
+    private String APICLIENT_CERT;
 
     @Override
     @Transactional
@@ -116,7 +120,7 @@ public class ZsCashApplyServiceImpl extends ServiceImpl<ZsCashApplyMapper, ZsCas
             return ResultUtil.success("提交数据重复或您选择的数据不在审核状态");
         }
         String appkey = wxConstants.getAppkey();// 微信商户秘钥, 根据实际情况填写
-        String certPath = "apiclient_cert.p12";// 微信商户证书路径, 根据实际情况填写
+        String certPath = APICLIENT_CERT;// 微信商户证书路径, 根据实际情况填写
 
         TransfersDto model = new TransfersDto();// 微信接口请求参数, 根据实际情况填写
         model.setMch_appid(wxConstants.getAppid()); // 申请商户号的appid或商户号绑定的appid

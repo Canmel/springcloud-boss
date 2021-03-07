@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -62,6 +63,8 @@ public class ZsWorkShiftController extends BaseCommonController {
     @AuthIgnore
     @GetMapping("/all")
     public Result all(ZsWorkShift entity, String openId) {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        entity.setStartDate(sf.format(new Date()));
         return ResultUtil.success(service.all(entity, openId));
     }
 

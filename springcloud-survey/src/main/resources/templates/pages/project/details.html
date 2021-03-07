@@ -144,6 +144,16 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">外呼接入号：</label>
+                            <div class="col-sm-8">
+                                <select name="pstnNumber" class="form-control" type="text" v-model="new_survey.pstnNumber">
+                                    <option v-for="item in pstnnumbers" :value="item">{{item}}</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group" v-if="edit_mode==false">
                             <label class="col-sm-3 control-label">视频监控：</label>
                             <div class="col-sm-8">
@@ -279,6 +289,8 @@
                 status: ''
             },
             surveies: [],
+            // 外呼号码
+            pstnnumbers: [],
             calTypeStage: [
                 {
                     from: 0,
@@ -313,8 +325,15 @@
             this.loadExam();
             this.loadEntity();
             this.loadProjects();
+            this.loadPstnnumber();
         },
         methods: {
+            loadPstnnumber() {
+                let that = this;
+                AJAX.GET("pstnnumber/all", {}, function (resp) {
+                    that.pstnnumbers = resp.data;
+                })
+            },
             calValueFrom(item, index){
                 if(index > 0) {
                     let preData = this.calTypeStage[index - 1];
@@ -454,6 +473,7 @@
                     monit: 0,
                     informationTemplate: item.informationTemplate,
                     unclearCount: item.unclearCount,
+                    pstnNumber: item.pstnNumber
                 }
             },
             showSurveyDetails(item) {

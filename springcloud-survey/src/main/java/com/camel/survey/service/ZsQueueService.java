@@ -1,5 +1,6 @@
 package com.camel.survey.service;
 
+import cn.hutool.json.JSONArray;
 import com.camel.survey.model.ZsOption;
 import com.camel.survey.model.ZsQueue;
 import com.baomidou.mybatisplus.service.IService;
@@ -32,4 +33,6 @@ public interface ZsQueueService extends IService<ZsQueue> {
     void push(ZsQueue queue);
 
     void pull(ZsQueue queue);
+
+    JSONArray selectIVRS();
 }

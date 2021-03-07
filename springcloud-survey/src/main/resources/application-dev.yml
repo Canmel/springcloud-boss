@@ -142,10 +142,11 @@ wx:
     appkey: d4ahjqulmuvuzyna2lj00nv1a40ww54u
     mchid: 1511764991
     mchname: 赛炜大数据服务有限公司
+  apiclient_cert_path: apiclient_cert.p12
 
 cti:
   record-file:
     url: http://122.226.162.131/yscrm/servlet/filedown?filename=
   system:
     url: http://122.226.162.131/yscrm/servlet/filedown?filename=
-  baseUrl: 192.168.0.110
+  baseUrl: ${CTI_SERVER}
