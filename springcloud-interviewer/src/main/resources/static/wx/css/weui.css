@@ -1014,6 +1014,7 @@ button.weui-btn_inline,input.weui-btn_inline,button.weui-btn_mini,input.weui-btn
 
 .weui-input {
     width: 100%;
+    padding-left: 10px;
     border: 0;
     outline: 0;
     -webkit-appearance: none;
@@ -1301,6 +1302,7 @@ button.weui-form-preview__btn {
 
 .weui-cell_select .weui-select {
     padding-right: 30px;
+    padding-left: 10px;
 }
 
 .weui-cell_select .weui-cell__bd:after {
@@ -1409,7 +1411,7 @@ button.weui-form-preview__btn {
 }
 
 .weui-cell_select-after .weui-select {
-    padding-left: 0;
+    padding-left: 10px;
 }
 
 .weui-cell_select-after.weui-cell_access .weui-cell__bd {
