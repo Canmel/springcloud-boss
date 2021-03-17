@@ -129,8 +129,8 @@ logging:
 
 qiniu:
   acount:
-    access_key: ${ACCESS_KEY}
-    secret_key: ${SECRET_KEY}
+    access_key: cGcaCWf5fNNdo0SXRK_8xXV8vXgVDRrG7uSXGXMn
+    secret_key: 9pucymavTRvIcKO-XLBytHaR_o_g27B0x7TPD_6N
 
 mybatis:
   type-handlers-package: com.camel.survey.enumhandler

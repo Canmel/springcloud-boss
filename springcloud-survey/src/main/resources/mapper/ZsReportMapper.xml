@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.ZsReportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.ZsReport">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="sex" property="sex"/>
+        <result column="email" property="email"/>
+        <result column="id_num" property="idNum"/>
+        <result column="school" property="school"/>
+        <result column="phone" property="phone"/>
+        <result column="adress" property="address"/>
+        <result column="work_date" property="workDate"/>
+        <result column="work_shit" property="workShit"/>
+        <result column="green_url" property="greenUrl"/>
+        <result column="epidemic_url" property="epidemicUrl"/>
+        <result column="is_pass" property="isPass" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, sex, email, id_num, school, phone, address, work_date, work_shit, green_url, epidemic_url, is_pass
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_report
+        where 1=1
+        <if test="username != null and username != ''">
+            and username like concat("%", #{username},"%")
+        </if>
+        order by
+        is_pass asc
+    </select>
+</mapper>
