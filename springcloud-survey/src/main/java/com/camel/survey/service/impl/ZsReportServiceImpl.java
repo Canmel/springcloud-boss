@@ -43,7 +43,7 @@ import java.util.List;
 public class ZsReportServiceImpl extends ServiceImpl<ZsReportMapper, ZsReport> implements ZsReportService {
 
     public static final String UPLOAD_DOCUMENT_PATH = "doc/";
-    public static final String BUCKET_NAME_URL = "http://image.meedesidy.top";
+    public static final String BUCKET_NAME_URL = "https://image.meedesidy.top";
     public static final String BUCKET_NAME = "c7-oss-store";
 
     @Autowired

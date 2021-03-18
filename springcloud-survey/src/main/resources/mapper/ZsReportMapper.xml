@@ -40,7 +40,7 @@
     </select>
 
     <select id="selectSubscribe" resultType="string">
-        select share_user from wx_subscibe where user = #{openid}
+        select share_user from wx_subscibe where user = #{openid} ORDER BY created_at desc LIMIT 1
     </select>
 
     <select id="subscribeId" resultType="integer">
