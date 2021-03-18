@@ -16,12 +16,14 @@
         <result column="work_shit" property="workShit"/>
         <result column="green_url" property="greenUrl"/>
         <result column="epidemic_url" property="epidemicUrl"/>
+        <result column="share_user" property="shareUser"/>
+        <result column="sharer" property="sharer"/>
         <result column="is_pass" property="isPass" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, username, sex, email, id_num, school, phone, address, work_date, work_shit, green_url, epidemic_url, is_pass
+        id, username, sex, email, id_num, school, phone, address, work_date, work_shit, green_url, epidemic_url, is_pass, share_user, sharer
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
@@ -35,5 +37,22 @@
         </if>
         order by
         is_pass asc
+    </select>
+
+    <select id="selectSubscribe" resultType="string">
+        select share_user from wx_subscibe where user = #{openid}
+    </select>
+
+    <select id="subscribeId" resultType="integer">
+        SELECT
+            sys_user.id
+        FROM
+            wx_user
+        LEFT JOIN sys_user ON wx_user.id_num = sys_user.id_num
+        WHERE
+            wx_user.openid = #{subscribe}
+        AND wx_user.STATUS = 1
+        AND sys_user.`status` = 1
+        LIMIT 1
     </select>
 </mapper>

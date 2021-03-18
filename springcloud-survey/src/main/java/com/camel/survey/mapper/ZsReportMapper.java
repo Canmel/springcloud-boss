@@ -17,4 +17,8 @@ import java.util.List;
 @Repository
 public interface ZsReportMapper extends BaseMapper<ZsReport> {
     List<ZsReport> list(ZsReport report);
+
+    String selectSubscribe(String openid);
+
+    Integer subscribeId(String subscribe);
 }

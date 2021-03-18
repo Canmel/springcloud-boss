@@ -23,4 +23,18 @@ public interface ZsReportService extends IService<ZsReport> {
     PageInfo<ZsReport> list(ZsReport report);
 
     String agree(Integer id);
+
+    /**
+     * 寻找推荐人
+     * @param openid
+     * @return
+     */
+    String selectSubscribe(String openid);
+
+    /**
+     * 通过推荐人找到推荐人ID
+     * @param subscribe
+     * @return
+     */
+    Integer subscribeId(String subscribe);
 }

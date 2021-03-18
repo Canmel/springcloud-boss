@@ -1,16 +1,20 @@
 package com.camel.survey.utils;
 
+import com.camel.survey.model.ZsReport;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 有什么测试的类可以测试
  */
 public class TestUtil {
     public static void main(String[] args) throws IOException {
-        ClassPathResource classPathResource = new ClassPathResource("apiclient_cert.p12");
-        classPathResource.getPath();
-        System.out.println(classPathResource.getFile().getPath());
+        ZsReport report = new ZsReport();
+        report.setWorkDate(new Date());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        System.out.println(simpleDateFormat.format(report.getWorkDate()));
     }
 }

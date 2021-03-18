@@ -9,7 +9,9 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsReport;
 import com.camel.survey.service.ZsReportService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,6 +57,16 @@ public class ZsReportController extends BaseCommonController {
     @AuthIgnore
     @PostMapping
     public Result save(@RequestBody ZsReport report) {
+        if(StringUtils.isNotBlank(report.getOpenid())) {
+            String subscribe = service.selectSubscribe(report.getOpenid());
+            if(StringUtils.isNotBlank(subscribe)) {
+                report.setShareUser(subscribe);
+                Integer subscribeUserId = service.subscribeId(subscribe);
+                if(!ObjectUtils.isEmpty(subscribeUserId)) {
+                    report.setSharer(subscribeUserId);
+                }
+            }
+        }
         return super.save(report);
     }
 

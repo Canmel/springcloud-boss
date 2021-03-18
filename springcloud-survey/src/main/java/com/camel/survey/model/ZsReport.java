@@ -74,6 +74,17 @@ public class ZsReport extends BasePaginationEntity {
      */
     private ZsYesOrNo isPass;
 
+    /**
+     * 推荐人
+     * @return
+     */
+    private String shareUser;
+
+    /**
+     * 分享人ID
+     */
+    private Integer sharer;
+
     @Override
     public String toString() {
         return "ZsReport{" +

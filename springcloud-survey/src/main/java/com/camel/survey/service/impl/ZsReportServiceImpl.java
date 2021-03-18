@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -78,7 +79,8 @@ public class ZsReportServiceImpl extends ServiceImpl<ZsReportMapper, ZsReport> i
         ZsReport report = mapper.selectById(id);
         report.setIsPass(ZsYesOrNo.YES);
         if (updateById(report)) {
-            smsService.sendWxMsg(report.getOpenid(), "您好，您申请的"+ report.getWorkDate() + " "  + report.getWorkShit() + " 在 " + report.getAddress() + " 的兼职已经审核通过，请提前半小时到达");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+            smsService.sendWxMsg(report.getOpenid(), "您好，您申请的" + simpleDateFormat.format(report.getWorkDate()) + " " + report.getWorkShit() + " 在 " + report.getAddress() + " 的兼职已经审核通过，请提前半小时到达");
             return "操作成功";
         }
         return "操作失败";
@@ -159,4 +161,13 @@ public class ZsReportServiceImpl extends ServiceImpl<ZsReportMapper, ZsReport> i
         return auth.privateDownloadUrl(publicUrl, 3600 * 24 * 30);
     }
 
+    @Override
+    public String selectSubscribe(String openid) {
+        return mapper.selectSubscribe(openid);
+    }
+
+    @Override
+    public Integer subscribeId(String subscribe) {
+        return mapper.subscribeId(subscribe);
+    }
 }
