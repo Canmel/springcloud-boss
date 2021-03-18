@@ -5,11 +5,12 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.enums.ZsYesOrNo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author baily
@@ -47,6 +48,7 @@ public class ZsReport extends BasePaginationEntity {
     /**
      * 工作日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date workDate;
     /**
      * 班次

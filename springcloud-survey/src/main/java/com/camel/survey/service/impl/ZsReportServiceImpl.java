@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author baily
@@ -47,6 +47,9 @@ public class ZsReportServiceImpl extends ServiceImpl<ZsReportMapper, ZsReport> i
 
     @Autowired
     private ZsReportMapper mapper;
+
+    @Autowired
+    private ZsSmsServiceImpl smsService;
 
     @Autowired
     private QiNiuConfig qiNiuConfig;
@@ -74,8 +77,9 @@ public class ZsReportServiceImpl extends ServiceImpl<ZsReportMapper, ZsReport> i
     public String agree(Integer id) {
         ZsReport report = mapper.selectById(id);
         report.setIsPass(ZsYesOrNo.YES);
-        if(updateById(report)) {
-           return "操作成功";
+        if (updateById(report)) {
+            smsService.sendWxMsg(report.getOpenid(), "您好，您申请的"+ report.getWorkDate() + " "  + report.getWorkShit() + " 在 " + report.getAddress() + " 的兼职已经审核通过，请提前半小时到达");
+            return "操作成功";
         }
         return "操作失败";
     }

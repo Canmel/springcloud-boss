@@ -41,4 +41,10 @@ public class ZsSmsServiceImpl implements ZsSmsService {
         this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.Sms.Survey.Topic"), sms.toString());
         return true;
     }
+
+    @Override
+    public boolean sendWxMsg(String openid, String msg) {
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.WxNotice.Topic"), msg.toString());
+        return true;
+    }
 }

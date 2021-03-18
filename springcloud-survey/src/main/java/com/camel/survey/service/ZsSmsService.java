@@ -27,4 +27,6 @@ import com.camel.survey.vo.ZsSendSms;
  **/
 public interface ZsSmsService {
     boolean send(ZsSendSms sms);
+
+    boolean sendWxMsg(String openid, String msg);
 }
