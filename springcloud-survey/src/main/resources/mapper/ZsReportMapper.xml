@@ -45,7 +45,7 @@
 
     <select id="subscribeId" resultType="integer">
         SELECT
-            sys_user.id
+            sys_user.uid
         FROM
             wx_user
         LEFT JOIN sys_user ON wx_user.id_num = sys_user.id_num
