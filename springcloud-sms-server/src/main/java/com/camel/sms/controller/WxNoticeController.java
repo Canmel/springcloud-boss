@@ -44,9 +44,8 @@ public class WxNoticeController {
     private WxNoticeService service;
 
     @JmsListener(destination = "ActiveMQ.WxNotice.Topic")
-    public Result notice(String msg) {
+    public void notice(String msg) {
         JSONObject jsonObject = (JSONObject) JSONObject.parse(msg);
         service.send(jsonObject.getString("openid"), jsonObject.getString("msg"));
-        return ResultUtil.success("发送消息成功");
     }
 }

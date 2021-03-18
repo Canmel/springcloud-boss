@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.camel.survey.service.ZsSmsService;
 import com.camel.survey.vo.ZsSendSms;
 import org.apache.activemq.command.ActiveMQTopic;
@@ -44,7 +45,10 @@ public class ZsSmsServiceImpl implements ZsSmsService {
 
     @Override
     public boolean sendWxMsg(String openid, String msg) {
-        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.WxNotice.Topic"), msg.toString());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("openid", openid);
+        jsonObject.put("msg", msg);
+        this.jmsMessagingTemplate.convertAndSend(new ActiveMQTopic("ActiveMQ.WxNotice.Topic"), jsonObject.toJSONString());
         return true;
     }
 }
