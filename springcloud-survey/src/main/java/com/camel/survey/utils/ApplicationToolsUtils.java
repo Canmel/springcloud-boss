@@ -132,7 +132,8 @@ public class ApplicationToolsUtils {
         }
     }
 
-    public boolean hasRole(OAuth2Authentication authentication, String roleName) {
+    public boolean hasRole(String roleName) {
+        OAuth2Authentication authentication = (OAuth2Authentication)SecurityContextHolder.getContext().getAuthentication();
         Collection<GrantedAuthority> auths = authentication.getAuthorities();
         for (GrantedAuthority authority: auths) {
             if(authority.getAuthority().equals(roleName)) {

@@ -47,6 +47,9 @@
         <if test="sex != null">
             and sex = #{sex}
         </if>
+        <if test="sharer != null">
+            and sharer = #{sharer}
+        </if>
         order by
         is_pass asc
     </select>

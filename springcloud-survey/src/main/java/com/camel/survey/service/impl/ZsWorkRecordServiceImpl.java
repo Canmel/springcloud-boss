@@ -87,7 +87,7 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
             }
         });
 
-        if(!applicationToolsUtils.hasRole(oAuth2Authentication, CODE_DEVOPS)) {
+        if(!applicationToolsUtils.hasRole(CODE_DEVOPS)) {
             for (int i = 0; i < workShiftList.size(); i++) {
                 if (workShiftList.get(i).getStartDate().equals(zsWorkShift.getStartDate())) {
                     if (workShiftList.get(i).getStartTime().compareTo(zsWorkShift.getEndTime()) < 0 && workShiftList.get(i).getEndTime().compareTo(zsWorkShift.getStartTime()) > 0) {

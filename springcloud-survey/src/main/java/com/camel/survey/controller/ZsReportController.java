@@ -9,10 +9,12 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsReport;
 import com.camel.survey.service.ZsReportService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.ExportExcelUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,11 +39,19 @@ public class ZsReportController extends BaseCommonController {
     private ZsReportService service;
 
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     @GetMapping
     public Result index(ZsReport report) {
+        applicationToolsUtils.currentUser().getSysRoles();
+        if(!applicationToolsUtils.hasRole("ROLE_ADMIN")) {
+            report.setSharer(applicationToolsUtils.currentUser().getUid());
+        }
         return ResultUtil.success(service.list(report));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'MANAGER')")
     @GetMapping("/download")
     public void download(ZsReport report, HttpServletResponse response) throws IOException {
         HSSFWorkbook wb = service.download(report);
@@ -53,6 +63,7 @@ public class ZsReportController extends BaseCommonController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVOPS', 'MANAGER')")
     @GetMapping("/agree/{id}")
     public Result agree(@PathVariable Integer id) {
         return ResultUtil.success(service.agree(id));
