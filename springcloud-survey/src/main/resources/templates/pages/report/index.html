@@ -6,13 +6,36 @@
         <div class="ibox-content">
 
             <div class="row">
-                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <select placeholder="请选择工作地点" class="input-sm form-control search-input"
+                           v-model="pageInfo.address">
+                        <option value="">请选择工作地点</option>
+                        <option value="宁波民调">宁波民调</option>
+                        <option value="金华民调">金华民调</option>
+                        <option value="天湖大厦">天湖大厦</option>
+                        <option value="台州民调">台州民调</option>
+                        <option value="智慧调查">智慧调查</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="请输入工作日期" class="input-sm form-control search-input"
+                           v-model="pageInfo.workDateStr">
+                </div>
+                <div class="col-sm-3">
+                    <select placeholder="请选择性别" class="input-sm form-control search-input"
+                           v-model="pageInfo.sex">
+                        <option value="">请选择性别</option>
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                </div>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" placeholder="请输入申请人姓名" class="input-sm form-control search-input"
                                v-model="pageInfo.username"> <span
                             class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button>
+                    <button type="button" class="btn btn-sm btn-success" @click="download()"> 下载健康表</button></span>
                     </div>
                 </div>
             </div>
@@ -26,7 +49,8 @@
                         <th>性别</th>
                         <th>身份证号</th>
                         <th>电话</th>
-                        <th>工作时间</th>
+                        <th>工作地点</th>
+                        <th>工作日期</th>
                         <th>报名班次</th>
                         <th>审核通过</th>
 
@@ -40,6 +64,7 @@
                         <td>{{item.sex == 1 ? "男" : "女"}}</td>
                         <td>{{item.idNum}}</td>
                         <td>{{item.phone}}</td>
+                        <td>{{item.address}}</td>
                         <td>{{item.workDate | formatOnlyDate}}</td>
                         <td>{{item.workShit}}</td>
                         <td>{{item.isPass && item.isPass.code == '0' ? '否' : '是'}}</td>
@@ -101,6 +126,24 @@
             this.loginMaster();
         },
         methods: {
+            download() {
+                let params = "";
+                if(this.pageInfo.address) {
+                    params += '&address=' + this.pageInfo.address;
+                }
+                if(this.pageInfo.workDateStr) {
+                    params += '&workDateStr=' + this.pageInfo.workDateStr;
+                }
+                if(this.pageInfo.sex) {
+                    params += '&sex=' + this.pageInfo.sex;
+                }
+                if(this.pageInfo.username) {
+                    params += '&username=' + this.pageInfo.username;
+                }
+
+                params += '&access_token=' + sessionStorage.getItem('access_token');
+                window.open('/survey/zsReport/download?' + params.substr(1));
+            },
             reviewCode(item) {
                 this.selectedItem = item;
                 $("#myModal").modal("show");

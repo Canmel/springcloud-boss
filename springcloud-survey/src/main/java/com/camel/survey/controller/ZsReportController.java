@@ -9,11 +9,18 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.model.ZsReport;
 import com.camel.survey.service.ZsReportService;
+import com.camel.survey.utils.ExportExcelUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 
 /**
  * <p>
@@ -35,6 +42,17 @@ public class ZsReportController extends BaseCommonController {
         return ResultUtil.success(service.list(report));
     }
 
+    @GetMapping("/download")
+    public void download(ZsReport report, HttpServletResponse response) throws IOException {
+        HSSFWorkbook wb = service.download(report);
+        ExportExcelUtils.export(wb, "客户信息", response);
+    }
+
+    /**
+     * 同意
+     * @param id
+     * @return
+     */
     @GetMapping("/agree/{id}")
     public Result agree(@PathVariable Integer id) {
         return ResultUtil.success(service.agree(id));
@@ -69,6 +87,23 @@ public class ZsReportController extends BaseCommonController {
         }
         return super.save(report);
     }
+
+    /**
+     * 重设response
+     *
+     * @param response
+     * @param fileName
+     * @return
+     */
+    private HttpServletResponse setHeader(HttpServletResponse response, String fileName) {
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        response.setContentType("application;charset=UTF-8");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        return response;
+    }
+
 
     @Override
     public IService getiService() {

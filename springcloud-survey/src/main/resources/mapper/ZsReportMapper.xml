@@ -11,7 +11,7 @@
         <result column="id_num" property="idNum"/>
         <result column="school" property="school"/>
         <result column="phone" property="phone"/>
-        <result column="adress" property="address"/>
+        <result column="address" property="address"/>
         <result column="work_date" property="workDate"/>
         <result column="work_shit" property="workShit"/>
         <result column="green_url" property="greenUrl"/>
@@ -34,6 +34,18 @@
         where 1=1
         <if test="username != null and username != ''">
             and username like concat("%", #{username},"%")
+        </if>
+        <if test="address != null and address != ''">
+            and address like concat("%", #{address}, "%")
+        </if>
+        <if test="workDateStr != null and workDateStr != ''">
+            and work_date like concat(#{workDateStr}, "%")
+        </if>
+        <if test="workShit != null and workShit != ''">
+            and work_shit = #{workShit}
+        </if>
+        <if test="sex != null">
+            and sex = #{sex}
         </if>
         order by
         is_pass asc

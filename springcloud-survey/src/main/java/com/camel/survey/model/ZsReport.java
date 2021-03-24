@@ -1,5 +1,6 @@
 package com.camel.survey.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -7,6 +8,7 @@ import com.camel.core.entity.BasePaginationEntity;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -73,6 +75,9 @@ public class ZsReport extends BasePaginationEntity {
      * 是否通过
      */
     private ZsYesOrNo isPass;
+
+    @TableField(exist = false)
+    private String workDateStr;
 
     /**
      * 推荐人

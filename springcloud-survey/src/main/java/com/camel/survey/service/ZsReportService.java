@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.camel.survey.model.ZsReport;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -37,4 +40,6 @@ public interface ZsReportService extends IService<ZsReport> {
      * @return
      */
     Integer subscribeId(String subscribe);
+
+    HSSFWorkbook download(ZsReport report);
 }
