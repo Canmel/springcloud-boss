@@ -14,6 +14,7 @@ import com.camel.interviewer.model.WxSubscibe;
 import com.camel.interviewer.model.WxUser;
 import com.camel.interviewer.model.WxUserForm;
 import com.camel.interviewer.service.InterviewerService;
+import com.camel.interviewer.service.WeixinStartService;
 import com.camel.interviewer.service.WxSubscibeService;
 import com.camel.interviewer.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class WxUserController extends BaseCommonController {
     private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
+    private WeixinStartService weixinStartService;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
@@ -58,6 +62,14 @@ public class WxUserController extends BaseCommonController {
     private InterviewerService interviewerService;
 
     public static final String QUEUE_NAME = "ActiveMQ.System.New.User";
+
+
+    @AuthIgnore
+    @GetMapping("/recomend")
+    public Result myRecommend(String code) {
+        WxUser wxUser = weixinStartService.getUser(code);
+        return ResultUtil.success(service.selectRecommends(wxUser.getOpenid()));
+    }
 
     @GetMapping
     private Result index(WxUserForm wxUser) {

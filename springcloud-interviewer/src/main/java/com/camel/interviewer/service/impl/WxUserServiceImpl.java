@@ -16,8 +16,11 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -62,5 +65,13 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
             wxUserMapper.list(wxUser);
         });
         return pageInfo;
+    }
+
+    @Override
+    public List<Map<String, String>> selectRecommends(String openid) {
+        if(StringUtils.isEmpty(openid)) {
+            return new ArrayList<>();
+        }
+        return wxUserMapper.selectRecommends(openid);
     }
 }

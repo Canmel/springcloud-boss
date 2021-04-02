@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -25,4 +26,6 @@ public interface WxUserMapper extends BaseMapper<WxUser> {
     List<WxUser> list(WxUser entity);
 
     List<WxZc> allWxZc();
+
+    List<Map<String, String>> selectRecommends(String openid);
 }

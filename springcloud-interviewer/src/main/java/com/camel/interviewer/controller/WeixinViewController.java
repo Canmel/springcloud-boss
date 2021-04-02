@@ -40,6 +40,12 @@ public class WeixinViewController {
     }
 
     @AuthIgnore
+    @GetMapping("/recommend")
+    public String recommend() {
+        return "recommend";
+    }
+
+    @AuthIgnore
     @GetMapping("/signIn")
     public ModelAndView signIn(String zc) {
         ModelAndView modelAndView = new ModelAndView();

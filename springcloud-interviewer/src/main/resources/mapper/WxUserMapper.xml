@@ -30,7 +30,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="status" property="status"/>
     </resultMap>
-    
+
     <resultMap id="allWxZcMap" type="com.camel.interviewer.entity.wx.WxZc">
         <id column="id" property="id"></id>
         <result column="address" property="address"></result>
@@ -79,4 +79,17 @@
     <select id="allWxZc" resultMap="allWxZcMap">
         select id, nickname, zcname, address, rixin, scene_id from sys_zc
     </select>
+
+    <select id="selectRecommends" resultType="java.util.Map">
+        SELECT
+            subs.user, subuser.username subname,  shareuser.username share,  shareuser.openid, subs.created_at
+        FROM wx_subscibe subs LEFT JOIN wx_user shareuser ON subs.share_user = shareuser.openid
+        LEFT JOIN wx_user subuser ON subuser.openid = subs.`user`
+
+        WHERE subs.`status` = 1
+        AND shareuser.openid = #{openid}
+        ORDER BY subs.created_at DESC
+    </select>
+
+
 </mapper>

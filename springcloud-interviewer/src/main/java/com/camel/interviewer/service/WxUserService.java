@@ -5,6 +5,9 @@ import com.camel.interviewer.model.WxUser;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 微信用户信息 服务类
@@ -20,4 +23,6 @@ public interface WxUserService extends IService<WxUser> {
     void updateSystem(SysUser sysUser);
 
     PageInfo<WxUser> pageQuery(WxUser wxUser);
+
+    List<Map<String, String>> selectRecommends(String openid);
 }
