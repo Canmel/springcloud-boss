@@ -3,6 +3,7 @@ package com.camel.interviewer.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.camel.core.model.SysRole;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.interviewer.feign.SpringCloudSystemFeignClient;
@@ -78,5 +79,10 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     @Override
     public List<Map<String, String>> selectRecommendSalary(String idNum) {
         return wxUserMapper.selectRecommendSalary(idNum);
+    }
+
+    @Override
+    public List<String> getLoginUserRole(WxUser wxUser) {
+        return wxUserMapper.getLoginUserRole(wxUser);
     }
 }

@@ -3,6 +3,7 @@ package com.camel.interviewer.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.interviewer.annotation.AuthIgnore;
 import com.camel.interviewer.config.WxConstants;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -66,6 +68,16 @@ public class WeixinShareController {
     @GetMapping("/getQRCode")
     private Result qrCode(String code) {
         WxUser wxUser = weixinStartService.getUser(code);
+        List<String> roleName = weixinStartService.getLoginUserRole(wxUser);
+        boolean isPartner= false;
+        for (String item: roleName) {
+            if(item.equals("Partner")) {
+                isPartner = true;
+            }
+        }
+        if(!isPartner) {
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "您目前不是合作商，不能进行该操作！请联系管理员");
+        }
         System.out.println("wxUser       ======:   " + wxUser.toString() );
         if(ObjectUtils.isEmpty(wxUser)) {
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "未找到您的相关信息，请先完善信息");

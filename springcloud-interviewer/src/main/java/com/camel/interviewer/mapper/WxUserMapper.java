@@ -1,5 +1,7 @@
 package com.camel.interviewer.mapper;
 
+import com.camel.core.model.SysRole;
+import com.camel.core.model.SysUser;
 import com.camel.interviewer.entity.wx.WxZc;
 import com.camel.interviewer.model.WxUser;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -30,4 +32,6 @@ public interface WxUserMapper extends BaseMapper<WxUser> {
     List<Map<String, String>> selectRecommends(String openid);
 
     List<Map<String, String>> selectRecommendSalary(String idNum);
+
+    List<String> getLoginUserRole(WxUser wxUser);
 }

@@ -138,11 +138,13 @@
                                 that.getSignature();
                             } else {
                                 that.userinfo = null;
+                                alert(resp.msg);
                             }
 
                         },
                         error: function (err) {
                             that.userinfo = null;
+                            alert(err.msg);
                         }
                     });
                 } else {

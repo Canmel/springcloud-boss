@@ -1,8 +1,8 @@
 package com.camel.interviewer.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.model.SysUser;
 import com.camel.interviewer.model.WxUser;
-import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -27,4 +27,6 @@ public interface WxUserService extends IService<WxUser> {
     List<Map<String, String>> selectRecommends(String openid);
 
     List<Map<String, String>> selectRecommendSalary(String idNum);
+
+    List<String> getLoginUserRole(WxUser wxUser);
 }

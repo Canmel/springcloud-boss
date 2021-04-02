@@ -97,5 +97,8 @@
         FROM zs_agency_fee fee LEFT JOIN zs_work WORK ON `work`.id = fee.work_id WHERE fee.id_num = #{idNum}
     </select>
 
-
+    <select id="getLoginUserRole" resultType="java.lang.String">
+        SELECT role.role_name from sys_user_role ur left join sys_user user on ur.user_id = `user`.uid left join sys_role role on role.role_id = ur.role_id
+        where ur.`status` = 1 and `user`.id_num = #{idNum} and user.username = #{username}
+    </select>
 </mapper>

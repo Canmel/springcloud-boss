@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -38,7 +39,7 @@ public class WeixinStartServiceImpl implements WeixinStartService {
             String responseBody = HttpUtils.httpGetMethod(WeixinStartController.USERID_URL, params);
             if (responseBody != null) {
                 tokenBody = JSONObject.parseObject(responseBody);
-                if(StringUtils.isNotBlank(tokenBody.getString("errcode"))) {
+                if (StringUtils.isNotBlank(tokenBody.getString("errcode"))) {
                     throw new NotWxExplorerException();
                 }
                 System.out.println(tokenBody.toJSONString());
@@ -47,5 +48,10 @@ public class WeixinStartServiceImpl implements WeixinStartService {
             throw new WxServerConnectException();
         }
         return wxUserService.selectByOpenid(tokenBody.getString("openid"));
+    }
+
+    @Override
+    public List<String> getLoginUserRole(WxUser wxUser) {
+        return wxUserService.getLoginUserRole(wxUser);
     }
 }
