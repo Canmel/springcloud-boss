@@ -91,5 +91,11 @@
         ORDER BY subs.created_at DESC
     </select>
 
+    <select id="selectRecommendSalary" resultType="java.util.Map">
+        SELECT
+            fee.work_name, work.work_hours, fee.salary, `work`.phone
+        FROM zs_agency_fee fee LEFT JOIN zs_work WORK ON `work`.id = fee.work_id WHERE fee.id_num = #{idNum}
+    </select>
+
 
 </mapper>

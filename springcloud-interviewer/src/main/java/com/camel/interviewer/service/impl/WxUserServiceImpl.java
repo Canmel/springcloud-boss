@@ -74,4 +74,9 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
         }
         return wxUserMapper.selectRecommends(openid);
     }
+
+    @Override
+    public List<Map<String, String>> selectRecommendSalary(String idNum) {
+        return wxUserMapper.selectRecommendSalary(idNum);
+    }
 }

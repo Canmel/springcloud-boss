@@ -46,6 +46,12 @@ public class WeixinViewController {
     }
 
     @AuthIgnore
+    @GetMapping("resalary")
+    public String resalary() {
+        return "resalary";
+    }
+
+    @AuthIgnore
     @GetMapping("/signIn")
     public ModelAndView signIn(String zc) {
         ModelAndView modelAndView = new ModelAndView();

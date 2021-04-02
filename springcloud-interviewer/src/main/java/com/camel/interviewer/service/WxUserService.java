@@ -25,4 +25,6 @@ public interface WxUserService extends IService<WxUser> {
     PageInfo<WxUser> pageQuery(WxUser wxUser);
 
     List<Map<String, String>> selectRecommends(String openid);
+
+    List<Map<String, String>> selectRecommendSalary(String idNum);
 }

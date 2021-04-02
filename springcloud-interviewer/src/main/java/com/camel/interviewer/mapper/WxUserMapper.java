@@ -28,4 +28,6 @@ public interface WxUserMapper extends BaseMapper<WxUser> {
     List<WxZc> allWxZc();
 
     List<Map<String, String>> selectRecommends(String openid);
+
+    List<Map<String, String>> selectRecommendSalary(String idNum);
 }

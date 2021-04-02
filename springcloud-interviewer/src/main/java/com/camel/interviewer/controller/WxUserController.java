@@ -156,6 +156,13 @@ public class WxUserController extends BaseCommonController {
         return ResultUtil.success(interviewerService.AllZc());
     }
 
+    @AuthIgnore
+    @GetMapping("/recommendSalary")
+    public Result recommendSalary(String code) {
+        WxUser wxUser = weixinStartService.getUser(code);
+        return ResultUtil.success(service.selectRecommendSalary(wxUser.getIdNum()));
+    }
+
     @Autowired
     private WxUserService service;
 
