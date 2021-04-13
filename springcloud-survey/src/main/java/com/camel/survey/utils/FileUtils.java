@@ -59,6 +59,7 @@ public class FileUtils {
         try {
             //循环读取文件路径集合，获取每一个文件的路径
             for (ZsCdrinfo cdrinfo : filePaths) {
+                System.out.println(cdrinfo.getRecordFile());
                 InputStream inputFile = getInputStreamFromNetFileByUrl(BASE_FILE_PATH + cdrinfo.getRecordFile() + "&showname=1");
                 BufferedInputStream bis = new BufferedInputStream(inputFile);
                 //将文件写入zip内，即将文件进行打包
