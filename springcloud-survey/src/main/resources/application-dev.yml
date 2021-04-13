@@ -146,7 +146,7 @@ wx:
 
 cti:
   record-file:
-    url: http://122.226.162.131/yscrm/servlet/filedown?filename=
+    url: http://tj.svdata.cn/yscrm/servlet/filedown?filename=
   system:
-    url: http://122.226.162.131/yscrm/servlet/filedown?filename=
+    url: http://tj.svdata.cn/yscrm/servlet/filedown?filename=
   baseUrl: ${CTI_SERVER}

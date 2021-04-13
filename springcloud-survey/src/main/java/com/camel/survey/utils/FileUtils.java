@@ -96,15 +96,20 @@ public class FileUtils {
      *  
      */
     public static InputStream getInputStreamFromNetFileByUrl(String strUrl) {
+        System.out.println(strUrl);
         try {
             URL url = new URL(strUrl);
             LoggerFactory.getLogger(FileUtils.class).info(strUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5 * 1000);
+            conn.setConnectTimeout(50 * 1000);
             return conn.getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        getInputStreamFromNetFileByUrl("http://tj.svdata.cn/yscrm/servlet/filedown?filename=/YunEasy/FsPbx/CTI/DATA/recoredings/2020-11-25/cti_record_13566805255_1606301310105942_7e8f6d13-5353-4985-b85f-b06866dc0f75.mp3"  + "&showname=1");
     }
 }
