@@ -140,6 +140,11 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
      */
     private Integer xintf;
 
+    /**
+     * 问卷ID
+     */
+    private Integer surveyId;
+
     @Override
     public String toString() {
         return "ZsCallPlan{" +

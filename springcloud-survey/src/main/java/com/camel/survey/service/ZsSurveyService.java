@@ -130,4 +130,12 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
     Result check(Integer id);
 
     ZsSign selectTotal(Integer surveyId, Integer id, ZsSign zsDynamicView);
+
+    /**
+     * 判断号码是否可以拨打
+     * @param taskid
+     * @param tel
+     * @return
+     */
+    boolean telValid(Integer id, String taskid, String tel);
 }
