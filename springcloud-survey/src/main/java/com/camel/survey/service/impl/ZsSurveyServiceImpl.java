@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -107,6 +108,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Autowired
     private ZsWorkShiftService zsWorkShiftService;
+
+    @Autowired
+    private ZsPhoneInformationService phoneInformationService;
 
     public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
@@ -462,5 +466,20 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         zsDynamicView.setLogicInvalidNum((BigDecimal) result.get("logic_invalid_num"));
         zsDynamicView.setCallLastsTime((Double) result.get("call_lasts_time"));
         return zsDynamicView;
+    }
+
+    @Override
+    public boolean telValid(Integer id, String taskid, String tel) {
+        ZsSurvey survey = mapper.selectById(id);
+        List<ZsOption> options = optionService.selectBySurveyId(id);
+        ZsPhoneInformation phoneInformation = new ZsPhoneInformation();
+        phoneInformation.setMobile(tel);
+        phoneInformation.setSurveyId(id);
+        List<ZsPhoneInformation> informations = phoneInformationService.selectByMobileAndSurvey(phoneInformation);
+        ZsPhoneInformation information = null;
+        if(CollectionUtil.isEmpty(informations)) {
+
+        }
+        return true;
     }
 }

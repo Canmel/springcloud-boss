@@ -83,6 +83,7 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
         jsonObject.set("pstnNumber", entity.getPstnNumber());
         jsonObject.set("max_concurrent_num", entity.getMaxConcurrentNum().toString());
         jsonObject.set("transName", entity.getTransName());
+//        jsonObject.set("", "http://diaocha.natapp1.cc/");
         HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/createtask.json");
     }
 

@@ -49,6 +49,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-sm-3 control-label">调查问卷：</label>
+                    <div class="col-sm-8">
+                        <select name="surveyId" class="form-control" type="text" v-model="entity.surveyId">
+                            <option v-for="item in surveies" :value="item.id">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3">
                         <button type="button" class="btn btn-success" @click="save">提交</button>
                         <button type="button" class="btn" @click="cancel">取消</button>
@@ -75,6 +84,7 @@
                 pstnNumber: "",
                 maxConcurrentNum: 1
             },
+            surveies: [],
             pstnnumbers: [],
             trans: [],
             queues: [],
@@ -87,8 +97,15 @@
         created: function () {
             this.loadPstnnumber();
             this.loadQueues();
+            this.loadSurveys();
         },
         methods: {
+            loadSurveys() {
+                let that = this;
+                AJAX.GET("zsSurvey/mine", {}, function (resp) {
+                    that.surveies = resp.data;
+                })
+            },
             loadPstnnumber() {
                 let that = this;
                 AJAX.GET("pstnnumber/all", {}, function (resp) {
