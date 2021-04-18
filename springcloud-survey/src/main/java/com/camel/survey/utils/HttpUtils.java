@@ -71,6 +71,7 @@ public class HttpUtils {
         String resp = "";
         try {
             resp = HttpUtil.createPost("http://" + baseUrl + path).header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
+            System.out.println(resp);
             JSONObject respObject = JSONUtil.parseObj(resp);
             String statuscode = respObject.getStr(CTI_RESP_STATUS);
             if (!statuscode.equals(CtiResult.SUCCESS.getCode())) {
