@@ -23,6 +23,7 @@ public interface ZsPhoneInformationService extends IService<ZsPhoneInformation> 
 
     List<ZsPhoneInformation> selectByMobileAndSurvey(ZsPhoneInformation zsPhoneInformation);
 
-    List<ZsPhoneInformation> selectBySurveyId(Integer surveyId);
+    List<Object> selectBySurveyId(Integer surveyId, Integer from);
 
+    Integer selectBySurveyIdCount(Integer surveyId);
 }

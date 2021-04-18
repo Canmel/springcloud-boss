@@ -70,9 +70,16 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
     }
 
     @Override
-    public List<ZsPhoneInformation> selectBySurveyId(Integer surveyId) {
+    public List<Object> selectBySurveyId(Integer surveyId, Integer pageNum) {
+        Wrapper<ZsPhoneInformation> wrapper = new EntityWrapper();
+        wrapper.eq("survey_id", surveyId);
+        return PageHelper.startPage(pageNum, 1000).doSelectPageInfo(()-> selectList(wrapper)).getList();
+    }
+
+    @Override
+    public Integer selectBySurveyIdCount(Integer surveyId) {
         Wrapper wrapper = new EntityWrapper();
         wrapper.eq("survey_id", surveyId);
-        return selectList(wrapper);
+        return selectCount(wrapper);
     }
 }

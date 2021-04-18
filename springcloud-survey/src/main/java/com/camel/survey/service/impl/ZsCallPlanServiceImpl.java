@@ -187,16 +187,22 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
 
     @Override
     public Boolean uploadFromSurvey(ZsCallPlan callPlan) {
-        List<ZsPhoneInformation> informations = phoneInformationService.selectBySurveyId(callPlan.getSurveyId());
-        StringBuilder builder = new StringBuilder();
-        for (ZsPhoneInformation item: informations) {
-            builder.append(item.getMobile());
-            builder.append(",");
+        Integer count = phoneInformationService.selectBySurveyIdCount(callPlan.getSurveyId());
+
+        for (int i = 0; i < Math.ceil(count/1000) ; i++) {
+            List<Object> informations = phoneInformationService.selectBySurveyId(callPlan.getSurveyId(), i);
+            StringBuilder builder = new StringBuilder();
+            for (Object item: informations) {
+                ZsPhoneInformation information = (ZsPhoneInformation) item;
+                builder.append(information.getMobile());
+                builder.append(",");
+            }
+            JSONObject jsonObject = JSONUtil.createObj();
+            jsonObject.set("taskid", callPlan.getTaskId());
+            jsonObject.set("telList", StringUtils.trimTrailingCharacter(builder.toString(), ','));
+            HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
         }
-        JSONObject jsonObject = JSONUtil.createObj();
-        jsonObject.set("taskid", callPlan.getTaskId());
-        jsonObject.set("telList", StringUtils.trimTrailingCharacter(builder.toString(), ','));
-        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
+
         return true;
     }
 }
