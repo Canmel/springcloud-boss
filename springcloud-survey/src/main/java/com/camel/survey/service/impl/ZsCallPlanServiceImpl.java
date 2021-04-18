@@ -189,7 +189,7 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     public Boolean uploadFromSurvey(ZsCallPlan callPlan) {
         Integer count = phoneInformationService.selectBySurveyIdCount(callPlan.getSurveyId());
 
-        for (int i = 0; i < Math.ceil(count/1000) ; i++) {
+        for (int i = 0; i <= Math.ceil(count/1000.0) ; i++) {
             List<Object> informations = phoneInformationService.selectBySurveyId(callPlan.getSurveyId(), i);
             StringBuilder builder = new StringBuilder();
             for (Object item: informations) {
