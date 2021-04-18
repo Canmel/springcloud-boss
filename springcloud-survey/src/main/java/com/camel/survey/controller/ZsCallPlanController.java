@@ -7,6 +7,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsCallPlan;
 import com.camel.survey.service.ZsCallPlanService;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,6 +84,12 @@ public class ZsCallPlanController extends BaseCommonController {
     public Result upload(@RequestParam MultipartFile file, @PathVariable Integer id) {
         service.uploadNumers(file, id);
         return ResultUtil.success("号码信息上传成功！");
+    }
+
+    @GetMapping("/uploadFromSurvey/{id}")
+    public Result uploadFromSurvey(@PathVariable Integer id) {
+        ZsCallPlan callPlan = service.selectById(id);
+        return ResultUtil.success(service.uploadFromSurvey(callPlan));
     }
 
     @PutMapping

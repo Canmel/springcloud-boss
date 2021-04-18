@@ -27,6 +27,7 @@
                     <tr>
                         <th>序号</th>
                         <th>任务名称</th>
+                        <th>问卷名称</th>
                         <th>转接类型</th>
                         <th>转接对象</th>
                         <th>外线接入号</th>
@@ -48,6 +49,7 @@
                     <tr v-for="(item, index) in items">
                         <td scope="row">{{(pageInfo.pageNum - 1) * 10 + index + 1}}</td>
                         <td><span class="click-span" v-on:click="details(item)">{{item.taskId}}</span></td>
+                        <td>{{item.survey ? item.survey.name : ""}}</td>
                         <td>{{item.transType ? item.transType.name : ""}}</td>
                         <td>{{item.transName}}</td>
                         <td>{{item.pstnNumber}}</td>
@@ -109,6 +111,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-success" v-on:click="imprtFromSurvey()">从问卷中导入</button>
                     <button type="button" class="btn btn-success" v-on:click="saveNumber()">保存</button>
                 </div>
             </div><!-- /.modal-content -->
@@ -328,6 +331,13 @@
                     that.pagequery();
                 })
             },
+            imprtFromSurvey() {
+                let url = "zsCallPlan/uploadFromSurvey/" + this.selectedItem.id;
+                AJAX.GET(url, {}, function (resp) {
+                    toastr.success(resp.msg);
+                    $("#myModal").modal("hide");
+                })
+            },
             saveNumber() {
                 let that = this;
                 let formData = new FormData($('#uploadForm')[0]);
@@ -344,12 +354,11 @@
                     contentType: false,
                 }).success(function (resp) {
                     toastr.success(resp.msg);
-                    $("#myModal").modal('hide');
                     that.pagequery();
                 }).error(function () {
                     alert("上传失败");
-                    $("#myModal").modal("hide");
                 });
+                $("#myModal").modal("hide");
             },
             details(item) {
                 this.selectedItem = item;

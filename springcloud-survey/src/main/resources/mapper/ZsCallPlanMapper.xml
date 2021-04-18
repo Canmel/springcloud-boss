@@ -38,24 +38,28 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
+        <association property="survey" javaType="com.camel.survey.model.ZsSurvey">
+            <id property="id" column="survey_id"/>
+            <result property="name" column="survey_name" />
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, trans_name, task_id, trans_type, pstn_number, task_status, max_concurrent_num, playfile_url, ro_name, created_at, creator, status,
-        tot_cust, tot_callsuc, tot_uncall, tot_failure, tot_success, tot_tocustomer, tot_callsuc_rate, tot_uncall_rate, tot_success_rate, tot_tocustomer_rate,
-        hit_rate, acw_time, redial_times, min_redial_interval, max_ring_time, xintf
+        p.id, p.name, p.trans_name, p.task_id, p.trans_type, p.pstn_number, p.task_status, p.max_concurrent_num, p.playfile_url, p.ro_name, p.created_at, p.creator, p.status,
+        tot_cust, p.tot_callsuc, p.tot_uncall, p.tot_failure, p.tot_success, p.tot_tocustomer, p.tot_callsuc_rate, p.tot_uncall_rate, p.tot_success_rate, p.tot_tocustomer_rate,
+        hit_rate, p.acw_time, p.redial_times, p.min_redial_interval, p.max_ring_time, p.xintf, p.survey_id, survey.name survey_name
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         from
-        zs_call_plan
+        zs_call_plan p LEFT JOIN zs_survey survey ON p.survey_id = survey.id
         <where>
-            status = 1
+            p.status = 1
             <if test="taskId != null and taskId != ''">
-                AND task_id like concat("%", #{taskId}, "%")
+                AND p.task_id like concat("%", #{taskId}, "%")
             </if>
         </where>
     </select>

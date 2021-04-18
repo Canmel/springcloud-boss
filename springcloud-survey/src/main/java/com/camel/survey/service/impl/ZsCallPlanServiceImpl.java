@@ -15,7 +15,11 @@ import com.camel.survey.enums.TaskStatus;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.mapper.ZsCallPlanMapper;
 import com.camel.survey.model.ZsCallPlan;
+import com.camel.survey.model.ZsPhoneInformation;
+import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsCallPlanService;
+import com.camel.survey.service.ZsPhoneInformationService;
+import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.utils.HttpUtils;
 import com.github.pagehelper.PageInfo;
@@ -23,8 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -45,6 +51,12 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
+
+    @Autowired
+    private ZsPhoneInformationService phoneInformationService;
+
+    @Autowired
+    private ZsSurveyService surveyService;
 
     @Override
     public PageInfo<ZsCallPlan> list(ZsCallPlan entity) {
@@ -171,5 +183,20 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
             System.out.println(e.getMessage());
             throw new SourceDataNotValidException(e.getMessage());
         }
+    }
+
+    @Override
+    public Boolean uploadFromSurvey(ZsCallPlan callPlan) {
+        List<ZsPhoneInformation> informations = phoneInformationService.selectBySurveyId(callPlan.getSurveyId());
+        StringBuilder builder = new StringBuilder(",");
+        for (ZsPhoneInformation item: informations) {
+            builder.append(item.getMobile());
+            builder.append(",");
+        }
+        JSONObject jsonObject = JSONUtil.createObj();
+        jsonObject.set("taskid", callPlan.getTaskId());
+        jsonObject.set("telList", StringUtils.trimTrailingCharacter(builder.toString(), ','));
+        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
+        return true;
     }
 }

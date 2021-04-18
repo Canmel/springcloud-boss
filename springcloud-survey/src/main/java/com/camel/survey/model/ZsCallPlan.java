@@ -1,5 +1,6 @@
 package com.camel.survey.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -144,6 +145,12 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
      * 问卷ID
      */
     private Integer surveyId;
+
+    /**
+     * 问卷
+     */
+    @TableField(exist = false)
+    private ZsSurvey survey;
 
     @Override
     public String toString() {

@@ -69,4 +69,10 @@ public class ZsPhoneInformationServiceImpl extends ServiceImpl<ZsPhoneInformatio
         return selectList(zsPhoneInformationWrapper);
     }
 
+    @Override
+    public List<ZsPhoneInformation> selectBySurveyId(Integer surveyId) {
+        Wrapper wrapper = new EntityWrapper();
+        wrapper.eq("survey_id", surveyId);
+        return selectList(wrapper);
+    }
 }
