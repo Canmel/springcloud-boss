@@ -188,7 +188,7 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     @Override
     public Boolean uploadFromSurvey(ZsCallPlan callPlan) {
         List<ZsPhoneInformation> informations = phoneInformationService.selectBySurveyId(callPlan.getSurveyId());
-        StringBuilder builder = new StringBuilder(",");
+        StringBuilder builder = new StringBuilder();
         for (ZsPhoneInformation item: informations) {
             builder.append(item.getMobile());
             builder.append(",");

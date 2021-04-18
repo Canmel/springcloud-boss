@@ -70,6 +70,7 @@ public class HttpUtils {
     public static JSON post(JSONObject jsonObject, String baseUrl, String path) {
         String resp = "";
         try {
+            System.out.println(jsonObject.toJSONString(1));
             resp = HttpUtil.createPost("http://" + baseUrl + path).header("Content-Type", "application/json; charset=UTF-8").body(jsonObject.toString(), "application/json").execute().body();
             System.out.println(resp);
             JSONObject respObject = JSONUtil.parseObj(resp);
