@@ -17,6 +17,13 @@ public class ApiController {
     @Autowired
     private ZsSurveyService surveyService;
 
+    /**
+     *
+     * @param id
+     * @param taskid
+     * @param tel
+     * @return
+     */
     @AuthIgnore
     @GetMapping("/valid/{id}")
     public JSON valid(@PathVariable Integer id, String taskid, String tel) {

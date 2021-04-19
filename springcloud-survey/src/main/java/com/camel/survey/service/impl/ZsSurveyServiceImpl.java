@@ -1,6 +1,7 @@
 package com.camel.survey.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -44,25 +46,25 @@ import java.util.stream.Collectors;
 /**
  * 　　　　　　　 ┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━━━┛┻┓
- * 　　　　　　　┃         ┃ 　
+ * 　　　　　　　┃         ┃
  * 　　　　　　　┃    ━    ┃
  * 　　　　　　　┃  >   <  ┃
  * 　　　　　　　┃         ┃
  * 　　　　　　　┃... ⌒ ...┃
  * 　　　　　　　┃         ┃
- *             ┗━┓     ┏━┛
- *               ┃     ┃　Code is far away from bug with the animal protecting　　　　　　　　　　
- *               ┃     ┃   神兽保佑,代码无bug
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┃  　　　　　　
- *               ┃     ┃        < 服务实现类>
- *               ┃     ┃　　　　　　　　　　　
- *               ┃     ┗━━━━┓   @author baily
- *               ┃          ┣┓
- *               ┃          ┏┛  @since 1.0
- *               ┗┓┓┏━━━━┳┓┏┛
- *                ┃┫┫    ┃┫┫    @date 2019-12-06
- *                ┗┻┛    ┗┻┛
+ * ┗━┓     ┏━┛
+ * ┃     ┃　Code is far away from bug with the animal protecting
+ * ┃     ┃   神兽保佑,代码无bug
+ * ┃     ┃
+ * ┃     ┃
+ * ┃     ┃        < 服务实现类>
+ * ┃     ┃
+ * ┃     ┗━━━━┓   @author baily
+ * ┃          ┣┓
+ * ┃          ┏┛  @since 1.0
+ * ┗┓┓┏━━━━┳┓┏┛
+ * ┃┫┫    ┃┫┫    @date 2019-12-06
+ * ┗┻┛    ┗┻┛
  */
 @Service
 public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> implements ZsSurveyService {
@@ -127,10 +129,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             applicationToolsUtils.allUsers().forEach(sysUser -> {
                 if (sysUser.getUid().equals(e.getCreatorId())) {
                     e.setCreator(sysUser);
-                    if(e.getCreatorId().equals(user.getUid())||zsWorkShiftService.selectByUidandSurveyId(user.getUid(),e.getId())!=null){
+                    if (e.getCreatorId().equals(user.getUid()) || zsWorkShiftService.selectByUidandSurveyId(user.getUid(), e.getId()) != null) {
                         e.setAuthority(ZsYesOrNo.YES);
-                    }
-                    else{
+                    } else {
                         e.setAuthority(ZsYesOrNo.NO);
                     }
                 }
@@ -152,7 +153,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public ZsSurvey selectById(Serializable id) {
         ZsSurvey entity = mapper.selectById(id);
-        if(ObjectUtils.isEmpty(entity)) {
+        if (ObjectUtils.isEmpty(entity)) {
             return entity;
         }
         applicationToolsUtils.allUsers().forEach(sysUser -> {
@@ -283,6 +284,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     /**
      * 通过问卷ID发短信给相应的用户
+     *
      * @param survey 问卷
      */
     public void sendMessage(ZsSurvey survey, String contxt) {
@@ -343,8 +345,8 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Override
     public ZsSurvey getByNameFromList(String name, List<ZsSurvey> surveys) {
-        for (ZsSurvey zsSurvey: surveys) {
-            if(zsSurvey.getName().equals(name)) {
+        for (ZsSurvey zsSurvey : surveys) {
+            if (zsSurvey.getName().equals(name)) {
                 return zsSurvey;
             }
         }
@@ -378,7 +380,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         questionService.insertBatch(uniqueQuestions);
         uniqueQuestions.forEach(q -> {
             options.forEach((o) -> {
-                if(q.getName().equals(o.getQuestion())){
+                if (q.getName().equals(o.getQuestion())) {
                     o.setQuestionId(q.getId());
                     o.setCurrent(0);
                     o.setCreatorId(user.getUid());
@@ -401,16 +403,16 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public Result stopOrUse(Integer id) {
         ZsSurvey survey = mapper.selectById(id);
-        if(!ObjectUtils.isEmpty(survey)) {
-            if(survey.getState().getValue() == ZsSurveyState.COLLECTING.getValue() ) {
+        if (!ObjectUtils.isEmpty(survey)) {
+            if (survey.getState().getValue() == ZsSurveyState.COLLECTING.getValue()) {
                 survey.setState(ZsSurveyState.CLOSED);
-                if(this.updateById(survey)) {
+                if (this.updateById(survey)) {
                     return ResultUtil.success("回收问卷成功");
                 }
             }
-            if(survey.getState().getValue() == ZsSurveyState.CLOSED.getValue() ) {
+            if (survey.getState().getValue() == ZsSurveyState.CLOSED.getValue()) {
                 survey.setState(ZsSurveyState.COLLECTING);
-                if(this.updateById(survey)) {
+                if (this.updateById(survey)) {
                     return ResultUtil.success("启用问卷成功");
                 }
             }
@@ -427,23 +429,23 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         Integer count = answerService.selectCount(wrapper);
         wrapper.in("review_status", new Integer[]{1, 2});
         Integer countReviews = answerService.selectCount(wrapper);
-        if(0 == count || 0 == countReviews) {
+        if (0 == count || 0 == countReviews) {
             return "0";
         }
         NumberFormat format = NumberFormat.getPercentInstance();
         format.setMaximumFractionDigits(2);
         format.setMinimumFractionDigits(2);
 
-        return format.format(countReviews.floatValue()/count.floatValue());
+        return format.format(countReviews.floatValue() / count.floatValue());
     }
 
     @Override
     public Result check(Integer id) {
         Wrapper wrapper = new EntityWrapper();
-        wrapper.eq("survey_id",id);
-        wrapper.eq("checked",0);
-        wrapper.eq("status",1);
-        List<ZsAnswer> answers =answerService.selectList(wrapper);
+        wrapper.eq("survey_id", id);
+        wrapper.eq("checked", 0);
+        wrapper.eq("status", 1);
+        List<ZsAnswer> answers = answerService.selectList(wrapper);
         List<ZsWork> zsWorks = mapper.checkAnswers(id);
         zsWorks.forEach(w -> {
             w.setSource(ZsWorkSource.CHECKED);
@@ -451,7 +453,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         answers.forEach(a -> {
             a.setChecked(1);
         });
-        if(answerService.updateBatchById(answers)&&zsWorkService.insertBatch(zsWorks)){
+        if (answerService.updateBatchById(answers) && zsWorkService.insertBatch(zsWorks)) {
             return ResultUtil.success("结算成功");
         }
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "结算失败");
@@ -471,14 +473,38 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public boolean telValid(Integer id, String taskid, String tel) {
         ZsSurvey survey = mapper.selectById(id);
-        List<ZsOption> options = optionService.selectBySurveyId(id);
+        List<ZsQuestion> questions = questionService.selectBySurveyId(id);
+
         ZsPhoneInformation phoneInformation = new ZsPhoneInformation();
         phoneInformation.setMobile(tel);
         phoneInformation.setSurveyId(id);
         List<ZsPhoneInformation> informations = phoneInformationService.selectByMobileAndSurvey(phoneInformation);
-        ZsPhoneInformation information = null;
-        if(CollectionUtil.isEmpty(informations)) {
 
+        ZsPhoneInformation information = null;
+        if (!CollectionUtil.isEmpty(informations)) {
+            information = informations.get(0);
+        }
+        if (!ObjectUtils.isEmpty(information)) {
+            String infoStr = information.getInformation();
+            JSONObject jsonObject = (JSONObject) JSONObject.parse(infoStr);
+            for (ZsQuestion q : questions) {
+                if (StringUtils.isEmpty(q.getConfigType())) {
+                    String v = jsonObject.getString(q.getConfigType());
+                    if (!StringUtils.isEmpty(v)) {
+                        List<ZsOption> options = optionService.selectByQuestionId(q.getId());
+                        for (ZsOption o : options) {
+                            // 有配额 有当前值
+                            if(v.equals(o.getName())) {
+                                if(!ObjectUtils.isEmpty(o.getConfigration()) && !ObjectUtils.isEmpty(o.getCurrent())) {
+                                    if(o.getConfigration() <= o.getCurrent()) {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         return true;
     }

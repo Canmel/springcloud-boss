@@ -85,6 +85,11 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
     private Integer answerCount;
 
     /**
+     * 配额类型
+     */
+    private String configType;
+
+    /**
      * 选项
      */
     @TableField(exist = false)
