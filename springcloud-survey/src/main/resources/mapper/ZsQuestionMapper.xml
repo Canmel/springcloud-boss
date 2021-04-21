@@ -15,6 +15,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="creator" property="creatorId"/>
         <result column="compulsory" property="compulsory"/>
+        <result column="config_type" property="configType"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -35,6 +36,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="creator" property="creatorId"/>
         <result column="compulsory" property="compulsory"/>
+        <result column="config_type" property="configType"/>
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
@@ -44,7 +46,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, order_num, survey_id, type, max_select, min_select, status, created_at, creator, compulsory
+        id, name, order_num, survey_id, type, max_select, min_select, status, created_at, creator, compulsory, config_type
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

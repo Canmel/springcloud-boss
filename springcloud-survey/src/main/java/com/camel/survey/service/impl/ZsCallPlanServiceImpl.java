@@ -202,7 +202,6 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
             jsonObject.set("telList", StringUtils.trimTrailingCharacter(builder.toString(), ','));
             HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
         }
-
         return true;
     }
 }

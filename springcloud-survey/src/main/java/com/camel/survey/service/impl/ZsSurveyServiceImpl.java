@@ -488,7 +488,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             String infoStr = information.getInformation();
             JSONObject jsonObject = (JSONObject) JSONObject.parse(infoStr);
             for (ZsQuestion q : questions) {
-                if (StringUtils.isEmpty(q.getConfigType())) {
+                if (!StringUtils.isEmpty(q.getConfigType())) {
                     String v = jsonObject.getString(q.getConfigType());
                     if (!StringUtils.isEmpty(v)) {
                         List<ZsOption> options = optionService.selectByQuestionId(q.getId());
