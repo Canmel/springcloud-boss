@@ -22,4 +22,6 @@ public interface ZsCdrinfoMapper extends BaseMapper<ZsCdrinfo> {
     ZsCdrinfo details(String id);
 
     List<ZsCdrinfo> selectListByAgents(Set<String> agents);
+
+    Integer selectAvgTime(Integer id);
 }

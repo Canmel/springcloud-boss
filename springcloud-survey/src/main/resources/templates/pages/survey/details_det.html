@@ -74,13 +74,14 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-sm-3">
-                        <label class="col-sm-6 control-label">需收集数:</label>
-                        <label class="col-sm-6 control-label">{{survey.collectNum}}</label>
+                        <label class="col-sm-6 control-label">收集数:</label>
+                        <label class="col-sm-6 control-label">{{survey.currentNum}}/{{survey.collectNum}}</label>
                     </div>
 
                     <div class="col-sm-3">
-                        <label class="col-sm-6 control-label">已收集数:</label>
-                        <label class="col-sm-6 control-label">{{survey.currentNum}}</label>
+                        <label class="col-sm-6 control-label">难度系数:</label>
+                        <label class="col-sm-6 control-label" v-if="difficuteRate">{{difficuteRate | fixed2 }}</label>
+                        <a class="col-sm-6 control-label" v-if="!difficuteRate" v-on:click="getDifficuteRate()">点击获取</a>
                     </div>
 
                     <div class="col-sm-3">
@@ -643,6 +644,7 @@
             },
             avgTime: 0,
             reviewRate: 0,
+            difficuteRate: 0,
             loadData: {
                 zsQuestions: []
             },
@@ -722,6 +724,14 @@
                 AJAX.GET("zsSurvey/reviewRate/" + this.survey.id, {}, function (resp) {
                     if (resp.data) {
                         that.reviewRate = resp.data;
+                    }
+                })
+            },
+            getDifficuteRate() {
+                let that = this;
+                AJAX.GET("zsSurvey/difficult/" + this.survey.id, {}, function (resp) {
+                    if (resp.data) {
+                        that.difficuteRate = resp.data;
                     }
                 })
             },

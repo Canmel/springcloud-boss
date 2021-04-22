@@ -34,4 +34,9 @@ public class ZsCdrinfoServiceImpl extends ServiceImpl<ZsCdrinfoMapper, ZsCdrinfo
 
         return mapper.selectListByAgents(agents);
     }
+
+    @Override
+    public Integer selectAvgTime(Integer id) {
+        return mapper.selectAvgTime(id);
+    }
 }

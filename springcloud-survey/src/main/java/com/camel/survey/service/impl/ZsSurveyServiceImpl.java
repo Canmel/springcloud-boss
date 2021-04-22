@@ -1,6 +1,7 @@
 package com.camel.survey.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -113,6 +114,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Autowired
     private ZsPhoneInformationService phoneInformationService;
+
+    @Autowired
+    private ZsCdrinfoService cdrinfoService;
 
     public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
@@ -507,5 +511,27 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
             }
         }
         return true;
+    }
+
+    @Override
+    public Result difficult(Integer id) {
+        Wrapper wrapper = new EntityWrapper<>();
+        wrapper.eq("survey_id", id);
+
+        Integer count = cdrinfoService.selectCount(wrapper);
+
+        Wrapper answerWrapper = new EntityWrapper();
+        answerWrapper.eq("valid", ZsYesOrNo.YES.getCode());
+        Integer answerCount = answerService.selectCount(answerWrapper);
+
+        Integer avg = this.avgTime(id);
+        if(ObjectUtil.isNotEmpty(count) && count > 0) {
+            Double successRate = 1.0 * answerCount / count;
+            if(ObjectUtil.isNotEmpty(successRate) && successRate > 0) {
+                return  ResultUtil.success(avg / successRate);
+            }
+        }
+
+        return ResultUtil.success(0);
     }
 }

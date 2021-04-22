@@ -18,4 +18,6 @@ public interface ZsCdrinfoService extends IService<ZsCdrinfo> {
     ZsCdrinfo details(String id);
 
     List<ZsCdrinfo> selectList(Set<String> agents);
+
+    Integer selectAvgTime(Integer id);
 }

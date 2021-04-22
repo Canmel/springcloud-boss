@@ -294,6 +294,16 @@ public class ZsSurveyController extends BaseCommonController {
     }
 
     /**
+     * 获取难度系数
+     * @param id
+     * @return
+     */
+    @GetMapping("/difficult/{id}")
+    public Result difficult(@PathVariable Integer id) {
+        return service.difficult(id);
+    }
+
+    /**
      * 获取service
      */
     @Override

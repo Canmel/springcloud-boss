@@ -138,4 +138,11 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      * @return
      */
     boolean telValid(Integer id, String taskid, String tel);
+
+    /**
+     * 难度系数
+     * @param id
+     * @return
+     */
+    Result difficult(Integer id);
 }

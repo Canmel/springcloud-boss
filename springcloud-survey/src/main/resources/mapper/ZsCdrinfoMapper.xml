@@ -73,4 +73,8 @@
             </foreach>
         </if>
     </select>
+
+    <select id="selectAvgTime">
+        select AVG(agent_duration) from zs_cdrinfo where survey_id = #{id}
+    </select>
 </mapper>

@@ -178,3 +178,7 @@ Vue.filter('sToTime', function (value) {
     }
     return result;
 });
+
+Vue.filter('fixed2', function (value) {
+    return value.toFixed(2);
+});
