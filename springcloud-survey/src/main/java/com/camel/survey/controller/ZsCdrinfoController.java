@@ -111,18 +111,12 @@ public class ZsCdrinfoController extends BaseCommonController {
                                     answerService.updateById(answer);
                                 }
                             }
-                        }else{
-                            result = "error";
-                            continue;
-                        }
-                        if (ObjectUtils.isEmpty(cdr.getId())) {
-                            result = "error";
-                            continue;
                         }
                         try {
                             service.insert(cdr);
                         }catch (Exception e) {
                             e.printStackTrace();
+                            result = "error";
                             continue;
                         }
 
