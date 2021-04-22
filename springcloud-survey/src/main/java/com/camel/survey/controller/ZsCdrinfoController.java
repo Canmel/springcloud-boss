@@ -1,6 +1,7 @@
 package com.camel.survey.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
@@ -81,8 +82,11 @@ public class ZsCdrinfoController extends BaseCommonController {
                     ZsCdrinfo cdr = zsCdrinfos.get(i);
                     if (!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
                         ZsSeat seat = seatService.selectBySeat(cdr.getCaller_agent_num());
-                        cdr.setUid(seat.getUid());
-                        cdr.setSurveyId(seat.getSurveyId());
+                        if(ObjectUtil.isNotEmpty(seat)) {
+                            cdr.setUid(seat.getUid());
+                            cdr.setSurveyId(seat.getSurveyId());
+                        }
+
                     }
                     if (StringUtils.isEmpty(cdr.getUuids())) {
                         cdr.setId(UUID.randomUUID().toString());

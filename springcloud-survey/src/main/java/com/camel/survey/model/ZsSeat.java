@@ -1,10 +1,12 @@
 package com.camel.survey.model;
 
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
+import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
@@ -64,6 +66,12 @@ public class ZsSeat extends BasePaginationEntity {
 
     @TableField(exist = false)
     private String queueName;
+
+    /**
+     * 状态
+     */
+    @TableLogic
+    private ZsStatus status;
 
     @Override
     public String toString() {
