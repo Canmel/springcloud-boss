@@ -522,6 +522,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
         Wrapper answerWrapper = new EntityWrapper();
         answerWrapper.eq("valid", ZsYesOrNo.YES.getCode());
+        answerWrapper.eq("survey_id", id);
         Integer answerCount = answerService.selectCount(answerWrapper);
 
         Integer avg = this.avgTime(id);
