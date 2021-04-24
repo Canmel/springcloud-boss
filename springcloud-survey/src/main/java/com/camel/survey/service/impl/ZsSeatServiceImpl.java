@@ -119,7 +119,9 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
         if(!ObjectUtils.isEmpty(seat)) {
             // 1.2 如果当前人的坐席就在该队列
             if(ObjectUtil.isNotEmpty(seat.getQueueId()) && seat.getQueueId().equals(zsWorkShift.getQueueId())) {
-                return true;
+                // 仅仅需要更新问卷
+                seat.setSurveyId(surveyId);
+                return updateById(seat);
             }
             seat.setState(ZsYesOrNo.NO);
             updateById(seat);
