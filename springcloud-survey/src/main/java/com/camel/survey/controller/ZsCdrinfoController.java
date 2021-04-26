@@ -90,11 +90,9 @@ public class ZsCdrinfoController extends BaseCommonController {
                         }
 
                     }
+                    cdr.setId(UUID.randomUUID().toString());
                     if (StringUtils.isEmpty(cdr.getUuids())) {
-                        cdr.setId(UUID.randomUUID().toString());
-                        System.out.println("1");
-                        System.out.println(cdr.toString());
-                        service.insert(cdr);
+                        System.out.println("cdr 没有UUIDS");
                     } else {
                         String[] uuids = cdr.getUuids().split(",");
                         List<ZsAnswer> zsAnswers = new ArrayList<>();
@@ -116,16 +114,13 @@ public class ZsCdrinfoController extends BaseCommonController {
                                 }
                             }
                         }
-                        try {
-                            System.out.println("2");
-                            System.out.println(cdr.toString());
-                            service.insert(cdr);
-                        }catch (Exception e) {
-                            System.out.println(e.getMessage());
-                            result = "error";
-                            continue;
-                        }
-
+                    }
+                    try {
+                        service.insert(cdr);
+                    }catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        result = "error";
+                        continue;
                     }
 
                 }
