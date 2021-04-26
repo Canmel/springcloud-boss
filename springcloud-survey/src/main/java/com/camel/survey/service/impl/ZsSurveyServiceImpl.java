@@ -535,4 +535,10 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
         return ResultUtil.success(0);
     }
+
+    @Override
+    public List<ZsPhoneInformation> selectRandom(Integer surveyId, Integer randomNum) {
+        // TODO 获取号码信息列表
+        return null;
+    }
 }

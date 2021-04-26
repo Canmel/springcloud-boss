@@ -116,6 +116,8 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
 
     private String pstnNumber;
 
+    private ZsYesOrNo autoCall;
+
     public ZsSurvey(Integer id) {
         this.id = id;
     }

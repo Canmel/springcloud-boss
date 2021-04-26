@@ -303,6 +303,11 @@ public class ZsSurveyController extends BaseCommonController {
         return service.difficult(id);
     }
 
+    @GetMapping("/random")
+    public Result getRandomCustomers(Integer surveyId, Integer randomNum) {
+        return  ResultUtil.success(service.selectRandom(surveyId, randomNum));
+    }
+
     /**
      * 获取service
      */

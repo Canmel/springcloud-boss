@@ -180,7 +180,7 @@
                                                             <button class="btn btn-rounded btn-primary"
                                                                     id="calloutExternal" style="display: none;"
                                                                     v-on:click="calloutExternalModal()"
-                                                                    href="javascript:void(0)"
+                                                                    href="javascript:void(0)" v-if="survey.autoCall.code === 0"
                                                                     iconcls="icon2-external-call" plain="true">外呼
                                                             </button>
                                                             <button class="btn btn-rounded btn-warning"
@@ -424,6 +424,31 @@
                             </div>
                         </div>
                     </form>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>城市</th>
+                                <th>公司</th>
+                                <th>姓名</th>
+                                <th>电话</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, index) in preCallOutList">
+                                <td scope="row">{{index + 1}}</td>
+                                <td>{{item.city}}</td>
+                                <td>{{item.company}}</td>
+                                <td>{{item.username}}</td>
+                                <td>{{item.tel}}</td>
+                                <td><button class="btn btn-success" @click="callOutByHand(item)"><i class="fa fa-phone"></i></button></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" onclick="calloutExternal()">提交</button>
@@ -590,11 +615,22 @@
             }
         },
         methods: {
+            callOutByHand(item){
+                AJAX.GET('customerGroupItem/used/' + item.id, {}, function (resp) {
+                    console.log(resp);
+                    calloutExternal(item.tel);
+                });
+
+            },
             calloutInternalModal() {
                 $("#calloutInternalModal").modal("show");
             },
             calloutExternalModal() {
-                $("#myPhoneModal").modal("show");
+                let that = this;
+                AJAX.GET('zsSurvey/random', {groupId: this.survey.id, randomNum: 3}, function (resp) {
+                    that.preCallOutList = resp.data;
+                    $("#myPhoneModal").modal("show");
+                });
             },
             details(item) {
                 var that = this;
@@ -675,6 +711,7 @@
                         projectId: resp.data.projectId,
                         monit: resp.data.monit,
                         state: resp.data.state,
+                        autoCall: resp.data.autoCall,
                         pstnNumber: resp.data.pstnNumber
                     };
                     debugger;

@@ -3,10 +3,7 @@ package com.camel.survey.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
-import com.camel.survey.model.ZsOption;
-import com.camel.survey.model.ZsQuestion;
-import com.camel.survey.model.ZsSign;
-import com.camel.survey.model.ZsSurvey;
+import com.camel.survey.model.*;
 import com.camel.survey.vo.ZsAnswerSave;
 import com.camel.survey.vo.ZsDynamicView;
 import com.github.pagehelper.PageInfo;
@@ -145,4 +142,12 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
      * @return
      */
     Result difficult(Integer id);
+
+    /**
+     * 随机取几条号码
+     * @param surveyId
+     * @param randomNum
+     * @return
+     */
+    List<ZsPhoneInformation> selectRandom(Integer surveyId, Integer randomNum);
 }

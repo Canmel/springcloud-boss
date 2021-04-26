@@ -132,6 +132,15 @@
                                 <span> {{new_survey.currentNum}}</span>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">呼叫方式：</label>
+                            <div class="col-sm-8">
+                                <select name="information_template" class="form-control" type="text" aria-required="true"
+                                        aria-invalid="true" v-model="new_survey.autoCall">
+                                    <option :value="o.code" v-for="o in [{name: '自动', code: 1}, {name: '手动', code: 0}]">{{o.name}}</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group" v-if="edit_mode==false">
                             <label class="col-sm-3 control-label">收集方式：</label>
                             <div class="col-sm-8">
