@@ -71,6 +71,8 @@ public class ZsCdrinfoController extends BaseCommonController {
     @AuthIgnore
     @PostMapping
     public String save(@RequestBody Map<String, ZsCdrinfo[]> params) {
+        System.out.println("------------------------------");
+        System.out.println(JSONObject.toJSONString(params));
         try {
             if (!ArrayUtils.isEmpty(params.get(CDR_KEY))) {
                 List<ZsCdrinfo> zsCdrinfos = CollectionUtils.arrayToList(params.get(CDR_KEY));
