@@ -24,6 +24,7 @@
         <result column="id_num" property="idNum" jdbcType="VARCHAR"></result>
         <result column="seat_num" property="seatNum" jdbcType="VARCHAR"></result>
         <result column="work_num" property="workNum" jdbcType="VARCHAR"></result>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"></result>
         <association property="agency" javaType="com.camel.core.model.ZsAgency">
             <id column="zs_agency_id" property="id"></id>
             <result column="zs_agency_name" property="name"></result>
@@ -57,7 +58,8 @@
         sys_user.remark,
         sys_user.id_num,
         sys_user.seat_num,
-        sys_user.work_num
+        sys_user.work_num,
+        sys_user.company_id
     </sql>
 
     <select id="findRoleIdsByUserId" resultType="integer">

@@ -15,7 +15,7 @@
                     <div class="input-group">
                         <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span
                             class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        <button type="button" class="btn btn-sm btn-primary" @click="pagequery()"> 搜索</button> </span>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                 })
             },
             pagequery: function () {
-                var that = this;
+                let that = this;
                 if(that.result==true){
                     AJAX.GET('zsProject', this.pageInfo, function (resp) {
                         that.items = resp.data.list;
@@ -97,7 +97,7 @@
                     })
                 }
                 else{
-                    AJAX.GET('zsProject/Dev', this.pageInfo, function (resp) {
+                    AJAX.GET('zsProject', this.pageInfo, function (resp) {
                         that.items = resp.data.list;
                         that.pageInfo.pageNum = resp.data.pageNum;
                         that.pageInfo.total = resp.data.total;
@@ -107,7 +107,6 @@
             },
             pageFn: function (val) {
                 this.pageInfo.pageNum = val;
-                this.pagequery();
             },
             edit: function (item) {
                 sessionStorage.setItem('editParams', item.id);

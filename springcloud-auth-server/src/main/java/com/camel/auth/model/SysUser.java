@@ -119,6 +119,11 @@ public class SysUser implements Serializable {
 
     private List<SysRole> sysRoles;
 
+    /**
+     * 公司ID
+     */
+    private Integer companyId;
+
     @Override
     public String toString() {
         return "SysUser{" +

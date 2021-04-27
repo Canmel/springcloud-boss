@@ -27,6 +27,9 @@
         zs_project
         <where>
             status = 1
+            <if test="companyId != null">
+                AND company_id = #{companyId}
+            </if>
         </where>
     </select>
 

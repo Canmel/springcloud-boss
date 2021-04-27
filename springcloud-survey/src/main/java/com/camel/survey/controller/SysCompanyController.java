@@ -1,6 +1,7 @@
 package com.camel.survey.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
@@ -58,6 +59,11 @@ public class SysCompanyController extends BaseCommonController {
         return super.delete(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/all")
+    public Result all() {
+        return ResultUtil.success(service.selectList(new EntityWrapper<>()));
+    }
 
     @Override
     public IService getiService() {

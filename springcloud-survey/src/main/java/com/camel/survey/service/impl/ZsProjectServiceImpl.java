@@ -58,6 +58,8 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
 
     @Override
     public PageInfo<ZsProject> selectPage(ZsProject entity) {
+        SysUser currentUser = applicationToolsUtils.currentUser();
+        entity.setCompanyId(currentUser.getCompanyId());
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
@@ -75,8 +77,10 @@ public class ZsProjectServiceImpl extends ServiceImpl<ZsProjectMapper, ZsProject
 
     @Override
     public PageInfo<ZsProject> selectPageDev(ZsProject entity) {
+        SysUser s = applicationToolsUtils.currentUser();
+        entity.setCompanyId(s.getCompanyId());
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
-            mapper.listByUid(applicationToolsUtils.currentUser().getUid());
+            mapper.listByUid(s.getUid());
         });
         List<ZsProject> projectList = pageInfo.getList();
         projectList.forEach(project -> {

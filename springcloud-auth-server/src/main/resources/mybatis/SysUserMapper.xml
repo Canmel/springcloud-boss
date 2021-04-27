@@ -16,6 +16,7 @@
         <result property="gender" column="gender" jdbcType="VARCHAR"/>
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
         <result property="idNum" column="id_num" jdbcType="VARCHAR"/>
+        <result property="companyId" column="company_id" jdbcType="INTEGER"/>
         <collection property="sysRoles" fetchType="eager" column="uid"
                     select="com.camel.auth.dao.SysRoleDao.findByUserId"></collection>
     </resultMap>
@@ -41,7 +42,8 @@
         sys_user.address,
         sys_user.remark,
         sys_user.avatar,
-        sys_user.id_num
+        sys_user.id_num,
+        sys_user.company_id
     </sql>
 
     <select id="findByUserName" resultMap="BaseResultMap" parameterType="com.camel.auth.model.SysUser">
