@@ -71,6 +71,8 @@ public class ZsCdrinfoController extends BaseCommonController {
     @AuthIgnore
     @PostMapping
     public String save(@RequestBody Map<String, ZsCdrinfo[]> params) {
+        System.out.println("------------------------------");
+        System.out.println(JSONObject.toJSONString(params));
         try {
             if (!ArrayUtils.isEmpty(params.get(CDR_KEY))) {
                 List<ZsCdrinfo> zsCdrinfos = CollectionUtils.arrayToList(params.get(CDR_KEY));
@@ -88,9 +90,9 @@ public class ZsCdrinfoController extends BaseCommonController {
                         }
 
                     }
+                    cdr.setId(UUID.randomUUID().toString());
                     if (StringUtils.isEmpty(cdr.getUuids())) {
-                        cdr.setId(UUID.randomUUID().toString());
-                        service.insert(cdr);
+                        System.out.println("cdr 没有UUIDS");
                     } else {
                         String[] uuids = cdr.getUuids().split(",");
                         List<ZsAnswer> zsAnswers = new ArrayList<>();
@@ -112,14 +114,13 @@ public class ZsCdrinfoController extends BaseCommonController {
                                 }
                             }
                         }
-                        try {
-                            service.insert(cdr);
-                        }catch (Exception e) {
-                            e.printStackTrace();
-                            result = "error";
-                            continue;
-                        }
-
+                    }
+                    try {
+                        service.insert(cdr);
+                    }catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        result = "error";
+                        continue;
                     }
 
                 }

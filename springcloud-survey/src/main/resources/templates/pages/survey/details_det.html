@@ -80,7 +80,7 @@
 
                     <div class="col-sm-3">
                         <label class="col-sm-6 control-label">难度系数:</label>
-                        <label class="col-sm-6 control-label" v-if="difficuteRate">{{difficuteRate | fixed2 }}</label>
+                        <label class="col-sm-6 control-label" v-if="difficuteRate">{{(difficuteRate /60) | fixed2 }}</label>
                         <a class="col-sm-6 control-label" v-if="!difficuteRate" v-on:click="getDifficuteRate()">点击获取</a>
                     </div>
 

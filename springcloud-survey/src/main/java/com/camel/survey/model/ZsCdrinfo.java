@@ -49,11 +49,26 @@ public class ZsCdrinfo extends BasePaginationEntity {
     @Override
     public String toString() {
         return "ZsCdrinfo{" +
-                ", uuids=" + uuids +
-                ", grade=" + grade +
-                ", taskid=" + taskid +
-                ", taskname=" + taskname +
-                "}";
+                "id='" + id + '\'' +
+                ", call_uuid='" + call_uuid + '\'' +
+                ", uuids='" + uuids + '\'' +
+                ", call_type='" + call_type + '\'' +
+                ", caller_num='" + caller_num + '\'' +
+                ", callee_num='" + callee_num + '\'' +
+                ", start_time='" + start_time + '\'' +
+                ", call_lasts_time='" + call_lasts_time + '\'' +
+                ", agent_duration=" + agent_duration +
+                ", caller_agent_num='" + caller_agent_num + '\'' +
+                ", callee_agent_num='" + callee_agent_num + '\'' +
+                ", caller_agent_group_name='" + caller_agent_group_name + '\'' +
+                ", recordFile='" + recordFile + '\'' +
+                ", grade='" + grade + '\'' +
+                ", taskid='" + taskid + '\'' +
+                ", taskname='" + taskname + '\'' +
+                ", ivr_dtmf='" + ivr_dtmf + '\'' +
+                ", uid=" + uid +
+                ", surveyId=" + surveyId +
+                '}';
     }
 
     public String loadRecordFileName() {
