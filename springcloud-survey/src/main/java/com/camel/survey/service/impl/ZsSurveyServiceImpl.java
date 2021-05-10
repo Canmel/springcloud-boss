@@ -118,6 +118,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Autowired
     private ZsCdrinfoService cdrinfoService;
 
+    @Autowired
+    private ZsUnionConfigrationService unionConfigrationService;
+
     public static final String SMS_CONTEXT_MODEL = "您好，欢迎参加关于?title?的调查，参加问卷收集得话费，点击?url?";
 
     public static final String SMS_SURVEY_URL = "http://127.0.0.1:8080/survey/web_survey.html";
@@ -341,6 +344,11 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
                 throw new SurveyNotValidException("我们（" + zsOption.getName() + "）的样本调查配额已满，谢谢您的支持！不好意思打扰了，再见。");
             }
         });
+
+        if(!unionConfigrationService.valid(survey.getId(), zsOptions)) {
+            throw new SurveyNotValidException("我们（" + survey.getName() + "）的样本调查配额已满，谢谢您的支持！不好意思打扰了，再见。");
+        }
+
         return ResultUtil.success("");
     }
 
