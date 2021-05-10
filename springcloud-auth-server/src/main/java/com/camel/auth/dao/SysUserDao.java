@@ -2,6 +2,7 @@ package com.camel.auth.dao;
 
 
 import com.camel.auth.model.SysUser;
+import org.springframework.stereotype.Repository;
 
 /**
  *　　　　　　　 ┏┓    ┏┓+ +
@@ -28,6 +29,7 @@ import com.camel.auth.model.SysUser;
  * @author baily
  * @since  2019/7/5
  */
+@Repository
 public interface SysUserDao {
 
     /**

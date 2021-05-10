@@ -58,6 +58,7 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserDao.findByUserName(username);
+
         Member member = new Member(sysUser.getUid(), sysUser.getUsername());
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
         byte[] su = SerizlizeUtil.serialize(member);

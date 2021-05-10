@@ -26,7 +26,7 @@ import java.util.List;
  *     ...:::           ::::::::::::'              ``::.
  *    ```` ':.          ':::::::::'                  ::::..
  *                       '.:::::'                    ':'````..
- * @author baily 
+ * @author baily
  * @since 2019/7/4
  **/
 @Data
@@ -123,6 +123,8 @@ public class SysUser implements Serializable {
      * 公司ID
      */
     private Integer companyId;
+
+    private SysCompany company;
 
     @Override
     public String toString() {

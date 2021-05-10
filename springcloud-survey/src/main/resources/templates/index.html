@@ -105,11 +105,32 @@
                         </div>
                     </form>
                 </div>
-                <div style="float: right;margin-right: 1%;margin-top: 1%;">
-                    <a class="alert-link" v-on:click="logout()"> 登出</a>
-                    <a class="alert-link" v-on:click="editPwd()"> 修改密码</a>
+<!--                <div style="float: right;margin-right: 1%;margin-top: 1%;">-->
+<!--                    <a class="alert-link" v-on:click="logout()"> 登出</a>-->
+<!--                    <a class="alert-link" > 修改密码</a>-->
+<!--                </div>-->
+                <div class="top-nav ">
+                    <!--search & user info start-->
+                    <ul class="nav pull-right top-menu">
+                        <!-- user login dropdown start-->
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <img alt="" src="img/avatar1_small.jpg">
+                                <span class="username">{{user ? user.username : '未登录'}} {{user.companyName ? '('+ user.companyName +')' : ''}}</span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu extended logout">
+                                <div class="log-arrow-up"></div>
+                                <li><a v-on:click="editPwd()"><i class="icon-bell-alt"></i> 修改密码</a></li>
+                                <li><a v-on:click="logout()"><i class="icon-key"></i> 注销登陆</a></li>
+                            </ul>
+                        </li>
+                        <!-- user login dropdown end -->
+                    </ul>
+                    <!--search & user info end-->
                 </div>
             </nav>
+
         </div>
         <div class="row J_mainContent page-container" id="content-main">
 
@@ -211,6 +232,7 @@
                     that.user.userid = resp.data.principal.sysUser.uid;
                     that.user.password = resp.data.principal.sysUser.password;
                     that.user.idNum = resp.data.principal.sysUser.idNum;
+                    that.user.companyName = resp.data.principal.sysUser.company ? resp.data.principal.sysUser.company.name : "";
                     sessionStorage.setItem('user',JSON.stringify(that.user));
                     sessionStorage.setItem('master',JSON.stringify(that.master));
                 });
