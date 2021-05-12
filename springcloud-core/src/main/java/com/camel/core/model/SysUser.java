@@ -33,7 +33,7 @@ import java.util.List;
  *     ...:::           ::::::::::::'              ``::.
  *    ```` ':.          ':::::::::'                  ::::..
  *                       '.:::::'                    ':'````..
- * @author baily 
+ * @author baily
  * @since 2019/7/4
  **/
 @Data
@@ -143,6 +143,8 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     private String workNum;
 
     private Integer companyId;
+
+    private SysCompany company;
 
     @TableField(exist = false)
     private ZsAgency agency;
