@@ -78,6 +78,9 @@
             <if test="projectId != null">
                 AND zs_survey.project_id = #{projectId}
             </if>
+            <if test="companyId != null">
+                AND zs_survey.company_id = #{companyId}
+            </if>
         </where>
         order by id desc
     </select>

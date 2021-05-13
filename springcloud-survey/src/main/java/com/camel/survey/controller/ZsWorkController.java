@@ -137,6 +137,7 @@ public class ZsWorkController extends BaseCommonController {
      */
     @GetMapping
     public Result index(ZsWork entity, @RequestParam("zsWorkId[]") String[] zsWorkId, OAuth2Authentication oAuth2Authentication) {
+        entity.setCompanyId(applicationUtils.currentUser().getCompanyId());
         return ResultUtil.success(service.selectPage(entity, zsWorkId, oAuth2Authentication));
     }
 
@@ -150,6 +151,7 @@ public class ZsWorkController extends BaseCommonController {
     @PostMapping("/report")
     public Result report(@Valid ZsWork work, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            work.setCompanyId(applicationUtils.currentUser().getCompanyId());
             throw new SourceDataNotValidException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
         return ResultUtil.success(service.report(work));

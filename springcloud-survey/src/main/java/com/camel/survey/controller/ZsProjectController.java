@@ -3,11 +3,13 @@ package com.camel.survey.controller;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
+import com.camel.core.utils.ApplicationUtils;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsProject;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsProjectService;
 import com.camel.survey.service.ZsSurveyService;
+import com.camel.survey.utils.ApplicationToolsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -48,6 +50,9 @@ public class ZsProjectController extends BaseCommonController {
     @Autowired
     private ZsSurveyService surveyService;
 
+    @Autowired
+    private ApplicationToolsUtils applicationToolsUtils;
+
     /**
      * 分页查询
      * @param entity
@@ -83,6 +88,7 @@ public class ZsProjectController extends BaseCommonController {
      */
     @PostMapping
     public Result save(ZsProject entity, OAuth2Authentication oAuth2Authentication) {
+        entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return service.save(entity, oAuth2Authentication);
     }
 
