@@ -62,7 +62,6 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
     if(type == 'delete') {
         url += '/' + data['id'] + '?access_token=' + access_token;
     }
-    console.log(url)
     if(type == 'put') {
         url += '?access_token=' + access_token;
     }
@@ -82,7 +81,7 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
             // 未登录
             console.log('', url)
             if(resp.status === web_status.NO_LOGIN) {
-                // location.href = '/login?redirect_url=/survey/';
+                location.href = '/login?redirect_url=/survey/';
             }
             if(resp.status === web_status.NO_AUTHENTICATE) {
                 toastr.error(resp.responseJSON.error_description)
