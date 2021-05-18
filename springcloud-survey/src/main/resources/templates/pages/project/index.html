@@ -106,7 +106,9 @@
 
             },
             pageFn: function (val) {
+                console.log(val)
                 this.pageInfo.pageNum = val;
+                this.pagequery();
             },
             edit: function (item) {
                 sessionStorage.setItem('editParams', item.id);

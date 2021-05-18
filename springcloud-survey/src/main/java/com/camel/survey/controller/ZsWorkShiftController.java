@@ -78,7 +78,7 @@ public class ZsWorkShiftController extends BaseCommonController {
      */
     @PostMapping
     public Result save(ZsWorkShift entity, Principal principal) {
-        int cid = applicationUtils.currentUser().getCompanyId();
+        Integer cid = applicationUtils.currentUser().getCompanyId();
         Wrapper<ZsWorkShift> zsWorkshift = new EntityWrapper<>();
         entity.setCompanyId(cid);
         zsWorkshift.eq("cname",entity.getCname());
