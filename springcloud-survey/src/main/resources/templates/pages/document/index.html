@@ -31,6 +31,7 @@
                         <th>资料文件名称</th>
                         <th>文件后缀</th>
                         <th>上传人员</th>
+                        <th>地址</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
@@ -42,6 +43,7 @@
                         <td>{{item.dtype}}</td>
                         <td>{{item.creator ? item.creator.username : ''}}</td>
                         <td>{{item.createdAt | formatDate}}</td>
+                        <td>{{downloadUrl(item)}}</td>
                         <td>
                             <button type="button" v-on:click="download(item)" class="btn btn-success btn-xs"
                             v-if="resultIn">
@@ -84,6 +86,9 @@
             this.loginMaster();
         },
         methods: {
+            downloadUrl(item) {
+                return window.location.origin + '/survey/document/download/' + item['id'] + '?access_token=';
+            },
             loginMaster(){
                 var that = this;
                 this.master = sessionStorage.getItem('master');

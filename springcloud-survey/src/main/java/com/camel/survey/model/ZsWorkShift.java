@@ -95,4 +95,6 @@ public class ZsWorkShift extends ZsSurveyBaseEntity implements Serializable {
      */
     @TableField(exist = false)
     private String zsAccessMsg;
+
+    private Integer companyId;
 }
