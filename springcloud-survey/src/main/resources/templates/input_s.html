@@ -100,7 +100,7 @@
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio"
                                                                   :id="'radio_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt, $event, item.type)"
-                                                                  :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
+                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus" :dignoreNum="opt.ignoreNum"
                                                                   :name="'radio_' + item.id + '_' + item.id"
                                                                   :value="opt.id + '_' +  opt.name"
                                                                   :content="opt.name">
@@ -133,7 +133,7 @@
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox"
                                                                   :id="'checkbox_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt, $event, item.type)"
-                                                                  :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
+                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus" :dignoreNum="opt.ignoreNum"
                                                                   :dexclusivity="opt.exclusivity ? opt.exclusivity.code : 0"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id"
                                                                   :value="opt.id + '_' +  opt.name"
@@ -226,7 +226,7 @@
         <div id="end" class="simform" autocomplete="off" style="font-size: 14px; display: none;">
             <div class="simform-inner">
                 <div class="question">
-                    <h4 class="question-title" style="font-size: 30px;">{{textFilter(survey.endShow)}}</h4>
+                    <h4 class="question-title" style="font-size: 30px;">{{endshowText}}</h4>
                 </div>
             </div>
         </div>
@@ -285,6 +285,12 @@
             this.loadParams();
             this.loadSurvey();
             this.initPageParams();
+        },
+        computed: {
+            endshowText() {
+                let end = this.survey.endShow;
+                return this.textFilter(end);
+            }
         },
         methods: {
             areaSelectHandler(s, opt) {
@@ -423,6 +429,7 @@
                     var target = $(item).attr('dtarget');
                     var checked = $(item).is(':checked');
                     var content = $(item).attr('content');
+                    var endshowPlus = $(item).attr('dendshow');
                     // 选中说不清数量到达限额
                     if (checked && content.search("说不清") != -1) {
                         that.unclear = that.unclear + 1;
@@ -450,6 +457,10 @@
                         if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                             $("#theForm").hide();
                             that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                            console.log(endshowPlus)
+                            if(endshowPlus) {
+                                that.survey.endShow = endshowPlus;
+                            }
                             // that.userParamsIndex++;
                             $("#end").show();
                         } else {
@@ -465,7 +476,8 @@
                     }
 
                     if (checked && !isNaN(target) && target > 1000) {
-                        that.submitImmediately();
+                        console.log(endshowPlus)
+                        that.submitImmediately(null, null, endshowPlus);
                         if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         } else {
                             $("#theForm")[0].reset();
@@ -586,9 +598,11 @@
 
             },
             nextQuestion(question, event) {
+                // 未选择
                 if (!this.isInputed(question, event)) {
                     return alert('请选择');
                 }
+                // 选项数量
                 if (question.type === 2 && this.isOutOfBounds(question, event)) {
                     var resultStr = "";
                     if (question.maxSelect) {
@@ -741,7 +755,8 @@
                     }
                 });
             },
-            submitImmediately(question, event) {
+            submitImmediately(question, event, endshowPlus) {
+                console.log(endshowPlus)
                 var that = this;
                 if (!this.validateForm()) {
                     alert('请完成表单');
@@ -770,9 +785,13 @@
                 }, function (resp) {
                     if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
                         $("#theForm").hide();
+                        console.log(endshowPlus)
+                        that.survey.endShow = resp.msg;
+                        if(endshowPlus) {
+                            that.survey.endShow = endshowPlus;
+                        }
                         $("#end").show();
                         parent.surveyStatus = 1;
-                        that.survey.endShow = resp.msg;
                         return false;
                     } else {
                         $("#theForm")[0].reset();

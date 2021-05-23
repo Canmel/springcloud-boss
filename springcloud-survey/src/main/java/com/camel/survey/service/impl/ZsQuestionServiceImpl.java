@@ -150,7 +150,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
         surveyService.valid(zsAnswerSave);
         ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
         if (isAnswered(zsAnswerSave)) {
-            return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
+            return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "(重复样本)本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         }
         if (zsSurvey.isFull()) {
             throw new SurveyNotValidException("我们的（" + zsSurvey.getName() + "）样本个数已满，不好意思打扰您了，祝您生活愉快，再见！");
