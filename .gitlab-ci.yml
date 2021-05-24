@@ -78,7 +78,7 @@ docker-deploy:
   tags:
     - deployer
   script:
-    - pwd
+    - pwd 
 #    - cd springcloud-eureka-server && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-system && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-auth-server && docker-compose up -d && cd .. && pwd
