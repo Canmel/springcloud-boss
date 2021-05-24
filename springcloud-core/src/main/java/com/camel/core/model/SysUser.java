@@ -144,6 +144,7 @@ public class SysUser extends BasePaginationEntity implements Serializable {
 
     private Integer companyId;
 
+    @TableField(exist = false)
     private SysCompany company;
 
     @TableField(exist = false)

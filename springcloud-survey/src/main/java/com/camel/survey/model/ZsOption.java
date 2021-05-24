@@ -141,6 +141,12 @@ public class ZsOption extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     private int count;
 
+    /**
+     * 结束语
+     * 该结束语针对某一选项
+     */
+    private String endshowPlus;
+
     public Boolean isFull() {
         if (!ObjectUtils.isEmpty(this.current) && !ObjectUtils.isEmpty(this.configration)) {
             return this.current >= this.configration;

@@ -83,10 +83,16 @@
 
     <select id="enabledSurvies" resultType="hashmap">
         select type, name, id from zs_other_survey where `status` = 1 and state = 1
+        <if test="cid != null">
+            and company_id = #{cid}
+        </if>
         UNION ALL
         select 0 type, name, id from zs_survey where `status` = 1
         <if test="!isAll">
             and state = 2
+        </if>
+        <if test="cid != null">
+            and company_id = #{cid}
         </if>
     </select>
 

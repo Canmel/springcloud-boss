@@ -58,6 +58,7 @@
                                     <span class="block m-t-xs" style="font-size:20px;">
                                         <i class="fa fa-bug"></i>
                                         <strong class="font-bold">智慧调查</strong>
+                                        <img :src="logoUrl">
                                     </span>
                                 </span>
                         </a>
@@ -203,14 +204,25 @@
             tops: [],
             subs: [],
             master: [],//用于存储权限数组
+            logoUrl: '',
             user: {username:'',phone:'',userid:'',password:'',idNum:""},//存储username查取其参与考试
         },
         created: function () {
+            this.loadLogoUrl();
             this.loadTops();
             this.loadSubs();
             this.loadMaster();
         },
         methods: {
+            loadLogoUrl() {
+                let that = this;
+                AJAX.GET("args/logo", {
+                    code: window.location.host
+                }, function (resp) {
+                    let d = resp.data;
+                    that.logoUrl = d.value + sessionStorage.getItem('access_token');
+                })
+            },
             loadTops: function() {
                 let that = this;
                 AJAX.GET("/system/sysMenu/tops", {}, function (resp) {

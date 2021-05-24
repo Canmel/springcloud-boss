@@ -31,6 +31,7 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 　　　　　　　 ┏┓　　　┏┓
@@ -207,7 +209,12 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         if (ObjectUtils.isEmpty(document)) {
             throw new FileNotFoundException();
         }
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         String fileName = document.getAddress();
+        String addr = operations.get(fileName);
+        if(!StringUtils.isNullOrEmpty(addr)) {
+            return addr;
+        }
         String encodedFileName = null;
         try {
             encodedFileName = URLEncoder.encode(fileName, "utf-8").replace("+", "%20");
@@ -220,7 +227,9 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         String publicUrl = String.format("%s/%s", BUCKET_NAME_URL, encodedFileName);
         Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
         // 1小时，可以自定义链接过期时间
-        return auth.privateDownloadUrl(publicUrl, 3600);
+        String url = auth.privateDownloadUrl(publicUrl, 3600);
+        operations.set(fileName, url, 50 * 60, TimeUnit.SECONDS);
+        return url;
     }
 
     @Override
@@ -232,6 +241,11 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         if (ObjectUtils.isEmpty(document)) {
             throw new FileNotFoundException();
         }
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+        String addr = operations.get(document.getAddress());
+        if(StringUtils.isNullOrEmpty(addr)) {
+            return addr;
+        }
         String fileName = document.getAddress();
         String encodedFileName = null;
         try {
@@ -245,7 +259,9 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         String publicUrl = String.format("%s/%s", BUCKET_NAME_URL, encodedFileName);
         Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
         // 1小时，可以自定义链接过期时间
-        return auth.privateDownloadUrl(publicUrl, 3600);
+        String url = auth.privateDownloadUrl(publicUrl, 3600);
+        operations.set(document.getAddress(), url, 50 * 60, TimeUnit.SECONDS);
+        return url;
     }
 
 

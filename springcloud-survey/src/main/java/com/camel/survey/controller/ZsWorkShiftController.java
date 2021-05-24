@@ -1,6 +1,7 @@
 package com.camel.survey.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
@@ -48,6 +49,8 @@ public class ZsWorkShiftController extends BaseCommonController {
      */
     @GetMapping
     public Result index(ZsWorkShift entity, OAuth2Authentication authentication) {
+        Integer cid = applicationUtils.currentUser().getCompanyId();
+        entity.setCompanyId(cid);
         if(!isAdmin(authentication.getAuthorities())) {
             entity.setStartDate(new Date().toString());
         }
@@ -75,12 +78,17 @@ public class ZsWorkShiftController extends BaseCommonController {
      */
     @PostMapping
     public Result save(ZsWorkShift entity, Principal principal) {
+        Integer cid = applicationUtils.currentUser().getCompanyId();
         Wrapper<ZsWorkShift> zsWorkshift = new EntityWrapper<>();
+        entity.setCompanyId(cid);
         zsWorkshift.eq("cname",entity.getCname());
+        if(ObjectUtil.isNotEmpty(entity.getCompanyId())) {
+            zsWorkshift.eq("company_id",entity.getCompanyId());
+        }
         int count = service.selectCount(zsWorkshift);
         if( count>0 ){
             return ResultUtil.success("该班次已存在，请重新输入！！",false);
-        };
+        }
         return service.saveWorkShift(entity);
     }
 

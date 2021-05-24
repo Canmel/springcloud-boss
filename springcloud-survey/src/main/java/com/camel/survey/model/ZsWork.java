@@ -185,6 +185,8 @@ public class ZsWork extends BasePaginationEntity {
 
     private Double avgNum;
 
+    private Integer companyId;
+
     /**
      * 状态
      */

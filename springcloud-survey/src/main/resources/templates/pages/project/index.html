@@ -4,7 +4,7 @@
             <h5>项目管理</h5>
             <div class="ibox-tools">
                 <a :href="applicationContextRootPath + 'pages/project/add.html'"
-                   data-pjax class="btn btn-primary btn-xs" v-if="resultDev">新建项目</a>
+                   data-pjax class="btn btn-primary btn-xs">新建项目</a>
             </div>
         </div>
         <div class="ibox-content">
@@ -106,7 +106,9 @@
 
             },
             pageFn: function (val) {
+                console.log(val)
                 this.pageInfo.pageNum = val;
+                this.pagequery();
             },
             edit: function (item) {
                 sessionStorage.setItem('editParams', item.id);

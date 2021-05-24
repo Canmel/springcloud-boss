@@ -99,6 +99,9 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="entity.companyId != null">
+                AND company_id = #{entity.companyId}
+            </if>
         </where>
     </select>
 

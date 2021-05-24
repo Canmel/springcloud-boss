@@ -87,8 +87,9 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public PageInfo enabledSurvies(boolean isAll, BasePaginationEntity entity) {
+        Integer cid = applicationToolsUtils.currentUser().getCompanyId();
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
-            mapper.enabledSurvies(isAll);
+            mapper.enabledSurvies(isAll, cid);
         });
         return pageInfo;
     }

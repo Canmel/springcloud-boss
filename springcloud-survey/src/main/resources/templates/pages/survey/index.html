@@ -177,7 +177,7 @@
                 var masterJ = JSON.parse(this.master);
                 masterJ.forEach(e => {
                     var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
+                    if(authority ==='ROLE_ADMIN'|| 'ROLE_AGENT'){that.result = true;that.resultDev = true;}
                     if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
                 })
             },

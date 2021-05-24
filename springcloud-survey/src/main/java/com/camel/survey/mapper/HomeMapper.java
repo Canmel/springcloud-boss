@@ -32,7 +32,7 @@ public interface HomeMapper {
 
     List<Map> pieChart();
 
-    List<Map> enabledSurvies(@Param(value="isAll") boolean isAll);
+    List<Map> enabledSurvies(@Param(value="isAll") boolean isAll, @Param(value = "cid") Integer cid);
 
     List<Map> enabledSurviesDev(boolean isAll, Integer uid);
 }

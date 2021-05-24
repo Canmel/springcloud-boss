@@ -68,10 +68,12 @@ public class ZsWorkServiceImpl extends ServiceImpl<ZsWorkMapper, ZsWork> impleme
     @Override
     @Transactional
     public Result importExcel(MultipartFile file) {
+        Integer companyId = applicationToolsUtils.currentUser().getCompanyId();
         try {
             List<ZsWork> works = ExcelUtil.readExcelObject(file, ZsWork.class);
             List<ZsSurvey> zsSurveyList = surveyMapper.all();
             for (ZsWork work : works) {
+                work.setCompanyId(companyId);
                 ZsSurvey zsSurvey = zsSurveyService.getByNameFromList(work.getPname(), zsSurveyList);
                 if (!ObjectUtils.isEmpty(zsSurvey)) {
                     work.setProjectId(zsSurvey.getId());
