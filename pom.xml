@@ -24,7 +24,7 @@
         <module>springcloud-stock-operation</module>
         <module>springcloud-interviewer</module>
         <module>springcloud-access-control</module>
-        <module>springcloud-offline-survey</module>
+        <module>springcloud-offline</module>
     </modules>
     <packaging>pom</packaging>
     <description>springcloud 通关</description>
