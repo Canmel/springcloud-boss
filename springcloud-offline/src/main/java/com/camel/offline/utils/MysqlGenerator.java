@@ -40,8 +40,8 @@ import java.util.Map;
  * 　　　　　　　   ┗┻┛     ┗┻┛+ + + +
  */
 public class MysqlGenerator {
-    public static String CODE_FACTORY_OUT_PATH = "./springcloud-survey/src/main/java/com/camel/survey";
-    public static String XML_FACTORY_OUT_PATH = "./springcloud-survey/src/main/resources/";
+    public static String CODE_FACTORY_OUT_PATH = "./springcloud-offline/src/main/java/com/camel/offline";
+    public static String XML_FACTORY_OUT_PATH = "./springcloud-offline/src/main/resources/";
 
     public static void main(String[] args) {
         String path = new MysqlGenerator().getClass().getResource("/").getPath();
@@ -58,7 +58,7 @@ public class MysqlGenerator {
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
-        strategyConfig.setInclude(new String[] {"zs_union_configration"});
+        strategyConfig.setInclude(new String[] {"sys_user"});
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
@@ -81,7 +81,7 @@ public class MysqlGenerator {
                 .setStrategy(strategyConfig)
                 .setPackageInfo(
                         new PackageConfig()
-                                .setParent("com.camel.survey")
+                                .setParent("com.camel.offline")
                                 .setController("controller")
                                 .setEntity("model")
                 ).execute();
