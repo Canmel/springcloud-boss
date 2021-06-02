@@ -8,7 +8,17 @@
         <div class="ibox-content">
 
             <div class="row">
-                <div class="col-sm-9"></div>
+                <div class="col-sm-6"></div>
+                <div class="col-sm-3">
+                    <select class="form-control" v-model="pageInfo.stateId" >
+                        <option disabled value="">请选择</option>
+                        <option value ="0">无效</option>
+                        <option value ="1">创建</option>
+                        <option value="2">开始收集</option>
+                        <option value="3">完成</option>
+                        <option value="4">关闭</option>
+                    </select>
+                </div>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
@@ -65,21 +75,21 @@
                             <button type="button" v-on:click="deleteItem(item)" v-if="(result || isInValid(item))&&showDelete(item)"
                                     class="btn btn-danger btn-xs" >删除
                             </button>
-<!--                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"-->
-<!--                                    class="btn btn-danger btn-xs">查看申请记录-->
-<!--                            </button>-->
+                            <!--                            <button type="button" v-on:click="applyView(item)" v-if="appliable(item)"-->
+                            <!--                                    class="btn btn-danger btn-xs">查看申请记录-->
+                            <!--                            </button>-->
                             <button type="button" v-on:click="changeStatus(item, '回收')" v-if="(result || isInValid(item))&&showBack(item)"
                                     class="btn btn-danger btn-xs">回收
                             </button>
                             <button type="button" v-on:click="changeStatus(item, '收集')" v-if="(result || isInValid(item))&&showUse(item)"
                                     class="btn btn-danger btn-xs">收集
                             </button>
-<!--                            <button type="button" v-on:click="check(item)" v-if="result || isInValid(item)"-->
-<!--                                    class="btn btn-warning btn-xs">结算-->
-<!--                            </button>-->
-<!--                            <button type="button" @click="monitor(item)"-->
-<!--                                    class="btn btn-warning btn-xs">话务监控-->
-<!--                            </button>-->
+                            <!--                            <button type="button" v-on:click="check(item)" v-if="result || isInValid(item)"-->
+                            <!--                                    class="btn btn-warning btn-xs">结算-->
+                            <!--                            </button>-->
+                            <!--                            <button type="button" @click="monitor(item)"-->
+                            <!--                                    class="btn btn-warning btn-xs">话务监控-->
+                            <!--                            </button>-->
                         </td>
                     </tr>
                     </tbody>
@@ -101,6 +111,7 @@
             pageInfo: {
                 // creatorId:JSON.parse(sessionStorage.getItem('user')).userid,
                 name: '',
+                stateId: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10//每页显示条目个数不传默认10
