@@ -120,6 +120,9 @@ public class ZsSurvey extends ZsSurveyBaseEntity implements Serializable {
 
     private Integer companyId;
 
+    @TableField(exist = false)
+    private Integer stateId;
+
     public ZsSurvey(Integer id) {
         this.id = id;
     }
