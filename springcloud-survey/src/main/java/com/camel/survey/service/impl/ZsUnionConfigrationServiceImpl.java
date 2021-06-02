@@ -1,15 +1,11 @@
 package com.camel.survey.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.camel.survey.model.ZsOption;
-import com.camel.survey.model.ZsSurvey;
-import com.camel.survey.model.ZsUnionConfigration;
-import com.camel.survey.mapper.ZsUnionConfigrationMapper;
-import com.camel.survey.service.ZsOptionService;
-import com.camel.survey.service.ZsSurveyService;
-import com.camel.survey.service.ZsUnionConfigrationService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.apache.commons.lang.ArrayUtils;
+import com.camel.survey.mapper.ZsUnionConfigrationMapper;
+import com.camel.survey.model.ZsOption;
+import com.camel.survey.model.ZsUnionConfigration;
+import com.camel.survey.service.ZsUnionConfigrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

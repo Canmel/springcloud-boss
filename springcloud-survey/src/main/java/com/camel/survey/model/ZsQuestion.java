@@ -95,6 +95,11 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
     @TableField(exist = false)
     public List<ZsOption> options;
 
+    /**
+     * 是否显示
+     */
+    private String showCondition;
+
     public ZsQuestion() {
     }
 

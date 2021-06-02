@@ -89,6 +89,7 @@
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
+                     :showCondition="item.showCondition"
                      :data-type="item.type">
                     <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span
                             style="font-size: 12px;"
@@ -100,7 +101,8 @@
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio"
                                                                   :id="'radio_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt, $event, item.type)"
-                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus" :dignoreNum="opt.ignoreNum"
+                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus"
+                                                                  :dignoreNum="opt.ignoreNum"
                                                                   :name="'radio_' + item.id + '_' + item.id"
                                                                   :value="opt.id + '_' +  opt.name"
                                                                   :content="opt.name">
@@ -133,7 +135,8 @@
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox"
                                                                   :id="'checkbox_' + item.id + '_' + opt.id"
                                                                   v-on:change="radioChange(opt, $event, item.type)"
-                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus" :dignoreNum="opt.ignoreNum"
+                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus"
+                                                                  :dignoreNum="opt.ignoreNum"
                                                                   :dexclusivity="opt.exclusivity ? opt.exclusivity.code : 0"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id"
                                                                   :value="opt.id + '_' +  opt.name"
@@ -298,10 +301,10 @@
             },
             foucusAreaHandler(e, o, q) {
                 if (o.otype == 1) {
-                    if(q.type == 2) {
+                    if (q.type == 2) {
                         $($(e.target).next().get(0)).show()
                     }
-                    if(q.type == 1) {
+                    if (q.type == 1) {
                         $($(e.target).next().get(0)).show()
                     }
                 }
@@ -321,15 +324,15 @@
 
             },
             markBlueHandler(event, opt, q) {
-                setTimeout(()=>{
+                setTimeout(() => {
                     //执行离开焦点操作
-                    if(q.type == 2) {
+                    if (q.type == 2) {
                         $($(event.target).next().get(0)).hide();
                     }
-                    if(q.type == 1) {
+                    if (q.type == 1) {
                         $($(event.target).next().get(0)).hide()
                     }
-                    if(this.currentRemark) {
+                    if (this.currentRemark) {
                         // $("#areaSelectors").hide();
                         event.target.value = this.currentRemark;
                         opt.name = this.currentRemark;
@@ -338,7 +341,7 @@
                     }
                     opt.name = event.target.value;
 
-                },0);
+                }, 0);
             },
             getPercentage() {
                 if (this.pageParams) {
@@ -458,7 +461,7 @@
                             $("#theForm").hide();
                             that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
                             console.log(endshowPlus)
-                            if(endshowPlus) {
+                            if (endshowPlus) {
                                 that.survey.endShow = endshowPlus;
                             }
                             // that.userParamsIndex++;
@@ -597,13 +600,13 @@
 
 
             },
-            nextQuestion(question, event) {
+            nextQuestion(question, event, notValid) {
                 // 未选择
-                if (!this.isInputed(question, event)) {
+                if (!notValid && !this.isInputed(question, event)) {
                     return alert('请选择');
                 }
                 // 选项数量
-                if (question.type === 2 && this.isOutOfBounds(question, event)) {
+                if (!notValid && question.type === 2 && this.isOutOfBounds(question, event)) {
                     var resultStr = "";
                     if (question.maxSelect) {
                         resultStr += '最多只能选择' + question.maxSelect + '条';
@@ -631,6 +634,11 @@
                     this.nextIndex = nextQIndex;
                 }
                 this.current = this.nextIndex;
+                // 判断是不是能显示
+                if(!this.questionIsShow(this.current)) {
+                   this.nextQuestion(this.questions[this.current + 1], event, true)
+                }
+
                 if (this.questions.length <= this.nextIndex) {
                     this.showSubmit = true;
                 }
@@ -661,19 +669,34 @@
                 $("input").val(null);
             },
             getNextIndex(question) {
+                let nextIndex = 0;
                 if (question.type === 1 && this.tmpNextRadio) {
-                    let nextIndex = this.tmpNextRadio;
+                    nextIndex = this.tmpNextRadio;
                     this.tmpNextRadio = null;
-                    return nextIndex;
                 } else {
                     if (this.tmpNext.length > 0) {
-                        let nextIndex = this.tmpNext[0];
+                        nextIndex = this.tmpNext[0];
                         this.tmpNext.splice(0, 1);
-                        return nextIndex;
                     }
                 }
-
-                return 0;
+                return nextIndex;
+            },
+            // 判断是否显示 如果必须的话
+            questionIsShow(qIndex) {
+                let q = this.questions[qIndex - 1];
+                if(q && q.showCondition) {
+                    console.log(q.showCondition)
+                    for (let i = 0; i < this.finalData.length; i++) {
+                        let data = this.finalData[i];
+                        if(data['value'] && data['value'].split("_")[0]) {
+                            if(q.showCondition.indexOf(data['value'].split("_")[0]) > -1) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                return true;
             },
             isOutOfBounds(question, event) {
                 var $inputs = $(event.srcElement).parents('.question').find('input:checked');
@@ -787,7 +810,7 @@
                         $("#theForm").hide();
                         console.log(endshowPlus)
                         that.survey.endShow = resp.msg;
-                        if(endshowPlus) {
+                        if (endshowPlus) {
                             that.survey.endShow = endshowPlus;
                         }
                         $("#end").show();
