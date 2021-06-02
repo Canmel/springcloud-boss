@@ -129,6 +129,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         SysUser user = applicationToolsUtils.currentUser();
         entity.setState(ZsSurveyState.getEnumByValue(entity.getStateId()));
+        System.out.println("test");
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
