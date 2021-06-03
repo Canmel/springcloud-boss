@@ -10,7 +10,14 @@
         <div class="ibox-content">
 
             <div class="row">
-                <div class="col-sm-9"></div>
+                <div class="col-sm-6"></div>
+                <div class="col-sm-3">
+                    <select
+                            aria-invalid="true" class="form-control m-b"
+                            v-model="pageInfo.queueId">
+                        <option :value="item.id" v-for="item in queues">{{item.name}}</option>
+                    </select>
+                </div>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" placeholder="请输入关键词" class="input-sm form-control search-input"
@@ -30,6 +37,7 @@
                         <th>班次地址</th>
                         <th>班次日期</th>
                         <th>班次时间</th>
+                        <th>队列管理</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -44,6 +52,9 @@
                         </td>
                         <td>
                             <span class="badge badge" >{{item.wtime}}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge">{{item.queue.name}}</span>
                         </td>
                         <td>
 
@@ -121,6 +132,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                queueId: '',
                 cname: '',
                 pageNum: 1,
                 total: 0,//总页数
@@ -134,14 +146,22 @@
             resultDev: false,//表示操作人员权限
             user: {username:'',phone:'',userid:'',password:''},//存储username查取其参与考试
             zsWorkRecord:{},
+            queues: []
         },
         created: function () {
             this.loginMaster();
+            this.loadQueues();
             var userJsonStr = sessionStorage.getItem('user');
             this.user = JSON.parse(userJsonStr);
             this.pageInfo.idNum = this.user.idNum;
         },
         methods: {
+            loadQueues() {
+                let that = this;
+                AJAX.GET("zsQueue/all", {}, function (resp) {
+                    that.queues = resp.data;
+                })
+            },
             isInValid(item) {
                 let that = this;
                 if(item.survey){
