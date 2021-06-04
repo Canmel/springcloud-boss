@@ -79,7 +79,7 @@
                                     <dd>创建时间: {{item['createdAt'] | formatDate}}</dd>
 
                                     <small>当前进度： {{item['collectNum'] ?
-                                            (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0}}%</small>
+                                        (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0}}%</small>
                                     <div class="progress progress-mini">
                                         <div :style="'width: ' + item['collectNum'] ? (item['currentNum']/item['collectNum']).toFixed(4) * 100 : 0 + '%;'"
                                              class="progress-bar"></div>
@@ -121,8 +121,8 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label"><span style="color: red;">*</span>收集份数：</label>
                             <div class="col-sm-8">
-                                <input name="collect_num" class="form-control" type="text" aria-required="true"
-                                       aria-invalid="true" v-model="new_survey.collectNum" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                <input name="check_int" class="form-control" type="number" aria-required="true"
+                                       aria-invalid="true" v-model="new_survey.collectNum">
                             </div>
                         </div>
 
@@ -213,8 +213,8 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">可选“不清楚”数：</label>
                             <div class="col-sm-8">
-                                <input name="unclear_count" class="form-control" type="text" aria-required="true"
-                                       aria-invalid="true" v-model="new_survey.unclearCount" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                <input name="check_int_b" class="form-control" type="number" aria-required="true"
+                                       aria-invalid="true" v-model="new_survey.unclearCount">
                             </div>
                         </div>
                         <div class="form-group">
@@ -240,8 +240,8 @@
                         <div class="form-group" v-if="new_survey.calType === '1'">
                             <label class="col-sm-3 control-label">计费单价：</label>
                             <div class="col-sm-8">
-                                <input name="price" class="form-control" type="text" aria-required="true"
-                                       aria-invalid="true" v-model="new_survey.price" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                <input name="check_int_c" class="form-control" type="number" aria-required="true"
+                                       aria-invalid="true" v-model="new_survey.price">
                             </div>
                         </div>
 
@@ -412,7 +412,6 @@
                         that.surveies = resp.data;
                     })
                 }
-
             },
             addSurvey() {
                 this.edit_mode = false;
@@ -502,6 +501,21 @@
         var icon = "<i class='fa fa-times-circle'></i> ";
         $("#signupForm").validate({
             rules: {
+                check_int: {
+                    required: true,
+                    min: 0,
+                    digits: true
+                },
+                check_int_b: {
+                    required: true,
+                    min: 0,
+                    digits: true
+                },
+                check_int_c: {
+                    required: true,
+                    min: 0,
+                    digits: true
+                },
                 collect_num: "required",
                 name: {
                     required: true,
@@ -510,6 +524,21 @@
                 }
             },
             messages: {
+                check_int: {
+                    required: icon + "请输入正整数",
+                    min: icon + "请输入正整数",
+                    digits: icon + "请输入正整数"
+                },
+                check_int_b: {
+                    required: icon + "请输入正整数",
+                    min: icon + "请输入正整数",
+                    digits: icon + "请输入正整数"
+                },
+                check_int_c: {
+                    required: icon + "请输入正整数",
+                    min: icon + "请输入正整数",
+                    digits: icon + "请输入正整数"
+                },
                 collect_num: icon + "请输入问卷需要收集的数量",
                 name: {
                     required: icon + "请输入需要收集份数",
