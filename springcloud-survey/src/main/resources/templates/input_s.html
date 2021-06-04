@@ -636,7 +636,11 @@
                 this.current = this.nextIndex;
                 // 判断是不是能显示
                 if(!this.questionIsShow(this.current)) {
-                   this.nextQuestion(this.questions[this.current], event, true)
+                   this.nextQuestion(this.questions[this.current], event, true);
+                    if (this.questions.length <= this.nextIndex) {
+                        this.showSubmit = true;
+                    }
+                    return ;
                 }
 
                 if (this.questions.length <= this.nextIndex) {
