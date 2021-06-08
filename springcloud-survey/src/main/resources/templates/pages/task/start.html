@@ -178,10 +178,16 @@
                                                                 忙碌
                                                             </button>
                                                             <button class="btn btn-rounded btn-primary"
-                                                                    id="calloutExternal" style="display: none;"
+                                                                    id="calloutExternal"
                                                                     v-on:click="calloutExternalModal()"
                                                                     href="javascript:void(0)" v-if="survey.autoCall.code === 0"
                                                                     iconcls="icon2-external-call" plain="true">外呼
+                                                            </button>
+                                                            <button class="btn btn-rounded btn-primary"
+                                                                    id="calloutExternalAdmin"
+                                                                    v-on:click="calloutExternalModal()"
+                                                                    href="javascript:void(0)" v-if="hasRole('ADMIN')"
+                                                                    iconcls="icon2-external-call" plain="true">管理员外呼
                                                             </button>
                                                             <button class="btn btn-rounded btn-warning"
                                                                     style="display: none;" id="calloutInternal"
@@ -615,6 +621,9 @@
             }
         },
         methods: {
+            hasRole(value) {
+                return sessionStorage.getItem('master').indexOf("ROLE_" + value) > 0;
+            },
             callOutByHand(item){
                 AJAX.GET('customerGroupItem/used/' + item.id, {}, function (resp) {
                     console.log(resp);
