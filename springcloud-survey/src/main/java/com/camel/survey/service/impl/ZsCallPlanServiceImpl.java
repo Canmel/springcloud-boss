@@ -1,6 +1,5 @@
 package com.camel.survey.service.impl;
 
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -10,13 +9,11 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
-import com.camel.survey.enums.CtiResult;
 import com.camel.survey.enums.TaskStatus;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.mapper.ZsCallPlanMapper;
 import com.camel.survey.model.ZsCallPlan;
 import com.camel.survey.model.ZsPhoneInformation;
-import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsCallPlanService;
 import com.camel.survey.service.ZsPhoneInformationService;
 import com.camel.survey.service.ZsSurveyService;
@@ -31,7 +28,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * <p>
@@ -134,7 +130,7 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
             System.out.println(e.getMessage());
             if ("任务标识不存在".equals(e.getMessage())) {
                 deleteById(id);
-            }else{
+            } else {
                 throw new SourceDataNotValidException(e.getMessage());
             }
         }
@@ -189,10 +185,10 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     public Boolean uploadFromSurvey(ZsCallPlan callPlan) {
         Integer count = phoneInformationService.selectBySurveyIdCount(callPlan.getSurveyId());
 
-        for (int i = 0; i <= Math.ceil(count/1000.0) ; i++) {
+        for (int i = 0; i <= Math.ceil(count / 1000.0); i++) {
             List<Object> informations = phoneInformationService.selectBySurveyId(callPlan.getSurveyId(), i);
             StringBuilder builder = new StringBuilder();
-            for (Object item: informations) {
+            for (Object item : informations) {
                 ZsPhoneInformation information = (ZsPhoneInformation) item;
                 builder.append(information.getMobile());
                 builder.append(",");
@@ -203,5 +199,12 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
             HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
         }
         return true;
+    }
+
+    @Override
+    public ZsCallPlan selectByTaskName(String taskname) {
+        ZsCallPlan callPlan = new ZsCallPlan();
+        callPlan.setTaskId(taskname);
+        return mapper.selectOne(callPlan);
     }
 }

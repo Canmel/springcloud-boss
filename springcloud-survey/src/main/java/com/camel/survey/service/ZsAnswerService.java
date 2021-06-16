@@ -78,4 +78,12 @@ public interface ZsAnswerService extends IService<ZsAnswer> {
     String selectTimeRange(Integer surveyId);
 
     String selectTimeRangeReview(Integer surveyId);
+
+    /**
+     * 通过问卷ID和外呼号码 确定唯一的样本
+     * @param surveyId
+     * @param callee_num
+     * @return
+     */
+    ZsAnswer selectBySurveyIdAndPhone(Integer surveyId, String callee_num);
 }

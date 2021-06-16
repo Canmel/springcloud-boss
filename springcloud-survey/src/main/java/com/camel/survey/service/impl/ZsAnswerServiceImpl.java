@@ -10,15 +10,15 @@ import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.enums.ZsAnswerReviewerStatus;
 import com.camel.survey.enums.ZsYesOrNo;
-import com.camel.survey.mapper.*;
+import com.camel.survey.mapper.ZsAnswerItemMapper;
+import com.camel.survey.mapper.ZsAnswerMapper;
+import com.camel.survey.mapper.ZsOptionMapper;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
-import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.ZsAnswerService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
@@ -60,19 +60,10 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     private ZsAnswerMapper mapper;
 
     @Autowired
-    private ZsSurveyMapper surveyMapper;
-
-    @Autowired
     private ZsAnswerItemMapper answerItemMapper;
 
     @Autowired
     private ZsOptionMapper optionMapper;
-
-    @Autowired
-    private ZsAnswerMapper zsAnswerMapper;
-
-    @Autowired
-    private ZsCdrinfoMapper zsCdrinfoMapper;
 
     @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
@@ -341,5 +332,13 @@ public class ZsAnswerServiceImpl extends ServiceImpl<ZsAnswerMapper, ZsAnswer> i
     @Override
     public String selectTimeRangeReview(Integer surveyId) {
         return mapper.selectTimeRangeReview(surveyId);
+    }
+
+    @Override
+    public ZsAnswer selectBySurveyIdAndPhone(Integer surveyId, String callee_num) {
+        ZsAnswer zsAnswer = new ZsAnswer();
+        zsAnswer.setSurveyId(surveyId);
+        zsAnswer.setCreator(callee_num);
+        return mapper.selectOne(zsAnswer);
     }
 }

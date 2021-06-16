@@ -31,4 +31,6 @@ public interface ZsCallPlanService extends IService<ZsCallPlan> {
     void end(Integer id);
 
     Boolean uploadFromSurvey(ZsCallPlan callPlan);
+
+    ZsCallPlan selectByTaskName(String taskname);
 }

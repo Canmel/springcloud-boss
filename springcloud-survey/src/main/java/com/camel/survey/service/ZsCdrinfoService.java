@@ -20,4 +20,12 @@ public interface ZsCdrinfoService extends IService<ZsCdrinfo> {
     List<ZsCdrinfo> selectList(Set<String> agents);
 
     Integer selectAvgTime(Integer id);
+
+    boolean validAndUpdateAnserByTaskAndPhone(ZsCdrinfo zsCdrinfo);
+
+    boolean validAndUpdateByUUID(ZsCdrinfo cdrinfo);
+
+    boolean updateAnswer(Integer answerId, ZsCdrinfo cdrinfo);
+
+    boolean isSaved(ZsCdrinfo cdr);
 }
