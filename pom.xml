@@ -25,6 +25,7 @@
         <module>springcloud-interviewer</module>
         <module>springcloud-access-control</module>
         <module>springcloud-offline</module>
+        <module>springcloud-realname</module>
     </modules>
     <packaging>pom</packaging>
     <description>springcloud 通关</description>
