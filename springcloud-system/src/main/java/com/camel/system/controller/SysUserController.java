@@ -18,14 +18,21 @@ import com.camel.system.model.ZsSeat;
 import com.camel.system.service.SysRoleService;
 import com.camel.system.service.SysUserRoleService;
 import com.camel.system.service.SysUserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.security.Principal;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -177,7 +184,6 @@ public class SysUserController extends BaseCommonController {
     @JmsListener(destination = QUEUE_NAME)
     public void newNormalUser(SysUser sysUser) {
         System.out.println(sysUser);
-
         if(ObjectUtils.isEmpty(sysUser.getUid())) {
             insertNewUser(sysUser);
             Wrapper<SysUser> userWrapper1 = new EntityWrapper<>();
@@ -209,6 +215,32 @@ public class SysUserController extends BaseCommonController {
     @GetMapping("/{id}/selectByUid")
     public Result selectByUid(@PathVariable Integer id) {
         return ResultUtil.success(service.selectByUid(id));
+    }
+
+    @GetMapping("/myself")
+    public Result myself() {
+        SysUser user = currentUser();
+        SysUser r = service.selectById(user.getUid());
+        r.setPassword(null);
+        return ResultUtil.success(r);
+    }
+
+    public SysUser currentUser(OAuth2Authentication oAuth2Authentication) {
+        ObjectMapper mapper = new ObjectMapper();
+        SysUser user = null;
+        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) oAuth2Authentication.getUserAuthentication();
+        LinkedHashMap tokenDetails = (LinkedHashMap)token.getDetails();
+        LinkedHashMap p = (LinkedHashMap) tokenDetails.get("principal");
+        LinkedHashMap userInfo = (LinkedHashMap) p.get("sysUser");
+        if(!CollectionUtils.isEmpty(userInfo)) {
+            user = mapper.convertValue(userInfo, SysUser.class);
+            System.out.println(user);
+        }
+        return user;
+    }
+
+    public SysUser currentUser() {
+        return currentUser((OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication());
     }
 
     @Override

@@ -14,44 +14,36 @@
 </head>
 <body>
 <div class="x-body">
-    <blockquote class="layui-elem-quote">本模块仅限个人实名认证，不包含企业与合作商</blockquote>
+    <blockquote class="layui-elem-quote">本模块仅限合作商实名认证，不包含企业与个人的实名认证</blockquote>
     <fieldset class="layui-elem-field">
         <legend>认证信息</legend>
         <div class="layui-field-box">
             <table class="layui-table">
                 <thead>
                 <tr>
-                    <th colspan="2" scope="col">个人信息</th>
+                    <th colspan="2" scope="col">合作商信息</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <th width="30%">姓名</th>
+                    <th width="30%">企业或组织名称</th>
                     <td><span id="lbServerName">{{userInfo.username}}</span></td>
                 </tr>
                 <tr>
-                    <td>身份证号码</td>
+                    <td>唯一认证号</td>
                     <td>{{userInfo.idNum}}</td>
                 </tr>
                 <tr>
-                    <td>性别</td>
+                    <td>地址</td>
                     <td>{{userInfo.gender}}</td>
                 </tr>
                 <tr>
-                    <td>手机号</td>
+                    <td>联系电话</td>
                     <td>{{userInfo.mobile}}</td>
                 </tr>
                 <tr>
                     <td>邮箱</td>
                     <td>{{userInfo.email}}</td>
-                </tr>
-                <tr>
-                    <td>所属公司</td>
-                    <td>{{userInfo.company}}</td>
-                </tr>
-                <tr>
-                    <td>所在位置 </td>
-                    <td>{{userInfo.address}}</td>
                 </tr>
                 </tbody>
             </table>

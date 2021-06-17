@@ -10,7 +10,7 @@
     </parent>
     <artifactId>springcloud-realname</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>course</name>
+    <name>springcloud-realname</name>
     <description>在线培训</description>
     <properties>
         <java.version>1.8</java.version>
