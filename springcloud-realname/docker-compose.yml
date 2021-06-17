@@ -1,7 +1,7 @@
 version: "3"
 services:
   web:
-    image: 192.168.0.180:5000/boss/survey_service:latest
+    image: 192.168.0.180:5000/boss/realname_service:latest
     container_name: realname
     ports:
       - '22'

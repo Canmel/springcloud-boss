@@ -1,4 +1,6 @@
-  port: 9899
+server:
+  port: 0
+
 spring:
   application:
     name: springcloud-realname
