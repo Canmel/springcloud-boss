@@ -3,14 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.camel.springcloud</groupId>
         <artifactId>springcloud-boss</artifactId>
+        <groupId>com.camel.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>springcloud-realname</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>springcloud-realname</name>
     <description>在线培训</description>
     <properties>
         <java.version>1.8</java.version>
