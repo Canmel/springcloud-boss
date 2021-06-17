@@ -26,7 +26,7 @@ docker-package:
     - pwd
     - mvn clean package -Dmaven.test.skip=true -U -X
     # 在根目录创建一个文件夹来放所有的构建物
-    - mkdir -p sartifacts/eurka_service && mkdir -p sartifacts/system_service && mkdir -p sartifacts/auth_service && mkdir -p sartifacts/survey_service && mkdir -p sartifacts/stock_service && mkdir -p sartifacts/viewer_service && mkdir -p sartifacts/sms_service && mkdir -p sartifacts/control_service && mkdir -p sartifacts/zuul_service
+    - mkdir -p sartifacts/eurka_service && mkdir -p sartifacts/system_service && mkdir -p sartifacts/auth_service && mkdir -p sartifacts/survey_service && mkdir -p sartifacts/stock_service && mkdir -p sartifacts/viewer_service && mkdir -p sartifacts/sms_service && mkdir -p sartifacts/control_service && mkdir -p sartifacts/realname_service && mkdir -p sartifacts/zuul_service
 #    - cp -r springcloud-eureka-server/docker-compose.yml springcloud-eureka-server/target/springcloud-eureka-server-*.jar springcloud-eureka-server/Dockerfile springcloud-eureka-server/docker_web_run.sh sartifacts/eurka_service
     - cp -r springcloud-system/docker-compose.yml springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile springcloud-system/docker_web_run.sh sartifacts/system_service
 #    - cp -r springcloud-auth-server/docker-compose.yml springcloud-auth-server/target/springcloud-auth-server-*.jar springcloud-auth-server/Dockerfile springcloud-auth-server/docker_web_run.sh sartifacts/auth_service
