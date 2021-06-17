@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 9899
 spring:
   application:
     name: springcloud-realname
@@ -50,7 +50,7 @@ spring:
   mvc:
     static-path-pattern: /**
     view:
-      prefix: /
+      prefix: /pages/
       suffix: .html
   resources:
     static-locations: classpath:/templates/,classpath:/static/
@@ -72,3 +72,10 @@ security:
     client:
       ignore-urls:
         - /
+
+survey:
+  price:
+    phone: 1
+  getway:
+    url: ${APPLICATION_GETWAY_URL}
+    port: ${APPLICATION_GETWAY_PORT}

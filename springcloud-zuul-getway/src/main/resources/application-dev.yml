@@ -62,6 +62,10 @@ zuul:
       path: /control/**
       serviceId: springcloud-access-control
       sensitiveHeaders: "*"
+    realname:
+      path: /realname/**
+      serviceId: springcloud-realname
+      sensitiveHeaders: "*"
   retryable: true
   ignored-services: "*"
   host:
