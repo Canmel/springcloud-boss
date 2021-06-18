@@ -62,5 +62,6 @@
                 AND p.task_id like concat("%", #{taskId}, "%")
             </if>
         </where>
+        ORDER BY id DESC
     </select>
 </mapper>

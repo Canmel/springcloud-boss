@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,8 +67,10 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     @Override
     @Transactional
     public Result save(ZsCallPlan entity) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         entity.setTaskStatus(TaskStatus.WAITING);
-        entity.setTaskId(entity.getName());
+        entity.setTaskName(entity.getName());
+        entity.setTaskId(formatter.format(new Date()));
         uploadCallPlan(entity);
         SysUser currentUser = applicationToolsUtils.currentUser();
         entity.setCreatorId(currentUser.getUid());
@@ -84,13 +88,14 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
      */
     public void uploadCallPlan(ZsCallPlan entity) {
         JSONObject jsonObject = JSONUtil.createObj();
-        jsonObject.set("taskid", entity.getName());
+        jsonObject.set("taskid", entity.getTaskId());
         jsonObject.set("tel", "");
         jsonObject.set("transType", entity.getTransType().getValue().toString());
         jsonObject.set("taskStatus", entity.getTaskStatus().getValue().toString());
         jsonObject.set("pstnNumber", entity.getPstnNumber());
         jsonObject.set("max_concurrent_num", entity.getMaxConcurrentNum().toString());
         jsonObject.set("transName", entity.getTransName());
+        jsonObject.set("xintf", entity.getXintf());
 //        jsonObject.set("", "http://diaocha.natapp1.cc/");
         HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/createtask.json");
     }
@@ -206,5 +211,23 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
         ZsCallPlan callPlan = new ZsCallPlan();
         callPlan.setTaskId(taskname);
         return mapper.selectOne(callPlan);
+    }
+
+    @Override
+    public void updatePlan(ZsCallPlan zsCallPlan) {
+        if(StringUtils.isEmpty(zsCallPlan.getTaskId())) {
+            throw new SourceDataNotValidException("外呼计划不能为空");
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("taskid", zsCallPlan.getTaskId());
+        jsonObject.set("hitRate", zsCallPlan.getHitRate().getValue());
+        jsonObject.set("acwTime", zsCallPlan.getAcwTime());
+        jsonObject.set("redialTimes", zsCallPlan.getRedialTimes());
+        jsonObject.set("minRedialInterval", zsCallPlan.getMinRedialInterval());
+        jsonObject.set("maxRingTime", zsCallPlan.getMaxRingTime());
+        jsonObject.set("pstnNumber", zsCallPlan.getPstnNumber());
+        jsonObject.set("xintf", zsCallPlan.getXintf());
+        jsonObject.set("max_concurrent_num", zsCallPlan.getMaxConcurrentNum());
+        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
     }
 }

@@ -122,6 +122,7 @@
                             </a>
                             <ul class="dropdown-menu extended logout">
                                 <div class="log-arrow-up"></div>
+                                <li><a v-on:click="doRealname()"><i class="icon-bell-alt"></i> 实名认证</a></li>
                                 <li><a v-on:click="editPwd()"><i class="icon-bell-alt"></i> 修改密码</a></li>
                                 <li><a v-on:click="logout()"><i class="icon-key"></i> 注销登陆</a></li>
                             </ul>
@@ -277,6 +278,9 @@
                     container: '.page-container'
                 });
             },
+            doRealname() {
+                location.href = "/realname"
+            }
         }
     });
     var currentPage = sessionStorage.getItem('currentPage');

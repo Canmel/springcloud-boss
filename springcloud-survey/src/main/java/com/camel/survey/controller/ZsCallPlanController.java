@@ -94,6 +94,7 @@ public class ZsCallPlanController extends BaseCommonController {
 
     @PutMapping
     public Result edit(@RequestBody ZsCallPlan zsCallPlan) {
+        service.updatePlan(zsCallPlan);
         return ResultUtil.success("修改外呼任务成功！");
     }
 

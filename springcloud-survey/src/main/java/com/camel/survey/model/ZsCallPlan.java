@@ -37,6 +37,10 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
      */
     private String taskId;
     /**
+     * 任务名称
+     */
+    private String taskName;
+    /**
      * 转接类型
      */
     private TransType transType;

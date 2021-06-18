@@ -75,8 +75,11 @@ public class HttpUtils {
             System.out.println(resp);
             JSONObject respObject = JSONUtil.parseObj(resp);
             String statuscode = respObject.getStr(CTI_RESP_STATUS);
-            if (!statuscode.equals(CtiResult.SUCCESS.getCode())) {
+            if (statuscode.equals("000009")){
                 throw new SourceDataNotValidException(respObject.getStr(CTI_RESP_BODY));
+            }
+            if (!statuscode.equals(CtiResult.SUCCESS.getCode())) {
+                throw new SourceDataNotValidException(respObject.getStr("message"));
             }
             if ("任务标识不存在".equals(respObject.getStr("body"))) {
                 throw new SourceDataNotValidException(respObject.getStr("body"));
