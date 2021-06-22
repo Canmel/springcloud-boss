@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.BaseEnum;
+import com.camel.core.enums.GradeStatus;
 import com.camel.core.model.SysRole;
 import com.camel.core.utils.MyCollectionUtils;
 import com.camel.core.utils.ResultUtil;
@@ -16,6 +18,7 @@ import com.camel.system.service.SysRoleService;
 import com.camel.system.service.SysUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -49,7 +53,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public PageInfo<SysUser> pageQuery(SysUser entity) {
-        PageInfo pageInfo = PageHelper.startPage(entity.getPageNum(), entity.getPageSize()).doSelectPageInfo(()-> mapper.list(entity));
+        PageInfo pageInfo = PageHelper.startPage(entity.getPageNum(), entity.getPageSize())
+                .doSelectPageInfo(
+                        ()-> mapper.list(entity)
+                        .stream().forEach(x -> x.setGradeName(GradeStatus.getValue(x.getGrade())))
+                );
         mapper.loadWorkNum();
         return pageInfo;
     }

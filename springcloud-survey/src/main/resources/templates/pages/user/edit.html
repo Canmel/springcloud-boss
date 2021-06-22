@@ -56,6 +56,18 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-3 control-label">访员级别<span class="text-danger">*</span>：</label>
+                    <div class="col-sm-8">
+                        <select id="grade" name="grade" class="form-control" v-model="user.grade" >
+                            <option disabled value="">请选择</option>
+                            <option value ="1">高级</option>
+                            <option value="2">中级</option>
+                            <option value="3">初级</option>
+                            <option value="4">见习</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-3 control-label">备注：</label>
                     <div class="col-sm-8">
                         <input id="remark" name="remark" class="form-control" type="text" v-model="user.remark"></input>
@@ -95,7 +107,8 @@
                 orgName: '',
                 remark: '',
                 idNum: '',
-                agencyId: null
+                agencyId: null,
+                grade: ''
             },
             agencies: [],
             companies: []
@@ -132,7 +145,8 @@
                         remark: resp.data.remark,
                         idNum: resp.data.idNum,
                         agency: resp.data.agency,
-                        companyId: resp.data.companyId
+                        companyId: resp.data.companyId,
+                        grade: resp.data.grade
                     };
                 });
             },
@@ -186,6 +200,7 @@
                     required: true,
                     isMobile: true
                 },
+                grade:"required",
                 orgName: "required"
             },
             messages: {
@@ -212,6 +227,7 @@
                     required: icon + "请输入手机号码",
                     isMobile: "无效的手机号码"
                 },
+                grade: icon + "请输入访员级别",
                 orgName: icon + "请输入部门名称"
             }
         });

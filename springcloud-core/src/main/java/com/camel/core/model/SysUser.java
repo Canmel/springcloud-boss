@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.enums.GradeStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -144,6 +145,17 @@ public class SysUser extends BasePaginationEntity implements Serializable {
 
     private Integer companyId;
 
+    /**
+     * 访员级别(编号)
+     */
+    private Integer grade;
+
+    /**
+     * 访员级别(名称)
+     */
+    @TableField(exist = false)
+    private String gradeName;
+
     @TableField(exist = false)
     private SysCompany company;
 
@@ -205,6 +217,7 @@ public class SysUser extends BasePaginationEntity implements Serializable {
         ", gender=" + gender +
         ", orgNo=" + orgNo +
         ", orgName=" + orgName +
+                ", grade=" + grade +
         "}";
     }
 }
