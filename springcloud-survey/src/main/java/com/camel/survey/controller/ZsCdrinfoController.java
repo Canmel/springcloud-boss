@@ -76,7 +76,7 @@ public class ZsCdrinfoController extends BaseCommonController {
                     ZsCdrinfo cdr = zsCdrinfos.get(i);
                     // 如果被保存过就放弃
                     if(service.isSaved(cdr)) {
-                       return "success";
+                       continue;
                     }
                     // 如果推送的消息中有座席号 查出坐席，更新当前坐席绑定的人员
                     if (!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
@@ -95,9 +95,9 @@ public class ZsCdrinfoController extends BaseCommonController {
                     }
                     try {
                         if(service.insert(cdr)) {
-                            return "success";
+                            continue;
                         }
-                        return "error";
+                        result = "error";
                     }catch (Exception e) {
                         result = "error";
                         continue;

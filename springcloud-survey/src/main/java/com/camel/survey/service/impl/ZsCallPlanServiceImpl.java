@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -215,11 +216,12 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
 
     @Override
     public void updatePlan(ZsCallPlan zsCallPlan) {
-        if(StringUtils.isEmpty(zsCallPlan.getTaskId())) {
+        ZsCallPlan callPlan = selectById(zsCallPlan.getId());
+        if(ObjectUtil.isNotEmpty(callPlan) && StringUtils.isEmpty(callPlan.getTaskId())) {
             throw new SourceDataNotValidException("外呼计划不能为空");
         }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.set("taskid", zsCallPlan.getTaskId());
+        jsonObject.set("taskid", callPlan.getTaskId());
         jsonObject.set("hitRate", zsCallPlan.getHitRate().getValue());
         jsonObject.set("acwTime", zsCallPlan.getAcwTime());
         jsonObject.set("redialTimes", zsCallPlan.getRedialTimes());
