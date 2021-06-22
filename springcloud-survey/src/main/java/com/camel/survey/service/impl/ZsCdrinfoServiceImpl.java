@@ -113,6 +113,7 @@ public class ZsCdrinfoServiceImpl extends ServiceImpl<ZsCdrinfoMapper, ZsCdrinfo
         answer.setAgentUUID(cdrinfo.getId());
         answer.setStartTime(cdrinfo.getStart_time());
         answer.setCallLastsTime(cdrinfo.getCall_lasts_time());
+        answer.setRecord(cdrinfo.getRecordFile());
         try {
             answer.setEndTime(sdf.format(sdf.parse(answer.getStartTime()).getTime() + Long.valueOf(answer.getCallLastsTime()) * 1000));
             answerService.updateById(answer);

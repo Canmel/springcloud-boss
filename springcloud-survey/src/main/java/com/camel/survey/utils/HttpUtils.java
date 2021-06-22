@@ -78,6 +78,10 @@ public class HttpUtils {
             if (statuscode.equals("000009")){
                 throw new SourceDataNotValidException(respObject.getStr(CTI_RESP_BODY));
             }
+
+            if (statuscode.equals(CtiResult.PARAMS_REQUIRE.getCode())){
+                throw new SourceDataNotValidException(respObject.getStr(CTI_RESP_BODY));
+            }
             if (!statuscode.equals(CtiResult.SUCCESS.getCode())) {
                 throw new SourceDataNotValidException(respObject.getStr("message"));
             }

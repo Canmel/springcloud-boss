@@ -222,14 +222,39 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.set("taskid", callPlan.getTaskId());
-        jsonObject.set("hitRate", zsCallPlan.getHitRate().getValue());
-        jsonObject.set("acwTime", zsCallPlan.getAcwTime());
-        jsonObject.set("redialTimes", zsCallPlan.getRedialTimes());
-        jsonObject.set("minRedialInterval", zsCallPlan.getMinRedialInterval());
-        jsonObject.set("maxRingTime", zsCallPlan.getMaxRingTime());
-        jsonObject.set("pstnNumber", zsCallPlan.getPstnNumber());
-        jsonObject.set("xintf", zsCallPlan.getXintf());
-        jsonObject.set("max_concurrent_num", zsCallPlan.getMaxConcurrentNum());
-        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getHitRate())) {
+            callPlan.setHitRate(zsCallPlan.getHitRate());
+        }
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getAcwTime())) {
+            callPlan.setAcwTime(zsCallPlan.getAcwTime());
+        }
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getRedialTimes())) {
+            callPlan.setRedialTimes(zsCallPlan.getRedialTimes());
+        }
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getMinRedialInterval())) {
+            callPlan.setMinRedialInterval(zsCallPlan.getMinRedialInterval());
+        }
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getMaxRingTime())) {
+            callPlan.setMaxRingTime(zsCallPlan.getMaxRingTime());
+        }
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getPstnNumber())) {
+            callPlan.setPstnNumber(zsCallPlan.getPstnNumber());
+        }
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getXintf())) {
+            callPlan.setXintf(zsCallPlan.getXintf());
+        }
+        if(ObjectUtil.isNotEmpty(zsCallPlan.getMaxConcurrentNum())) {
+            callPlan.setMaxConcurrentNum(zsCallPlan.getMaxConcurrentNum());
+        }
+        updateById(callPlan);
+        jsonObject.set("hitRate", callPlan.getHitRate().getValue().toString());
+        jsonObject.set("acwTime", callPlan.getAcwTime().toString());
+        jsonObject.set("redialTimes", callPlan.getRedialTimes().toString());
+        jsonObject.set("minRedialInterval", callPlan.getMinRedialInterval().getValue().toString());
+        jsonObject.set("maxRingTime", callPlan.getMaxRingTime().getValue().toString());
+        jsonObject.set("pstnNumber", callPlan.getPstnNumber());
+        jsonObject.set("xintf", callPlan.getXintf());
+        jsonObject.set("max_concurrent_num", callPlan.getMaxConcurrentNum().toString());
+        HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/settaskconfig.json");
     }
 }

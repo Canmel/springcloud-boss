@@ -42,6 +42,7 @@
                         <th>未呼率</th>
                         <th>已接通率</th>
                         <th>转接率</th>
+                        <th>最大并发数</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -64,6 +65,7 @@
                         <td>{{item.totUncallRate}}</td>
                         <td>{{item.totSuccessRate}}</td>
                         <td>{{item.totTocustomerRate}}</td>
+                        <td>{{item.maxConcurrentNum}}</td>
                         <td>
                             <button type="button" v-on:click="startUp(item)" class="btn btn-primary btn-xs"
                                     v-if="resultDev && item.taskStatus && item.taskStatus.code !== 4 && item.taskStatus.code !== 6">
@@ -191,7 +193,13 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">校验URL：</label>
                             <div class="col-sm-8">
-                                <input name="name" class="form-control" type="text" v-model="selectedItem.xintf">
+                                <input name="name" class="form-control" type="text" v-model="selectedItem.xintf" @blur="xintfHandler">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">最大并发：</label>
+                            <div class="col-sm-8">
+                                <input name="name" class="form-control" @change="maxConcurrentNumBlurHandler" type="number" min="0" max="5" v-model="selectedItem.maxConcurrentNum">
                             </div>
                         </div>
                     </form>
@@ -250,13 +258,19 @@
                     v = "RING_TIME_60";
                 }
                 AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, maxRingTime: v}), function (resp) {
-                    console.log(resp);
+                    toastr.success(resp.msg);
                 });
             },
             // 重拨次数
             redialTimesBlurHandler(event) {
                 AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, redialTimes: event.target.value}), function (resp) {
-                    console.log(resp);
+                    toastr.success(resp.msg);
+                });
+            },
+            // 最大并发数
+            maxConcurrentNumBlurHandler(event) {
+                AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, maxConcurrentNum: event.target.value}), function (resp) {
+                    toastr.success(resp.msg);
                 });
             },
             // 重拨间隔时长
@@ -278,13 +292,13 @@
                     v = "SECOND_300";
                 }
                 AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, minRedialInterval: v}), function (resp) {
-                    console.log(resp);
+                    toastr.success(resp.msg);
                 });
             },
             // 后处理时长
             acwTimeChangeBlur(event) {
                 AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, acwTime: event.target.value}), function (resp) {
-                    console.log(resp);
+                    toastr.success(resp.msg);
                 });
             },
             // 命中率
@@ -318,7 +332,12 @@
                     v = "PERCENT_100";
                 }
                 AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, hitRate: v}), function (resp) {
-                    console.log(resp);
+                    toastr.success(resp.msg);
+                });
+            },
+            xintfHandler(event) {
+                AJAX.PUT("zsCallPlan", JSON.stringify({id: this.selectedItem.id, xintf: event.target.value}), function (resp) {
+                    toastr.success(resp.msg);
                 });
             },
             search() {

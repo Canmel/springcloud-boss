@@ -143,7 +143,7 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
     /**
      * 第三方校验URL
      */
-    private Integer xintf;
+    private String xintf;
 
     /**
      * 问卷ID
