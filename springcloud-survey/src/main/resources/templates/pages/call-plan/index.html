@@ -26,8 +26,8 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>任务名称</th>
                         <th>任务ID</th>
+                        <th>任务名称</th>
                         <th>问卷名称</th>
                         <th>转接类型</th>
                         <th>转接对象</th>
@@ -43,7 +43,7 @@
                         <th>未呼率</th>
                         <th>已接通率</th>
                         <th>转接率</th>
-<!--                        <th>最大并发数</th>-->
+                        <!--                        <th>最大并发数</th>-->
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -87,7 +87,7 @@
                             </div>
                             {{item.totTocustomerRate}}
                         </td>
-<!--                        <td>{{item.maxConcurrentNum}}</td>-->
+                        <!--                        <td>{{item.maxConcurrentNum}}</td>-->
                         <td>
                             <button type="button" v-on:click="startUp(item)" class="btn btn-primary btn-xs"
                                     v-if="resultDev && item.taskStatus && item.taskStatus.code !== 4 && item.taskStatus.code !== 6">
@@ -126,14 +126,14 @@
                 </div>
                 <div class="modal-body">
 
-                        <form class="form-horizontal m-t" id="uploadForm">
-                            <div id="file-pretty">
-                                <div class="form-group">
-                                    <label class="font-noraml">文件选择（单选）</label>
-                                    <input type="file" name="file" class="form-control">
-                                </div>
+                    <form class="form-horizontal m-t" id="uploadForm">
+                        <div id="file-pretty">
+                            <div class="form-group">
+                                <label class="font-noraml">文件选择（单选）</label>
+                                <input type="file" name="file" class="form-control">
                             </div>
-                        </form>
+                        </div>
+                    </form>
 
                 </div>
                 <div class="modal-footer">
@@ -146,24 +146,88 @@
 
     <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="width: 70%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="detailModalLabel">计划详情</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="ibox">
+                    <div class="ibox" v-if="selectedItem">
                         <div class="ibox-content">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="m-b-md">
-                                        <a href="project_detail.html#" class="btn btn-white btn-xs pull-right">编辑项目</a>
-                                        <h2>阿里巴巴集团</h2>
+                                        <span class="label label-primary pull-right">{{selectedItem.status ? selectedItem.status.name : '未知'}}</span>
+                                        <h2>{{selectedItem.name}}</h2>
                                     </div>
                                     <dl class="dl-horizontal">
-                                        <dt>状态：</dt>
-                                        <dd><span class="label label-primary">进行中</span>
+                                        <dt>关联问卷：</dt>
+                                        <td>
+                                            <dd>{{selectedItem.survey ? selectedItem.survey.name : ""}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <dl class="dl-horizontal">
+                                        <dt>CTI任务ID：</dt>
+                                        <dd>{{selectedItem.taskId}}</dd>
+                                        <dt>转接类型：</dt>
+                                        <td>
+                                            <dd>{{selectedItem.transType ? selectedItem.transType.name : ""}}</dd>
+                                            <dt>外呼数：</dt>
+                                            <dd>{{selectedItem.totCust || '未知'}}</dd>
+                                            <dt>已呼数：</dt>
+                                            <dd>{{selectedItem.totCallsuc || '未知'}}</dd>
+                                            <dt>未呼数：</dt>
+                                            <dd>{{selectedItem.totUncall || '未知'}}</dd>
+                                            <dt>已接数：</dt>
+                                            <dd>{{selectedItem.totTocustomer || '未知'}}</dd>
+                                    </dl>
+                                </div>
+                                <div class="col-sm-6" id="cluster_info">
+                                    <dl class="dl-horizontal">
+
+                                        <dt>创建时间：</dt>
+                                        <dd>{{selectedItem.createdAt}}</dd>
+                                        <dt>已呼率：</dt>
+                                        <dd>
+                                            <div class="progress progress-mini">
+                                                <div v-bind:style="{ width:  selectedItem.totCallsucRate}"
+                                                     class="progress-bar"></div>
+                                            </div>
+                                            {{selectedItem.totCallsucRate || '未知'}}
+                                        </dd>
+                                        <dt>未呼率：</dt>
+                                        <dd>
+                                            <div class="progress progress-mini">
+                                                <div v-bind:style="{ width:  selectedItem.totUncallRate}"
+                                                     class="progress-bar"></div>
+                                            </div>
+                                            {{selectedItem.totUncallRate || '未知'}}
+                                        </dd>
+                                        <dt>已接通率：</dt>
+                                        <dd>
+                                            <div class="progress progress-mini">
+                                                <div v-bind:style="{ width:  selectedItem.totSuccessRate}"
+                                                     class="progress-bar"></div>
+                                            </div>
+                                            {{selectedItem.totSuccessRate || '未知'}}
+                                        </dd>
+                                        <dt>转接率：</dt>
+                                        <dd>
+                                            <div class="progress progress-mini">
+                                                <div v-bind:style="{ width:  selectedItem.totTocustomerRate}"
+                                                     class="progress-bar"></div>
+                                            </div>
+                                            {{selectedItem.totTocustomerRate || '未知'}}
+                                        </dd>
+                                        <dd class="project-people">
+                                            <th>已呼率</th>
+                                            <th>未呼率</th>
+                                            <th>已接通率</th>
+                                            <th>转接率</th>
                                         </dd>
                                     </dl>
                                 </div>
@@ -171,16 +235,10 @@
                             <div class="row">
                                 <form class="form-horizontal m-t" v-if="selectedItem">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">任务名称：</label>
-                                        <div class="col-sm-8">
-                                            <input name="name" disabled class="form-control" type="text"
-                                                   v-model="selectedItem.name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="col-sm-3 control-label">命中率：</label>
                                         <div class="col-sm-8">
-                                            <select name="name" class="form-control" @change="hitRateChangeHandler" type="text"
+                                            <select name="name" class="form-control" @change="hitRateChangeHandler"
+                                                    type="text"
                                                     v-model="selectedItem.hitRate && selectedItem.hitRate.value">
                                                 <option value="0">自动计算</option>
                                                 <option value="1">30%命中率</option>
@@ -197,21 +255,24 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">后处理时长：</label>
                                         <div class="col-sm-8">
-                                            <input name="name" class="form-control" @blur="acwTimeChangeBlur" type="number" max="60"
+                                            <input name="name" class="form-control" @blur="acwTimeChangeBlur"
+                                                   type="number" max="60"
                                                    min="0" v-model="selectedItem.acwTime">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">重拨次数：</label>
                                         <div class="col-sm-8">
-                                            <input name="name" class="form-control" @blur="redialTimesBlurHandler" type="number"
+                                            <input name="name" class="form-control" @blur="redialTimesBlurHandler"
+                                                   type="number"
                                                    min="0" max="5" v-model="selectedItem.redialTimes">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">重拨间隔时长：</label>
                                         <div class="col-sm-8">
-                                            <select name="name" class="form-control" type="text" @change="minRedialIntervalChange"
+                                            <select name="name" class="form-control" type="text"
+                                                    @change="minRedialIntervalChange"
                                                     v-model="selectedItem.minRedialInterval && selectedItem.minRedialInterval.value">
                                                 <option value="1">60秒</option>
                                                 <option value="2">120秒</option>
@@ -224,7 +285,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">最大振铃时长：</label>
                                         <div class="col-sm-8">
-                                            <select name="name" class="form-control" type="text" @change="maxRingTimeHandler"
+                                            <select name="name" class="form-control" type="text"
+                                                    @change="maxRingTimeHandler"
                                                     v-model="selectedItem.maxRingTime && selectedItem.maxRingTime.value">
                                                 <option value="30">30秒</option>
                                                 <option value="35">35秒</option>
@@ -240,15 +302,18 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">校验URL：</label>
                                         <div class="col-sm-8">
-                                            <input name="name" class="form-control" type="text" v-model="selectedItem.xintf"
+                                            <input name="name" class="form-control" type="text"
+                                                   v-model="selectedItem.xintf"
                                                    @blur="xintfHandler">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">最大并发：</label>
                                         <div class="col-sm-8">
-                                            <input name="name" class="form-control" @change="maxConcurrentNumBlurHandler"
-                                                   type="number" min="0" max="5" v-model="selectedItem.maxConcurrentNum">
+                                            <input name="name" class="form-control"
+                                                   @change="maxConcurrentNumBlurHandler"
+                                                   type="number" min="0" max="5"
+                                                   v-model="selectedItem.maxConcurrentNum">
                                         </div>
                                     </div>
                                 </form>
@@ -523,3 +588,9 @@
         }
     });
 </script>
+
+<style>
+    dd {
+        min-height: 30px;
+    }
+</style>

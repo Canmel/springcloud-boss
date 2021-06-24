@@ -116,7 +116,7 @@
                         <!-- user login dropdown start-->
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <img alt="" :src="profile.avatar" class="img-circle" style="max-width: 20%;">
                                 <span class="username">{{user ? user.username : '未登录'}} {{user.companyName ? '('+ user.companyName +')' : ''}}</span>
                                 <b class="caret"></b>
                             </a>
@@ -201,6 +201,7 @@
     var mvm = new Vue({
         el: '#wrapper',
         data: {
+            profile: {},
             applicationContextRootPath: '/survey/',
             tops: [],
             subs: [],
@@ -213,15 +214,24 @@
             this.loadTops();
             this.loadSubs();
             this.loadMaster();
+            this.loadProfile();
         },
         methods: {
+            loadProfile() {
+                let that = this;
+                AJAX.GET('profile', {}, function (resp) {
+                    that.profile = resp.data;
+                });
+            },
             loadLogoUrl() {
                 let that = this;
                 AJAX.GET("args/logo", {
                     code: window.location.host
                 }, function (resp) {
                     let d = resp.data;
-                    that.logoUrl = d.value + sessionStorage.getItem('access_token');
+                    if(d) {
+                        that.logoUrl = d.value + sessionStorage.getItem('access_token');
+                    }
                 })
             },
             loadTops: function() {
