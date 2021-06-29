@@ -27,7 +27,16 @@
                     <input type="text" placeholder="请输入坐席号" class="input-sm form-control search-input"
                            v-model="pageInfo.seatNum">
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
+                    <select class="form-control" v-model="pageInfo.grade" >
+                        <option disabled value="">请选择访员级别</option>
+                        <option value ="1">高级</option>
+                        <option value="2">中级</option>
+                        <option value="3">初级</option>
+                        <option value="4">见习</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
                     <div class="input-group">
                         <input type="text" placeholder="请输入姓名" class="input-sm form-control search-input"
                                v-model="pageInfo.username"> <span
@@ -49,6 +58,7 @@
                         <th>电话</th>
                         <th>工号</th>
                         <th>坐席号</th>
+                        <th>访员级别</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -62,6 +72,7 @@
                         <td>{{item.mobile}}</td>
                         <td>{{item.workNum}}</td>
                         <td>{{item.seatNum}}</td>
+                        <td>{{item.gradeName}}</td>
 <!--                        <td>{{item.gmtCreate | formatDate}}</td>-->
                         <td>
                             <button type="button" v-on:click="edit(item)" class="btn btn-success btn-xs" v-if="resultDev">
@@ -152,6 +163,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                grade: "",
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10

@@ -25,6 +25,7 @@
         <result column="seat_num" property="seatNum" jdbcType="VARCHAR"></result>
         <result column="work_num" property="workNum" jdbcType="VARCHAR"></result>
         <result column="company_id" property="companyId" jdbcType="INTEGER"></result>
+        <result column="grade" property="grade" jdbcType="INTEGER"></result>
         <association property="agency" javaType="com.camel.core.model.ZsAgency">
             <id column="zs_agency_id" property="id"></id>
             <result column="zs_agency_name" property="name"></result>
@@ -59,7 +60,8 @@
         sys_user.id_num,
         sys_user.seat_num,
         sys_user.work_num,
-        sys_user.company_id
+        sys_user.company_id,
+        sys_user.`grade`
     </sql>
 
     <select id="findRoleIdsByUserId" resultType="integer">
@@ -84,6 +86,7 @@
             <if test="workNum !=null and workNum != ''">and sys_user.work_num like CONCAT('%', #{workNum}, '%')</if>
             <if test="idNum !=null and idNum != ''">and sys_user.id_num like CONCAT('%', #{idNum}, '%')</if>
             <if test="mobile !=null and mobile != ''">and sys_user.mobile like CONCAT('%', #{mobile}, '%')</if>
+            <if test="grade !=null and grade != ''">and sys_user.grade like CONCAT('%', #{grade}, '%')</if>
         </where>
         ORDER BY sys_user.uid
     </select>
