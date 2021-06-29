@@ -1,11 +1,11 @@
-    <div id="subContainer" class="wrapper wrapper-content">
+<div id="subContainer" class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>队列</h5>
+            <h5>外呼队列</h5>
             <div class="ibox-tools">
                 <div class="ibox-tools">
-                    <a :href="applicationContextRootPath + 'pages/queue/add.html'"
-                       data-pjax class="btn btn-success btn-xs">新建队列</a>
+<!--                    <a :href="applicationContextRootPath + 'pages/queue/add.html'"-->
+<!--                       data-pjax class="btn btn-success btn-xs">新建队列</a>-->
                     <a @click="syncQueue()"
                        data-pjax class="btn btn-primary btn-xs">从服务器更新</a>
                 </div>
@@ -42,7 +42,6 @@
                         <td><span>{{item.createdAt}}</span></td>
                         <td>
                             <a class="btn btn-xs btn-warning" @click="addQueue(item)" v-if="resultDev">查看队列</a>
-                            <a class="btn btn-xs btn-danger" @click="deleteItem(item)" v-if="result">删除</a>
                             <a class="btn btn-xs btn-primary" @click="push(item)" v-if="result">推送</a>
                             <a class="btn btn-xs btn-info" @click="pull(item)" v-if="result">拉取</a>
                         </td>
@@ -74,7 +73,7 @@
             resultDev: false,//表示操作人员权限
         },
         created: function () {
-           this.loginMaster();
+            this.loginMaster();
         },
         methods: {
             pull(item) {
@@ -91,9 +90,16 @@
                 /**
                  * 同步队列
                  */
-                AJAX.GET("zsQueue/doSync", {}, function (resp) {
-                    toastr.success(resp['msg'], '操作成功');
-                });
+                confirm("您确认要更新全部队列吗？", "", function (isConfirm) {
+                    if (isConfirm) {
+                        AJAX.GET("zsQueue/doSync", {}, function (resp) {
+                            toastr.success(resp['msg'], '操作成功');
+                        });
+                    } else {
+                        //after click the cancel
+                    }
+                }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
+
             },
             addQueue(item) {
                 toPage("pages/queue/addQueue.html", item.id)
@@ -112,17 +118,23 @@
                     }
                 }, {confirmButtonText: '确认', cancelButtonText: '取消', width: 400});
             },
-            loginMaster(){
+            loginMaster() {
                 var that = this;
                 this.master = sessionStorage.getItem('master');
                 var masterJ = JSON.parse(this.master);
                 masterJ.forEach(e => {
                     var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){that.result = true;that.resultDev = true;}
-                    if(authority ==='ROLE_DEVOPS'){that.resultDev = true}
+                    if (authority === 'ROLE_ADMIN') {
+                        that.result = true;
+                        that.resultDev = true;
+                    }
+                    if (authority === 'ROLE_DEVOPS') {
+                        that.resultDev = true
+                    }
                 })
             },
             pagequery: function () {
+                console.log(12)
                 let that = this;
                 AJAX.GET('zsQueue', this.pageInfo, function (resp) {
                     that.items = resp.data.list;

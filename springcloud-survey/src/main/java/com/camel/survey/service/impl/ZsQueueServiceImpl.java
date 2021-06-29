@@ -89,13 +89,25 @@ public class ZsQueueServiceImpl extends ServiceImpl<ZsQueueMapper, ZsQueue> impl
             JSONObject respObject = JSONUtil.parseObj(resp);
             JSONArray array = respObject.getJSONArray("info");
             for (int i = 0; i < array.size(); i++) {
-                JSONObject item = (JSONObject) array.get(i);
-                String queueNum = item.getStr("queueNum");
-                String queueName = item.getStr("queueName");
-                Wrapper<ZsQueue> queueWrapper = new EntityWrapper<>();
-                queueWrapper.eq("name", queueName);
-                if (mapper.selectCount(queueWrapper) < 1) {
-                    mapper.insert(new ZsQueue(queueName, queueNum));
+                // 队列信息
+                ZsQueue queue = new ZsQueue((JSONObject)array.get(i));
+                Wrapper existWrapper = new EntityWrapper();
+                existWrapper.eq("num", queue.getNum());
+                if(mapper.selectCount(existWrapper) < 1) {
+                    mapper.insert(queue);
+                } else {
+                    mapper.update(queue, existWrapper);
+                }
+                ZsQueue queueExit = selectOne(existWrapper);
+                // 坐席信息
+                List<ZsSeat> seats = ZsSeat.parse(queue.getAgents());
+                if(ObjectUtil.isNotEmpty(queueExit)) {
+                    for (ZsSeat s: seats) {
+                        s.setQueueId(queueExit.getId());
+                        Wrapper seatWrapper = new EntityWrapper();
+                        seatWrapper.eq("seat_num", s.getSeatNum());
+                        seatService.update(s, seatWrapper);
+                    }
                 }
             }
         } catch (RuntimeException e) {

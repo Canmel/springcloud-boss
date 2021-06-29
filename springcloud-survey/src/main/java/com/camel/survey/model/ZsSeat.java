@@ -1,5 +1,7 @@
 package com.camel.survey.model;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -10,11 +12,13 @@ import com.camel.survey.enums.ZsStatus;
 import com.camel.survey.enums.ZsYesOrNo;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author baily
@@ -80,5 +84,21 @@ public class ZsSeat extends BasePaginationEntity {
         ", seatNum=" + seatNum +
         ", password=" + password +
         "}";
+    }
+
+    public static List<ZsSeat> parse(JSONArray jsonArray) {
+        List<ZsSeat> seats = new ArrayList<>();
+        for (Object object: jsonArray) {
+            JSONObject jsonObject = (JSONObject) object;
+            seats.add(new ZsSeat(jsonObject.getStr("agentnum")));
+        }
+        return seats;
+    }
+
+    public ZsSeat(String seatNum) {
+        this.seatNum = seatNum;
+    }
+
+    public ZsSeat() {
     }
 }

@@ -1,5 +1,7 @@
 package com.camel.survey.model;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -43,6 +45,9 @@ public class ZsQueue extends BasePaginationEntity {
     @TableLogic
     private ZsStatus status;
 
+    @TableField(exist = false)
+    private JSONArray agents;
+
     /**
      * 创建时间
      */
@@ -64,5 +69,11 @@ public class ZsQueue extends BasePaginationEntity {
                 ", id=" + id +
                 ", name=" + name +
                 "}";
+    }
+
+    public ZsQueue(JSONObject jsonObject) {
+        this.name = jsonObject.getStr("queueName");
+        this.num = jsonObject.getStr("queueNum");
+        this.agents = jsonObject.getJSONArray("agents");
     }
 }
