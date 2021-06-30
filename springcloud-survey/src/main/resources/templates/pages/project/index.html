@@ -13,9 +13,10 @@
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span
+                        <input type="text" placeholder="请输入项目名称" class="input-sm form-control search-input"
+                               v-model="pageInfo.name"> <span
                             class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary" @click="pagequery()"> 搜索</button> </span>
+                                        <button type="button" class="btn btn-sm btn-primary" v-on:click="pagequery()"> 搜索</button> </span>
                     </div>
                 </div>
             </div>
@@ -63,6 +64,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                name: '',
                 pageNum: 1,
                 total: 0,//总页数
                 size: 10,//每页显示条目个数不传默认10
