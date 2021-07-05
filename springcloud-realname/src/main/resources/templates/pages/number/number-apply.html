@@ -13,6 +13,7 @@
     <script type="text/javascript" src="../../js/jquery.min.js"></script>
     <script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../js/vue.js"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
     <style>
         .success {
             color: green;
@@ -28,7 +29,8 @@
                 <span class="x-red">*</span>客户申请表
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="applySheet" name="applySheet" @change="upload('applySheet')" :disabled="apply.status.code !== 1"
+                <input type="file" id="applySheet" name="applySheet" @change="upload('applySheet')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.applySheet" class="span success">已上传</span>
             </div>
@@ -41,7 +43,8 @@
                 <span class="x-red">*</span>单位资质
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="license" name="license" @change="upload('license')" :disabled="apply.status.code !== 1"
+                <input type="file" id="license" name="license" @change="upload('license')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.license" class="span success">已上传</span>
             </div>
@@ -54,7 +57,8 @@
                 <span class="x-red">*</span>法人身份证
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="cardLegal" name="cardLegal" @change="upload('cardLegal')" :disabled="apply.status.code !== 1"
+                <input type="file" id="cardLegal" name="cardLegal" @change="upload('cardLegal')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.cardLegal" class="span success">已上传</span>
             </div>
@@ -67,7 +71,8 @@
                 <span class="x-red">*</span>经办人身份证
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="cardAgent" name="cardAgent" @change="upload('cardAgent')" :disabled="apply.status.code !== 1"
+                <input type="file" id="cardAgent" name="cardAgent" @change="upload('cardAgent')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.cardAgent" class="span success">已上传</span>
             </div>
@@ -80,7 +85,8 @@
                 <span class="x-red">*</span>经办人身份证手持照片
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="handAgent" name="handAgent" @change="upload('handAgent')" :disabled="apply.status.code !== 1"
+                <input type="file" id="handAgent" name="handAgent" @change="upload('handAgent')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.handAgent" class="span success">已上传</span>
             </div>
@@ -93,7 +99,8 @@
                 <span class="x-red">*</span>使用人身份证
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="cardUser" name="cardUser" @change="upload('cardUser')" :disabled="apply.status.code !== 1"
+                <input type="file" id="cardUser" name="cardUser" @change="upload('cardUser')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.cardUser" class="span success">已上传</span>
             </div>
@@ -106,7 +113,8 @@
                 <span class="x-red">*</span>电信入网承诺书
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="enterPromise" name="enterPromise" @change="upload('enterPromise')" :disabled="apply.status.code !== 1"
+                <input type="file" id="enterPromise" name="enterPromise" @change="upload('enterPromise')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.enterPromise" class="span success">已上传</span>
             </div>
@@ -119,7 +127,8 @@
                 <span class="x-red">*</span>号码申请公函
             </label>
             <div class="layui-input-inline">
-                <input type="file" id="applyLetter" name="applyLetter" @change="upload('applyLetter')" :disabled="apply.status.code !== 1"
+                <input type="file" id="applyLetter" name="applyLetter" @change="upload('applyLetter')"
+                       :disabled="apply.status && apply.status.code !== 1"
                        autocomplete="off" class="layui-input">
                 <span v-if="apply.applyLetter" class="span success">已上传</span>
             </div>
@@ -127,12 +136,12 @@
                 <span class="x-red">*</span>加盖红色公章
             </div>
         </div>
-        <div class="layui-form-item" v-if="apply.id && apply.status.code == 1">
-            <button class="layui-btn" lay-filter="add" lay-submit="" @click="applyImmediately(apply)">
-                立即申请
-            </button>
-        </div>
     </form>
+    <div class="layui-form-item" v-if="apply.status && apply.status.code == 1">
+        <button class="layui-btn" lay-filter="add" lay-submit="" @click="applyImmediately(apply)">
+            立即申请
+        </button>
+    </div>
 </div>
 <script>
     new Vue({
@@ -142,21 +151,26 @@
             userInfo: {}
         },
         created: function () {
-            if(localStorage.getItem("params")) {
+            if (localStorage.getItem("params")) {
                 this.applying(localStorage.getItem("params"));
                 localStorage.removeItem("params");
+            } else {
+                this.applying();
             }
 
         },
         methods: {
             applyImmediately(apply) {
-                parent.layer.confirm('是否立即申请?', function(index){
-                    parent.parent.AJAX.GET("applyNumber/apply/" + apply.id, {}, function (resp) {
-                        if(resp.msg) {
-                            parent.layer.msg(resp.msg, {icon: 1, time: 1000});
+                if (!apply.id) {
+                    return parent.layer.msg("请完善资料文件");
+                }
+                parent.layer.confirm('是否立即申请?', function (index) {
+                    parent.AJAX.GET("applyNumber/apply/" + apply.id, {}, function (resp) {
+                        if (resp && resp.msg) {
+                            parent.parent.layer.msg(resp.msg, {icon: 1, time: 1000});
+                            x_admin_close();
                         }
                     });
-
                     parent.layer.close(index);
                 });
             },

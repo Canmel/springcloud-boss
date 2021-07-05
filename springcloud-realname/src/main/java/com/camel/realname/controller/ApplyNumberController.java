@@ -69,7 +69,7 @@ public class ApplyNumberController extends BaseCommonController {
         }
         SysUser user = applicationToolsUtils.currentUser();
         Wrapper wrapper = new EntityWrapper();
-        wrapper.gt("status", 1);
+        wrapper.eq("status", 1);
         wrapper.eq("creator", user.getUid());
         return ResultUtil.success(service.selectOne(wrapper));
     }
