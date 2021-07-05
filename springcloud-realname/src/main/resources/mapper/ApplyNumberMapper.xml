@@ -34,6 +34,6 @@
         <include refid="Base_Column_List"></include>
         from
         apply_number left join sys_user on apply_number.creator = sys_user.uid
-        where creator = #{creatorId}
+        where creator = #{creatorId} and deleted = 1
     </select>
 </mapper>

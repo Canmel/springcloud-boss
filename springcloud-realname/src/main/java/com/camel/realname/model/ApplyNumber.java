@@ -1,17 +1,21 @@
 package com.camel.realname.model;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.model.SysUser;
 import com.camel.realname.enums.NumberStatus;
+import com.camel.realname.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * <p>
@@ -86,37 +90,49 @@ public class ApplyNumber extends BasePaginationEntity {
     /**
      * 状态
      */
-    @TableLogic
+
     private NumberStatus status;
+
+    @TableLogic
+    private ZsYesOrNo deleted;
 
     /**
      * 创建时间
      */
     @TableField("created_at")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
 
     @Override
     public String toString() {
         return "ApplyNumber{" +
-        ", id=" + id +
-        ", code=" + code +
-        ", status=" + status +
-        ", creator=" + creator +
-        ", createdAt=" + createdAt +
-        ", applyAt=" + applyAt +
-        ", applySheet=" + applySheet +
-        ", license=" + license +
-        ", cardLegal=" + cardLegal +
-        ", cardAgent=" + cardAgent +
-        ", handAgent=" + handAgent +
-        ", cardUser=" + cardUser +
-        ", enterPromise=" + enterPromise +
-        ", applyLetter=" + applyLetter +
-        "}";
+                ", id=" + id +
+                ", code=" + code +
+                ", status=" + status +
+                ", creator=" + creator +
+                ", createdAt=" + createdAt +
+                ", applyAt=" + applyAt +
+                ", applySheet=" + applySheet +
+                ", license=" + license +
+                ", cardLegal=" + cardLegal +
+                ", cardAgent=" + cardAgent +
+                ", handAgent=" + handAgent +
+                ", cardUser=" + cardUser +
+                ", enterPromise=" + enterPromise +
+                ", applyLetter=" + applyLetter +
+                "}";
     }
 
     public void buildCode() {
         this.code = sd.format(new Date());
+    }
+
+    public boolean isValid() {
+        if (StringUtils.isNotBlank(this.applySheet) && StringUtils.isNotBlank(this.license) && StringUtils.isNotBlank(this.cardLegal)
+                && StringUtils.isNotBlank(this.cardAgent) && StringUtils.isNotBlank(this.handAgent) && StringUtils.isNotBlank(this.cardUser)
+                && StringUtils.isNotBlank(this.enterPromise) && StringUtils.isNotBlank(this.applyLetter)) {
+            return true;
+        }
+        return false;
     }
 }

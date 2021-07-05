@@ -137,7 +137,10 @@ $(function () {
     w       弹出层宽度（缺省调默认值）
     h       弹出层高度（缺省调默认值）
 */
-function x_admin_show(title,url,w,h){
+function x_admin_show(title,url,params,w,h){
+    if(params) {
+        localStorage.setItem("params", params);
+    }
     if (title == null || title == '') {
         title=false;
     };

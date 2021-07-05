@@ -1,9 +1,14 @@
 package com.camel.realname.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.core.entity.Result;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.PaginationUtil;
+import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
+import com.camel.realname.enums.NumberStatus;
 import com.camel.realname.mapper.ApplyNumberMapper;
 import com.camel.realname.model.ApplyNumber;
 import com.camel.realname.service.ApplyNumberService;
@@ -93,5 +98,20 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
         String secretKey = qiNiuConfig.getSecretKey();
         Auth auth = Auth.create(accessKey, secretKey);
         return auth;
+    }
+
+    @Override
+    public Result apply(Integer id) {
+        ApplyNumber applyNumber = mapper.selectById(id);
+        if(ObjectUtil.isNotEmpty(applyNumber) && applyNumber.isValid()) {
+            applyNumber.setStatus(NumberStatus.APPLYING);
+            if(mapper.updateById(applyNumber) > -1) {
+                return ResultUtil.success(applyNumber);
+            } else {
+                return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "申请失败");
+            }
+        }
+        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "申请失败：请先完成资料");
+
     }
 }

@@ -1,7 +1,9 @@
 package com.camel.realname.controller;
 
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -24,7 +26,9 @@ import org.springframework.stereotype.Controller;
 import com.camel.core.controller.BaseCommonController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -37,11 +41,19 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/applyNumber")
 public class ApplyNumberController extends BaseCommonController {
+    public static final List<String> excelFileSuf = ListUtil.toList("XLS", "XLSX");
+    public static final List<String> picFileSuf = ListUtil.toList("PNG", "JPG");
+
     @Autowired
     private ApplyNumberService service;
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
+
+    @GetMapping("/apply/{id}")
+    public Result apply(@PathVariable Integer id) {
+        return service.apply(id);
+    }
 
     @GetMapping("/index")
     public Result index(ApplyNumber entity) {
@@ -52,9 +64,12 @@ public class ApplyNumberController extends BaseCommonController {
 
     @GetMapping("/applying")
     public Result applying(ApplyNumber entity) {
+        if(ObjectUtil.isNotEmpty(entity.getId())) {
+            return ResultUtil.success(service.selectById(entity.getId()));
+        }
         SysUser user = applicationToolsUtils.currentUser();
         Wrapper wrapper = new EntityWrapper();
-        wrapper.eq("status", 1);
+        wrapper.gt("status", 1);
         wrapper.eq("creator", user.getUid());
         return ResultUtil.success(service.selectOne(wrapper));
     }
@@ -74,38 +89,49 @@ public class ApplyNumberController extends BaseCommonController {
         String[] fileNames = file.getOriginalFilename().split("\\.");
         if(ArrayUtil.isNotEmpty(fileNames)) {
            String type = fileNames[fileNames.length - 1];
-           if(type.toUpperCase().equals("XLS") || type.toUpperCase().equals("XLSX")) {
+
+           if(fileType.equals("applySheet") && isExcel(file)) {
                JSONObject object = service.upload(file);
-               if(fileType.equals("applySheet")) {
-                   entity.setApplySheet(object.getString("key"));
-               }
-               if(fileType.equals("license")) {
-                   entity.setLicense(object.getString("key"));
-               }
-               if(fileType.equals("cardLegal")) {
-                   entity.setCardLegal(object.getString("key"));
-               }
-               if(fileType.equals("cardAgent")) {
-                   entity.setCardAgent(object.getString("key"));
-               }
-               if(fileType.equals("handAgent")) {
-                   entity.setHandAgent(object.getString("key"));
-               }
-               if(fileType.equals("cardUser")) {
-                   entity.setCardUser(object.getString("key"));
-               }
-               if(fileType.equals("enterPromise")) {
-                   entity.setEnterPromise(object.getString("key"));
-               }
-               if(fileType.equals("applyLetter")) {
-                   entity.setApplyLetter(object.getString("key"));
-               }
+               entity.setApplySheet(object.getString("key"));
                return ResultUtil.success(service.insertOrUpdate(entity));
-           } else{
-               return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "上传失败");
+           }
+           if(fileType.equals("license") && isPic(file)) {
+               JSONObject object = service.upload(file);
+               entity.setLicense(object.getString("key"));
+               return ResultUtil.success(service.insertOrUpdate(entity));
+           }
+           if(fileType.equals("cardLegal") && isPic(file)) {
+               JSONObject object = service.upload(file);
+               entity.setCardLegal(object.getString("key"));
+               return ResultUtil.success(service.insertOrUpdate(entity));
+           }
+           if(fileType.equals("cardAgent") && isPic(file)) {
+               JSONObject object = service.upload(file);
+               entity.setCardAgent(object.getString("key"));
+               return ResultUtil.success(service.insertOrUpdate(entity));
+           }
+           if(fileType.equals("handAgent") && isPic(file)) {
+               JSONObject object = service.upload(file);
+               entity.setHandAgent(object.getString("key"));
+               return ResultUtil.success(service.insertOrUpdate(entity));
+           }
+           if(fileType.equals("cardUser") && isPic(file)) {
+               JSONObject object = service.upload(file);
+               entity.setCardUser(object.getString("key"));
+               return ResultUtil.success(service.insertOrUpdate(entity));
+           }
+           if(fileType.equals("enterPromise") && isPic(file)) {
+               JSONObject object = service.upload(file);
+               entity.setEnterPromise(object.getString("key"));
+               return ResultUtil.success(service.insertOrUpdate(entity));
+           }
+           if(fileType.equals("applyLetter") && isPic(file)) {
+               JSONObject object = service.upload(file);
+               entity.setApplyLetter(object.getString("key"));
+               return ResultUtil.success(service.insertOrUpdate(entity));
            }
         }
-        return ResultUtil.success("上传成功");
+        return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "上传失败");
     }
 
     @PostMapping
@@ -121,6 +147,24 @@ public class ApplyNumberController extends BaseCommonController {
     @Override
     public String getMouduleName() {
         return "外呼号码";
+    }
+
+    public boolean isExcel(MultipartFile file) {
+        String[] fileNames = file.getOriginalFilename().split("\\.");
+        if(ArrayUtil.isNotEmpty(fileNames)) {
+            String type = fileNames[fileNames.length - 1];
+            return excelFileSuf.indexOf(type.toUpperCase()) > -1;
+        }
+        return false;
+    }
+
+    public boolean isPic(MultipartFile file) {
+        String[] fileNames = file.getOriginalFilename().split("\\.");
+        if(ArrayUtil.isNotEmpty(fileNames)) {
+            String type = fileNames[fileNames.length - 1];
+            return picFileSuf.indexOf(type.toUpperCase()) > -1;
+        }
+        return false;
     }
 }
 

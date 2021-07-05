@@ -38,7 +38,7 @@ function simpleSuccess(result) {
     } else {
         //其他错误情况，直接弹出提示框
         if (result.msg != null) {
-            toastr.error(result.msg, '错误');
+            layer.msg(result.msg);
         }
     }
     return null;
@@ -121,7 +121,11 @@ AJAX = {
             contentType: false,
             processData: false,
             success: function (res) {
-                success(res);
+                if(res.code == 200) {
+                    success(res);
+                } else {
+                    layer.msg(res.msg);
+                }
             }
         })
     },

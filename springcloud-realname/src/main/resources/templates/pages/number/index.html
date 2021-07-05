@@ -21,7 +21,7 @@
     <fieldset class="layui-elem-field">
         <legend>申请列表</legend>
         <legend>
-            <button class="layui-btn" onclick="x_admin_show('创建新申请','./number-apply.html',800,600)"><i
+            <button class="layui-btn" onclick="x_admin_show('创建新申请','./number-apply.html',null,800,600)"><i
                     class="layui-icon"></i>添加
             </button>
             <span class="x-right" style="line-height:40px">共有数据：88 条</span>
@@ -41,7 +41,7 @@
                 <tbody>
                 <tr v-for="(item, index) in pageInfo.list">
                     <td>{{(pageInfo.pageNum - 1) * 10 + index + 1}}</td>
-                    <td>{{item.code}}</td>
+                    <td style="color: #1E9FFF; cursor: pointer;" @click="edit(item)">{{item.code}}</td>
                     <td>{{item.creator ? item.creator.username : ""}}</td>
                     <td>2017-01-01 11:11:42</td>
                     <td class="td-status">
@@ -51,14 +51,14 @@
                         <a onclick="member_stop(this,'10001')" href="javascript:;" title="下载">
                             <i class="layui-icon">&#xe601;</i>
                         </a>
-                        <a title="编辑" onclick="x_admin_show('编辑','number-apply.html',800,600)" href="javascript:;">
+                        <a title="编辑" @click="edit(item)" href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a onclick="x_admin_show('修改密码','member-password.html',800,600)" title="修改密码"
+                        <a @click="applyImmediately(item)" title="立即申请"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe631;</i>
+                            <i class="layui-icon">&#xe609;</i>
                         </a>
-                        <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                        <a title="删除" v-if="item.status.code == 1" onclick="member_del(this,'要删除的id')" href="javascript:;">
                             <i class="layui-icon">&#xe640;</i>
                         </a>
                     </td>
@@ -80,6 +80,20 @@
             this.list();
         },
         methods: {
+            applyImmediately(item) {
+                layer.confirm('是否立即申请?', function(index){
+                    parent.AJAX.GET("applyNumber/apply/" + item.id, {}, function (resp) {
+                        if(resp.msg) {
+                            layui.msg(resp.msg, {icon: 1, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            edit(item) {
+                console.log(item.id)
+                x_admin_show('编辑','number-apply.html',item.id,800,600)
+            },
 
             list() {
                 let that = this;
