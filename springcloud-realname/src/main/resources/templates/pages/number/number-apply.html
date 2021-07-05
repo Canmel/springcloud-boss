@@ -13,7 +13,11 @@
     <script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../js/vue.js"></script>
     <script type="text/javascript" src="../../js/ajax-util.js"></script>
-    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <style>
+        .success {
+            color: green;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,6 +30,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="applySheet" name="applySheet" @change="upload('applySheet')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.applySheet" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>客户申请表
@@ -38,6 +43,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="license" name="license" @change="upload('license')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.license" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>营业执照加盖红色公章，注明用途和时间
@@ -50,6 +56,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="cardLegal" name="cardLegal" @change="upload('cardLegal')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.cardLegal" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>正反面加盖红色公章，注明用途和时间
@@ -62,6 +69,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="cardAgent" name="cardAgent" @change="upload('cardAgent')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.cardAgent" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>身份证复印件正反面一张A4并加盖红色公章，注明用途和时间
@@ -74,6 +82,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="handAgent" name="handAgent" @change="upload('handAgent')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.handAgent" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>经办人身份证手持照片
@@ -86,6 +95,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="cardUser" name="cardUser" @change="upload('cardUser')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.cardUser" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>身份证复印件正反面一张A4并加盖红色公章，注明用途和时间
@@ -98,6 +108,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="enterPromise" name="enterPromise" @change="upload('enterPromise')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.enterPromise" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>电信入网承诺书（加盖红色公章）
@@ -110,6 +121,7 @@
             <div class="layui-input-inline">
                 <input type="file" id="applyLetter" name="applyLetter" @change="upload('applyLetter')"
                        autocomplete="off" class="layui-input">
+                <span v-if="apply.applyLetter" class="span success">已上传</span>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>加盖红色公章
@@ -126,11 +138,20 @@
     new Vue({
         el: '.x-body',
         data: {
+            apply: {},
             userInfo: {}
         },
         created: function () {
+            this.applying();
         },
         methods: {
+            applying() {
+                let that = this;
+                //查询正在编辑的
+                parent.AJAX.GET("applyNumber/applying", {}, function (resp) {
+                    that.apply = resp.data;
+                })
+            },
             upload(id) {
                 parent.parent.AJAX.UPLOAD("realname/applyNumber/upload", {file: $('#' + id)[0].files[0], fileType: id}, function (resp) {
                     console.log(resp)

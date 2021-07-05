@@ -74,20 +74,13 @@
     new Vue({
         el: '.x-body',
         data: {
-            userInfo: {},
             pageInfo: {}
         },
         created: function () {
-            this.me();
             this.list();
         },
         methods: {
-            me() {
-                let that = this;
-                parent.AJAX.GET("/system/sysUser/myself", {}, function (resp) {
-                    that.userInfo = resp.data;
-                })
-            },
+
             list() {
                 let that = this;
                 parent.AJAX.GET("applyNumber/index", {}, function (resp) {

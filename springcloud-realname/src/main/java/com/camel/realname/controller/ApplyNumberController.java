@@ -50,6 +50,15 @@ public class ApplyNumberController extends BaseCommonController {
         return ResultUtil.success(service.list(entity));
     }
 
+    @GetMapping("/applying")
+    public Result applying(ApplyNumber entity) {
+        SysUser user = applicationToolsUtils.currentUser();
+        Wrapper wrapper = new EntityWrapper();
+        wrapper.eq("status", 1);
+        wrapper.eq("creator", user.getUid());
+        return ResultUtil.success(service.selectOne(wrapper));
+    }
+
     @PostMapping("/upload")
     public Result upload(@RequestParam("file") MultipartFile file, String fileType) {
         SysUser sysUser = applicationToolsUtils.currentUser();
