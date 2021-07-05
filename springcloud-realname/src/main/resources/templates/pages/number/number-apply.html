@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>号码申请页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+    <script type="text/javascript" src="../../js/ajax-util.js"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+</head>
+
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="applySheet" class="layui-form-label">
+                <span class="x-red">*</span>客户申请表
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="applySheet" name="applySheet" @change="upload('applySheet')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>客户申请表
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="license" class="layui-form-label">
+                <span class="x-red">*</span>单位资质
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="license" name="license" @change="upload('license')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>营业执照加盖红色公章，注明用途和时间
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="cardLegal" class="layui-form-label">
+                <span class="x-red">*</span>法人身份证
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="cardLegal" name="cardLegal" @change="upload('cardLegal')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>正反面加盖红色公章，注明用途和时间
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="cardAgent" class="layui-form-label">
+                <span class="x-red">*</span>经办人身份证
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="cardAgent" name="cardAgent" @change="upload('cardAgent')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>身份证复印件正反面一张A4并加盖红色公章，注明用途和时间
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="handAgent" class="layui-form-label">
+                <span class="x-red">*</span>经办人身份证手持照片
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="handAgent" name="handAgent" @change="upload('handAgent')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>经办人身份证手持照片
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="cardUser" class="layui-form-label">
+                <span class="x-red">*</span>使用人身份证
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="cardUser" name="cardUser" @change="upload('cardUser')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>身份证复印件正反面一张A4并加盖红色公章，注明用途和时间
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="enterPromise" class="layui-form-label">
+                <span class="x-red">*</span>电信入网承诺书
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="enterPromise" name="enterPromise" @change="upload('enterPromise')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>电信入网承诺书（加盖红色公章）
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="applyLetter" class="layui-form-label">
+                <span class="x-red">*</span>号码申请公函
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="applyLetter" name="applyLetter" @change="upload('applyLetter')"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>加盖红色公章
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="add" lay-submit="">
+                提交
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    new Vue({
+        el: '.x-body',
+        data: {
+            userInfo: {}
+        },
+        created: function () {
+        },
+        methods: {
+            upload(id) {
+                parent.parent.AJAX.UPLOAD("realname/applyNumber/upload", {file: $('#' + id)[0].files[0], fileType: id}, function (resp) {
+                    console.log(resp)
+                })
+            }
+        }
+    });
+</script>
+
+</body>
+
+</html>

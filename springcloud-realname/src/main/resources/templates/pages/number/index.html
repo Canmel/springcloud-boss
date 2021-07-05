@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+    <script type="text/javascript" src="../../js/ajax-util.js"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+</head>
+<body>
+<div class="x-body">
+    <blockquote class="layui-elem-quote">外呼号码申请</blockquote>
+    <fieldset class="layui-elem-field">
+        <legend>申请列表</legend>
+        <legend>
+            <button class="layui-btn" onclick="x_admin_show('创建新申请','./number-apply.html',800,600)"><i
+                    class="layui-icon"></i>添加
+            </button>
+            <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        </legend>
+        <div class="layui-field-box">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>申请编号</th>
+                    <th>申请人</th>
+                    <th>申请时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, index) in pageInfo.list">
+                    <td>{{(pageInfo.pageNum - 1) * 10 + index + 1}}</td>
+                    <td>{{item.code}}</td>
+                    <td>{{item.creator ? item.creator.username : ""}}</td>
+                    <td>2017-01-01 11:11:42</td>
+                    <td class="td-status">
+                        <span class="layui-btn layui-btn-normal layui-btn-mini">{{item.status.name}}</span>
+                    </td>
+                    <td class="td-manage">
+                        <a onclick="member_stop(this,'10001')" href="javascript:;" title="下载">
+                            <i class="layui-icon">&#xe601;</i>
+                        </a>
+                        <a title="编辑" onclick="x_admin_show('编辑','number-apply.html',800,600)" href="javascript:;">
+                            <i class="layui-icon">&#xe642;</i>
+                        </a>
+                        <a onclick="x_admin_show('修改密码','member-password.html',800,600)" title="修改密码"
+                           href="javascript:;">
+                            <i class="layui-icon">&#xe631;</i>
+                        </a>
+                        <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                            <i class="layui-icon">&#xe640;</i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</body>
+
+<script>
+    new Vue({
+        el: '.x-body',
+        data: {
+            userInfo: {},
+            pageInfo: {}
+        },
+        created: function () {
+            this.me();
+            this.list();
+        },
+        methods: {
+            me() {
+                let that = this;
+                parent.AJAX.GET("/system/sysUser/myself", {}, function (resp) {
+                    that.userInfo = resp.data;
+                })
+            },
+            list() {
+                let that = this;
+                parent.AJAX.GET("applyNumber/index", {}, function (resp) {
+                    that.pageInfo = resp.data;
+                });
+            }
+        }
+    });
+
+</script>
+</html>

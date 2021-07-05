@@ -1,0 +1,97 @@
+package com.camel.realname.service.impl;
+
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.camel.core.utils.PaginationUtil;
+import com.camel.realname.config.QiNiuConfig;
+import com.camel.realname.mapper.ApplyNumberMapper;
+import com.camel.realname.model.ApplyNumber;
+import com.camel.realname.service.ApplyNumberService;
+import com.github.pagehelper.PageInfo;
+import com.qiniu.common.QiniuException;
+import com.qiniu.http.Response;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+/**
+ * <p>
+ * 服务实现类
+ * </p>
+ *
+ * @author baily
+ * @since 2021-07-05
+ */
+@Service
+public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, ApplyNumber> implements ApplyNumberService {
+    public static final String BUCKET_NAME_URL = "http://image.meedesidy.top";
+    public static final String BUCKET_NAME = "c7-oss-store";
+
+    @Autowired
+    private ApplyNumberMapper mapper;
+
+    @Autowired
+    private QiNiuConfig qiNiuConfig;
+
+    @Override
+    public PageInfo<ApplyNumber> list(ApplyNumber entity) {
+        PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
+            mapper.list(entity);
+        });
+        return pageInfo;
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param file 文件
+     * @return
+     */
+    public JSONObject upload(MultipartFile file) {
+        Auth auth = getQiniuAuthentication();
+        JSONObject jsonObject = null;
+        String upToken = auth.uploadToken(BUCKET_NAME);
+        try {
+            UploadManager uploadManager = getUploadManager();
+            Response response = uploadManager.put(file.getBytes(), null, upToken);
+            jsonObject = JSONObject.parseObject(response.bodyString());
+        } catch (QiniuException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 获取七牛上传管理
+     *
+     * @return
+     */
+    private UploadManager getUploadManager() {
+        //构造一个带指定 Region 对象的配置类
+        Configuration cfg = new Configuration(Region.huanan());
+        //...其他参数参考类注释
+        UploadManager uploadManager = new UploadManager(cfg);
+        return uploadManager;
+    }
+
+    /**
+     * 获取七牛上传凭证
+     *
+     * @return
+     */
+    private Auth getQiniuAuthentication() {
+        //...生成上传凭证，然后准备上传
+        String accessKey = qiNiuConfig.getAccessKey();
+        String secretKey = qiNiuConfig.getSecretKey();
+        Auth auth = Auth.create(accessKey, secretKey);
+        return auth;
+    }
+}

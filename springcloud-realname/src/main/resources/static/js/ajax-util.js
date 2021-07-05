@@ -2,13 +2,13 @@
  * Created by liuruijie on 2016/9/28.
  * 前端控制
  */
-    //状态码
+//状态码
 web_status = {
-    SUCCESS : 200,
-    FAIL : 500,
-    NO_LOGIN : 401,
+    SUCCESS: 200,
+    FAIL: 500,
+    NO_LOGIN: 401,
     NO_AUTHENTICATE: 403,
-    NO_PRIVILEGE : "004"
+    NO_PRIVILEGE: "004"
 };
 
 $(function () {
@@ -35,9 +35,9 @@ function simpleSuccess(result) {
         alert("您还未登陆！");
         // window.location.href =
         //     "http://127.0.0.1:8081/login.html?backToUrl="+encodeURIComponent(btoa(window.location.href));
-    }else{
+    } else {
         //其他错误情况，直接弹出提示框
-        if(result.msg!=null){
+        if (result.msg != null) {
             toastr.error(result.msg, '错误');
         }
     }
@@ -45,51 +45,52 @@ function simpleSuccess(result) {
 }
 
 //对jquery的ajax方法再次封装
-__ajax = function(url, data, success, type ,contentType, sync, json){
-    if(!url.startsWith("/")) {
-        url =  '/survey/' + url;
+__ajax = function (url, data, success, type, contentType, sync, json) {
+    if (!url.startsWith("/")) {
+        url = '/realname/' + url;
     }
-    if(null == sync) {
+    if (null == sync) {
         sync = false;
     }
 
-    success = success||function(data){};
-    data = data||{};
+    success = success || function (data) {
+    };
+    data = data || {};
     let access_token = sessionStorage.getItem('access_token');
-    if(access_token && url.indexOf('access_token')) {
+    if (access_token && url.indexOf('access_token')) {
         data['access_token'] = access_token;
     }
-    if(type == 'delete') {
+    if (type == 'delete') {
         url += '/' + data['id'] + '?access_token=' + access_token;
     }
-    if(type == 'put') {
+    if (type == 'put') {
         url += '?access_token=' + access_token;
     }
-    if(json) {
+    if (json) {
         data = JSON.stringify(data);
     }
     var config = {
-        url:url,
-        type:type,
-        dataType:"json",
-        data:data,
+        url: url,
+        type: type,
+        dataType: "json",
+        data: data,
         async: sync,
-        success:function(result){
+        success: function (result) {
             success(simpleSuccess(result));
         },
         error: function (resp) {
             // 未登录
             console.log('请求错误', url)
-            if(resp.status === web_status.NO_LOGIN) {
+            if (resp.status === web_status.NO_LOGIN) {
                 location.href = '/login?redirect_url=/realname';
             }
-            if(resp.status === web_status.NO_AUTHENTICATE) {
-                layer.msg(resp.responseJSON.error_description,{icon:1,time:1000});
+            if (resp.status === web_status.NO_AUTHENTICATE) {
+                layer.msg(resp.responseJSON.error_description, {icon: 1, time: 1000});
             }
         }
     };
     //如果需要token校验
-    if(contentType){
+    if (contentType) {
         config.contentType = contentType;
     }
     // var token = $.cookie("token");
@@ -98,51 +99,57 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
     //         xhr.setRequestHeader("Authorization", "Basic " + btoa(token));
     //     }
     // }
-   if(type === 'put') {
+    if (type === 'put') {
         config.dataType = 'json';
-   }
+    }
     $.ajax(config)
 };
 
 //再再次封装
 AJAX = {
-    UPLOAD: function(url, data, success) {
-        if(sessionStorage.getItem("access_token")) {
+    UPLOAD: function (url, data, success) {
+        if (sessionStorage.getItem("access_token")) {
             url = url + '?access_token=' + sessionStorage.getItem("access_token");
         }
+        let formData = new FormData();
+        formData.append("file",data.file);
+        formData.append("fileType",data.fileType);
         $.ajax({
-            type: "POST",           //因为是传输文件，所以必须是post
-            url: 'survey/' + url,         //对应的后台处理类的地址
-            data: data,
+            url: url, /*接口域名地址*/
+            type: 'post',
+            data: formData,
+            contentType: false,
             processData: false,
-            success: success()
-        });
+            success: function (res) {
+                success(res);
+            }
+        })
     },
-    GET:function(url, data, success){
-      __ajax(url, data, success, "get");
+    GET: function (url, data, success) {
+        __ajax(url, data, success, "get");
     },
-    GET_SYNC:function(url, data, success){
+    GET_SYNC: function (url, data, success) {
         __ajax(url, data, success, "get", null, true);
     },
-    POST_JSON: function(url, data, success){
-        if(sessionStorage.getItem("access_token")) {
+    POST_JSON: function (url, data, success) {
+        if (sessionStorage.getItem("access_token")) {
             url = url + '?access_token=' + sessionStorage.getItem("access_token");
         }
 
         __ajax(url, data, success, "post", "application/json", false, true);
     },
-    POST:function(url, data, success){
+    POST: function (url, data, success) {
         __ajax(url, data, success, "post");
     },
-    POST_ARRAY:function(url, data, success){
+    POST_ARRAY: function (url, data, success) {
         var access_token = sessionStorage.getItem('access_token');
         url += '?access_token=' + access_token;
         __ajax(url, data, success, "post");
     },
-    DELETE: function(url, data, success){
+    DELETE: function (url, data, success) {
         __ajax(url, data, success, "delete");
     },
-    PUT:function(url, data, success){
+    PUT: function (url, data, success) {
         __ajax(url, data, success, "put", 'application/json; charset=UTF-8');
     },
     PATCH: function (url, data, success) {
@@ -150,14 +157,14 @@ AJAX = {
     },
     INCLUDE: function (url, id) {
         $.ajax({
-            url:url,
-            type:"get",
-            dataType:"html",
+            url: url,
+            type: "get",
+            dataType: "html",
             error: function (code) {
-                $("#"+id).html("加载失败");
+                $("#" + id).html("加载失败");
             },
             success: function (result) {
-                $("#"+id).html(result);
+                $("#" + id).html(result);
             }
         })
     }

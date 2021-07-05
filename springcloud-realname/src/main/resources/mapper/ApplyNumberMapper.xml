@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.realname.mapper.ApplyNumberMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.realname.model.ApplyNumber">
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="status" property="status" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="apply_at" property="applyAt"/>
+        <result column="apply_sheet" property="applySheet"/>
+        <result column="license" property="license"/>
+        <result column="card_legal" property="cardLegal"/>
+        <result column="card_agent" property="cardAgent"/>
+        <result column="hand_agent" property="handAgent"/>
+        <result column="card_user" property="cardUser"/>
+        <result column="enter_promise" property="enterPromise"/>
+        <result column="apply_letter" property="applyLetter"/>
+        <association property="creator" column="creator" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="creator"></id>
+            <result property="username" column="username"></result>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        apply_number.id, apply_number.code, apply_number.status, apply_number.creator, apply_number.created_at, apply_number.apply_at, apply_number.apply_sheet, apply_number.license, apply_number.card_legal,
+         apply_number.card_agent, apply_number.hand_agent, apply_number.card_user, apply_number.enter_promise, apply_number.apply_letter, sys_user.username
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        apply_number left join sys_user on apply_number.creator = sys_user.uid
+        where creator = #{creatorId}
+    </select>
+</mapper>
