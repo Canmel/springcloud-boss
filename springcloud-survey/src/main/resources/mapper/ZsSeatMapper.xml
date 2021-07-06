@@ -18,6 +18,10 @@
             <result column="queue_id" property="id"/>
             <result column="name" property="name"/>
         </association>
+        <association property="user" javaType="com.camel.core.model.SysUser">
+            <result column="uid" property="uid"/>
+            <result column="username" property="username"/>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -37,13 +41,16 @@
             seat.survey_id,
             seat.last_submit,
             seat.queue_id,
-            queue.name
+            queue.name,
+            user.username
         FROM
             zs_seat seat
             LEFT JOIN zs_queue queue ON queue.id = seat.queue_id
+            LEFT JOIN sys_user user ON user.uid = seat.uid
         <where>
             <if test="seatNum !=null and seatNum != ''">AND seat.seat_num LIKE CONCAT('%', #{seatNum}, '%')</if>
             <if test="queueName !=null and queueName != ''">AND queue.name LIKE CONCAT('%', #{queueName}, '%')</if>
+            <if test="userName !=null and userName != ''">AND user.username LIKE CONCAT('%', #{userName}, '%')</if>
         </where>
         ORDER BY seat.last_submit DESC
     </select>

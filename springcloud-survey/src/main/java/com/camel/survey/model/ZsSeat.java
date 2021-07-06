@@ -55,6 +55,9 @@ public class ZsSeat extends BasePaginationEntity {
     @TableField(exist = false)
     private SysUser user;
 
+    @TableField(exist = false)
+    private String userName;
+
     private ZsYesOrNo state;
 
     private String workNum;

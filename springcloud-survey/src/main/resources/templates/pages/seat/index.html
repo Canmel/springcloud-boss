@@ -12,7 +12,11 @@
         <div class="ibox-content">
 
             <div class="row">
-                <div class="col-sm-6"></div>
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="请输入用户名" class="input-sm form-control search-input"
+                           v-model="pageInfo.userName">
+                </div>
                 <div class="col-sm-3">
                     <input type="text" placeholder="请输入队列名称" class="input-sm form-control search-input"
                            v-model="pageInfo.queueName">
@@ -90,6 +94,7 @@
         data: {
             applicationContextRootPath: '/survey/',
             pageInfo: {
+                username: '',
                 queueName: '',
                 pageNum: 1,
                 total: 0,//总页数
