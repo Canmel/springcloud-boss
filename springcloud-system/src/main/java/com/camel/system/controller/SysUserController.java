@@ -25,6 +25,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -84,6 +85,7 @@ public class SysUserController extends BaseCommonController {
 
     @PostMapping
     public Result save(@RequestBody SysUser sysUser) {
+        sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
         super.save(sysUser);
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
         userWrapper.eq("id_num", sysUser.getIdNum());

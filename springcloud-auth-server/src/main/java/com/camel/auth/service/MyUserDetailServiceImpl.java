@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -60,7 +61,7 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserDao.findByUserName(username);
         if(ObjectUtil.isEmpty(sysUser)) {
-            return null;
+            throw  new BadCredentialsException("用户名密码不正确");
         }
         Member member = new Member(sysUser.getUid(), sysUser.getUsername());
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();

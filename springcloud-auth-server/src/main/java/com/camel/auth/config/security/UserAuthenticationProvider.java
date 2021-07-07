@@ -17,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -32,6 +33,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -49,10 +51,10 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new LockedException("账户已锁定，请联系管理员");
         }
         //比较前端传入的密码明文和数据库中加密的密码是否相等
-        if (!password.equals(user.getPassword())) {
+        if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
             //发布密码不正确事件
             publisher.publishEvent(new UserLoginFailedEvent(authentication, username));
-            throw new BadCredentialsException("密码不正确");
+            throw new LockedException("密码不正确");
         }
         //获取用户权限信息
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
