@@ -1,5 +1,5 @@
 @charset "utf-8";
-@import url(../lib/layui/css/layui.css);
+@import url(../layui/css/layui.css);
 *{
 	margin: 0px;
 	padding: 0px;
@@ -12,7 +12,7 @@ a{
 html{
 	width: 100%;
 	height: 100%;
-	overflow-x:hidden; 
+	overflow-x:hidden;
 	overflow-y:auto;
 }
 body{
@@ -307,7 +307,7 @@ xblock{
 	/*background: #fff url() 0 0 no-repeat;*/
 }
 .left-nav #nav li .opened .current{
-	
+
 }
 .left-nav #nav li .sub-menu li:hover{
 	/*color: blue;*/
@@ -407,7 +407,7 @@ xblock{
 .page-content .layui-tab-content .layui-tab-item{
 	width: 100%;
 	height: 100%;
-	
+
 }
 .page-content .layui-tab-content .layui-tab-item iframe{
 	width: 100%;
@@ -458,8 +458,8 @@ table th, table td {
 		left: 0px;
 	}
 	.page-content .layui-tab-content .layui-tab-item{
-		-webkit-overflow-scrolling: touch; 
-  		overflow-y: scroll;	
+		-webkit-overflow-scrolling: touch;
+  		overflow-y: scroll;
 	}
 	.x-so input.layui-input{
 		width: 100%;

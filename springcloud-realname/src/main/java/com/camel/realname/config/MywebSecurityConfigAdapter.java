@@ -42,7 +42,7 @@ public class MywebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/lib/**", "/js/**", "/model-list.html", "/welcome.html", "/css/**", "/img/**", "/fonts/**",
+        web.ignoring().antMatchers("/lib/**", "/js/**", "/model-list.html", "/welcome.html", "/css/**", "/img/**", "/fonts/**", "/images/**", "/layui/**",
                 "/editor-app/**", "/diagram-viewer/**", "/public/**", "/pages/**", "/sounds/**");
     }
 }

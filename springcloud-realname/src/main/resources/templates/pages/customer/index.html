@@ -11,47 +11,201 @@
     <script type="text/javascript" src="../../js/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/vue.js"></script>
     <script type="text/javascript" src="../../js/ajax-util.js"></script>
+    <style>
+        .layui-border-red {
+            border-color: #FF5722!important;
+            color: #FF5722!important;
+        }
+    </style>
 </head>
 <body>
 <div class="x-body">
-    <blockquote class="layui-elem-quote">本模块仅限客户实名认证，不包含个人与合作商</blockquote>
+    <blockquote class="layui-elem-quote">本模块仅限企业实名认证 <span class="layui-btn layui-btn-normal layui-btn-mini" @click="changeMode()" v-if="!editable">开始</span>
+         </blockquote>
     <fieldset class="layui-elem-field">
         <legend>认证信息</legend>
         <div class="layui-field-box">
             <table class="layui-table">
                 <thead>
                 <tr>
-                    <th colspan="2" scope="col">个人信息</th>
+                    <th colspan="2" scope="col">基本信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th width="30%">企业名称</th>
+                    <td>
+                        <span id="enterpriseName">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <th width="30%">企业营业执照代码</th>
+                    <td>
+                        <span id="businessLicenseCode">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <td>企业营业执照</td>
+                    <td><img src="../../images/bg.png" style="width: 100%; max-width: 100%;"></td>
+                </tr>
+                </tbody>
+            </table>
+            <hr class="layui-border-red">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th colspan="2" scope="col">法人信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th width="30%">法人</th>
+                    <td>
+                        <span id="corporateName">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <th width="30%">法人身份证 URL</th>
+                    <td>
+                        <span id="corporateIDURL">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <th width="30%">企业成立日期</th>
+                    <td>
+                        <span id="businessStartDate">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <th width="30%">开始营业日期</th>
+                    <td>
+                        <span id="businessTermStartDate">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <th width="30%">结束营业日期</th>
+                    <td>
+                        <span id="businessTermEndDate">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <th width="30%">单位地址</th>
+                    <td>
+                        <span id="businessAddress">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <th width="30%">单位联系电话</th>
+                    <td>
+                        <span id="businessNo">{{userInfo.username}}</span></td>
+                </tr>
+                <tr>
+                    <td>企业营业执照</td>
+                    <td><img src="../../images/bg.png" style="width: 100%; max-width: 100%;"></td>
+                </tr>
+                </tbody>
+
+                <hr class="layui-border-red">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th colspan="2" scope="col">经办人信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th width="30%">姓名</th>
+                        <td>
+                            <span id="agentName">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">身份证号码</th>
+                        <td>
+                            <span id="agentPID">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">身份证头像</th>
+                        <td>
+                            <span id="agentIDTURL">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">身份证正面</th>
+                        <td>
+                            <span id="agentIDURL">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">身份证反面</th>
+                        <td>
+                            <span id="agentIDFURL">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">手持身份证</th>
+                        <td>
+                            <span id="agentIDHURL">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">身份证地址</th>
+                        <td>
+                            <span id="agentIDAddress">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">性别</th>
+                        <td>
+                            <span id="agentIDGender">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">民族</th>
+                        <td>
+                            <span id="agentIDNation">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">生日</th>
+                        <td>
+                            <span id="agentIDBirthDay">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">签证机关</th>
+                        <td>
+                            <span id="agentIDIssuingAuthority">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">证件生效日期</th>
+                        <td>
+                            <span id="agentIDCertValiddate">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">证件失效日期</th>
+                        <td>
+                            <span id="agentIDCertExpdate">{{userInfo.username}}</span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">手机号码</th>
+                        <td>
+                            <span id="agentContactNo">{{userInfo.username}}</span></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <th width="30%">手机号码</th>
+                        <td>
+                            <span id="联系地址">{{userInfo.username}}</span></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <th width="30%">手机号码</th>
+                        <td>
+                            <span id="人联系地址">{{userInfo.username}}</span></td>
+                    </tr>
+                    </tbody>
+            </table>
+
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th colspan="2" scope="col">联系人信息</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <th width="30%">姓名</th>
-                    <td><span id="lbServerName">{{userInfo.username}}</span></td>
+                    <td>
+                        <span id="contactName">{{userInfo.username}}</span></td>
                 </tr>
                 <tr>
-                    <td>身份证号码</td>
-                    <td>{{userInfo.idNum}}</td>
-                </tr>
-                <tr>
-                    <td>性别</td>
-                    <td>{{userInfo.gender}}</td>
-                </tr>
-                <tr>
-                    <td>手机号</td>
-                    <td>{{userInfo.mobile}}</td>
-                </tr>
-                <tr>
-                    <td>邮箱</td>
-                    <td>{{userInfo.email}}</td>
-                </tr>
-                <tr>
-                    <td>所属公司</td>
-                    <td>{{userInfo.company}}</td>
-                </tr>
-                <tr>
-                    <td>所在位置 </td>
-                    <td>{{userInfo.address}}</td>
+                    <th width="30%">电话</th>
+                    <td>
+                        <span id="contactNo">{{userInfo.username}}</span></td>
                 </tr>
                 </tbody>
             </table>
@@ -64,17 +218,15 @@
     new Vue({
         el: '.x-body',
         data: {
-            userInfo: {}
+            userInfo: {},
+            editable: false
         },
         created: function () {
             this.me();
         },
         methods: {
-            me() {
-                let that = this;
-                parent.AJAX.GET("/system/sysUser/myself", {}, function (resp) {
-                    that.userInfo = resp.data;
-                })
+            changeMode() {
+                this.editable = !this.editable;
             }
         }
     });

@@ -1,5 +1,6 @@
 package com.camel.auth.service;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.camel.auth.dao.SysUserDao;
 import com.camel.auth.model.MyUserDetails;
 import com.camel.auth.model.SysMenu;
@@ -58,7 +59,9 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserDao.findByUserName(username);
-
+        if(ObjectUtil.isEmpty(sysUser)) {
+            return null;
+        }
         Member member = new Member(sysUser.getUid(), sysUser.getUsername());
         ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
         byte[] su = SerizlizeUtil.serialize(member);

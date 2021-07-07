@@ -63,6 +63,7 @@
         FROM
         sys_user sys_user left join sys_company sys_company on sys_user.company_id = sys_company.id
         <where>
+            status = 1
             and sys_user.email = #{email}
         </where>
         ORDER BY sys_user.uid
