@@ -29,6 +29,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -109,6 +110,14 @@ public class SysUserController extends BaseCommonController {
 
     @PutMapping
     public Result update(@RequestBody SysUser sysUser) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!StringUtils.isEmpty(sysUser.getOldPassword())) {
+            SysUser user = service.selectById(sysUser.getUid());
+            if(!encoder.matches(sysUser.getOldPassword(), user.getPassword())) {
+                throw new RuntimeException("原密码不正确");
+            }
+        }
+        sysUser.setPassword(encoder.encode(sysUser.getPassword()));
         Result result = super.update(sysUser);
         sysUserCacheConfig.initSysUsers();
         return result;

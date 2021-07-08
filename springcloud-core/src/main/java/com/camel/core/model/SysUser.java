@@ -55,6 +55,12 @@ public class SysUser extends BasePaginationEntity implements Serializable {
      * 密码
      */
     private String password;
+
+    /**
+     * 旧密码
+     */
+    @TableField(exist = false)
+    private String oldPassword;
     /**
      * 昵称/姓名
      */

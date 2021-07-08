@@ -86,6 +86,9 @@ __ajax = function(url, data, success, type ,contentType, sync, json){
             if(resp.status === web_status.NO_AUTHENTICATE) {
                 toastr.error(resp.responseJSON.error_description)
             }
+            if(resp.status === web_status.FAIL) {
+                toastr.error(resp.responseJSON.message)
+            }
         }
     };
     //如果需要token校验
