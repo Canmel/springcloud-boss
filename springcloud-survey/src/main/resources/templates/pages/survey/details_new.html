@@ -662,6 +662,14 @@
                 $("#importModal").modal('show');
             },
             questionDelete(question, event) {
+                let arr = [];
+                let needDel = this.zsoptions.filter(x => x.questionOrderNum === question.orderNum)
+                this.zsoptions.forEach(x=>{
+                    if(needDel.indexOf(x) === -1){
+                        arr.push(x)
+                    }
+                })
+                this.zsoptions = arr;
                 event.stopPropagation();
                 let index = this.questions.indexOf(question);
                 this.questions.splice(index, 1);
@@ -882,6 +890,9 @@
             },
             optionNameClickHandler(e, option) {
                 // this.selectedIndex = this.zsoptions.indexOf(option);
+                console.log("questions",this.questions)
+                console.log("zsoptions",this.zsoptions)
+                console.log(option.questionOrderNum - 1)
                 e.stopPropagation;
                 this.selectedOption = option;
                 if (this.selectedOption.target < 0) {
@@ -890,7 +901,9 @@
                 if (this.selectedOption.target > 999) {
                     this.selectedOption.sattr = 0;
                 }
-                this.selectedOption.questionType = this.questions[option.questionOrderNum - 1].type;
+                let qus = this.questions.filter(x=>x.orderNum === option.questionOrderNum);
+                // this.selectedOption.questionType = this.questions[option.questionOrderNum - 1].type;
+                this.selectedOption.questionType = qus[0].type;
                 this.selected = 2;
             },
             up(e, question) {
@@ -969,11 +982,25 @@
                     this.renderDetailQuestion()
                 }
             },
+            createUUID(){
+                let s = [];
+                let hexDigits = "0123456789abcdef";
+                for (let i = 0; i < 36; i++) {
+                    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+                }
+                s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+                s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+                s[8] = s[13] = s[18] = s[23] = "-";
+                let uuid = s.join("");
+                return uuid;
+            },
             renderSingleSelect() {
+                let randomNum = this.createUUID();
                 let question = {
                     name: "单选题",
                     type: 1,
-                    orderNum: this.questions.length + 1,
+                    // orderNum: this.questions.length + 1,
+                    orderNum: randomNum,
                     minSelect: 1,
                     surveyId: this.surveyId,
                     maxSelect: 1,

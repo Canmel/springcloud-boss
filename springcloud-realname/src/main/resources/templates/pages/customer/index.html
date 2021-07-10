@@ -11,6 +11,10 @@
     <script type="text/javascript" src="../../js/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/vue.js"></script>
     <script type="text/javascript" src="../../js/ajax-util.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <style>
         .layui-border-red {
             border-color: #FF5722!important;
@@ -20,8 +24,10 @@
 </head>
 <body>
 <div class="x-body">
-    <blockquote class="layui-elem-quote">本模块仅限企业实名认证 <span class="layui-btn layui-btn-normal layui-btn-mini" @click="changeMode()" v-if="!editable">开始</span>
-         </blockquote>
+    <blockquote class="layui-elem-quote">本模块仅限企业实名认证
+        <span class="layui-btn layui-btn-normal layui-btn-mini"
+              @click="dialogVisible = true">{{disabled === true ? "开始编辑" : "退出编辑"}}</span>
+    </blockquote>
     <fieldset class="layui-elem-field">
         <legend>认证信息</legend>
         <div class="layui-field-box">
@@ -35,16 +41,43 @@
                 <tr>
                     <th width="30%">企业名称</th>
                     <td>
-                        <span id="enterpriseName">{{userInfo.username}}</span></td>
+                        <span id="enterpriseName">
+                            <el-input :disabled="disabled" v-model="authInfo.enterpriseName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <th width="30%">企业营业执照代码</th>
                     <td>
-                        <span id="businessLicenseCode">{{userInfo.username}}</span></td>
+                        <span id="businessLicenseCode">
+                            <el-input :disabled="disabled" v-model="authInfo.businessLicenseCode" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                        </span></td>
                 </tr>
                 <tr>
                     <td>企业营业执照</td>
-                    <td><img src="../../images/bg.png" style="width: 100%; max-width: 100%;"></td>
+                    <td>
+                        <div v-if="authInfo.businessLicenseUrl !== '' && authInfo.businessLicenseUrl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.businessLicenseUrl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            <el-upload
+                                    :disabled="disabled"
+                                    id="businessLicenseUrl"
+                                    class="upload-demo"
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'businessLicenseUrl')
+                                    }"
+                                    multiple
+                                    :limit="1">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -59,135 +92,304 @@
                 <tr>
                     <th width="30%">法人</th>
                     <td>
-                        <span id="corporateName">{{userInfo.username}}</span></td>
+                        <span id="corporateName">
+                            <el-input :disabled="disabled" v-model="authInfo.corporateName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                        </span></td>
                 </tr>
                 <tr>
                     <th width="30%">法人身份证 URL</th>
                     <td>
-                        <span id="corporateIDURL">{{userInfo.username}}</span></td>
+                        <div v-if="authInfo.corporateIdUrl !== '' && authInfo.corporateIdUrl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.corporateIdUrl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            <el-upload
+                                    :disabled="disabled"
+                                    class="upload-demo"
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'corporateIdUrl')
+                                    }"
+                                    multiple
+                                    :limit="1">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th width="30%">企业成立日期</th>
                     <td>
-                        <span id="businessStartDate">{{userInfo.username}}</span></td>
+                        <el-date-picker
+                                :disabled="disabled"
+                                id="businessStartDate"
+                                v-model="authInfo.businessStartDate"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择日期"
+                                @blur="updateCorp()">
+                        </el-date-picker>
+                    </td>
                 </tr>
                 <tr>
                     <th width="30%">开始营业日期</th>
                     <td>
-                        <span id="businessTermStartDate">{{userInfo.username}}</span></td>
+                        <el-date-picker
+                                :disabled="disabled"
+                                id="businessTermStartDate"
+                                v-model="authInfo.businessTermStartDate"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择日期"
+                                @blur="updateCorp()">
+                        </el-date-picker>
+                    </td>
                 </tr>
                 <tr>
                     <th width="30%">结束营业日期</th>
                     <td>
-                        <span id="businessTermEndDate">{{userInfo.username}}</span></td>
+                        <el-date-picker
+                                :disabled="disabled"
+                                id="businessTermEndDate"
+                                v-model="authInfo.businessTermEndDate"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择日期"
+                                @blur="updateCorp()">
+                        </el-date-picker>
+                    </td>
                 </tr>
                 <tr>
                     <th width="30%">单位地址</th>
                     <td>
-                        <span id="businessAddress">{{userInfo.username}}</span></td>
+                        <span id="businessAddress">
+                            <el-input :disabled="disabled" v-model="authInfo.businessAddress" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                        </span></td>
                 </tr>
                 <tr>
                     <th width="30%">单位联系电话</th>
                     <td>
-                        <span id="businessNo">{{userInfo.username}}</span></td>
-                </tr>
-                <tr>
-                    <td>企业营业执照</td>
-                    <td><img src="../../images/bg.png" style="width: 100%; max-width: 100%;"></td>
+                        <span id="businessNo">
+                            <el-input :disabled="disabled" v-model="authInfo.businessNo" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                        </span></td>
                 </tr>
                 </tbody>
+            </table>
 
-                <hr class="layui-border-red">
-                <table class="layui-table">
-                    <thead>
-                    <tr>
-                        <th colspan="2" scope="col">经办人信息</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th width="30%">姓名</th>
-                        <td>
-                            <span id="agentName">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">身份证号码</th>
-                        <td>
-                            <span id="agentPID">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">身份证头像</th>
-                        <td>
-                            <span id="agentIDTURL">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">身份证正面</th>
-                        <td>
-                            <span id="agentIDURL">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">身份证反面</th>
-                        <td>
-                            <span id="agentIDFURL">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">手持身份证</th>
-                        <td>
-                            <span id="agentIDHURL">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">身份证地址</th>
-                        <td>
-                            <span id="agentIDAddress">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">性别</th>
-                        <td>
-                            <span id="agentIDGender">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">民族</th>
-                        <td>
-                            <span id="agentIDNation">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">生日</th>
-                        <td>
-                            <span id="agentIDBirthDay">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">签证机关</th>
-                        <td>
-                            <span id="agentIDIssuingAuthority">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">证件生效日期</th>
-                        <td>
-                            <span id="agentIDCertValiddate">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">证件失效日期</th>
-                        <td>
-                            <span id="agentIDCertExpdate">{{userInfo.username}}</span></td>
-                    </tr>
-                    <tr>
-                        <th width="30%">手机号码</th>
-                        <td>
-                            <span id="agentContactNo">{{userInfo.username}}</span></td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <th width="30%">手机号码</th>
-                        <td>
-                            <span id="联系地址">{{userInfo.username}}</span></td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <th width="30%">手机号码</th>
-                        <td>
-                            <span id="人联系地址">{{userInfo.username}}</span></td>
-                    </tr>
-                    </tbody>
+            <hr class="layui-border-red">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th colspan="2" scope="col">经办人信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th width="30%">姓名</th>
+                    <td>
+                            <span id="agentName">
+                                <el-input :disabled="disabled" v-model="authInfo.agentName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            </span></td>
+                </tr>
+                <tr>
+                    <th width="30%">身份证号码</th>
+                    <td>
+                            <span id="agentPID">
+                                <el-input :disabled="disabled" v-model="authInfo.agentPid" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            </span></td>
+                </tr>
+                <tr>
+                    <th width="30%">身份证头像</th>
+                    <td>
+                        <div v-if="authInfo.agentIdTurl !== '' && authInfo.agentIdTurl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.agentIdTurl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            <el-upload
+                                    class="upload-demo"
+                                    multiple
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'agentIdTurl')
+                                    }"
+                                    :limit="1">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">身份证正面</th>
+                    <td>
+                        <div v-if="authInfo.agentIdUrl !== '' && authInfo.agentIdUrl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.agentIdUrl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            <el-upload
+                                    :disabled="disabled"
+                                    class="upload-demo"
+                                    multiple
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'agentIdUrl')
+                                    }"
+                                    :limit="1">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">身份证反面</th>
+                    <td>
+                        <div v-if="authInfo.agentIdFurl !== '' && authInfo.agentIdFurl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.agentIdFurl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            <el-upload
+                                    :disabled="disabled"
+                                    class="upload-demo"
+                                    multiple
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'agentIdFurl')
+                                    }"
+                                    :limit="1">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">手持身份证</th>
+                    <td>
+                        <div v-if="authInfo.agentIdHurl !== '' && authInfo.agentIdHurl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.agentIdHurl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            <el-upload
+                                    :disabled="disabled"
+                                    class="upload-demo"
+                                    multiple
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'agentIdHurl')
+                                    }"
+                                    :limit="1">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">身份证地址</th>
+                    <td>
+                            <span id="agentIDAddress">
+                                <el-input :disabled="disabled" v-model="authInfo.agentIdAddress" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            </span></td>
+                </tr>
+                <tr>
+                    <th width="30%">性别</th>
+                    <td>
+                            <span id="agentIDGender">
+                                <label><el-radio :disabled="disabled" v-model="authInfo.agentIdGender" label="1">男</el-radio></label>
+                                <label><el-radio :disabled="disabled" v-model="authInfo.agentIdGender" label="0">女</el-radio></label>
+                            </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">民族</th>
+                    <td>
+                            <span id="agentIDNation">
+                                <el-input :disabled="disabled" v-model="authInfo.agentIdNation" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            </span></td>
+                </tr>
+                <tr>
+                    <th width="30%">生日</th>
+                    <td>
+                        <el-date-picker
+                                :disabled="disabled"
+                                id="agentIdBirthDay"
+                                v-model="authInfo.agentIdBirthDay"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择日期"
+                                @blur="updateCorp()">
+                        </el-date-picker>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">签证机关</th>
+                    <td>
+                            <span id="agentIDIssuingAuthority">
+                                <el-input :disabled="disabled" v-model="authInfo.agentIdIssuingAuthority" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            </span></td>
+                </tr>
+                <tr>
+                    <th width="30%">证件生效日期</th>
+                    <td>
+                        <el-date-picker
+                                :disabled="disabled"
+                                id="agentIDCertValidDate"
+                                v-model="authInfo.agentIdCertValidDate"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择日期"
+                                @blur="updateCorp()">
+                        </el-date-picker>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">证件失效日期</th>
+                    <td>
+                        <el-date-picker
+                                :disabled="disabled"
+                                id="agentIdCertExpDate"
+                                v-model="authInfo.agentIdCertExpDate"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择日期"
+                                @blur="updateCorp()">
+                        </el-date-picker>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">手机号码</th>
+                    <td>
+                            <span id="agentContactNo">
+                                <el-input :disabled="disabled" v-model="authInfo.agentContactNo" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            </span></td>
+                </tr>
+                </tr>
+                <tr>
+                    <th width="30%">经办人联系地址</th>
+                    <td>
+                            <span id="agentAddress">
+                                <el-input :disabled="disabled" v-model="authInfo.agentAddress" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            </span></td>
+                </tr>
+                </tr>
+                </tbody>
             </table>
 
             <table class="layui-table">
@@ -200,33 +402,160 @@
                 <tr>
                     <th width="30%">姓名</th>
                     <td>
-                        <span id="contactName">{{userInfo.username}}</span></td>
+                        <span id="contactName">
+                            <el-input :disabled="disabled" v-model="authInfo.contactName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                        </span></td>
                 </tr>
                 <tr>
                     <th width="30%">电话</th>
                     <td>
-                        <span id="contactNo">{{userInfo.username}}</span></td>
+                        <span id="contactNo">
+                            <el-input :disabled="disabled" v-model="authInfo.contactNo" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                        </span></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </fieldset>
+    <!--进入编辑状态确认框-->
+    <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%">
+        <span v-if="disabled === true">确定进入编辑状态吗？</span>
+        <span v-else>是否完成编辑？</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changeEdit">确 定</el-button>
+        </span>
+    </el-dialog>
 </div>
+
 </body>
 
 <script>
     new Vue({
         el: '.x-body',
         data: {
-            userInfo: {},
-            editable: false
+            disabled:true,
+            dialogVisible:false,
+            authInfo: {
+                enterpriseName:null,
+                businessLicenseCode:null,
+                businessLicenseUrl:null,
+                corporateName:null,
+                corporateIdUrl:null,
+                businessStartDate:null,
+                businessTermStartDate:null,
+                businessTermEndDate:null,
+                businessAddress:null,
+                businessNo:null,
+                agentName:null,
+                agentPid:null,
+                agentIdTurl:null,
+                agentIdUrl:null,
+                agentIdFurl:null,
+                agentIdHurl:null,
+                agentIdAddress:null,
+                agentIdGender:null,
+                agentIdNation:null,
+                agentIdBirthDay:null,
+                agentIdIssuingAuthority:null,
+                agentIdCertValidDate:null,
+                agentIdCertExpDate:null,
+                agentContactNo:null,
+                agentAddress:null,
+                contactName:null,
+                contactNo:null,
+                userId:null,
+                zsCorpUrlVo:{},
+            },
+            editable: false,
+            userId: null,
         },
         created: function () {
-            this.me();
+            // this.me();
+        },
+        mounted:function(){
+            this.authInfo.userId = this.userId;
+            this.showInfo();
         },
         methods: {
-            changeMode() {
-                this.editable = !this.editable;
+            changeEdit() {
+                this.disabled = !this.disabled;
+                this.dialogVisible = false;
+            },
+            showInfo(){//   获取用户绑定的企业认证信息
+                let params = {};
+                let that = this;
+                AJAX.GET('zsCorp/getOne',params,function(res){
+                    console.log(res)
+                    that.authInfo = res.data;
+                })
+            },
+            updateCorp(){
+                let authInfo = this.authInfo;
+                let that = this;
+                console.log("authInfo",authInfo)
+                AJAX.POST_JSON("zsCorp/change",authInfo,function(res){
+                    if(res.code === 200){
+                        that.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'success'
+                        });
+                    }else{
+                        that.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'error'
+                        });
+                    }
+                })
+                this.showInfo();
+            },
+            uploadImage(options,id){//    自定义上传行为
+                let that = this;
+                console.log("options",options)
+                console.log("options.file",options.file)
+                let obj = {
+                    file:options.file,
+                    fileType:id
+                }
+                parent.parent.AJAX.UPLOAD("realname/zsCorp/upload",obj,function(res){
+                    console.log(res);
+                    if(res.code === 200){
+                        that.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'success'
+                        });
+                    }else{
+                        that.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'error'
+                        });
+                    }
+                    that.showInfo();
+
+                })
+            },
+            uploadSuccess(res,file){//  上传成功钩子
+                console.log("imgRes",res);
+                console.log("file",file);
+            },
+            beforeUpload(file){//   上传前钩子
+                const isJPGorPNG = file.type === 'image/jpeg' || file.type === 'image/png';
+                const isLt2M = file.size / 1024 / 1024 < 0.5;
+
+                if (!isJPGorPNG) {
+                    this.$message.error('上传头像图片只能是 JPG、PNG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 500kb!');
+                }
+                return isJPGorPNG && isLt2M;
             }
         }
     });
