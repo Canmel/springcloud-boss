@@ -12,9 +12,9 @@
     <script type="text/javascript" src="../../js/vue.js"></script>
     <script type="text/javascript" src="../../js/ajax-util.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.3.8/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/element-ui@2.3.8/lib/index.js"></script>
     <style>
         .layui-border-red {
             border-color: #FF5722!important;
@@ -61,6 +61,8 @@
                         </div>
                         <div v-else>
                             <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
                             <el-upload
                                     :disabled="disabled"
                                     id="businessLicenseUrl"
@@ -97,13 +99,15 @@
                         </span></td>
                 </tr>
                 <tr>
-                    <th width="30%">法人身份证 URL</th>
+                    <th width="30%">法人身份证</th>
                     <td>
                         <div v-if="authInfo.corporateIdUrl !== '' && authInfo.corporateIdUrl !== null">
                             <img :src="authInfo.zsCorpUrlVo.corporateIdUrl" style="width: 100%; max-width: 100%;">
                         </div>
                         <div v-else>
                             <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
                             <el-upload
                                     :disabled="disabled"
                                     class="upload-demo"
@@ -210,6 +214,8 @@
                         </div>
                         <div v-else>
                             <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
                             <el-upload
                                     class="upload-demo"
                                     multiple
@@ -234,6 +240,8 @@
                         </div>
                         <div v-else>
                             <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
                             <el-upload
                                     :disabled="disabled"
                                     class="upload-demo"
@@ -259,6 +267,8 @@
                         </div>
                         <div v-else>
                             <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
                             <el-upload
                                     :disabled="disabled"
                                     class="upload-demo"
@@ -284,6 +294,8 @@
                         </div>
                         <div v-else>
                             <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
                             <el-upload
                                     :disabled="disabled"
                                     class="upload-demo"

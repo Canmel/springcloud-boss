@@ -54,7 +54,7 @@ spring:
       prefix: /pages/
       suffix: .html
   resources:
-    static-locations: classpath:/templates/,classpath:/static/
+    static-locations: classpath:/templates/,classpath:/static/,classpath:/static/images/
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
@@ -86,6 +86,7 @@ security:
     client:
       ignore-urls:
         - /
+        - /images/
 
 survey:
   price:
