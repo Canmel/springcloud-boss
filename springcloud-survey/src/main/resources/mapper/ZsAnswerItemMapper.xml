@@ -16,8 +16,8 @@
         <result column="valid" property="valid" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="seat" property="seat"/>
         <result column="option_id" property="optionId"/>
-        <result column="option" property="option" />
-        <result column="uid" property="uid" />
+        <result column="option" property="option"/>
+        <result column="uid" property="uid"/>
         <association property="user" javaType="com.camel.core.model.SysUser">
             <id property="id" column="uid" jdbcType="INTEGER"></id>
         </association>
@@ -36,6 +36,22 @@
         <where>
             status = 1
         </where>
+    </select>
+
+    <select id="listByAnswers" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        zs_answer_item
+        <where>
+            <if test="list.size > 0">
+                answer_id in
+                <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
     </select>
 
     <select id="selectCrossCount" resultType="hashmap">
@@ -140,8 +156,10 @@
             a.end_time,
             a.call_lasts_time,
             GROUP_CONCAT(ai.question SEPARATOR '@##@') questions,
+            GROUP_CONCAT(ai.question_id SEPARATOR '@##@') questionIds,
             GROUP_CONCAT(ai.`value` SEPARATOR '@##@') answers,
-            GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options
+            GROUP_CONCAT(ai.`option` SEPARATOR '@##@') options,
+            GROUP_CONCAT(ai.option_id SEPARATOR '@##@') optionIds
         FROM
             zs_answer_item ai
         LEFT JOIN zs_answer a ON a.id = ai.answer_id
@@ -204,10 +222,10 @@
 
     <select id="selectAnswerItemCount" resultType="integer">
         SELECT
-            IFNULL(COUNT(DISTINCT ai.creator, a.label), 0) c
+            IFNULL(COUNT(CONCAT(ai.creator, IFNULL(a.label,''))), 0) c
         FROM
             zs_answer_item ai LEFT JOIN zs_answer a on a.id = ai.answer_id
         WHERE
-            ai.survey_id = #{surveyId} and ai.question_id = #{qId} and ai.option_id = #{oId} and a.valid = 1
+            ai.survey_id = #{surveyId} and ai.question_id = #{qId} and ai.option_id = #{oId} and a.valid = 1 and a.status = 1
     </select>
 </mapper>
