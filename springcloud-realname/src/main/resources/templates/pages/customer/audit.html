@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>audit</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+    <script type="text/javascript" src="../../js/ajax-util.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.3/lib/index.js"></script>
+    <style>
+        .layui-border-red {
+            border-color: #FF5722!important;
+            color: #FF5722!important;
+        }
+    </style>
+</head>
+<body>
+    <div class="x-body">
+        <!-- 标题 -->
+        <div>
+            <blockquote class="layui-elem-quote">企业实名认证审核
+                <!--            <span class="layui-btn layui-btn-normal layui-btn-mini"-->
+                <!--                  @click="dialogVisible = true">{{disabled === true ? "开始编辑" : "退出编辑"}}</span>-->
+            </blockquote>
+        </div>
+        <!-- 审核表格 -->
+        <div>
+            <el-table
+                    ref="multipleTable"
+                    :data="tableData"
+                    height="250"
+                    :default-sort="{prop: 'submitDate', order: 'descending'}"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange">
+                <el-table-column
+                        type="selection"
+                        width="55">
+                </el-table-column>
+                <el-table-column
+                        sortable
+                        label="提交审核日期"
+                        width="140">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.submitDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="enterpriseName"
+                        label="企业名称"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="businessLicenseCode"
+                        label="企业营业执照代码"
+                        width="140"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        label="企业营业执照"
+                        width="140">
+                    <template slot-scope="scope">
+                        <el-popover trigger="click" placement="top">
+                            <el-image :src="scope.row.zsCorpUrlVo.businessLicenseUrl">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium" effect="plain">查看</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="corporateName"
+                        label="法人"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        label="法人身份证"
+                        width="140">
+                    <template slot-scope="scope">
+                        <el-popover trigger="click" placement="top">
+                            <el-image :src="scope.row.zsCorpUrlVo.corporateIdUrl">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium" effect="plain">查看</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="企业成立日期"
+                        width="140">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.businessStartDate }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="企业开始营业日期"
+                        width="140">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.businessTermStartDate }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="企业结束营业日期"
+                        width="140">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.businessTermEndDate }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="businessAddress"
+                        label="单位地址"
+                        width="140"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        prop="businessNo"
+                        label="单位联系电话"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="agentName"
+                        label="经办人姓名"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="agentPid"
+                        label="经办人身份证号码"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        label="经办人身份证头像"
+                        width="140">
+                    <template slot-scope="scope">
+                        <el-popover trigger="click" placement="top">
+                            <el-image :src="scope.row.zsCorpUrlVo.agentIdTurl">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium" effect="plain">查看</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="经办人身份证正面"
+                        width="140">
+                    <template slot-scope="scope">
+                        <el-popover trigger="click" placement="top">
+                            <el-image :src="scope.row.zsCorpUrlVo.agentIdUrl">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium" effect="plain">查看</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="经办人身份证反面"
+                        width="140">
+                    <template slot-scope="scope">
+                        <el-popover trigger="click" placement="top">
+                            <el-image :src="scope.row.zsCorpUrlVo.agentIdFurl">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium" effect="plain">查看</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="经办人手持身份证"
+                        width="140">
+                    <template slot-scope="scope">
+                        <el-popover trigger="click" placement="top">
+                            <el-image :src="scope.row.zsCorpUrlVo.agentIdHurl">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium" effect="plain">查看</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="agentIdAddress"
+                        label="经办人身份证地址"
+                        width="140"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        label="经办人性别"
+                        width="140">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.agentIdGender = 1">男</span>
+                        <span v-if="scope.row.agentIdGender = 0">女</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="agentIdNation"
+                        label="经办人民族"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        label="经办人生日"
+                        width="140">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.agentIdBirthDay }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="agentIdIssuingAuthority"
+                        label="经办人签证机关"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        label="经办人证件生效日期"
+                        width="140">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.agentIdCertValidDate }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="经办人证件失效日期"
+                        width="140">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.agentIdCertExpDate }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="agentContactNo"
+                        label="经办人手机号码"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="agentAddress"
+                        label="经办人联系地址"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="contactName"
+                        label="联系人姓名"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="contactNo"
+                        label="联系电话"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        align="right"
+                        width="240">
+                    <template slot="header" slot-scope="scope">
+                        <el-input
+                                v-model="search"
+                                size="mini"
+                                placeholder="输入关键字搜索">
+                            <el-button slot="append" icon="el-icon-search"></el-button>
+                        </el-input>
+                    </template>
+                    <template slot-scope="scope">
+                        <div v-if="scope.row.status === 2" style="align-items: center;">
+                            <el-button
+                                    size="mini"
+                                    type="success"
+                                    @click="handlePass(scope.$index, scope.row)">通过</el-button>
+                            <el-button
+                                    size="mini"
+                                    type="warning"
+                                    @click="handleRefuse(scope.$index, scope.row)">退回</el-button>
+                        </div>
+                        <template v-if="scope.row.status === 3" style="align-items: center;">
+                            <el-tag type="success">已通过</el-tag>
+                        </template>
+                        <template v-if="scope.row.status === 4" style="align-items: center;">
+                            <el-tag type="success">已退回</el-tag>
+                        </template>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el:'.x-body',
+        data:{
+            search:'',
+            tableData: [
+            {
+                enterpriseName:"aa",
+                businessLicenseCode:"aa",
+                businessLicenseUrl:"aa",
+                corporateName:"aa",
+                corporateIdUrl:"aa",
+                businessStartDate:"2021-7-13",
+                businessTermStartDate:"2021-7-13",
+                businessTermEndDate:"2021-7-13",
+                businessAddress:"aa",
+                businessNo:"aa",
+                agentName:"aa",
+                agentPid:"aa",
+                agentIdTurl:"aa",
+                agentIdUrl:"aa",
+                agentIdFurl:"aa",
+                agentIdHurl:"aa",
+                agentIdAddress:"aa",
+                agentIdGender:1,
+                agentIdNation:"aa",
+                agentIdBirthDay:"2021-7-13",
+                agentIdIssuingAuthority:"aa",
+                agentIdCertValidDate:"2021-7-13",
+                agentIdCertExpDate:"2021-7-13",
+                agentContactNo:"aa",
+                agentAddress:"aa",
+                contactName:"aa",
+                contactNo:"aa",
+                userId:1,
+                status:2,
+                zsCorpUrlVo:{},
+                submitDate:"2021-7-13",
+            }],
+            multipleSelection: []
+        },
+        created:function(){
+            console.log("created...")
+        },
+        methods:{
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log("multipleSelection:",this.multipleSelection)
+            },
+            handlePass(index, row) {
+                console.log(index, row);
+                //审核通过
+            },
+            handleRefuse(index, row) {
+                console.log(index, row);
+                //回退认证
+            },
+        }
+    })
+</script>
+</html>

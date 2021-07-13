@@ -7,6 +7,7 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
+import com.camel.realname.enums.NumberStatus;
 import com.camel.realname.mapper.ZsCorpMapper;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ZsCorpService;
@@ -195,7 +196,7 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         Integer userId = applicationToolsUtils.currentUser().getUid();
         ZsCorp exist = zsCorpMapper.getOneByUid(userId);
         if(exist == null){
-            zsCorpMapper.insertDemo(userId);
+            zsCorpMapper.insertDemo(userId, NumberStatus.EDITABLE.getCode());
         }
         ZsCorp zsCorp = zsCorpMapper.getOneByUid(userId);
         ZsCorpUrlVo zsCorpUrlVo = new ZsCorpUrlVo();

@@ -137,7 +137,7 @@ public class ZsCorp extends BasePaginationEntity {
      */
     private String agentIdFurl;
     /**
-     *经办人手持 URL
+     *经办人手持身份证 URL
      */
     private String agentIdHurl;
     /**
@@ -201,8 +201,31 @@ public class ZsCorp extends BasePaginationEntity {
     @TableField(exist = false)
     private ZsCorpUrlVo zsCorpUrlVo;
 
+    /**
+     * 企业认证状态 0, "已删除",1, "创建", 2, "申请中", 3, "成功", 4, "失败"
+     */
+    private Integer status;
 
-    public ZsCorp(Integer id, String requestId, Integer isMerge, String enterpriseName, String businessLicenseCode, String businessLicenseUrl, String corporateName, String corporateIdUrl, Date businessStartDate, Date businessTermStartDate, Date businessTermEndDate, String businessAddress, String businessNo, String organizationCode, String organizationCodeUrl, String organizationName, Integer organizationType, Date organizationEffectiveDate, Date organizationExpirationDate, String entrustmentLetterUrl, String acceptanceUrl, String agentName, String agentPid, String agentIdTurl, String agentIdUrl, String agentIdFurl, String agentIdHurl, String agentIdAddress, Integer agentIdGender, String agentIdNation, Date agentIdBirthDay, String agentIdIssuingAuthority, Date agentIdCertValidDate, Date agentIdCertExpDate, String agentContactNo, String agentAddress, String contactName, String contactNo, Integer userId, ZsCorpUrlVo zsCorpUrlVo) {
+    /**
+     * 提交日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date submitDate;
+
+
+    public ZsCorp(Integer id, String requestId, Integer isMerge, String enterpriseName,
+                  String businessLicenseCode, String businessLicenseUrl, String corporateName,
+                  String corporateIdUrl, Date businessStartDate, Date businessTermStartDate,
+                  Date businessTermEndDate, String businessAddress, String businessNo,
+                  String organizationCode, String organizationCodeUrl, String organizationName,
+                  Integer organizationType, Date organizationEffectiveDate, Date organizationExpirationDate,
+                  String entrustmentLetterUrl, String acceptanceUrl, String agentName, String agentPid,
+                  String agentIdTurl, String agentIdUrl, String agentIdFurl, String agentIdHurl,
+                  String agentIdAddress, Integer agentIdGender, String agentIdNation, Date agentIdBirthDay,
+                  String agentIdIssuingAuthority, Date agentIdCertValidDate, Date agentIdCertExpDate,
+                  String agentContactNo, String agentAddress, String contactName, String contactNo,
+                  Integer userId, ZsCorpUrlVo zsCorpUrlVo, Integer status, Date submitDate) {
         this.id = id;
         this.requestId = requestId;
         this.isMerge = isMerge;
@@ -243,6 +266,8 @@ public class ZsCorp extends BasePaginationEntity {
         this.contactNo = contactNo;
         this.userId = userId;
         this.zsCorpUrlVo = zsCorpUrlVo;
+        this.status = status;
+        this.submitDate = submitDate;
     }
 
     public ZsCorp() {
@@ -568,6 +593,22 @@ public class ZsCorp extends BasePaginationEntity {
         this.zsCorpUrlVo = zsCorpUrlVo;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+
     @Override
     public String toString() {
         return "ZsCorp{" +
@@ -611,6 +652,8 @@ public class ZsCorp extends BasePaginationEntity {
                 ", contactNo='" + contactNo + '\'' +
                 ", userId=" + userId +
                 ", zsCorpUrlVo=" + zsCorpUrlVo +
+                ", status=" + status +
+                ", submitDate=" + submitDate +
                 '}';
     }
 }
