@@ -1,5 +1,6 @@
 package com.camel.survey.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.toolkit.MapUtils;
 import com.camel.core.model.SysUser;
@@ -19,6 +20,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -32,6 +34,41 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class ExcelUtil {
+    public static List<String> readExcelPhone(MultipartFile file) {
+        List<String> result = new ArrayList<>();
+        Workbook wookbook = null;
+        InputStream inputStream = null;
+
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            throw new ExcelImportException("文件读取异常");
+        }
+
+        // 根据excel文件版本获取工作簿
+        if (file.getOriginalFilename().endsWith(".xls")) {
+            wookbook = xls(inputStream);
+        } else if (file.getOriginalFilename().endsWith(".xlsx")) {
+            wookbook = xlsx(inputStream);
+        } else {
+            throw new ExcelImportException("非excel文件");
+        }
+
+        // 得到一个工作表
+        Sheet sheet = wookbook.getSheetAt(0);
+        boolean hasNext = true;
+        Integer rowIndex = 1;
+        while (hasNext) {
+            Row row = sheet.getRow(rowIndex++);
+            if(!ObjectUtil.isEmpty(row) && StringUtils.isNotBlank(row.getCell(0).getStringCellValue())) {
+                result.add(row.getCell(0).getStringCellValue());
+            } else {
+                hasNext = false;
+            }
+        }
+        return result;
+    }
+
     public static List<ZsPhoneInformation> readExcelPI(MultipartFile file, Integer surveyId, SysUser user) {
         // 存储excel数据
         List<ZsPhoneInformation> list = new ArrayList<>();

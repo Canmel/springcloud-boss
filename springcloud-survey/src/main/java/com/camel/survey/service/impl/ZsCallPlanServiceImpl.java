@@ -19,8 +19,10 @@ import com.camel.survey.service.ZsCallPlanService;
 import com.camel.survey.service.ZsPhoneInformationService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.utils.HttpUtils;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -145,9 +147,15 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     @Override
     public void uploadNumers(MultipartFile file, Integer id) {
         ZsCallPlan entity = selectById(id);
+        List<String> tels = ExcelUtil.readExcelPhone(file);
+        StringBuilder builder = new StringBuilder();
+        for (String item : tels) {
+            builder.append(item);
+            builder.append(",");
+        }
         JSONObject jsonObject = JSONUtil.createObj();
         jsonObject.set("taskid", entity.getTaskId());
-        jsonObject.set("telList", "018357162602");
+        jsonObject.set("telList", StringUtils.trimTrailingCharacter(builder.toString(), ','));
         HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
     }
 
