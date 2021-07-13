@@ -7,10 +7,13 @@ import com.camel.core.entity.Result;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.ZsCallPlan;
 import com.camel.survey.service.ZsCallPlanService;
+import com.camel.survey.utils.ExportExcelUtils;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -96,6 +99,11 @@ public class ZsCallPlanController extends BaseCommonController {
     public Result edit(@RequestBody ZsCallPlan zsCallPlan) {
         service.updatePlan(zsCallPlan);
         return ResultUtil.success("修改外呼任务成功！");
+    }
+
+    @GetMapping("/download/{id}")
+    public void download(@PathVariable Integer id, HttpServletResponse response) {
+        ExportExcelUtils.export(service.download(id), "外呼详情", response);
     }
 
     @Override

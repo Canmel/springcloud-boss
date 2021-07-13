@@ -223,12 +223,6 @@
                                             </div>
                                             {{selectedItem.totTocustomerRate || '未知'}}
                                         </dd>
-                                        <dd class="project-people">
-                                            <th>已呼率</th>
-                                            <th>未呼率</th>
-                                            <th>已接通率</th>
-                                            <th>转接率</th>
-                                        </dd>
                                     </dl>
                                 </div>
                             </div>
@@ -320,6 +314,9 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <button class="btn btn-success" @click="exportCallPlan(selectedItem)">导出</button>
+                    </div>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -350,6 +347,9 @@
             $('#file-pretty input[type="file"]').prettyFile();
         },
         methods: {
+            exportCallPlan(item) {
+                window.open('/survey/zsCallPlan/download/'+ item.id +'?access_token=' + sessionStorage.getItem('access_token'));
+            },
             // 最大振铃时长
             maxRingTimeHandler(event) {
                 let v = "";

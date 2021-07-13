@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.survey.model.ZsCallPlan;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -35,4 +36,6 @@ public interface ZsCallPlanService extends IService<ZsCallPlan> {
     ZsCallPlan selectByTaskName(String taskname);
 
     void updatePlan(ZsCallPlan zsCallPlan);
+
+    Workbook download(Integer id);
 }

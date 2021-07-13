@@ -60,8 +60,13 @@ public class ExcelUtil {
         Integer rowIndex = 1;
         while (hasNext) {
             Row row = sheet.getRow(rowIndex++);
-            if(!ObjectUtil.isEmpty(row) && StringUtils.isNotBlank(row.getCell(0).getStringCellValue())) {
-                result.add(row.getCell(0).getStringCellValue());
+            if(!ObjectUtil.isEmpty(row)) {
+                row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+                if(StringUtils.isNotBlank(row.getCell(0).getStringCellValue())) {
+                    result.add(row.getCell(0).getStringCellValue());
+                } else {
+                    hasNext = false;
+                }
             } else {
                 hasNext = false;
             }
