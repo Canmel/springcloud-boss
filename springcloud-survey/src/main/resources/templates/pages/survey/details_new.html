@@ -36,6 +36,8 @@
             <div class="ibox-title">
                 拖拽到下方区域，即可生成快速模板
             </div>
+            <button value="选择组" @click="test01()">选择组</button>
+            <button value="问题组" @click="test02()">问题组</button>
             <div class="ibox-content">
                 <div class="form-group draggable alert alert-success col-sm-4" draggable="true"
                      @dragstart="dragstart($event, {type: 1})" @dragend="dragend($event)">
@@ -542,6 +544,12 @@
         mounted() {
         },
         methods: {
+            test01(){
+              console.log(this.zsoptions)
+            },
+            test02(){
+                console.log(this.questions)
+            },
             translateData(p, s, x) {
                 console.log(p, s, x);
                 if (x) {
@@ -662,9 +670,19 @@
                 $("#importModal").modal('show');
             },
             questionDelete(question, event) {
+                var arr = [];
                 event.stopPropagation();
                 let index = this.questions.indexOf(question);
                 this.questions.splice(index, 1);
+                var filter = this.zsoptions.filter(x => x.questionOrderNum === question.orderNum);
+                console.log("filter",filter)
+                this.zsoptions.forEach(x => {
+                    if (filter.indexOf(x) === -1){
+                        arr.push(x)
+                    }
+                })
+                this.zsoptions = arr
+                console.log("this.zsoptions",this.zsoptions)
                 this.selected = 0;
             },
             questionCopy(question, event) {
@@ -843,6 +861,7 @@
                     ignoreNum: false,
                     questionOrderNum: question.orderNum
                 }
+                question.hasOtherOpt = true;
                 this.zsoptions.push(tmp)
             },
             addNotClearOption(question) {
@@ -890,7 +909,8 @@
                 if (this.selectedOption.target > 999) {
                     this.selectedOption.sattr = 0;
                 }
-                this.selectedOption.questionType = this.questions[option.questionOrderNum - 1].type;
+                let qus = this.questions.filter(x=>x.orderNum === option.questionOrderNum);
+                this.selectedOption.questionType = qus[0].type;
                 this.selected = 2;
             },
             up(e, question) {
@@ -969,15 +989,27 @@
                     this.renderDetailQuestion()
                 }
             },
+            generateGuid() {
+                var guid = "";
+                for (var i = 1; i <= 9; i++) {
+                    var n = Math.floor(Math.random() * 10);
+                    guid += n;
+                    // if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                    //     guid += "-";
+                }
+                return parseInt(guid);
+            },
             renderSingleSelect() {
                 let question = {
                     name: "单选题",
                     type: 1,
-                    orderNum: this.questions.length + 1,
+                    // orderNum: this.questions.length + 1,
+                    orderNum: this.generateGuid(),
                     minSelect: 1,
                     surveyId: this.surveyId,
                     maxSelect: 1,
-                    compulsory: 1
+                    compulsory: 1,
+                    hasOtherOpt: false
                 };
                 let tmpOptions = [
                     {
@@ -1010,7 +1042,8 @@
                     surveyId: this.surveyId,
                     minSelect: 1,
                     maxSelect: 2,
-                    compulsory: 1
+                    compulsory: 1,
+                    hasOtherOpt: false
                 };
                 let tmpOptions = [
                     {

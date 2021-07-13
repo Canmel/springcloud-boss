@@ -36,10 +36,7 @@ import org.springframework.util.StringUtils;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -198,15 +195,24 @@ public class ExportServiceImpl implements ExportService {
         List<String> titleQList = new ArrayList<>();
         List<String> titleIdList = new ArrayList<>();
         questionList.forEach(que -> {
-            if (que.getType().equals(2)) {
+             if (que.getType().equals(2)) {
                 for (int i = 0; i < que.getOptions().size(); i++) {
                     titleQList.add(que.getName() + "_" + que.getOptions().get(i).getName());
                     titleIdList.add(que.getId() + "_" + que.getOptions().get(i).getId());
+                    if (que.getHasOtherOpt()){
+                        titleQList.add(que.getName()+"其他选项");
+                        titleIdList.add(que.getId() + "_" + que.getOptions().get(i).getId());
+                    }
                 }
             } else {
                 titleQList.add(que.getName());
                 titleIdList.add(que.getId() + "");
+                if (que.getHasOtherOpt()){
+                    titleQList.add(que.getName()+"其他选项");
+                    titleIdList.add(que.getId() + "");
+                }
             }
+
         });
         headValues.addAll(titleQList);
         headValues.add("合计");
@@ -261,7 +267,13 @@ public class ExportServiceImpl implements ExportService {
                 for (int qIndex = 0; qIndex < qIds.size(); qIndex++) {
                     // 全等，即单选
                     if (titleStr.equals(qIds.get(qIndex))) {
-                        fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
+                        if (answersArray[qIndex].contains("&%%&")){
+                            fillCell(row.createCell(13 + index), style, "其他");
+                            fillCell(row.createCell(13+index+1), style, answersArray[qIndex].split("&%%&")[1]);
+                            index+=1;
+                        }else{
+                            fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
+                        }
                         qIndex = qIds.size();
                     } else {
                         // 多选， 并且问题和excel当前表头相同

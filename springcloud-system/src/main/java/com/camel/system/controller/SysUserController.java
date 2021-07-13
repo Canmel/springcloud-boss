@@ -1,6 +1,7 @@
 package com.camel.system.controller;
 
 
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
@@ -22,17 +23,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.Serializable;
-import java.security.Principal;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -172,6 +181,27 @@ public class SysUserController extends BaseCommonController {
     public Result avatar(@RequestBody SysUser sysUser) {
         super.update(sysUser);
         return ResultUtil.success("修改用户头像成功");
+    }
+
+    @GetMapping("/checkUser")
+    public Result SurveyCheckUser(SysUser user){
+        RestTemplate client = new RestTemplate();
+        // headers
+        HttpHeaders httpHeaders = new HttpHeaders();
+        MediaType type=MediaType.parseMediaType("application/json;charset=UTF-8");
+        httpHeaders.setContentType(type);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userName",user.getUsername());
+        map.put("email",user.getEmail());
+        // request
+        HttpEntity<Map<String, Object>> objectHttpEntity = new HttpEntity<>(map,httpHeaders);
+        ResponseEntity<JSONObject> response = client.postForEntity("http://localhost:1024/dev-api/system/user/checkUser", objectHttpEntity, JSONObject.class);
+        JSONObject body = response.getBody();
+        if ((Integer)body.get("code") == 500){
+            return ResultUtil.error(500,"用户已存在");
+        }
+        return ResultUtil.success("新增用户成功");
     }
 
     @GetMapping("/byIdNum/{idNum}")

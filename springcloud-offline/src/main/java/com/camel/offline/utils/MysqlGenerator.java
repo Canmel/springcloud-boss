@@ -54,7 +54,7 @@ public class MysqlGenerator {
         dataSourceConfig.setDbType(DbType.MYSQL)
                 .setUrl(dbUrl)
                 .setUsername("root")
-                .setPassword("1234")
+                .setPassword("123456")
                 .setDriverName("com.mysql.cj.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         // 指定表名
