@@ -481,10 +481,10 @@ public class ExportServiceImpl implements ExportService {
      */
     public void crossSingleSimple(HSSFWorkbook wb, ZsCrossExport zsCrossExport) {
         HSSFCellStyle style = createCellStyle(wb);
-        ZsQuestion questionF = zsCrossExport.getQuestionF();
-        ZsQuestion questionS = zsCrossExport.getQuestionS();
-        List<ZsOption> optionListF = zsCrossExport.getOptionsF();
-        List<ZsOption> optionListS = zsCrossExport.getOptionsS();
+        ZsQuestion questionF = zsQuestionService.selectById(zsCrossExport.getFirstSelect());
+        ZsQuestion questionS = zsQuestionService.selectById(zsCrossExport.getSecondSelect());
+        List<ZsOption> optionListF = getAllOption(zsCrossExport.getFirstOption(), zsCrossExport.getFirstSelect());
+        List<ZsOption> optionListS = getAllOption(zsCrossExport.getSecondOption(), zsCrossExport.getSecondSelect());
         HSSFSheet sheet = wb.createSheet("Q" + questionF.getOrderNum() + "--Q" + questionS.getOrderNum());
         HSSFRow rowQ1 = sheet.createRow(0);
         fillCell(rowQ1.createCell(0), createHeadStyle(wb), "Q" + questionF.getOrderNum() + "." + questionF.getName());

@@ -146,6 +146,11 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     private Integer companyId;
 
     /**
+     * 是否拥有学习平台账号
+     */
+    private Integer hasAccount;
+
+    /**
      * 访员级别(编号)
      */
     private Integer grade;

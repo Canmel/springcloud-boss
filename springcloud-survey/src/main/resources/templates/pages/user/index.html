@@ -87,8 +87,8 @@
                             <button type="button" v-on:click="seatModal(item)" class="btn btn-warning btn-xs" v-if="resultDev">
                                 分配坐席
                             </button>
-                            <button type="button" v-on:click="checkUser(item)" class="btn btn-default btn-xs" v-if="resultDev">
-                                检查用户
+                            <button type="button" v-on:click="checkUser(item)" class="btn btn-default btn-xs" v-if="resultDev && item.hasAccount==0">
+                                开通学习平台账号
                             </button>
                         </td>
                     </tr>
@@ -273,7 +273,7 @@
             },
             checkUser(item){
                 AJAX.GET('/system/sysUser/checkUser',
-                    {username:item.username,email:item.email}
+                    {username:item.username,email:item.email,uid:item.uid}
                     , function (resp) {
                         if (resp.code == 200){
                             toastr.success(resp.msg);

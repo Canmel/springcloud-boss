@@ -201,6 +201,8 @@ public class SysUserController extends BaseCommonController {
         if ((Integer)body.get("code") == 500){
             return ResultUtil.error(500,"用户已存在");
         }
+        user.setHasAccount(1);
+        service.updateById(user);
         return ResultUtil.success("新增用户成功");
     }
 
