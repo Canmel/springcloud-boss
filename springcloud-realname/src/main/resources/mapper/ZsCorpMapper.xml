@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.camel.realname.model.ZsCorp">
-        <id column="id" property="id"/>
+        <id column="id" property="id" javaType="java.lang.Integer"/>
         <result column="request_id" property="requestId" javaType="java.lang.String"/>
         <result column="is_merge" property="isMerge" javaType="java.lang.Integer"/>
         <result column="enterprise_name" property="enterpriseName" javaType="java.lang.String"/>
@@ -113,11 +113,28 @@
         where user_id = #{userId}
     </update>
 
-    <select id="getOneByUid" resultType="com.camel.realname.model.ZsCorp">
+    <update id="audit">
+        update zs_corp set status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="getOneByUid" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from zs_corp
         where user_id = #{userId}
         limit 1
     </select>
 
-
+    <select id="getList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from zs_corp
+        <where>
+            <if test="enterpriseName != null and enterpriseName != ''">enterprise_name like concat('%',#{enterpriseName},'%')</if>
+            <if test="corporateName != null and corporateName != ''">or corporate_name like concat('%',#{corporateName},'%')</if>
+            <if test="enterpriseName != null and businessLicenseCode != ''">or business_license_code like concat('%',#{businessLicenseCode},'%')</if>
+            <if test="agentName != null and agentName != ''">or agent_name like concat('%',#{agentName},'%')</if>
+            <if test="agentPid != null and agentPid != ''">or agent_pid like concat('%',#{agentPid},'%')</if>
+            <if test="agentContactNo != null and agentContactNo != ''">or agent_contact_no like concat('%',#{agentContactNo},'%')</if>
+            <if test="agentIdIssuingAuthority != null and agentIdIssuingAuthority != ''">or agent_id_issuing_authority like concat('%',#{agentIdIssuingAuthority},'%')</if>
+            and status > 1
+        </where>
+    </select>
 </mapper>

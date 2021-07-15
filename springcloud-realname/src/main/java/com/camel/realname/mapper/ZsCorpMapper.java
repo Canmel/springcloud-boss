@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.realname.model.ZsCorp;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface ZsCorpMapper extends BaseMapper<ZsCorp> {
     /**
      * 修改企业认证信息
@@ -26,5 +28,18 @@ public interface ZsCorpMapper extends BaseMapper<ZsCorp> {
      * @return 企业认证信息对象
      */
     ZsCorp getOneByUid(Integer userId);
+
+    /**
+     * 审核改变状态
+     * @param zsCorp 企业认证信息
+     */
+    Integer audit(ZsCorp zsCorp);
+
+    /**
+     * 查询企业认证信息集合（status > 1）
+     * @param zsCorp 查询条件
+     * @return 企业认证信息集合
+     */
+    List<ZsCorp> getList(ZsCorp zsCorp);
 
 }

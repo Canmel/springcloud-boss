@@ -39,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -191,39 +192,53 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         return url;
     }
 
+    /**
+     * 将ZsCorpUrlVo绑定到zsCorp对象中
+     * @param zsCorp 企业认证对象
+     */
+    private void bindZsCorpUrlVo(ZsCorp zsCorp) throws FileNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException {
+        ZsCorpUrlVo zsCorpUrlVo = new ZsCorpUrlVo();
+        Field[] fields = ZsCorpUrlVo.class.getDeclaredFields();
+        for (Field field:fields) {
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            String picUrl = getImageAddr(fieldName);
+            String name = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+            zsCorpUrlVo.getClass().getDeclaredMethod("set"+name,String.class).invoke(zsCorpUrlVo,picUrl);
+        }
+        zsCorp.setZsCorpUrlVo(zsCorpUrlVo);
+    }
+
     @Override
-    public Result getOneByUid() {
+    public Result getOneByUid() throws InvocationTargetException, FileNotFoundException, IllegalAccessException, NoSuchMethodException {
         Integer userId = applicationToolsUtils.currentUser().getUid();
         ZsCorp exist = zsCorpMapper.getOneByUid(userId);
         if(exist == null){
             zsCorpMapper.insertDemo(userId, NumberStatus.EDITABLE.getCode());
         }
         ZsCorp zsCorp = zsCorpMapper.getOneByUid(userId);
-        ZsCorpUrlVo zsCorpUrlVo = new ZsCorpUrlVo();
-        Field[] fields = ZsCorpUrlVo.class.getDeclaredFields();
-        for (Field field:fields) {
-            field.setAccessible(true);
-            try {
-                String fieldName = field.getName();
-                String picUrl = getImageAddr(fieldName);
-                String name = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-                zsCorpUrlVo.getClass().getDeclaredMethod("set"+name,String.class).invoke(zsCorpUrlVo,picUrl);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),e.getMessage());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),e.getMessage());
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-                return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),e.getMessage());
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-                return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),e.getMessage());
-            }
-        }
-        zsCorp.setZsCorpUrlVo(zsCorpUrlVo);
+        bindZsCorpUrlVo(zsCorp);
         return ResultUtil.success("查询成功",zsCorp);
+    }
+
+    @Override
+    public List<ZsCorp> getList(ZsCorp zsCorp) throws InvocationTargetException, FileNotFoundException,
+            IllegalAccessException, NoSuchMethodException {
+        List<ZsCorp> list = zsCorpMapper.getList(zsCorp);
+        for (ZsCorp zc:list) {
+            bindZsCorpUrlVo(zc);
+        }
+        return list;
+    }
+
+    @Override
+    public Result audit(ZsCorp zsCorp) {
+        Integer res = zsCorpMapper.audit(zsCorp);
+        if(res > 0){
+            return ResultUtil.success("审核成功");
+        }
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR);
     }
 
     /**
