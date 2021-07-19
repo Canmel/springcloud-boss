@@ -31,6 +31,7 @@
 </style>
 
 <div id="subContainer" class="wrapper wrapper-content">
+    {{this.zsoptions}}
     <div class="row">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
@@ -890,9 +891,6 @@
             },
             optionNameClickHandler(e, option) {
                 // this.selectedIndex = this.zsoptions.indexOf(option);
-                console.log("questions",this.questions)
-                console.log("zsoptions",this.zsoptions)
-                console.log(option.questionOrderNum - 1)
                 e.stopPropagation;
                 this.selectedOption = option;
                 if (this.selectedOption.target < 0) {
@@ -994,8 +992,8 @@
                 let question = {
                     name: "单选题",
                     type: 1,
-                    // orderNum: this.questions.length + 1,
-                    orderNum: randomNum,
+                    orderNum: this.questions.length + 1,
+                    // orderNum: randomNum,
                     minSelect: 1,
                     surveyId: this.surveyId,
                     maxSelect: 1,
