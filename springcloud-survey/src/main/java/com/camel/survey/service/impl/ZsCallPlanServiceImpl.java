@@ -65,6 +65,8 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
 
     @Override
     public PageInfo<ZsCallPlan> list(ZsCallPlan entity) {
+        SysUser currentUser = applicationToolsUtils.currentUser();
+        entity.setCompanyId(currentUser.getCompanyId());
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
@@ -81,6 +83,7 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
         uploadCallPlan(entity);
         SysUser currentUser = applicationToolsUtils.currentUser();
         entity.setCreatorId(currentUser.getUid());
+        entity.setCompanyId(currentUser.getCompanyId());
         if (insert(entity)) {
             return ResultUtil.success("保存成功");
         }
