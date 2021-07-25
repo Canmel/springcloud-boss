@@ -11,6 +11,7 @@ import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
 import com.camel.survey.enums.ZsYesOrNo;
+import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.mapper.ZsSeatMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
@@ -121,15 +122,19 @@ public class ZsSeatServiceImpl extends ServiceImpl<ZsSeatMapper, ZsSeat> impleme
             if(ObjectUtil.isNotEmpty(seat.getQueueId()) && seat.getQueueId().equals(zsWorkShift.getQueueId())) {
                 // 仅仅需要更新问卷
                 seat.setSurveyId(surveyId);
-                return updateById(seat);
+                return updateById(seat) && mapper.assignSeat(seat.getSeatNum(), uid);
             }
             seat.setState(ZsYesOrNo.NO);
-            updateById(seat);
+            seat.setUid(null);
+            seat.setSurveyId(null);
+            seat.setWorkNum(null);
+            updateAllColumnById(seat);
         }
         // 2. 从指定坐席队列中获取坐席
         ZsSeat newSeat = selectFreeSeat(zsWorkShift.getQueueId());
         if (ObjectUtils.isEmpty(newSeat)) {
-            return false;
+            throw new SourceDataNotValidException("暂无新的可用坐席");
+//            return false;
         }
         // 3. 设置坐席信息,将最新信息写入坐席
         newSeat.setState(ZsYesOrNo.YES);
