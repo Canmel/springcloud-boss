@@ -1,6 +1,8 @@
 package com.camel.realname.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
@@ -93,15 +95,17 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
 
     @Override
     public Result change(ZsCorp zsCorp) {
+        Integer uid = applicationToolsUtils.currentUser().getUid();
+        zsCorp.setUserId(uid);
         if(zsCorp == null || zsCorp.getId() == null){
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"参数为空，或者id为空");
         }
-
-        Integer update = zsCorpMapper.updateCorp(zsCorp);
-        if(update <= 0){
-            return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改失败");
+        Wrapper wrapper = new EntityWrapper<ZsCorp>();
+        wrapper.eq("user_id", uid);
+        if(update(zsCorp, wrapper)){
+            return ResultUtil.success("修改成功");
         }
-        return ResultUtil.success("修改成功");
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改失败");
     }
 
     @Override
@@ -215,7 +219,9 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         Integer userId = applicationToolsUtils.currentUser().getUid();
         ZsCorp exist = zsCorpMapper.getOneByUid(userId);
         if(exist == null){
-            zsCorpMapper.insertDemo(userId, NumberStatus.EDITABLE.getCode());
+            ZsCorp zsCorp = new ZsCorp();
+            zsCorp.setUserId(userId);
+            zsCorpMapper.insert(zsCorp);
         }
         ZsCorp zsCorp = zsCorpMapper.getOneByUid(userId);
         bindZsCorpUrlVo(zsCorp);

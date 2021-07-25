@@ -43,8 +43,9 @@
         <result column="contact_name" property="contactName" javaType="java.lang.String"/>
         <result column="contact_no" property="contactNo" javaType="java.lang.String"/>
         <result column="user_id" property="userId" javaType="java.lang.Integer"/>
-        <result column="status" property="status" javaType="java.lang.Integer"/>
         <result column="submit_date" property="submitDate" javaType="java.util.Date"/>
+        <result column="status" property="status" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="apply" property="apply" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -58,7 +59,7 @@
         agent_id_url,agent_id_furl,agent_id_hurl,agent_id_address,agent_id_gender,
         agent_id_nation,agent_id_birth_day,agent_id_issuing_authority,
         agent_id_cert_valid_date,agent_id_cert_exp_date,agent_contact_no,
-        agent_address,contact_name,contact_no,user_id,status,submit_date
+        agent_address,contact_name,contact_no,user_id,status,submit_date, status, apply
     </sql>
 
     <insert id="insertDemo">
@@ -121,6 +122,7 @@
     <select id="getOneByUid" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from zs_corp
         where user_id = #{userId}
+        and status = 1
         limit 1
     </select>
 
