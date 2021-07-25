@@ -30,12 +30,12 @@ docker-package:
 #    - cp -r springcloud-eureka-server/docker-compose.yml springcloud-eureka-server/target/springcloud-eureka-server-*.jar springcloud-eureka-server/Dockerfile springcloud-eureka-server/docker_web_run.sh sartifacts/eurka_service
     - cp -r springcloud-system/docker-compose.yml springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile springcloud-system/docker_web_run.sh sartifacts/system_service
 #    - cp -r springcloud-auth-server/docker-compose.yml springcloud-auth-server/target/springcloud-auth-server-*.jar springcloud-auth-server/Dockerfile springcloud-auth-server/docker_web_run.sh sartifacts/auth_service
-    - cp -r springcloud-survey/docker-compose.yml springcloud-survey/target/springcloud-survey-*.jar springcloud-survey/Dockerfile springcloud-survey/docker_web_run.sh sartifacts/survey_service
+#    - cp -r springcloud-survey/docker-compose.yml springcloud-survey/target/springcloud-survey-*.jar springcloud-survey/Dockerfile springcloud-survey/docker_web_run.sh sartifacts/survey_service
 #    - cp -r springcloud-stock-opzsAnswereration/docker-compose.yml springcloud-stock-operation/target/springcloud-stock-operation-*.jar springcloud-stock-operation/Dockerfile springcloud-stock-operation/docker_web_run.sh sartifacts/stock_service
 #    - cp -r springcloud-interviewer/docker-compose.yml springcloud-interviewer/target/springcloud-interviewer-*.jar springcloud-interviewer/Dockerfile springcloud-interviewer/docker_web_run.sh sartifacts/viewer_service
 #    - cp -r springcloud-sms-server/docker-compose.yml springcloud-sms-server/target/springcloud-sms-server-*.jar springcloud-sms-server/Dockerfile springcloud-sms-server/docker_web_run.sh sartifacts/sms_service
 #    - cp -r springcloud-access-control/docker-compose.yml springcloud-access-control/target/springcloud-access-control-*.jar springcloud-access-control/Dockerfile springcloud-access-control/docker_web_run.sh sartifacts/control_service
-    - cp -r springcloud-realname/docker-compose.yml springcloud-realname/target/springcloud-realname-*.jar springcloud-realname/Dockerfile springcloud-realname/docker_web_run.sh sartifacts/realname_service
+#    - cp -r springcloud-realname/docker-compose.yml springcloud-realname/target/springcloud-realname-*.jar springcloud-realname/Dockerfile springcloud-realname/docker_web_run.sh sartifacts/realname_service
 #    - cp -r springcloud-zuul-getway/docker-compose.yml springcloud-zuul-getway/target/springcloud-zuul-getway-*.jar springcloud-zuul-getway/Dockerfile springcloud-zuul-getway/docker_web_run.sh sartifacts/zuul_service
     - du -h --max-depth=1 sartifacts
   artifacts:
@@ -60,8 +60,8 @@ docker-build:
     - docker push $system_service
 #    - docker build -t $auth_service ./sartifacts/auth_service/
 #    - docker push $auth_service
-    - docker build -t $survey_service ./sartifacts/survey_service/
-    - docker push $survey_service
+#    - docker build -t $survey_service ./sartifacts/survey_service/
+#    - docker push $survey_service
 #    - docker build -t $stock_service ./sartifacts/stock_service/
 #    - docker push $stock_service
 #    - docker build -t $viewer_service ./sartifacts/viewer_service/
@@ -70,8 +70,8 @@ docker-build:
 #    - docker push $sms_service
 #    - docker build -t $control_service ./sartifacts/control_service/
 #    - docker push $control_service
-    - docker build -t $realname_service ./sartifacts/realname_service/
-    - docker push $realname_service
+#    - docker build -t $realname_service ./sartifacts/realname_service/
+#    - docker push $realname_service
 #    - docker build -t $zuul_service ./sartifacts/zuul_service/
 #    - docker push $zuul_service
 
@@ -86,11 +86,11 @@ docker-deploy:
 #    - cd springcloud-eureka-server && docker-compose up -d && cd .. && pwd
     - cd springcloud-system && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-auth-server && docker-compose up -d && cd .. && pwd
-    - cd springcloud-survey && docker-compose up -d && cd .. && pwd
+#    - cd springcloud-survey && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-stock-operation && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-interviewer && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-sms-server && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-access-control && docker-compose up -d && cd .. && pwd
-    - cd springcloud-realname && docker-compose up -d && cd .. && pwd
+#    - cd springcloud-realname && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-zuul-getway && docker-compose up -d && cd .. && pwd
     - docker rmi `docker images | grep  "<none>" | awk '{print $3}'`

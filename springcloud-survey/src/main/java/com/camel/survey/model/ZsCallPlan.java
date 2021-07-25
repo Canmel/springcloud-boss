@@ -151,6 +151,11 @@ public class ZsCallPlan extends ZsSurveyBaseEntity {
     private Integer surveyId;
 
     /**
+     * 所属公司
+     */
+    private Integer companyId;
+
+    /**
      * 问卷
      */
     @TableField(exist = false)

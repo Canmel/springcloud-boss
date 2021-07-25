@@ -265,6 +265,7 @@ public class SysUserController extends BaseCommonController {
     }
 
     public void insertNewUser(SysUser sysUser) {
+        sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
         service.insert(sysUser);
         Wrapper<SysRole> roleWrapper = new EntityWrapper<>();
         roleWrapper.eq("role_name", "interviewer");

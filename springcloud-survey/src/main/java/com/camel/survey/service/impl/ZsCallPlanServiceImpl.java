@@ -19,8 +19,14 @@ import com.camel.survey.service.ZsCallPlanService;
 import com.camel.survey.service.ZsPhoneInformationService;
 import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.utils.ExcelUtil;
 import com.camel.survey.utils.HttpUtils;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -59,6 +65,8 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
 
     @Override
     public PageInfo<ZsCallPlan> list(ZsCallPlan entity) {
+        SysUser currentUser = applicationToolsUtils.currentUser();
+        entity.setCompanyId(currentUser.getCompanyId());
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
@@ -75,6 +83,7 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
         uploadCallPlan(entity);
         SysUser currentUser = applicationToolsUtils.currentUser();
         entity.setCreatorId(currentUser.getUid());
+        entity.setCompanyId(currentUser.getCompanyId());
         if (insert(entity)) {
             return ResultUtil.success("保存成功");
         }
@@ -145,9 +154,15 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
     @Override
     public void uploadNumers(MultipartFile file, Integer id) {
         ZsCallPlan entity = selectById(id);
+        List<String> tels = ExcelUtil.readExcelPhone(file);
+        StringBuilder builder = new StringBuilder();
+        for (String item : tels) {
+            builder.append(item);
+            builder.append(",");
+        }
         JSONObject jsonObject = JSONUtil.createObj();
         jsonObject.set("taskid", entity.getTaskId());
-        jsonObject.set("telList", "018357162602");
+        jsonObject.set("telList", StringUtils.trimTrailingCharacter(builder.toString(), ','));
         HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/importtel.json");
     }
 
@@ -256,5 +271,37 @@ public class ZsCallPlanServiceImpl extends ServiceImpl<ZsCallPlanMapper, ZsCallP
         jsonObject.set("xintf", callPlan.getXintf());
         jsonObject.set("max_concurrent_num", callPlan.getMaxConcurrentNum().toString());
         HttpUtils.post(jsonObject, baseUrl, "/yscrm/20150101/setting/settaskconfig.json");
+    }
+
+    @Override
+    public Workbook download(Integer id) {
+        ZsCallPlan callPlan = selectById(id);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet(callPlan.getName());
+        Integer index = 0;
+        Row row = sheet.createRow(index++);
+        row.createCell(0).setCellValue("号码");
+        row.createCell(1).setCellValue("上次呼叫时间");
+        row.createCell(2).setCellValue("呼叫结果");
+        row.createCell(3).setCellValue("当前状态");
+        row.createCell(4).setCellValue("已呼叫次数");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("taskid", callPlan.getTaskId());
+        JSON json = HttpUtils.post(jsonObject, baseUrl, "/yscrm/ 20150101/query/gettaskinfo.json");
+        if(ObjectUtil.isNotEmpty(json)) {
+            JSONArray jsonArray = (JSONArray) json;
+            for (Object obj: jsonArray) {
+                Row r = sheet.createRow(index++);
+                JSONObject phone = (JSONObject) obj;
+                Integer cellIndex = 0;
+                r.createCell(cellIndex++).setCellValue(phone.getStr("tel"));
+                r.createCell(cellIndex++).setCellValue(phone.getStr("calltime"));
+                r.createCell(cellIndex++).setCellValue(phone.getStr("callresult"));
+                r.createCell(cellIndex++).setCellValue(phone.getStr("status"));
+                r.createCell(cellIndex++).setCellValue(phone.getStr("callcount"));
+            }
+        }
+        System.out.println(json);
+        return wb;
     }
 }
