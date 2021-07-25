@@ -8,7 +8,10 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ZsCorpService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiniu.util.IOUtils;
+import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +24,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/zsCorp")
@@ -47,6 +52,7 @@ public class ZsCorpController extends BaseCommonController {
      * 查询用户绑定的企业认证信息
      * @return Result
      */
+    @SneakyThrows
     @GetMapping("/getOne")
     public Result getOne(){
         return zsCorpService.getOneByUid();
@@ -75,11 +81,38 @@ public class ZsCorpController extends BaseCommonController {
      * @param imgName 文件名
      * @return Result
      */
+    @SneakyThrows
     @GetMapping("/image/{imgName}")
     public void showImage(@PathVariable("imgName") String imgName,
-                          HttpServletResponse response)
-            throws FileNotFoundException, IIOException {
+                          HttpServletResponse response){
         zsCorpService.showImage(imgName, response);
+    }
+
+    /**
+     * 条件分页查询企业认证信息(status > 1)
+     * @return Result
+     */
+    @SneakyThrows
+    @GetMapping("/getList")
+    public Result getList(ZsCorp zsCorp){
+        if(zsCorp.getPageNum() != null && zsCorp.getPageSize() != null){
+            PageHelper.startPage(zsCorp.getPageNum(),zsCorp.getPageSize());
+            List<ZsCorp> list = zsCorpService.getList(zsCorp);
+            return ResultUtil.success(new PageInfo<ZsCorp>(list));
+        }
+        return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"分页相关数据为空");
+    }
+
+    /**
+     * 审核企业认证信息
+     * @return Result
+     */
+    @PutMapping("/audit")
+    public Result audit(@RequestBody ZsCorp zsCorp){
+        if(zsCorp != null){
+            return zsCorpService.audit(zsCorp);
+        }
+        return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"参数为空");
     }
 
     @Override
@@ -115,9 +148,5 @@ public class ZsCorpController extends BaseCommonController {
         return null;
     }
 
-//    public static void main(String[] args) {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encode = passwordEncoder.encode("123456");
-//        System.out.println(encode);
-//    }
+
 }

@@ -901,8 +901,7 @@
                 if (this.selectedOption.target > 999) {
                     this.selectedOption.sattr = 0;
                 }
-                let qus = this.questions.filter(x=>x.orderNum === option.questionOrderNum);
-                this.selectedOption.questionType = qus[0].type;
+                this.selectedOption.questionType = this.questions[option.questionOrderNum - 1].type;
                 this.selected = 2;
             },
             up(e, question) {
@@ -994,8 +993,7 @@
                 let question = {
                     name: "单选题",
                     type: 1,
-                    // orderNum: this.questions.length + 1,
-                    orderNum: randomNum,
+                    orderNum: this.questions.length + 1,
                     minSelect: 1,
                     surveyId: this.surveyId,
                     maxSelect: 1,
