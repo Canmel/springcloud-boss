@@ -74,9 +74,6 @@ public class ZsCdrinfoController extends BaseCommonController {
                 String result = "success";
                 for (int i = 0; i < zsCdrinfos.size(); i++) {
                     ZsCdrinfo cdr = zsCdrinfos.get(i);
-                    if(cdr.isNotValidData()) {
-                        continue;
-                    }
                     // 如果被保存过就放弃
                     if(service.isSaved(cdr)) {
                        continue;

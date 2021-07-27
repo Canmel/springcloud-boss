@@ -61,6 +61,9 @@ public class ZsCdrinfoServiceImpl extends ServiceImpl<ZsCdrinfoMapper, ZsCdrinfo
 
     @Override
     public boolean validAndUpdateByUUID(ZsCdrinfo cdr) {
+        if(cdr.isNotValidData()) {
+            return true;
+        }
         if (org.springframework.util.StringUtils.isEmpty(cdr.getUuids())) {
             System.out.println("cdr 没有UUIDS");
         } else {
@@ -86,6 +89,9 @@ public class ZsCdrinfoServiceImpl extends ServiceImpl<ZsCdrinfoMapper, ZsCdrinfo
     @Override
     public boolean validAndUpdateAnserByTaskAndPhone(ZsCdrinfo zsCdrinfo) {
         String taskname = zsCdrinfo.getTaskname();
+        if(zsCdrinfo.isNotValidData()) {
+            return true;
+        }
         if(StringUtils.isBlank(taskname)) {
             System.out.println("taskname 为空");
             return false;
