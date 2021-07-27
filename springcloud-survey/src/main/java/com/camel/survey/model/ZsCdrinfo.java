@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.camel.core.entity.BasePaginationEntity;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,13 @@ public class ZsCdrinfo extends BasePaginationEntity {
     private String ivr_dtmf;
     private Integer uid;
     private Integer surveyId;
+
+    public boolean isNotValidData() {
+        if(StringUtils.isBlank(this.call_lasts_time) || StringUtils.isBlank(this.recordFile)) {
+            return true;
+        }
+        return false;
+    }
 
 
     @Override

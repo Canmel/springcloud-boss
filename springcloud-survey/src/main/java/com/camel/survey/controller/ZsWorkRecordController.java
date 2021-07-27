@@ -62,6 +62,12 @@ public class ZsWorkRecordController extends BaseCommonController {
     public Result sign(ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication){
         return service.start(entity, oAuth2Authentication);
     }
+
+    @PostMapping("/signApp")
+    public Result signApp(@RequestBody ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication){
+        return service.start(entity, oAuth2Authentication);
+    }
+
     /**
      * 编辑 更新 班次
      */

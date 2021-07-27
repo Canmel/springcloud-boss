@@ -61,7 +61,6 @@ public class ZsWorkRecordServiceImpl extends ServiceImpl<ZsWorkRecordMapper, ZsW
         List<ZsWorkRecord> workrecords = pageInfo.getList();
         workrecords.forEach(zsWorkRecord -> {
             zsWorkRecord.setCreator(applicationToolsUtils.getUser(zsWorkRecord.getCreatorId()));
-            zsWorkRecord.setWorkshift(zsWorkShiftservice.selectById(zsWorkRecord.getWsId()));
         });
         return pageInfo;
     }

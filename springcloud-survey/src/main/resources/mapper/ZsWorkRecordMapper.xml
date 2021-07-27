@@ -16,30 +16,35 @@
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
-        <association property="workshift" javaType="com.camel.survey.model.ZsWorkShift">
-            <id property="wsId" column="workshift" jdbcType="INTEGER"></id>
+        <association property="workshift" javaType="com.camel.survey.model.ZsWorkShift" column="cid_num">
+            <id property="id" column="ws_id" jdbcType="INTEGER"></id>
+            <result column="cname" property="cname"></result>
         </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, ws_id, status, cid_num, created_at, result,creator
+        zs_work_record.id, zs_work_record.ws_id, zs_work_record.status, zs_work_record.cid_num, zs_work_record.created_at, zs_work_record.result, zs_work_record.creator, shift.cname
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         from
-        zs_work_record
+        zs_work_record zs_work_record left join zs_work_shift shift on zs_work_record.ws_id = shift.id
         <where>
-            status = 1
+            zs_work_record.status = 1
             <if test="result != null">
-                AND result = #{result.value}
+                AND zs_work_record.result = #{result.value}
             </if>
             <if test="wsId != null">
-                AND ws_id = #{wsId}
+                AND zs_work_record.ws_id = #{wsId}
+            </if>
+            <if test="creatorId != null">
+                AND zs_work_record.creator = #{creatorId}
             </if>
         </where>
+        order by id desc
     </select>
 
     <select id="hasAppointment" resultType="integer">
