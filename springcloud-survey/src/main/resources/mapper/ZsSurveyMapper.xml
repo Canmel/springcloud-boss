@@ -125,7 +125,7 @@
 
     <select id="avgTime" resultType="integer">
         SELECT
-            IFNULL(AVG(TIMESTAMPDIFF(SECOND, start_time, end_time)),0)
+            AVG(IFNULL(call_lasts_time, 0))
         FROM
             zs_answer
         WHERE
