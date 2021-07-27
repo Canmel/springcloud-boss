@@ -64,6 +64,7 @@
             AND zs_work_shift.start_date > DATE_SUB(now(), INTERVAL 1 DAY)
         </if>
         </where>
+        order by id desc
     </select>
 
     <select id="findWsByShift" resultMap="BaseResultMap">
