@@ -80,4 +80,7 @@ public class ZsWorkRecord extends BasePaginationEntity {
 
     private String username;
 
+    @TableField(exist = false)
+    private ZsSurvey survey;
+
 }

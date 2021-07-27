@@ -1,6 +1,7 @@
 package com.camel.survey.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
@@ -9,7 +10,10 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.feign.SpringCloudSystemFeignClient;
+import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.model.ZsWorkRecord;
+import com.camel.survey.model.ZsWorkShift;
+import com.camel.survey.service.ZsSurveyService;
 import com.camel.survey.service.ZsWorkRecordService;
 import com.camel.survey.service.ZsWorkShiftService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -35,6 +39,9 @@ public class ZsWorkRecordController extends BaseCommonController {
 
     @Autowired
     private ZsWorkRecordService service;
+
+    @Autowired
+    private ZsSurveyService surveyService;
 
     @Autowired
     private ZsWorkShiftService zsWorkShiftService;
@@ -65,6 +72,10 @@ public class ZsWorkRecordController extends BaseCommonController {
 
     @PostMapping("/signApp")
     public Result signApp(@RequestBody ZsWorkRecord entity, OAuth2Authentication oAuth2Authentication){
+        SysUser sysUser = applicationToolsUtils.currentUser();
+        entity.setCIdNum(sysUser.getIdNum());
+        entity.setUsername(sysUser.getUsername());
+        entity.setCreatorId(sysUser.getUid());
         return service.start(entity, oAuth2Authentication);
     }
 
@@ -74,6 +85,20 @@ public class ZsWorkRecordController extends BaseCommonController {
     @PutMapping
     public Result update(@RequestBody ZsWorkRecord entity) {
         return service.updateSignW(entity);
+    }
+
+    @GetMapping("/{id}")
+    public Result detail(@PathVariable Integer id) {
+        Result details = super.details(id);
+        ZsWorkRecord record = (ZsWorkRecord) details.getData();
+        ZsWorkShift zsWorkShift = zsWorkShiftService.selectById(record.getWsId());
+        if(ObjectUtil.isNotEmpty(zsWorkShift)) {
+            record.setWorkshift(zsWorkShift);
+            ZsSurvey zsSurvey = surveyService.selectById(zsWorkShift.getSurveyId());
+            record.setSurvey(zsSurvey);
+        }
+        details.setData(record);
+        return details;
     }
 
     /**
