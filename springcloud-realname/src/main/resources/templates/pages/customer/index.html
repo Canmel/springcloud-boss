@@ -12,9 +12,9 @@
     <script type="text/javascript" src="../../js/vue.js"></script>
     <script type="text/javascript" src="../../js/ajax-util.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.3.8/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui@2.3.8/lib/index.js"></script>
+    <script src="https://unpkg.com/element-ui@2.15.3/lib/index.js"></script>
     <style>
         .layui-border-red {
             border-color: #FF5722!important;
@@ -25,8 +25,24 @@
 <body>
 <div class="x-body">
     <blockquote class="layui-elem-quote">本模块仅限企业实名认证
-        <span class="layui-btn layui-btn-normal layui-btn-mini"
-              @click="dialogVisible = true">{{disabled === true ? "开始编辑" : "退出编辑"}}</span>
+        <template v-if="authInfo.apply.code === 0">
+            <b>| 您还未认证提供您可以</b>
+            <span class="layui-btn layui-btn-normal layui-btn-mini"
+                  @click="dialogVisible = true"> {{disabled === true ? "开始编辑" : "退出编辑"}}</span>
+        </template>
+        <template v-else-if="authInfo.apply.code === 1">
+            <span class="layui-btn layui-btn-warm layui-btn-mini"
+                  >审核中...</span>
+        </template>
+        <template v-else-if="authInfo.apply.code === 2">
+            <span class="layui-btn layui-btn-mini"
+                  >审核已通过</span>
+        </template>
+        <template v-else-if="authInfo.apply.code === 3">
+            <span style="color: #FF5722">审核未通过，请重新编辑提交审核</span>
+            <span class="layui-btn layui-btn-normal layui-btn-mini"
+                  @click="dialogVisible = true">{{disabled === true ? "开始编辑" : "退出编辑"}}</span>
+        </template>
     </blockquote>
     <fieldset class="layui-elem-field">
         <legend>认证信息</legend>
@@ -42,7 +58,7 @@
                     <th width="30%">企业名称</th>
                     <td>
                         <span id="enterpriseName">
-                            <el-input :disabled="disabled" v-model="authInfo.enterpriseName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            <el-input :disabled="disabled" v-model="authInfo.enterpriseName" placeholder="请输入内容" @blur="updateCorp({enterpriseName: authInfo.enterpriseName})"></el-input>
                         </span>
                     </td>
                 </tr>
@@ -50,7 +66,7 @@
                     <th width="30%">企业营业执照代码</th>
                     <td>
                         <span id="businessLicenseCode">
-                            <el-input :disabled="disabled" v-model="authInfo.businessLicenseCode" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            <el-input :disabled="disabled" v-model="authInfo.businessLicenseCode" placeholder="请输入内容" @blur="updateCorp({businessLicenseCode: authInfo.businessLicenseCode})"></el-input>
                         </span></td>
                 </tr>
                 <tr>
@@ -75,7 +91,7 @@
                                     }"
                                     multiple
                                     :limit="1">
-                                <el-button size="small" type="primary">点击上传</el-button>
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
@@ -95,7 +111,7 @@
                     <th width="30%">法人</th>
                     <td>
                         <span id="corporateName">
-                            <el-input :disabled="disabled" v-model="authInfo.corporateName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            <el-input :disabled="disabled" v-model="authInfo.corporateName" placeholder="请输入内容" @blur="updateCorp({corporateName: authInfo.corporateName})"></el-input>
                         </span></td>
                 </tr>
                 <tr>
@@ -119,7 +135,7 @@
                                     }"
                                     multiple
                                     :limit="1">
-                                <el-button size="small" type="primary">点击上传</el-button>
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
@@ -135,7 +151,7 @@
                                 type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
-                                @blur="updateCorp()">
+                                @blur="updateCorp({businessStartDate: authInfo.businessStartDate})">
                         </el-date-picker>
                     </td>
                 </tr>
@@ -149,7 +165,7 @@
                                 type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
-                                @blur="updateCorp()">
+                                @blur="updateCorp({businessTermStartDate: authInfo.businessTermStartDate})">
                         </el-date-picker>
                     </td>
                 </tr>
@@ -163,7 +179,7 @@
                                 type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
-                                @blur="updateCorp()">
+                                @blur="updateCorp({businessTermEndDate: authInfo.businessTermEndDate})">
                         </el-date-picker>
                     </td>
                 </tr>
@@ -171,14 +187,14 @@
                     <th width="30%">单位地址</th>
                     <td>
                         <span id="businessAddress">
-                            <el-input :disabled="disabled" v-model="authInfo.businessAddress" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            <el-input :disabled="disabled" v-model="authInfo.businessAddress" placeholder="请输入内容" @blur="updateCorp({businessAddress: authInfo.businessAddress})"></el-input>
                         </span></td>
                 </tr>
                 <tr>
                     <th width="30%">单位联系电话</th>
                     <td>
                         <span id="businessNo">
-                            <el-input :disabled="disabled" v-model="authInfo.businessNo" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            <el-input :disabled="disabled" v-model="authInfo.businessNo" placeholder="请输入内容" @blur="updateCorp({businessNo: authInfo.businessNo})"></el-input>
                         </span></td>
                 </tr>
                 </tbody>
@@ -196,14 +212,14 @@
                     <th width="30%">姓名</th>
                     <td>
                             <span id="agentName">
-                                <el-input :disabled="disabled" v-model="authInfo.agentName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                                <el-input :disabled="disabled" v-model="authInfo.agentName" placeholder="请输入内容" @blur="updateCorp({agentName: authInfo.agentName})"></el-input>
                             </span></td>
                 </tr>
                 <tr>
                     <th width="30%">身份证号码</th>
                     <td>
                             <span id="agentPID">
-                                <el-input :disabled="disabled" v-model="authInfo.agentPid" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                                <el-input :disabled="disabled" v-model="authInfo.agentPid" placeholder="请输入内容" @blur="updateCorp({agentPid: authInfo.agentPid})"></el-input>
                             </span></td>
                 </tr>
                 <tr>
@@ -226,7 +242,7 @@
                                         return uploadImage(options,'agentIdTurl')
                                     }"
                                     :limit="1">
-                                <el-button size="small" type="primary">点击上传</el-button>
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
@@ -253,7 +269,7 @@
                                         return uploadImage(options,'agentIdUrl')
                                     }"
                                     :limit="1">
-                                <el-button size="small" type="primary">点击上传</el-button>
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
@@ -280,7 +296,7 @@
                                         return uploadImage(options,'agentIdFurl')
                                     }"
                                     :limit="1">
-                                <el-button size="small" type="primary">点击上传</el-button>
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
@@ -307,7 +323,7 @@
                                         return uploadImage(options,'agentIdHurl')
                                     }"
                                     :limit="1">
-                                <el-button size="small" type="primary">点击上传</el-button>
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
@@ -317,15 +333,15 @@
                     <th width="30%">身份证地址</th>
                     <td>
                             <span id="agentIDAddress">
-                                <el-input :disabled="disabled" v-model="authInfo.agentIdAddress" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                                <el-input :disabled="disabled" v-model="authInfo.agentIdAddress" placeholder="请输入内容" @blur="updateCorp({agentIdAddress: authInfo.agentIdAddress})"></el-input>
                             </span></td>
                 </tr>
                 <tr>
                     <th width="30%">性别</th>
                     <td>
                             <span id="agentIDGender">
-                                <label><el-radio :disabled="disabled" v-model="authInfo.agentIdGender" label="1">男</el-radio></label>
-                                <label><el-radio :disabled="disabled" v-model="authInfo.agentIdGender" label="0">女</el-radio></label>
+                                <label><el-radio :disabled="disabled" v-model="authInfo.agentIdGender" @change="updateCorp({agentIdGender: authInfo.agentIdGender})" label="1">男</el-radio></label>
+                                <label><el-radio :disabled="disabled" v-model="authInfo.agentIdGender" @change="updateCorp({agentIdGender: authInfo.agentIdGender})" label="0">女</el-radio></label>
                             </span>
                     </td>
                 </tr>
@@ -333,7 +349,7 @@
                     <th width="30%">民族</th>
                     <td>
                             <span id="agentIDNation">
-                                <el-input :disabled="disabled" v-model="authInfo.agentIdNation" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                                <el-input :disabled="disabled" v-model="authInfo.agentIdNation" placeholder="请输入内容" @blur="updateCorp({agentIdNation: authInfo.agentIdNation})"></el-input>
                             </span></td>
                 </tr>
                 <tr>
@@ -346,7 +362,7 @@
                                 type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
-                                @blur="updateCorp()">
+                                @blur="updateCorp({agentIdBirthDay: authInfo.agentIdBirthDay})">
                         </el-date-picker>
                     </td>
                 </tr>
@@ -354,7 +370,7 @@
                     <th width="30%">签证机关</th>
                     <td>
                             <span id="agentIDIssuingAuthority">
-                                <el-input :disabled="disabled" v-model="authInfo.agentIdIssuingAuthority" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                                <el-input :disabled="disabled" v-model="authInfo.agentIdIssuingAuthority" placeholder="请输入内容" @blur="updateCorp({agentIdIssuingAuthority: authInfo.agentIdIssuingAuthority})"></el-input>
                             </span></td>
                 </tr>
                 <tr>
@@ -367,7 +383,7 @@
                                 type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
-                                @blur="updateCorp()">
+                                @blur="updateCorp({agentIdCertValidDate: authInfo.agentIdCertValidDate})">
                         </el-date-picker>
                     </td>
                 </tr>
@@ -381,7 +397,7 @@
                                 type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
-                                @blur="updateCorp()">
+                                @blur="updateCorp({agentIdCertExpDate: authInfo.agentIdCertExpDate})">
                         </el-date-picker>
                     </td>
                 </tr>
@@ -389,7 +405,7 @@
                     <th width="30%">手机号码</th>
                     <td>
                             <span id="agentContactNo">
-                                <el-input :disabled="disabled" v-model="authInfo.agentContactNo" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                                <el-input :disabled="disabled" v-model="authInfo.agentContactNo" placeholder="请输入内容" @blur="updateCorp({agentContactNo: authInfo.agentContactNo})"></el-input>
                             </span></td>
                 </tr>
                 </tr>
@@ -397,7 +413,7 @@
                     <th width="30%">经办人联系地址</th>
                     <td>
                             <span id="agentAddress">
-                                <el-input :disabled="disabled" v-model="authInfo.agentAddress" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                                <el-input :disabled="disabled" v-model="authInfo.agentAddress" placeholder="请输入内容" @blur="updateCorp({agentAddress: authInfo.agentAddress})"></el-input>
                             </span></td>
                 </tr>
                 </tr>
@@ -415,18 +431,21 @@
                     <th width="30%">姓名</th>
                     <td>
                         <span id="contactName">
-                            <el-input :disabled="disabled" v-model="authInfo.contactName" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            <el-input :disabled="disabled" v-model="authInfo.contactName" placeholder="请输入内容" @blur="updateCorp({contactName: authInfo.contactName})"></el-input>
                         </span></td>
                 </tr>
                 <tr>
                     <th width="30%">电话</th>
                     <td>
                         <span id="contactNo">
-                            <el-input :disabled="disabled" v-model="authInfo.contactNo" placeholder="请输入内容" @blur="updateCorp()"></el-input>
+                            <el-input :disabled="disabled" v-model="authInfo.contactNo" placeholder="请输入内容" @blur="updateCorp({contactNo: authInfo.contactNo})"></el-input>
                         </span></td>
                 </tr>
                 </tbody>
             </table>
+            <div style="text-align: center">
+                <el-button type="primary" plain @click="submit">主要按钮</el-button>
+            </div>
         </div>
     </fieldset>
     <!--进入编辑状态确认框-->
@@ -452,6 +471,7 @@
             disabled:true,
             dialogVisible:false,
             authInfo: {
+                id:null,
                 enterpriseName:null,
                 businessLicenseCode:null,
                 businessLicenseUrl:null,
@@ -480,17 +500,18 @@
                 contactName:null,
                 contactNo:null,
                 userId:null,
+                status:null,
                 zsCorpUrlVo:{},
             },
             editable: false,
             userId: null,
         },
         created: function () {
-            // this.me();
-        },
-        mounted:function(){
             this.authInfo.userId = this.userId;
             this.showInfo();
+        },
+        mounted:function(){
+
         },
         methods: {
             changeEdit() {
@@ -505,11 +526,15 @@
                     that.authInfo = res.data;
                 })
             },
-            updateCorp(){
+            submit(){
+                console.log("提交审核，状态更变为2，页面不可修改")
+                this.disabled = true;
+            },
+            updateCorp(param){
                 let authInfo = this.authInfo;
                 let that = this;
-                console.log("authInfo",authInfo)
-                AJAX.POST_JSON("zsCorp/change",authInfo,function(res){
+                param.id = authInfo.id;
+                AJAX.POST_JSON("zsCorp/change",param,function(res){
                     if(res.code === 200){
                         that.$message({
                             showClose: true,

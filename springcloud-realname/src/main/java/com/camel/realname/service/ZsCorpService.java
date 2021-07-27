@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.IIOException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public interface ZsCorpService extends IService<ZsCorp> {
 
@@ -53,6 +55,20 @@ public interface ZsCorpService extends IService<ZsCorp> {
      * 根据用户id查询企业实名认证信息
      * @return Result
      */
-    Result getOneByUid();
+    Result getOneByUid() throws InvocationTargetException, FileNotFoundException, IllegalAccessException, NoSuchMethodException;
+
+    /**
+     *  查询所有企业认证信息(status > 1)
+     *  @param zsCorp 查询条件
+     * @return
+     */
+    List<ZsCorp> getList(ZsCorp zsCorp) throws InvocationTargetException, FileNotFoundException, IllegalAccessException, NoSuchMethodException;
+
+    /**
+     * 审核改变状态
+     * @param zsCorp 企业认证信息
+     * @return Result
+     */
+    Result audit(ZsCorp zsCorp);
 
 }
