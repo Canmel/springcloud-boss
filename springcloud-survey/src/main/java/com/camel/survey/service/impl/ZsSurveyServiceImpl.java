@@ -128,8 +128,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         SysUser user = applicationToolsUtils.currentUser();
-        entity.setState(ZsSurveyState.getEnumByValue(entity.getStateId()));
-        System.out.println("test");
+        if(ObjectUtil.isEmpty(entity.getState()) && ObjectUtil.isNotEmpty(entity.getStateId())) {
+            entity.setState(ZsSurveyState.getEnumByValue(entity.getStateId()));
+        }
         PageInfo pageInfo = PaginationUtil.startPage(entity, () -> {
             mapper.list(entity);
         });
