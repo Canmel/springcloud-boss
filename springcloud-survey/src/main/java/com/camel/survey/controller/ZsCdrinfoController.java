@@ -89,9 +89,7 @@ public class ZsCdrinfoController extends BaseCommonController {
                     cdr.setId(UUID.randomUUID().toString());
                     // 两种方式都未通过直接下一个
                     if(!service.validAndUpdateByUUID(cdr)) {
-                        if(!service.validAndUpdateAnserByTaskAndPhone(cdr)) {
-                            continue;
-                        }
+                        service.validAndUpdateAnserByTaskAndPhone(cdr);
                     }
                     try {
                         if(service.insert(cdr)) {
