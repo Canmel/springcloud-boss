@@ -78,6 +78,10 @@ public class ZsCdrinfoController extends BaseCommonController {
                     if(service.isSaved(cdr)) {
                        continue;
                     }
+                    if(cdr.isNotValidData()) {
+                        System.out.println(cdr.getCallee_num() + "无效： 外呼时间为0或者没有录音");
+                        continue;
+                    }
                     // 如果推送的消息中有座席号 查出坐席，更新当前坐席绑定的人员
                     if (!ObjectUtils.isEmpty(cdr.getCaller_agent_num())) {
                         ZsSeat seat = seatService.selectBySeat(cdr.getCaller_agent_num());

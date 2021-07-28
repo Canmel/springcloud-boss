@@ -47,7 +47,7 @@ public class ZsCdrinfo extends BasePaginationEntity {
     private Integer surveyId;
 
     public boolean isNotValidData() {
-        if(StringUtils.isBlank(this.call_lasts_time) || StringUtils.isBlank(this.recordFile)) {
+        if(StringUtils.isBlank(this.call_lasts_time) || StringUtils.isBlank(this.recordFile) || StringUtils.equals("0", this.call_lasts_time)) {
             return true;
         }
         return false;
