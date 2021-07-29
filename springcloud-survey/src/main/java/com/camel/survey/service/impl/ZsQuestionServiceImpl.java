@@ -1,5 +1,8 @@
 package com.camel.survey.service.impl;
 
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -12,6 +15,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.utils.SessionContextUtils;
+import com.camel.survey.enums.ZsSurveyCollectType;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.camel.survey.exceptions.SurveyNotValidException;
 import com.camel.survey.mapper.ZsQuestionMapper;
@@ -136,19 +140,26 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result saveAnswer(ZsAnswerSave zsAnswerSave) {
+        ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.surveyId);
         // 坐席更新提交时间
-        if (StringUtils.isEmpty(zsAnswerSave.seat)) {
+        if (ObjectUtil.notEqual(zsSurvey.getCollectType(), ZsSurveyCollectType.INTERVIEW) && StringUtils.isEmpty(zsAnswerSave.seat)) {
             throw new SurveyNotValidException("无效的坐席");
         }
         ZsSeat seat = zsSeatMapper.searchBySeatNum(zsAnswerSave.seat);
-        if (ObjectUtils.isEmpty(seat)) {
+        if (ObjectUtil.notEqual(zsSurvey.getCollectType(), ZsSurveyCollectType.INTERVIEW) && ObjectUtils.isEmpty(seat)) {
             throw new SurveyNotValidException("无效的坐席");
         }
-        seat.setLastSubmit(new Date());
-        zsSeatMapper.updateById(seat);
+        if(ObjectUtil.notEqual(zsSurvey.getCollectType(), ZsSurveyCollectType.INTERVIEW)) {
+            // 非走访
+            seat.setLastSubmit(new Date());
+            zsSeatMapper.updateById(seat);
+        } else {
+            // 走访
+            zsAnswerSave.setPhone(RandomUtil.randomNumbers(11));
+        }
         // 验证配额以及样本数量是否已经满额
         surveyService.valid(zsAnswerSave);
-        ZsSurvey zsSurvey = surveyService.selectById(zsAnswerSave.getSurveyId());
+
         if (isAnswered(zsAnswerSave)) {
             return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "(重复样本)本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
         }
@@ -222,7 +233,7 @@ public class ZsQuestionServiceImpl extends ServiceImpl<ZsQuestionMapper, ZsQuest
             zsSurvey.setEndShow("对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！");
         }
         if (answerItemService.insertBatch(zsAnswerItemList)) {
-            return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow());
+            return ResultUtil.success(StringUtils.isEmpty(zsSurvey.getEndShow()) ? "本次访问结束，感谢您的理解和支持，再见" : zsSurvey.getEndShow(), zsAnswer);
         } else {
             return ResultUtil.error(ResultEnum.SERVICE_ERROR);
         }
