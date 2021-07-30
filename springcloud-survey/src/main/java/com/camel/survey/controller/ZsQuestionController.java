@@ -107,6 +107,16 @@ public class ZsQuestionController extends BaseCommonController {
     }
 
     /**
+     * 保存答卷APP
+     * @param zsAnswerSave
+     * @param request
+     */
+    @PostMapping("/answerApp")
+    public Result answerApp(@RequestBody ZsAnswerSave zsAnswerSave, HttpServletRequest request) {
+        return service.saveAnswer(zsAnswerSave);
+    }
+
+    /**
      * 修改问题题目
      * @param entity
      */

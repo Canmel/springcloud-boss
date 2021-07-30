@@ -144,6 +144,7 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
      * @param file 文件
      * @return
      */
+    @Override
     public JSONObject upload(MultipartFile file) {
         Auth auth = getQiniuAuthentication();
         JSONObject jsonObject = null;

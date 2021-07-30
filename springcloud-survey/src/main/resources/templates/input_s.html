@@ -5,7 +5,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>正在加载...</title>
+    <title>Minimal Form Interface</title>
     <meta name="description" content="Minimal Form Interface: Simplistic, single input view form"/>
     <meta name="keywords" content="form, minimal, interface, single input, big form, responsive form, transition"/>
     <meta name="author" content="Codrops"/>
@@ -20,31 +20,11 @@
     <script src="/survey/js/ajax-util.js"></script>
     <script src="/survey/js/vue.js"></script>
     <script src="js/bootstrap.min.js?v=3.3.6"></script>
-    <script type="text/javascript">
-        var userAgent = navigator.userAgent;
-        if (userAgent.indexOf('AlipayClient') > -1) {
-            // 支付宝小程序的 JS-SDK 防止 404 需要动态加载，如果不需要兼容支付宝小程序，则无需引用此 JS 文件。
-            document.writeln('<script src="https://appx/web-view.min.js"' + '>' + '<' + '/' + 'script>');
-        } else if (/QQ/i.test(userAgent) && /miniProgram/i.test(userAgent)) {
-            // QQ 小程序
-            document.write('<script type="text/javascript" src="https://qqq.gtimg.cn/miniprogram/webview_jssdk/qqjssdk-1.0.0.js"><\/script>');
-        } else if (/miniProgram/i.test(userAgent)) {
-            // 微信小程序 JS-SDK 如果不需要兼容微信小程序，则无需引用此 JS 文件。
-            document.write('<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"><\/script>');
-        } else if (/toutiaomicroapp/i.test(userAgent)) {
-            // 字节跳动小程序 JS-SDK 如果不需要兼容字节跳动小程序，则无需引用此 JS 文件。
-            document.write('<script type="text/javascript" src="https://s3.pstatp.com/toutiao/tmajssdk/jssdk-1.0.1.js"><\/script>');
-        } else if (/swan/i.test(userAgent)) {
-            // 百度小程序 JS-SDK 如果不需要兼容百度小程序，则无需引用此 JS 文件。
-            document.write('<script type="text/javascript" src="https://b.bdstatic.com/searchbox/icms/searchbox/js/swan-2.0.18.js"><\/script>');
-        }
-    </script>
-    <!-- uni 的 SDK -->
-    <script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
     <style type="text/css">
         [v-cloak]{
             display: none;
         }
+
         .star-box {
             display: inline-block;
         }
@@ -82,10 +62,11 @@
         <span style="color: green;">计时：</span>
         <span style="color: green;" id="time">00:00</span>
     </div>
-    <div class="panel padder-v item progress-v">
+    <div class="panel padder-v item"
+         style="position:fixed; top: 150px; width: 200px; text-align: center;background-color: sandybrown; border-radius: 0 40px 40px 0;">
         <div class="font-thin"><span
-                style="font-size: 30px; color: navy; font-family: 'Microsoft YaHei',微软雅黑,'MicrosoftJhengHei',华文细黑,STHeiti,MingLiu">{{userParamsIndex + 1}} </span>
-            <span style="font-size: 20px;">/{{pageParams.length ? pageParams.length : 1 }}</span></div>
+                style="font-size: 50px; color: navy; font-family: 'Microsoft YaHei',微软雅黑,'MicrosoftJhengHei',华文细黑,STHeiti,MingLiu">{{userParamsIndex + 1}} </span>
+            <span style="font-size: 30px;">/{{pageParams.length ? pageParams.length : 1 }}</span></div>
         <span class="text-muted text-xs">所有问卷进度</span>
     </div>
     <header class="codrops-header">
@@ -117,7 +98,7 @@
                             style="font-size: 12px;"
                             v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
-                    <div class="question-option myoptions" v-for="(opt, i) in item.options"
+                    <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio"
@@ -658,7 +639,7 @@
                 this.current = this.nextIndex;
                 // 判断是不是能显示
                 if(!this.questionIsShow(this.current)) {
-                   this.nextQuestion(this.questions[this.current], event, true);
+                    this.nextQuestion(this.questions[this.current], event, true);
                     if (this.questions.length <= this.nextIndex) {
                         this.showSubmit = true;
                     }
@@ -792,11 +773,6 @@
                         $("#end").show();
                         parent.surveyStatus = 1;
                         that.survey.endShow = resp.msg;
-                        uni.postMessage({
-                            data: {
-                                answerId: resp.data.id
-                            }
-                        });
                         // that.userParamsIndex++;
                         return false;
                     } else {
@@ -846,11 +822,6 @@
                         }
                         $("#end").show();
                         parent.surveyStatus = 1;
-                        uni.postMessage({
-                            data: {
-                                answerId: resp.data.id
-                            }
-                        });
                         return false;
                     } else {
                         $("#theForm")[0].reset();

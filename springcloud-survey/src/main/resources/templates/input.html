@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 
 <html lang="en" class="no-js">
-
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Minimal Form Interface</title>
+    <title>正在加载...</title>
     <meta name="description" content="Minimal Form Interface: Simplistic, single input view form"/>
     <meta name="keywords" content="form, minimal, interface, single input, big form, responsive form, transition"/>
     <meta name="author" content="Codrops"/>
@@ -21,7 +20,31 @@
     <script src="/survey/js/ajax-util.js"></script>
     <script src="/survey/js/vue.js"></script>
     <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script type="text/javascript">
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf('AlipayClient') > -1) {
+            // 支付宝小程序的 JS-SDK 防止 404 需要动态加载，如果不需要兼容支付宝小程序，则无需引用此 JS 文件。
+            document.writeln('<script src="https://appx/web-view.min.js"' + '>' + '<' + '/' + 'script>');
+        } else if (/QQ/i.test(userAgent) && /miniProgram/i.test(userAgent)) {
+            // QQ 小程序
+            document.write('<script type="text/javascript" src="https://qqq.gtimg.cn/miniprogram/webview_jssdk/qqjssdk-1.0.0.js"><\/script>');
+        } else if (/miniProgram/i.test(userAgent)) {
+            // 微信小程序 JS-SDK 如果不需要兼容微信小程序，则无需引用此 JS 文件。
+            document.write('<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"><\/script>');
+        } else if (/toutiaomicroapp/i.test(userAgent)) {
+            // 字节跳动小程序 JS-SDK 如果不需要兼容字节跳动小程序，则无需引用此 JS 文件。
+            document.write('<script type="text/javascript" src="https://s3.pstatp.com/toutiao/tmajssdk/jssdk-1.0.1.js"><\/script>');
+        } else if (/swan/i.test(userAgent)) {
+            // 百度小程序 JS-SDK 如果不需要兼容百度小程序，则无需引用此 JS 文件。
+            document.write('<script type="text/javascript" src="https://b.bdstatic.com/searchbox/icms/searchbox/js/swan-2.0.18.js"><\/script>');
+        }
+    </script>
+    <!-- uni 的 SDK -->
+    <script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
     <style type="text/css">
+        [v-cloak]{
+            display: none;
+        }
         .star-box {
             display: inline-block;
         }
@@ -50,76 +73,81 @@
             color: #dedede;
             opacity: 1;
         }
-
-        #lottery {
-            width: 100%;
-            margin: 0px auto;
-            border: 4px solid #ba1809;
-        }
-
-        #lottery table {
-            background-color: #da5e54;
-        }
-
-        #lottery table td {
-            position: relative;
-            width: 30%;
-            height: 100px;
-            border: 2px solid #ffe600;
-            text-align: center;
-            color: #333;
-            font-index: -999
-        }
-
-        #lottery table td img {
-            display: block;
-            width: 100%;
-        }
-
-        #lottery table td.active .mask {
-            display: block;
-        }
-
-        .mask {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background-color: rgba(252, 211, 4, 0.5);
-            display: none;
-        }
     </style>
 </head>
 <body>
-<div id="container">
+<div id="container" v-cloak>
     <!-- Top Navigation -->
+    <div style="position: fixed; top: 0; font-size: 25px; left:2px;">
+        <span style="color: green;">计时：</span>
+        <span style="color: green;" id="time">00:00</span>
+    </div>
+    <div class="panel padder-v item progress-v">
+        <div class="font-thin"><span
+                style="font-size: 30px; color: navy; font-family: 'Microsoft YaHei',微软雅黑,'MicrosoftJhengHei',华文细黑,STHeiti,MingLiu">{{userParamsIndex + 1}} </span>
+            <span style="font-size: 20px;">/{{pageParams.length ? pageParams.length : 1 }}</span></div>
+        <span class="text-muted text-xs">所有问卷进度</span>
+    </div>
     <header class="codrops-header">
         <h1>智慧调查<span>{{survey.name}}</span></h1>
+        <h3><span>{{textFilter(survey.informationTemplate)}}</span></h3>
     </header>
-
     <section>
+        <div style="position: fixed; width: 100%; bottom: 0px;">
+            <div class="progress progress-striped active">
+                <div :style="{width: getPercentage()}" :aria-valuemax="questions.length" aria-valuemin="0"
+                     :aria-valuenow="current" role="progressbar" class="progress-bar progress-bar-danger">
+                    <span class="sr-only" style="position: relative; font-size: 20px;">当前进度： {{current}} / {{questions.length}} </span>
+                </div>
+            </div>
+        </div>
+        <div class="row question-welcome" v-if="current === 1">
+            <div class="text-center">
+                <span>
+                    {{textFilter(survey.startShow)}}
+                </span>
+            </div>
+        </div>
         <form id="theForm" class="simform" autocomplete="off" style="font-size: 14px;">
             <div class="simform-inner">
                 <div class="question" v-for="(item, index) in questions" v-show="current === index + 1"
+                     :showCondition="item.showCondition"
                      :data-type="item.type">
-                    <h4 class=" question-title">{{item.orderNum}}. {{item.name}} <span style="font-size: 12px;"
-                                                                                       v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
+                    <h4 class=" question-title">{{item.orderNum}}. {{textFilter(item.name)}} <span
+                            style="font-size: 12px;"
+                            v-if="item.type === 2">{{item.maxSelect ? '最多' + item.maxSelect + '条':''}} {{item.minSelect ? '最少' + item.minSelect + '条':''}}</span>
                     </h4>
-                    <div class="question-option" v-for="(opt, i) in item.options"
+                    <div class="question-option myoptions" v-for="(opt, i) in item.options"
                          v-if="item.type === 1 && showOptions(item, opt)">
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input :disabled="disableOption(opt)" type="radio"
                                                                   :id="'radio_' + item.id + '_' + opt.id"
-                                                                  v-on:change="radioChange(opt)"
-                                                                  :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
+                                                                  v-on:change="radioChange(opt, $event, item.type)"
+                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus"
+                                                                  :dignoreNum="opt.ignoreNum"
                                                                   :name="'radio_' + item.id + '_' + item.id"
-                                                                  :value="opt.id + '_' +  opt.name">
+                                                                  :value="opt.id + '_' +  opt.name"
+                                                                  :content="opt.name">
                             <label :for="'radio_' + item.id + '_' + opt.id">
-                                <span>{{opt.name}}</span>
-                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
-                                       v-model="opt.name">
+                                <span>{{textFilter(opt.text)}}</span>
                             </label>
+                            <div style="display: inline-block; width: 300px;" v-if="opt.hasRemark">
+                                <input class="form-control" style="display: inherit; width: 100%;"
+                                       :placeholder="textFilter(opt.text)"
+                                       @input="areaChange($event, opt)" @focus="foucusAreaHandler($event, opt, item)"
+                                       @blur="markBlueHandler($event, opt, item)">
+                                <div v-show="sigleInputShow">
+                                    <div v-for="s in areaSelectors"
+                                         @mousedown="areaSelectHandler(s, opt)"
+                                         style="border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0,0,0,.075);font-size: 14px; padding: 5px; cursor: pointer;">
+                                        {{s.name}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
+                            <span class="badge" style="background-color: #f0ad4e"
+                                  v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
 
@@ -128,22 +156,41 @@
                         <div>
                             {{opt.orderNum}}. &nbsp; &nbsp;<input type="checkbox"
                                                                   :id="'checkbox_' + item.id + '_' + opt.id"
-                                                                  v-on:change="radioChange(opt)"
-                                                                  :dtarget="opt.target" :dignoreNum="opt.ignoreNum"
+                                                                  v-on:change="radioChange(opt, $event, item.type)"
+                                                                  :dtarget="opt.target" :dendshow="opt.endshowPlus"
+                                                                  :dignoreNum="opt.ignoreNum"
+                                                                  :dexclusivity="opt.exclusivity ? opt.exclusivity.code : 0"
                                                                   :name="'checkbox_' + item.id + '_' + opt.id"
-                                                                  :value="opt.id + '_' +  opt.name">
+                                                                  :value="opt.id + '_' +  opt.name"
+                                                                  :content="opt.name">
                             <label :for="'checkbox_' + item.id + '_' + opt.id">
-                                <span :value="opt.id + '_' +  opt.name">{{opt.name}}</span>
-                                <input class="form-control" v-if="opt.hasRemark" style="display: inherit; width: auto;"
-                                       v-model="opt.name">
+                                <span :value="opt.id + '_' +  opt.name">{{textFilter(opt.text)}}</span>
+
                             </label>
+                            <div style="display: inline-block; width: 300px;" v-if="opt.hasRemark">
+                                <input class="form-control" style="display: inherit; width: 100%;"
+                                       :placeholder="textFilter(opt.text)"
+                                       @input="areaChange($event, opt)" @focus="foucusAreaHandler($event, opt, item)"
+                                       @blur="markBlueHandler($event, opt, item)">
+                                <div v-show="multipleInputShow">
+                                    <div v-for="s in areaSelectors"
+                                         @click="areaSelectHandler(s, opt)"
+                                         style="border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0,0,0,.075);font-size: 14px; padding: 5px; cursor: pointer;">
+                                        {{s.name}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="badge label-success" v-if="opt.score">{{opt.score}} 分</span>
+                            <span class="badge" style="background-color: #f0ad4e"
+                                  v-if="opt.target > 1000 || opt.target < 0">立即结束</span>
                         </div>
                     </div>
 
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 3 && showOptions(item, opt)">
                         <div>
-                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
+                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{textFilter(opt.name)}}</span>
                             <span class="star-box">
                             <input type="radio" value="5"
                                    :name="'star_' + item.id + '_' + opt.id"
@@ -181,101 +228,54 @@
                     <div class="question-option" v-for="(opt, i) in item.options"
                          v-if="item.type === 4 && showOptions(item, opt)">
                         <div>
-                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{opt.name}}</span>
+                            {{opt.orderNum}}. &nbsp; &nbsp;<span>{{textFilter(opt.name)}}</span>
                             <input type="text" :name="'answer_' + item.id + '_' + opt.id" class="form-control"
                                    style="display: initial; width: auto;">
                         </div>
                     </div>
-                    <div class="row text-center" v-if="!showSubmit" id="nextQuestion">
-                        <span class="btn btn-primary"
-                              style="padding: 10px; cursor: pointer; width: 92%; font-size: 16px;"
+                    <div class="row text-center" style="margin-top: 10%;">
+                        <span class="glyphicon glyphicon-arrow-left" style="font-size: 30px; cursor: pointer;"
+                              v-if="current!=1"
+                              v-on:click="previousQuestion(item, $event)">上一题</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span id="nextQuestion" v-if="!showSubmit" class="glyphicon glyphicon-arrow-right"
+                              style="font-size: 30px; cursor: pointer;"
                               v-on:click="nextQuestion(item, $event)">下一题</span>
+                        <span v-if="showSubmit" class="submit btn"
+                              :class="{'btn-warning': isLastParams(), 'btn-danger': !isLastParams()}"
+                              v-on:click="submit(item, $event)">{{submitText()}}</span>
                     </div>
-                    <div class="row text-center" v-if="showSubmit">
-                        <span class="btn btn-primary"
-                              style="padding: 10px; cursor: pointer; width: 92%; font-size: 16px;"
-                              v-on:click="submit()">提交</span>
-                    </div>
+
                 </div>
             </div><!-- /simform-inner -->
         </form><!-- /simform -->
-        <div id="phoneContent" class="simform" autocomplete="off" style="font-size: 14px; display: none;">
-            <div class="simform-inner">
-                <div class="question">
-                    <h4 class="question-title end-show">提交问卷成功，请留下手机号，后续我们会将奖励以话费的形式发放到您的手机号上！</h4>
-                </div>
-                <div class="question-option row" style="border: none">
-                    <div style="width: 30%; display: inline-block; text-align: right;"><label>您的手机号：</label></div>
-                    <div style="width: 65%; display: inline-block; text-align: right;">
-                        <input class="form-control" id="phone" v-model="phone">
-                    </div>
-                </div>
-                <div class="row text-center" v-if="showSubmit">
-                    <span class="btn btn-primary"
-                          style="padding: 10px; cursor: pointer; width: 92%; font-size: 16px;"
-                          v-on:click="submitPhone()">提交</span>
-                </div>
-            </div>
-        </div>
-
         <div id="end" class="simform" autocomplete="off" style="font-size: 14px; display: none;">
             <div class="simform-inner">
                 <div class="question">
-                    <h4 class="question-title" style="font-size: 30px;">{{survey.endShow}}</h4>
+                    <h4 class="question-title" style="font-size: 30px;">{{endshowText}}</h4>
                 </div>
-            </div>
-            <div id="lottery">
-                <table border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td class="lottery-unit lottery-unit-0">
-                            <span>100元话费</span>
-                            <div class="mask"></div>
-                        </td>
-                        <td class="lottery-unit lottery-unit-1"><span>10元话费</span>
-                            <div class="mask"></div>
-                        </td>
-                        <td class="lottery-unit lottery-unit-2"><span>感谢参与</span>
-                            <div class="mask"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lottery-unit lottery-unit-7"><span>10元话费</span>
-                            <div class="mask"></div>
-                        </td>
-                        <td class="lottery-unit xxx" v-on:click="cjclick($event)"><img src="img/cj/lottery1.jpg"></td>
-                        <td class="lottery-unit lottery-unit-3"><span>3元微信红包</span>
-                            <div class="mask"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lottery-unit lottery-unit-6"><span>谢谢惠顾</span>
-                            <div class="mask"></div>
-                        </td>
-                        <td class="lottery-unit lottery-unit-5"><span>2元话费</span>
-                            <div class="mask"></div>
-                        </td>
-                        <td class="lottery-unit lottery-unit-4"><span>祝君好运</span>
-                            <div class="mask"></div>
-                        </td>
-                    </tr>
-                </table>
+                <div class="text-center" style="margin-top: 30%;">
+                    <button class="btn-success btn" style="width: 50%;" @click="closeAndSend()"> 返回并提交 </button>
+                </div>
             </div>
         </div>
     </section>
-    <div class="progress" style="position: absolute; width: 100%; height: 5px; bottom: 0px; margin: 0px;">
-        <div class="progress-bar" :style="'width:' + progress + '%'"></div>
-    </div>
 </div>
 </body>
+
+<script src="/survey/js/plugins/beautifyhtml/beautifyhtml.js"></script>
+<script src="/survey/js/validateIsMain.js"></script>
 <script>
-    new Vue({
+    mvm = new Vue({
         el: '#container',
         data: {
             applicationContextRootPath: '/survey/',
-            pageInfo: {},
+            pageInfo: {
+                hrefstr: ''
+            },
             survey: {
                 name: '',
-                endShow: '问卷结束，感谢您的配合！'
+                endShow: '问卷结束，感谢您的配合！',
+                informationTemplate: '',
             },
             paramsPair: [],
             questions: [],
@@ -285,192 +285,264 @@
             phone: '',
             current: 1,
             nextIndex: 1,
-            tmpNext: null,
+            index: [], //按顺序存储answersave的问题id
+            order: [], //按顺序存储answersave的问题orderNum
+            tmpNext: [],
+            tmpNextRadio: null,
             showSubmit: false,
             endInfo: '问卷结束，感谢您的配合！',
-            place: 0, //请求后指定停留在某个位置
-            click: false, //默认值为false可抽奖，防止重复点击
-            index: -1, //当前转动到哪个位置，起点位置
-            count: 0, //总共有多少个位置
-            timer: 0, //setTimeout的ID，用clearTimeout清除
-            speed: 20, //初始转动速度
-            times: 0, //转动次数
-            cycle: 50, //转动基本次数：即至少需要转动多少次再进入抽奖环节
-            prize: -1, //中奖位置
+            unclear: 0,
+            tmpNextAll: [],
+            phoneInformation: {
+                mobile: '',
+                surveyId: '',
+                information: [],
+            },
+            pageParams: [],
+            finalData: [], //存储最终zsAnswerItemSaves
+            userParamsIndex: 0,
+            label: null, // 标签,不同标签可以重复收集
+            validResult: true,
+            areaSelectors: [],
+            currentRemark: '',
+            multipleInputShow: false,
+            sigleInputShow: false,
+            zsAnswer: {},
         },
         created: function () {
             this.loadParams();
             this.loadSurvey();
+            this.initPageParams();
         },
-        watch: {},
         computed: {
-            progress: function () {
-                console.log(312)
-                if (this.questions.length > 0) {
-                    return Math.round((this.current - 1) / this.questions.length * 100);
-                } else {
-                    return 1;
-                }
+            endshowText() {
+                let end = this.survey.endShow;
+                return this.textFilter(end);
             }
         },
         methods: {
-            cjclick(event) {
-                console.log(event)
-                event.preventDefault();
-                this.init('lottery');
-                if (this.click) { //click控制一次抽奖过程中不能重复点击抽奖按钮，后面的点击不响应
-                    return false;
-                } else {
-                    this.getLottery();
-                    return false;
+            areaSelectHandler(s, opt) {
+                this.currentRemark = s.name;
+            },
+            foucusAreaHandler(e, o, q) {
+                if (o.otype == 1) {
+                    if (q.type == 2) {
+                        $($(e.target).next().get(0)).show()
+                    }
+                    if (q.type == 1) {
+                        $($(e.target).next().get(0)).show()
+                    }
                 }
             },
-            init: function(id) {
-                if ($("#" + id).find(".lottery-unit").length > 0) {
-                    $lottery = $("#" + id);
-                    $units = $lottery.find(".lottery-unit");
-                    this.obj = $lottery;
-                    this.count = $units.length;
-                    $lottery.find(".lottery-unit-" + this.index).addClass("active");
-                };
-            },
-            roll: function() {
-                var index = this.index,
-                    count = this.count,
-                    lottery = this.obj;
-                $(lottery).find(".lottery-unit-" + index).removeClass("active");
-                index += 1;
-                if (index > count - 1) {
-                    index = 0;
-                };
-                $(lottery).find(".lottery-unit-" + index).addClass("active");
-                this.index = index;
-                return false;
-            },
-            stop: function() {
-                this.times += 1;
-                this.roll(); //转动过程调用的是lottery的roll方法，这里是第一次调用初始化
-                if (this.times > this.cycle + 10 && this.prize == this.index) {
-                    clearTimeout(this.timer);
-                    this.prize = -1;
-                    this.times = 0;
-                    this.click = false;
-                    //可以在这个位置写上中奖弹框，这个是转盘停止时触发事件
-                    console.log('您抽中了第' + this.place + '个奖品');
-                } else {
-                    if (this.times < this.cycle) {
-                        this.speed -= 10;
-                    } else if (this.times == this.cycle) {
-                        // this.place = 3; //案例中奖物品通过一个随机数生成
-                        this.prize = this.place;
-                        // this.prize = this.place;  //这个可以通过ajax请求回来的数据赋值给this.place
+            areaChange(e, o) {
+                let that = this;
+                console.log(e);
+                if (o.otype == 1) {
+                    if (e.target.value) {
+                        AJAX.GET("areaAddress/match", {areaId: o.dataId, text: e.target.value}, function (resp) {
+                            that.areaSelectors = resp.data;
+                        })
                     } else {
-                        if (this.times > this.cycle + 10 && ((this.prize == 0 && this.index == 7) || this.prize == this.index + 1)) {
-                            this.speed += 110;
-                        } else {
-                            this.speed += 20;
+                        this.areaSelectors = [];
+                    }
+                }
+
+            },
+            markBlueHandler(event, opt, q) {
+                setTimeout(() => {
+                    //执行离开焦点操作
+                    if (q.type == 2) {
+                        $($(event.target).next().get(0)).hide();
+                    }
+                    if (q.type == 1) {
+                        $($(event.target).next().get(0)).hide()
+                    }
+                    if (this.currentRemark) {
+                        // $("#areaSelectors").hide();
+                        event.target.value = this.currentRemark;
+                        opt.name = this.currentRemark;
+                        return this.currentRemark = '';
+
+                    }
+                    opt.name = event.target.value;
+
+                }, 0);
+            },
+            getPercentage() {
+                if (this.pageParams) {
+                    let p = this.current / this.questions.length;
+                    if (p) {
+                        let percent = Number(p * 100).toFixed(1) + "%";
+                        return percent;
+                    } else {
+                        return "0%";
+                    }
+
+                } else {
+                    return null;
+                }
+            },
+            // 逻辑出提交按钮的文字,入提交,提交并继续
+            submitText() {
+                if (this.isLastParams()) {
+                    return '保存问卷结束';
+                }
+                return '保存问卷继续';
+            },
+            isLastParams() {
+                if (this.pageParams.length) {
+                    return this.pageParams.length === this.userParamsIndex + 1;
+                } else {
+                    return true;
+                }
+
+            },
+            //将最新问题答案写入最终zsAnswerItemSaves
+            loadFinalData() {
+                this.index.push(this.questions[this.current - 1].id);
+                this.order.push(this.current);
+                let array = $('#theForm').serializeArray();
+                for (let j = 0; j < array.length; j++) {
+                    if (array[j].name.split("_")[1] === ("" + this.questions[this.current - 1].id)) {
+                        this.finalData.push(array[j]);
+                    }
+                }
+            },
+            initPageParams() {
+                if (!this.survey.informationTemplate) {
+                    return false;
+                }
+                let that = this;
+                this.phoneInformation.mobile = this.getParams('phone');
+                this.phoneInformation.surveyId = this.survey.id;
+                AJAX.GET('zsPhoneInformation/selectByMobileAndSurvey', this.phoneInformation, function (resp) {
+                    if (resp.data != null) {
+                        let infos = resp.data;
+                        if (infos) {
+                            for (let i = 0; i < infos.length; i++) {
+                                that.phoneInformation.information.push(infos[i].information);
+                                let info = infos[i].information;
+                                info = info.replace(/[\r\n]/g, "")
+                                that.pageParams.push(JSON.parse(info));
+                            }
+                        }
+                    } else {
+                        alert("被访对象数据为空，请联系管理员");
+                    }
+                });
+            },
+            textFilter(text) {
+                if (text != null) {
+                    let that = this;
+                    let filterParams = that.pageParams[this.userParamsIndex];
+                    if (!filterParams) {
+                        return text;
+                    }
+                    for (let i = 0; i < Object.keys(filterParams).length; i++) {
+                        let str = "{" + Object.keys(filterParams)[i] + "}";
+                        if (text.includes(str)) {
+                            text = text.replace(new RegExp(str, 'g'), Object.values(filterParams)[i]);
                         }
                     }
-                    if (this.speed < 40) {
-                        this.speed = 40;
-                    };
-                    this.timer = setTimeout(this.stop, this.speed); //循环调用
+                    if (text.includes("{") && text.includes("}")) {
+                        alert("被访对象数据不正确，请联系管理员");
+                    }
                 }
-                return false;
-            },
-            getLottery: function() {
-                this.place = 4
-                //ajax请求中奖接口，本案例注释便于案例正常展示效果，实际中可参考注释的代码
-                // $.ajax({
-                //     url: '/activity/this',//中奖接口
-                //     type: 'POST',
-                //     dataType: 'json',
-                //     data: {
-                //         'activityCategory': 'POINT_SHOP'//提交字段
-                //     }
-                // })
-                // .done(function(data) {
-                //     if (data.returnCode == 0) {//登录后的操作
-
-                //         switch (data.prize) {//请求返回的抽中奖品字段
-                //             case 'POINT_SHOP_INTEREST_COUPON_2': //0.2加息券
-                //                 this.place = 7;//当前奖品所在九宫格位置
-                //                 break;
-                //             case 'POINT_SHOP_RED_ENVELOPE_10': //10元投资红包
-                //                 this.place = 0;//当前奖品所在九宫格位置
-                //                 break;
-                //             case 'POINT_SHOP_POINT_500': //500积分
-                //                 this.place = 1;//当前奖品所在九宫格位置
-                //                 break;
-                //             case 'POINT_SHOP_PHONE_CHARGE_10': //10元话费
-                //                 this.place = 5;//当前奖品所在九宫格位置
-                //                 break;
-                //             case 'OINT_SHOP_JD_100': //100元京东卡
-                //                 this.place = 2;//当前奖品所在九宫格位置
-                //                 break;
-                //             case 'POINT_SHOP_POINT_3000': //3000积分
-                //                 this.place = 6;//当前奖品所在九宫格位置
-                //                 break;
-                //             case 'POINT_SHOP_INTEREST_COUPON_5': //0.5加息券
-                //                 this.place = 4;//当前奖品所在九宫格位置
-                //                 break;
-                //             case 'POINT_SHOP_RED_ENVELOPE_50': //50元投资红包
-                //                 this.place = 3;//当前奖品所在九宫格位置
-                //                 break;
-                //         }
-                this.speed = 100;
-                this.stop(); //转圈过程不响应click事件，会将click置为false
-                this.click = true; //一次抽奖完成后，设置click为true，可继续抽奖
-                //     } else if (data.returnCode == 1) {//没有抽奖机会
-                //         alert('没有抽奖机会');
-                //     } else if (data.returnCode == 2) {//未登录
-                //         location.href='/login';
-                //     } else if (data.returnCode == 3) {//不在活动时间范围内！
-                //         alert('不在活动时间内');
-                //     } else if (data.returnCode == 4) {//实名认证
-                //         alert('未实名认证');
-                //     }
-                // })
-                // .fail(function() {
-                //     alert('请求失败，请重试！');
-                // });
-            },
-            submitPhone() {
-                if (!(/^1[3456789]\d{9}$/.test(this.phone))) {
-                    alert("手机号码有误，请重填");
-                    return false;
-                }
-                this.submit();
+                return text;
             },
             validSurvey() {
                 var that = this;
                 var $inputs = $('.simform-inner').find('.question :visible').find('input');
-                console.log($inputs);
                 $inputs.each(function (index, item) {
                     var target = $(item).attr('dtarget');
-                    var ckecked = $(item).is(':checked')
+                    var checked = $(item).is(':checked');
+                    var content = $(item).attr('content');
+                    var endshowPlus = $(item).attr('dendshow');
+                    // 选中说不清数量到达限额
+                    if (checked && content.search("说不清") != -1) {
+                        that.unclear = that.unclear + 1;
+                        if (that.unclear >= that.survey.unclearCount) {
+                            if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                                $("#theForm").hide();
+                                that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                                // that.userParamsIndex++;
+                                $("#end").show();
+                            } else {
+                                $("#theForm")[0].reset();
+                                that.current = 1;
+                                that.nextIndex = 1;
+                                that.showSubmit = false;
+                                that.userParamsIndex++;
+                                that.validResult = false;
+                                that.finalData = [];
+                            }
+                        }
+
+
+                    }
                     // 选中的项目 target为数字并且小于0
-                    if (ckecked && !isNaN(target) && target < 0) {
-                        $("#theForm").hide();
-                        that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
-                        $("#end").show();
+                    if (checked && !isNaN(target) && target < 0) {
+                        if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                            $("#theForm").hide();
+                            that.survey.endShow = "对不起，打扰您了，感谢您的支持，祝您生活愉快，再见！";
+                            console.log(endshowPlus)
+                            if (endshowPlus) {
+                                that.survey.endShow = endshowPlus;
+                            }
+                            // that.userParamsIndex++;
+                            $("#end").show();
+                        } else {
+                            $("#theForm")[0].reset();
+                            that.current = 1;
+                            that.nextIndex = 1;
+                            that.showSubmit = false;
+                            that.userParamsIndex++;
+                            that.validResult = false;
+                            that.finalData = [];
+                        }
+
                     }
 
-                    if (ckecked && !isNaN(target) && target > 1000) {
-                        that.submit();
+                    if (checked && !isNaN(target) && target > 1000) {
+                        console.log(endshowPlus)
+                        that.submitImmediately(null, null, endshowPlus);
+                        if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        } else {
+                            $("#theForm")[0].reset();
+                            that.current = 1;
+                            that.nextIndex = 1;
+                            that.showSubmit = false;
+                            that.userParamsIndex++;
+                            that.validResult = false;
+                        }
                     }
-
                 });
+                if (!this.finalData.length > 0) {
+                    return;
+                }
                 AJAX.POST_JSON('zsSurvey/valid', {
-                    zsAnswerItemSaves: $('#theForm').serializeArray(),
+                    zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),
-                    phone: this.phone,
-                    seat: this.phone
+                    phone: this.getParams('phone'),
+                    record: this.getParams('record'),
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID')
                 }, function (resp) {
                     if (resp.msg != '') {
-                        alert(resp.msg);
-                        // window.close();
-                        $("#nextQuestion").hide();
+                        if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                            alert(resp.msg);
+                            // window.close();
+                            $("#nextQuestion").hide();
+                        } else {
+                            $("#theForm")[0].reset();
+                            that.current = 1;
+                            that.nextIndex = 1;
+                            that.showSubmit = false;
+                            that.userParamsIndex++;
+                            that.validResult = false;
+                            that.finalData = [];
+                        }
+
                     }
                     return true;
                 });
@@ -514,24 +586,52 @@
             },
             disableOption(opt) {
                 if (opt.configration && opt.current) {
-                    console.log(opt.configration, opt.current)
                     return opt.configration <= opt.current;
                 }
                 return false;
 
             },
-            radioChange(opt) {
+            radioChange(opt, event, type) {
+                // 判断类型
+                if (type === 2) {
+                    return this.checkboxChanged(opt, event);
+                }
                 if (opt.target > 0) {
-                    this.tmpNext = opt.target;
+                    this.tmpNextRadio = opt.target;
                 } else {
-                    this.tmpNext = null;
+                    this.tmpNextRadio = null;
                 }
             },
-            nextQuestion(question, event) {
-                if (!this.isInputed(question, event)) {
+            checkboxChanged(opt, event) {
+                if (opt.exclusivity && opt.exclusivity.code == 1) {
+                    if (event.target.checked) {
+                        this.tmpNext = [];
+                        $(event.target).parents('.question').find('input').not(event.target).attr('checked', false);
+                    }
+                } else {
+                    $(event.target).parents('.question').find("[dexclusivity=1]").attr('checked', false);
+                }
+                if (opt.target > 0) {
+                    if (event.target.checked) {
+                        this.tmpNextAll.push(opt.target);
+                    } else {
+                        this.tmpNextAll.splice(this.tmpNextAll.indexOf(opt.target), 1);
+                    }
+                    this.tmpNext = Array.from(new Set(this.tmpNextAll));
+                    this.tmpNext.sort(function (a1, a2) {
+                        return a1 - a2;
+                    })
+                }
+
+
+            },
+            nextQuestion(question, event, notValid) {
+                // 未选择
+                if (!notValid && !this.isInputed(question, event)) {
                     return alert('请选择');
                 }
-                if (question.type === 2 && this.isOutOfBounds(question, event)) {
+                // 选项数量
+                if (!notValid && question.type === 2 && this.isOutOfBounds(question, event)) {
                     var resultStr = "";
                     if (question.maxSelect) {
                         resultStr += '最多只能选择' + question.maxSelect + '条';
@@ -542,22 +642,90 @@
                     alert(resultStr);
                     return;
                 }
+                this.loadFinalData();
                 this.validSurvey();
-
+                if (!this.validResult) {
+                    this.validResult = true;
+                    return;
+                }
                 if (this.current === this.nextIndex) {
                     this.nextIndex += 1
-                }
-                if (this.questions.length <= this.nextIndex) {
-                    this.showSubmit = true;
                 }
                 if (this.questions.length < this.nextIndex) {
                     return;
                 }
-                if (this.tmpNext > this.nextIndex) {
-                    this.nextIndex = this.tmpNext;
+                let nextQIndex = this.getNextIndex(question);
+                if (nextQIndex > 0) {
+                    this.nextIndex = nextQIndex;
                 }
                 this.current = this.nextIndex;
+                // 判断是不是能显示
+                if(!this.questionIsShow(this.current)) {
+                    this.nextQuestion(this.questions[this.current], event, true);
+                    if (this.questions.length <= this.nextIndex) {
+                        this.showSubmit = true;
+                    }
+                    return ;
+                }
+
+                if (this.questions.length <= this.nextIndex) {
+                    this.showSubmit = true;
+                }
                 this.nextIndex += 1;
+            },
+            //删除前一题的作答
+            deletePreviousQuestion() {
+                let that = this;
+                let length = this.finalData.length;
+                for (let j = length - 1; j >= 0; j--) {
+                    if (this.finalData[j].name.split("_")[1] === ("" + this.index[this.index.length - 1])) {
+                        if (this.finalData[j].value.split("_")[1].search("说不清") != -1) {
+                            that.unclear -= 1;
+                        }
+                        this.finalData.pop(this.finalData[j]);
+                    }
+                }
+            },
+            previousQuestion(question, event) {
+                this.deletePreviousQuestion();
+                this.index.pop();
+                let end = this.order.pop();
+                this.nextIndex = end;
+                this.current = this.nextIndex;
+                this.nextIndex += 1;
+                this.showSubmit = false;
+                $("input").attr('checked', false);
+                $("input").val(null);
+            },
+            getNextIndex(question) {
+                let nextIndex = 0;
+                if (question.type === 1 && this.tmpNextRadio) {
+                    nextIndex = this.tmpNextRadio;
+                    this.tmpNextRadio = null;
+                } else {
+                    if (this.tmpNext.length > 0) {
+                        nextIndex = this.tmpNext[0];
+                        this.tmpNext.splice(0, 1);
+                    }
+                }
+                return nextIndex;
+            },
+            // 判断是否显示 如果必须的话
+            questionIsShow(qIndex) {
+                let q = this.questions[qIndex - 1];
+                if(q && q.showCondition) {
+                    console.log(q.showCondition)
+                    for (let i = 0; i < this.finalData.length; i++) {
+                        let data = this.finalData[i];
+                        if(data['value'] && data['value'].split("_")[0]) {
+                            if(q.showCondition.indexOf(data['value'].split("_")[0]) > -1) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                return true;
             },
             isOutOfBounds(question, event) {
                 var $inputs = $(event.srcElement).parents('.question').find('input:checked');
@@ -567,10 +735,8 @@
                     return false;
                 }
                 return $inputs.length < question.minSelect || $inputs.length > question.maxSelect;
-
             },
             isInputed(question, event) {
-                console.log($inputs);
                 if (question.type === 1) {
                     var $inputs = $(event.srcElement).parents('.question').find('input:checked');
                     return $inputs.length !== 0;
@@ -595,43 +761,101 @@
                 }
 
             },
-            closeWin() {
-                window.opener = null;
-                window.top.open('', '_self', '');
-                window.close(this);
+            submit(question, event) {
+                let that = this;
+                if (!this.validateForm()) {
+                    alert('请完成表单');
+                    return false;
+                }
+                if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
+                    let resultStr = "";
+                    if (question.maxSelect) {
+                        resultStr += '最多只能选择' + question.maxSelect + '条';
+                    }
+                    if (question.minSelect) {
+                        resultStr += '最少选择' + question.minSelect + '条';
+                    }
+                    alert(resultStr);
+                    return;
+                }
+                this.loadFinalData();
+                let currentParams = this.pageParams[this.userParamsIndex];
+                AJAX.POST_JSON('zsQuestion/answerApp?access_token=' + this.getParams('token'), {
+                    zsAnswerItemSaves: this.finalData,
+                    surveyId: this.getParams('surveyId'),
+                    phone: this.getParams('phone'),
+                    record: this.getParams('record'),
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID'),
+                    label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null,
+                    access_token: this.getParams('token')
+                }, function (resp) {
+                    if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        $("#theForm").hide();
+                        $("#end").show();
+                        parent.surveyStatus = 1;
+                        that.survey.endShow = resp.msg;
+                        that.zsAnswer = resp.data;
+                        // that.userParamsIndex++;
+                        return false;
+                    } else {
+                        $("#theForm")[0].reset();
+                        that.current = 1;
+                        that.nextIndex = 1;
+                        that.showSubmit = false;
+                        that.userParamsIndex++;
+                        that.finalData = [];
+                    }
+                });
             },
-            submit() {
+            submitImmediately(question, event, endshowPlus) {
+                console.log(endshowPlus)
                 var that = this;
                 if (!this.validateForm()) {
                     alert('请完成表单');
                     return false;
                 }
-                this.current++;
-                if (this.survey.collectPhone === 1 && this.phone === '') {
-                    $("#theForm").hide();
-                    $("#phoneContent").show();
-                    return false;
+                if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
+                    var resultStr = "";
+                    if (question.maxSelect) {
+                        resultStr += '最多只能选择' + question.maxSelect + '条';
+                    }
+                    if (question.minSelect) {
+                        resultStr += '最少选择' + question.minSelect + '条';
+                    }
+                    alert(resultStr);
+                    return;
                 }
-                AJAX.POST_JSON('zsQuestion/answer', {
-                    zsAnswerItemSaves: $('#theForm').serializeArray(),
+                let currentParams = this.pageParams[this.userParamsIndex];
+                AJAX.POST_JSON('zsQuestion/answerApp?access_token=' + this.getParams('token'), {
+                    zsAnswerItemSaves: this.finalData,
                     surveyId: this.getParams('surveyId'),
-                    phone: this.phone,
-                    seat: this.phone
+                    phone: this.getParams('phone'),
+                    record: this.getParams('record'),
+                    seat: this.getParams('seat'),
+                    agentUUID: this.getParams('agentUUID'),
+                    label: currentParams ? currentParams['type'] ? currentParams['type'] : null : null,
+                    access_token: this.getParams('token')
                 }, function (resp) {
-                    // alert(resp.msg);
-                    $("#phoneContent").hide();
-                    $("#theForm").hide();
-                    $("#end").show();
-                    that.survey.endShow = resp.msg;
-                    // window.close();
-                    return false;
+                    if (that.pageParams.length === 0 || that.pageParams.length === that.userParamsIndex + 1) {
+                        $("#theForm").hide();
+                        console.log(endshowPlus)
+                        that.survey.endShow = resp.msg;
+                        if (endshowPlus) {
+                            that.survey.endShow = endshowPlus;
+                        }
+                        that.zsAnswer = resp.data;
+                        $("#end").show();
+                        parent.surveyStatus = 1;
+                        return false;
+                    } else {
+                        $("#theForm")[0].reset();
+                        that.current = 1;
+                        that.nextIndex = 1;
+                        that.showSubmit = false;
+                        that.finalData = [];
+                    }
                 });
-
-            },
-            radioName(opt) {
-                if (opt.questionId) {
-                    return 'radio_' + opt.questionId;
-                }
             },
             showOptions(question, option) {
                 if (option.questionOrderNum) {
@@ -643,22 +867,23 @@
                 return false;
             },
             loadParams() {
-                var params = location.href.split("?")[1];
-                var paramsPair = params.split("&");
+                let params = location.href.split("?")[1];
+                this.pageInfo.hrefstr = params;
+                let paramsPair = params.split("&");
                 this.paramsPair = paramsPair;
             },
             getParams(paramName) {
-                var result = null;
+                let result = null;
                 this.paramsPair.forEach(function (value) {
                     if (value.includes(paramName)) {
-                        result = value.split("=")[1];
-                        return;
+                        result = value.split("=")[1]
+                        return
                     }
                 });
                 return result;
             },
             loadSurvey() {
-                var that = this;
+                let that = this;
                 AJAX.GET('zsSurvey/questions/' + this.getParams('surveyId'), {}, function (resp) {
                     that.questions = resp.data;
                     if (that.questions.length === 1) {
@@ -673,8 +898,61 @@
                         $("#nextQuestion").hide();
                     }
                 });
+            },
+            closeAndSend() {
+                uni.postMessage({
+                    data: {
+                        answerId: this.zsAnswer.id
+                    }
+                });
             }
         }
     });
+</script>
+
+<script>
+
+    //我需要两个变量来分别存储秒数和分钟数
+    var second = 0;
+    var minute = 0;
+    //然后需要一个变量来存储我的定时器
+    var int;
+
+    function timer() {  //声明一个timer函数，在这个函数里实现我的功能。
+        second += 1;  //秒数加1
+        if (second > 59) {
+            second = 0;  //当秒数大于59的时候，让秒数重新归零。
+            minute += 1;  //分钟数加1
+        }
+        //然后将秒和分钟追加到dom里，为了保持00:00这样的格式，我们需要做一些简单的判断
+        if (minute < 10) {
+            document.getElementById('time').innerHTML = '0' + minute + ":0" + second;
+            if (second < 10) {
+                document.getElementById('time').innerHTML = '0' + minute + ":0" + second;
+            } else {
+                document.getElementById('time').innerHTML = '0' + minute + ":" + second;
+            }
+        } else {
+            document.getElementById('time').innerHTML = minute + ":0" + second;
+            if (second < 10) {
+                document.getElementById('time').innerHTML = minute + ":0" + second;
+            } else {
+                document.getElementById('time').innerHTML = minute + ":" + second;
+            }
+        }
+    }
+
+    //然后我创建一个定时器来执行timer函数，在js中，1000毫秒等于1秒。我可以让这个定时器每隔1000毫秒执行一次timer函数。我想要的效果是点击开始按钮的时候再执行这个定时器。
+    //我可以把这个定时器放在一个函数里，在我点击开始按钮的时候运行这个函数即可。
+    function start() {
+        //在每次点击开始按钮时，我们需要先清除一下定时器，然后再执行定时器，原因是如果不清除，每次点击开始按钮，定时器都会累加，会导致计时越来越快的bug
+        clearInterval(int);
+        int = setInterval(timer, 1000);
+    }
+
+    jQuery(document).ready(function () {
+        start();
+    });
+
 </script>
 </html>

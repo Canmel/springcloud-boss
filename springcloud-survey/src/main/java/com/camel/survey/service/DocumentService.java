@@ -1,5 +1,6 @@
 package com.camel.survey.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
 import com.camel.survey.model.Document;
@@ -72,5 +73,7 @@ public interface DocumentService extends IService<Document> {
      * @throws QiniuException
      */
     Integer delete(Integer id) throws QiniuException;
+
+    JSONObject upload(MultipartFile file);
 
 }
