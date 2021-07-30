@@ -1079,11 +1079,17 @@
                 if (!item.cdrinfo) {
                     return toastr.error('未获取到录音信息,请稍后尝试', '错误');
                 }
+                console.log(item.cdrinfo);
+                console.log("1212211221")
                 AJAX.GET('zsCdrinfo/' + item.cdrinfo.id, {}, function (resp) {
                     that.cdrinfo = resp.data;
                     if (that.cdrinfo && that.cdrinfo.recordFile) {
                         that.duration = that.cdrinfo.call_lasts_time - that.cdrinfo.agent_duration > 0 ? that.cdrinfo.call_lasts_time : that.cdrinfo.agent_duration;
-                        that.recordUrl = that.baseRecordUrl + that.cdrinfo.recordFile + '&showname=11';
+                        if(that.cdrinfo.call_type == '0') {
+                            that.recordUrl = "https://image.meedesidy.top/" + that.cdrinfo.recordFile;
+                        } else {
+                            that.recordUrl = that.baseRecordUrl + that.cdrinfo.recordFile + '&showname=11';
+                        }
                         that.initPlayer();
                     } else {
                         that.recordUrl = '';
