@@ -217,31 +217,32 @@ public class ExportServiceImpl implements ExportService {
         for (int i = 0; i < result.size(); i++) {
             int cellNum = 0;
             HSSFRow row = sheet.createRow(4 + i);
-            fillCell(row.createCell(cellNum++), style, sf.format(result.get(i).get("created_at")));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("creator"));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("work_num"));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("username"));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("start_time"));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("end_time"));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("call_lasts_time"));
-            fillCell(row.createCell(cellNum++), style, result.get(i).get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
-            fillCell(row.createCell(cellNum++), style, renderInvalidMsg(result.get(i)));
-            fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("reviewer_name"));
-            Date reviewAt = (Date) result.get(i).get("reviewer_at");
-            fillCell(row.createCell(cellNum++), style, ObjectUtils.isEmpty(result.get(i).get("reviewer_at")) ? "" : sf.format(new Date(reviewAt.getTime())));
+            Map<String, Object> stringObjectMap = result.get(i);
+            fillCell(row.createCell(cellNum++), style, sf.format(stringObjectMap.get("created_at")));
+            fillCell(row.createCell(cellNum++), style, (String) stringObjectMap.get("creator"));
+            fillCell(row.createCell(cellNum++), style, (String) stringObjectMap.get("work_num"));
+            fillCell(row.createCell(cellNum++), style, (String) stringObjectMap.get("username"));
+            fillCell(row.createCell(cellNum++), style, (String) stringObjectMap.get("start_time"));
+            fillCell(row.createCell(cellNum++), style, (String) stringObjectMap.get("end_time"));
+            fillCell(row.createCell(cellNum++), style, (String) stringObjectMap.get("call_lasts_time"));
+            fillCell(row.createCell(cellNum++), style, stringObjectMap.get("valid").equals(ZsYesOrNo.YES.getCode()) ? "正常" : "无效");
+            fillCell(row.createCell(cellNum++), style, renderInvalidMsg(stringObjectMap));
+            fillCell(row.createCell(cellNum++), style, (String) stringObjectMap.get("reviewer_name"));
+            Date reviewAt = (Date) stringObjectMap.get("reviewer_at");
+            fillCell(row.createCell(cellNum++), style, ObjectUtils.isEmpty(stringObjectMap.get("reviewer_at")) ? "" : sf.format(new Date(reviewAt.getTime())));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("review_msg"));
             fillCell(row.createCell(cellNum++), style, (String) result.get(i).get("label"));
-            String answers = (String) result.get(i).get("answers");
+            String answers = (String) stringObjectMap.get("answers");
             String[] answersArray = answers.split("@##@", -1);
 
-            String options = (String) result.get(i).get("optionIds");
+            String options = (String) stringObjectMap.get("optionIds");
             String[] optionsArray = options.split("@##@", -1);
             List<String> optionList = CollectionUtils.arrayToList(optionsArray);
 
             String ques = "";
             String queIds = "";
-            ques = (String) result.get(i).get("questions");
-            queIds = (String) result.get(i).get("questionIds");
+            ques = (String) stringObjectMap.get("questions");
+            queIds = (String) stringObjectMap.get("questionIds");
             String[] questions = ques.split("@##@", -1);
             String[] questionIds = queIds.split("@##@", -1);
             List<String> qs = CollectionUtils.arrayToList(questions);
