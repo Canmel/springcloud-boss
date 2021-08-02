@@ -10,7 +10,6 @@
         <result column="survey_id" property="surveyId"/>
         <result column="max_select" property="maxSelect"/>
         <result column="min_select" property="minSelect"/>
-        <result column="has_other_opt" property="hasOtherOpt" javaType="java.lang.Boolean"/>
         <result column="type" property="type"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
@@ -33,7 +32,6 @@
         <result column="survey_id" property="surveyId"/>
         <result column="max_select" property="maxSelect"/>
         <result column="min_select" property="minSelect"/>
-        <result column="has_other_opt" property="hasOtherOpt" javaType="java.lang.Boolean"/>
         <result column="type" property="type"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt"/>
@@ -49,7 +47,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, order_num, survey_id,has_other_opt, type, max_select, min_select, status, created_at, creator, compulsory, config_type, show_condition
+        id, name, order_num, survey_id, type, max_select, min_select, status, created_at, creator, compulsory, config_type, show_condition
     </sql>
 
     <select id="list" resultMap="BaseResultMap">
