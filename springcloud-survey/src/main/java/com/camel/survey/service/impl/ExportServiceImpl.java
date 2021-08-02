@@ -209,10 +209,6 @@ public class ExportServiceImpl implements ExportService {
                 for (int i = 0; i < que.getOptions().size(); i++) {
                     titleQList.add(que.getName() + "_" + que.getOptions().get(i).getName());
                     titleIdList.add(que.getId() + "_" + que.getOptions().get(i).getId());
-                    if (hasOtherOpt){
-                        titleQList.add(que.getName()+"其他选项");
-                        titleIdList.add(que.getId() + "_" + que.getOptions().get(i).getId());
-                    }
                 }
             } else {
                 titleQList.add(que.getName());
