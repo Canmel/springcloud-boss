@@ -289,6 +289,7 @@ public class ExportServiceImpl implements ExportService {
                             fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
                         }
                         qIndex = qIds.size();
+
                     } else {
                         // 多选， 并且问题和excel当前表头相同
                         if (titleQ.equals(qIds.get(qIndex))) {
