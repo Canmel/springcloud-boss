@@ -53,6 +53,24 @@
             color: #dedede;
             opacity: 1;
         }
+        #answerCard{
+            border: 5px solid #8AC007;
+            float:right;
+            height:50%;
+            overflow:auto;
+            position:fixed;
+            top: 150px;
+            right: 100px;
+            text-align: center;
+            border-radius: 25px;
+        }
+        .card_ul {
+            margin-top: 20px;
+            text-align: center;
+            list-style:none;
+            width: 150px;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -225,7 +243,14 @@
                               :class="{'btn-warning': isLastParams(), 'btn-danger': !isLastParams()}"
                               v-on:click="submit(item, $event)">{{submitText()}}</span>
                     </div>
-
+                    <div id="answerCard">
+                        <template v-for="(item,i) in answerArr">
+                            <div class="card_ul">
+                                <div><span>第{{i + 1}}题：</span><span>{{item}}</span></div>
+                            </div>
+                        </template>
+                    </div>
+                    <div style="clear: both"></div>
                 </div>
             </div><!-- /simform-inner -->
         </form><!-- /simform -->
@@ -264,6 +289,7 @@
             phone: '',
             current: 1,
             nextIndex: 1,
+            answerArr: undefined, //暂存答案数组，用来侧边显示
             index: [], //按顺序存储answersave的问题id
             order: [], //按顺序存储answersave的问题orderNum
             tmpNext: [],
@@ -342,7 +368,8 @@
                         return this.currentRemark = '';
 
                     }
-                    opt.name = event.target.value;
+                    // opt.name = event.target.value;
+                    opt.name = "&%%&"+event.target.value;
 
                 }, 0);
             },
@@ -380,11 +407,15 @@
                 this.index.push(this.questions[this.current - 1].id);
                 this.order.push(this.current);
                 let array = $('#theForm').serializeArray();
+                let answerValue = '';
                 for (let j = 0; j < array.length; j++) {
                     if (array[j].name.split("_")[1] === ("" + this.questions[this.current - 1].id)) {
                         this.finalData.push(array[j]);
+                        let arr = array[j].value.split('_');
+                        answerValue += arr[arr.length - 1] + ","
                     }
                 }
+                return answerValue;
             },
             initPageParams() {
                 if (!this.survey.informationTemplate) {
@@ -620,7 +651,9 @@
                     alert(resultStr);
                     return;
                 }
-                this.loadFinalData();
+                let anwserValue = this.loadFinalData();
+                // 将对应的orderNum位置的问题的答案记录
+                this.answerArr[question.orderNum-1] = anwserValue;
                 this.validSurvey();
                 if (!this.validResult) {
                     this.validResult = true;
@@ -649,6 +682,8 @@
                 if (this.questions.length <= this.nextIndex) {
                     this.showSubmit = true;
                 }
+                console.log("answerArr",this.answerArr)
+                console.log("finaldata",this.finalData)
                 this.nextIndex += 1;
             },
             //删除前一题的作答
@@ -745,6 +780,7 @@
                     alert('请完成表单');
                     return false;
                 }
+                console.log("form",this.finalData)
                 if (question && question.type === 2 && this.isOutOfBounds(question, event)) {
                     let resultStr = "";
                     if (question.maxSelect) {
@@ -861,6 +897,7 @@
                 let that = this;
                 AJAX.GET('zsSurvey/questions/' + this.getParams('surveyId'), {}, function (resp) {
                     that.questions = resp.data;
+                    that.answerArr = Array.from({length: that.questions.length}, () => '');
                     if (that.questions.length === 1) {
                         that.showSubmit = true;
                     }

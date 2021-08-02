@@ -87,6 +87,9 @@
                             <button type="button" v-on:click="seatModal(item)" class="btn btn-warning btn-xs" v-if="resultDev">
                                 分配坐席
                             </button>
+                            <button type="button" v-on:click="checkUser(item)" class="btn btn-default btn-xs" v-if="resultDev && item.hasAccount==0">
+                                开通学习平台账号
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -204,10 +207,6 @@
                     }
                 })
             },
-            seatModal: function(item) {
-                this.seat.uid=item.uid;
-                $("#seatModal").modal("show");
-            },
             saveSeat() {
                 let that=this;
                 AJAX.POST("zsSeat/manualAssign", this.seat, function (resp) {
@@ -270,6 +269,15 @@
                         toastr.success(resp.msg);
                         $("#signupForm")[0].reset()
                         $("#myModal").modal('hide');
+                    })
+            },
+            checkUser(item){
+                AJAX.GET('/system/sysUser/checkUser',
+                    {username:item.username,email:item.email,uid:item.uid}
+                    , function (resp) {
+                        if (resp.code == 200){
+                            toastr.success(resp.msg);
+                        }
                     })
             }
         }

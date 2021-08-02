@@ -100,6 +100,11 @@ public class ZsQuestion extends ZsSurveyBaseEntity implements Serializable {
      */
     private String showCondition;
 
+    /**
+     * 是否有其他选项
+     */
+    private Boolean hasOtherOpt;
+
     public ZsQuestion() {
     }
 
