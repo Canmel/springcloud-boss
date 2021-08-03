@@ -88,4 +88,9 @@ public class ZsAnswerItemServiceImpl extends ServiceImpl<ZsAnswerItemMapper, ZsA
     public Integer selectAnswerItemCount(Integer surveyId, Integer qId, Integer oId) {
         return mapper.selectAnswerItemCount(surveyId, qId, oId);
     }
+
+    @Override
+    public List<Map<String, Object>> selectHasRemark(Integer surveyId, Integer id) {
+        return mapper.selectHasRemark(surveyId, id);
+    }
 }

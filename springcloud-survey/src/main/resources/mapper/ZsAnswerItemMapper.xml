@@ -228,4 +228,19 @@
         WHERE
             ai.survey_id = #{surveyId} and ai.question_id = #{qId} and ai.option_id = #{oId} and a.valid = 1 and a.status = 1
     </select>
+
+    <select id="selectHasRemark" resultType="hashmap">
+        SELECT
+            ai.`option`, ai.value, a.label, a.creator
+        FROM
+            zs_answer_item ai
+        LEFT JOIN zs_option o ON o.id = ai.option_id
+        LEFT JOIN zs_answer a ON ai.answer_id = a.id
+        WHERE
+            ai.survey_id = #{surveyId}
+        AND o.has_remark = 1
+        AND ai.`status` = 1
+        AND ai.valid = 1
+        AND o.question_id = #{id}
+    </select>
 </mapper>

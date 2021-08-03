@@ -1,5 +1,6 @@
 package com.camel.survey.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.survey.model.ZsAnswerItem;
 import com.camel.survey.model.ZsOption;
@@ -53,4 +54,6 @@ public interface ZsAnswerItemService extends IService<ZsAnswerItem> {
     List<Map<String, Object>> selectWorkNumTotal(Integer id);
 
     Integer selectAnswerItemCount(Integer surveyId, Integer qId, Integer oId);
+
+    List<Map<String, Object>> selectHasRemark(Integer surveyId, Integer id);
 }
