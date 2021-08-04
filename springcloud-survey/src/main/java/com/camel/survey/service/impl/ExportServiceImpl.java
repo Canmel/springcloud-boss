@@ -204,11 +204,6 @@ public class ExportServiceImpl implements ExportService {
                     titleQList.add(que.getName() + "_" + que.getOptions().get(i).getName());
                     titleIdList.add(que.getId() + "_" + que.getOptions().get(i).getId());
                     optionIdList.add(que.getOptions().get(i).getId().toString());
-                    if (que.getOptions().get(i).getHasRemark()){
-                        titleQList.add(que.getName() + "其他选项");
-                        titleIdList.add(que.getId() + "_" + que.getOptions().get(i).getId());
-                        optionIdList.add(que.getOptions().get(i).getId().toString());
-                    }
                 }
             } else {
                 titleQList.add(que.getName());
@@ -282,11 +277,16 @@ public class ExportServiceImpl implements ExportService {
                     // 全等，即单选
                     String v = "";
                     if (titleStr.equals(qIds.get(qIndex))) {
-                        String s = titleQList.get(index);
-                        if(s.contains("其他选项")) {
-                            v = findOptionName(zsOptionList, optionIdList.get(index));
+                        ZsOption opt = zsOptionService.selectById(Integer.valueOf(optionList.get(qIndex)));
+                        if(opt.getHasRemark()) {
+                            fillCell(row.createCell(13 + index), style, opt.getName());
+                            fillCell(row.createCell(13 + index + 1), style, answersArray[qIndex]);
+                            index += 1;
                         } else {
-                            v = answersArray[qIndex];
+                            if(index >=1 && titleIdList.get(index - 1).equals(titleIdList.get(index))){
+                                break;
+                            }
+                            fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
                         }
                         qIndex = qIds.size();
                     }
@@ -297,17 +297,11 @@ public class ExportServiceImpl implements ExportService {
                             String oStr = optionList.get(qIndex);
                             // 如果excel中表头也有这个选项，则表示位置正确
                             if (org.apache.commons.lang.StringUtils.isNotBlank(oStr) && oStr.equals(titleO)) {
-                                String s = titleQList.get(index);
-                                if(s.contains("其他选项")) {
-                                    v = findOptionName(zsOptionList, optionIdList.get(index));
-                                } else {
-                                    v = answersArray[qIndex];
-                                }
+                                fillCell(row.createCell(13 + index), style, answersArray[qIndex]);
                                 qIndex = qIds.size();
                             }
                         }
                     }
-                    fillCell(row.createCell(13 + index), style, v);
                 }
 
             }
