@@ -294,7 +294,7 @@
                         </el-input>
                     </template>
                     <template slot-scope="scope">
-                        <div v-if="scope.row.status === 2" align="center">
+                        <div v-if="scope.row.apply.code === 2" align="center">
                             <el-button
                                     size="mini"
                                     type="success"
@@ -304,10 +304,10 @@
                                     type="warning"
                                     @click="handleRefuse(scope.$index, scope.row)">退回</el-button>
                         </div>
-                        <div v-if="scope.row.status === 3" align="center">
+                        <div v-if="scope.row.apply.code === 3" align="center">
                             <el-tag type="success">已通过</el-tag>
                         </div>
-                        <div v-if="scope.row.status === 4" align="center">
+                        <div v-if="scope.row.apply.code === 4" align="center">
                             <el-tag type="error">已退回</el-tag>
                         </div>
                     </template>
@@ -365,7 +365,7 @@
                 //审核通过
                 let data = {
                     id: row.id,
-                    status: 3
+                    apply: 3
                 }
                 AJAX.POST_JSON("zsCorp/audit",data,function(res){
                     console.log("res:",res);
@@ -391,7 +391,7 @@
                 //回退申请
                 let data = {
                     id: row.id,
-                    status: 4
+                    apply: 4
                 }
                 AJAX.POST_JSON("zsCorp/audit",data,function(res){
                     console.log("res:",res);

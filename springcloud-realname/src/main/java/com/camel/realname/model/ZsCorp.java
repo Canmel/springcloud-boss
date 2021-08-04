@@ -211,7 +211,7 @@ public class ZsCorp extends BasePaginationEntity {
     private ZsApplyStatus apply;
 
     /**
-     * 状态
+     * 状态 0 无效 1 有效
      */
     @TableLogic
     private ZsStatus status;

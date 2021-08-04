@@ -136,7 +136,8 @@
             <if test="agentPid != null and agentPid != ''">or agent_pid like concat('%',#{agentPid},'%')</if>
             <if test="agentContactNo != null and agentContactNo != ''">or agent_contact_no like concat('%',#{agentContactNo},'%')</if>
             <if test="agentIdIssuingAuthority != null and agentIdIssuingAuthority != ''">or agent_id_issuing_authority like concat('%',#{agentIdIssuingAuthority},'%')</if>
-            and status > 1
+            and status = 1
+            and apply >= 2
         </where>
     </select>
 </mapper>
