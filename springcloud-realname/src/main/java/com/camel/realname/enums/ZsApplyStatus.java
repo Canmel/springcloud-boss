@@ -30,7 +30,7 @@ import java.io.Serializable;
  **/
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ZsApplyStatus implements MyEnum {
-    CREATED(0, "创建"), APPLYING(1, "审核中"), APPLY_SUCCESS(2, "审核成功"), APPLY_FAILD(3, "审核被拒");
+    DELETE(0,"已删除"),CREATED(1, "创建"), APPLYING(2, "审核中"), APPLY_SUCCESS(3, "审核成功"), APPLY_FAILD(4, "审核被拒");
 
     /**
      * 状态码

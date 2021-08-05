@@ -31,17 +31,19 @@ public interface ZsCorpService extends IService<ZsCorp> {
 
     /**
      * 用于页面访问图片
+     * @param userId 用户id
      * @param imgName 图片类型名称
      * @param response response
      */
-    void showImage(String imgName,HttpServletResponse response) throws FileNotFoundException, IIOException;
+    void showImage(Integer userId,String imgName,HttpServletResponse response) throws FileNotFoundException, IIOException;
 
     /**
      * 根据绑定的用户id，获取存储图片的key
+     * @param userId 用户id
      * @param imgName 图片类型名称
      * @return 图片访问url
      */
-    String getImageAddr(String imgName) throws FileNotFoundException;
+    String getImageAddr(Integer userId,String imgName) throws FileNotFoundException;
 
     /**
      * 用于上传时返回url，此时数据库中没有key

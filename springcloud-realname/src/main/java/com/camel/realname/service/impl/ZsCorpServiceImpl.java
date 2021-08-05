@@ -109,10 +109,10 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     }
 
     @Override
-    public void showImage(String imgName, HttpServletResponse response) throws FileNotFoundException, IIOException {
+    public void showImage(Integer userId,String imgName, HttpServletResponse response) throws FileNotFoundException, IIOException {
         OutputStream out = null;
         InputStream in = null;
-        String picUrl = getImageAddr(imgName);
+        String picUrl = getImageAddr(userId,imgName);
         try {
             URL url = new URL(picUrl);
             in = url.openStream();
@@ -147,8 +147,7 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     }
 
     @Override
-    public String getImageAddr(String imgName) throws FileNotFoundException {
-        Integer userId = applicationToolsUtils.currentUser().getUid();
+    public String getImageAddr(Integer userId,String imgName) throws FileNotFoundException {
         String fileName = userId+"-imgName-" + imgName;
         ValueOperations operations = redisTemplate.opsForValue();
         String redisUrl = (String) operations.get(fileName);
@@ -202,12 +201,13 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
      */
     private void bindZsCorpUrlVo(ZsCorp zsCorp) throws FileNotFoundException, NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
+        Integer userId = applicationToolsUtils.currentUser().getUid();
         ZsCorpUrlVo zsCorpUrlVo = new ZsCorpUrlVo();
         Field[] fields = ZsCorpUrlVo.class.getDeclaredFields();
         for (Field field:fields) {
             field.setAccessible(true);
             String fieldName = field.getName();
-            String picUrl = getImageAddr(fieldName);
+            String picUrl = getImageAddr(userId,fieldName);
             String name = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
             zsCorpUrlVo.getClass().getDeclaredMethod("set"+name,String.class).invoke(zsCorpUrlVo,picUrl);
         }

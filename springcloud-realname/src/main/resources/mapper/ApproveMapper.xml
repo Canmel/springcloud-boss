@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.realname.mapper.ApproveMapper">
+
+    <resultMap id="approveResult" type="com.camel.realname.model.ApproveInfo">
+        <id property="id" column="id" javaType="java.lang.Long"/>
+        <result property="name" column="name" javaType="java.lang.String"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="apply" column="apply"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="approve_colunm_list">
+        id,name,type,create_time,apply,status
+    </sql>
+
+    <select id="getList" resultType="com.camel.realname.model.ApproveInfo">
+        select id,name,type,create_time,apply,status
+        from (
+                 select id id, enterprise_name name, 1 type, submit_date create_time, apply apply,status status
+                 from zs_corp
+                 UNION
+                 select id id, code name, 2 type, apply_at create_time, status apply, deleted status
+                 from apply_number
+             ) approve_info
+        where status = 1
+    </select>
+
+</mapper>

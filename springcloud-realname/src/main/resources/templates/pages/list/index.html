@@ -23,7 +23,7 @@
         <el-table
                 ref="multipleTable"
                 :data="tableData"
-                height="250"
+                height="500"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange">
@@ -43,7 +43,7 @@
                     show-overflow-tooltip>
             </el-table-column>
             <el-table-column
-                    prop="type"
+                    prop="type.name"
                     label="类型"
                     width="140">
             </el-table-column>
@@ -57,29 +57,62 @@
                     label="状态"
                     width="140">
                 <template slot-scope="scope">
-<!--                    <div v-if="scope.row.apply.code === 3" align="center">-->
-<!--                        <el-tag type="success">已通过</el-tag>-->
-<!--                    </div>-->
-<!--                    <div v-if="scope.row.apply.code === 4" align="center">-->
-<!--                        <el-tag type="error">已退回</el-tag>-->
-<!--                    </div>-->
-                    <el-tag type="error">未通过</el-tag>
+                    <div v-if="scope.row.apply.code === 1" align="center">
+                        <el-tag type="success">创建</el-tag>
+                    </div>
+                    <div v-if="scope.row.apply.code === 2" align="center">
+                        <el-tag type="success">申请中</el-tag>
+                    </div>
+                    <div v-if="scope.row.apply.code === 3" align="center">
+                        <el-tag type="success">已通过</el-tag>
+                    </div>
+                    <div v-if="scope.row.apply.code === 4" align="center">
+                        <el-tag type="error">已退回</el-tag>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="operation"
                     label="操作"
-                    width="140">
+                    fixed="right"
+                    align="center"
+                    width="260">
                 <template slot-scope="scope">
-                    <div v-if="scope.row.apply.code === 2" align="center">
+                    <div v-if="scope.row.type.code === 1" align="center">
+                        <el-button
+                                size="mini"
+                                type="primary"
+                                @click="downAuthInfo(scope.$index, scope.row)">实名认证资料</el-button>
+                    </div>
+                    <div v-if="scope.row.type.code === 2" align="center">
+                        <el-button
+                                size="mini"
+                                type="primary"
+                                @click="downAuthInfo(scope.$index, scope.row)">实名认证资料</el-button>
                         <el-button
                                 size="mini"
                                 type="success"
-                                @click="handlePass(scope.$index, scope.row)">审核</el-button>
+                                @click="downClientApplication(scope.$index, scope.row)">客户申请表</el-button>
+                    </div>
+                    <div v-if="scope.row.type.code === 3" align="center">
+                        <el-button
+                                size="mini"
+                                type="primary"
+                                @click="downAuthInfo(scope.$index, scope.row)">实名认证资料</el-button>
                     </div>
                 </template>
             </el-table-column>
         </el-table>
+    </div>
+    <div class="block">
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="pageParams.pageNum"
+                :page-sizes="pageParams.pageSizes"
+                :page-size="pageParams.pageSize"
+                :layout="pageParams.layout"
+                :total="pageParams.total">
+        </el-pagination>
     </div>
 </div>
 </body>
@@ -88,17 +121,84 @@
     new Vue({
         el: '.x-body',
         data: {
-            tableData:[]
+            multipleSelection:[],
+            tableData:[],
+            search:"",
+            paramsData:{
+                pageNum:1,
+                pageSize:20,
+            },
+            pageParams:{
+                pageSizes:[10, 20, 30, 40],
+                pageSize:20,
+                pageNum:1,
+                total:1000,
+                layout:"total, sizes, prev, pager, next, jumper",
+            },
         },
         created: function () {
             // this.me();
         },
         mounted:function(){
-            console.log("mounted...")
+            console.log("mounted...");
+            this.getList();
         },
         methods: {
             handleSelectionChange(val){
-                console.log(val);
+                this.multipleSelection = val;
+                console.log("multipleSelection:",this.multipleSelection)
+            },
+            downAuthInfo(index, row){
+
+            },
+            downClientApplication(index, row){
+
+            },
+            handleSizeChange(){
+
+            },
+            handleCurrentChange(){
+
+            },
+            resetPage(){
+                this.pageParams={
+                    pageSizes:[10, 20, 30, 40],
+                    pageSize:20,
+                    pagerCount:6,
+                    pageNum:1,
+                    total:1000,
+                    layout:"total, sizes, prev, pager, next, jumper",
+                }
+            },
+            handleSizeChange(val){
+                console.log(`每页 ${val} 条`);
+                this.paramsData.pageSize = val;
+                this.getList();
+            },
+            handleCurrentChange(val){
+                console.log(`当前页: ${val}`);
+                this.paramsData.pageNum = val;
+                this.getList();
+            },
+            getList(){
+                let that = this;
+                let paramsData = this.paramsData;
+                paramsData['type']=this.search;
+                paramsData['name']=this.search;
+                paramsData['createTime']=this.search;
+                paramsData['apply']=this.search;
+                AJAX.GET_SYNC("approve/getList",this.paramsData,function(res){
+                    if(res.code === 200){
+                        that.tableData = res.data.list;
+                        that.pageParams.total = res.data.total;
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
             }
         }
     });

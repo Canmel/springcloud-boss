@@ -82,10 +82,11 @@ public class ZsCorpController extends BaseCommonController {
      * @return Result
      */
     @SneakyThrows
-    @GetMapping("/image/{imgName}")
+    @GetMapping("/image/{imgName}/{userId}")
     public void showImage(@PathVariable("imgName") String imgName,
+                          @PathVariable("userId") Integer userId,
                           HttpServletResponse response){
-        zsCorpService.showImage(imgName, response);
+        zsCorpService.showImage(userId, imgName, response);
     }
 
     /**

@@ -14,13 +14,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 企业实名认证表
  */
 @Data
-public class ZsCorp extends BasePaginationEntity {
+public class ZsCorp extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**

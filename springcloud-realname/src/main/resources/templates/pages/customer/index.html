@@ -25,20 +25,20 @@
 <body>
 <div class="x-body">
     <blockquote class="layui-elem-quote">本模块仅限企业实名认证
-        <template v-if="authInfo.apply.code === 0">
+        <template v-if="authInfo.apply.code === 1">
             <b>| 您还未认证提供您可以</b>
             <span class="layui-btn layui-btn-normal layui-btn-mini"
                   @click="dialogVisible = true"> {{disabled === true ? "开始编辑" : "退出编辑"}}</span>
         </template>
-        <template v-else-if="authInfo.apply.code === 1">
+        <template v-else-if="authInfo.apply.code === 2">
             <span class="layui-btn layui-btn-warm layui-btn-mini"
                   >审核中...</span>
         </template>
-        <template v-else-if="authInfo.apply.code === 2">
+        <template v-else-if="authInfo.apply.code === 3">
             <span class="layui-btn layui-btn-mini"
                   >审核已通过</span>
         </template>
-        <template v-else-if="authInfo.apply.code === 3">
+        <template v-else-if="authInfo.apply.code === 4">
             <span style="color: #FF5722">审核未通过，请重新编辑提交审核</span>
             <span class="layui-btn layui-btn-normal layui-btn-mini"
                   @click="dialogVisible = true">{{disabled === true ? "开始编辑" : "退出编辑"}}</span>

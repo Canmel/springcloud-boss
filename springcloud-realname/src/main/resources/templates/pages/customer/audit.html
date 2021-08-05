@@ -315,7 +315,6 @@
             </el-table>
         </div>
         <div class="block">
-            <span class="demonstration">显示总数</span>
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
@@ -367,7 +366,7 @@
                     id: row.id,
                     apply: 3
                 }
-                AJAX.POST_JSON("zsCorp/audit",data,function(res){
+                AJAX.PUT("zsCorp/audit",data,function(res){
                     console.log("res:",res);
                     if(res.code === 200){
                         that.$message({
@@ -393,7 +392,8 @@
                     id: row.id,
                     apply: 4
                 }
-                AJAX.POST_JSON("zsCorp/audit",data,function(res){
+                data = JSON.stringify(data)
+                AJAX.PUT("zsCorp/audit",data,function(res){
                     console.log("res:",res);
                     if(res.code === 200){
                         that.$message({
