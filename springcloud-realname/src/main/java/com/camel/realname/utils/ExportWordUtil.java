@@ -45,6 +45,8 @@ public class ExportWordUtil {
             template.process(dataMap, out);
             log.info("由模板文件：" + templateName + ".ftl" + " 生成Word文件 " + fileName + " 成功！！");
             out.flush();
+            outputStream.flush();
+            outputStream.close();
         } catch (TemplateNotFoundException e) {
             log.info("模板文件未找到");
             e.printStackTrace();

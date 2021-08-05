@@ -36,4 +36,11 @@
         apply_number left join sys_user on apply_number.creator = sys_user.uid
         where creator = #{creatorId} and deleted = 1
     </select>
+    <select id="selectById" resultType="com.camel.realname.model.ApplyNumber">
+        select
+            apply_number.id, apply_number.code, apply_number.status, apply_number.creator, apply_number.created_at, apply_number.apply_at, apply_number.apply_sheet, apply_number.license, apply_number.card_legal,
+            apply_number.card_agent, apply_number.hand_agent, apply_number.card_user, apply_number.enter_promise, apply_number.apply_letter
+        from apply_number
+        where id = #{id}
+    </select>
 </mapper>

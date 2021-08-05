@@ -13,7 +13,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.imageio.IIOException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -32,17 +34,9 @@ public class ExportWordController {
     @Autowired
     private ZsCorpService zsCorpService;
 
-    @Autowired
+    @Resource
     private ApplyNumberService applyNumberService;
 
-
-    public void exportWord1(HttpServletResponse response) {
-        ExportWordUtil ewUtil = new ExportWordUtil();
-        Map<String, Object> dataMap = new HashMap<>();
-        String url = image2Byte("https://diaocha.svdata.cn/realname/images/bg.png");
-        dataMap.put("photo", url);
-        ewUtil.exportWord(dataMap, "demo.ftl", response, "全国语音实名材料.doc");
-    }
 
     /**
      * 下载word
@@ -58,24 +52,42 @@ public class ExportWordController {
         System.out.println("businessLicenseUrl = " + businessLicenseUrl);
         String businessLicense = image2Byte(businessLicenseUrl);
         //法人身份证
-//        String corporateIdUrl = zsCorpService.getImageAddr(userId, "corporateIdUrl");
-//        String corporateId = image2Byte(corporateIdUrl);
+        String corporateIdUrl = zsCorpService.getImageAddr(userId, "corporateIdUrl");
+        String corporateId = image2Byte(corporateIdUrl);
         //法人手持照片
 
-        //经办人身份证
-
+        //经办人身份证 (正
+        String agentIdUrl = zsCorpService.getImageAddr(userId, "agentIdUrl");
+        String agentIdZ = image2Byte(agentIdUrl);
+        // （ 反
+        String agentIdFurl = zsCorpService.getImageAddr(userId, "agentIdFurl");
+        String agentIdF = image2Byte(agentIdFurl);
         //经办人手持照片
-
+        String agentIdHurl = zsCorpService.getImageAddr(userId, "agentIdHurl");
+        String agentIdH = image2Byte(agentIdHurl);
         //电信入网承诺书
-
+        String acceptanceUrl = zsCorpService.getImageAddr(userId, "acceptanceUrl");
+        String acceptance = image2Byte(acceptanceUrl);
         //号码申请公函
+        String entrustmentLetterUrl = zsCorpService.getImageAddr(userId, "entrustmentLetterUrl");
+        String entrustmentLetter = image2Byte(entrustmentLetterUrl);
+
         dataMap.put("businessLicense", businessLicense);
-//        dataMap.put("corporateId", corporateId);
+        dataMap.put("corporateId", corporateId);
+        dataMap.put("agentIdZ", agentIdZ);
+        dataMap.put("agentIdF", agentIdF);
+        dataMap.put("agentIdH", agentIdH);
+        dataMap.put("acceptance", acceptance);
+        dataMap.put("entrustmentLetter", entrustmentLetter);
+
         ewUtil.exportWord(dataMap, "demo.ftl", response, "全国语音实名材料.doc");
     }
 
 
     public static String image2Byte(String imgUrl) {
+        if (imgUrl == null && !imgUrl.startsWith("http")){
+            return null;
+        }
         URL url = null;
         InputStream is = null;
         ByteArrayOutputStream outStream = null;
@@ -86,7 +98,6 @@ public class ExportWordController {
             httpUrl.setRequestMethod("GET");
             httpUrl.setConnectTimeout(30 * 1000);
             httpUrl.connect();
-            httpUrl.getInputStream();
             is = httpUrl.getInputStream();
             outStream = new ByteArrayOutputStream();
             //创建一个Buffer字符串
@@ -130,16 +141,55 @@ public class ExportWordController {
      * @return
      * @throws FileNotFoundException
      */
-    public void getApplySheet(Integer id,HttpServletResponse response) throws FileNotFoundException, IIOException {
+    @GetMapping("/getApplySheet/{id}")
+    @AuthIgnore
+    public void getApplySheet(@PathVariable("id") Integer id,HttpServletResponse response) throws FileNotFoundException, IIOException {
         String excelUrl = applyNumberService.url(id);
+        System.out.println("excelUrl = " + excelUrl);
+        String excelName = "客户申请表";
         //  返回excel
-//        BufferedInputStream bis = null;
-//        try {
-//            URL url = new URL(excelUrl);
-//            bis = new BufferedInputStream(url.openStream());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            throw new IIOException("Can't get input stream from URL!",e);
-//        }
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        HttpURLConnection httpUrl = null;
+        try {
+            URL url = new URL(excelUrl);
+            httpUrl = (HttpURLConnection) url.openConnection();
+            httpUrl.setRequestMethod("GET");
+            httpUrl.setConnectTimeout(30 * 1000);
+            httpUrl.connect();
+            bis = new BufferedInputStream(httpUrl.getInputStream());
+            response.reset();
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+//            response.setCharacterEncoding("UTF-8");
+            response.setHeader("Content-disposition", "attachment; filename="
+                    + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
+            bos = new BufferedOutputStream(response.getOutputStream());
+            int len = -1;
+            byte[] b = new byte[1024];
+            while((len = bis.read(b)) != -1){
+                bos.write(b,0,b.length);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IIOException("Can't get input stream from URL!",e);
+        }finally {
+            if(bis != null){
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(bos != null){
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (httpUrl != null) {
+                httpUrl.disconnect();
+            }
+        }
     }
 }

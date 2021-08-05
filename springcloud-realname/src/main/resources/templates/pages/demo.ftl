@@ -597,11 +597,6 @@
             ${agentIdUrl}
         </pkg:binaryData>
     </pkg:part>
-    <pkg:part pkg:name="/word/media/image5.png" pkg:contentType="image/png" pkg:compression="store">
-        <pkg:binaryData>
-            ${agentIdFurl}
-        </pkg:binaryData>
-    </pkg:part>
     <pkg:part pkg:name="/word/theme/theme1.xml"
               pkg:contentType="application/vnd.openxmlformats-officedocument.theme+xml">
         <pkg:xmlData>

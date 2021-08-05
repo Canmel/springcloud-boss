@@ -20,4 +20,6 @@ import java.util.List;
 public interface ApplyNumberMapper extends BaseMapper<ApplyNumber> {
 
     List<ApplyNumber> list(ApplyNumber entity);
+
+    ApplyNumber selectById(Integer id);
 }
