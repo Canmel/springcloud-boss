@@ -148,8 +148,8 @@ public class ExportWordController {
         System.out.println("excelUrl = " + excelUrl);
         String excelName = "客户申请表";
         //  返回excel
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
+        InputStream is = null;
+        OutputStream os = null;
         HttpURLConnection httpUrl = null;
         try {
             URL url = new URL(excelUrl);
@@ -157,32 +157,32 @@ public class ExportWordController {
             httpUrl.setRequestMethod("GET");
             httpUrl.setConnectTimeout(30 * 1000);
             httpUrl.connect();
-            bis = new BufferedInputStream(httpUrl.getInputStream());
+            is = httpUrl.getInputStream();
             response.reset();
-            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            response.setContentType("application/vnd.ms-excel");
 //            response.setCharacterEncoding("UTF-8");
-            response.setHeader("Content-disposition", "attachment; filename="
+            response.setHeader("Content-disposition", "attachment;filename="
                     + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
-            bos = new BufferedOutputStream(response.getOutputStream());
+            os = response.getOutputStream();
             int len = -1;
             byte[] b = new byte[1024];
-            while((len = bis.read(b)) != -1){
-                bos.write(b,0,b.length);
+            while((len = is.read(b)) != -1){
+                os.write(b,0,b.length);
             }
         } catch (IOException e) {
             e.printStackTrace();
             throw new IIOException("Can't get input stream from URL!",e);
         }finally {
-            if(bis != null){
+            if(is != null){
                 try {
-                    bis.close();
+                    is.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(bos != null){
+            if(os != null){
                 try {
-                    bos.close();
+                    os.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
