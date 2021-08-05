@@ -2,15 +2,21 @@ package com.camel.realname.controller;
 
 import com.camel.realname.annotation.AuthIgnore;
 import com.camel.realname.model.ZsCorp;
+import com.camel.realname.service.ApplyNumberService;
 import com.camel.realname.service.ZsCorpService;
 import com.camel.realname.utils.ExportWordUtil;
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -26,6 +32,9 @@ public class ExportWordController {
     @Autowired
     private ZsCorpService zsCorpService;
 
+    @Autowired
+    private ApplyNumberService applyNumberService;
+
 
     public void exportWord1(HttpServletResponse response) {
         ExportWordUtil ewUtil = new ExportWordUtil();
@@ -40,7 +49,7 @@ public class ExportWordController {
      * @param userId 用户id
      */
     @GetMapping("/exportWord/{id}")
-    @AuthIgnore
+//    @AuthIgnore
     public void exportWord(@PathVariable("id") Integer userId, HttpServletResponse response) throws FileNotFoundException {
         ExportWordUtil ewUtil = new ExportWordUtil();
         Map<String, Object> dataMap = new HashMap<>();
@@ -49,8 +58,8 @@ public class ExportWordController {
         System.out.println("businessLicenseUrl = " + businessLicenseUrl);
         String businessLicense = image2Byte(businessLicenseUrl);
         //法人身份证
-        String corporateIdUrl = zsCorpService.getImageAddr(userId, "corporateIdUrl");
-        String corporateId = image2Byte(corporateIdUrl);
+//        String corporateIdUrl = zsCorpService.getImageAddr(userId, "corporateIdUrl");
+//        String corporateId = image2Byte(corporateIdUrl);
         //法人手持照片
 
         //经办人身份证
@@ -61,7 +70,7 @@ public class ExportWordController {
 
         //号码申请公函
         dataMap.put("businessLicense", businessLicense);
-        dataMap.put("corporateId", corporateId);
+//        dataMap.put("corporateId", corporateId);
         ewUtil.exportWord(dataMap, "demo.ftl", response, "全国语音实名材料.doc");
     }
 
@@ -113,5 +122,24 @@ public class ExportWordController {
             }
         }
         return null;
+    }
+
+    /**
+     * 下载客户申请表excel
+     * @param id
+     * @return
+     * @throws FileNotFoundException
+     */
+    public void getApplySheet(Integer id,HttpServletResponse response) throws FileNotFoundException, IIOException {
+        String excelUrl = applyNumberService.url(id);
+        //  返回excel
+//        BufferedInputStream bis = null;
+//        try {
+//            URL url = new URL(excelUrl);
+//            bis = new BufferedInputStream(url.openStream());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new IIOException("Can't get input stream from URL!",e);
+//        }
     }
 }

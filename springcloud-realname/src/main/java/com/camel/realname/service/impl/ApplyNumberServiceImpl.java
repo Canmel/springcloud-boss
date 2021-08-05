@@ -19,11 +19,15 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import com.qiniu.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * <p>
@@ -98,6 +102,25 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
         String secretKey = qiNiuConfig.getSecretKey();
         Auth auth = Auth.create(accessKey, secretKey);
         return auth;
+    }
+
+    /**
+     * 获取url
+     * @param id
+     * @return url
+     * @throws FileNotFoundException
+     */
+    @Override
+    public String url(Integer id) throws FileNotFoundException {
+        ApplyNumber applyNumber = mapper.selectById(id);
+        if (ObjectUtils.isEmpty(applyNumber)) {
+            throw new FileNotFoundException();
+        }
+        String key = applyNumber.getApplySheet();
+        String publicUrl = String.format("%s/%s", BUCKET_NAME_URL, key);
+        Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
+        // 1小时，可以自定义链接过期时间
+        return auth.privateDownloadUrl(publicUrl, 3600);
     }
 
     @Override

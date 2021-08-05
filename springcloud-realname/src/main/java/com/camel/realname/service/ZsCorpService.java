@@ -47,6 +47,7 @@ public interface ZsCorpService extends IService<ZsCorp> {
 
     /**
      * 用于上传时返回url，此时数据库中没有key
+     * @param userId 用户id
      * @param key key
      * @param imgName 图片类型名称
      * @return url
