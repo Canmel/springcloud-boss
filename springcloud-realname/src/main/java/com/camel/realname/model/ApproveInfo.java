@@ -2,6 +2,7 @@ package com.camel.realname.model;
 
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.realname.enums.ApproveType;
+import com.camel.realname.enums.ZsApplyStatus;
 import com.camel.realname.enums.ZsStatus;
 import com.camel.realname.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,6 +22,10 @@ public class ApproveInfo extends BasePaginationEntity {
      */
     private Long id;
     /**
+     * 用户id
+     */
+    private Integer userId;
+    /**
      * 名称
      */
     private String name;
@@ -35,12 +40,12 @@ public class ApproveInfo extends BasePaginationEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /**
-     * 状态 0：未通过，1：已通过
+     * 状态 0, "已删除",1, "创建", 2, "申请中", 3, "成功", 4, "失败"
      */
-    private ZsYesOrNo apply;
+    private ZsApplyStatus apply;
 
     /**
-     * 是否有效，0：无效，1有效
+     * 是否有效，0：无效，1：有效
      */
     private ZsStatus status;
 }

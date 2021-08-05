@@ -4,24 +4,25 @@
 
     <resultMap id="approveResult" type="com.camel.realname.model.ApproveInfo">
         <id property="id" column="id" javaType="java.lang.Long"/>
+        <result column="user_id" property="userId" javaType="java.lang.Integer"/>
         <result property="name" column="name" javaType="java.lang.String"/>
         <result property="type" column="type"/>
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
-        <result property="apply" column="apply"/>
-        <result property="status" column="status"/>
+        <result property="apply" column="apply" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <result property="status" column="status" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <sql id="approve_colunm_list">
-        id,name,type,create_time,apply,status
+        id,user_id,name,type,create_time,apply,status
     </sql>
 
     <select id="getList" resultType="com.camel.realname.model.ApproveInfo">
-        select id,name,type,create_time,apply,status
+        select id,user_id,name,type,create_time,apply,status
         from (
-                 select id id, enterprise_name name, 1 type, submit_date create_time, apply apply,status status
+                 select id id, user_id user_id,enterprise_name name, 1 type, submit_date create_time, apply apply,status status
                  from zs_corp
                  UNION
-                 select id id, code name, 2 type, apply_at create_time, status apply, deleted status
+                 select id id, creator user_id, code name, 2 type, apply_at create_time, status apply, deleted status
                  from apply_number
              ) approve_info
         where status = 1
