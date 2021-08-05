@@ -53,6 +53,7 @@ public class ExportWordController {
         String businessLicense = image2Byte(businessLicenseUrl);
         //法人身份证
         String corporateIdUrl = zsCorpService.getImageAddr(userId, "corporateIdUrl");
+        System.out.println("corporateIdUrl = " + corporateIdUrl);
         String corporateId = image2Byte(corporateIdUrl);
         //法人手持照片
 
