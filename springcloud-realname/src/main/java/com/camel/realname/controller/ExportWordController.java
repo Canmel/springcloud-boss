@@ -43,7 +43,6 @@ public class ExportWordController {
      * @param userId 用户id
      */
     @GetMapping("/exportWord/{id}")
-//    @AuthIgnore
     public void exportWord(@PathVariable("id") Integer userId, HttpServletResponse response) throws FileNotFoundException {
         ExportWordUtil ewUtil = new ExportWordUtil();
         Map<String, Object> dataMap = new HashMap<>();
@@ -86,7 +85,7 @@ public class ExportWordController {
 
 
     public static String image2Byte(String imgUrl) {
-        if (imgUrl == null && !imgUrl.startsWith("http")){
+        if (imgUrl == null || imgUrl.equals("")){
             return null;
         }
         URL url = null;
