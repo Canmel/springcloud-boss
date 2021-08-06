@@ -444,7 +444,7 @@
                 </tbody>
             </table>
             <div style="text-align: center">
-                <el-button type="primary" plain @click="submit">提交审核</el-button>
+                <el-button :disabled="disabled" type="primary" plain @click="submit">提交审核</el-button>
             </div>
         </div>
     </fieldset>
@@ -500,7 +500,7 @@
                 contactName:null,
                 contactNo:null,
                 userId:null,
-                status:null,
+                apply:null,
                 zsCorpUrlVo:{},
             },
             editable: false,
@@ -527,7 +527,30 @@
                 })
             },
             submit(){
+                let that = this;
                 console.log("提交审核，状态更变为2，页面不可修改")
+                let data={
+                    id:this.authInfo.id,
+                    apply:2
+                }
+                data = JSON.stringify(data)
+                AJAX.PUT("zsCorp/audit",data,function(res){
+                    console.log(res)
+                    if(res.code === 200){
+                        that.$message({
+                            message: "提交成功",
+                            type: 'success',
+                            center: true
+                        });
+                    }else{
+                        that.$message({
+                            message: "提交失败",
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                    that.showInfo();
+                })
                 this.disabled = true;
             },
             updateCorp(param){

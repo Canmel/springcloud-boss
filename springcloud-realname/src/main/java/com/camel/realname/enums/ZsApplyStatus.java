@@ -69,9 +69,9 @@ public enum ZsApplyStatus implements MyEnum {
         return this.code;
     }
 
-    public static ZsApplyStatus getEnumByValue(Integer value) {
+    public static ZsApplyStatus getEnumByCode(Integer code) {
         for (ZsApplyStatus enums : ZsApplyStatus.values()) {
-            if (enums.getValue().equals(value)) {
+            if (enums.getCode().equals(code)) {
                 return enums;
             }
         }

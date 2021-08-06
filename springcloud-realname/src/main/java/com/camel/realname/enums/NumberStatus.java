@@ -45,4 +45,13 @@ public enum NumberStatus implements MyEnum {
     public Serializable getValue() {
         return this.code;
     }
+
+    public static NumberStatus getEnumByCode(Integer code) {
+        for (NumberStatus enums : NumberStatus.values()) {
+            if (enums.getCode().equals(code)) {
+                return enums;
+            }
+        }
+        return null;
+    }
 }

@@ -28,10 +28,14 @@ public class ApproveController {
         return ResultUtil.success("查询成功",pageList);
     }
 
-    @GetMapping("/downInfo/{id}")
-    public Result downInfo(@PathVariable("id") Long id, HttpServletResponse response){
-
-        return null;
+    /**
+     * 审核，修改状态
+     * @param approveInfo 信息
+     * @return Result
+     */
+    @PutMapping("/audit")
+    public Result audit(@RequestBody ApproveInfo approveInfo){
+        return approveService.audit(approveInfo);
     }
 
 }

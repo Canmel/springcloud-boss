@@ -8,9 +8,9 @@ import java.io.Serializable;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ApproveType implements MyEnum {
 
-    企业(1,"企业"),
-    外呼号码(2,"外呼号码"),
-    个人(3,"个人");
+    企业(0,"企业"),
+    外呼号码(1,"外呼号码"),
+    个人(2,"个人");
 
 
     private Integer code;

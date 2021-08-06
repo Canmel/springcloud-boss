@@ -366,6 +366,7 @@
                     id: row.id,
                     apply: 3
                 }
+                data = JSON.stringify(data)
                 AJAX.PUT("zsCorp/audit",data,function(res){
                     console.log("res:",res);
                     if(res.code === 200){
@@ -413,7 +414,7 @@
             },
             searchList(){
                 this.resetPage();
-                this.getList()
+                this.getList();
             },
             getList(){
                 let that = this;

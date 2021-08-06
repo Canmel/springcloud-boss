@@ -1,5 +1,6 @@
 package com.camel.realname.service;
 
+import com.camel.core.entity.Result;
 import com.camel.realname.model.ApproveInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -14,9 +15,9 @@ public interface ApproveService {
     PageInfo<ApproveInfo> getPageList(ApproveInfo approveInfo);
 
     /**
-     * 下载
-     * @param id
-     * @param response
+     * 审核
+     * @param approveInfo 修改状态信息
+     * @return Result
      */
-    void downInfo(Long id, HttpServletResponse response);
+    Result audit(ApproveInfo approveInfo);
 }

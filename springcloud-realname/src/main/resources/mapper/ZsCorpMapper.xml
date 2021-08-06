@@ -109,13 +109,14 @@
             <if test="agentAddress != null and agentAddress != ''">agent_address = #{agentAddress},</if>
             <if test="contactName != null and contactName != ''">contact_name = #{contactName},</if>
             <if test="contactNo != null and contactNo != ''">contact_no = #{contactNo},</if>
-            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="apply != null">apply = #{apply},</if>
+            <if test="status != null">status = #{status},</if>
         </set>
         where user_id = #{userId}
     </update>
 
     <update id="audit">
-        update zs_corp set status = #{status}
+        update zs_corp set apply = #{apply}
         where id = #{id}
     </update>
 
