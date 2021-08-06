@@ -54,7 +54,7 @@ public class ApproveServiceImpl implements ApproveService {
             }else if(approveInfo.getType().getCode() == 1){
                 //  外呼号码
                 ApplyNumber applyNumber = new ApplyNumber();
-                applyNumber.setId(approveInfo.getUserId());
+                applyNumber.setId(approveInfo.getId());
                 NumberStatus apply = NumberStatus.getEnumByCode(approveInfo.getApply().getCode());
                 if(apply == null){
                     return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"状态码类型不存在");

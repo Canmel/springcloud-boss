@@ -124,11 +124,11 @@
                         <el-button
                                 size="mini"
                                 type="success"
-                                @click="index(scope.$index, scope.row,3)">通过</el-button>
+                                @click="audit(scope.$index, scope.row,3)">通过</el-button>
                         <el-button
                                 size="mini"
                                 type="warning"
-                                @click="index(scope.$index, scope.row,4)">退回</el-button>
+                                @click="audit(scope.$index, scope.row,4)">退回</el-button>
                     </div>
                     <div v-if="scope.row.apply.code === 3" align="center">
                         <el-tag type="success">已通过</el-tag>

@@ -20,7 +20,7 @@ public class ApproveInfo extends BasePaginationEntity {
     /**
      * 序号
      */
-    private Long id;
+    private Integer id;
     /**
      * 用户id
      */
