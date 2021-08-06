@@ -109,12 +109,12 @@
             <el-table-column
                     fixed="right"
                     align="center"
-                    width="180">
+                    width="200">
                 <template slot="header" slot-scope="scope">
                     <el-input
                             v-model="search"
                             size="mini"
-                            placeholder="输入关键字搜索"
+                            placeholder="输入 名称 搜索"
                             @keyup.enter="searchList">
                         <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
                     </el-input>
@@ -248,10 +248,7 @@
             getList(){
                 let that = this;
                 let paramsData = this.paramsData;
-                paramsData['id']=this.search;
-                paramsData['type']=this.search;
                 paramsData['name']=this.search;
-                paramsData['apply']=this.search;
                 AJAX.GET_SYNC("approve/getList",this.paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;

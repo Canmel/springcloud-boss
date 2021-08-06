@@ -26,10 +26,7 @@
                  from apply_number
              ) approve_info
         <where>
-            <if test="id != null">id = #{id}</if>
             <if test="name != null and name != ''">and name like concat('%',#{name},'%')</if>
-            <if test="type != null">and type = #{type}</if>
-            <if test="apply != null">and apply = #{apply}</if>
             and status = 1
         </where>
     </select>
