@@ -186,7 +186,7 @@
                 console.log("multipleSelection:",this.multipleSelection)
             },
             downAuthInfo(index, row){
-                window.open('/realname/exportWord/'+ row.userId+'?access_token=' + sessionStorage.getItem('access_token'));
+                window.open('/realname/exportWord/'+ row.id+'?type='+row.type.code+'&access_token=' + sessionStorage.getItem('access_token'));
             },
             downClientApplication(index, row){
                 window.open('/realname/getApplySheet/'+ row.id+'?access_token=' + sessionStorage.getItem('access_token'));

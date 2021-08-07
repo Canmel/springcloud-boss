@@ -9,11 +9,13 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
+import com.camel.realname.enums.ApproveType;
 import com.camel.realname.enums.NumberStatus;
 import com.camel.realname.mapper.ZsCorpMapper;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ZsCorpService;
 import com.camel.realname.utils.ApplicationToolsUtils;
+import com.camel.realname.utils.ExportWordUtil;
 import com.camel.realname.vo.ZsCorpUrlVo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -32,16 +34,16 @@ import javax.annotation.Resource;
 import javax.imageio.IIOException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -109,10 +111,10 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     }
 
     @Override
-    public void showImage(Integer userId,String imgName, HttpServletResponse response) throws FileNotFoundException, IIOException {
+    public void showImage(Integer userId,ApproveType type,String imgName, HttpServletResponse response) throws FileNotFoundException, IIOException {
         OutputStream out = null;
         InputStream in = null;
-        String picUrl = getImageAddr(userId,imgName);
+        String picUrl = getImageAddr(userId,type,imgName);
         try {
             URL url = new URL(picUrl);
             in = url.openStream();
@@ -147,18 +149,18 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     }
 
     @Override
-    public String getImageAddr(Integer userId,String imgName) throws FileNotFoundException {
-        String fileName = userId+"-imgName-" + imgName;
+    public String getImageAddr(Integer id, ApproveType approveType,String fileName) throws FileNotFoundException {
+        String redisKey = id+"-type-"+ approveType.getCode() +"-fileName-" + fileName;
         ValueOperations operations = redisTemplate.opsForValue();
-        String redisUrl = (String) operations.get(fileName);
+        String redisUrl = (String) operations.get(redisKey);
         if(!StringUtils.isNullOrEmpty(redisUrl)) {
             return redisUrl;
         }
-        ZsCorp zsCorp = zsCorpMapper.getOneByUid(userId);
+        ZsCorp zsCorp = zsCorpMapper.selectById(id);
         if (ObjectUtils.isEmpty(zsCorp)) {
             throw new FileNotFoundException();
         }
-        String name = imgName.substring(0, 1).toUpperCase() + imgName.substring(1);
+        String name = fileName.substring(0, 1).toUpperCase() + fileName.substring(1);
         String url = "";
         try {
             //  通过对应的get方法拿到key
@@ -171,7 +173,7 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
             Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
             // 1小时，可以自定义链接过期时间
             url = auth.privateDownloadUrl(publicUrl, 3600);
-            operations.set(fileName, url, 50 * 60, TimeUnit.SECONDS);
+            operations.set(redisKey, url, 50 * 60, TimeUnit.SECONDS);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -183,15 +185,16 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     }
 
     @Override
-    public String getImgUrlByKey(String key,String imgName) {
+    public String getImgUrlByKey(String key,String fileName) {
         Integer userId = applicationToolsUtils.currentUser().getUid();
-        String fileName = userId+"-imgName-" + imgName;
+        ZsCorp zsCorp = zsCorpMapper.getOneByUid(userId);
+        String redisKey = zsCorp.getId()+"-type-"+ ApproveType.企业.getCode() +"-fileName-" + fileName;
         ValueOperations operations = redisTemplate.opsForValue();
         String publicUrl = String.format("%s/%s", BUCKET_NAME_URL, key);
         Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
         // 1小时，可以自定义链接过期时间
         String url = auth.privateDownloadUrl(publicUrl, 3600);
-        operations.set(fileName, url, 50 * 60, TimeUnit.SECONDS);
+        operations.set(redisKey, url, 50 * 60, TimeUnit.SECONDS);
         return url;
     }
 
@@ -207,7 +210,7 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         for (Field field:fields) {
             field.setAccessible(true);
             String fieldName = field.getName();
-            String picUrl = getImageAddr(userId,fieldName);
+            String picUrl = getImageAddr(userId,ApproveType.企业,fieldName);
             String name = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
             zsCorpUrlVo.getClass().getDeclaredMethod("set"+name,String.class).invoke(zsCorpUrlVo,picUrl);
         }
@@ -271,5 +274,98 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         String secretKey = qiNiuConfig.getSecretKey();
         Auth auth = Auth.create(accessKey, secretKey);
         return auth;
+    }
+
+    @Override
+    public void exportWord(Integer id, ApproveType approveType, HttpServletResponse response) throws IOException {
+        ExportWordUtil ewUtil = new ExportWordUtil();
+        Map<String, Object> dataMap = new HashMap<>();
+        //企业资质
+        String businessLicenseUrl = getImageAddr(id,approveType, "businessLicenseUrl");
+        System.out.println("businessLicenseUrl = " + businessLicenseUrl);
+        String businessLicense = image2Byte(businessLicenseUrl);
+        //法人身份证
+        String corporateIdUrl = getImageAddr(id,approveType, "corporateIdUrl");
+        System.out.println("corporateIdUrl = " + corporateIdUrl);
+        String corporateId = image2Byte(corporateIdUrl);
+        //法人手持照片
+
+        //经办人身份证 (正
+        String agentIdUrl = getImageAddr(id,approveType, "agentIdUrl");
+        String agentIdZ = image2Byte(agentIdUrl);
+        // （ 反
+        String agentIdFurl = getImageAddr(id,approveType, "agentIdFurl");
+        String agentIdF = image2Byte(agentIdFurl);
+        //经办人手持照片
+        String agentIdHurl = getImageAddr(id,approveType, "agentIdHurl");
+        String agentIdH = image2Byte(agentIdHurl);
+        //电信入网承诺书
+        String acceptanceUrl = getImageAddr(id,approveType, "acceptanceUrl");
+        String acceptance = image2Byte(acceptanceUrl);
+        //号码申请公函
+        String entrustmentLetterUrl = getImageAddr(id,approveType, "entrustmentLetterUrl");
+        String entrustmentLetter = image2Byte(entrustmentLetterUrl);
+
+        dataMap.put("businessLicense", businessLicense);
+        dataMap.put("corporateId", corporateId);
+        dataMap.put("agentIdZ", agentIdZ);
+        dataMap.put("agentIdF", agentIdF);
+        dataMap.put("agentIdH", agentIdH);
+        dataMap.put("acceptance", acceptance);
+        dataMap.put("entrustmentLetter", entrustmentLetter);
+
+        ewUtil.exportWord(dataMap, "demo.ftl", response, "全国语音实名材料.doc");
+    }
+
+    @Override
+    public String image2Byte(String imgUrl) {
+        if (imgUrl == null || imgUrl.equals("")){
+            return null;
+        }
+        URL url = null;
+        InputStream is = null;
+        ByteArrayOutputStream outStream = null;
+        HttpURLConnection httpUrl = null;
+        try {
+            url = new URL(imgUrl);
+            httpUrl = (HttpURLConnection) url.openConnection();
+            httpUrl.setRequestMethod("GET");
+            httpUrl.setConnectTimeout(30 * 1000);
+            httpUrl.connect();
+            is = httpUrl.getInputStream();
+            outStream = new ByteArrayOutputStream();
+            //创建一个Buffer字符串
+            byte[] buffer = new byte[2048];
+            //每次读取的字符串长度，如果为-1，代表全部读取完毕
+            int len = 0;
+            //使用一个输入流从buffer里把数据读取出来
+            while ((len = is.read(buffer)) != -1) {
+                //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+                outStream.write(buffer, 0, len);
+            }
+            // 对字节数组Base64编码
+            return java.util.Base64.getEncoder().encodeToString(outStream.toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outStream != null) {
+                try {
+                    outStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (httpUrl != null) {
+                httpUrl.disconnect();
+            }
+        }
+        return null;
     }
 }

@@ -141,4 +141,10 @@
             and apply >= 2
         </where>
     </select>
+    <select id="selectById" resultType="com.camel.realname.model.ZsCorp">
+        select <include refid="Base_Column_List"/> from zs_corp
+        where id = #{id}
+        and status = 1
+        limit 1
+    </select>
 </mapper>

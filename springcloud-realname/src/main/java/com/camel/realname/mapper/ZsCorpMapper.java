@@ -30,6 +30,13 @@ public interface ZsCorpMapper extends BaseMapper<ZsCorp> {
     ZsCorp getOneByUid(Integer userId);
 
     /**
+     * 根据id查询用户信息
+     * @param id id
+     * @return 企业认证信息对象
+     */
+    ZsCorp selectById(Integer id);
+
+    /**
      * 审核改变状态
      * @param zsCorp 企业认证信息
      */

@@ -42,4 +42,13 @@ public enum ApproveType implements MyEnum {
     public Serializable getValue() {
         return this.code;
     }
+
+    public static ApproveType getEnumByCode(Integer code) {
+        for (ApproveType enums : ApproveType.values()) {
+            if (enums.getCode().equals(code)) {
+                return enums;
+            }
+        }
+        return null;
+    }
 }

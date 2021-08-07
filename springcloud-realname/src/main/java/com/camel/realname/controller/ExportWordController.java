@@ -1,6 +1,7 @@
 package com.camel.realname.controller;
 
 import com.camel.realname.annotation.AuthIgnore;
+import com.camel.realname.enums.ApproveType;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ApplyNumberService;
 import com.camel.realname.service.ZsCorpService;
@@ -40,99 +41,32 @@ public class ExportWordController {
 
     /**
      * 下载word
-     * @param userId 用户id
+     * @param id id
+     * @param type ApproveType code
      */
     @GetMapping("/exportWord/{id}")
-    public void exportWord(@PathVariable("id") Integer userId, HttpServletResponse response) throws FileNotFoundException {
-        ExportWordUtil ewUtil = new ExportWordUtil();
-        Map<String, Object> dataMap = new HashMap<>();
-        //企业资质
-        String businessLicenseUrl = zsCorpService.getImageAddr(userId, "businessLicenseUrl");
-        System.out.println("businessLicenseUrl = " + businessLicenseUrl);
-        String businessLicense = image2Byte(businessLicenseUrl);
-        //法人身份证
-        String corporateIdUrl = zsCorpService.getImageAddr(userId, "corporateIdUrl");
-        System.out.println("corporateIdUrl = " + corporateIdUrl);
-        String corporateId = image2Byte(corporateIdUrl);
-        //法人手持照片
-
-        //经办人身份证 (正
-        String agentIdUrl = zsCorpService.getImageAddr(userId, "agentIdUrl");
-        String agentIdZ = image2Byte(agentIdUrl);
-        // （ 反
-        String agentIdFurl = zsCorpService.getImageAddr(userId, "agentIdFurl");
-        String agentIdF = image2Byte(agentIdFurl);
-        //经办人手持照片
-        String agentIdHurl = zsCorpService.getImageAddr(userId, "agentIdHurl");
-        String agentIdH = image2Byte(agentIdHurl);
-        //电信入网承诺书
-        String acceptanceUrl = zsCorpService.getImageAddr(userId, "acceptanceUrl");
-        String acceptance = image2Byte(acceptanceUrl);
-        //号码申请公函
-        String entrustmentLetterUrl = zsCorpService.getImageAddr(userId, "entrustmentLetterUrl");
-        String entrustmentLetter = image2Byte(entrustmentLetterUrl);
-
-        dataMap.put("businessLicense", businessLicense);
-        dataMap.put("corporateId", corporateId);
-        dataMap.put("agentIdZ", agentIdZ);
-        dataMap.put("agentIdF", agentIdF);
-        dataMap.put("agentIdH", agentIdH);
-        dataMap.put("acceptance", acceptance);
-        dataMap.put("entrustmentLetter", entrustmentLetter);
-
-        ewUtil.exportWord(dataMap, "demo.ftl", response, "全国语音实名材料.doc");
-    }
-
-
-    public static String image2Byte(String imgUrl) {
-        if (imgUrl == null || imgUrl.equals("")){
-            return null;
+    public void exportWord(@PathVariable("id") Integer id,
+                           Integer type,
+                           HttpServletResponse response) throws IOException {
+        ApproveType approveType = null;
+        if(type == null){
+            response.setContentType("text/html");
+            response.getWriter().println("type 参数 为空");
         }
-        URL url = null;
-        InputStream is = null;
-        ByteArrayOutputStream outStream = null;
-        HttpURLConnection httpUrl = null;
-        try {
-            url = new URL(imgUrl);
-            httpUrl = (HttpURLConnection) url.openConnection();
-            httpUrl.setRequestMethod("GET");
-            httpUrl.setConnectTimeout(30 * 1000);
-            httpUrl.connect();
-            is = httpUrl.getInputStream();
-            outStream = new ByteArrayOutputStream();
-            //创建一个Buffer字符串
-            byte[] buffer = new byte[2048];
-            //每次读取的字符串长度，如果为-1，代表全部读取完毕
-            int len = 0;
-            //使用一个输入流从buffer里把数据读取出来
-            while ((len = is.read(buffer)) != -1) {
-                //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
-                outStream.write(buffer, 0, len);
+        approveType = ApproveType.getEnumByCode(type);
+        if(approveType != null){
+            if(approveType.getCode() == 0){
+                zsCorpService.exportWord(id,approveType,response);
+            }else if (approveType.getCode() == 1){
+                applyNumberService.exportWord(id, approveType, response);
+            }else if(approveType.getCode() == 2){
+                response.setContentType("text/html");
+                response.getWriter().println("暂无 个人 实名认证信息");
             }
-            // 对字节数组Base64编码
-            return java.util.Base64.getEncoder().encodeToString(outStream.toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outStream != null) {
-                try {
-                    outStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (httpUrl != null) {
-                httpUrl.disconnect();
-            }
+        }else{
+            response.setContentType("text/html");
+            response.getWriter().println("查无该 type 类型");
         }
-        return null;
     }
 
     /**
@@ -144,7 +78,7 @@ public class ExportWordController {
     @GetMapping("/getApplySheet/{id}")
     @AuthIgnore
     public void getApplySheet(@PathVariable("id") Integer id,HttpServletResponse response) throws FileNotFoundException, IIOException {
-        String excelUrl = applyNumberService.url(id);
+        String excelUrl = applyNumberService.getFileUrl(id,ApproveType.外呼号码,"applySheet");
         System.out.println("excelUrl = " + excelUrl);
         String excelName = "客户申请表";
         //  返回excel
@@ -160,7 +94,6 @@ public class ExportWordController {
             is = httpUrl.getInputStream();
             response.reset();
             response.setContentType("application/vnd.ms-excel");
-//            response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-disposition", "attachment;filename="
                     + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
             os = response.getOutputStream();
