@@ -282,21 +282,15 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         //企业资质
         String businessLicenseUrl = getImageAddr(id,approveType, "businessLicenseUrl");
         String businessLicense = image2Byte(businessLicenseUrl);
-        //法人身份证(正
-        String corporateIdZurl = getImageAddr(id,approveType, "corporateIdZurl");
-        String corporateIdZ = image2Byte(corporateIdZurl);
-        //法人身份证(反
-        String corporateIdFurl = getImageAddr(id,approveType, "corporateIdFurl");
-        String corporateIdF = image2Byte(corporateIdFurl);
+        //法人身份证
+        String corporateIdUrl = getImageAddr(id,approveType, "corporateIdUrl");
+        String corporateId = image2Byte(corporateIdUrl);
         //法人手持照片
         String corporateIdHurl = getImageAddr(id,approveType, "corporateIdHurl");
         String corporateIdH = image2Byte(corporateIdHurl);
-        //经办人身份证 (正
-        String agentIdUrl = getImageAddr(id,approveType, "agentIdUrl");
-        String agentIdZ = image2Byte(agentIdUrl);
-        // （ 反
-        String agentIdFurl = getImageAddr(id,approveType, "agentIdFurl");
-        String agentIdF = image2Byte(agentIdFurl);
+        //经办人身份证
+        String agentIdAddress = getImageAddr(id,approveType, "agentIdAddress");
+        String agentIdZ = image2Byte(agentIdAddress);
         //经办人手持照片
         String agentIdHurl = getImageAddr(id,approveType, "agentIdHurl");
         String agentIdH = image2Byte(agentIdHurl);
@@ -308,11 +302,9 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         String entrustmentLetter = image2Byte(entrustmentLetterUrl);
 
         dataMap.put("businessLicense", businessLicense);
-        dataMap.put("corporateIdZ", corporateIdZ);
-        dataMap.put("corporateIdF", corporateIdF);
+        dataMap.put("corporateId", corporateId);
         dataMap.put("corporateIdH", corporateIdH);
-        dataMap.put("agentIdZ", agentIdZ);
-        dataMap.put("agentIdF", agentIdF);
+        dataMap.put("agentId", agentIdZ);
         dataMap.put("agentIdH", agentIdH);
         dataMap.put("acceptance", acceptance);
         dataMap.put("entrustmentLetter", entrustmentLetter);

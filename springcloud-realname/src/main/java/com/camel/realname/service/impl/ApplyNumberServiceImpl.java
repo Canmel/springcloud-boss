@@ -189,21 +189,15 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
         //企业资质
         String license = getFileUrl(id,approveType, "license");
         String businessLicense = image2Byte(license);
-        //法人身份证(正
-        String cardLegalZ = getFileUrl(id,approveType, "cardLegalZ");
-        String corporateIdZ = image2Byte(cardLegalZ);
-        //法人身份证(反
-        String cardLegalF = getFileUrl(id,approveType, "cardLegalF");
-        String corporateIdF = image2Byte(cardLegalF);
+        //法人身份证
+        String cardLegal = getFileUrl(id,approveType, "cardLegal");
+        String corporateId = image2Byte(cardLegal);
         //法人手持照片
         String cardLegalH = getFileUrl(id,approveType, "cardLegalH");
         String corporateIdH = image2Byte(cardLegalH);
         //经办人身份证 (正
-        String cardAgentZ = getFileUrl(id,approveType, "cardAgentZ");
-        String agentIdZ = image2Byte(cardAgentZ);
-        // （ 反
-        String cardAgentF = getFileUrl(id,approveType, "cardAgentF");
-        String agentIdF = image2Byte(cardAgentF);
+        String cardAgent = getFileUrl(id,approveType, "cardAgent");
+        String agentId = image2Byte(cardAgent);
         //经办人手持照片
         String handAgent = getFileUrl(id,approveType, "handAgent");
         String agentIdH = image2Byte(handAgent);
@@ -215,11 +209,9 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
         String entrustmentLetter = image2Byte(applyLetter);
 
         dataMap.put("businessLicense", businessLicense);
-        dataMap.put("corporateIdZ", corporateIdZ);
-        dataMap.put("corporateIdF", corporateIdF);
+        dataMap.put("corporateId", corporateId);
         dataMap.put("corporateIdH", corporateIdH);
-        dataMap.put("agentIdZ", agentIdZ);
-        dataMap.put("agentIdF", agentIdF);
+        dataMap.put("agentId", agentId);
         dataMap.put("agentIdH", agentIdH);
         dataMap.put("acceptance", acceptance);
         dataMap.put("entrustmentLetter", entrustmentLetter);

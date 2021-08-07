@@ -54,25 +54,17 @@ public class ApplyNumber extends BasePaginationEntity {
      */
     private String license;
     /**
-     * 法人身份证（正
+     * 法人身份证
      */
-    private String cardLegalZ;
-    /**
-     * 法人身份证（反
-     */
-    private String cardLegalF;
+    private String cardLegal;
     /**
      * 法人手持身份证
      */
     private String cardLegalH;
     /**
-     * 经办人身份证(正
+     * 经办人身份证
      */
-    private String cardAgentZ;
-    /**
-     * 经办人身份证（反
-     */
-    private String cardAgentF;
+    private String cardAgent;
     /**
      * 经办人身份证手持照片
      */
@@ -123,11 +115,7 @@ public class ApplyNumber extends BasePaginationEntity {
                 ", applyAt=" + applyAt +
                 ", applySheet='" + applySheet + '\'' +
                 ", license='" + license + '\'' +
-                ", cardLegalZ='" + cardLegalZ + '\'' +
-                ", cardLegalF='" + cardLegalF + '\'' +
                 ", cardLegalH='" + cardLegalH + '\'' +
-                ", cardAgentZ='" + cardAgentZ + '\'' +
-                ", cardAgentF='" + cardAgentF + '\'' +
                 ", handAgent='" + handAgent + '\'' +
                 ", cardUser='" + cardUser + '\'' +
                 ", enterPromise='" + enterPromise + '\'' +
@@ -145,8 +133,8 @@ public class ApplyNumber extends BasePaginationEntity {
     }
 
     public boolean isValid() {
-        if (StringUtils.isNotBlank(this.applySheet) && StringUtils.isNotBlank(this.license) && StringUtils.isNotBlank(this.cardLegalZ) && StringUtils.isNotBlank(this.cardLegalF)
-                && StringUtils.isNotBlank(this.cardLegalH) && StringUtils.isNotBlank(this.cardAgentZ) && StringUtils.isNotBlank(this.cardAgentF) && StringUtils.isNotBlank(this.handAgent) && StringUtils.isNotBlank(this.cardUser)
+        if (StringUtils.isNotBlank(this.applySheet) && StringUtils.isNotBlank(this.license) && StringUtils.isNotBlank(this.cardLegal)
+                && StringUtils.isNotBlank(this.cardLegalH) && StringUtils.isNotBlank(this.cardAgent) && StringUtils.isNotBlank(this.handAgent) && StringUtils.isNotBlank(this.cardUser)
                 && StringUtils.isNotBlank(this.enterPromise) && StringUtils.isNotBlank(this.applyLetter)) {
             return true;
         }
