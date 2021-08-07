@@ -55,9 +55,9 @@ public class ExportWordController {
         }
         approveType = ApproveType.getEnumByCode(type);
         if(approveType != null){
-            if(approveType.getCode() == 0){
+            if(approveType.getCode().equals(ApproveType.企业.getCode())){
                 zsCorpService.exportWord(id,approveType,response);
-            }else if (approveType.getCode() == 1){
+            }else if (approveType.getCode().equals(ApproveType.外呼号码.getCode())){
                 applyNumberService.exportWord(id, approveType, response);
             }else if(approveType.getCode() == 2){
                 response.setContentType("text/html");

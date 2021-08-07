@@ -187,33 +187,37 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
         ExportWordUtil ewUtil = new ExportWordUtil();
         Map<String, Object> dataMap = new HashMap<>();
         //企业资质
-        String businessLicenseUrl = getFileUrl(id,approveType, "businessLicenseUrl");
-        System.out.println("businessLicenseUrl = " + businessLicenseUrl);
-        String businessLicense = image2Byte(businessLicenseUrl);
-        //法人身份证
-        String corporateIdUrl = getFileUrl(id,approveType, "corporateIdUrl");
-        System.out.println("corporateIdUrl = " + corporateIdUrl);
-        String corporateId = image2Byte(corporateIdUrl);
+        String license = getFileUrl(id,approveType, "license");
+        String businessLicense = image2Byte(license);
+        //法人身份证(正
+        String cardLegalZ = getFileUrl(id,approveType, "cardLegalZ");
+        String corporateIdZ = image2Byte(cardLegalZ);
+        //法人身份证(反
+        String cardLegalF = getFileUrl(id,approveType, "cardLegalF");
+        String corporateIdF = image2Byte(cardLegalF);
         //法人手持照片
-
+        String cardLegalH = getFileUrl(id,approveType, "cardLegalH");
+        String corporateIdH = image2Byte(cardLegalH);
         //经办人身份证 (正
-        String agentIdUrl = getFileUrl(id,approveType, "agentIdUrl");
-        String agentIdZ = image2Byte(agentIdUrl);
+        String cardAgentZ = getFileUrl(id,approveType, "cardAgentZ");
+        String agentIdZ = image2Byte(cardAgentZ);
         // （ 反
-        String agentIdFurl = getFileUrl(id,approveType, "agentIdFurl");
-        String agentIdF = image2Byte(agentIdFurl);
+        String cardAgentF = getFileUrl(id,approveType, "cardAgentF");
+        String agentIdF = image2Byte(cardAgentF);
         //经办人手持照片
-        String agentIdHurl = getFileUrl(id,approveType, "agentIdHurl");
-        String agentIdH = image2Byte(agentIdHurl);
+        String handAgent = getFileUrl(id,approveType, "handAgent");
+        String agentIdH = image2Byte(handAgent);
         //电信入网承诺书
-        String acceptanceUrl = getFileUrl(id,approveType, "acceptanceUrl");
-        String acceptance = image2Byte(acceptanceUrl);
+        String enterPromise = getFileUrl(id,approveType, "enterPromise");
+        String acceptance = image2Byte(enterPromise);
         //号码申请公函
-        String entrustmentLetterUrl = getFileUrl(id,approveType, "entrustmentLetterUrl");
-        String entrustmentLetter = image2Byte(entrustmentLetterUrl);
+        String applyLetter = getFileUrl(id,approveType, "applyLetter");
+        String entrustmentLetter = image2Byte(applyLetter);
 
         dataMap.put("businessLicense", businessLicense);
-        dataMap.put("corporateId", corporateId);
+        dataMap.put("corporateIdZ", corporateIdZ);
+        dataMap.put("corporateIdF", corporateIdF);
+        dataMap.put("corporateIdH", corporateIdH);
         dataMap.put("agentIdZ", agentIdZ);
         dataMap.put("agentIdF", agentIdF);
         dataMap.put("agentIdH", agentIdH);
@@ -226,7 +230,7 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
     @Override
     public String image2Byte(String imgUrl) {
         if (imgUrl == null || imgUrl.equals("")){
-            return null;
+            return "没有图片";
         }
         URL url = null;
         InputStream is = null;

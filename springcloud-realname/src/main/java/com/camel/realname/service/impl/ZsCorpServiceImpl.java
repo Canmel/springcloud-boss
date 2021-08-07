@@ -281,14 +281,16 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         Map<String, Object> dataMap = new HashMap<>();
         //企业资质
         String businessLicenseUrl = getImageAddr(id,approveType, "businessLicenseUrl");
-        System.out.println("businessLicenseUrl = " + businessLicenseUrl);
         String businessLicense = image2Byte(businessLicenseUrl);
-        //法人身份证
-        String corporateIdUrl = getImageAddr(id,approveType, "corporateIdUrl");
-        System.out.println("corporateIdUrl = " + corporateIdUrl);
-        String corporateId = image2Byte(corporateIdUrl);
+        //法人身份证(正
+        String corporateIdZurl = getImageAddr(id,approveType, "corporateIdZurl");
+        String corporateIdZ = image2Byte(corporateIdZurl);
+        //法人身份证(反
+        String corporateIdFurl = getImageAddr(id,approveType, "corporateIdFurl");
+        String corporateIdF = image2Byte(corporateIdFurl);
         //法人手持照片
-
+        String corporateIdHurl = getImageAddr(id,approveType, "corporateIdHurl");
+        String corporateIdH = image2Byte(corporateIdHurl);
         //经办人身份证 (正
         String agentIdUrl = getImageAddr(id,approveType, "agentIdUrl");
         String agentIdZ = image2Byte(agentIdUrl);
@@ -306,7 +308,9 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         String entrustmentLetter = image2Byte(entrustmentLetterUrl);
 
         dataMap.put("businessLicense", businessLicense);
-        dataMap.put("corporateId", corporateId);
+        dataMap.put("corporateIdZ", corporateIdZ);
+        dataMap.put("corporateIdF", corporateIdF);
+        dataMap.put("corporateIdH", corporateIdH);
         dataMap.put("agentIdZ", agentIdZ);
         dataMap.put("agentIdF", agentIdF);
         dataMap.put("agentIdH", agentIdH);
