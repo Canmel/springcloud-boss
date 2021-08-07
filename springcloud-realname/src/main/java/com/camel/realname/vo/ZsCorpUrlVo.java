@@ -44,13 +44,13 @@ public class ZsCorpUrlVo implements Serializable {
      */
     private String agentIdTurl;
     /**
-     *  经办人身份证正面 URL
+     *  经办人身份证 正反面 URL
      */
     private String agentIdUrl;
-    /**
-     *  经办人身份证反面 URL
-     */
-    private String agentIdFurl;
+//    /**
+//     *  经办人身份证反面 URL
+//     */
+//    private String agentIdFurl;
     /**
      *  经办人手持 URL
      */
@@ -60,7 +60,7 @@ public class ZsCorpUrlVo implements Serializable {
     }
 
     public ZsCorpUrlVo(String businessLicenseUrl, String corporateIdUrl, String corporateIdHurl, String organizationCodeUrl, String entrustmentLetterUrl,
-                       String acceptanceUrl, String agentIdTurl, String agentIdUrl, String agentIdFurl, String agentIdHurl) {
+                       String acceptanceUrl, String agentIdTurl, String agentIdUrl, String agentIdHurl) {
         this.businessLicenseUrl = businessLicenseUrl;
         this.corporateIdUrl = corporateIdUrl;
         this.corporateIdHurl = corporateIdHurl;
@@ -69,7 +69,6 @@ public class ZsCorpUrlVo implements Serializable {
         this.acceptanceUrl = acceptanceUrl;
         this.agentIdTurl = agentIdTurl;
         this.agentIdUrl = agentIdUrl;
-        this.agentIdFurl = agentIdFurl;
         this.agentIdHurl = agentIdHurl;
     }
 
@@ -135,14 +134,6 @@ public class ZsCorpUrlVo implements Serializable {
 
     public void setAgentIdUrl(String agentIdUrl) {
         this.agentIdUrl = agentIdUrl;
-    }
-
-    public String getAgentIdFurl() {
-        return agentIdFurl;
-    }
-
-    public void setAgentIdFurl(String agentIdFurl) {
-        this.agentIdFurl = agentIdFurl;
     }
 
     public String getAgentIdHurl() {

@@ -30,7 +30,6 @@
         <result column="agent_pid" property="agentPid" javaType="java.lang.String"/>
         <result column="agent_id_turl" property="agentIdTurl" javaType="java.lang.String"/>
         <result column="agent_id_url" property="agentIdUrl" javaType="java.lang.String"/>
-        <result column="agent_id_furl" property="agentIdFurl" javaType="java.lang.String"/>
         <result column="agent_id_hurl" property="agentIdHurl" javaType="java.lang.String"/>
         <result column="agent_id_address" property="agentIdAddress" javaType="java.lang.String"/>
         <result column="agent_id_gender" property="agentIdGender" javaType="java.lang.Integer"/>
@@ -57,7 +56,7 @@
         business_no,organization_code,organization_code_url,organization_name,
         organization_type,organization_effective_date,organization_expiration_date,
         entrustment_letter_url,acceptance_url,agent_name,agent_pid,agent_id_turl,
-        agent_id_url,agent_id_furl,agent_id_hurl,agent_id_address,agent_id_gender,
+        agent_id_url,agent_id_hurl,agent_id_address,agent_id_gender,
         agent_id_nation,agent_id_birth_day,agent_id_issuing_authority,
         agent_id_cert_valid_date,agent_id_cert_exp_date,agent_contact_no,
         agent_address,contact_name,contact_no,user_id,status,submit_date, status, apply

@@ -276,7 +276,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th width="30%">身份证正面</th>
+                    <th width="30%">身份证正反面</th>
                     <td>
                         <div v-if="authInfo.agentIdUrl !== '' && authInfo.agentIdUrl !== null">
                             <img :src="authInfo.zsCorpUrlVo.agentIdUrl" style="width: 100%; max-width: 100%;">
@@ -294,33 +294,6 @@
                                     :before-upload="beforeUpload"
                                     :http-request="function(options){
                                         return uploadImage(options,'agentIdUrl')
-                                    }"
-                                    :limit="1">
-                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                            </el-upload>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th width="30%">身份证反面</th>
-                    <td>
-                        <div v-if="authInfo.agentIdFurl !== '' && authInfo.agentIdFurl !== null">
-                            <img :src="authInfo.zsCorpUrlVo.agentIdFurl" style="width: 100%; max-width: 100%;">
-                        </div>
-                        <div v-else>
-                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
-                        </div>
-                        <div>
-                            <el-upload
-                                    :disabled="disabled"
-                                    class="upload-demo"
-                                    multiple
-                                    action=""
-                                    :on-success="uploadSuccess"
-                                    :before-upload="beforeUpload"
-                                    :http-request="function(options){
-                                        return uploadImage(options,'agentIdFurl')
                                     }"
                                     :limit="1">
                                 <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
@@ -513,7 +486,6 @@
                 agentPid:null,
                 agentIdTurl:null,
                 agentIdUrl:null,
-                agentIdFurl:null,
                 agentIdHurl:null,
                 agentIdAddress:null,
                 agentIdGender:null,

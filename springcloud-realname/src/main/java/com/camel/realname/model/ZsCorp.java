@@ -141,10 +141,14 @@ public class ZsCorp extends BasePaginationEntity implements Serializable {
      *经办人身份证正面 URL
      */
     private String agentIdUrl;
-    /**
-     *经办人身份证反面 URL
-     */
-    private String agentIdFurl;
+//    /**
+//     *经办人身份证正面 URL
+//     */
+//    private String agentIdUrl;
+//    /**
+//     *经办人身份证反面 URL
+//     */
+//    private String agentIdFurl;
     /**
      *经办人手持身份证 URL
      */
