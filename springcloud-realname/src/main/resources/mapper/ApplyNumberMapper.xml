@@ -12,6 +12,7 @@
         <result column="apply_sheet" property="applySheet"/>
         <result column="license" property="license"/>
         <result column="card_legal" property="cardLegal"/>
+        <result column="card_legal_h" property="cardLegalH"/>
         <result column="card_agent" property="cardAgent"/>
         <result column="hand_agent" property="handAgent"/>
         <result column="card_user" property="cardUser"/>
@@ -26,7 +27,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         apply_number.id, apply_number.code, apply_number.status, apply_number.creator, apply_number.created_at,
-        apply_number.apply_at, apply_number.apply_sheet, apply_number.license, apply_number.card_legal,
+        apply_number.apply_at, apply_number.apply_sheet, apply_number.license, apply_number.card_legal,apply_number.card_legal_h,
         apply_number.card_agent, apply_number.hand_agent, apply_number.card_user, apply_number.enter_promise,
         apply_number.apply_letter, sys_user.username
     </sql>
@@ -34,18 +35,19 @@
     <update id="updateById">
         update apply_number
         <set>
-            <if test="code != null and code != ''">code = #{code}</if>
-            <if test="status != null">status = #{status}</if>
-            <if test="creatorId != null">creator = #{creatorId}</if>
-            <if test="createdAt != null">createdAt = #{createdAt}</if>
-            <if test="applyAt != null">applyAt = #{applyAt}</if>
-            <if test="applySheet != null and applySheet != ''">applySheet = #{applySheet}</if>
-            <if test="license != null and license != ''">license = #{license}</if>
-            <if test="cardLegal != null and cardLegal != ''">cardLegal = #{cardLegal}</if>
-            <if test="handAgent != null and handAgent != ''">handAgent = #{handAgent}</if>
-            <if test="cardUser != null and cardUser != ''">cardUser = #{cardUser}</if>
-            <if test="enterPromise != null and enterPromise != ''">enterPromise = #{enterPromise}</if>
-            <if test="applyLetter != null and applyLetter != ''">applyLetter = #{applyLetter}</if>
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="creatorId != null">creator = #{creatorId},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="applyAt != null">apply_at = #{applyAt},</if>
+            <if test="applySheet != null and applySheet != ''">apply_sheet = #{applySheet},</if>
+            <if test="license != null and license != ''">license = #{license},</if>
+            <if test="cardLegal != null and cardLegal != ''">card_legal = #{cardLegal},</if>
+            <if test="cardLegalH != null and cardLegalH != ''">card_legal_h = #{cardLegalH},</if>
+            <if test="handAgent != null and handAgent != ''">hand_agent = #{handAgent},</if>
+            <if test="cardUser != null and cardUser != ''">card_user = #{cardUser},</if>
+            <if test="enterPromise != null and enterPromise != ''">enter_promise = #{enterPromise},</if>
+            <if test="applyLetter != null and applyLetter != ''">apply_letter = #{applyLetter},</if>
         </set>
         <where>
             id = #{id}
@@ -61,7 +63,7 @@
     </select>
     <select id="selectById" resultType="com.camel.realname.model.ApplyNumber">
         select
-            apply_number.id, apply_number.code, apply_number.status, apply_number.creator, apply_number.created_at, apply_number.apply_at, apply_number.apply_sheet, apply_number.license, apply_number.card_legal,
+            apply_number.id, apply_number.code, apply_number.status, apply_number.creator, apply_number.created_at, apply_number.apply_at, apply_number.apply_sheet, apply_number.license, apply_number.card_legal,apply_number.card_legal_h,
             apply_number.card_agent, apply_number.hand_agent, apply_number.card_user, apply_number.enter_promise, apply_number.apply_letter
         from apply_number
         where id = #{id}

@@ -107,6 +107,14 @@ public class ApplyNumberController extends BaseCommonController {
                 entity.setCardLegal(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
+            if (fileType.equals("cardLegalH")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"法人手持身份证请上传图片(PNG,JPG格式)文件");
+                }
+                JSONObject object = service.upload(file);
+                entity.setCardLegalH(object.getString("key"));
+                return ResultUtil.success(service.insertOrUpdate(entity));
+            }
             if (fileType.equals("cardAgent")) {
                 if (!isPic(file)){
                     return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"经办人身份证请上传图片(PNG,JPG格式)文件");
