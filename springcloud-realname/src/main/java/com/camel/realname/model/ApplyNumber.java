@@ -54,13 +54,25 @@ public class ApplyNumber extends BasePaginationEntity {
      */
     private String license;
     /**
-     * 法人身份证
+     * 法人身份证（正
      */
-    private String cardLegal;
+    private String cardLegalZ;
     /**
-     * 经办人身份证
+     * 法人身份证（反
      */
-    private String cardAgent;
+    private String cardLegalF;
+    /**
+     * 法人手持身份证
+     */
+    private String cardLegalH;
+    /**
+     * 经办人身份证(正
+     */
+    private String cardAgentZ;
+    /**
+     * 经办人身份证（反
+     */
+    private String cardAgentF;
     /**
      * 经办人身份证手持照片
      */
@@ -106,21 +118,26 @@ public class ApplyNumber extends BasePaginationEntity {
     @Override
     public String toString() {
         return "ApplyNumber{" +
-                ", id=" + id +
-                ", code=" + code +
-                ", status=" + status +
-                ", creator=" + creator +
-                ", createdAt=" + createdAt +
+                "id=" + id +
+                ", code='" + code + '\'' +
                 ", applyAt=" + applyAt +
-                ", applySheet=" + applySheet +
-                ", license=" + license +
-                ", cardLegal=" + cardLegal +
-                ", cardAgent=" + cardAgent +
-                ", handAgent=" + handAgent +
-                ", cardUser=" + cardUser +
-                ", enterPromise=" + enterPromise +
-                ", applyLetter=" + applyLetter +
-                "}";
+                ", applySheet='" + applySheet + '\'' +
+                ", license='" + license + '\'' +
+                ", cardLegalZ='" + cardLegalZ + '\'' +
+                ", cardLegalF='" + cardLegalF + '\'' +
+                ", cardLegalH='" + cardLegalH + '\'' +
+                ", cardAgentZ='" + cardAgentZ + '\'' +
+                ", cardAgentF='" + cardAgentF + '\'' +
+                ", handAgent='" + handAgent + '\'' +
+                ", cardUser='" + cardUser + '\'' +
+                ", enterPromise='" + enterPromise + '\'' +
+                ", applyLetter='" + applyLetter + '\'' +
+                ", creatorId=" + creatorId +
+                ", creator=" + creator +
+                ", status=" + status +
+                ", deleted=" + deleted +
+                ", createdAt=" + createdAt +
+                '}';
     }
 
     public void buildCode() {
@@ -128,8 +145,8 @@ public class ApplyNumber extends BasePaginationEntity {
     }
 
     public boolean isValid() {
-        if (StringUtils.isNotBlank(this.applySheet) && StringUtils.isNotBlank(this.license) && StringUtils.isNotBlank(this.cardLegal)
-                && StringUtils.isNotBlank(this.cardAgent) && StringUtils.isNotBlank(this.handAgent) && StringUtils.isNotBlank(this.cardUser)
+        if (StringUtils.isNotBlank(this.applySheet) && StringUtils.isNotBlank(this.license) && StringUtils.isNotBlank(this.cardLegalZ) && StringUtils.isNotBlank(this.cardLegalF)
+                && StringUtils.isNotBlank(this.cardLegalH) && StringUtils.isNotBlank(this.cardAgentZ) && StringUtils.isNotBlank(this.cardAgentF) && StringUtils.isNotBlank(this.handAgent) && StringUtils.isNotBlank(this.cardUser)
                 && StringUtils.isNotBlank(this.enterPromise) && StringUtils.isNotBlank(this.applyLetter)) {
             return true;
         }
