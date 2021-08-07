@@ -12,6 +12,7 @@
         <result column="business_license_url" property="businessLicenseUrl" javaType="java.lang.String"/>
         <result column="corporate_name" property="corporateName" javaType="java.lang.String"/>
         <result column="corporate_id_url" property="corporateIdUrl" javaType="java.lang.String"/>
+        <result column="corporate_id_hurl" property="corporateIdHurl" javaType="java.lang.String"/>
         <result column="business_start_date" property="businessStartDate" javaType="java.util.Date"/>
         <result column="business_term_start_date" property="businessTermStartDate" javaType="java.util.Date"/>
         <result column="business_term_end_date" property="businessTermEndDate" javaType="java.util.Date"/>
@@ -51,7 +52,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,request_id,is_merge,enterprise_name,business_license_code,
-        business_license_url,corporate_name,corporate_id_url,business_start_date,
+        business_license_url,corporate_name,corporate_id_url,corporate_id_hurl,business_start_date,
         business_term_start_date,business_term_end_date,business_address,
         business_no,organization_code,organization_code_url,organization_name,
         organization_type,organization_effective_date,organization_expiration_date,
@@ -79,6 +80,7 @@
             <if test="businessLicenseUrl != null and businessLicenseUrl != ''">business_license_url = #{businessLicenseUrl},</if>
             <if test="corporateName != null and corporateName != ''">corporate_name = #{corporateName},</if>
             <if test="corporateIdUrl != null and corporateIdUrl != ''">corporate_id_url = #{corporateIdUrl},</if>
+            <if test="corporateIdHurl != null and corporateIdHurl != ''">corporate_id_hurl = #{corporateIdHurl},</if>
             <if test="businessStartDate != null">business_start_date = #{businessStartDate},</if>
             <if test="businessTermStartDate != null">business_term_start_date = #{businessTermStartDate},</if>
             <if test="businessTermEndDate != null">business_term_end_date = #{businessTermEndDate},</if>

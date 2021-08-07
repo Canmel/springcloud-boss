@@ -60,6 +60,10 @@ public class ZsCorp extends BasePaginationEntity implements Serializable {
      */
     private String corporateIdUrl;
     /**
+     *法人身份证手持 URL
+     */
+    private String corporateIdHurl;
+    /**
      *企业成立日期 格式：2017-01-01
      */
     @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")

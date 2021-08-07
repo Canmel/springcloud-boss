@@ -40,13 +40,13 @@ public interface ZsCorpService extends IService<ZsCorp>,ExportService {
     void showImage(Integer userId,ApproveType type,String imgName,HttpServletResponse response) throws FileNotFoundException, IIOException;
 
     /**
-     * 根据绑定的用户id，获取存储图片的key
-     * @param userId 用户id
+     * 根据数据id，获取存储图片的key
+     * @param id id
      * @param approveType 类型
      * @param imgName 图片类型名称
      * @return 图片访问url
      */
-    String getImageAddr(Integer userId, ApproveType approveType,String imgName) throws FileNotFoundException;
+    String getImageAddr(Integer id, ApproveType approveType,String imgName) throws FileNotFoundException;
 
     /**
      * 用于上传时返回url，此时数据库中没有key

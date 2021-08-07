@@ -204,13 +204,12 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
      */
     private void bindZsCorpUrlVo(ZsCorp zsCorp) throws FileNotFoundException, NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
-        Integer userId = applicationToolsUtils.currentUser().getUid();
         ZsCorpUrlVo zsCorpUrlVo = new ZsCorpUrlVo();
         Field[] fields = ZsCorpUrlVo.class.getDeclaredFields();
         for (Field field:fields) {
             field.setAccessible(true);
             String fieldName = field.getName();
-            String picUrl = getImageAddr(userId,ApproveType.企业,fieldName);
+            String picUrl = getImageAddr(zsCorp.getId(),ApproveType.企业,fieldName);
             String name = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
             zsCorpUrlVo.getClass().getDeclaredMethod("set"+name,String.class).invoke(zsCorpUrlVo,picUrl);
         }

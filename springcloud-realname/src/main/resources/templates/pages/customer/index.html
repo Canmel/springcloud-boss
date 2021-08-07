@@ -142,6 +142,33 @@
                     </td>
                 </tr>
                 <tr>
+                    <th width="30%">法人身份证手持</th>
+                    <td>
+                        <div v-if="authInfo.corporateIdHurl !== '' && authInfo.corporateIdHurl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.corporateIdHurl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
+                            <el-upload
+                                    :disabled="disabled"
+                                    class="upload-demo"
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'corporateIdHurl')
+                                    }"
+                                    multiple
+                                    :limit="1">
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <th width="30%">企业成立日期</th>
                     <td>
                         <el-date-picker
