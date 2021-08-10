@@ -61,7 +61,15 @@
             <el-table-column
                     label="状态"
                     align="center"
-                    width="140">
+                    width="140"
+                    :filters="[
+                        { text: '已删除', value: 0 },
+                        { text: '创建', value: 1 },
+                        { text: '申请中', value: 2 },
+                        { text: '已通过', value: 3 },
+                        { text: '未通过', value: 4 }
+                    ]"
+                    :filter-method="filterTag">
                 <template slot-scope="scope">
                     <div v-if="scope.row.apply.code === 0" align="center">
                         <el-tag type="danger">已删除</el-tag>
@@ -85,13 +93,13 @@
                     align="center"
                     width="280">
                 <template slot-scope="scope">
-                    <div v-if="scope.row.status.code > 1 && scope.row.type.code === 0" align="center">
+                    <div v-if="scope.row.apply.code > 1 && scope.row.type.code === 0" align="center">
                         <el-button
                                 size="mini"
                                 type="primary"
                                 @click="downAuthInfo(scope.$index, scope.row)">实名认证资料</el-button>
                     </div>
-                    <div v-if="scope.row.status.code > 1 && scope.row.type.code === 1" align="center">
+                    <div v-if="scope.row.apply.code > 1 && scope.row.type.code === 1" align="center">
                         <el-button
                                 size="mini"
                                 type="primary"
@@ -101,7 +109,7 @@
                                 type="success"
                                 @click="downClientApplication(scope.$index, scope.row)">客户申请表</el-button>
                     </div>
-                    <div v-if="scope.row.status.code > 1 && scope.row.type.code === 2" align="center">
+                    <div v-if="scope.row.apply.code > 1 && scope.row.type.code === 2" align="center">
                         <el-button
                                 size="mini"
                                 type="primary"
@@ -187,6 +195,9 @@
             handleSelectionChange(val){
                 this.multipleSelection = val;
                 console.log("multipleSelection:",this.multipleSelection)
+            },
+            filterTag(value, row) {
+                return row.apply.code === value;
             },
             downAuthInfo(index, row){
                 window.open('/realname/exportWord/'+ row.id+'?type='+row.type.code+'&access_token=' + sessionStorage.getItem('access_token'));
