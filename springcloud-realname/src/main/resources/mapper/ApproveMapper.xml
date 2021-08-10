@@ -21,9 +21,6 @@
         from (
                  select id id, user_id user_id,enterprise_name name, 0 type, submit_date create_time, apply apply,status status
                  from zs_corp
-                 UNION
-                 select id id, creator user_id, code name, 1 type, apply_at create_time, status apply, deleted status
-                 from apply_number
              ) approve_info
         <where>
             <if test="name != null and name != ''">and name like concat('%',#{name},'%')</if>

@@ -98,22 +98,10 @@
                                 size="mini"
                                 type="primary"
                                 @click="downAuthInfo(scope.$index, scope.row)">实名认证资料</el-button>
-                    </div>
-                    <div v-if="scope.row.apply.code > 1 && scope.row.type.code === 1" align="center">
-                        <el-button
-                                size="mini"
-                                type="primary"
-                                @click="downAuthInfo(scope.$index, scope.row)">实名认证资料</el-button>
                         <el-button
                                 size="mini"
                                 type="success"
                                 @click="downClientApplication(scope.$index, scope.row)">客户申请表</el-button>
-                    </div>
-                    <div v-if="scope.row.apply.code > 1 && scope.row.type.code === 2" align="center">
-                        <el-button
-                                size="mini"
-                                type="primary"
-                                @click="downAuthInfo(scope.$index, scope.row)">实名认证资料</el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -200,7 +188,7 @@
                 return row.apply.code === value;
             },
             downAuthInfo(index, row){
-                window.open('/realname/exportWord/'+ row.id+'?type='+row.type.code+'&access_token=' + sessionStorage.getItem('access_token'));
+                window.open('/realname/exportWord/'+ row.id+'?access_token=' + sessionStorage.getItem('access_token'));
             },
             downClientApplication(index, row){
                 window.open('/realname/getApplySheet/'+ row.id+'?access_token=' + sessionStorage.getItem('access_token'));
