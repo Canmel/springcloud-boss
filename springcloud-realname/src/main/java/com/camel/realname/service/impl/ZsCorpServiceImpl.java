@@ -11,6 +11,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
 import com.camel.realname.enums.ApproveType;
 import com.camel.realname.enums.NumberStatus;
+import com.camel.realname.enums.ZsApplyStatus;
 import com.camel.realname.enums.ZsStatus;
 import com.camel.realname.mapper.ZsCorpMapper;
 import com.camel.realname.model.ZsCorp;
@@ -225,6 +226,7 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
             ZsCorp zsCorp = new ZsCorp();
             zsCorp.setUserId(userId);
             zsCorp.setStatus(ZsStatus.CREATED);
+            zsCorp.setApply(ZsApplyStatus.CREATED);
             zsCorpMapper.insert(zsCorp);
         }
         ZsCorp zsCorp = zsCorpMapper.getOneByUid(userId);

@@ -47,20 +47,24 @@ public class ZsCorpUrlVo implements Serializable {
      *  经办人身份证 正反面 URL
      */
     private String agentIdUrl;
-//    /**
-//     *  经办人身份证反面 URL
-//     */
-//    private String agentIdFurl;
     /**
      *  经办人手持 URL
      */
     private String agentIdHurl;
+    /**
+     * 使用人身份证正反面 url
+     */
+    private String contactIdUrl;
+    /**
+     * 客户申请表 url
+     */
+    private String applySheetUrl;
 
     public ZsCorpUrlVo() {
     }
 
     public ZsCorpUrlVo(String businessLicenseUrl, String corporateIdUrl, String corporateIdHurl, String organizationCodeUrl, String entrustmentLetterUrl,
-                       String acceptanceUrl, String agentIdTurl, String agentIdUrl, String agentIdHurl) {
+                       String acceptanceUrl, String agentIdTurl, String agentIdUrl, String agentIdHurl,String contactIdUrl,String applySheetUrl) {
         this.businessLicenseUrl = businessLicenseUrl;
         this.corporateIdUrl = corporateIdUrl;
         this.corporateIdHurl = corporateIdHurl;
@@ -70,6 +74,24 @@ public class ZsCorpUrlVo implements Serializable {
         this.agentIdTurl = agentIdTurl;
         this.agentIdUrl = agentIdUrl;
         this.agentIdHurl = agentIdHurl;
+        this.contactIdUrl = contactIdUrl;
+        this.applySheetUrl = applySheetUrl;
+    }
+
+    public String getContactIdUrl() {
+        return contactIdUrl;
+    }
+
+    public void setContactIdUrl(String contactIdUrl) {
+        this.contactIdUrl = contactIdUrl;
+    }
+
+    public String getApplySheetUrl() {
+        return applySheetUrl;
+    }
+
+    public void setApplySheetUrl(String applySheetUrl) {
+        this.applySheetUrl = applySheetUrl;
     }
 
     public String getBusinessLicenseUrl() {

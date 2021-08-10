@@ -21,6 +21,8 @@ import java.util.Date;
  * 企业实名认证表
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ZsCorp extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -126,6 +128,10 @@ public class ZsCorp extends BasePaginationEntity implements Serializable {
      */
     private String acceptanceUrl;
     /**
+     * 客户申请表
+     */
+    private String applySheetUrl;
+    /**
      *经办人姓名
      */
     private String agentName;
@@ -138,17 +144,9 @@ public class ZsCorp extends BasePaginationEntity implements Serializable {
      */
     private String agentIdTurl;
     /**
-     *经办人身份证正面 URL
+     *经办人身份证正反面 URL
      */
     private String agentIdUrl;
-//    /**
-//     *经办人身份证正面 URL
-//     */
-//    private String agentIdUrl;
-//    /**
-//     *经办人身份证反面 URL
-//     */
-//    private String agentIdFurl;
     /**
      *经办人手持身份证 URL
      */
@@ -203,6 +201,10 @@ public class ZsCorp extends BasePaginationEntity implements Serializable {
      *联系电话
      */
     private String contactNo;
+    /**
+     * 使用人身份证正反面 url
+     */
+    private String contactIdUrl;
     /**
      * 用户id
      */
