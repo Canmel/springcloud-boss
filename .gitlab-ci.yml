@@ -28,7 +28,7 @@ docker-package:
     # 在根目录创建一个文件夹来放所有的构建物
     - mkdir -p sartifacts/eurka_service && mkdir -p sartifacts/system_service && mkdir -p sartifacts/auth_service && mkdir -p sartifacts/survey_service && mkdir -p sartifacts/stock_service && mkdir -p sartifacts/viewer_service && mkdir -p sartifacts/sms_service && mkdir -p sartifacts/control_service && mkdir -p sartifacts/realname_service && mkdir -p sartifacts/zuul_service
 #    - cp -r springcloud-eureka-server/docker-compose.yml springcloud-eureka-server/target/springcloud-eureka-server-*.jar springcloud-eureka-server/Dockerfile springcloud-eureka-server/docker_web_run.sh sartifacts/eurka_service
-#    - cp -r springcloud-system/docker-compose.yml springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile springcloud-system/docker_web_run.sh sartifacts/system_service
+    - cp -r springcloud-system/docker-compose.yml springcloud-system/target/springcloud-system-*.jar springcloud-system/Dockerfile springcloud-system/docker_web_run.sh sartifacts/system_service
     - cp -r springcloud-auth-server/docker-compose.yml springcloud-auth-server/target/springcloud-auth-server-*.jar springcloud-auth-server/Dockerfile springcloud-auth-server/docker_web_run.sh sartifacts/auth_service
 #    - cp -r springcloud-survey/docker-compose.yml springcloud-survey/target/springcloud-survey-*.jar springcloud-survey/Dockerfile springcloud-survey/docker_web_run.sh sartifacts/survey_service
 #    - cp -r springcloud-stock-opzsAnswereration/docker-compose.yml springcloud-stock-operation/target/springcloud-stock-operation-*.jar springcloud-stock-operation/Dockerfile springcloud-stock-operation/docker_web_run.sh sartifacts/stock_service
@@ -56,8 +56,8 @@ docker-build:
     - pwd
 #    - docker build -t $eurka_service ./sartifacts/eurka_service/
 #    - docker push $eurka_service
-#    - docker build -t $system_service ./sartifacts/system_service/
-#    - docker push $system_service
+    - docker build -t $system_service ./sartifacts/system_service/
+    - docker push $system_service
     - docker build -t $auth_service ./sartifacts/auth_service/
     - docker push $auth_service
 #    - docker build -t $survey_service ./sartifacts/survey_service/
@@ -84,7 +84,7 @@ docker-deploy:
   script:
     - pwd
 #    - cd springcloud-eureka-server && docker-compose up -d && cd .. && pwd
-#    - cd springcloud-system && docker-compose up -d && cd .. && pwd
+    - cd springcloud-system && docker-compose up -d && cd .. && pwd
     - cd springcloud-auth-server && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-survey && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-stock-operation && docker-compose up -d && cd .. && pwd
@@ -92,5 +92,5 @@ docker-deploy:
 #    - cd springcloud-sms-server && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-access-control && docker-compose up -d && cd .. && pwd
 #    - cd springcloud-realname && docker-compose up -d && cd .. && pwd
-#    - cd springcloud-zuul-getway && docker-compose up -d && cd .. && pwd
+    - cd springcloud-zuul-getway && docker-compose up -d && cd .. && pwd
     - docker rmi `docker images | grep  "<none>" | awk '{print $3}'`
