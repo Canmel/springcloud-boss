@@ -5,19 +5,26 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.enums.NumberStatus;
 import com.camel.realname.enums.ZsApplyStatus;
+import com.camel.realname.enums.ZsStatus;
+import com.camel.realname.enums.ZsYesOrNo;
 import com.camel.realname.mapper.ApplyNumberMapper;
 import com.camel.realname.mapper.ApproveMapper;
+import com.camel.realname.mapper.ApproveOrderMapper;
 import com.camel.realname.mapper.ZsCorpMapper;
 import com.camel.realname.model.ApplyNumber;
 import com.camel.realname.model.ApproveInfo;
+import com.camel.realname.model.ApproveOrder;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ApproveService;
+import com.camel.realname.utils.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +34,9 @@ public class ApproveServiceImpl implements ApproveService {
 
     @Resource
     private ZsCorpMapper zsCorpMapper;
+
+    @Resource
+    private ApproveOrderMapper approveOrderMapper;
 
     @Resource
     private ApplyNumberMapper applyNumberMapper;
@@ -50,7 +60,27 @@ public class ApproveServiceImpl implements ApproveService {
                     return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"状态码类型不存在");
                 }
                 zsCorp.setApply(apply);
-                zsCorpMapper.updateCorp(zsCorp);
+                Integer res = zsCorpMapper.updateCorp(zsCorp);
+                if(res > 0){
+                    if(ZsApplyStatus.APPLY_SUCCESS.getCode().equals(approveInfo.getApply().getCode())){
+                        //  审核通过，创建订单
+                        ApproveOrder order = new ApproveOrder();
+                        order.setId(SnowflakeIdWorker.generateId());
+                        order.setUserId(approveInfo.getUserId());
+                        order.setPrice(new BigDecimal("88.88"));
+                        order.setSubject("号码授权订单");
+                        order.setBody("号码授权");
+                        order.setCreateTime(new Date());
+                        order.setIsPay(ZsYesOrNo.NO);
+                        order.setStatus(ZsStatus.CREATED);
+                        Integer integer = approveOrderMapper.insertOrder(order);
+                        if(integer <= 0){
+                            return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"创建订单失败");
+                        }
+                    }
+                }else{
+                    return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改认证状态失败");
+                }
             }else if(approveInfo.getType().getCode() == 1){
                 //  外呼号码
                 ApplyNumber applyNumber = new ApplyNumber();

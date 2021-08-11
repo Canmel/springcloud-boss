@@ -71,7 +71,7 @@ public interface ZsCorpService extends IService<ZsCorp>{
     List<ZsCorp> getList(ZsCorp zsCorp) throws InvocationTargetException, FileNotFoundException, IllegalAccessException, NoSuchMethodException;
 
     /**
-     * 审核改变状态
+     * 审核改变状态,通过就创建订单
      * @param zsCorp 企业认证信息
      * @return Result
      */

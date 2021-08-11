@@ -9,15 +9,15 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
-import com.camel.realname.enums.ApproveType;
-import com.camel.realname.enums.NumberStatus;
-import com.camel.realname.enums.ZsApplyStatus;
-import com.camel.realname.enums.ZsStatus;
+import com.camel.realname.enums.*;
+import com.camel.realname.mapper.ApproveOrderMapper;
 import com.camel.realname.mapper.ZsCorpMapper;
+import com.camel.realname.model.ApproveOrder;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ZsCorpService;
 import com.camel.realname.utils.ApplicationToolsUtils;
 import com.camel.realname.utils.ExportWordUtil;
+import com.camel.realname.utils.SnowflakeIdWorker;
 import com.camel.realname.vo.ZsCorpUrlVo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -40,12 +40,10 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -61,6 +59,9 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
 
     @Resource
     private ZsCorpMapper zsCorpMapper;
+
+    @Resource
+    private ApproveOrderMapper approveOrderMapper;
 
     @Resource
     private QiNiuConfig qiNiuConfig;
@@ -248,9 +249,10 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     public Result audit(ZsCorp zsCorp) {
         Integer res = zsCorpMapper.audit(zsCorp);
         if(res > 0){
+
             return ResultUtil.success("审核成功");
         }
-        return ResultUtil.error(ResultEnum.SERVICE_ERROR);
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"审核状态修改失败");
     }
 
     /**

@@ -130,7 +130,12 @@
                                 @click="audit(scope.$index, scope.row,4)">退回</el-button>
                     </div>
                     <div v-if="scope.row.apply.code === 3" align="center">
-                        <el-tag type="success">已通过</el-tag>
+                        <div v-if="scope.row.isPay !== null && scope.row.isPay.code === 0">
+                            <el-tag type="warning">已通过,未支付</el-tag>
+                        </div>
+                        <div v-if="scope.row.isPay !== null && scope.row.isPay.code === 1">
+                            <el-tag type="success">已通过,已支付</el-tag>
+                        </div>
                     </div>
                     <div v-if="scope.row.apply.code === 4" align="center">
                         <el-tag type="error">已退回</el-tag>
@@ -152,120 +157,119 @@
     </div>
 </div>
 </body>
-
 <script>
-    new Vue({
-        el: '.x-body',
-        data: {
-            multipleSelection:[],
-            tableData:[],
-            search:"",
-            paramsData:{
-                pageNum:1,
-                pageSize:20,
-            },
-            pageParams:{
-                pageSizes:[10, 20, 30, 40],
-                pageSize:20,
-                pageNum:1,
-                total:1000,
-                layout:"total, sizes, prev, pager, next, jumper",
-            },
-        },
-        created: function () {
-            // this.me();
-        },
-        mounted:function(){
-            console.log("mounted...");
-            this.getList();
-        },
-        methods: {
-            handleSelectionChange(val){
-                this.multipleSelection = val;
-                console.log("multipleSelection:",this.multipleSelection)
-            },
-            filterTag(value, row) {
-                return row.apply.code === value;
-            },
-            downAuthInfo(index, row){
-                window.open('/realname/exportWord/'+ row.id+'?access_token=' + sessionStorage.getItem('access_token'));
-            },
-            downClientApplication(index, row){
-                window.open('/realname/getApplySheet/'+ row.id+'?access_token=' + sessionStorage.getItem('access_token'));
-            },
-            handleSizeChange(val){
-                // console.log(`每页 ${val} 条`);
-                this.paramsData.pageSize = val;
-                this.getList();
-            },
-            handleCurrentChange(val){
-                // console.log(`当前页: ${val}`);
-                this.paramsData.pageNum = val;
-                this.getList();
-            },
-            resetPage(){
-                this.pageParams={
+        new Vue({
+            el: '.x-body',
+            data: {
+                multipleSelection:[],
+                tableData:[],
+                search:"",
+                paramsData:{
+                    pageNum:1,
+                    pageSize:20,
+                },
+                pageParams:{
                     pageSizes:[10, 20, 30, 40],
                     pageSize:20,
-                    pagerCount:6,
                     pageNum:1,
                     total:1000,
                     layout:"total, sizes, prev, pager, next, jumper",
-                }
+                },
             },
-            audit(index, row,apply){
-                let that = this;
-                let data={
-                    id:row.id,
-                    name:row.name,
-                    createTime:row.createTime,
-                    type:row.type.code,
-                    apply:apply,
-                    userId:row.userId,
-                    status:row.status.code
-                }
-                data = JSON.stringify(data)
-                AJAX.PUT("approve/audit",data,function(res){
-                    console.log("res:",res);
-                    if(res.code === 200){
-                        that.$message({
-                            message: res.msg,
-                            type: 'success',
-                            center: true
-                        });
-                    }else{
-                        that.$message({
-                            message: res.msg,
-                            type: 'error',
-                            center: true
-                        });
-                    }
-                    that.getList();
-                })
+            created: function () {
+                // this.me();
             },
-            searchList(){
-                this.resetPage();
+            mounted:function(){
+                console.log("mounted...");
                 this.getList();
             },
-            getList(){
-                let that = this;
-                let paramsData = this.paramsData;
-                paramsData['name']=this.search;
-                AJAX.GET_SYNC("approve/getList",this.paramsData,function(res){
-                    if(res.code === 200){
-                        that.tableData = res.data.list;
-                        that.pageParams.total = res.data.total;
-                    }else{
-                        that.$message({
-                            message: res.msg,
-                            type: 'error',
-                            center: true
-                        });
+            methods: {
+                handleSelectionChange(val){
+                    this.multipleSelection = val;
+                    console.log("multipleSelection:",this.multipleSelection)
+                },
+                filterTag(value, row) {
+                    return row.apply.code === value;
+                },
+                downAuthInfo(index, row){
+                    window.open('/realname/exportWord/'+ row.id+'?access_token=' + sessionStorage.getItem('access_token'));
+                },
+                downClientApplication(index, row){
+                    window.open('/realname/getApplySheet/'+ row.id+'?access_token=' + sessionStorage.getItem('access_token'));
+                },
+                handleSizeChange(val){
+                    // console.log(`每页 ${val} 条`);
+                    this.paramsData.pageSize = val;
+                    this.getList();
+                },
+                handleCurrentChange(val){
+                    // console.log(`当前页: ${val}`);
+                    this.paramsData.pageNum = val;
+                    this.getList();
+                },
+                resetPage(){
+                    this.pageParams={
+                        pageSizes:[10, 20, 30, 40],
+                        pageSize:20,
+                        pagerCount:6,
+                        pageNum:1,
+                        total:1000,
+                        layout:"total, sizes, prev, pager, next, jumper",
                     }
-                })
+                },
+                audit(index, row,apply){
+                    let that = this;
+                    let data={
+                        id:row.id,
+                        name:row.name,
+                        createTime:row.createTime,
+                        type:row.type.code,
+                        apply:apply,
+                        userId:row.userId,
+                        status:row.status.code
+                    }
+                    data = JSON.stringify(data)
+                    AJAX.PUT("approve/audit",data,function(res){
+                        console.log("res:",res);
+                        if(res.code === 200){
+                            that.$message({
+                                message: res.msg,
+                                type: 'success',
+                                center: true
+                            });
+                        }else{
+                            that.$message({
+                                message: res.msg,
+                                type: 'error',
+                                center: true
+                            });
+                        }
+                        that.getList();
+                    })
+                },
+                searchList(){
+                    this.resetPage();
+                    this.getList();
+                },
+                getList(){
+                    let that = this;
+                    let paramsData = this.paramsData;
+                    paramsData['name']=this.search;
+                    AJAX.GET_SYNC("approve/getList",this.paramsData,function(res){
+                        if(res.code === 200){
+                            that.tableData = res.data.list;
+                            that.pageParams.total = res.data.total;
+                        }else{
+                            that.$message({
+                                message: res.msg,
+                                type: 'error',
+                                center: true
+                            });
+                        }
+                    })
+                }
             }
-        }
-    });
+        });
 
 </script>
 </html>

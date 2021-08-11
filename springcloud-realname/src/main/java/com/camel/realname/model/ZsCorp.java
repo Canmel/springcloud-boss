@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.realname.enums.ZsApplyStatus;
 import com.camel.realname.enums.ZsStatus;
+import com.camel.realname.enums.ZsYesOrNo;
 import com.camel.realname.vo.ZsCorpUrlVo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -233,5 +234,9 @@ public class ZsCorp extends BasePaginationEntity implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date submitDate;
+    /**
+     * 是否支付
+     */
+    private ZsYesOrNo isPay;
 
 }
