@@ -56,11 +56,11 @@ public class BootOAuth2WebResponseExceptionTranslator implements WebResponseExce
                 result.setCode(400);
                 return status.body(result);
             }
-            result.setMessage("用户名或密码错误");
+            result.setMessage("认证失败,请输入正确的账号密码");
             result.setCode(400);
             return status.body(result);
         }
-        result.setMessage("认证失败");
+        result.setMessage("认证失败,请输入正确的账号密码");
         result.setCode(400);
         return status.body(result);
     }

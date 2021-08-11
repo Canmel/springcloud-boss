@@ -9,6 +9,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysRole;
 import com.camel.core.model.SysUser;
 import com.camel.core.model.SysUserRole;
+import com.camel.core.utils.PwdCheckUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.redis.entity.RedisUser;
 import com.camel.redis.utils.SerizlizeUtil;
@@ -115,6 +116,9 @@ public class SysUserController extends BaseCommonController {
             SysUser user = service.selectById(sysUser.getUid());
             if(!encoder.matches(sysUser.getOldPassword(), user.getPassword())) {
                 throw new RuntimeException("原密码不正确");
+            }
+            if(checkPasswd(sysUser.getPassword())) {
+                throw new RuntimeException("新密码应该是包含大写、小写字母、数字的6-20位的字符串");
             }
         }
         sysUser.setPassword(encoder.encode(sysUser.getPassword()));
@@ -274,6 +278,14 @@ public class SysUserController extends BaseCommonController {
         userRoleService.insert(sysUserRole);
         sysUserCacheConfig.initSysUsers();
         return;
+    }
+
+    public static boolean checkPasswd(String pswd) {
+        boolean flag = false;
+        if(PwdCheckUtil.checkPasswordLength(pswd, "6", "20") && PwdCheckUtil.checkContainDigit(pswd) && PwdCheckUtil.checkContainCase(pswd) && !PwdCheckUtil.checkContainLowerCase(pswd) && PwdCheckUtil.checkContainUpperCase(pswd)) {
+            flag = true;
+        }
+        return flag;
     }
 }
 
