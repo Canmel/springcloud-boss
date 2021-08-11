@@ -6,32 +6,28 @@ import com.baomidou.mybatisplus.toolkit.MapUtils;
 import com.camel.core.model.SysUser;
 import com.camel.survey.annotation.ExcelAnnotation;
 import com.camel.survey.exceptions.ExcelImportException;
-import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.model.Customer;
 import com.camel.survey.model.ZsPhoneInformation;
-import com.camel.survey.model.ZsSurveyBaseEntity;
 import com.camel.survey.utils.export.HSSFUtils;
 import com.github.pagehelper.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.usermodel.examples.CellTypes;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.streaming.SXSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.DocFlavor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class ExcelUtil {
     public static List<String> readExcelPhone(MultipartFile file) {
@@ -711,7 +707,24 @@ public class ExcelUtil {
     public static void creatTotalHead(Sheet sheet, Integer startRow) {
         String[] titles = {"序号", "选项", "样本情况"};
         int columIndex = 1;
-        Row row = sheet.createRow(startRow);
+        Row row = sheet.getRow(startRow);
+        if(ObjectUtil.isEmpty(row)) {
+            row = sheet.createRow(startRow);
+        }
+        for (String title : titles) {
+            Cell cell = row.createCell(columIndex++);
+            cell.setCellStyle(createTotalHeadStyle(sheet.getWorkbook()));
+            cell.setCellValue(title);
+        }
+    }
+
+    public static void creatRemarkHead(Sheet sheet, Integer startRow) {
+        String[] titles = {"序号", "标签", "号码", "其他选项", "其他中的填写"};
+        int columIndex = 10;
+        Row row = sheet.getRow(startRow);
+        if(ObjectUtil.isEmpty(row)) {
+            row = sheet.createRow(startRow);
+        }
         for (String title : titles) {
             Cell cell = row.createCell(columIndex++);
             cell.setCellStyle(createTotalHeadStyle(sheet.getWorkbook()));

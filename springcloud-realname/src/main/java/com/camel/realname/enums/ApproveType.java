@@ -6,24 +6,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum NumberStatus implements MyEnum {
+public enum ApproveType implements MyEnum {
 
-    DELETED(0, "已删除"),EDITABLE(1, "创建"), APPLYING(2, "申请中"), SUCCESS(3, "成功"), FAILD(4, "失败");
+    企业(0,"企业"),
+    外呼号码(1,"外呼号码"),
+    个人(2,"个人");
 
-    /**
-     * 状态码
-     */
+
     private Integer code;
 
-    /**
-     * 状态名称
-     */
     private String name;
-
-    NumberStatus(Integer code, String name) {
-        this.code = code;
-        this.name = name;
-    }
 
     public Integer getCode() {
         return code;
@@ -41,13 +33,18 @@ public enum NumberStatus implements MyEnum {
         this.name = name;
     }
 
+    ApproveType(Integer code, String name) {
+        this.code = code;
+        this.name = name;
+    }
+
     @Override
     public Serializable getValue() {
         return this.code;
     }
 
-    public static NumberStatus getEnumByCode(Integer code) {
-        for (NumberStatus enums : NumberStatus.values()) {
+    public static ApproveType getEnumByCode(Integer code) {
+        for (ApproveType enums : ApproveType.values()) {
             if (enums.getCode().equals(code)) {
                 return enums;
             }

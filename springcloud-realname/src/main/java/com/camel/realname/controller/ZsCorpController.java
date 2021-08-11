@@ -6,6 +6,7 @@ import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.utils.ResultUtil;
+import com.camel.realname.enums.ApproveType;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ZsCorpService;
 import com.github.pagehelper.PageHelper;
@@ -82,10 +83,17 @@ public class ZsCorpController extends BaseCommonController {
      * @return Result
      */
     @SneakyThrows
-    @GetMapping("/image/{imgName}")
+    @GetMapping("/image/{imgName}/{userId}")
     public void showImage(@PathVariable("imgName") String imgName,
+                          @PathVariable("userId") Integer userId,
+                          Integer type,
                           HttpServletResponse response){
-        zsCorpService.showImage(imgName, response);
+        if(type == null){
+            response.setContentType("text/html");
+            response.getWriter().println("type 类型 找不到");
+        }
+        ApproveType approveType = ApproveType.getEnumByCode(type);
+        zsCorpService.showImage(userId, approveType,imgName, response);
     }
 
     /**

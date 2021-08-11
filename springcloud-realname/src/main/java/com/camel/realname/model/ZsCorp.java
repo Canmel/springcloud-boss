@@ -14,13 +14,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 企业实名认证表
  */
 @Data
-public class ZsCorp extends BasePaginationEntity {
+public class ZsCorp extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
@@ -58,6 +59,10 @@ public class ZsCorp extends BasePaginationEntity {
      *法人身份证 URL
      */
     private String corporateIdUrl;
+    /**
+     *法人身份证手持 URL
+     */
+    private String corporateIdHurl;
     /**
      *企业成立日期 格式：2017-01-01
      */
@@ -136,10 +141,14 @@ public class ZsCorp extends BasePaginationEntity {
      *经办人身份证正面 URL
      */
     private String agentIdUrl;
-    /**
-     *经办人身份证反面 URL
-     */
-    private String agentIdFurl;
+//    /**
+//     *经办人身份证正面 URL
+//     */
+//    private String agentIdUrl;
+//    /**
+//     *经办人身份证反面 URL
+//     */
+//    private String agentIdFurl;
     /**
      *经办人手持身份证 URL
      */
@@ -211,7 +220,7 @@ public class ZsCorp extends BasePaginationEntity {
     private ZsApplyStatus apply;
 
     /**
-     * 状态
+     * 状态 0 无效 1 有效
      */
     @TableLogic
     private ZsStatus status;

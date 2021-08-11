@@ -24,6 +24,10 @@ public class ZsCorpUrlVo implements Serializable {
      */
     private String corporateIdUrl;
     /**
+     *法人身份证手持 URL
+     */
+    private String corporateIdHurl;
+    /**
      * 组织机构代码证 URL
      */
     private String organizationCodeUrl;
@@ -40,13 +44,13 @@ public class ZsCorpUrlVo implements Serializable {
      */
     private String agentIdTurl;
     /**
-     *  经办人身份证正面 URL
+     *  经办人身份证 正反面 URL
      */
     private String agentIdUrl;
-    /**
-     *  经办人身份证反面 URL
-     */
-    private String agentIdFurl;
+//    /**
+//     *  经办人身份证反面 URL
+//     */
+//    private String agentIdFurl;
     /**
      *  经办人手持 URL
      */
@@ -55,15 +59,16 @@ public class ZsCorpUrlVo implements Serializable {
     public ZsCorpUrlVo() {
     }
 
-    public ZsCorpUrlVo(String businessLicenseUrl, String corporateIdUrl, String organizationCodeUrl, String entrustmentLetterUrl, String acceptanceUrl, String agentIdTurl, String agentIdUrl, String agentIdFurl, String agentIdHurl) {
+    public ZsCorpUrlVo(String businessLicenseUrl, String corporateIdUrl, String corporateIdHurl, String organizationCodeUrl, String entrustmentLetterUrl,
+                       String acceptanceUrl, String agentIdTurl, String agentIdUrl, String agentIdHurl) {
         this.businessLicenseUrl = businessLicenseUrl;
         this.corporateIdUrl = corporateIdUrl;
+        this.corporateIdHurl = corporateIdHurl;
         this.organizationCodeUrl = organizationCodeUrl;
         this.entrustmentLetterUrl = entrustmentLetterUrl;
         this.acceptanceUrl = acceptanceUrl;
         this.agentIdTurl = agentIdTurl;
         this.agentIdUrl = agentIdUrl;
-        this.agentIdFurl = agentIdFurl;
         this.agentIdHurl = agentIdHurl;
     }
 
@@ -81,6 +86,14 @@ public class ZsCorpUrlVo implements Serializable {
 
     public void setCorporateIdUrl(String corporateIdUrl) {
         this.corporateIdUrl = corporateIdUrl;
+    }
+
+    public String getCorporateIdHurl() {
+        return corporateIdHurl;
+    }
+
+    public void setCorporateIdHurl(String corporateIdHurl) {
+        this.corporateIdHurl = corporateIdHurl;
     }
 
     public String getOrganizationCodeUrl() {
@@ -121,14 +134,6 @@ public class ZsCorpUrlVo implements Serializable {
 
     public void setAgentIdUrl(String agentIdUrl) {
         this.agentIdUrl = agentIdUrl;
-    }
-
-    public String getAgentIdFurl() {
-        return agentIdFurl;
-    }
-
-    public void setAgentIdFurl(String agentIdFurl) {
-        this.agentIdFurl = agentIdFurl;
     }
 
     public String getAgentIdHurl() {

@@ -1,0 +1,104 @@
+#--------------------server---------------------
+server:
+  port: 8080
+
+#--------------------spring---------------------
+spring:
+  application:
+    name: springcloud-gateway
+  resources:
+    static-locations: classpath:/templates/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/pages/
+  mvc:
+    static-path-pattern: /**
+  thymeleaf:
+    prefix: classpath:/templates/
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+#--------------------eureka---------------------
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_IP}:8888/eureka/
+
+#--------------------Zuul-----------------------
+zuul:
+  routes:
+    member:
+      path: /system/**
+      serviceId: springcloud-system
+      sensitiveHeaders: "*"
+    auth:
+      path: /auth/**
+      serviceId: springcloud-auth
+      sensitiveHeaders: "*"
+    bpm:
+      path: /bpm/**
+      serviceId: springcloud-bpm-server
+      sensitiveHeaders: "*"
+    oa:
+      path: /oa/**
+      serviceId: springcloud-oa-server
+      sensitiveHeaders: "*"
+    activiti:
+      path: /acti/**
+      serviceId: springcloud-activiti
+    survey:
+      path: /survey/**
+      serviceId: springcloud-survey
+    attendance:
+      path: /attendance/**
+      serviceId: springcloud-attendance
+    interviewer:
+      path: /viewer/**
+      serviceId: springcloud-interviewer
+      sensitiveHeaders: "*"
+    control:
+      path: /control/**
+      serviceId: springcloud-access-control
+      sensitiveHeaders: "*"
+    realname:
+      path: /realname/**
+      serviceId: springcloud-realname
+      sensitiveHeaders: "*"
+  retryable: true
+  ignored-services: "*"
+  host:
+    connect-timeout-millis: 600000
+    socket-timeout-millis: 600000
+  add-proxy-headers: true
+
+
+#---------------------OAuth2---------------------
+security:
+  oauth2:
+    client:
+      access-token-uri: http://${APPLICATION_IP}:${server.port}/auth/oauth/token
+      user-authorization-uri: http://${APPLICATION_IP}:${server.port}/auth/oauth/authorize
+      client-id: web
+    resource:
+      user-info-uri:  http://${APPLICATION_IP}:${server.port}/auth/session/me
+      prefer-token-info: false
+
+#----------------------超时配置-------------------
+ribbon:
+  ReadTimeout: 600000
+  ConnectTimeout: 600000
+  MaxAutoRetries: 2             # 对当前实例的重试次数
+  MaxAutoRetriesNextServer: 3   # 切换实例重试次数
+  eureka:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true                   # 如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000000   # 断路器超时时间

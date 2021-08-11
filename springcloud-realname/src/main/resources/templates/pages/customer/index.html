@@ -25,20 +25,20 @@
 <body>
 <div class="x-body">
     <blockquote class="layui-elem-quote">本模块仅限企业实名认证
-        <template v-if="authInfo.apply.code === 0">
+        <template v-if="authInfo.apply.code === 1">
             <b>| 您还未认证提供您可以</b>
             <span class="layui-btn layui-btn-normal layui-btn-mini"
                   @click="dialogVisible = true"> {{disabled === true ? "开始编辑" : "退出编辑"}}</span>
         </template>
-        <template v-else-if="authInfo.apply.code === 1">
+        <template v-else-if="authInfo.apply.code === 2">
             <span class="layui-btn layui-btn-warm layui-btn-mini"
                   >审核中...</span>
         </template>
-        <template v-else-if="authInfo.apply.code === 2">
+        <template v-else-if="authInfo.apply.code === 3">
             <span class="layui-btn layui-btn-mini"
                   >审核已通过</span>
         </template>
-        <template v-else-if="authInfo.apply.code === 3">
+        <template v-else-if="authInfo.apply.code === 4">
             <span style="color: #FF5722">审核未通过，请重新编辑提交审核</span>
             <span class="layui-btn layui-btn-normal layui-btn-mini"
                   @click="dialogVisible = true">{{disabled === true ? "开始编辑" : "退出编辑"}}</span>
@@ -132,6 +132,33 @@
                                     :before-upload="beforeUpload"
                                     :http-request="function(options){
                                         return uploadImage(options,'corporateIdUrl')
+                                    }"
+                                    multiple
+                                    :limit="1">
+                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="30%">法人身份证手持</th>
+                    <td>
+                        <div v-if="authInfo.corporateIdHurl !== '' && authInfo.corporateIdHurl !== null">
+                            <img :src="authInfo.zsCorpUrlVo.corporateIdHurl" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div v-else>
+                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                        </div>
+                        <div>
+                            <el-upload
+                                    :disabled="disabled"
+                                    class="upload-demo"
+                                    action=""
+                                    :on-success="uploadSuccess"
+                                    :before-upload="beforeUpload"
+                                    :http-request="function(options){
+                                        return uploadImage(options,'corporateIdHurl')
                                     }"
                                     multiple
                                     :limit="1">
@@ -249,7 +276,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th width="30%">身份证正面</th>
+                    <th width="30%">身份证正反面</th>
                     <td>
                         <div v-if="authInfo.agentIdUrl !== '' && authInfo.agentIdUrl !== null">
                             <img :src="authInfo.zsCorpUrlVo.agentIdUrl" style="width: 100%; max-width: 100%;">
@@ -267,33 +294,6 @@
                                     :before-upload="beforeUpload"
                                     :http-request="function(options){
                                         return uploadImage(options,'agentIdUrl')
-                                    }"
-                                    :limit="1">
-                                <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                            </el-upload>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th width="30%">身份证反面</th>
-                    <td>
-                        <div v-if="authInfo.agentIdFurl !== '' && authInfo.agentIdFurl !== null">
-                            <img :src="authInfo.zsCorpUrlVo.agentIdFurl" style="width: 100%; max-width: 100%;">
-                        </div>
-                        <div v-else>
-                            <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
-                        </div>
-                        <div>
-                            <el-upload
-                                    :disabled="disabled"
-                                    class="upload-demo"
-                                    multiple
-                                    action=""
-                                    :on-success="uploadSuccess"
-                                    :before-upload="beforeUpload"
-                                    :http-request="function(options){
-                                        return uploadImage(options,'agentIdFurl')
                                     }"
                                     :limit="1">
                                 <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
@@ -444,7 +444,7 @@
                 </tbody>
             </table>
             <div style="text-align: center">
-                <el-button type="primary" plain @click="submit">主要按钮</el-button>
+                <el-button :disabled="disabled" type="primary" plain @click="submit">提交审核</el-button>
             </div>
         </div>
     </fieldset>
@@ -477,6 +477,7 @@
                 businessLicenseUrl:null,
                 corporateName:null,
                 corporateIdUrl:null,
+                corporateIdHurl:null,
                 businessStartDate:null,
                 businessTermStartDate:null,
                 businessTermEndDate:null,
@@ -486,7 +487,6 @@
                 agentPid:null,
                 agentIdTurl:null,
                 agentIdUrl:null,
-                agentIdFurl:null,
                 agentIdHurl:null,
                 agentIdAddress:null,
                 agentIdGender:null,
@@ -500,7 +500,7 @@
                 contactName:null,
                 contactNo:null,
                 userId:null,
-                status:null,
+                apply:null,
                 zsCorpUrlVo:{},
             },
             editable: false,
@@ -527,7 +527,30 @@
                 })
             },
             submit(){
+                let that = this;
                 console.log("提交审核，状态更变为2，页面不可修改")
+                let data={
+                    id:this.authInfo.id,
+                    apply:2
+                }
+                data = JSON.stringify(data)
+                AJAX.PUT("zsCorp/audit",data,function(res){
+                    console.log(res)
+                    if(res.code === 200){
+                        that.$message({
+                            message: "提交成功",
+                            type: 'success',
+                            center: true
+                        });
+                    }else{
+                        that.$message({
+                            message: "提交失败",
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                    that.showInfo();
+                })
                 this.disabled = true;
             },
             updateCorp(param){

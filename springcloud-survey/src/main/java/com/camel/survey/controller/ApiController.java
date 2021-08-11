@@ -58,11 +58,11 @@ public class ApiController {
     }
 
     @PostMapping("/upload")
-    public Result upload(@RequestParam("file") MultipartFile file, Integer answerId) {
+    public Result upload(@RequestParam("file") MultipartFile file, Integer answerId, Integer duration) {
         ZsAnswer answer = answerService.selectById(answerId);
         JSONObject upload = documentService.upload(file);
         // 新建一个录音
-        ZsCdrinfo cdrinfo = loadNewCdrInfo(upload.getString("key"), answer);
+        ZsCdrinfo cdrinfo = loadNewCdrInfo(upload.getString("key"), answer, duration);
         cdrinfoService.insert(cdrinfo);
         answer.setAgentUUID(cdrinfo.getCall_uuid());
         answer.setStartTime(cdrinfo.getStart_time());
@@ -71,7 +71,7 @@ public class ApiController {
         return ResultUtil.success("录音文件上传成功");
     }
 
-    public static ZsCdrinfo loadNewCdrInfo(String path, ZsAnswer zsAnswer) {
+    public static ZsCdrinfo loadNewCdrInfo(String path, ZsAnswer zsAnswer, Integer duration) {
         SimpleDateFormat dataParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ZsCdrinfo cdrinfo = new ZsCdrinfo();
         String uuid = RandomUtil.randomUUID();
@@ -82,8 +82,8 @@ public class ApiController {
         cdrinfo.setCaller_num("");
         cdrinfo.setCallee_num(zsAnswer.getCreator());
         cdrinfo.setStart_time(dataParser.format(new Date()));
-        cdrinfo.setCall_lasts_time("100");
-        cdrinfo.setAgent_duration(100);
+        cdrinfo.setCall_lasts_time(String.valueOf(duration));
+        cdrinfo.setAgent_duration(duration);
         cdrinfo.setRecordFile(path);
         cdrinfo.setUid(zsAnswer.getUid());
         cdrinfo.setSurveyId(zsAnswer.getSurveyId());

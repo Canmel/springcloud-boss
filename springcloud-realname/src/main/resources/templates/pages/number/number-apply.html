@@ -67,6 +67,20 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label for="cardLegalH" class="layui-form-label">
+                <span class="x-red">*</span>法人手持身份证
+            </label>
+            <div class="layui-input-inline">
+                <input type="file" id="cardLegalH" name="cardLegalH" @change="upload('cardLegalH')"
+                       :disabled="apply.status && apply.status.code !== 1"
+                       autocomplete="off" class="layui-input">
+                <span v-if="apply.cardLegalH" class="span success">已上传</span>
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>法人身份证手持照片
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label for="cardAgent" class="layui-form-label">
                 <span class="x-red">*</span>经办人身份证
             </label>

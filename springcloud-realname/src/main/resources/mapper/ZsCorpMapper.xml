@@ -12,6 +12,7 @@
         <result column="business_license_url" property="businessLicenseUrl" javaType="java.lang.String"/>
         <result column="corporate_name" property="corporateName" javaType="java.lang.String"/>
         <result column="corporate_id_url" property="corporateIdUrl" javaType="java.lang.String"/>
+        <result column="corporate_id_hurl" property="corporateIdHurl" javaType="java.lang.String"/>
         <result column="business_start_date" property="businessStartDate" javaType="java.util.Date"/>
         <result column="business_term_start_date" property="businessTermStartDate" javaType="java.util.Date"/>
         <result column="business_term_end_date" property="businessTermEndDate" javaType="java.util.Date"/>
@@ -29,7 +30,6 @@
         <result column="agent_pid" property="agentPid" javaType="java.lang.String"/>
         <result column="agent_id_turl" property="agentIdTurl" javaType="java.lang.String"/>
         <result column="agent_id_url" property="agentIdUrl" javaType="java.lang.String"/>
-        <result column="agent_id_furl" property="agentIdFurl" javaType="java.lang.String"/>
         <result column="agent_id_hurl" property="agentIdHurl" javaType="java.lang.String"/>
         <result column="agent_id_address" property="agentIdAddress" javaType="java.lang.String"/>
         <result column="agent_id_gender" property="agentIdGender" javaType="java.lang.Integer"/>
@@ -51,12 +51,12 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,request_id,is_merge,enterprise_name,business_license_code,
-        business_license_url,corporate_name,corporate_id_url,business_start_date,
+        business_license_url,corporate_name,corporate_id_url,corporate_id_hurl,business_start_date,
         business_term_start_date,business_term_end_date,business_address,
         business_no,organization_code,organization_code_url,organization_name,
         organization_type,organization_effective_date,organization_expiration_date,
         entrustment_letter_url,acceptance_url,agent_name,agent_pid,agent_id_turl,
-        agent_id_url,agent_id_furl,agent_id_hurl,agent_id_address,agent_id_gender,
+        agent_id_url,agent_id_hurl,agent_id_address,agent_id_gender,
         agent_id_nation,agent_id_birth_day,agent_id_issuing_authority,
         agent_id_cert_valid_date,agent_id_cert_exp_date,agent_contact_no,
         agent_address,contact_name,contact_no,user_id,status,submit_date, status, apply
@@ -79,6 +79,7 @@
             <if test="businessLicenseUrl != null and businessLicenseUrl != ''">business_license_url = #{businessLicenseUrl},</if>
             <if test="corporateName != null and corporateName != ''">corporate_name = #{corporateName},</if>
             <if test="corporateIdUrl != null and corporateIdUrl != ''">corporate_id_url = #{corporateIdUrl},</if>
+            <if test="corporateIdHurl != null and corporateIdHurl != ''">corporate_id_hurl = #{corporateIdHurl},</if>
             <if test="businessStartDate != null">business_start_date = #{businessStartDate},</if>
             <if test="businessTermStartDate != null">business_term_start_date = #{businessTermStartDate},</if>
             <if test="businessTermEndDate != null">business_term_end_date = #{businessTermEndDate},</if>
@@ -109,13 +110,14 @@
             <if test="agentAddress != null and agentAddress != ''">agent_address = #{agentAddress},</if>
             <if test="contactName != null and contactName != ''">contact_name = #{contactName},</if>
             <if test="contactNo != null and contactNo != ''">contact_no = #{contactNo},</if>
-            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="apply != null">apply = #{apply},</if>
+            <if test="status != null">status = #{status},</if>
         </set>
         where user_id = #{userId}
     </update>
 
     <update id="audit">
-        update zs_corp set status = #{status}
+        update zs_corp set apply = #{apply}
         where id = #{id}
     </update>
 
@@ -136,7 +138,14 @@
             <if test="agentPid != null and agentPid != ''">or agent_pid like concat('%',#{agentPid},'%')</if>
             <if test="agentContactNo != null and agentContactNo != ''">or agent_contact_no like concat('%',#{agentContactNo},'%')</if>
             <if test="agentIdIssuingAuthority != null and agentIdIssuingAuthority != ''">or agent_id_issuing_authority like concat('%',#{agentIdIssuingAuthority},'%')</if>
-            and status > 1
+            and status = 1
+            and apply >= 2
         </where>
+    </select>
+    <select id="selectById" resultType="com.camel.realname.model.ZsCorp">
+        select <include refid="Base_Column_List"/> from zs_corp
+        where id = #{id}
+        and status = 1
+        limit 1
     </select>
 </mapper>

@@ -83,46 +83,79 @@ public class ApplyNumberController extends BaseCommonController {
         if (ArrayUtil.isNotEmpty(fileNames)) {
             String type = fileNames[fileNames.length - 1];
 
-            if (fileType.equals("applySheet") && isExcel(file)) {
+            if (fileType.equals("applySheet")) {
+                if (!isExcel(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"客户申请表请上传excel文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setApplySheet(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
-            if (fileType.equals("license") && isPic(file)) {
+            if (fileType.equals("license")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"单位资质请上传图片(PNG,JPG格式)文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setLicense(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
-            if (fileType.equals("cardLegal") && isPic(file)) {
+            if (fileType.equals("cardLegal")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"法人身份证请上传图片(PNG,JPG格式)文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setCardLegal(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
-            if (fileType.equals("cardAgent") && isPic(file)) {
+            if (fileType.equals("cardLegalH")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"法人手持身份证请上传图片(PNG,JPG格式)文件");
+                }
+                JSONObject object = service.upload(file);
+                entity.setCardLegalH(object.getString("key"));
+                return ResultUtil.success(service.insertOrUpdate(entity));
+            }
+            if (fileType.equals("cardAgent")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"经办人身份证请上传图片(PNG,JPG格式)文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setCardAgent(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
-            if (fileType.equals("handAgent") && isPic(file)) {
+            if (fileType.equals("handAgent")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"经办人身份证手持照片请上传图片(PNG,JPG格式)文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setHandAgent(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
-            if (fileType.equals("cardUser") && isPic(file)) {
+            if (fileType.equals("cardUser")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"使用人身份证请上传图片(PNG,JPG格式)文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setCardUser(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
-            if (fileType.equals("enterPromise") && isPic(file)) {
+            if (fileType.equals("enterPromise")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"电信入网承诺书请上传图片(PNG,JPG格式)文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setEnterPromise(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
-            if (fileType.equals("applyLetter") && isPic(file)) {
+            if (fileType.equals("applyLetter")) {
+                if (!isPic(file)){
+                    return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"号码申请公函请上传图片(PNG,JPG格式)文件");
+                }
                 JSONObject object = service.upload(file);
                 entity.setApplyLetter(object.getString("key"));
                 return ResultUtil.success(service.insertOrUpdate(entity));
             }
+
         }
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "上传失败");
     }

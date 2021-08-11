@@ -46,4 +46,6 @@ public interface ZsAnswerItemMapper extends BaseMapper<ZsAnswerItem> {
     int chageInvalidByAnswer(Integer id, Integer valid);
 
     Integer selectAnswerItemCount(Integer surveyId, Integer qId, Integer oId);
+
+    List<Map<String, Object>> selectHasRemark(Integer surveyId, Integer id);
 }
