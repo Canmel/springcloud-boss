@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/**").authenticated()
                 .antMatchers("/druid/*").permitAll()
                 .antMatchers("/wx/**").permitAll()
+                .antMatchers("/realname/webSocket/**").permitAll()
                 .and()
                 .csrf().disable();
     }

@@ -27,7 +27,7 @@ public class ApproveOrder extends BasePaginationEntity {
      * 订单编号,使用雪花算法生成
      */
     @NotNull(message = "订单编号不能为空",groups = {Insert.class})
-    private Long id;
+    private String id;
     /**
      * 用户id
      */

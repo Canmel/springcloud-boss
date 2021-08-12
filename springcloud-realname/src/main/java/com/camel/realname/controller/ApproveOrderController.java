@@ -25,7 +25,7 @@ public class ApproveOrderController {
      * @return
      */
     @GetMapping("/getOne")
-    public Result getOne(@RequestParam("id") Long id){
+    public Result getOne(@RequestParam("id") String id){
         if(id == null){
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"订单编号为空");
         }
@@ -49,22 +49,5 @@ public class ApproveOrderController {
         }
         return ResultUtil.error(ResultEnum.RESOURCESNOTFOUND.getCode(),"查无订单");
     }
-
-//    /**
-//     * 支付宝支付成功回调接口
-//     * @param id 订单编号
-//     * @return
-//     */
-//    @PutMapping("/pay")
-//    public Result pay(Long id){
-//        if(id == null){
-//            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"订单编号为空");
-//        }
-//        Integer res = approveOrderService.pay(id);
-//        if(res > 0){
-//            return ResultUtil.success("支付成功");
-//        }
-//        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改支付成功状态失败");
-//    }
 
 }

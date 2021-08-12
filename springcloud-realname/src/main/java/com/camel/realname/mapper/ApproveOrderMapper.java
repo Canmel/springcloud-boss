@@ -9,9 +9,9 @@ import java.util.List;
 public interface ApproveOrderMapper {
     Integer insertOrder(ApproveOrder approveOrder);
 
-    ApproveOrder getOneById(Long id);
+    ApproveOrder getOneById(String id);
 
-    Integer pay(Long id);
+    Integer pay(String id);
 
     List<ApproveOrder> getList(ApproveOrder approveOrder);
 }

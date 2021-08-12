@@ -113,7 +113,8 @@
         <el-dialog
                 title="支付宝支付"
                 :visible.sync="qrcodeVisible"
-                width="50%">
+                width="50%"
+                :center="true">
             <div>￥88.88</div>
             <img :src="qrcodeBase64">
             <div>支付完成后，等待2个工作日左右，即可回复您号码</div>
@@ -195,6 +196,7 @@
                 this.getList();
             },
             createOrder(index,row){
+                console.log("createOrder:",row)
                 let that = this;
                 let order={
                     userId:row.userId,
@@ -203,6 +205,35 @@
                     body:row.body,
                     subject:row.subject
                 }
+                // if ("WebSocket" in window){
+                //     // alert("您的浏览器支持 WebSocket!")
+                //     // 打开一个 web socket
+                //     var ws = new WebSocket("ws://localhost:8080/realname/webSocket");
+                //     ws.onopen = function()
+                //     {
+                //         // Web Socket 已连接上，使用 send() 方法发送数据
+                //         ws.send("发送数据");
+                //         alert("数据发送中...");
+                //     };
+                //     ws.onmessage = function (evt)
+                //     {
+                //         if (Boolean(evt.data)){
+                //             var received_msg = evt.data;
+                //             alert("数据已接收..."+received_msg);
+                //             that.qrcodeVisible = false;
+                //         }
+                //         ws.close();
+                //     };
+                //     ws.onclose = function()
+                //     {
+                //         // 关闭 websocket
+                //         alert("连接已关闭...");
+                //     };
+                //     ws.onerror = function (event) {
+                //         console.log('webSocket连接异常。。。');
+                //     }
+                // }
+
                 AJAX.POST_JSON("alipay/order",order,function(res){
                     console.log(res);
                     if(res.code === 200){

@@ -67,7 +67,7 @@ public class ApproveServiceImpl implements ApproveService {
                     if(ZsApplyStatus.APPLY_SUCCESS.getCode().equals(approveInfo.getApply().getCode())){
                         //  审核通过，创建订单
                         ApproveOrder order = new ApproveOrder();
-                        order.setId(SnowflakeIdWorker.generateId());
+                        order.setId(SnowflakeIdWorker.generateId().toString());
                         order.setUserId(approveInfo.getUserId());
                         order.setPrice(new BigDecimal("0.01"));
                         order.setSubject("号码授权订单");
