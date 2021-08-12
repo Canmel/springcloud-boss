@@ -5,15 +5,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
 import com.camel.realname.enums.ApproveType;
 import com.camel.realname.enums.NumberStatus;
 import com.camel.realname.mapper.ApplyNumberMapper;
+import com.camel.realname.mapper.TelProtectionMapper;
 import com.camel.realname.model.ApplyNumber;
+import com.camel.realname.model.TelProtection;
 import com.camel.realname.service.ApplyNumberService;
 import com.camel.realname.utils.ExportWordUtil;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -21,10 +25,7 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import com.qiniu.util.IOUtils;
 import com.qiniu.util.StringUtils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -42,8 +43,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +63,9 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
 
     @Autowired
     private ApplyNumberMapper mapper;
+
+    @Autowired
+    private TelProtectionMapper telProtectionMapper;
 
     @Autowired
     private QiNiuConfig qiNiuConfig;
@@ -180,6 +184,43 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
         }
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "申请失败：请先完成资料");
 
+    }
+
+    @Override
+    public PageInfo<TelProtection> grantTelList(TelProtection telProtection) {
+        PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
+        List<TelProtection> list = telProtectionMapper.grantTelList(telProtection);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId) {
+        PageHelper.startPage(sysUser.getPageNum(),sysUser.getPageSize());
+        List<SysUser> list = telProtectionMapper.partnerList(sysUser,telId);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public Integer isExist(Integer uid, Integer telId) {
+        return telProtectionMapper.isExist(uid,telId);
+    }
+
+    @Override
+    public Result grant(TelProtection telProtection) {
+        Integer res = telProtectionMapper.updatePartner(telProtection);
+        if (res > 0){
+            return ResultUtil.success("授权成功");
+        }
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改失败");
+    }
+
+    @Override
+    public Result revoke(TelProtection telProtection) {
+        Boolean flag = telProtectionMapper.delPromise(telProtection);
+        if (flag){
+            return ResultUtil.success("撤销成功");
+        }
+        return ResultUtil.error(ResultEnum.UNKONW_ERROR);
     }
 
     @Override

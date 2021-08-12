@@ -3,9 +3,10 @@ package com.camel.realname.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
-import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.realname.enums.ApproveType;
 import com.camel.realname.model.ApplyNumber;
+import com.camel.realname.model.TelProtection;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,4 +29,14 @@ public interface ApplyNumberService extends IService<ApplyNumber>,ExportService 
     String getFileUrl(Integer id, ApproveType type, String fileName) throws FileNotFoundException;
 
     Result apply(Integer id);
+
+    PageInfo<TelProtection> grantTelList(TelProtection telProtection);
+
+    PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId);
+
+    Integer isExist(Integer uid, Integer telId);
+
+    Result grant(TelProtection telProtection);
+
+    Result revoke(TelProtection telProtection);
 }

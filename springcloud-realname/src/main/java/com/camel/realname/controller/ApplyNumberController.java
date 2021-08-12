@@ -14,10 +14,14 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.model.ApplyNumber;
+import com.camel.realname.model.ApproveInfo;
+import com.camel.realname.model.TelProtection;
 import com.camel.realname.service.ApplyNumberService;
 import com.camel.realname.utils.ApplicationToolsUtils;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -158,6 +162,57 @@ public class ApplyNumberController extends BaseCommonController {
 
         }
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "上传失败");
+    }
+
+    /**
+     * 显示最终用户所有电话
+     * @param telProtection
+     * @return
+     */
+    @GetMapping("/accreditList")
+    public Result accredit(TelProtection telProtection){
+        SysUser current = applicationToolsUtils.currentUser();
+        telProtection.setFinalCusId(current.getUid());
+        PageInfo<TelProtection> pageList = service.grantTelList(telProtection);
+        return ResultUtil.success("查询成功",pageList);
+    }
+
+    /**
+     * 显示所有合作伙伴
+     * @param sysUser
+     * @return
+     */
+    @GetMapping("/partnerList")
+    public Result partnerList(SysUser sysUser,Integer telId){
+        PageInfo<SysUser> pageList = service.partnerList(sysUser,telId);
+        return ResultUtil.success("查询成功",pageList);
+    }
+
+    /**
+     * 对供应商进行授权
+     * @param telProtection
+     * @return
+     */
+    // telid finid pratid
+    @PutMapping("/grant")
+    public Result grantNumber(@RequestBody TelProtection telProtection){
+        Integer exist = service.isExist(telProtection.getPartnerId(),telProtection.getId());
+        if (exist > 0){
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"该用户已获得授权");
+        }
+        return ResultUtil.success(service.grant(telProtection));
+    }
+
+    /**
+     * 撤销授权
+     * @return
+     */
+    @PutMapping("/revoke")
+    public Result revoke(@RequestBody TelProtection telProtection){
+        if (StringUtils.isEmpty(telProtection.getId()) && StringUtils.isEmpty(telProtection.getPartnerId())){
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM);
+        }
+        return ResultUtil.success(service.revoke(telProtection));
     }
 
     @PostMapping
