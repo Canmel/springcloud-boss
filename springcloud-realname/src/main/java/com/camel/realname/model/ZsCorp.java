@@ -237,6 +237,7 @@ public class ZsCorp extends BasePaginationEntity implements Serializable {
     /**
      * 是否支付
      */
+    @TableField(exist = false)
     private ZsYesOrNo isPay;
 
 }

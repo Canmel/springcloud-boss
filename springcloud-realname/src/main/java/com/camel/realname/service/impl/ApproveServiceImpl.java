@@ -20,6 +20,7 @@ import com.camel.realname.utils.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +50,7 @@ public class ApproveServiceImpl implements ApproveService {
     }
 
     @Override
+    @Transactional
     public Result audit(ApproveInfo approveInfo) {
         if(approveInfo != null && approveInfo.getType() != null){
             if(approveInfo.getType().getCode() == 0){
@@ -67,7 +69,7 @@ public class ApproveServiceImpl implements ApproveService {
                         ApproveOrder order = new ApproveOrder();
                         order.setId(SnowflakeIdWorker.generateId());
                         order.setUserId(approveInfo.getUserId());
-                        order.setPrice(new BigDecimal("88.88"));
+                        order.setPrice(new BigDecimal("0.01"));
                         order.setSubject("号码授权订单");
                         order.setBody("号码授权");
                         order.setCreateTime(new Date());

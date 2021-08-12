@@ -18,7 +18,7 @@ public class ApproveOrderServiceImpl implements ApproveOrderService {
 
     @Override
     public Integer addOrder(ApproveOrder approveOrder) {
-        return null;
+        return approveOrderMapper.insertOrder(approveOrder);
     }
 
     @Override

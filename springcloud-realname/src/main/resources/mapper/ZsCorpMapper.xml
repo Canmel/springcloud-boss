@@ -57,7 +57,7 @@
         zs_corp.business_license_url,zs_corp.corporate_name,zs_corp.corporate_id_url,zs_corp.corporate_id_hurl,zs_corp.business_start_date,
         zs_corp.business_term_start_date,zs_corp.business_term_end_date,zs_corp.business_address,
         zs_corp.business_no,zs_corp.organization_code,zs_corp.organization_code_url,zs_corp.organization_name,
-        zs_corp.organization_type,zs_corp.organization_effective_date,zs_corp.rganization_expiration_date,
+        zs_corp.organization_type,zs_corp.organization_effective_date,zs_corp.organization_expiration_date,
         zs_corp.entrustment_letter_url,zs_corp.acceptance_url,zs_corp.apply_sheet_url,zs_corp.agent_name,zs_corp.agent_pid,zs_corp.agent_id_turl,
         zs_corp.agent_id_url,zs_corp.agent_id_hurl,zs_corp.agent_id_address,zs_corp.agent_id_gender,
         zs_corp.agent_id_nation,zs_corp.agent_id_birth_day,zs_corp.agent_id_issuing_authority,

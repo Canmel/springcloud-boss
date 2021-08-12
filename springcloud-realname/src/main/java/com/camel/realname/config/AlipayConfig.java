@@ -1,6 +1,7 @@
 package com.camel.realname.config;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,51 +10,51 @@ public class AlipayConfig {
     /**
      * 公司支付宝的APPID
      */
-//    @Value("${alipay.app_id}")
+    @Value("${alipay.app_id}")
     private String appId;
     /**
      * 公司支付宝商户私钥
      * 您的PKCS8格式RSA2私钥
      */
-//    @Value("${alipay.merchat_private_key}")
+    @Value("${alipay.merchat_private_key}")
     private String merchatPrivateKey;
     /**
      * 公司支付宝公钥
      * 对应APPID下的支付宝公钥
      */
-//    @Value("${alipay.alipay_public_key}")
+    @Value("${alipay.alipay_public_key}")
     private String alipayPublicKey;
     /**
      *公司支付宝异步回调
      * 服务器一部通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问，必须外网可以正常访问
      */
-//    @Value("${alipay.notity_url}")
+    @Value("${alipay.notity_url}")
     private String notityUrl;
     /**
      *公司支付宝同步回调地址(如果是二维码扫描可以不配置)
      * 页面同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问，必须外网可以正常访问
      */
-//    @Value("${alipay.return_url}")
+    @Value("${alipay.return_url}")
     private String returnUrl;
     /**
      *签名方式
      */
-//    @Value("${alipay.sign_type}")
+    @Value("${alipay.sign_type}")
     private String signType;
     /**
      *字符串编码格式
      */
-//    @Value("${alipay.charset}")
+    @Value("${alipay.charset}")
     private String charset;
     /**
      *支付宝网关
      */
-//    @Value("${alipay.getway_url}")
+    @Value("${alipay.getway_url}")
     private String getwayUrl;
     /**
      *日志存放
      */
-//    @Value("${alipay.log_path}")
+    @Value("${alipay.log_path}")
     private String logPath;
 
     public String getAppId() {
