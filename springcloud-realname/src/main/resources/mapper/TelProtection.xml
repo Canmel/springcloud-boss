@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.realname.mapper.TelProtectionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.realname.model.TelProtection">
+        <id column="id" property="id" javaType="java.lang.Integer"/>
+        <result column="final_cus_id" property="finalCusId" javaType="java.lang.Integer"/>
+        <result column="tel" property="tel" javaType="java.lang.String"/>
+        <result column="survey_id" property="surveyId" javaType="java.lang.Integer"/>
+        <result column="apply_time" property="applyTime" javaType="java.util.Date"/>
+        <result column="status" property="status" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <collection property="partner" javaType="java.util.ArrayList" ofType="com.camel.core.model.SysUser">
+            <id column="uid" property="uid"></id>
+            <result column="username" property="username"/>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        tel_protection.id,tel_protection.final_cus_id,tel_protection.tel,tel_protection.survey_id,tel_protection.apply_time,tel_protection.status,
+        sys_user.username
+    </sql>
+
+    <insert id="updatePartner">
+        insert into tel_partner (tel_id,partner_id)
+        value (#{id},#{partnerId})
+    </insert>
+
+    <delete id="delPromise">
+        delete from tel_partner
+        where tel_id = #{id}
+        and #{partnerId}
+    </delete>
+
+    <select id="grantTelList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from
+            tel_protection left join tel_partner on tel_protection.id = tel_partner.tel_id
+            left join sys_user on sys_user.uid = tel_partner.partner_id
+        where tel_protection.final_cus_id = #{finalCusId}
+    </select>
+
+    <select id="partnerList" resultType="com.camel.core.model.SysUser">
+        SELECT s.uid, s.username,sr.remark from
+            sys_user s LEFT JOIN sys_user_role sur on s.uid = sur.user_id
+                       LEFT JOIN sys_role sr on sr.role_id = sur.role_id
+        where sr.role_id = 2
+        order by s.uid in (
+            SELECT partner_id from tel_partner WHERE tel_id = #{telId}
+            ) desc
+    </select>
+    <select id="isExist" resultType="java.lang.Integer">
+        select count(1) from tel_partner
+        where partner_id = #{uid}
+          and tel_id = #{telId}
+    </select>
+
+
+</mapper>
