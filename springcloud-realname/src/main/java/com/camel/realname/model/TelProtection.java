@@ -62,4 +62,15 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
     @TableField(exist = false)
     private List<SysUser> partner;
 
+    /**
+     * 项目名
+     */
+    @TableField(exist = false)
+    private String surveyName;
+
+    /**
+     * 最终用户名
+     */
+    @TableField(exist = false)
+    private String userName;
 }

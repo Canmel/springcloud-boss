@@ -20,4 +20,25 @@ public interface TelProtectionMapper {
     Integer isExist(Integer uid, Integer telId);
 
     Boolean delPromise(TelProtection telProtection);
+
+    /**
+     * 供应商：分页查询号码列表
+     * @param telProtection 查询条件
+     * @return Result
+     */
+    List<TelProtection> selectByPid(TelProtection telProtection);
+
+    /**
+     * 供应商：分页查询项目列表
+     * @param user 查询条件
+     * @return Result
+     */
+    List<SysUser> selectByFid(SysUser user);
+
+    /**
+     * 供应商：修改项目
+     * @param surveyId, id 修改条件
+     * @return boolean
+     */
+    int updateByTid(Integer surveyId, Integer id);
 }

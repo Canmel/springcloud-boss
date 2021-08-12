@@ -56,5 +56,29 @@
           and tel_id = #{telId}
     </select>
 
+    <!-- 供应商：分页查询项目列表 -->
+    <select id="selectByPid" resultType="com.camel.realname.model.TelProtection">
+        SELECT t.id,u.username as userName,t.tel,s.name as surveyName,t.apply_time,t.status,t.final_cus_id,t.survey_id as surveyId
+        FROM tel_protection t
+        LEFT JOIN tel_partner p ON p.tel_id = t.id
+        LEFT JOIN sys_user u ON t.final_cus_id = u.uid
+        LEFT JOIN zs_survey s ON t.survey_id = s.id
+        WHERE p.partner_id = #{partnerId}
+        <!--<if test="u.username != null and u.username != '' ">  AND u.username like concat('%',#{u.username},'%') </if>-->
+    </select>
+
+    <!-- 供应商：分页查询项目列表 -->
+    <select id="selectByFid" resultType="com.camel.core.model.SysUser">
+        SELECT s.id,u.username,s.name as surveyName,s.created_at as createdAt,s.id as surveyId
+        from sys_user u LEFT JOIN zs_survey s ON s.final_cus_id = u.uid
+        WHERE u.uid  = #{uid}
+    </select>
+
+    <!-- 供应商：修改项目 -->
+    <update id="updateByTid">
+        update
+            tel_protection
+        set survey_id = #{surveyId} where id = #{id}
+    </update>
 
 </mapper>

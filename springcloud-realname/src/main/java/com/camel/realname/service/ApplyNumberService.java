@@ -29,14 +29,4 @@ public interface ApplyNumberService extends IService<ApplyNumber>,ExportService 
     String getFileUrl(Integer id, ApproveType type, String fileName) throws FileNotFoundException;
 
     Result apply(Integer id);
-
-    PageInfo<TelProtection> grantTelList(TelProtection telProtection);
-
-    PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId);
-
-    Integer isExist(Integer uid, Integer telId);
-
-    Result grant(TelProtection telProtection);
-
-    Result revoke(TelProtection telProtection);
 }

@@ -187,43 +187,6 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
     }
 
     @Override
-    public PageInfo<TelProtection> grantTelList(TelProtection telProtection) {
-        PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
-        List<TelProtection> list = telProtectionMapper.grantTelList(telProtection);
-        return new PageInfo<>(list);
-    }
-
-    @Override
-    public PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId) {
-        PageHelper.startPage(sysUser.getPageNum(),sysUser.getPageSize());
-        List<SysUser> list = telProtectionMapper.partnerList(sysUser,telId);
-        return new PageInfo<>(list);
-    }
-
-    @Override
-    public Integer isExist(Integer uid, Integer telId) {
-        return telProtectionMapper.isExist(uid,telId);
-    }
-
-    @Override
-    public Result grant(TelProtection telProtection) {
-        Integer res = telProtectionMapper.updatePartner(telProtection);
-        if (res > 0){
-            return ResultUtil.success("授权成功");
-        }
-        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改失败");
-    }
-
-    @Override
-    public Result revoke(TelProtection telProtection) {
-        Boolean flag = telProtectionMapper.delPromise(telProtection);
-        if (flag){
-            return ResultUtil.success("撤销成功");
-        }
-        return ResultUtil.error(ResultEnum.UNKONW_ERROR);
-    }
-
-    @Override
     public void exportWord(Integer id, ApproveType approveType, HttpServletResponse response) throws IOException {
         ExportWordUtil ewUtil = new ExportWordUtil();
         Map<String, Object> dataMap = new HashMap<>();
