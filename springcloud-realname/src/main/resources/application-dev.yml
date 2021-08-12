@@ -110,3 +110,10 @@ alipay:
   charset: utf-8
   getway_url: https://openapi.alipaydev.com/gateway.do
   log_path: E:/tmp/
+
+cti:
+  record-file:
+    url: http://192.168.0.110/yscrm/servlet/filedown?filename=
+  system:
+    url: http://192.168.0.110/yscrm/servlet/filedown?filename=
+  baseUrl: ${CTI_SERVER}

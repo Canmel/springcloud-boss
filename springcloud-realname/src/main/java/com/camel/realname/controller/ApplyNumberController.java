@@ -14,10 +14,15 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.model.ApplyNumber;
+import com.camel.realname.model.ApproveInfo;
+import com.camel.realname.model.TelProtection;
 import com.camel.realname.service.ApplyNumberService;
+import com.camel.realname.service.TelProtectionService;
 import com.camel.realname.utils.ApplicationToolsUtils;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +47,9 @@ public class ApplyNumberController extends BaseCommonController {
 
     @Autowired
     private ApplicationToolsUtils applicationToolsUtils;
+
+    @Autowired
+    private TelProtectionService telService;
 
     @GetMapping("/apply/{id}")
     public Result apply(@PathVariable Integer id) {
@@ -158,6 +166,95 @@ public class ApplyNumberController extends BaseCommonController {
 
         }
         return ResultUtil.error(ResultEnum.NOT_VALID_PARAM.getCode(), "上传失败");
+    }
+
+
+    /**
+     * 供应商：分页查询号码列表
+     * @param telProtection 查询条件
+     * @return Result
+     */
+    @GetMapping("/telList")
+    public Result queryByPid(TelProtection telProtection) {
+        SysUser sysUser = applicationToolsUtils.currentUser();
+        telProtection.setPartnerId(sysUser.getUid());
+        PageInfo<TelProtection> pageList = telService.queryByPid(telProtection);
+        return ResultUtil.success("查询成功",pageList);
+    }
+
+    /**
+     * 供应商：分页查询项目列表
+     * @param sysUser 查询条件
+     * @return Result
+     */
+    @GetMapping("/telSurverList")
+    public Result queryByFid(SysUser sysUser) {
+        PageInfo<SysUser> pageList = telService.queryByFid(sysUser);
+        return ResultUtil.success("查询成功",pageList);
+    }
+
+    /**
+     * 供应商：修改项目
+     * @param telProtection 修改条件
+     * @return Result
+     */
+    @PutMapping("/modifiByTid")
+    public Result modifiByTid(@RequestBody TelProtection telProtection) {
+        if (telService.modifiByTid(telProtection.getSurveyId(),telProtection.getId())) {
+            return ResultUtil.success("修改项目成功");
+        }
+        return ResultUtil.error(400, "修改项目失败");
+    }
+
+    /**
+     * 显示最终用户所有电话
+     * @param telProtection
+     * @return
+     */
+    @GetMapping("/accreditList")
+    public Result accredit(TelProtection telProtection){
+        SysUser current = applicationToolsUtils.currentUser();
+        telProtection.setFinalCusId(current.getUid());
+        PageInfo<TelProtection> pageList = telService.grantTelList(telProtection);
+        return ResultUtil.success("查询成功",pageList);
+    }
+
+    /**
+     * 显示所有合作伙伴
+     * @param sysUser
+     * @return
+     */
+    @GetMapping("/partnerList")
+    public Result partnerList(SysUser sysUser,Integer telId){
+        PageInfo<SysUser> pageList = telService.partnerList(sysUser,telId);
+        return ResultUtil.success("查询成功",pageList);
+    }
+
+    /**
+     * 对供应商进行授权
+     * @param telProtection
+     * @return
+     */
+    // telid finid pratid
+    @PutMapping("/grant")
+    public Result grantNumber(@RequestBody TelProtection telProtection){
+        Integer exist = telService.isExist(telProtection.getPartnerId(),telProtection.getId());
+        if (exist > 0){
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"该用户已获得授权");
+        }
+        return ResultUtil.success(telService.grant(telProtection));
+    }
+
+    /**
+     * 撤销授权
+     * @return
+     */
+    @PutMapping("/revoke")
+    public Result revoke(@RequestBody TelProtection telProtection){
+        if (StringUtils.isEmpty(telProtection.getId()) && StringUtils.isEmpty(telProtection.getPartnerId())){
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM);
+        }
+        return ResultUtil.success(telService.revoke(telProtection));
     }
 
     @PostMapping

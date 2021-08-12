@@ -5,15 +5,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysUser;
 import com.camel.core.utils.PaginationUtil;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
 import com.camel.realname.enums.ApproveType;
 import com.camel.realname.enums.NumberStatus;
 import com.camel.realname.mapper.ApplyNumberMapper;
+import com.camel.realname.mapper.TelProtectionMapper;
 import com.camel.realname.model.ApplyNumber;
+import com.camel.realname.model.TelProtection;
 import com.camel.realname.service.ApplyNumberService;
 import com.camel.realname.utils.ExportWordUtil;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -21,10 +25,7 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import com.qiniu.util.IOUtils;
 import com.qiniu.util.StringUtils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -42,8 +43,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +63,9 @@ public class ApplyNumberServiceImpl extends ServiceImpl<ApplyNumberMapper, Apply
 
     @Autowired
     private ApplyNumberMapper mapper;
+
+    @Autowired
+    private TelProtectionMapper telProtectionMapper;
 
     @Autowired
     private QiNiuConfig qiNiuConfig;

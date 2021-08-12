@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.core.enums.GradeStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -181,6 +183,19 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     @TableField(exist = false)
     @JsonIgnore
     private List<SysRole> sysRoles;
+
+    @TableField(exist = false)
+    private Integer id;
+
+    @TableField(exist = false)
+    private Integer surveyId;
+
+    @TableField(exist = false)
+    private String surveyName;
+
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createdAt;
 
     @TableField(exist = false)
     @JsonIgnoreProperties(ignoreUnknown = true)
