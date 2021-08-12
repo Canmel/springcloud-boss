@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+    <script type="text/javascript" src="../../js/ajax-util.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.3/lib/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.js"></script>
+</head>
+<body>
+<div class="x-body">
+    <blockquote class="layui-elem-quote">查看订单信息</blockquote>
+    <fieldset class="layui-elem-field">
+        <legend>订单列表</legend>
+        <div>
+            <el-table
+                    ref="multipleTable"
+                    :data="tableData"
+                    height="500"
+                    :default-sort="{prop: 'submitDate', order: 'descending'}"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange">
+                <el-table-column
+                        type="selection"
+                        width="55">
+                </el-table-column>
+                <el-table-column
+                        prop="id"
+                        label="订单编号"
+                        align="center"
+                        width="160">
+                </el-table-column>
+                <el-table-column
+                        prop="sysUser.username"
+                        label="用户名"
+                        align="center"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="createTime"
+                        label="创建时间"
+                        sortable
+                        align="center"
+                        width="140">
+                </el-table-column>
+                <el-table-column
+                        label="支付状态"
+                        align="center"
+                        width="140"
+                        :filters="[
+                        { text: '已支付', value: 1 },
+                        { text: '未支付', value: 0 },
+                    ]"
+                        :filter-method="filterTag">
+                    <template slot-scope="scope">
+                        <div v-if="scope.row.isPay.code === 0" align="center">
+                            <el-tag type="danger">未支付</el-tag>
+                        </div>
+                        <div v-if="scope.row.isPay.code === 1" align="center">
+                            <el-tag type="info">已支付</el-tag>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        align="center"
+                        width="200">
+                    <template slot="header" slot-scope="scope">
+                        <el-input
+                                v-model="search"
+                                size="mini"
+                                placeholder="输入 名称 搜索"
+                                @keyup.enter="searchList">
+                            <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                        </el-input>
+                    </template>
+                    <template slot-scope="scope">
+                        <div v-if="scope.row.isPay.code === 0" align="center">
+                            <el-button
+                                    size="mini"
+                                    type="success"
+                                    @click="createOrder(scope.$index, scope.row)">去支付</el-button>
+                        </div>
+                        <div v-if="scope.row.isPay.code === 1" align="center">
+                            <el-tag type="success">已支付</el-tag>
+                        </div>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="block">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="pageParams.pageNum"
+                    :page-sizes="pageParams.pageSizes"
+                    :page-size="pageParams.pageSize"
+                    :layout="pageParams.layout"
+                    :total="pageParams.total">
+            </el-pagination>
+        </div>
+        <el-dialog
+                title="支付宝支付"
+                :visible.sync="qrcodeVisible"
+                width="50%">
+            <div>￥88.88</div>
+            <img :src="qrcodeBase64">
+            <div>支付完成后，等待2个工作日左右，即可回复您号码</div>
+        </el-dialog>
+    </fieldset>
+</div>
+</body>
+
+<script>
+    new Vue({
+        el: '.x-body',
+        data: {
+            userInfo: {},
+            multipleSelection:[],
+            tableData:[],
+            search:"",
+            qrcodeVisible:false,
+            qrcodeBase64:"",
+            paramsData:{
+                pageNum:1,
+                pageSize:20,
+            },
+            pageParams:{
+                pageSizes:[10, 20, 30, 40],
+                pageSize:20,
+                pageNum:1,
+                total:1000,
+                layout:"total, sizes, prev, pager, next, jumper",
+            },
+        },
+        created: function () {
+            // this.me();
+        },
+        mounted:function(){
+            console.log("mounted...");
+            this.getList();
+        },
+        methods: {
+            me() {
+                let that = this;
+                parent.AJAX.GET("/system/sysUser/myself", {}, function (resp) {
+                    that.userInfo = resp.data;
+                })
+            },
+            getList(){
+                let that = this;
+                let data = this.paramsData;
+                AJAX.GET("approveOrder/getList",data,function(res){
+                    console.log(res);
+                    that.tableData = res.data.list;
+                })
+            },
+            handleSelectionChange(val){
+                this.multipleSelection = val;
+            },
+            filterTag(value, row) {
+                return row.apply.code === value;
+            },
+            handleSizeChange(val){
+                this.paramsData.pageSize = val;
+                this.getList();
+            },
+            handleCurrentChange(val){
+                this.paramsData.pageNum = val;
+                this.getList();
+            },
+            resetPage(){
+                this.pageParams={
+                    pageSizes:[10, 20, 30, 40],
+                    pageSize:20,
+                    pagerCount:6,
+                    pageNum:1,
+                    total:1000,
+                    layout:"total, sizes, prev, pager, next, jumper",
+                }
+            },
+            searchList(){
+                this.resetPage();
+                this.getList();
+            },
+            createOrder(index,row){
+                let that = this;
+                let order={
+                    userId:row.userId,
+                    id:row.id,
+                    price:row.price,
+                    body:row.body,
+                    subject:row.subject
+                }
+                AJAX.POST_JSON("alipay/order",order,function(res){
+                    console.log(res);
+                    if(res.code === 200){
+                        that.qrcodeBase64 = res.data.qrCodeBase64;
+                        that.qrcodeVisible = true;
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+            },
+        }
+    });
+
+</script>
+</html>

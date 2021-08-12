@@ -1,5 +1,6 @@
 package com.camel.realname.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
 import com.camel.realname.enums.ApproveType;
 import com.camel.realname.enums.ZsApplyStatus;
@@ -48,4 +49,9 @@ public class ApproveInfo extends BasePaginationEntity {
      * 是否有效，0：无效，1：有效
      */
     private ZsStatus status;
+    /**
+     * 是否支付，0：否，1：是
+     */
+    @TableField(exist = false)
+    private ZsYesOrNo isPay;
 }
