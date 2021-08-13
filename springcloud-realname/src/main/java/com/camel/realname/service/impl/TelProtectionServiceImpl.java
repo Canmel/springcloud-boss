@@ -1,5 +1,9 @@
 package com.camel.realname.service.impl;
 
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
@@ -9,6 +13,7 @@ import com.camel.realname.model.TelProtection;
 import com.camel.realname.service.TelProtectionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +24,9 @@ public class TelProtectionServiceImpl implements TelProtectionService {
 
     @Resource
     private TelProtectionMapper telProtectionMapper;
+
+    @Value("${cti.baseUrl}")
+    public String baseUrl;
 
     /**
      * 供应商：分页查询号码列表
@@ -92,4 +100,17 @@ public class TelProtectionServiceImpl implements TelProtectionService {
         return ResultUtil.error(ResultEnum.UNKONW_ERROR);
     }
 
+
+    @Override
+    public JSONArray all() {
+        String r = HttpUtil.get("http://" + baseUrl + "/yscrm/v2/infs/getpstnnumber.json");
+        JSONObject o = JSONUtil.parseObj(r);
+        JSONArray array = o.getJSONArray("info");
+        return array;
+    }
+
+    @Override
+    public List<SysUser> finalList() {
+        return telProtectionMapper.finalList();
+    }
 }

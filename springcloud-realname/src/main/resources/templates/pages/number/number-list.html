@@ -115,7 +115,7 @@
                             style="width: 100%"
                             width="500">
                         <el-table-column
-                                prop="surveyId"
+                                prop="projectId"
                                 label="ID"
                                 align="center"
                                 sortable
@@ -148,7 +148,7 @@
                                 width="200">
                             <el-button @click="dialogVisible = false">取 消</el-button>
                             <template slot-scope="scope">
-                                <el-button type="danger" @click="getSure(scope.row.surveyId)">确 定</el-button>
+                                <el-button type="danger" @click="getSure(scope.row.projectId)">确 定</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -261,10 +261,10 @@
                     }
                 })
             },
-            getSure(survey_id) {
+            getSure(project_id) {
                 let that = this;
                 let paramsData = this.paramsData;
-                paramsData['surveyId'] = survey_id;
+                paramsData['projectId'] = project_id;
                 paramsData['id'] = that.telId;
                 params = JSON.stringify(paramsData)
                 that.dialogVisible = false;

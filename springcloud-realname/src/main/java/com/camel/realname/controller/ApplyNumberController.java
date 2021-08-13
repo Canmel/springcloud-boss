@@ -259,6 +259,19 @@ public class ApplyNumberController extends BaseCommonController {
         return ResultUtil.success(telService.revoke(telProtection));
     }
 
+    @GetMapping("/numberManage")
+    public Result index(){
+        String[] arr = {"1111111","2222222","3333333","4444444"};
+
+        return ResultUtil.success("success",arr);
+    }
+
+    @GetMapping("/finalList")
+    public Result finalList(){
+        List<SysUser> sysUsers = telService.finalList();
+        return ResultUtil.success(sysUsers);
+    }
+
     @PostMapping
     public Result save(ApplyNumber entity) {
         return ResultUtil.success("");

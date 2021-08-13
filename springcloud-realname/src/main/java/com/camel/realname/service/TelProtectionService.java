@@ -1,10 +1,13 @@
 package com.camel.realname.service;
 
+import cn.hutool.json.JSONArray;
 import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.realname.model.TelProtection;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TelProtectionService {
 
@@ -38,5 +41,9 @@ public interface TelProtectionService {
     Result grant(TelProtection telProtection);
 
     Result revoke(TelProtection telProtection);
+
+    JSONArray all();
+
+    List<SysUser> finalList();
 
 }

@@ -40,7 +40,7 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
     /**
      * 项目id
      */
-    private Integer surveyId;
+    private Integer projectId;
     /**
      * 申请时间
      */

@@ -41,10 +41,8 @@
                     label="接入号"
                     align="center"
                     width="200"
-                    show-overflow-tooltip>
-                <template slot="header" slot-scope="scope">
-
-                </template>
+                    show-overflow-tooltip
+                    :formatter="formatter">
             </el-table-column>
             <el-table-column
                     prop="remark"
@@ -67,7 +65,7 @@
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="grant(scope.$index, scope.row.uid)">绑定</el-button>
+                            @click="dialogTableVisible = true">绑定</el-button>
                     <el-button
                             size="mini"
                             type="danger"
@@ -76,6 +74,42 @@
             </el-table-column>
         </el-table>
     </div>
+
+    <el-dialog title="最终用户" :visible.sync="dialogTableVisible">
+        <el-table :data="gridData">
+            <el-table-column
+                    label="序号"
+                    type="index"
+                    width="150"></el-table-column>
+            <el-table-column
+                    property="name"
+                    label="姓名"
+                    width="200"></el-table-column>
+            <el-table-column
+                    align="center">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入 名称 搜索"
+                            @keyup.enter="searchList">
+                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                    </el-input>
+                </template>
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="finalCusList()">绑定</el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="revokeTel(scope.$index, scope.row.uid)">解绑</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-dialog>
+
     <div class="block">
         <el-pagination
                 @size-change="handleSizeChange"
@@ -95,6 +129,7 @@
         data: {
             tableData:[],
             search:"",
+            dialogTableVisible:false,
             paramsData:{
                 pageNum:1,
                 pageSize:20,
@@ -116,29 +151,15 @@
 
         },
         methods: {
-            grant(index, row) {
-                let that = this;
-                let obj = {
-                    id: that.telId,
-                    partnerId: row
-                }
-                data = JSON.stringify(obj)
-                AJAX.PUT("applyNumber/grant",data,function (res) {
-                    console.log(res)
-                    if(res.code === 200){
-                        that.$message({
-                            message: res.msg,
-                            type: 'success',
-                            center: true
-                        });
-                    }else{
-                        that.$message({
-                            message: res.msg,
-                            type: 'error',
-                            center: true
-                        });
-                    }
+            finalCusList(){
+                this.dialogTableVisible = true;
+                AJAX.GET_SYNC("applyNumber/finalList",{},function (res) {
+
                 })
+            },
+            grant(row) {
+
+                console.log("row",row);
             },
             revokeTel(index, row){
                 let that = this;
@@ -163,8 +184,8 @@
                     }
                 })
             },
-            buttonTest(row){
-                console.log(row)
+            formatter(row,index){
+                return row;
             },
             handleSizeChange(val){
                 // console.log(`每页 ${val} 条`);
@@ -193,7 +214,7 @@
             getList(){
                 let that = this;
                 let paramsData = this.paramsData;
-                AJAX.GET_SYNC("numberManage",paramsData,function(res){
+                AJAX.GET_SYNC("applyNumber/numberManage",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data;
                         that.pageParams.total = res.data.total;
