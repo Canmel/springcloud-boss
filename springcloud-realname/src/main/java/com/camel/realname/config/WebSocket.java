@@ -17,14 +17,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class WebSocket {
     private Session session;
     private static CopyOnWriteArraySet<WebSocket> webSockets = new CopyOnWriteArraySet<>();
-    /**
-     * 新建webSocket配置类
-     * @return
-     */
-    @Bean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
-    }
+
     /**
      * 建立连接
      * @param session
