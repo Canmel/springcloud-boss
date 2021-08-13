@@ -21,12 +21,12 @@ public interface ApproveOrderService {
      * @param id 订单编号
      * @return
      */
-    Integer pay(Long id);
+    Integer pay(String id);
 
     /**
      * 根据订单编号查询订单信息
      * @param id
      * @return
      */
-    ApproveOrder getOne(Long id);
+    ApproveOrder getOne(String id);
 }

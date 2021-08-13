@@ -185,19 +185,6 @@ public class SysUser extends BasePaginationEntity implements Serializable {
     private List<SysRole> sysRoles;
 
     @TableField(exist = false)
-    private Integer id;
-
-    @TableField(exist = false)
-    private Integer surveyId;
-
-    @TableField(exist = false)
-    private String surveyName;
-
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createdAt;
-
-    @TableField(exist = false)
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonIgnore
     private SysUser sysUser;

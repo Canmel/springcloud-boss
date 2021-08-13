@@ -184,12 +184,14 @@ public class ApplyNumberController extends BaseCommonController {
 
     /**
      * 供应商：分页查询项目列表
-     * @param sysUser 查询条件
+     * @param telProtection 查询条件
      * @return Result
      */
     @GetMapping("/telSurverList")
-    public Result queryByFid(SysUser sysUser) {
-        PageInfo<SysUser> pageList = telService.queryByFid(sysUser);
+    public Result queryByFid(TelProtection telProtection) {
+        System.out.println("telProtection = " + telProtection);
+        PageInfo<TelProtection> pageList = telService.queryByFid(telProtection);
+        System.out.println("pageList = " + pageList);
         return ResultUtil.success("查询成功",pageList);
     }
 

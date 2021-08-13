@@ -33,14 +33,14 @@ public class TelProtectionServiceImpl implements TelProtectionService {
     }
     /**
      * 供应商：分页查询项目列表
-     * @param user 查询条件
+     * @param telProtection 查询条件
      * @return Result
      */
     @Override
-    public PageInfo<SysUser> queryByFid(SysUser user) {
-        PageHelper.startPage(user.getPageNum(),user.getPageSize());
-        List<SysUser> list = telProtectionMapper.selectByFid(user);
-        return new PageInfo<SysUser>(list);
+    public PageInfo<TelProtection> queryByFid(TelProtection telProtection) {
+        PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
+        List<TelProtection> list = telProtectionMapper.selectByFid(telProtection);
+        return new PageInfo<TelProtection>(list);
     }
 
     /**

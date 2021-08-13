@@ -72,10 +72,10 @@
     </select>
 
     <!-- 供应商：分页查询项目列表 -->
-    <select id="selectByFid" resultType="com.camel.core.model.SysUser">
-        SELECT s.id,u.username,s.name as surveyName,s.created_at as createdAt,s.id as surveyId
-        from sys_user u LEFT JOIN zs_survey s ON s.final_cus_id = u.uid
-        WHERE u.uid  = #{uid}
+    <select id="selectByFid" resultType="com.camel.realname.model.TelProtection">
+        SELECT s.id as surveyId,u.username as userName,s.name as surveyName,s.created_at as createdAt
+        from zs_survey s LEFT JOIN sys_user u ON s.final_cus_id = u.uid
+        WHERE s.final_cus_id  = #{finalCusId}
     </select>
 
     <!-- 供应商：修改项目 -->

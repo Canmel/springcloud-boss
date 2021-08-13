@@ -31,12 +31,12 @@ public class ApproveOrderServiceImpl implements ApproveOrderService {
     }
 
     @Override
-    public Integer pay(Long id) {
+    public Integer pay(String id) {
         return approveOrderMapper.pay(id);
     }
 
     @Override
-    public ApproveOrder getOne(Long id) {
+    public ApproveOrder getOne(String id) {
         return approveOrderMapper.getOneById(id);
     }
 }

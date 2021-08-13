@@ -73,4 +73,13 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
      */
     @TableField(exist = false)
     private String userName;
+
+    /**
+     * 项目创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @TableField(exist = false)
+    private Date createdAt;
+
 }

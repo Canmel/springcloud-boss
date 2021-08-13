@@ -21,161 +21,163 @@
     <blockquote class="layui-elem-quote">号码列表展示</blockquote>
     <fieldset class="layui-elem-field">
         <legend>号码列表</legend>
-        <template class="layui-field-box" >
-            <div>
-                <el-table
-                        ref="multipleTable"
-                        :data="tableData"
-                        border
-                        height="400"
-                        :default-sort="{prop: 'submitDate', order: 'descending'}"
-                        tooltip-effect="dark"
-                        style="width: 100%">
-                    <el-table-column
-                            prop="id"
-                            label="序号"
-                            align="center"
-                            sortable
-                            width="100">
-                    </el-table-column>
-                    <el-table-column
-                            prop="userName"
-                            label="最终用户"
-                            align="center"
-                            width="200"
-                            show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column
-                            prop="surveyName"
-                            label="项目名称"
-                            align="center"
-                            width="200"
-                            show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column
-                            prop="tel"
-                            label="外呼号码"
-                            align="center"
-                            width="200"
-                            show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column
-                            prop="applyTime"
-                            label="创建时间"
-                            sortable
-                            align="center"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            label="状态"
-                            align="center"
-                            width="200"
-                            :filters="[
+    </fieldset>
+    <template>
+        <el-table
+                tooltip-effect="dark"
+                style="width: 100%"
+                width="500"
+                ref="multipleTable"
+                :data="tableData"
+                border
+                height="400"
+                :default-sort="{prop: 'submitDate', order: 'descending'}">
+            <el-table-column
+                    prop="id"
+                    label="序号"
+                    align="center"
+                    sortable
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="userName"
+                    label="最终用户"
+                    align="center"
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="surveyName"
+                    label="项目名称"
+                    align="center"
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="tel"
+                    label="外呼号码"
+                    align="center"
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="applyTime"
+                    label="创建时间"
+                    sortable
+                    align="center"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    label="状态"
+                    align="center"
+                    width="200"
+                    :filters="[
                         { text: '弃用', value: 0 },
                         { text: '正常', value: 1 },
                     ]">
-                        <template slot-scope="scope">
-                            <div v-if="scope.row.status.code === 0" align="center">
-                                <el-tag type="danger">弃用</el-tag>
-                            </div>
-                            <div v-if="scope.row.status.code === 1" align="center">
-                                <el-tag type="info">正常</el-tag>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            fixed="right"
-                            label="操作"
-                            align="center"
-                            width="180">
-                        <template slot-scope="scope">
-                            <el-button type="danger" @click="getDate(scope.row.finalCusId,scope.row.id)">设置</el-button>
-                        </template>
+                <template slot-scope="scope">
+                    <div v-if="scope.row.status.code === 0" align="center">
+                        <el-tag type="danger">弃用</el-tag>
+                    </div>
+                    <div v-if="scope.row.status.code === 1" align="center">
+                        <el-tag type="info">正常</el-tag>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    align="center"
+                    width="180">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入 名称 搜索"
+                            @keyup.enter="searchList">
+                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                    </el-input>
+                </template>
+                <template slot-scope="scope">
+                    <el-button type="danger" @click="getDate(scope.row.finalCusId,scope.row.id)">设置</el-button>
+                </template>
 
-                        <el-dialog title="设置项目"
-                                   :visible.sync="dialogVisible"
-                                   append-to-body>
-                            <el-table
-                                    ref="multipleTable"
-                                    :data="tableList"
-                                    border
-                                    height="300"
-                                    :default-sort="{prop: 'submitDate', order: 'descending'}"
-                                    tooltip-effect="dark"
-                                    style="width: 100%"
-                                    width="500"
-                                    @selection-change="handleSelectionChange">
-                                <el-table-column
-                                        type="selection"
-                                        width="55">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="id"
-                                        label="序号"
-                                        align="center"
-                                        sortable
-                                        width="100">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="username"
-                                        label="最终用户"
-                                        align="center"
-                                        width="200"
-                                        show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column
-                                        prop="surveyName"
-                                        label="项目名称"
-                                        align="center"
-                                        width="200"
-                                        show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column
-                                        prop="createdAt"
-                                        label="创建时间"
-                                        sortable
-                                        align="center"
-                                        width="200">
-                                </el-table-column>
-                                <el-table-column
-                                        label="创建时间"
-                                        align="center"
-                                        width="200">
-                                    <el-button @click="dialogVisible = false">取 消</el-button>
-                                    <template slot-scope="scope">
-                                        <el-button type="danger" @click="getSure(scope.row.surveyId)">确 定</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <div class="block">
-                                <el-pagination
-                                        @size-change="handleSizeChange"
-                                        @current-change="handleCurrentChange"
-                                        :current-page="pageParams.pageNum"
-                                        :page-sizes="pageParams.pageSizes"
-                                        :page-size="pageParams.pageSize"
-                                        :layout="pageParams.layout"
-                                        :total="pageParams.total">
-                                </el-pagination>
-                            </div>
-                        </el-dialog>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <div class="block">
-                <el-pagination
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page="pageParams.pageNum"
-                        :page-sizes="pageParams.pageSizes"
-                        :page-size="pageParams.pageSize"
-                        :layout="pageParams.layout"
-                        :total="pageParams.total">
-                </el-pagination>
-            </div>
-        </template>
-    </fieldset>
-
+                <el-dialog title="设置项目"
+                           :visible.sync="dialogVisible"
+                           append-to-body>
+                    <el-table
+                            ref="multipleTable"
+                            :data="tableList"
+                            border
+                            height="300"
+                            :default-sort="{prop: 'submitDate', order: 'descending'}"
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            width="500">
+                        <el-table-column
+                                prop="surveyId"
+                                label="ID"
+                                align="center"
+                                sortable
+                                width="100">
+                        </el-table-column>
+                        <el-table-column
+                                prop="userName"
+                                label="最终用户"
+                                align="center"
+                                width="200"
+                                show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column
+                                prop="surveyName"
+                                label="项目名称"
+                                align="center"
+                                width="200"
+                                show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column
+                                prop="createdAt"
+                                label="创建时间"
+                                sortable
+                                align="center"
+                                width="200">
+                        </el-table-column>
+                        <el-table-column
+                                label="创建时间"
+                                align="center"
+                                width="200">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <template slot-scope="scope">
+                                <el-button type="danger" @click="getSure(scope.row.surveyId)">确 定</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="block">
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="pageParams.pageNum"
+                                :page-sizes="pageParams.pageSizes"
+                                :page-size="pageParams.pageSize"
+                                :layout="pageParams.layout"
+                                :total="pageParams.total">
+                        </el-pagination>
+                    </div>
+                </el-dialog>
+            </el-table-column>
+        </el-table>
+        <div class="block">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="pageParams.pageNum"
+                    :page-sizes="pageParams.pageSizes"
+                    :page-size="pageParams.pageSize"
+                    :layout="pageParams.layout"
+                    :total="pageParams.total">
+            </el-pagination>
+        </div>
+    </template>
 </div>
 </body>
 
@@ -215,9 +217,6 @@
                             done();
                         })
                         .catch(_ => {});
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
             },
             handleSizeChange(val){
                 // console.log(`每页 ${val} 条`);
@@ -290,7 +289,7 @@
             getDate(row,id){
                 let that = this;
                 let paramsData = this.paramsData;
-                paramsData['uid'] = row;
+                paramsData['finalCusId'] = row;
                 that.telId = id;
                 that.dialogVisible = true;
                 AJAX.GET_SYNC("applyNumber/telSurverList",paramsData,function(res){
