@@ -72,6 +72,7 @@
         <!--<if test="u.username != null and u.username != '' ">  AND u.username like concat('%',#{u.username},'%') </if>-->
     </select>
 
+
     <!-- 供应商：分页查询项目列表 -->
     <select id="selectByFid" resultType="com.camel.realname.model.TelProtection">
         SELECT z.id as surveyId,u.username as userName,z.name as surveyName,z.created_at as createdAt
