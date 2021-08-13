@@ -143,9 +143,18 @@
                                 width="200">
                         </el-table-column>
                         <el-table-column
-                                label="创建时间"
+                                label="操作"
                                 align="center"
                                 width="200">
+                            <template slot="header" slot-scope="scope">
+                                <el-input
+                                        v-model="search"
+                                        size="mini"
+                                        placeholder="输入 名称 搜索"
+                                        @keyup.enter="searchSure">
+                                    <el-button slot="append" icon="el-icon-search" @click="searchSure"></el-button>
+                                </el-input>
+                            </template>
                             <el-button @click="dialogVisible = false">取 消</el-button>
                             <template slot-scope="scope">
                                 <el-button type="danger" @click="getSure(scope.row.surveyId)">确 定</el-button>
@@ -245,6 +254,7 @@
             getList(){
                 let that = this;
                 let paramsData = this.paramsData;
+                paramsData ['userName'] = this.search;
                 AJAX.GET_SYNC("applyNumber/telList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;
@@ -260,6 +270,10 @@
                         });
                     }
                 })
+            },
+            searchSure(){
+                this.resetPage();
+                this.getSure();
             },
             getSure(survey_id) {
                 let that = this;
