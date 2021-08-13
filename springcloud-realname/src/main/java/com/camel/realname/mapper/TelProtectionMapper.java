@@ -30,10 +30,10 @@ public interface TelProtectionMapper {
 
     /**
      * 供应商：分页查询项目列表
-     * @param user 查询条件
+     * @param telProtection 查询条件
      * @return Result
      */
-    List<SysUser> selectByFid(SysUser user);
+    List<TelProtection> selectByFid(TelProtection telProtection);
 
     /**
      * 供应商：修改项目

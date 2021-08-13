@@ -16,11 +16,10 @@ public interface TelProtectionService {
 
     /**
      * 供应商：分页查询项目列表
-     * @param user 查询条件
+     * @param telProtection 查询条件
      * @return Result
      */
-    PageInfo<SysUser> queryByFid(SysUser user);
-
+    PageInfo<TelProtection> queryByFid(TelProtection telProtection);
 
     /**
      * 供应商：修改项目
