@@ -58,20 +58,25 @@
 
     <!-- 供应商：分页查询项目列表 -->
     <select id="selectByPid" resultType="com.camel.realname.model.TelProtection">
-        SELECT t.id,u.username as userName,t.tel,s.name as surveyName,t.apply_time,t.status,t.final_cus_id,t.survey_id as surveyId
+        SELECT t.id,u.username as userName,t.tel,z.name as surveyName,t.apply_time,t.status,t.final_cus_id,t.survey_id as surveyId
         FROM tel_protection t
         LEFT JOIN tel_partner p ON p.tel_id = t.id
         LEFT JOIN sys_user u ON t.final_cus_id = u.uid
-        LEFT JOIN zs_survey s ON t.survey_id = s.id
-        WHERE p.partner_id = #{partnerId}
+        LEFT JOIN zs_project z ON t.survey_id = z.id
+        <where>
+            p.partner_id = #{partnerId}
+            <if test="userName != null and userName != '' ">
+                and username like concat('%',#{userName},'%')
+            </if>
+        </where>
         <!--<if test="u.username != null and u.username != '' ">  AND u.username like concat('%',#{u.username},'%') </if>-->
     </select>
 
     <!-- 供应商：分页查询项目列表 -->
     <select id="selectByFid" resultType="com.camel.realname.model.TelProtection">
-        SELECT s.id as surveyId,u.username as userName,s.name as surveyName,s.created_at as createdAt
-        from zs_survey s LEFT JOIN sys_user u ON s.final_cus_id = u.uid
-        WHERE s.final_cus_id  = #{finalCusId}
+        SELECT z.id as surveyId,u.username as userName,z.name as surveyName,z.created_at as createdAt
+        from zs_project z LEFT JOIN sys_user u ON z.company_id = u.uid
+        WHERE z.company_id = #{finalCusId}
     </select>
 
     <!-- 供应商：修改项目 -->
