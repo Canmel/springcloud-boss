@@ -45,11 +45,15 @@
         SELECT s.uid, s.username,sr.remark from
             sys_user s LEFT JOIN sys_user_role sur on s.uid = sur.user_id
                        LEFT JOIN sys_role sr on sr.role_id = sur.role_id
-        where sr.role_id = 2
+        <where>
+            <if test="sysUser.username != null and sysUser.username != '' ">and s.username like concat('%',#{sysUser.username},'%')</if>
+            and sr.role_id = 2
+        </where>
         order by s.uid in (
             SELECT partner_id from tel_partner WHERE tel_id = #{telId}
             ) desc
     </select>
+
     <select id="isExist" resultType="java.lang.Integer">
         select count(1) from tel_partner
         where partner_id = #{uid}

@@ -4,6 +4,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysUser;
 import com.camel.realname.model.TelProtection;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 public interface TelProtectionService {
 
@@ -31,7 +32,7 @@ public interface TelProtectionService {
 
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 
-    PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId);
+    PageInfo<SysUser> partnerList(@Param("sysUser") SysUser sysUser,@Param("telId") Integer telId);
 
     Integer isExist(Integer uid, Integer telId);
 

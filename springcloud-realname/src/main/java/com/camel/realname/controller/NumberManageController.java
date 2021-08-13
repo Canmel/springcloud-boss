@@ -12,7 +12,8 @@ public class NumberManageController {
 
     @GetMapping
     public Result index(){
+        String[] arr = {"1111111","2222222","3333333","4444444"};
 
-        return ResultUtil.success("success");
+        return ResultUtil.success("success",arr);
     }
 }
