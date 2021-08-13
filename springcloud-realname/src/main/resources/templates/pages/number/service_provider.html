@@ -32,8 +32,8 @@
                 tooltip-effect="dark"
                 style="width: 100%">
             <el-table-column
-                    prop="uid"
                     label="序号"
+                    type="index"
                     align="center"
                     width="80">
             </el-table-column>
@@ -51,8 +51,16 @@
                     width="100">
             </el-table-column>
             <el-table-column
-                    label="操作"
-                    align="center">
+                    align="right">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入 名称 搜索"
+                            @keyup.enter="searchList">
+                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                    </el-input>
+                </template>
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
@@ -63,7 +71,6 @@
                             type="danger"
                             @click="revokeTel(scope.$index, scope.row.uid)">撤回</el-button>
                 </template>
-            </el-table-column>
         </el-table>
     </div>
     <div class="block">
@@ -174,11 +181,16 @@
                     layout:"total, sizes, prev, pager, next, jumper",
                 }
             },
+            searchList(){
+                this.resetPage();
+                this.getList();
+            },
             getList(){
                 let that = this;
                 let paramsData = this.paramsData;
                 that.telId = localStorage.getItem("params");
                 paramsData['telId']= that.telId;
+                paramsData['username'] = that.search;
                 AJAX.GET_SYNC("applyNumber/partnerList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;
