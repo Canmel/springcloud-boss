@@ -37,12 +37,12 @@ public class AliPayServiceImpl implements AliPayService {
         //  发起交易预创建请求
         AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
         request.setNotifyUrl(alipayConfig.getNotityUrl());
-
+//        request.setReturnUrl(alipayConfig.getReturnUrl());
         AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
         model.setBody(order.getBody());
         model.setSubject(order.getSubject());
         model.setTotalAmount(order.getPrice().toString());
-        model.setOutTradeNo(order.getId().toString());
+        model.setOutTradeNo(order.getId());
         request.setBizModel(model);
 //        request.setBizContent("{" +
 //                "\"out_trade_no\":\""+order.getId()+"\"," +

@@ -3,7 +3,7 @@
 <mapper namespace="com.camel.realname.mapper.ApproveOrderMapper">
 
     <resultMap id="approveOrderResult" type="com.camel.realname.model.ApproveOrder">
-        <id property="id" column="id" javaType="java.lang.Long"/>
+        <id property="id" column="id" javaType="java.lang.String"/>
         <result property="userId" column="user_id" javaType="java.lang.Integer"/>
         <result property="price" column="price" javaType="java.math.BigDecimal"/>
         <result property="body" column="body" javaType="java.lang.String"/>
