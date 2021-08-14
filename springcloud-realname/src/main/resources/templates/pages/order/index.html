@@ -80,7 +80,7 @@
                         <el-input
                                 v-model="search"
                                 size="mini"
-                                placeholder="输入 名称 搜索"
+                                placeholder="订单编号 搜索"
                                 @keyup.enter="searchList">
                             <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
                         </el-input>
@@ -163,6 +163,7 @@
             getList(){
                 let that = this;
                 let data = this.paramsData;
+                data['id'] = this.search;
                 AJAX.GET("approveOrder/getList",data,function(res){
                     console.log(res);
                     that.tableData = res.data.list;
