@@ -21,6 +21,8 @@ public interface TelProtectionMapper {
 
     Boolean delPromise(TelProtection telProtection);
 
+    List<SysUser> finalList();
+
     /**
      * 供应商：分页查询号码列表
      * @param telProtection 查询条件
