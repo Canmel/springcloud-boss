@@ -1,8 +1,13 @@
 package com.camel.survey.service.impl;
 
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.mapper.TelProtectionMapper;
@@ -11,7 +16,9 @@ import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,6 +30,9 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
 
     @Resource
     private TelProtectionMapper telProtectionMapper;
+
+    @Value("${cti.baseUrl}")
+    public String baseUrl;
 
     /**
      * 供应商：分页查询号码列表
@@ -49,7 +59,7 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return Result
      */
     @Override
@@ -67,9 +77,9 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
 
     @Override
-    public PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId) {
-        PageHelper.startPage(sysUser.getPageNum(),sysUser.getPageSize());
-        List<SysUser> list = telProtectionMapper.partnerList(sysUser,telId);
+    public PageInfo<SysCompany> partnerList(SysCompany sysCompany, Integer telId) {
+        PageHelper.startPage(sysCompany.getPageNum(),sysCompany.getPageSize());
+        List<SysCompany> list = telProtectionMapper.partnerList(sysCompany,telId);
         return new PageInfo<>(list);
     }
 
@@ -96,6 +106,38 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
         return ResultUtil.error(ResultEnum.UNKONW_ERROR);
     }
 
+    @Override
+    public JSONArray all() {
+        String r = HttpUtil.get("http://" + baseUrl + "/yscrm/v2/infs/getpstnnumber.json");
+        JSONObject o = JSONUtil.parseObj(r);
+        JSONArray array = o.getJSONArray("info");
+        return array;
+    }
+
+    @Override
+    public PageInfo<SysCompany> finalList(SysCompany sysCompany) {
+        PageHelper.startPage(sysCompany.getPageNum(),sysCompany.getPageSize());
+        List<SysCompany> companies = telProtectionMapper.finalList(sysCompany);
+        return new PageInfo<>(companies);
+    }
+
+    @Override
+    public Result grantFinal(TelProtection telProtection) {
+        Integer res = telProtectionMapper.insertFinal(telProtection);
+        if (res < 0){
+            return ResultUtil.error(ResultEnum.RESOURCESNOTFOUND);
+        }
+        return ResultUtil.success("绑定成功");
+    }
+
+    @Override
+    public Result getFinalName(String tel) {
+        if (StringUtils.isEmpty(tel)){
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"接入号为空");
+        }
+        return ResultUtil.success("查询成功",telProtectionMapper.selectByTel(tel));
+    }
+    
     @Override
     public List<String> getTelListByUserId(Integer projectId) {
         Integer uid = applicationToolsUtils.currentUser().getUid();

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -65,8 +66,11 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
     @TableField(exist = false)
     private Integer partnerId;
 
+//    @TableField(exist = false)
+//    private List<SysUser> partner;
+
     @TableField(exist = false)
-    private List<SysUser> partner;
+    private List<SysCompany> company;
 
     /**
      * 项目名

@@ -1,7 +1,9 @@
 package com.camel.survey.service;
 
+import cn.hutool.json.JSONArray;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
 import com.github.pagehelper.PageInfo;
@@ -33,7 +35,7 @@ public interface TelProtectionService extends IService<TelProtection> {
 
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 
-    PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId);
+    PageInfo<SysCompany> partnerList(SysCompany sysCompany, Integer telId);
 
     Integer isExist(Integer uid, Integer telId);
 
@@ -41,11 +43,19 @@ public interface TelProtectionService extends IService<TelProtection> {
 
     Result revoke(TelProtection telProtection);
 
+    JSONArray all();
+
+    PageInfo<SysCompany> finalList(SysCompany sysCompany);
+
+    Result grantFinal(TelProtection telProtection);
+
     /**
      * 根据最终用户id和项目id查询对应的集合
      * @param projectId
      * @return
      */
     List<String> getTelListByUserId(Integer projectId);
+
+    Result getFinalName(String tel);
 
 }

@@ -184,7 +184,7 @@
                 this.dialogTableVisible = true;
                 finalData['name'] = that.search;
                 that.tel = row.tel;
-                AJAX.GET_SYNC("applyNumber/finalList",finalData,function (res) {
+                AJAX.GET_SYNC("/survey/applyNumber/finalList",finalData,function (res) {
                     that.finalList= res.data.list;
                 })
             },
@@ -195,7 +195,7 @@
                     finalCusId:id
                 }
                 // data = JSON.stringify(obj)
-                AJAX.POST_JSON("applyNumber/grantFinal",obj,function (res) {
+                AJAX.POST_JSON("/survey/applyNumber/grantFinal",obj,function (res) {
                     if(res.code === 200){
                         that.tableData = res.data;
                         that.pageParams.total = res.data.total;
@@ -215,7 +215,7 @@
             getName(row){
                 let that = this;
                 console.log("row",row);
-                AJAX.GET_SYNC("applyNumber/getName/"+row.tel,null,function (res) {
+                AJAX.GET_SYNC("/survey/applyNumber/getName/"+row.tel,null,function (res) {
                     if(res.code === 200){
                         that.name = res.data;
                     }else{
@@ -266,7 +266,7 @@
             getList(){
                 let that = this;
                 let paramsData = this.paramsData;
-                AJAX.GET_SYNC("applyNumber/numberManage",paramsData,function(res){
+                AJAX.GET_SYNC("/survey/applyNumber/numberManage",paramsData,function(res){
                     if(res.code === 200){
                         for (let i = 0; i < res.data.length; i++) {
                             let d ={

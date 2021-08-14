@@ -47,4 +47,7 @@ public interface TelProtectionMapper {
      * @return boolean
      */
     int updateByTid(Integer projectId, Integer id);
+
+    String selectByTel(String tel);
+
 }

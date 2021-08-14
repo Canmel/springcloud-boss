@@ -122,7 +122,7 @@
                     partnerId: id
                 }
                 data = JSON.stringify(obj)
-                AJAX.PUT("applyNumber/grant",data,function (res) {
+                AJAX.PUT("/survey/applyNumber/grant",data,function (res) {
                     console.log(res)
                     if(res.code === 200){
                         that.$message({
@@ -147,7 +147,7 @@
                     partnerId: id
                 }
                 data = JSON.stringify(obj)
-                AJAX.PUT("applyNumber/revoke",data,function (res) {
+                AJAX.PUT("/survey/applyNumber/revoke",data,function (res) {
                     if(res.code === 200){
                         that.$message({
                             message: res.msg,
@@ -194,7 +194,7 @@
                 that.telId = localStorage.getItem("params");
                 paramsData['telId']= that.telId;
                 paramsData['name'] = that.search;
-                AJAX.GET_SYNC("applyNumber/partnerList",paramsData,function(res){
+                AJAX.GET_SYNC("/survey/applyNumber/partnerList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;
                         that.pageParams.total = res.data.total;
