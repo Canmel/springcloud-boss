@@ -72,7 +72,7 @@
         methods: {
             getList(){
                 let that = this;
-                AJAX.GET_SYNC("/survey/applyNumber/accreditList",that.pageInfo,function (res){
+                AJAX.GET_SYNC("/survey/telProtection/accreditList",that.pageInfo,function (res){
                     that.telList = res.data;
                 })
             },
