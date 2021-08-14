@@ -57,5 +57,5 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
      */
     int updateByTid(Integer projectId, Integer id);
 
-    String selectByTel(String tel);
+    List<String> selectByTel(String tel);
 }

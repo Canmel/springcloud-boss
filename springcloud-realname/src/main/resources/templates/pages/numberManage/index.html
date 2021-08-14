@@ -199,6 +199,8 @@
                     if(res.code === 200){
                         that.tableData = res.data;
                         that.pageParams.total = res.data.total;
+                        that.dialogTableVisible = false;
+                        that.getList();
                     }else{
                         that.$message({
                             message: res.msg,
