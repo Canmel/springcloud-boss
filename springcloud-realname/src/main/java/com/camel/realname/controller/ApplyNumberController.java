@@ -202,7 +202,7 @@ public class ApplyNumberController extends BaseCommonController {
      */
     @PutMapping("/modifiByTid")
     public Result modifiByTid(@RequestBody TelProtection telProtection) {
-        if (telService.modifiByTid(telProtection.getSurveyId(),telProtection.getId())) {
+        if (telService.modifiByTid(telProtection.getProjectId(),telProtection.getId())) {
             return ResultUtil.success("修改项目成功");
         }
         return ResultUtil.error(400, "修改项目失败");
