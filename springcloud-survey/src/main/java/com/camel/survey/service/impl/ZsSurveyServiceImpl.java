@@ -126,6 +126,11 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     public static final String SMS_SURVEY_URL = "http://127.0.0.1:8080/survey/web_survey.html";
 
     @Override
+    public List<ZsSurvey> selectList(ZsSurvey entity) {
+        return mapper.list(entity);
+    }
+
+    @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         SysUser user = applicationToolsUtils.currentUser();
         if(ObjectUtil.isEmpty(entity.getState()) && ObjectUtil.isNotEmpty(entity.getStateId())) {
