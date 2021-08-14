@@ -139,12 +139,12 @@
         left join approve_order on zs_corp.user_id = approve_order.user_id
         <where>
             <if test="enterpriseName != null and enterpriseName != ''">zs_corp.enterprise_name like concat('%',#{enterpriseName},'%')</if>
-            <if test="corporateName != null and corporateName != ''">or zs_corp.corporate_name like concat('%',#{corporateName},'%')</if>
-            <if test="enterpriseName != null and businessLicenseCode != ''">or zs_corp.business_license_code like concat('%',#{businessLicenseCode},'%')</if>
-            <if test="agentName != null and agentName != ''">or zs_corp.agent_name like concat('%',#{agentName},'%')</if>
-            <if test="agentPid != null and agentPid != ''">or zs_corp.agent_pid like concat('%',#{agentPid},'%')</if>
-            <if test="agentContactNo != null and agentContactNo != ''">or zs_corp.agent_contact_no like concat('%',#{agentContactNo},'%')</if>
-            <if test="agentIdIssuingAuthority != null and agentIdIssuingAuthority != ''">or zs_corp.agent_id_issuing_authority like concat('%',#{agentIdIssuingAuthority},'%')</if>
+            <if test="corporateName != null and corporateName != ''">and zs_corp.corporate_name like concat('%',#{corporateName},'%')</if>
+            <if test="enterpriseName != null and businessLicenseCode != ''">and zs_corp.business_license_code like concat('%',#{businessLicenseCode},'%')</if>
+            <if test="agentName != null and agentName != ''">and zs_corp.agent_name like concat('%',#{agentName},'%')</if>
+            <if test="agentPid != null and agentPid != ''">and zs_corp.agent_pid like concat('%',#{agentPid},'%')</if>
+            <if test="agentContactNo != null and agentContactNo != ''">and zs_corp.agent_contact_no like concat('%',#{agentContactNo},'%')</if>
+            <if test="agentIdIssuingAuthority != null and agentIdIssuingAuthority != ''">and zs_corp.agent_id_issuing_authority like concat('%',#{agentIdIssuingAuthority},'%')</if>
             and zs_corp.status = 1
             and zs_corp.apply >= 2
         </where>
