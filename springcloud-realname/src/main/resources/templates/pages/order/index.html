@@ -163,6 +163,9 @@
             getList(){
                 let that = this;
                 let data = this.paramsData;
+                data['id'] = this.search;
+                data['body'] = this.search;
+                data['subject'] = this.search;
                 AJAX.GET("approveOrder/getList",data,function(res){
                     console.log(res);
                     that.tableData = res.data.list;
