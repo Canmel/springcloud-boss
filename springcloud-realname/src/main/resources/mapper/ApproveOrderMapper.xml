@@ -60,10 +60,10 @@
         left join sys_user on sys_user.uid = approve_order.user_id
         <where>
             <if test="id != null">approve_order.id like concat('%',#{id},'%')</if>
-            <if test="userId != null">and approve_order.user_id = #{userId}</if>
-            <if test="body != null and body != ''">and approve_order.body like concat('%',#{body},'%')</if>
-            <if test="subject != null and subject != ''">and approve_order.subject like concat('%',#{subject},'%')</if>
-            <if test="isPay != null">and approve_order.is_pay = #{isPay.code}</if>
+            <if test="userId != null">or approve_order.user_id = #{userId}</if>
+            <if test="body != null and body != ''">or approve_order.body like concat('%',#{body},'%')</if>
+            <if test="subject != null and subject != ''">or approve_order.subject like concat('%',#{subject},'%')</if>
+            <if test="isPay != null">or approve_order.is_pay = #{isPay.code}</if>
             and approve_order.status = 1
         </where>
     </select>

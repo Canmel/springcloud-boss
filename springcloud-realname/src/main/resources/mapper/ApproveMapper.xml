@@ -25,8 +25,8 @@
                 left join approve_order ao on zc.user_id = ao.user_id
              ) approve_info
         <where>
-            <if test="name != null and name != ''">and name like concat('%',#{name},'%')</if>
-            <if test="apply != null">and apply = #{apply.code}</if>
+            <if test="name != null and name != ''">name like concat('%',#{name},'%')</if>
+            <if test="apply != null">or apply = #{apply.code}</if>
             and status = 1
         </where>
     </select>
