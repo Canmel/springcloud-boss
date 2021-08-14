@@ -38,15 +38,15 @@
                     width="80">
             </el-table-column>
             <el-table-column
-                    prop="username"
+                    prop="name"
                     label="供货商"
                     align="center"
                     width="160"
                     show-overflow-tooltip>
             </el-table-column>
             <el-table-column
-                    prop="remark"
-                    label="身份"
+                    prop="contacts"
+                    label="介绍"
                     align="center"
                     width="100">
             </el-table-column>
@@ -65,12 +65,13 @@
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="grant(scope.$index, scope.row.uid)">授权</el-button>
+                            @click="grant(scope.row.id)">授权</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="revokeTel(scope.$index, scope.row.uid)">撤回</el-button>
+                            @click="revokeTel(scope.row.id)">撤回</el-button>
                 </template>
+            </el-table-column>
         </el-table>
     </div>
     <div class="block">
@@ -114,14 +115,14 @@
 
         },
         methods: {
-            grant(index, row) {
+            grant(id) {
                 let that = this;
                 let obj = {
                     id: that.telId,
-                    partnerId: row
+                    partnerId: id
                 }
                 data = JSON.stringify(obj)
-                AJAX.PUT("applyNumber/grant",data,function (res) {
+                AJAX.PUT("/survey/applyNumber/grant",data,function (res) {
                     console.log(res)
                     if(res.code === 200){
                         that.$message({
@@ -137,15 +138,16 @@
                         });
                     }
                 })
+                this.getList();
             },
-            revokeTel(index, row){
+            revokeTel(id){
                 let that = this;
                 let obj = {
                     id: that.telId,
-                    partnerId: row
+                    partnerId: id
                 }
                 data = JSON.stringify(obj)
-                AJAX.PUT("applyNumber/revoke",data,function (res) {
+                AJAX.PUT("/survey/applyNumber/revoke",data,function (res) {
                     if(res.code === 200){
                         that.$message({
                             message: res.msg,
@@ -160,6 +162,7 @@
                         });
                     }
                 })
+                this.getList();
             },
             handleSizeChange(val){
                 // console.log(`每页 ${val} 条`);
@@ -190,8 +193,8 @@
                 let paramsData = this.paramsData;
                 that.telId = localStorage.getItem("params");
                 paramsData['telId']= that.telId;
-                paramsData['username'] = that.search;
-                AJAX.GET_SYNC("applyNumber/partnerList",paramsData,function(res){
+                paramsData['name'] = that.search;
+                AJAX.GET_SYNC("/survey/applyNumber/partnerList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;
                         that.pageParams.total = res.data.total;

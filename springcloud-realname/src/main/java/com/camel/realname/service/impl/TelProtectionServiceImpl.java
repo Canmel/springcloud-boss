@@ -6,6 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.mapper.TelProtectionMapper;
@@ -15,6 +16,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -46,19 +48,21 @@ public class TelProtectionServiceImpl implements TelProtectionService {
      */
     @Override
     public PageInfo<TelProtection> queryByFid(TelProtection telProtection) {
+        System.out.println("telProtection = " + telProtection);
         PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
         List<TelProtection> list = telProtectionMapper.selectByFid(telProtection);
+        System.out.println("list = " + list);
         return new PageInfo<TelProtection>(list);
     }
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return Result
      */
     @Override
-    public boolean modifiByTid(Integer surveyId, Integer id) {
-        telProtectionMapper.updateByTid(surveyId, id);
+    public boolean modifiByTid(Integer projectId, Integer id) {
+        telProtectionMapper.updateByTid(projectId, id);
         return true;
     }
 
@@ -71,9 +75,9 @@ public class TelProtectionServiceImpl implements TelProtectionService {
     }
 
     @Override
-    public PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId) {
-        PageHelper.startPage(sysUser.getPageNum(),sysUser.getPageSize());
-        List<SysUser> list = telProtectionMapper.partnerList(sysUser,telId);
+    public PageInfo<SysCompany> partnerList(SysCompany sysCompany,Integer telId) {
+        PageHelper.startPage(sysCompany.getPageNum(),sysCompany.getPageSize());
+        List<SysCompany> list = telProtectionMapper.partnerList(sysCompany,telId);
         return new PageInfo<>(list);
     }
 
@@ -110,7 +114,26 @@ public class TelProtectionServiceImpl implements TelProtectionService {
     }
 
     @Override
-    public List<SysUser> finalList() {
-        return telProtectionMapper.finalList();
+    public PageInfo<SysCompany> finalList(SysCompany sysCompany) {
+        PageHelper.startPage(sysCompany.getPageNum(),sysCompany.getPageSize());
+        List<SysCompany> companies = telProtectionMapper.finalList(sysCompany);
+        return new PageInfo<>(companies);
+    }
+
+    @Override
+    public Result grantFinal(TelProtection telProtection) {
+        Integer res = telProtectionMapper.insertFinal(telProtection);
+        if (res < 0){
+            return ResultUtil.error(ResultEnum.RESOURCESNOTFOUND);
+        }
+        return ResultUtil.success("绑定成功");
+    }
+
+    @Override
+    public Result getFinalName(String tel) {
+        if (StringUtils.isEmpty(tel)){
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"接入号为空");
+        }
+        return ResultUtil.success("查询成功",telProtectionMapper.selectByTel(tel));
     }
 }

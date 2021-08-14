@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.camel.core.entity.BasePaginationEntity;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.enums.ZsYesOrNo;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -41,6 +42,12 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
      * 项目id
      */
     private Integer projectId;
+
+    /**
+     * 项目
+     */
+    @TableField(exist = false)
+    private ZsProject zsProject;
     /**
      * 申请时间
      */
@@ -59,14 +66,17 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
     @TableField(exist = false)
     private Integer partnerId;
 
+//    @TableField(exist = false)
+//    private List<SysUser> partner;
+
     @TableField(exist = false)
-    private List<SysUser> partner;
+    private List<SysCompany> company;
 
     /**
      * 项目名
      */
     @TableField(exist = false)
-    private String surveyName;
+    private String projectName;
 
     /**
      * 最终用户名
@@ -74,12 +84,5 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
     @TableField(exist = false)
     private String userName;
 
-    /**
-     * 项目创建时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @TableField(exist = false)
-    private Date createdAt;
 
 }

@@ -1,13 +1,16 @@
 package com.camel.survey.service;
 
+import cn.hutool.json.JSONArray;
+import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
-public interface TelProtectionService {
+public interface TelProtectionService extends IService<TelProtection> {
 
     /**
      * 供应商：分页查询号码列表
@@ -25,14 +28,14 @@ public interface TelProtectionService {
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return boolean
      */
-    boolean modifiByTid(Integer surveyId, Integer id);
+    boolean modifiByTid(Integer projectId, Integer id);
 
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 
-    PageInfo<SysUser> partnerList(SysUser sysUser,Integer telId);
+    PageInfo<SysCompany> partnerList(SysCompany sysCompany, Integer telId);
 
     Integer isExist(Integer uid, Integer telId);
 
@@ -40,11 +43,19 @@ public interface TelProtectionService {
 
     Result revoke(TelProtection telProtection);
 
+    JSONArray all();
+
+    PageInfo<SysCompany> finalList(SysCompany sysCompany);
+
+    Result grantFinal(TelProtection telProtection);
+
     /**
      * 根据最终用户id和项目id查询对应的集合
      * @param projectId
      * @return
      */
     List<String> getTelListByUserId(Integer projectId);
+
+    Result getFinalName(String tel);
 
 }

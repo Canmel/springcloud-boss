@@ -39,7 +39,7 @@
                     <td>{{item.applyTime}}</td>
                     <td>{{item.tel}}</td>
                     <td>
-                        <span v-for="uname in item.partner">{{uname.username}},</span>
+                        <span v-for="cname in item.company">{{cname.name}},</span>
                     </td>
                     <td class="td-status">
                         <span class="layui-btn layui-btn-normal layui-btn-mini">{{item.status.name}}</span>
@@ -72,7 +72,7 @@
         methods: {
             getList(){
                 let that = this;
-                AJAX.GET_SYNC("applyNumber/accreditList",that.pageInfo,function (res){
+                AJAX.GET_SYNC("/survey/applyNumber/accreditList",that.pageInfo,function (res){
                     that.telList = res.data;
                 })
             },

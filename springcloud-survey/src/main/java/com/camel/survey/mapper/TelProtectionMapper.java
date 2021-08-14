@@ -1,5 +1,7 @@
 package com.camel.survey.mapper;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,17 +12,21 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface TelProtectionMapper {
+public interface TelProtectionMapper extends BaseMapper<TelProtection> {
 
     List<TelProtection> grantTelList(TelProtection telProtection);
 
-    List<SysUser> partnerList(SysUser sysUser, Integer telId);
+    List<SysCompany> partnerList(@Param("sysCompany") SysCompany sysCompany, @Param("telId") Integer telId);
 
     Integer updatePartner(TelProtection telProtection);
 
     Integer isExist(Integer uid, Integer telId);
 
     Boolean delPromise(TelProtection telProtection);
+
+    List<SysCompany> finalList(SysCompany sysCompany);
+
+    Integer insertFinal(TelProtection telProtection);
 
     /**
      * 根据最终客户id返回电话集合
@@ -46,8 +52,10 @@ public interface TelProtectionMapper {
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return boolean
      */
-    int updateByTid(Integer surveyId, Integer id);
+    int updateByTid(Integer projectId, Integer id);
+
+    String selectByTel(String tel);
 }
