@@ -2,6 +2,7 @@ package com.camel.realname.service;
 
 import cn.hutool.json.JSONArray;
 import com.camel.core.entity.Result;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.realname.model.TelProtection;
 import com.github.pagehelper.PageInfo;
@@ -34,7 +35,7 @@ public interface TelProtectionService {
 
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 
-    PageInfo<SysUser> partnerList(@Param("sysUser") SysUser sysUser,@Param("telId") Integer telId);
+    PageInfo<SysCompany> partnerList(SysCompany sysCompany,Integer telId);
 
     Integer isExist(Integer uid, Integer telId);
 
@@ -44,6 +45,9 @@ public interface TelProtectionService {
 
     JSONArray all();
 
-    List<SysUser> finalList();
+    PageInfo<SysCompany> finalList(SysCompany sysCompany);
 
+    Result grantFinal(TelProtection telProtection);
+
+    Result getFinalName(String tel);
 }

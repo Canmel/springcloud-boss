@@ -1,5 +1,6 @@
 package com.camel.core.model;
 
+import com.camel.core.entity.BasePaginationEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * @since 2021-04-27
  */
 @Data
-public class SysCompany implements Serializable {
+public class SysCompany extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

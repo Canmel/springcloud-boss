@@ -1,8 +1,10 @@
 package com.camel.realname.mapper;
 
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.realname.model.TelProtection;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +15,7 @@ public interface TelProtectionMapper {
 
     List<TelProtection> grantTelList(TelProtection telProtection);
 
-    List<SysUser> partnerList(SysUser sysUser, Integer telId);
+    List<SysCompany> partnerList(@Param("sysCompany") SysCompany sysCompany,@Param("telId") Integer telId);
 
     Integer updatePartner(TelProtection telProtection);
 
@@ -21,7 +23,9 @@ public interface TelProtectionMapper {
 
     Boolean delPromise(TelProtection telProtection);
 
-    List<SysUser> finalList();
+    List<SysCompany> finalList(SysCompany sysCompany);
+
+    Integer insertFinal(TelProtection telProtection);
 
     /**
      * 供应商：分页查询号码列表
@@ -43,4 +47,6 @@ public interface TelProtectionMapper {
      * @return boolean
      */
     int updateByTid(Integer surveyId, Integer id);
+
+    List<String> selectByTel(String tel);
 }

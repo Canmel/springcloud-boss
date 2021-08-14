@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
+import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.model.ApplyNumber;
@@ -202,7 +203,7 @@ public class ApplyNumberController extends BaseCommonController {
      */
     @PutMapping("/modifiByTid")
     public Result modifiByTid(@RequestBody TelProtection telProtection) {
-        if (telService.modifiByTid(telProtection.getSurveyId(),telProtection.getId())) {
+        if (telService.modifiByTid(telProtection.getProjectId(),telProtection.getId())) {
             return ResultUtil.success("修改项目成功");
         }
         return ResultUtil.error(400, "修改项目失败");
@@ -223,12 +224,12 @@ public class ApplyNumberController extends BaseCommonController {
 
     /**
      * 显示所有合作伙伴
-     * @param sysUser
+     * @param sysCompany
      * @return
      */
     @GetMapping("/partnerList")
-    public Result partnerList(SysUser sysUser,Integer telId){
-        PageInfo<SysUser> pageList = telService.partnerList(sysUser,telId);
+    public Result partnerList(SysCompany sysCompany,Integer telId){
+        PageInfo<SysCompany> pageList = telService.partnerList(sysCompany,telId);
         return ResultUtil.success("查询成功",pageList);
     }
 
@@ -237,14 +238,13 @@ public class ApplyNumberController extends BaseCommonController {
      * @param telProtection
      * @return
      */
-    // telid finid pratid
     @PutMapping("/grant")
     public Result grantNumber(@RequestBody TelProtection telProtection){
         Integer exist = telService.isExist(telProtection.getPartnerId(),telProtection.getId());
         if (exist > 0){
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"该用户已获得授权");
         }
-        return ResultUtil.success(telService.grant(telProtection));
+        return telService.grant(telProtection);
     }
 
     /**
@@ -256,7 +256,7 @@ public class ApplyNumberController extends BaseCommonController {
         if (StringUtils.isEmpty(telProtection.getId()) && StringUtils.isEmpty(telProtection.getPartnerId())){
             return ResultUtil.error(ResultEnum.NOT_VALID_PARAM);
         }
-        return ResultUtil.success(telService.revoke(telProtection));
+        return telService.revoke(telProtection);
     }
 
     @GetMapping("/numberManage")
@@ -267,9 +267,22 @@ public class ApplyNumberController extends BaseCommonController {
     }
 
     @GetMapping("/finalList")
-    public Result finalList(){
-        List<SysUser> sysUsers = telService.finalList();
-        return ResultUtil.success(sysUsers);
+    public Result finalList(SysCompany sysCompany){
+        PageInfo<SysCompany> finalList = telService.finalList(sysCompany);
+        return ResultUtil.success("查询成功",finalList);
+    }
+
+    @PostMapping("/grantFinal")
+    public Result grantFinal(@RequestBody TelProtection telProtection){
+        if (StringUtils.isEmpty(telProtection.getTel()) && !StringUtils.isEmpty(telProtection.getFinalCusId())){
+            return ResultUtil.error(ResultEnum.BAD_REQUEST);
+        }
+        return ResultUtil.success("绑定最终用户成功",telService.grantFinal(telProtection));
+    }
+
+    @GetMapping("/getName/{tel}")
+    public Result getFinalName(@PathVariable("tel") String tel){
+        return telService.getFinalName(tel);
     }
 
     @PostMapping
