@@ -187,11 +187,9 @@ public class ApplyNumberController extends BaseCommonController {
      * @param telProtection 查询条件
      * @return Result
      */
-    @GetMapping("/telSurverList")
+    @GetMapping("/projectList")
     public Result queryByFid(TelProtection telProtection) {
-        System.out.println("telProtection = " + telProtection);
         PageInfo<TelProtection> pageList = telService.queryByFid(telProtection);
-        System.out.println("pageList = " + pageList);
         return ResultUtil.success("查询成功",pageList);
     }
 
@@ -202,7 +200,7 @@ public class ApplyNumberController extends BaseCommonController {
      */
     @PutMapping("/modifiByTid")
     public Result modifiByTid(@RequestBody TelProtection telProtection) {
-        if (telService.modifiByTid(telProtection.getSurveyId(),telProtection.getId())) {
+        if (telService.modifiByTid(telProtection.getProjectId(),telProtection.getId())) {
             return ResultUtil.success("修改项目成功");
         }
         return ResultUtil.error(400, "修改项目失败");

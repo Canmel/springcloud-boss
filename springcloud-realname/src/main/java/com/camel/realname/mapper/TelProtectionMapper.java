@@ -39,8 +39,8 @@ public interface TelProtectionMapper {
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return boolean
      */
-    int updateByTid(Integer surveyId, Integer id);
+    int updateByTid(Integer projectId, Integer id);
 }

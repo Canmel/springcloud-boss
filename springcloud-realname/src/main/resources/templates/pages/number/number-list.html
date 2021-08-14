@@ -93,13 +93,13 @@
                     <el-input
                             v-model="search"
                             size="mini"
-                            placeholder="输入 名称 搜索"
+                            placeholder="输入外呼号码搜索"
                             @keyup.enter="searchList">
                         <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
                     </el-input>
                 </template>
                 <template slot-scope="scope">
-                    <el-button type="danger" @click="getDate(scope.row.finalCusId,scope.row.id)">设置</el-button>
+                    <el-button type="danger" @click="getData(scope.row.finalCusId,scope.row.id)">设置</el-button>
                 </template>
 
                 <el-dialog title="设置项目"
@@ -115,7 +115,7 @@
                             style="width: 100%"
                             width="500">
                         <el-table-column
-                                prop="surveyId"
+                                prop="projectId"
                                 label="ID"
                                 align="center"
                                 sortable
@@ -150,21 +150,21 @@
                                 <el-input
                                         v-model="search"
                                         size="mini"
-                                        placeholder="输入 名称 搜索"
-                                        @keyup.enter="searchSure">
-                                    <el-button slot="append" icon="el-icon-search" @click="searchSure"></el-button>
+                                        placeholder="输入项目名称"
+                                        @keyup.enter="searchDate">
+                                    <el-button slot="append" icon="el-icon-search" @click="searchDate"></el-button>
                                 </el-input>
                             </template>
                             <el-button @click="dialogVisible = false">取 消</el-button>
                             <template slot-scope="scope">
-                                <el-button type="danger" @click="getSure(scope.row.surveyId)">确 定</el-button>
+                                <el-button type="danger" @click="getSure(scope.row.projectId)">确 定</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
                     <div class="block">
                         <el-pagination
-                                @size-change="handleSizeChange"
-                                @current-change="handleCurrentChange"
+                                @size-change="pageSizeChange"
+                                @current-change="pageCurrentChange"
                                 :current-page="pageParams.pageNum"
                                 :page-sizes="pageParams.pageSizes"
                                 :page-size="pageParams.pageSize"
@@ -194,6 +194,7 @@
     new Vue({
         el: '.x-body',
         data: {
+            finalCusId: '',
             dialogVisible: false,
             multipleSelection: [],
             tableData: [],
@@ -237,6 +238,16 @@
                 this.paramsData.pageNum = val;
                 this.getList();
             },
+            pageSizeChange(val){
+                // console.log(`每页 ${val} 条`);
+                this.paramsData.pageSize = val;
+                this.getData();
+            },
+            pageCurrentChange(val){
+                // console.log(`当前页: ${val}`);
+                this.paramsData.pageNum = val;
+                this.getData();
+            },
             resetPage(){
                 this.pageParams={
                     pageSizes:[10, 20, 30, 40],
@@ -254,7 +265,7 @@
             getList(){
                 let that = this;
                 let paramsData = this.paramsData;
-                paramsData ['userName'] = this.search;
+                paramsData['tel'] = this.search;
                 AJAX.GET_SYNC("applyNumber/telList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;
@@ -271,14 +282,10 @@
                     }
                 })
             },
-            searchSure(){
-                this.resetPage();
-                this.getSure();
-            },
-            getSure(survey_id) {
+            getSure(project_id) {
                 let that = this;
                 let paramsData = this.paramsData;
-                paramsData['surveyId'] = survey_id;
+                paramsData['projectId'] = project_id;
                 paramsData['id'] = that.telId;
                 params = JSON.stringify(paramsData)
                 that.dialogVisible = false;
@@ -300,13 +307,24 @@
                 });
                 this.getList();
             },
-            getDate(row,id){
+            searchDate(){
+
+                this.resetPage();
+                this.getData(this.finalCusId);
+                this.finalCusId = '';
+            },
+
+            getData(row,id){
                 let that = this;
                 let paramsData = this.paramsData;
-                paramsData['finalCusId'] = row;
+                paramsData['surveyName'] = this.search;
+
+                that.finalCusId = row;
+                paramsData.finalCusId = that.finalCusId;
+
                 that.telId = id;
                 that.dialogVisible = true;
-                AJAX.GET_SYNC("applyNumber/telSurverList",paramsData,function(res){
+                AJAX.GET_SYNC("applyNumber/projectList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableList = res.data.list;
                         that.pageParams.total = res.data.total;

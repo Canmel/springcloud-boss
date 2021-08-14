@@ -10,6 +10,7 @@
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="created_at" property="createdAt" />
         <result column="creator" property="creatorId" />
+        <result column="final_cus_id" property="finalCusId" />
         <association property="creator" javaType="com.camel.core.model.SysUser">
             <id property="uid" column="creator" jdbcType="INTEGER"></id>
         </association>
