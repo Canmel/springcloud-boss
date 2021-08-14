@@ -77,17 +77,17 @@
           and tel_id = #{telId}
     </select>
 
-    <!-- 供应商：分页查询项目列表 -->
+    <!-- 供应商：分页查询项目号码列表 -->
     <select id="selectByPid" resultType="com.camel.realname.model.TelProtection">
-        SELECT t.id,u.username as userName,t.tel,z.name as surveyName,t.apply_time,t.status,t.final_cus_id,t.project_id as projectId
+        SELECT t.id,u.username,t.tel,z.name as surveyName,t.apply_time,t.status,t.final_cus_id,t.project_id as projectId
         FROM tel_protection t
         LEFT JOIN tel_partner p ON p.tel_id = t.id
         LEFT JOIN sys_user u ON t.final_cus_id = u.uid
         LEFT JOIN zs_project z ON t.project_id = z.id
         <where>
             p.partner_id = #{partnerId}
-            <if test="userName != null and userName != '' ">
-                and username like concat('%',#{userName},'%')
+            <if test="tel != null and tel != '' ">
+                and tel like concat('%',#{tel},'%')
             </if>
         </where>
     </select>
@@ -96,7 +96,12 @@
     <select id="selectByFid" resultType="com.camel.realname.model.TelProtection">
         SELECT z.id as projectId,u.username as userName,z.name as surveyName,z.created_at as createdAt
         from zs_project z LEFT JOIN sys_user u ON z.company_id = u.uid
-        WHERE z.company_id = #{finalCusId}
+        <where>
+            z.company_id = #{finalCusId}
+            <if test="surveyName != null and surveyName != '' ">
+                and z.name like concat('%',#{surveyName},'%')
+            </if>
+        </where>
     </select>
 
     <select id="finalList" resultType="com.camel.core.model.SysCompany">

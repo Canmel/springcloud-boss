@@ -28,10 +28,10 @@ public interface TelProtectionService {
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return boolean
      */
-    boolean modifiByTid(Integer surveyId, Integer id);
+    boolean modifiByTid(Integer projectId, Integer id);
 
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 

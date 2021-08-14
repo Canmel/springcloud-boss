@@ -48,19 +48,21 @@ public class TelProtectionServiceImpl implements TelProtectionService {
      */
     @Override
     public PageInfo<TelProtection> queryByFid(TelProtection telProtection) {
+        System.out.println("telProtection = " + telProtection);
         PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
         List<TelProtection> list = telProtectionMapper.selectByFid(telProtection);
+        System.out.println("list = " + list);
         return new PageInfo<TelProtection>(list);
     }
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return Result
      */
     @Override
-    public boolean modifiByTid(Integer surveyId, Integer id) {
-        telProtectionMapper.updateByTid(surveyId, id);
+    public boolean modifiByTid(Integer projectId, Integer id) {
+        telProtectionMapper.updateByTid(projectId, id);
         return true;
     }
 

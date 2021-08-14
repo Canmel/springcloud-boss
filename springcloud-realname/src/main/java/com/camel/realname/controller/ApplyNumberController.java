@@ -188,11 +188,9 @@ public class ApplyNumberController extends BaseCommonController {
      * @param telProtection 查询条件
      * @return Result
      */
-    @GetMapping("/telSurverList")
+    @GetMapping("/projectList")
     public Result queryByFid(TelProtection telProtection) {
-        System.out.println("telProtection = " + telProtection);
         PageInfo<TelProtection> pageList = telService.queryByFid(telProtection);
-        System.out.println("pageList = " + pageList);
         return ResultUtil.success("查询成功",pageList);
     }
 

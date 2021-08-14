@@ -1,5 +1,6 @@
 package com.camel.survey.service.impl;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.camel.core.entity.Result;
 import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class TelProtectionServiceImpl implements TelProtectionService {
+public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, TelProtection> implements TelProtectionService {
     @Resource
     private ApplicationToolsUtils applicationToolsUtils;
 
@@ -52,8 +53,8 @@ public class TelProtectionServiceImpl implements TelProtectionService {
      * @return Result
      */
     @Override
-    public boolean modifiByTid(Integer surveyId, Integer id) {
-        telProtectionMapper.updateByTid(surveyId, id);
+    public boolean modifiByTid(Integer projectId, Integer id) {
+        telProtectionMapper.updateByTid(projectId, id);
         return true;
     }
 

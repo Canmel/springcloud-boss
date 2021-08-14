@@ -1,5 +1,6 @@
 package com.camel.survey.mapper;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface TelProtectionMapper {
+public interface TelProtectionMapper extends BaseMapper<TelProtection> {
 
     List<TelProtection> grantTelList(TelProtection telProtection);
 
@@ -46,8 +47,8 @@ public interface TelProtectionMapper {
 
     /**
      * 供应商：修改项目
-     * @param surveyId, id 修改条件
+     * @param projectId, id 修改条件
      * @return boolean
      */
-    int updateByTid(Integer surveyId, Integer id);
+    int updateByTid(Integer projectId, Integer id);
 }
