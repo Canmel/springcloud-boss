@@ -69,9 +69,11 @@ public class ZsSurveyController extends BaseCommonController {
     @GetMapping("/mine")
     public Result mine() {
         SysUser user = applicationToolsUtils.currentUser();
-        Wrapper wrapper = new EntityWrapper();
-        wrapper.eq("creator", user.getUid());
-        return ResultUtil.success(service.selectList(wrapper));
+//        Wrapper wrapper = new EntityWrapper();
+//        wrapper.eq("creator", user.getUid());
+        ZsSurvey entity = new ZsSurvey();
+        entity.setFinalCusId(user.getUid());
+        return ResultUtil.success(service.selectList(entity));
     }
 
     /**
