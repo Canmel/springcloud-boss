@@ -154,12 +154,12 @@
             this.getList();
         },
         methods: {
-            me() {
-                let that = this;
-                parent.AJAX.GET("/system/sysUser/myself", {}, function (resp) {
-                    that.userInfo = resp.data;
-                })
-            },
+            // me() {
+            //     let that = this;
+            //     parent.AJAX.GET("/system/sysUser/myself", {}, function (resp) {
+            //         that.userInfo = resp.data;
+            //     })
+            // },
             getList(){
                 let that = this;
                 let data = this.paramsData;

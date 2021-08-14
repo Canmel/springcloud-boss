@@ -130,6 +130,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public List<Integer> selectRoleId(SysUser sysUser) {
+        return mapper.findRoleIdsByUserId(sysUser.getUid());
+    }
+
+    @Override
     public SysUser selectByUid(Integer id) {
         Wrapper<SysUser> sysUserWrapper = new EntityWrapper<>();
         sysUserWrapper.eq("uid", id);
