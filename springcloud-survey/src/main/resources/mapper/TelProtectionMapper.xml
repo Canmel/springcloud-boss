@@ -9,9 +9,11 @@
         <result column="tel" property="tel" javaType="java.lang.String"/>
         <result column="project_id" property="projectId" javaType="java.lang.Integer"/>
         <result column="apply_time" property="applyTime" javaType="java.util.Date"/>
+        <result column="username" property="userName" javaType="java.lang.String"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <association property="zsProject" column="project_id" select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"/>
         <collection property="partner" javaType="java.util.ArrayList" ofType="com.camel.core.model.SysUser">
-            <id column="uid" property="uid"></id>
+            <id column="uid" property="uid"/>
             <result column="username" property="username"/>
         </collection>
     </resultMap>
@@ -43,12 +45,15 @@
 
     <select id="partnerList" resultType="com.camel.core.model.SysUser">
         SELECT s.uid, s.username,sr.remark from
-            sys_user s LEFT JOIN sys_user_role sur on s.uid = sur.user_id
-                       LEFT JOIN sys_role sr on sr.role_id = sur.role_id
-        where sr.role_id = 2
+        sys_user s LEFT JOIN sys_user_role sur on s.uid = sur.user_id
+        LEFT JOIN sys_role sr on sr.role_id = sur.role_id
+        <where>
+            <if test="sysUser.username != null and sysUser.username != '' ">and s.username like concat('%',#{sysUser.username},'%')</if>
+            and sr.role_id = 2
+        </where>
         order by s.uid in (
-            SELECT partner_id from tel_partner WHERE tel_id = #{telId}
-            ) desc
+        SELECT partner_id from tel_partner WHERE tel_id = #{telId}
+        ) desc
     </select>
     <select id="isExist" resultType="java.lang.Integer">
         select count(1) from tel_partner
@@ -57,21 +62,30 @@
     </select>
 
     <!-- 供应商：分页查询项目列表 -->
-    <select id="selectByPid" resultType="com.camel.survey.model.TelProtection">
-        SELECT t.id,u.username as userName,t.tel,s.name as projectName,t.apply_time,t.status,t.final_cus_id,t.project_id as projectId
+    <select id="selectByPid" resultMap="BaseResultMap">
+        SELECT t.id,u.username,t.tel,t.apply_time,t.status,t.final_cus_id,t.project_id
         FROM tel_protection t
         LEFT JOIN tel_partner p ON p.tel_id = t.id
         LEFT JOIN sys_user u ON t.final_cus_id = u.uid
-        LEFT JOIN zs_project s ON t.project_id = s.id
-        WHERE p.partner_id = #{partnerId}
-        <!--<if test="u.username != null and u.username != '' ">  AND u.username like concat('%',#{u.username},'%') </if>-->
+        LEFT JOIN zs_project z ON t.project_id = z.id
+        <where>
+            p.partner_id = #{partnerId}
+            <if test="tel != null and tel != ''">
+                and tel like concat('%',#{tel},'%')
+            </if>
+        </where>
     </select>
 
     <!-- 供应商：分页查询项目列表 -->
-    <select id="selectByFid" resultType="com.camel.survey.model.TelProtection">
-        SELECT s.id as projectId,u.username as userName,s.name as projectName,s.created_at as createdAt
-        from zs_survey s LEFT JOIN sys_user u ON s.final_cus_id = u.uid
-        WHERE s.final_cus_id  = #{finalCusId}
+    <select id="selectByFid" resultMap="BaseResultMap">
+        SELECT z.id as project_id,u.username
+        from zs_project z LEFT JOIN sys_user u ON z.company_id = u.uid
+        <where>
+            z.company_id = #{finalCusId}
+            <if test="projectName != null and projectName != '' ">
+                and z.name like concat('%',#{projectName},'%')
+            </if>
+        </where>
     </select>
 
     <select id="getTelByUserId" resultType="java.lang.String">
@@ -85,7 +99,8 @@
     <update id="updateByTid">
         update
             tel_protection
-        set survey_id = #{surveyId} where id = #{id}
+        set project_id = #{projectId}
+        where id = #{id}
     </update>
 
 </mapper>

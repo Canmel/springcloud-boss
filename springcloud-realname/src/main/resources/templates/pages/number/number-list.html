@@ -47,7 +47,7 @@
                     show-overflow-tooltip>
             </el-table-column>
             <el-table-column
-                    prop="surveyName"
+                    prop="zsProject.name"
                     label="项目名称"
                     align="center"
                     width="200"
@@ -129,14 +129,14 @@
                                 show-overflow-tooltip>
                         </el-table-column>
                         <el-table-column
-                                prop="surveyName"
+                                prop="zsProject.name"
                                 label="项目名称"
                                 align="center"
                                 width="200"
                                 show-overflow-tooltip>
                         </el-table-column>
                         <el-table-column
-                                prop="createdAt"
+                                prop="zsProject.createdAt"
                                 label="创建时间"
                                 sortable
                                 align="center"
@@ -148,11 +148,11 @@
                                 width="200">
                             <template slot="header" slot-scope="scope">
                                 <el-input
-                                        v-model="search"
+                                        v-model="projectSearch"
                                         size="mini"
                                         placeholder="输入项目名称"
-                                        @keyup.enter="searchDate">
-                                    <el-button slot="append" icon="el-icon-search" @click="searchDate"></el-button>
+                                        @keyup.enter="searchData">
+                                    <el-button slot="append" icon="el-icon-search" @click="searchData"></el-button>
                                 </el-input>
                             </template>
                             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -199,9 +199,14 @@
             multipleSelection: [],
             tableData: [],
             tableList: [],
-            search:"",
+            search:"",  // 号码列表搜索
+            projectSearch:"",   //  项目搜索
             telId: null,
             paramsData:{
+                pageNum:1,
+                pageSize:20,
+            },
+            projectData:{
                 pageNum:1,
                 pageSize:20,
             },
@@ -266,7 +271,7 @@
                 let that = this;
                 let paramsData = this.paramsData;
                 paramsData['tel'] = this.search;
-                AJAX.GET_SYNC("applyNumber/telList",paramsData,function(res){
+                AJAX.GET_SYNC("/survey/telProtection/telList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;
                         that.pageParams.total = res.data.total;
@@ -289,7 +294,7 @@
                 paramsData['id'] = that.telId;
                 params = JSON.stringify(paramsData)
                 that.dialogVisible = false;
-                AJAX.PUT("applyNumber/modifiByTid",params,function(res){
+                AJAX.PUT("/survey/telProtection/modifiByTid",params,function(res){
                     if(res.code === 200){
                         that.telId = null;
                         that.$message({
@@ -307,24 +312,23 @@
                 });
                 this.getList();
             },
-            searchDate(){
-
+            searchData(){
                 this.resetPage();
                 this.getData(this.finalCusId);
                 this.finalCusId = '';
             },
-
             getData(row,id){
                 let that = this;
-                let paramsData = this.paramsData;
-                paramsData['surveyName'] = this.search;
+                let paramsData = this.projectData;
+                paramsData['projectName'] = this.projectSearch;
+
 
                 that.finalCusId = row;
                 paramsData.finalCusId = that.finalCusId;
 
                 that.telId = id;
                 that.dialogVisible = true;
-                AJAX.GET_SYNC("applyNumber/projectList",paramsData,function(res){
+                AJAX.GET_SYNC("/survey/telProtection/projectList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableList = res.data.list;
                         that.pageParams.total = res.data.total;
