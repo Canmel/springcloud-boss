@@ -86,9 +86,9 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
 
     @Override
-    public PageInfo<SysCompany> partnerList(SysCompany sysCompany, Integer telId) {
+    public PageInfo<SysCompany> partnerList(SysCompany sysCompany) {
         PageHelper.startPage(sysCompany.getPageNum(),sysCompany.getPageSize());
-        List<SysCompany> list = telProtectionMapper.partnerList(sysCompany,telId);
+        List<SysCompany> list = telProtectionMapper.partnerList(sysCompany);
         return new PageInfo<>(list);
     }
 

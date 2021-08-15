@@ -36,7 +36,7 @@ public interface TelProtectionService extends IService<TelProtection> {
 
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 
-    PageInfo<SysCompany> partnerList(SysCompany sysCompany, Integer telId);
+    PageInfo<SysCompany> partnerList(SysCompany sysCompany);
 
     Integer isExist(Integer uid, Integer telId);
 

@@ -108,8 +108,8 @@ public class TelProtectionController extends BaseCommonController {
      * @return
      */
     @GetMapping("/partnerList")
-    public Result partnerList(SysCompany sysCompany, Integer telId){
-        PageInfo<SysCompany> pageList = telService.partnerList(sysCompany,telId);
+    public Result partnerList(SysCompany sysCompany){
+        PageInfo<SysCompany> pageList = telService.partnerList(sysCompany);
         return ResultUtil.success("查询成功",pageList);
     }
 

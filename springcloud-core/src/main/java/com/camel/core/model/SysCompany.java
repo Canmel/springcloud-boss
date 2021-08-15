@@ -1,5 +1,6 @@
 package com.camel.core.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.camel.core.entity.BasePaginationEntity;
 import lombok.Data;
 
@@ -22,6 +23,12 @@ public class SysCompany extends BasePaginationEntity implements Serializable {
     private String name;
     private String contacts;
     private String tel;
+
+    /**
+     * 号码是否绑定公司
+     */
+    @TableField(exist = false)
+    private Integer isBind;
 
     @Override
     public String toString() {

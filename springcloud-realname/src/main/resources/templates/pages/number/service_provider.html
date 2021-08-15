@@ -62,14 +62,18 @@
                     </el-input>
                 </template>
                 <template slot-scope="scope">
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="grant(scope.row.id)">授权</el-button>
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="revokeTel(scope.row.id)">撤回</el-button>
+                    <div v-if="scope.row.isBind !== -1">
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="revokeTel(scope.row.id)">撤回授权</el-button>
+                    </div>
+                    <div v-else>
+                        <el-button
+                                size="mini"
+                                type="success"
+                                @click="grant(scope.row.id)">授权</el-button>
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -123,7 +127,6 @@
                 }
                 data = JSON.stringify(obj)
                 AJAX.PUT("/survey/telProtection/grant",data,function (res) {
-                    console.log(res)
                     if(res.code === 200){
                         that.$message({
                             message: res.msg,
@@ -137,8 +140,8 @@
                             center: true
                         });
                     }
-                    this.getList();
                 })
+                this.getList();
             },
             revokeTel(id){
                 let that = this;
@@ -161,8 +164,8 @@
                             center: true
                         });
                     }
-                    this.getList();
                 })
+                this.getList();
             },
             handleSizeChange(val){
                 // console.log(`每页 ${val} 条`);
@@ -192,7 +195,6 @@
                 let that = this;
                 let paramsData = this.paramsData;
                 that.telId = localStorage.getItem("params");
-                paramsData['telId']= that.telId;
                 paramsData['name'] = that.search;
                 AJAX.GET_SYNC("/survey/telProtection/partnerList",paramsData,function(res){
                     if(res.code === 200){

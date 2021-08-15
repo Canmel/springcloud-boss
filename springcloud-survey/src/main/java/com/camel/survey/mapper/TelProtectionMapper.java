@@ -17,7 +17,7 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
 
     List<TelProtection> grantTelList(TelProtection telProtection);
 
-    List<SysCompany> partnerList(@Param("sysCompany") SysCompany sysCompany, @Param("telId") Integer telId);
+    List<SysCompany> partnerList(SysCompany sysCompany);
 
     Integer updatePartner(TelProtection telProtection);
 

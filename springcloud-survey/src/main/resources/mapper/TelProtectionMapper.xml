@@ -81,13 +81,12 @@
     </select>
 
     <select id="partnerList" resultType="com.camel.core.model.SysCompany">
-        SELECT id,name,contacts,tel from sys_company
+        SELECT sys_company.id,sys_company.name,sys_company.contacts,sys_company.tel , IFNULL(tel_partner.tel_id,-1) is_bind
+        from sys_company LEFT JOIN tel_partner on sys_company.id = tel_partner.partner_id
         <where>
-            <if test="sysCompany.name != null and sysCompany.name != '' ">and name like concat('%',#{sysCompany.name},'%')</if>
+            <if test="name != null and name != '' ">and name like concat('%',#{name},'%')</if>
         </where>
-        order by id in (
-            SELECT partner_id from tel_partner WHERE tel_id = #{telId}
-        ) desc
+        ORDER BY is_bind desc
     </select>
 
     <select id="isExist" resultType="java.lang.Integer">
