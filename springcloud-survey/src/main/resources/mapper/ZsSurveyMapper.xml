@@ -23,7 +23,6 @@
         <result column="information_template" property="informationTemplate"/>
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="auto_call" property="autoCall" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler" />
-        <result column="final_cus_id" property="finalCusId"/>
         <association property="project" column="project_id"
                      select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"></association>
         <association property="creator" javaType="com.camel.core.model.SysUser">
@@ -53,12 +52,11 @@
         <result column="information_template" property="informationTemplate"/>
         <result column="state" property="state" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <result column="pstn_number" property="pstnNumber"/>
-        <result column="final_cus_id" property="finalCusId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        zs_survey.id, zs_survey.name, start_show, end_show, collect_phone, monit, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type, zs_survey.unclear_count, zs_survey.information_template, zs_survey.pstn_number, zs_survey.auto_call,zs_survey.final_cus_id
+        zs_survey.id, zs_survey.name, start_show, end_show, collect_phone, monit, zs_survey.project_id, zs_survey.state, zs_survey.collect_num, zs_survey.current_num, zs_survey.status, zs_survey.created_at, zs_survey.creator, zs_survey.collect_type, zs_survey.unclear_count, zs_survey.information_template, zs_survey.pstn_number, zs_survey.auto_call
     </sql>
 
     <select id="list" resultMap="BaseResultMap">

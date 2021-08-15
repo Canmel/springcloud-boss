@@ -16,6 +16,7 @@ import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.service.PstnnumberService;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.FinalCusVo;
@@ -48,6 +49,9 @@ public class TelProtectionController extends BaseCommonController {
 
     @Autowired
     private TelProtectionService telService;
+
+    @Autowired
+    private PstnnumberService pstnnumberService;
 
     // @GetMapping("/apply/{id}")
     // public Result apply(@PathVariable Integer id) {
@@ -154,9 +158,7 @@ public class TelProtectionController extends BaseCommonController {
 
     @GetMapping("/numberManage")
     public Result index(){
-        String[] arr = {"1111111","2222222","3333333","4444444"};
-        JSONArray all = telService.all();
-        return ResultUtil.success("success",arr);
+        return ResultUtil.success("success",pstnnumberService.all());
     }
 
     @GetMapping("/finalList")
