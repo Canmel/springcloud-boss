@@ -38,7 +38,7 @@ public class PstnnumberController {
         if(StringUtils.isEmpty(projectId.toString())){
             return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"项目id不能为空");
         }
-        List<String> list = telProtectionService.getTelListByUserId(projectId);
+        List<String> list = telProtectionService.getTelListByProId(projectId);
         return ResultUtil.success("查询成功",list);
     }
 

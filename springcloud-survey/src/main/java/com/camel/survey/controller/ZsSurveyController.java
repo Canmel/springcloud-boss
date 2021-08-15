@@ -10,6 +10,7 @@ import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.annotation.AuthIgnore;
 import com.camel.survey.enums.ZsSurveyState;
+import com.camel.survey.mapper.SysUserMapper;
 import com.camel.survey.model.ZsAnswer;
 import com.camel.survey.model.ZsSurvey;
 import com.camel.survey.service.MyFileTransterBackUpdate;
@@ -23,6 +24,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -57,6 +59,9 @@ public class ZsSurveyController extends BaseCommonController {
     @Autowired
     private ZsSurveyService service;
 
+    @Resource
+    private SysUserMapper sysUserMapper;
+
     @Autowired
     private ZsAnswerService zsAnswerService;
 
@@ -69,10 +74,12 @@ public class ZsSurveyController extends BaseCommonController {
     @GetMapping("/mine")
     public Result mine() {
         SysUser user = applicationToolsUtils.currentUser();
-//        Wrapper wrapper = new EntityWrapper();
+//        Wrapper<ZsSurvey> wrapper = new EntityWrapper<>();
 //        wrapper.eq("creator", user.getUid());
         ZsSurvey entity = new ZsSurvey();
-        entity.setFinalCusId(user.getUid());
+//        entity.setCreatorId(user.getUid());
+        SysUser sysUser = sysUserMapper.selectByUid(user.getUid());
+        entity.setCompanyId(sysUser.getCompanyId());
         return ResultUtil.success(service.selectList(entity));
     }
 

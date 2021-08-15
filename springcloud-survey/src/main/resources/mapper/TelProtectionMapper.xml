@@ -17,10 +17,18 @@
 <!--            <result column="username" property="username"/>-->
 <!--        </collection>-->
         <collection property="company" ofType="com.camel.core.model.SysCompany">
-            <id column="cid" property="id"></id>
+            <id column="cid" property="id"/>
             <result column="name" property="name"/>
             <result column="contacts" property="contacts"/>
         </collection>
+    </resultMap>
+
+    <resultMap id="finalCusResult" type="com.camel.survey.vo.FinalCusVo">
+        <result property="uid" column="uid"/>
+        <result property="username" column="username"/>
+        <result property="isBind" column="is_bind"/>
+        <result property="telProId" column="id"/>
+        <result property="tel" column="tel"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -59,6 +67,11 @@
           and partner_id = #{partnerId}
     </delete>
 
+    <delete id="revokeTel">
+        delete from tel_protection
+        where id = #{id}
+    </delete>
+
     <select id="grantTelList" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from
@@ -73,7 +86,7 @@
             <if test="sysCompany.name != null and sysCompany.name != '' ">and name like concat('%',#{sysCompany.name},'%')</if>
         </where>
         order by id in (
-        SELECT partner_id from tel_partner WHERE tel_id = #{telId}
+            SELECT partner_id from tel_partner WHERE tel_id = #{telId}
         ) desc
     </select>
 
@@ -83,34 +96,38 @@
           and tel_id = #{telId}
     </select>
 
-    <select id="finalList" resultType="com.camel.core.model.SysCompany">
-        select id,name from sys_company
+    <select id="finalList" resultMap="finalCusResult">
+        select sys_user.uid,sys_user.username,IFNULL(tel_protection.final_cus_id,-1) is_bind,tel_protection.id,tel_protection.tel
+        from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+        left join tel_protection on sys_user.uid = tel_protection.final_cus_id
         <where>
-            <if test="name != null and name != '' ">and name like concat('%',#{name},'%')</if>
+            sys_user_role.role_id = 7
+            <if test="username != null and username != '' ">and name like concat('%',#{username},'%')</if>
         </where>
     </select>
 
     <select id="selectByTel" resultType="java.lang.String">
         select username
         from sys_user
-        where uid = (
+        where uid in (
             select final_cus_id
             from tel_protection
             where tel = #{tel}
         )
     </select>
 
-    <!-- 供应商：分页查询项目列表 -->
+    <!-- 供应商：分页查询号码列表 -->
     <select id="selectByPid" resultMap="BaseResultMap">
         SELECT t.id,u.username,t.tel,t.apply_time,t.status,t.final_cus_id,t.project_id
         FROM tel_protection t
         LEFT JOIN tel_partner p ON p.tel_id = t.id
-        LEFT JOIN sys_user u ON t.final_cus_id = u.uid
+        LEFT JOIN sys_user u ON u.uid = t.final_cus_id
+        LEFT JOIN sys_company c ON p.partner_id = c.id
         LEFT JOIN zs_project z ON t.project_id = z.id
         <where>
             p.partner_id = #{partnerId}
             <if test="tel != null and tel != ''">
-                and tel like concat('%',#{tel},'%')
+                and t.tel like concat('%',#{tel},'%')
             </if>
         </where>
     </select>
@@ -118,19 +135,18 @@
     <!-- 供应商：分页查询项目列表 -->
     <select id="selectByFid" resultMap="BaseResultMap">
         SELECT z.id as project_id,u.username
-        from zs_project z LEFT JOIN sys_user u ON z.company_id = u.uid
+        from zs_project z LEFT JOIN sys_user u ON z.final_cus_id = u.uid
         <where>
-            z.company_id = #{finalCusId}
+            z.final_cus_id = #{finalCusId}
             <if test="projectName != null and projectName != '' ">
                 and z.name like concat('%',#{projectName},'%')
             </if>
         </where>
     </select>
 
-    <select id="getTelByUserId" resultType="java.lang.String">
+    <select id="getTelByProId" resultType="java.lang.String">
         select tel from tel_protection
-        where final_cus_id = #{userId}
-        and project_id = #{projectId}
+        where project_id = #{projectId}
         and status = 1
     </select>
 

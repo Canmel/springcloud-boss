@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.vo.FinalCusVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -22,19 +23,28 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
 
     Integer isExist(Integer uid, Integer telId);
 
-    Boolean delPromise(TelProtection telProtection);
+    Integer delPromise(TelProtection telProtection);
 
-    List<SysCompany> finalList(SysCompany sysCompany);
+    /**
+     * 查询角色为最终用户的用户
+     * @param sysUser
+     * @return FinalCusVo 对象
+     */
+    List<FinalCusVo> finalList(SysUser sysUser);
+
+    /**
+     * 解绑
+     */
+    Integer revokeTel(Integer id);
 
     Integer insertFinal(TelProtection telProtection);
 
     /**
-     * 根据最终客户id返回电话集合
-     * @param userId 用户id
+     * 根据项目id返回电话集合
      * @param projectId 项目id
      * @return List<String>
      */
-    List<String> getTelByUserId(@Param("userId") Integer userId, @Param("projectId")Integer projectId);
+    List<String> getTelByProId(@Param("projectId")Integer projectId);
 
     /**
      * 供应商：分页查询号码列表

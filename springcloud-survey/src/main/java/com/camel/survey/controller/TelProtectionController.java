@@ -18,6 +18,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.TelProtection;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.FinalCusVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -60,8 +61,6 @@ public class TelProtectionController extends BaseCommonController {
      */
     @GetMapping("/telList")
     public Result queryByPid(TelProtection telProtection) {
-        SysUser sysUser = applicationToolsUtils.currentUser();
-        telProtection.setPartnerId(sysUser.getUid());
         PageInfo<TelProtection> pageList = telService.queryByPid(telProtection);
         return ResultUtil.success("查询成功",pageList);
     }
@@ -140,6 +139,19 @@ public class TelProtectionController extends BaseCommonController {
         return telService.revoke(telProtection);
     }
 
+    /**
+     * 解除绑定
+     * @return
+     */
+    @DeleteMapping("/revokeTel/{id}")
+    public Result revokeTel(@PathVariable("id") Integer id){
+        Integer res = telService.revokeTel(id);
+        if(res > 0){
+            return ResultUtil.success("解除绑定成功");
+        }
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"解除绑定失败");
+    }
+
     @GetMapping("/numberManage")
     public Result index(){
         String[] arr = {"1111111","2222222","3333333","4444444"};
@@ -148,8 +160,8 @@ public class TelProtectionController extends BaseCommonController {
     }
 
     @GetMapping("/finalList")
-    public Result finalList(SysCompany sysCompany){
-        PageInfo<SysCompany> finalList = telService.finalList(sysCompany);
+    public Result finalList(SysUser sysUser){
+        PageInfo<FinalCusVo> finalList = telService.finalList(sysUser);
         return ResultUtil.success("查询成功",finalList);
     }
 

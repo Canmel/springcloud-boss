@@ -19,7 +19,7 @@
                     <label class="col-sm-3 control-label">调查项目：</label>
                     <div class="col-sm-8">
                         <select name="project" class="form-control" v-model="selectedProject" type="text" @change="loadPstnnumber">
-                            <option v-for="item in projects" :value="item">{{item.name}}</option>
+                            <option v-for="item in projects" :value="item">{{item ? item.name : "无问卷，查无项目"}}</option>
                         </select>
                     </div>
                 </div>

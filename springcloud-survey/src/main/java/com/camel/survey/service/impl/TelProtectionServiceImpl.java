@@ -10,14 +10,17 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
+import com.camel.survey.mapper.SysUserMapper;
 import com.camel.survey.mapper.TelProtectionMapper;
 import com.camel.survey.model.TelProtection;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.FinalCusVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -31,6 +34,9 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     @Resource
     private TelProtectionMapper telProtectionMapper;
 
+    @Resource
+    private SysUserMapper sysUserMapper;
+
     @Value("${cti.baseUrl}")
     public String baseUrl;
 
@@ -41,6 +47,9 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
      */
     @Override
     public PageInfo<TelProtection> queryByPid(TelProtection telProtection) {
+        SysUser sysUser = applicationToolsUtils.currentUser();
+        SysUser user = sysUserMapper.selectByUid(sysUser.getUid());
+        telProtection.setPartnerId(user.getCompanyId());
         PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
         List<TelProtection> list = telProtectionMapper.selectByPid(telProtection);
         return new PageInfo<TelProtection>(list);
@@ -99,8 +108,8 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
 
     @Override
     public Result revoke(TelProtection telProtection) {
-        Boolean flag = telProtectionMapper.delPromise(telProtection);
-        if (flag){
+        Integer res = telProtectionMapper.delPromise(telProtection);
+        if (res > 0){
             return ResultUtil.success("撤销成功");
         }
         return ResultUtil.error(ResultEnum.UNKONW_ERROR);
@@ -115,10 +124,16 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
 
     @Override
-    public PageInfo<SysCompany> finalList(SysCompany sysCompany) {
-        PageHelper.startPage(sysCompany.getPageNum(),sysCompany.getPageSize());
-        List<SysCompany> companies = telProtectionMapper.finalList(sysCompany);
-        return new PageInfo<>(companies);
+    public PageInfo<FinalCusVo> finalList(SysUser sysUser) {
+        PageHelper.startPage(sysUser.getPageNum(),sysUser.getPageSize());
+        List<FinalCusVo> sysUsers = telProtectionMapper.finalList(sysUser);
+        return new PageInfo<>(sysUsers);
+    }
+
+    @Override
+    @Transactional
+    public Integer revokeTel(Integer id) {
+        return telProtectionMapper.revokeTel(id);
     }
 
     @Override
@@ -139,9 +154,8 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
     
     @Override
-    public List<String> getTelListByUserId(Integer projectId) {
-        Integer uid = applicationToolsUtils.currentUser().getUid();
-        return telProtectionMapper.getTelByUserId(uid,projectId);
+    public List<String> getTelListByProId(Integer projectId) {
+        return telProtectionMapper.getTelByProId(projectId);
     }
 
 }
