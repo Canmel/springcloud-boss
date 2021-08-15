@@ -1,11 +1,16 @@
 package com.camel.auth.config.oauth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.ExpiringOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -123,7 +128,32 @@ public class RedisTokenStore implements TokenStore {
 
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
-        return this.readAuthentication(token.getValue());
+        OAuth2Authentication result =  this.readAuthentication(token.getValue());
+
+        if(result != null) {
+            // 如果没有失效
+            DefaultOAuth2AccessToken oAuth2AccessToken = (DefaultOAuth2AccessToken) token;
+            // 重新设置过期时间
+            int validitySeconds = getAccessTokenValiditySeconds(result.getOAuth2Request());
+            if(validitySeconds > 0) {
+                oAuth2AccessToken.setExpiration(new Date(System.currentTimeMillis() + (validitySeconds * 1000L)));
+            }
+            storeAccessToken(token, result);
+        }
+        return result;
+    }
+
+    @Autowired
+    public ClientDetailsService clientDetailsService;
+
+    private int getAccessTokenValiditySeconds(OAuth2Request request) {
+        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(request.getClientId());
+        Integer accessTokenValiditySeconds = clientDetails.getAccessTokenValiditySeconds();
+        if(accessTokenValiditySeconds != null) {
+            System.out.println("请使用客户端自己的AccessTokenExp");
+            return accessTokenValiditySeconds;
+        }
+        return 20;
     }
 
     @Override
