@@ -26,6 +26,7 @@
         <result column="organization_expiration_date" property="organizationExpirationDate" javaType="java.util.Date"/>
         <result column="entrustment_letter_url" property="entrustmentLetterUrl" javaType="java.lang.String"/>
         <result column="acceptance_url" property="acceptanceUrl" javaType="java.lang.String"/>
+        <result column="apply_sheet_url" property="applySheetUrl" javaType="java.lang.String"/>
         <result column="agent_name" property="agentName" javaType="java.lang.String"/>
         <result column="agent_pid" property="agentPid" javaType="java.lang.String"/>
         <result column="agent_id_turl" property="agentIdTurl" javaType="java.lang.String"/>
@@ -42,24 +43,27 @@
         <result column="agent_address" property="agentAddress" javaType="java.lang.String"/>
         <result column="contact_name" property="contactName" javaType="java.lang.String"/>
         <result column="contact_no" property="contactNo" javaType="java.lang.String"/>
+        <result column="contact_id_url" property="contactIdUrl" javaType="java.lang.String"/>
         <result column="user_id" property="userId" javaType="java.lang.Integer"/>
         <result column="submit_date" property="submitDate" javaType="java.util.Date"/>
         <result column="status" property="status" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
         <result column="apply" property="apply" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <result column="is_pay" property="isPay" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,request_id,is_merge,enterprise_name,business_license_code,
-        business_license_url,corporate_name,corporate_id_url,corporate_id_hurl,business_start_date,
-        business_term_start_date,business_term_end_date,business_address,
-        business_no,organization_code,organization_code_url,organization_name,
-        organization_type,organization_effective_date,organization_expiration_date,
-        entrustment_letter_url,acceptance_url,agent_name,agent_pid,agent_id_turl,
-        agent_id_url,agent_id_hurl,agent_id_address,agent_id_gender,
-        agent_id_nation,agent_id_birth_day,agent_id_issuing_authority,
-        agent_id_cert_valid_date,agent_id_cert_exp_date,agent_contact_no,
-        agent_address,contact_name,contact_no,user_id,status,submit_date, status, apply
+        zs_corp.id,zs_corp.request_id,zs_corp.is_merge,zs_corp.enterprise_name,zs_corp.business_license_code,
+        zs_corp.business_license_url,zs_corp.corporate_name,zs_corp.corporate_id_url,zs_corp.corporate_id_hurl,zs_corp.business_start_date,
+        zs_corp.business_term_start_date,zs_corp.business_term_end_date,zs_corp.business_address,
+        zs_corp.business_no,zs_corp.organization_code,zs_corp.organization_code_url,zs_corp.organization_name,
+        zs_corp.organization_type,zs_corp.organization_effective_date,zs_corp.organization_expiration_date,
+        zs_corp.entrustment_letter_url,zs_corp.acceptance_url,zs_corp.apply_sheet_url,zs_corp.agent_name,zs_corp.agent_pid,zs_corp.agent_id_turl,
+        zs_corp.agent_id_url,zs_corp.agent_id_hurl,zs_corp.agent_id_address,zs_corp.agent_id_gender,
+        zs_corp.agent_id_nation,zs_corp.agent_id_birth_day,zs_corp.agent_id_issuing_authority,
+        zs_corp.agent_id_cert_valid_date,zs_corp.agent_id_cert_exp_date,zs_corp.agent_contact_no,
+        zs_corp.agent_address,zs_corp.contact_name,zs_corp.contact_no,zs_corp.contact_id_url,zs_corp.user_id,zs_corp.status,
+        zs_corp.submit_date, zs_corp.status, zs_corp.apply,approve_order.is_pay
     </sql>
 
     <insert id="insertDemo">
@@ -93,11 +97,11 @@
             <if test="organizationExpirationDate != null">organization_expiration_date = #{organizationExpirationDate},</if>
             <if test="entrustmentLetterUrl != null and entrustmentLetterUrl != ''">entrustment_letter_url = #{entrustmentLetterUrl},</if>
             <if test="acceptanceUrl != null and acceptanceUrl != ''">acceptance_url = #{acceptanceUrl},</if>
+            <if test="applySheetUrl != null and applySheetUrl != ''">apply_sheet_url = #{applySheetUrl},</if>
             <if test="agentName != null and agentName != ''">agent_name = #{agentName},</if>
             <if test="agentPid != null and agentPid != ''">agent_pid = #{agentPid},</if>
             <if test="agentIdTurl != null and agentIdTurl != ''">agent_id_turl = #{agentIdTurl},</if>
             <if test="agentIdUrl != null and agentIdUrl != ''">agent_id_url = #{agentIdUrl},</if>
-            <if test="agentIdFurl != null and agentIdFurl != ''">agent_id_furl = #{agentIdFurl},</if>
             <if test="agentIdHurl != null and agentIdHurl != ''">agent_id_hurl = #{agentIdHurl},</if>
             <if test="agentIdAddress != null and agentIdAddress != ''">agent_id_address = #{agentIdAddress},</if>
             <if test="agentIdGender != null and agentIdGender != ''">agent_id_gender = #{agentIdGender},</if>
@@ -110,8 +114,9 @@
             <if test="agentAddress != null and agentAddress != ''">agent_address = #{agentAddress},</if>
             <if test="contactName != null and contactName != ''">contact_name = #{contactName},</if>
             <if test="contactNo != null and contactNo != ''">contact_no = #{contactNo},</if>
-            <if test="apply != null">apply = #{apply},</if>
-            <if test="status != null">status = #{status},</if>
+            <if test="contactIdUrl != null and contactIdUrl != ''">contact_id_url = #{contactIdUrl},</if>
+            <if test="apply != null">apply = #{apply.code},</if>
+            <if test="status != null">status = #{status.code},</if>
         </set>
         where user_id = #{userId}
     </update>
@@ -123,29 +128,32 @@
 
     <select id="getOneByUid" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from zs_corp
-        where user_id = #{userId}
-        and status = 1
+        left join approve_order on zs_corp.user_id = approve_order.user_id
+        where zs_corp.user_id = #{userId}
+        and zs_corp.status = 1
         limit 1
     </select>
 
     <select id="getList" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from zs_corp
+        left join approve_order on zs_corp.user_id = approve_order.user_id
         <where>
-            <if test="enterpriseName != null and enterpriseName != ''">enterprise_name like concat('%',#{enterpriseName},'%')</if>
-            <if test="corporateName != null and corporateName != ''">or corporate_name like concat('%',#{corporateName},'%')</if>
-            <if test="enterpriseName != null and businessLicenseCode != ''">or business_license_code like concat('%',#{businessLicenseCode},'%')</if>
-            <if test="agentName != null and agentName != ''">or agent_name like concat('%',#{agentName},'%')</if>
-            <if test="agentPid != null and agentPid != ''">or agent_pid like concat('%',#{agentPid},'%')</if>
-            <if test="agentContactNo != null and agentContactNo != ''">or agent_contact_no like concat('%',#{agentContactNo},'%')</if>
-            <if test="agentIdIssuingAuthority != null and agentIdIssuingAuthority != ''">or agent_id_issuing_authority like concat('%',#{agentIdIssuingAuthority},'%')</if>
-            and status = 1
-            and apply >= 2
+            <if test="enterpriseName != null and enterpriseName != ''">zs_corp.enterprise_name like concat('%',#{enterpriseName},'%')</if>
+            <if test="corporateName != null and corporateName != ''">and zs_corp.corporate_name like concat('%',#{corporateName},'%')</if>
+            <if test="enterpriseName != null and businessLicenseCode != ''">and zs_corp.business_license_code like concat('%',#{businessLicenseCode},'%')</if>
+            <if test="agentName != null and agentName != ''">and zs_corp.agent_name like concat('%',#{agentName},'%')</if>
+            <if test="agentPid != null and agentPid != ''">and zs_corp.agent_pid like concat('%',#{agentPid},'%')</if>
+            <if test="agentContactNo != null and agentContactNo != ''">and zs_corp.agent_contact_no like concat('%',#{agentContactNo},'%')</if>
+            <if test="agentIdIssuingAuthority != null and agentIdIssuingAuthority != ''">and zs_corp.agent_id_issuing_authority like concat('%',#{agentIdIssuingAuthority},'%')</if>
+            and zs_corp.status = 1
+            and zs_corp.apply >= 2
         </where>
     </select>
     <select id="selectById" resultType="com.camel.realname.model.ZsCorp">
         select <include refid="Base_Column_List"/> from zs_corp
-        where id = #{id}
-        and status = 1
+        left join approve_order on zs_corp.user_id = approve_order.user_id
+        where zs_corp.id = #{id}
+        and zs_corp.status = 1
         limit 1
     </select>
 </mapper>

@@ -55,6 +55,8 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     int loadWorkNum();
 
+    List<Integer> findRoleIdsByUserId(Integer uid);
+
     SysUser detail(Integer id);
 
     SysUser selectByIdNum(String idNum);

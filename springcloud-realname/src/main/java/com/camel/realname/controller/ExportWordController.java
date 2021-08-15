@@ -38,36 +38,41 @@ public class ExportWordController {
     @Resource
     private ApplyNumberService applyNumberService;
 
-
-    /**
-     * 下载word
-     * @param id id
-     * @param type ApproveType code
-     */
     @GetMapping("/exportWord/{id}")
     public void exportWord(@PathVariable("id") Integer id,
-                           Integer type,
                            HttpServletResponse response) throws IOException {
-        ApproveType approveType = null;
-        if(type == null){
-            response.setContentType("text/html");
-            response.getWriter().println("type 参数 为空");
-        }
-        approveType = ApproveType.getEnumByCode(type);
-        if(approveType != null){
-            if(approveType.getCode().equals(ApproveType.企业.getCode())){
-                zsCorpService.exportWord(id,approveType,response);
-            }else if (approveType.getCode().equals(ApproveType.外呼号码.getCode())){
-                applyNumberService.exportWord(id, approveType, response);
-            }else if(approveType.getCode() == 2){
-                response.setContentType("text/html");
-                response.getWriter().println("暂无 个人 实名认证信息");
-            }
-        }else{
-            response.setContentType("text/html");
-            response.getWriter().println("查无该 type 类型");
-        }
+        zsCorpService.exportWord(id,response);
     }
+
+//    /**
+//     * 下载word
+//     * @param id id
+//     * @param type ApproveType code
+//     */
+//    @GetMapping("/exportWord/{id}")
+//    public void exportWord(@PathVariable("id") Integer id,
+//                           Integer type,
+//                           HttpServletResponse response) throws IOException {
+//        ApproveType approveType = null;
+//        if(type == null){
+//            response.setContentType("text/html");
+//            response.getWriter().println("type 参数 为空");
+//        }
+//        approveType = ApproveType.getEnumByCode(type);
+//        if(approveType != null){
+//            if(approveType.getCode().equals(ApproveType.企业.getCode())){
+//                zsCorpService.exportWord(id,approveType,response);
+//            }else if (approveType.getCode().equals(ApproveType.外呼号码.getCode())){
+//                applyNumberService.exportWord(id, approveType, response);
+//            }else if(approveType.getCode() == 2){
+//                response.setContentType("text/html");
+//                response.getWriter().println("暂无 个人 实名认证信息");
+//            }
+//        }else{
+//            response.setContentType("text/html");
+//            response.getWriter().println("查无该 type 类型");
+//        }
+//    }
 
     /**
      * 下载客户申请表excel
@@ -76,9 +81,15 @@ public class ExportWordController {
      * @throws FileNotFoundException
      */
     @GetMapping("/getApplySheet/{id}")
-    @AuthIgnore
-    public void getApplySheet(@PathVariable("id") Integer id,HttpServletResponse response) throws FileNotFoundException, IIOException {
-        String excelUrl = applyNumberService.getFileUrl(id,ApproveType.外呼号码,"applySheet");
+    public void getApplySheet(@PathVariable("id") Integer id,HttpServletResponse response) throws IOException {
+        String excelUrl = zsCorpService.getImageAddr(id,ApproveType.外呼号码,"applySheetUrl");
+        if("".equals(excelUrl)){
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter writer = response.getWriter();
+            writer.println("客户申请表未上传");
+            writer.close();
+            return;
+        }
         System.out.println("excelUrl = " + excelUrl);
         String excelName = "客户申请表";
         //  返回excel

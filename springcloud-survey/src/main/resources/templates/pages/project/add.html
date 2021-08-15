@@ -21,6 +21,15 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-3 control-label">最终客户：</label>
+                    <div class="col-sm-8">
+                        <select name="finalCusId" id="finalCusId" aria-required="true" aria-invalid="true" v-model="zs_project.finalCusId">
+                            <option value="">--请选择--</option>
+                            <option v-for='item in optionList' :value="item.uid">{{ item.username }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3">
                         <button type="button" class="btn btn-secondary" v-on:click="cancel()">取消</button>
                         <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
@@ -39,13 +48,23 @@
             zs_project: {
                 name: '',
                 code: '',
-                desc: ''
-            }
+                desc: '',
+                finalCusId: '',
+            },
+            select: '',
+            optionList: []
         },
         created: function () {
-
+            this.getValue();
         },
         methods: {
+            getValue: function(){
+                let that = this;
+                AJAX.GET_SYNC('/system/sysUser/role/'+7, {},function (res) {
+                    that.optionList = res.data;
+                })
+
+            },
             cancel: function () {
                 this.backToMain();
             },
@@ -75,12 +94,14 @@
             rules: {
                 name: "required",
                 code: "required",
-                desc: "required"
+                desc: "required",
+                finalCusId: "required"
             },
             messages: {
                 name: icon + "请输入项目名称",
                 code: icon + "请输入项目编号",
-                desc: icon + "请输入描述信息"
+                desc: icon + "请输入描述信息",
+                finalCusId : icon + "请选择最终客户"
             }
         });
 

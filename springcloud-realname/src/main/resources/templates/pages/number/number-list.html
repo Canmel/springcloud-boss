@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+    <script type="text/javascript" src="../../js/ajax-util.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.3/lib/index.js"></script>
+</head>
+<body>
+<div class="x-body">
+    <blockquote class="layui-elem-quote">号码列表展示</blockquote>
+    <fieldset class="layui-elem-field">
+        <legend>号码列表</legend>
+    </fieldset>
+    <template>
+        <el-table
+                tooltip-effect="dark"
+                style="width: 100%"
+                width="500"
+                ref="multipleTable"
+                :data="tableData"
+                border
+                height="400"
+                :default-sort="{prop: 'submitDate', order: 'descending'}">
+            <el-table-column
+                    prop="id"
+                    label="序号"
+                    align="center"
+                    sortable
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="userName"
+                    label="最终用户"
+                    align="center"
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="zsProject.name"
+                    label="项目名称"
+                    align="center"
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="tel"
+                    label="外呼号码"
+                    align="center"
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="applyTime"
+                    label="创建时间"
+                    sortable
+                    align="center"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    label="状态"
+                    align="center"
+                    width="200"
+                    :filters="[
+                        { text: '弃用', value: 0 },
+                        { text: '正常', value: 1 },
+                    ]">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.status.code === 0" align="center">
+                        <el-tag type="danger">弃用</el-tag>
+                    </div>
+                    <div v-if="scope.row.status.code === 1" align="center">
+                        <el-tag type="info">正常</el-tag>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    align="center"
+                    width="180">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入外呼号码搜索"
+                            @keyup.enter="searchList">
+                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                    </el-input>
+                </template>
+                <template slot-scope="scope">
+                    <el-button type="danger" @click="getData(scope.row.finalCusId,scope.row.id)">设置</el-button>
+                </template>
+
+                <el-dialog title="设置项目"
+                           :visible.sync="dialogVisible"
+                           append-to-body>
+                    <el-table
+                            ref="multipleTable"
+                            :data="tableList"
+                            border
+                            height="300"
+                            :default-sort="{prop: 'submitDate', order: 'descending'}"
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            width="500">
+                        <el-table-column
+                                prop="projectId"
+                                label="ID"
+                                align="center"
+                                sortable
+                                width="100">
+                        </el-table-column>
+                        <el-table-column
+                                prop="userName"
+                                label="最终用户"
+                                align="center"
+                                width="200"
+                                show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column
+                                prop="zsProject.name"
+                                label="项目名称"
+                                align="center"
+                                width="200"
+                                show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column
+                                prop="zsProject.createdAt"
+                                label="创建时间"
+                                sortable
+                                align="center"
+                                width="200">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                align="center"
+                                width="200">
+                            <template slot="header" slot-scope="scope">
+                                <el-input
+                                        v-model="projectSearch"
+                                        size="mini"
+                                        placeholder="输入项目名称"
+                                        @keyup.enter="searchData">
+                                    <el-button slot="append" icon="el-icon-search" @click="searchData"></el-button>
+                                </el-input>
+                            </template>
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <template slot-scope="scope">
+                                <el-button type="danger" @click="getSure(scope.row.projectId)">确 定</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="block">
+                        <el-pagination
+                                @size-change="pageSizeChange"
+                                @current-change="pageCurrentChange"
+                                :current-page="pageParams.pageNum"
+                                :page-sizes="pageParams.pageSizes"
+                                :page-size="pageParams.pageSize"
+                                :layout="pageParams.layout"
+                                :total="pageParams.total">
+                        </el-pagination>
+                    </div>
+                </el-dialog>
+            </el-table-column>
+        </el-table>
+        <div class="block">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="pageParams.pageNum"
+                    :page-sizes="pageParams.pageSizes"
+                    :page-size="pageParams.pageSize"
+                    :layout="pageParams.layout"
+                    :total="pageParams.total">
+            </el-pagination>
+        </div>
+    </template>
+</div>
+</body>
+
+<script>
+    new Vue({
+        el: '.x-body',
+        data: {
+            finalCusId: '',
+            dialogVisible: false,
+            multipleSelection: [],
+            tableData: [],
+            tableList: [],
+            search:"",  // 号码列表搜索
+            projectSearch:"",   //  项目搜索
+            telId: null,
+            paramsData:{
+                pageNum:1,
+                pageSize:20,
+            },
+            projectData:{
+                pageNum:1,
+                pageSize:20,
+            },
+            pageParams:{
+                pageSizes:[10, 20, 30, 40],
+                pageSize:20,
+                pageNum:1,
+                total:1000,
+                layout:"total, sizes, prev, pager, next, jumper",
+            },
+        },
+        created: function () {
+            // this.me();
+        },
+        mounted:function(){
+            console.log("mounted...");
+            this.getList();
+        },
+        methods: {
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                        .then(_ => {
+                            done();
+                        })
+                        .catch(_ => {});
+            },
+            handleSizeChange(val){
+                // console.log(`每页 ${val} 条`);
+                this.paramsData.pageSize = val;
+                this.getList();
+            },
+            handleCurrentChange(val){
+                // console.log(`当前页: ${val}`);
+                this.paramsData.pageNum = val;
+                this.getList();
+            },
+            pageSizeChange(val){
+                // console.log(`每页 ${val} 条`);
+                this.paramsData.pageSize = val;
+                this.getData();
+            },
+            pageCurrentChange(val){
+                // console.log(`当前页: ${val}`);
+                this.paramsData.pageNum = val;
+                this.getData();
+            },
+            resetPage(){
+                this.pageParams={
+                    pageSizes:[10, 20, 30, 40],
+                    pageSize:20,
+                    pagerCount:6,
+                    pageNum:1,
+                    total:1000,
+                    layout:"total, sizes, prev, pager, next, jumper",
+                }
+            },
+            searchList(){
+                this.resetPage();
+                this.getList();
+            },
+            getList(){
+                let that = this;
+                let paramsData = this.paramsData;
+                paramsData['tel'] = this.search;
+                AJAX.GET_SYNC("/survey/telProtection/telList",paramsData,function(res){
+                    if(res.code === 200){
+                        that.tableData = res.data.list;
+                        that.pageParams.total = res.data.total;
+                        console.log(
+                                that.tableData
+                        )
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+            },
+            getSure(project_id) {
+                let that = this;
+                let paramsData = this.paramsData;
+                paramsData['projectId'] = project_id;
+                paramsData['id'] = that.telId;
+                params = JSON.stringify(paramsData)
+                that.dialogVisible = false;
+                AJAX.PUT("/survey/telProtection/modifiByTid",params,function(res){
+                    if(res.code === 200){
+                        that.telId = null;
+                        that.$message({
+                            message: res.msg,
+                            type: 'success',
+                            center: true
+                        });
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                });
+                this.getList();
+            },
+            searchData(){
+                this.resetPage();
+                this.getData(this.finalCusId);
+            },
+            getData(row,id){
+                let that = this;
+                let paramsData = this.projectData;
+                paramsData['projectName'] = this.projectSearch;
+
+
+                that.finalCusId = row;
+                paramsData.finalCusId = that.finalCusId;
+
+                that.telId = id;
+                that.dialogVisible = true;
+                AJAX.GET_SYNC("/survey/telProtection/projectList",paramsData,function(res){
+                    if(res.code === 200){
+                        that.tableList = res.data.list;
+                        that.pageParams.total = res.data.total;
+                        console.log(
+                                that.tableList
+                        )
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+            }
+        }
+    });
+
+</script>
+</html>

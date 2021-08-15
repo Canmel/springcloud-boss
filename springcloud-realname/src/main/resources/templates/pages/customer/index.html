@@ -92,7 +92,7 @@
                                     multiple
                                     :limit="1">
                                 <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div slot="tip" class="el-upload__tip">营业执照加盖红色公章，注明用途和时间，只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
                     </td>
@@ -136,7 +136,7 @@
                                     multiple
                                     :limit="1">
                                 <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div slot="tip" class="el-upload__tip">身份证复印件正反面一张A4并加盖红色公章，注明用途和时间，只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
                     </td>
@@ -297,7 +297,7 @@
                                     }"
                                     :limit="1">
                                 <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div slot="tip" class="el-upload__tip">身份证复印件正反面一张A4并加盖红色公章，，注明用途和时间，只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </div>
                     </td>
@@ -427,20 +427,137 @@
                 </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <th width="30%">姓名</th>
+                        <td>
+                            <span id="contactName">
+                                <el-input :disabled="disabled" v-model="authInfo.contactName" placeholder="请输入内容" @blur="updateCorp({contactName: authInfo.contactName})"></el-input>
+                            </span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">电话</th>
+                        <td>
+                            <span id="contactNo">
+                                <el-input :disabled="disabled" v-model="authInfo.contactNo" placeholder="请输入内容" @blur="updateCorp({contactNo: authInfo.contactNo})"></el-input>
+                            </span></td>
+                    </tr>
+                    <tr>
+                        <th width="30%">使用人身份证</th>
+                        <td>
+                            <div v-if="authInfo.contactIdUrl !== '' && authInfo.contactIdUrl !== null">
+                                <img :src="authInfo.zsCorpUrlVo.contactIdUrl" style="width: 100%; max-width: 100%;">
+                            </div>
+                            <div v-else>
+                                <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            </div>
+                            <div>
+                                <el-upload
+                                        :disabled="disabled"
+                                        class="upload-demo"
+                                        multiple
+                                        action=""
+                                        :on-success="uploadSuccess"
+                                        :before-upload="beforeUpload"
+                                        :http-request="function(options){
+                                            return uploadImage(options,'contactIdUrl')
+                                        }"
+                                        :limit="1">
+                                    <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
+                                    <div slot="tip" class="el-upload__tip">身份证复印件正反面一张A4并加盖红色公章，注明用途和时间，只能上传jpg/png文件，且不超过500kb</div>
+                                </el-upload>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="layui-table">
+                <thead>
                 <tr>
-                    <th width="30%">姓名</th>
-                    <td>
-                        <span id="contactName">
-                            <el-input :disabled="disabled" v-model="authInfo.contactName" placeholder="请输入内容" @blur="updateCorp({contactName: authInfo.contactName})"></el-input>
-                        </span></td>
+                    <th colspan="2" scope="col">上传资料</th>
                 </tr>
-                <tr>
-                    <th width="30%">电话</th>
-                    <td>
-                        <span id="contactNo">
-                            <el-input :disabled="disabled" v-model="authInfo.contactNo" placeholder="请输入内容" @blur="updateCorp({contactNo: authInfo.contactNo})"></el-input>
-                        </span></td>
-                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th width="30%">电信入网承诺书</th>
+                        <td>
+                            <div v-if="authInfo.acceptanceUrl !== '' && authInfo.acceptanceUrl !== null">
+                                <img :src="authInfo.zsCorpUrlVo.acceptanceUrl" style="width: 100%; max-width: 100%;">
+                            </div>
+                            <div v-else>
+                                <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
+                            </div>
+                            <div>
+                                <el-upload
+                                        :disabled="disabled"
+                                        class="upload-demo"
+                                        multiple
+                                        action=""
+                                        :on-success="uploadSuccess"
+                                        :before-upload="beforeUpload"
+                                        :http-request="function(options){
+                                                return uploadImage(options,'acceptanceUrl')
+                                            }"
+                                        :limit="1">
+                                    <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
+                                    <div slot="tip" class="el-upload__tip">电信入网承诺书（加盖红色公章），注明用途和时间，只能上传jpg/png文件，且不超过500kb</div>
+                                </el-upload>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="30%">号码申请公函</th>
+                        <td>
+                            <div v-if="authInfo.entrustmentLetterUrl !== '' && authInfo.entrustmentLetterUrl !== null">
+                                <img :src="authInfo.zsCorpUrlVo.entrustmentLetterUrl" style="width: 100%; max-width: 100%;">
+                            </div>
+                            <div v-else>
+                                <img src="../../images/ck.png" style="width: 100%; max-width: 100%;">
+                            </div>
+                            <div>
+                                <el-upload
+                                        :disabled="disabled"
+                                        class="upload-demo"
+                                        multiple
+                                        action=""
+                                        :on-success="uploadSuccess"
+                                        :before-upload="beforeUpload"
+                                        :http-request="function(options){
+                                            return uploadImage(options,'entrustmentLetterUrl')
+                                        }"
+                                        :limit="1">
+                                    <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
+                                    <div slot="tip" class="el-upload__tip">加盖红色公章，注明用途和时间，只能上传jpg/png文件，且不超过500kb</div>
+                                </el-upload>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="30%">客户申请表</th>
+                        <td>
+                            <div v-if="authInfo.applySheetUrl !== null && authInfo.applySheetUrl !== ''">
+                                <el-tag class="warning">已上传</el-tag>
+                            </div>
+                            <div v-else>
+                                <el-tag class="success">未上传</el-tag>
+                            </div>
+                            <div>
+                                <el-upload
+                                        :disabled="disabled"
+                                        class="upload-demo"
+                                        multiple
+                                        action=""
+                                        :on-success="uploadSuccess"
+                                        :before-upload="beforeExcelUpload"
+                                        :http-request="function(options){
+                                            return uploadImage(options,'applySheetUrl')
+                                        }"
+                                        :limit="1">
+                                    <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
+                                    <div slot="tip" class="el-upload__tip">只能上传excel文件，且不超过600kb</div>
+                                </el-upload>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div style="text-align: center">
@@ -483,6 +600,9 @@
                 businessTermEndDate:null,
                 businessAddress:null,
                 businessNo:null,
+                acceptanceUrl:null,
+                entrustmentLetterUrl:null,
+                applySheetUrl:null,
                 agentName:null,
                 agentPid:null,
                 agentIdTurl:null,
@@ -499,6 +619,7 @@
                 agentAddress:null,
                 contactName:null,
                 contactNo:null,
+                contactIdUrl:null,
                 userId:null,
                 apply:null,
                 zsCorpUrlVo:{},
@@ -616,6 +737,14 @@
                     this.$message.error('上传头像图片大小不能超过 500kb!');
                 }
                 return isJPGorPNG && isLt2M;
+            },
+            beforeExcelUpload(file){//   上传前钩子
+                const isExcel = file.type === "application/vnd.ms-excel";
+                const isLt600kb = file.size / 1024 / 1024 < 0.6;
+                if (!isExcel) {
+                    this.$message.error('文件类型只能是 excel ');
+                }
+                return isExcel && isLt600kb;
             }
         }
     });

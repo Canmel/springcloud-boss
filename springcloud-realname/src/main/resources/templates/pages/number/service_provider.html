@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>号码申请页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+    <script type="text/javascript" src="../../js/ajax-util.js"></script>
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.3/lib/index.js"></script>
+</head>
+
+<body>
+<div class="x-body">
+    <div>
+        <el-table
+                ref="multipleTable"
+                :data="tableData"
+                height="500"
+                :default-sort="{prop: 'submitDate', order: 'descending'}"
+                tooltip-effect="dark"
+                style="width: 100%">
+            <el-table-column
+                    label="序号"
+                    type="index"
+                    align="center"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="供货商"
+                    align="center"
+                    width="160"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="contacts"
+                    label="介绍"
+                    align="center"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    align="right">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入 名称 搜索"
+                            @keyup.enter="searchList">
+                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                    </el-input>
+                </template>
+                <template slot-scope="scope">
+                    <div v-if="scope.row.isBind !== -1">
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="revokeTel(scope.row.id)">撤回授权</el-button>
+                    </div>
+                    <div v-else>
+                        <el-button
+                                size="mini"
+                                type="success"
+                                @click="grant(scope.row.id)">授权</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="block">
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="pageParams.pageNum"
+                :page-sizes="pageParams.pageSizes"
+                :page-size="pageParams.pageSize"
+                :layout="pageParams.layout"
+                :total="pageParams.total">
+        </el-pagination>
+    </div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '.x-body',
+        data: {
+            multipleSelection:[],
+            tableData:[],
+            search:"",
+            paramsData:{
+                pageNum:1,
+                pageSize:20,
+            },
+            telId: null,
+            pageParams:{
+                pageSizes:[10, 20, 30, 40],
+                pageSize:20,
+                pageNum:1,
+                total:1000,
+                layout:"total, sizes, prev, pager, next, jumper",
+            },
+        },
+        created: function () {
+            // this.me();
+            this.getList();
+        },
+        mounted:function(){
+
+        },
+        methods: {
+            grant(id) {
+                let that = this;
+                let obj = {
+                    id: that.telId,
+                    partnerId: id
+                }
+                data = JSON.stringify(obj)
+                AJAX.PUT("/survey/telProtection/grant",data,function (res) {
+                    if(res.code === 200){
+                        that.$message({
+                            message: res.msg,
+                            type: 'success',
+                            center: true
+                        });
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+                this.getList();
+            },
+            revokeTel(id){
+                let that = this;
+                let obj = {
+                    id: that.telId,
+                    partnerId: id
+                }
+                data = JSON.stringify(obj)
+                AJAX.PUT("/survey/telProtection/revoke",data,function (res) {
+                    if(res.code === 200){
+                        that.$message({
+                            message: res.msg,
+                            type: 'success',
+                            center: true
+                        });
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+                this.getList();
+            },
+            handleSizeChange(val){
+                // console.log(`每页 ${val} 条`);
+                this.paramsData.pageSize = val;
+                this.getList();
+            },
+            handleCurrentChange(val){
+                // console.log(`当前页: ${val}`);
+                this.paramsData.pageNum = val;
+                this.getList();
+            },
+            resetPage(){
+                this.pageParams={
+                    pageSizes:[10, 20, 30, 40],
+                    pageSize:20,
+                    pagerCount:6,
+                    pageNum:1,
+                    total:1000,
+                    layout:"total, sizes, prev, pager, next, jumper",
+                }
+            },
+            searchList(){
+                this.resetPage();
+                this.getList();
+            },
+            getList(){
+                let that = this;
+                let paramsData = this.paramsData;
+                that.telId = localStorage.getItem("params");
+                paramsData['name'] = that.search;
+                AJAX.GET_SYNC("/survey/telProtection/partnerList",paramsData,function(res){
+                    if(res.code === 200){
+                        that.tableData = res.data.list;
+                        that.pageParams.total = res.data.total;
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+            }
+        }
+    });
+</script>
+</html>

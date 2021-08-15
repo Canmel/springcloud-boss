@@ -81,6 +81,9 @@
             <if test="companyId != null">
                 AND zs_survey.company_id = #{companyId}
             </if>
+            <if test="creatorId != null">
+                AND zs_survey.creator = #{creatorId}
+            </if>
         </where>
         order by id desc
     </select>

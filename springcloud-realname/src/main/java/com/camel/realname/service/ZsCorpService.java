@@ -10,10 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.IIOException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public interface ZsCorpService extends IService<ZsCorp>,ExportService {
+public interface ZsCorpService extends IService<ZsCorp>{
 
     /**
      * 上传文件到犀牛云
@@ -70,10 +71,12 @@ public interface ZsCorpService extends IService<ZsCorp>,ExportService {
     List<ZsCorp> getList(ZsCorp zsCorp) throws InvocationTargetException, FileNotFoundException, IllegalAccessException, NoSuchMethodException;
 
     /**
-     * 审核改变状态
+     * 审核改变状态,通过就创建订单
      * @param zsCorp 企业认证信息
      * @return Result
      */
     Result audit(ZsCorp zsCorp);
+
+    void exportWord(Integer id, HttpServletResponse response) throws IOException;
 
 }

@@ -10,22 +10,22 @@
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
         <result property="apply" column="apply" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
         <result property="status" column="status" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <result property="isPay" column="is_pay" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
     </resultMap>
 
     <sql id="approve_colunm_list">
-        id,user_id,name,type,create_time,apply,status
+        id,user_id,name,type,create_time,apply,status,is_pay
     </sql>
 
-    <select id="getList" resultType="com.camel.realname.model.ApproveInfo">
-        select id,user_id,name,type,create_time,apply,status
+    <select id="getList" resultMap="approveResult">
+        select <include refid="approve_colunm_list"/>
         from (
-                 select id id, user_id user_id,enterprise_name name, 0 type, submit_date create_time, apply apply,status status
-                 from zs_corp
-                 UNION
-                 select id id, creator user_id, code name, 1 type, apply_at create_time, status apply, deleted status
-                 from apply_number
+                select zc.id id, zc.user_id user_id,zc.enterprise_name name, 0 type, zc.submit_date create_time, zc.apply apply,zc.status status,ao.is_pay is_pay
+                from zs_corp zc
+                left join approve_order ao on zc.user_id = ao.user_id
              ) approve_info
         <where>
+            <if test="apply != null">and apply = #{apply.code}</if>
             <if test="name != null and name != ''">and name like concat('%',#{name},'%')</if>
             and status = 1
         </where>
