@@ -23,9 +23,9 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">最终客户：</label>
                     <div class="col-sm-8">
-                        <select name="finalCusId" id="finalCusId" aria-required="true" aria-invalid="true" v-model="zs_project.finalCusId" @change='getValue'>
+                        <select name="finalCusId" id="finalCusId" aria-required="true" aria-invalid="true" v-model="zs_project.finalCusId">
                             <option value="">--请选择--</option>
-                            <option v-for='item in optionList'>{{ item.username }}</option>
+                            <option v-for='item in optionList' :value="item.uid">{{ item.username }}</option>
                         </select>
                     </div>
                 </div>
