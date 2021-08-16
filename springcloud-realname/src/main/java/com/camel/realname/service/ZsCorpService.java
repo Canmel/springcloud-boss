@@ -79,4 +79,6 @@ public interface ZsCorpService extends IService<ZsCorp>{
 
     void exportWord(Integer id, HttpServletResponse response) throws IOException;
 
+    String getUrlByKey(String key);
+
 }

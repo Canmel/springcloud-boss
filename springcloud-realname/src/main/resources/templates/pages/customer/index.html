@@ -511,7 +511,7 @@
                                 <img :src="authInfo.zsCorpUrlVo.entrustmentLetterUrl" style="width: 100%; max-width: 100%;">
                             </div>
                             <div v-else>
-                                <img src="../../images/ck.png" style="width: 100%; max-width: 100%;">
+                                <img src="../../images/bg.png" style="width: 100%; max-width: 100%;">
                             </div>
                             <div>
                                 <el-upload
@@ -553,6 +553,7 @@
                                         }"
                                         :limit="1">
                                     <el-button size="small" type="primary" :disabled="disabled">点击上传</el-button>
+                                    <div style="color: #009688" @click="getModel">点击下载模板</div>
                                     <div slot="tip" class="el-upload__tip">只能上传excel文件，且不超过600kb</div>
                                 </el-upload>
                             </div>
@@ -647,6 +648,9 @@
                     that.authInfo = res.data;
                 })
             },
+            getModel(){
+                window.open('/exportExcel/applySheetModel'+'?access_token=' + sessionStorage.getItem('access_token'));
+            },
             submit(){
                 let that = this;
                 console.log("提交审核，状态更变为2，页面不可修改")
@@ -739,10 +743,13 @@
                 return isJPGorPNG && isLt2M;
             },
             beforeExcelUpload(file){//   上传前钩子
-                const isExcel = file.type === "application/vnd.ms-excel";
+                const isExcel = file.type === "application/vnd.ms-excel" || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 const isLt600kb = file.size / 1024 / 1024 < 0.6;
                 if (!isExcel) {
                     this.$message.error('文件类型只能是 excel ');
+                }
+                if (!isLt600kb) {
+                    this.$message.error('上传excel大小不能超过 600kb!');
                 }
                 return isExcel && isLt600kb;
             }

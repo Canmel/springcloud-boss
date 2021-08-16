@@ -63,6 +63,9 @@
         <if test="companyId != null">
             AND zs_work_shift.start_date > DATE_SUB(now(), INTERVAL 1 DAY)
         </if>
+        <if test="stype != null">
+            AND zs_survey.collect_type = #{stype}
+        </if>
         </where>
         order by id desc
     </select>

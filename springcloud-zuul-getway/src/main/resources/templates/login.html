@@ -37,6 +37,15 @@
                     <div class="login-center-input-text">密码</div>
                 </div>
             </div>
+            <div class="login-center clearfix">
+                <div class="login-center-img" style="width: 150px;"><img name="code" id="code" src=""/></div>
+                <div class="login-center-input" style="width: 100px; line-height: 50px;">
+                    <input type="text" name="imageCode  " id="imageCode" value="" placeholder="验证码"
+                           onfocus="this.placeholder=''"
+                           onblur="this.placeholder='验证码'"/>
+                    <div class="login-center-input-text">密码</div>
+                </div>
+            </div>
             <div style="text-align: center;color: red; display: none;" class="error_message">
                 <span id="error_msg">用户名密码不正确，请确认后重新提交</span>
             </div>
@@ -64,6 +73,16 @@
         });
 
         redirect_url = getQueryVariable('redirect_url');
+        $.ajax({
+            url: "/auth/session/code",
+            method: 'GET',
+            success: function(resp) {
+                let data = resp.data;
+                let captchaBase64 = data.captchaBase64;
+                window.key = data.key;
+                $("#code").attr("src", captchaBase64);
+            }
+        })
     });
 
     function hasClass(elem, cls) {
@@ -92,8 +111,14 @@
         $(".error_message").hide();
         var username = document.querySelector('#username').value;
         var password = document.querySelector('#password').value;
-
-        var url = '/auth/oauth/token?grant_type=password&username=' + username + '&password=' + password;
+        var imageCode = document.querySelector("#imageCode").value;
+        if(!imageCode) {
+            $("#error_msg").text("验证码不能为空");
+            $(".error_message").show();
+        } else {
+            $(".error_message").hide();
+        }
+        var url = '/auth/oauth/token?grant_type=password&username=' + username + '&password=' + password + '&imageCode=' + imageCode + "&key=" + key;
         console.log(url);
         $.ajax({
             url: url,
@@ -112,7 +137,14 @@
                 }
             },
             error: function (resp) {
-                $("#error_msg").text(resp.responseJSON.message);
+                if(resp.status == 401) {
+                    if(resp.responseJSON && resp.responseJSON.message) {
+                        $("#error_msg").text(resp.responseJSON.message);
+                    } else {
+                        $("#error_msg").text("请输入正确的用户名密码");
+                    }
+                }
+
                 $(".error_message").show();
             }
         })

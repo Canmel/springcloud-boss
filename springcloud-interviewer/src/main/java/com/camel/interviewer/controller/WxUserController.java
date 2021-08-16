@@ -128,7 +128,7 @@ public class WxUserController extends BaseCommonController {
         }
         boolean insert = service.insert(wxUser);
         if (insert) {
-            jmsMessagingTemplate.convertAndSend(QUEUE_NAME, new SysUser(null, wxUser.getUsername(), "123456", wxUser.getUsername(), wxUser.getEmail(), wxUser.getPhone(), wxUser.getIdNum()));
+            jmsMessagingTemplate.convertAndSend(QUEUE_NAME, new SysUser(null, wxUser.getUsername(), "Svdata001@", wxUser.getUsername(), wxUser.getEmail(), wxUser.getPhone(), wxUser.getIdNum()));
             redisTemplate.delete(wxUser.getPhone());
             return ResultUtil.success("新增" + getMouduleName() + "成功", wxUser);
         }
