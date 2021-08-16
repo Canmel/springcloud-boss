@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/zsCorp")
 public class ZsCorpController extends BaseCommonController {
-    public static final String BUCKET_NAME_URL = "http://image.meedesidy.top";
+    private static final String BUCKET_NAME_URL = "http://image.meedesidy.top";
 
     @Resource
     private ZsCorpService zsCorpService;

@@ -48,8 +48,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> implements ZsCorpService {
-    public static final String BUCKET_NAME_URL = "http://image.meedesidy.top";
-    public static final String BUCKET_NAME = "c7-oss-store";
+    private static final String BUCKET_NAME_URL = "http://image.meedesidy.top";
+    private static final String BUCKET_NAME = "c7-oss-store";
 
     @Resource
     private ApplicationToolsUtils applicationToolsUtils;
@@ -316,6 +316,14 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         dataMap.put("entrustmentLetter", entrustmentLetter);
 
         ewUtil.exportWord(dataMap, "demo.ftl", response, "全国语音实名材料.doc");
+    }
+
+    @Override
+    public String getUrlByKey(String key) {
+        String publicUrl = String.format("%s/%s", BUCKET_NAME_URL, key);
+        Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
+        // 1小时，可以自定义链接过期时间
+        return auth.privateDownloadUrl(publicUrl, 3600);
     }
 
     private String image2Byte(String imgUrl) {

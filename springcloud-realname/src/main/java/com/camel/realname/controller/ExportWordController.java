@@ -31,13 +31,18 @@ import java.net.URL;
 
 @RestController
 public class ExportWordController {
+    private static final String applySheetModelKey = "";
 
     @Autowired
     private ZsCorpService zsCorpService;
 
-    @Resource
-    private ApplyNumberService applyNumberService;
 
+    /**
+     * 下载word
+     * @param id
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/exportWord/{id}")
     public void exportWord(@PathVariable("id") Integer id,
                            HttpServletResponse response) throws IOException {
@@ -75,6 +80,58 @@ public class ExportWordController {
 //    }
 
     /**
+     * 客户申请表excel 模板
+     */
+    @GetMapping("/exportExcel/applySheetModel")
+    public void getApplySheet(HttpServletResponse response) throws IIOException {
+        String modelUrl = zsCorpService.getUrlByKey(applySheetModelKey);
+        String excelName = "客户申请表（模板）";
+        //  返回excel
+        InputStream is = null;
+        OutputStream os = null;
+        HttpURLConnection httpUrl = null;
+        try {
+            URL url = new URL(modelUrl);
+            httpUrl = (HttpURLConnection) url.openConnection();
+            httpUrl.setRequestMethod("GET");
+            httpUrl.setConnectTimeout(30 * 1000);
+            httpUrl.connect();
+            is = httpUrl.getInputStream();
+            response.reset();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-disposition", "attachment;filename="
+                    + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
+            os = response.getOutputStream();
+            int len = -1;
+            byte[] b = new byte[1024];
+            while((len = is.read(b)) != -1){
+                os.write(b,0,b.length);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IIOException("Can't get input stream from URL!",e);
+        }finally {
+            if(is != null){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(os != null){
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (httpUrl != null) {
+                httpUrl.disconnect();
+            }
+        }
+    }
+
+    /**
      * 下载客户申请表excel
      * @param id
      * @return
@@ -90,7 +147,6 @@ public class ExportWordController {
             writer.close();
             return;
         }
-        System.out.println("excelUrl = " + excelUrl);
         String excelName = "客户申请表";
         //  返回excel
         InputStream is = null;
