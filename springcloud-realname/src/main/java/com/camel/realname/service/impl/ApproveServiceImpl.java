@@ -69,7 +69,7 @@ public class ApproveServiceImpl implements ApproveService {
                         ApproveOrder order = new ApproveOrder();
                         order.setId(SnowflakeIdWorker.generateId().toString());
                         order.setUserId(approveInfo.getUserId());
-                        order.setPrice(new BigDecimal("0.01"));
+                        order.setPrice(new BigDecimal("525"));
                         order.setSubject("号码授权订单");
                         order.setBody("号码授权");
                         order.setCreateTime(new Date());
