@@ -74,7 +74,7 @@
                     <el-button
                             size="mini"
                             type="success"
-                            @click="finalCusList(scope.row)">绑定最终用户</el-button>
+                            @click="finalCusList(scope.row.tel)">绑定最终用户</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -182,12 +182,13 @@
             }
         },
         methods: {
-            finalCusList(row){
+            finalCusList(id){
                 let that = this;
                 let finalData = that.finalData;
                 this.dialogTableVisible = true;
                 finalData['username'] = that.search;
-                that.tel = row.tel;
+                finalData['tel'] = id;
+                that.tel = id;
                 AJAX.GET_SYNC("/survey/telProtection/finalList",finalData,function (res) {
                     that.finalList= res.data.list;
                 })
@@ -201,10 +202,12 @@
                 // data = JSON.stringify(obj)
                 AJAX.POST_JSON("/survey/telProtection/grantFinal",obj,function (res) {
                     if(res.code === 200){
+                        that.$message({
+                            message: res.msg,
+                            type: 'success',
+                            center: true
+                        });
                         that.tableData = res.data;
-                        that.pageParams.total = res.data.total;
-                        that.dialogTableVisible = false;
-                        that.getList();
                     }else{
                         that.$message({
                             message: res.msg,
@@ -213,7 +216,7 @@
                         });
                     }
                 })
-                console.log("row",row);
+                that.finalCusList(that.tel);
             },
             revokeTel(id){
                 let that = this;
@@ -235,6 +238,7 @@
                         });
                     }
                 })
+                that.finalCusList(that.tel);
             },
             getName(row){
                 let that = this;
@@ -292,9 +296,9 @@
                 let paramsData = this.paramsData;
                 AJAX.GET_SYNC("/survey/telProtection/numberManage",paramsData,function(res){
                     if(res.code === 200){
-                        for (let i = 0; i < res.data.length; i++) {
+                        for (let i = 0; i < res.data.list.length; i++) {
                             let d ={
-                                tel: res.data[i]
+                                tel: res.data.list[i]
                             }
                             that.tableData.push(d)
                         }
@@ -307,6 +311,7 @@
                         });
                     }
                 })
+                that.tableData = [];
             }
         }
     });

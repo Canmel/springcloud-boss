@@ -7,6 +7,7 @@ import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
 import com.camel.survey.vo.FinalCusVo;
+import com.camel.survey.vo.NumberVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -44,9 +45,9 @@ public interface TelProtectionService extends IService<TelProtection> {
 
     Result revoke(TelProtection telProtection);
 
-    JSONArray all();
+    PageInfo<JSONArray> all(NumberVo numberVo);
 
-    PageInfo<FinalCusVo> finalList(SysUser sysUser);
+    PageInfo<FinalCusVo> finalList(SysUser sysUser,String tel);
 
     Integer revokeTel(Integer id);
 

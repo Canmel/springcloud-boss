@@ -20,13 +20,19 @@ import com.camel.survey.service.PstnnumberService;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.FinalCusVo;
+import com.camel.survey.vo.NumberVo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -157,13 +163,30 @@ public class TelProtectionController extends BaseCommonController {
     }
 
     @GetMapping("/numberManage")
-    public Result index(){
-        return ResultUtil.success("success",pstnnumberService.all());
+    public Result index(NumberVo numberVo){
+//        return ResultUtil.success("success",telService.all(numberVo));
+
+        String[] arr = {"1212","2323","3434","4545","5656","6767","7878","8989","9090","11111","22222","33333","44444","55555","66666","77777"};
+        //手动分页
+        List<String> list = Arrays.asList(arr);
+        //创建Page类
+        Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+        //为Page类中的total属性赋值
+        int total = list.size();
+        page.setTotal(total);
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (numberVo.getPageNum() - 1) * numberVo.getPageSize();
+        int endIndex = Math.min(startIndex + numberVo.getPageSize(),total);
+        //从链表中截取需要显示的子链表，并加入到Page
+        page.addAll(list.subList(startIndex,endIndex));
+        //以Page创建PageInfo
+        PageInfo<String> pageInfo = new PageInfo<String>(page);
+        return ResultUtil.success("success",pageInfo);
     }
 
     @GetMapping("/finalList")
-    public Result finalList(SysUser sysUser){
-        PageInfo<FinalCusVo> finalList = telService.finalList(sysUser);
+    public Result finalList(SysUser sysUser,String tel){
+        PageInfo<FinalCusVo> finalList = telService.finalList(sysUser,tel);
         return ResultUtil.success("查询成功",finalList);
     }
 

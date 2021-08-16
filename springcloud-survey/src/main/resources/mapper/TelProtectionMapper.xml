@@ -96,12 +96,12 @@
     </select>
 
     <select id="finalList" resultMap="finalCusResult">
-        select sys_user.uid,sys_user.username,IFNULL(tel_protection.final_cus_id,-1) is_bind,tel_protection.id,tel_protection.tel
+        select sys_user.uid,sys_user.username,if(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.id,tel_protection.tel
         from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
         left join tel_protection on sys_user.uid = tel_protection.final_cus_id
         <where>
-            sys_user_role.role_id = 7
-            <if test="username != null and username != '' ">and name like concat('%',#{username},'%')</if>
+            and sys_user_role.role_id = 7
+            <if test="sysUser.username != null and sysUser.username != '' ">and name like concat('%',#{sysUser.username},'%')</if>
         </where>
     </select>
 

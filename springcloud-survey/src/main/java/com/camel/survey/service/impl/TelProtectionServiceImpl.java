@@ -16,6 +16,8 @@ import com.camel.survey.model.TelProtection;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.FinalCusVo;
+import com.camel.survey.vo.NumberVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -116,17 +119,33 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
 
     @Override
-    public JSONArray all() {
+    public PageInfo<JSONArray> all(NumberVo numberVo) {
         String r = HttpUtil.get("http://" + baseUrl + "/yscrm/v2/infs/getpstnnumber.json");
         JSONObject o = JSONUtil.parseObj(r);
         JSONArray array = o.getJSONArray("info");
-        return array;
+
+
+        //手动分页
+        List<JSONArray> list = Arrays.asList(array);
+        //创建Page类
+        Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+        //为Page类中的total属性赋值
+        int total = list.size();
+        page.setTotal(total);
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (numberVo.getPageNum() - 1) * numberVo.getPageSize();
+        int endIndex = Math.min(startIndex + numberVo.getPageSize(),total);
+        //从链表中截取需要显示的子链表，并加入到Page
+        page.addAll(list.subList(startIndex,endIndex));
+        //以Page创建PageInfo
+        PageInfo<JSONArray> pageInfo = new PageInfo<JSONArray>(page);
+        return pageInfo;
     }
 
     @Override
-    public PageInfo<FinalCusVo> finalList(SysUser sysUser) {
+    public PageInfo<FinalCusVo> finalList(SysUser sysUser,String tel) {
         PageHelper.startPage(sysUser.getPageNum(),sysUser.getPageSize());
-        List<FinalCusVo> sysUsers = telProtectionMapper.finalList(sysUser);
+        List<FinalCusVo> sysUsers = telProtectionMapper.finalList(sysUser,tel);
         return new PageInfo<>(sysUsers);
     }
 

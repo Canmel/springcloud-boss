@@ -30,7 +30,7 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
      * @param sysUser
      * @return FinalCusVo 对象
      */
-    List<FinalCusVo> finalList(SysUser sysUser);
+    List<FinalCusVo> finalList(@Param("sysUser") SysUser sysUser,@Param("tel") String tel);
 
     /**
      * 解绑
