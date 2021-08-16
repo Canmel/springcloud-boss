@@ -196,6 +196,7 @@
                 let paramsData = this.paramsData;
                 that.telId = localStorage.getItem("params");
                 paramsData['name'] = that.search;
+                paramsData['telId'] = that.telId;
                 AJAX.GET_SYNC("/survey/telProtection/partnerList",paramsData,function(res){
                     if(res.code === 200){
                         that.tableData = res.data.list;

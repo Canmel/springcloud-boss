@@ -19,6 +19,7 @@ import com.camel.survey.model.TelProtection;
 import com.camel.survey.service.PstnnumberService;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.CompanyVo;
 import com.camel.survey.vo.FinalCusVo;
 import com.camel.survey.vo.NumberVo;
 import com.github.pagehelper.Page;
@@ -118,8 +119,8 @@ public class TelProtectionController extends BaseCommonController {
      * @return
      */
     @GetMapping("/partnerList")
-    public Result partnerList(SysCompany sysCompany){
-        PageInfo<SysCompany> pageList = telService.partnerList(sysCompany);
+    public Result partnerList(SysCompany sysCompany,Integer telId){
+        PageInfo<CompanyVo> pageList = telService.partnerList(sysCompany,telId);
         return ResultUtil.success("查询成功",pageList);
     }
 

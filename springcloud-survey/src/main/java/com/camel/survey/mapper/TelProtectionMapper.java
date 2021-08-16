@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.vo.CompanyVo;
 import com.camel.survey.vo.FinalCusVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,7 +18,7 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
 
     List<TelProtection> grantTelList(TelProtection telProtection);
 
-    List<SysCompany> partnerList(SysCompany sysCompany);
+    List<CompanyVo> partnerList(@Param("company") SysCompany sysCompany, @Param("telId") Integer telId);
 
     Integer updatePartner(TelProtection telProtection);
 

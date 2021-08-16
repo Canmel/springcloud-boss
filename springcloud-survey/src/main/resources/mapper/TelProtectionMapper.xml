@@ -22,6 +22,15 @@
             <result column="contacts" property="contacts"/>
         </collection>
     </resultMap>
+    
+    <resultMap id="companyResult" type="com.camel.survey.vo.CompanyVo">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="contacts" column="contacts"/>
+        <result property="tel" column="tel"/>
+        <result property="telId" column="tel_id"/>
+        <result property="isBind" column="is_bind"/>
+    </resultMap>
 
     <resultMap id="finalCusResult" type="com.camel.survey.vo.FinalCusVo">
         <result property="uid" column="uid"/>
@@ -80,13 +89,37 @@
         where tel_protection.final_cus_id = #{finalCusId}
     </select>
 
-    <select id="partnerList" resultType="com.camel.core.model.SysCompany">
-        SELECT sys_company.id,sys_company.name,sys_company.contacts,sys_company.tel , IFNULL(tel_partner.tel_id,-1) is_bind
-        from sys_company LEFT JOIN tel_partner on sys_company.id = tel_partner.partner_id
-        <where>
-            <if test="name != null and name != '' ">and name like concat('%',#{name},'%')</if>
-        </where>
-        ORDER BY is_bind desc
+    <select id="partnerList" resultMap="companyResult">
+        select id,name,contacts,tel,tel_id,is_bind
+        from
+            (SELECT
+                 sys_company.id,sys_company.name,sys_company.contacts,sys_company.tel,IF(tel_partner.tel_id = #{telId},1,-1) is_bind,tel_partner.tel_id
+             from sys_company
+                      LEFT JOIN tel_partner on sys_company.id = tel_partner.partner_id
+            ) _now
+                where tel_id is null or tel_id not in(
+                        select tel_id
+                from
+                (SELECT
+                sys_company.id,sys_company.name,sys_company.contacts,sys_company.tel,IF(tel_partner.tel_id = #{telId},1,-1) is_bind,tel_partner.tel_id
+                from sys_company
+                LEFT JOIN tel_partner on sys_company.id = tel_partner.partner_id
+                ) _s
+                where is_bind = -1 and tel_id is not null and id in(
+                                select id
+                from
+                (
+                        SELECT
+                        sys_company.id,sys_company.name,sys_company.contacts,sys_company.tel,
+                                IF(tel_partner.tel_id = #{telId},1,-1) is_bind,tel_partner.tel_id
+                        from sys_company
+                        LEFT JOIN tel_partner on sys_company.id = tel_partner.partner_id
+                ) _t
+                where is_bind = 1
+                )
+)
+        GROUP BY id
+        order by is_bind desc
     </select>
 
     <select id="isExist" resultType="java.lang.Integer">
@@ -96,14 +129,41 @@
     </select>
 
     <select id="finalList" resultMap="finalCusResult">
-        select sys_user.uid,sys_user.username,if(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.id,tel_protection.tel
-        from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
-        left join tel_protection on sys_user.uid = tel_protection.final_cus_id
-        <where>
-            and sys_user_role.role_id = 7
-            <if test="sysUser.username != null and sysUser.username != '' ">and name like concat('%',#{sysUser.username},'%')</if>
-        </where>
+        select _now.id,_now.uid,_now.username,_now.is_bind,_now.tel
+        from(
+            select tel_protection.id,sys_user.uid,sys_user.username,
+            IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
+            from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+            left join tel_protection on sys_user.uid = tel_protection.final_cus_id
+            WHERE sys_user_role.role_id = 7
+            ) _now
+        where id is null or id not in(
+            select id from
+            (
+            select id,uid,username,is_bind,tel from (
+            select tel_protection.id,sys_user.uid,sys_user.username,
+            IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
+            from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+            left join tel_protection on sys_user.uid = tel_protection.final_cus_id
+            WHERE sys_user_role.role_id = 7
+            ) _old
+            where is_bind = -1 and id is not null and uid in (
+            select uid from
+            (select tel_protection.id,sys_user.uid,sys_user.username,
+            IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
+            from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+            left join tel_protection on sys_user.uid = tel_protection.final_cus_id
+            WHERE sys_user_role.role_id = 7
+            ) _s
+            where is_bind = 1
+            )
+            ) _t
+            )
+        group by id
+        ORDER BY is_bind desc
     </select>
+
+
 
     <select id="selectByTel" resultType="java.lang.String">
         select username

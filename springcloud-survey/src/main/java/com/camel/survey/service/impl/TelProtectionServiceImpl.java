@@ -15,6 +15,7 @@ import com.camel.survey.mapper.TelProtectionMapper;
 import com.camel.survey.model.TelProtection;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
+import com.camel.survey.vo.CompanyVo;
 import com.camel.survey.vo.FinalCusVo;
 import com.camel.survey.vo.NumberVo;
 import com.github.pagehelper.Page;
@@ -89,9 +90,9 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
 
     @Override
-    public PageInfo<SysCompany> partnerList(SysCompany sysCompany) {
+    public PageInfo<CompanyVo> partnerList(SysCompany sysCompany, Integer telId) {
         PageHelper.startPage(sysCompany.getPageNum(),sysCompany.getPageSize());
-        List<SysCompany> list = telProtectionMapper.partnerList(sysCompany);
+        List<CompanyVo> list = telProtectionMapper.partnerList(sysCompany,telId);
         return new PageInfo<>(list);
     }
 

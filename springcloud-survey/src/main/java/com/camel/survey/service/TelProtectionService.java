@@ -6,6 +6,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.vo.CompanyVo;
 import com.camel.survey.vo.FinalCusVo;
 import com.camel.survey.vo.NumberVo;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +38,7 @@ public interface TelProtectionService extends IService<TelProtection> {
 
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 
-    PageInfo<SysCompany> partnerList(SysCompany sysCompany);
+    PageInfo<CompanyVo> partnerList(SysCompany sysCompany, Integer telId);
 
     Integer isExist(Integer uid, Integer telId);
 

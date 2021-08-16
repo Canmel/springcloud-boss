@@ -132,11 +132,11 @@
             <el-pagination
                     @size-change="finalSizeChange"
                     @current-change="finalCurrentChange"
-                    :current-page="pageParams.pageNum"
-                    :page-sizes="pageParams.pageSizes"
-                    :page-size="pageParams.pageSize"
-                    :layout="pageParams.layout"
-                    :total="pageParams.total">
+                    :current-page="finalPage.pageNum"
+                    :page-sizes="finalPage.pageSizes"
+                    :page-size="finalPage.pageSize"
+                    :layout="finalPage.layout"
+                    :total="finalPage.total">
             </el-pagination>
         </div>
     </el-dialog>
@@ -168,6 +168,13 @@
                 total:1000,
                 layout:"total, sizes, prev, pager, next, jumper",
             },
+            finalPage:{
+                pageSizes:[10, 20, 30, 40],
+                pageSize:10,
+                pageNum:1,
+                total:1000,
+                layout:"total, sizes, prev, pager, next, jumper",
+            }
         },
         created: function () {
             // this.me();
@@ -191,6 +198,7 @@
                 that.tel = id;
                 AJAX.GET_SYNC("/survey/telProtection/finalList",finalData,function (res) {
                     that.finalList= res.data.list;
+                    that.finalPage.total = res.data.total;
                 })
             },
             grant(id) {
