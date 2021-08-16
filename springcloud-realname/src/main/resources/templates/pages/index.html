@@ -65,7 +65,7 @@
                         <cite>认证管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu">
+                    <ul class="sub-menu" v-if="isAdmin || isFinalCus || isPartner">
                         <li>
                             <a href="javascript:;">
                                 <i class="iconfont">&#xe70b;</i>
@@ -79,52 +79,42 @@
                                         <cite>开始认证</cite>
                                     </a>
                                 </li>
-                                <li>
-                                    <a _href="xx.html">
-                                        <i class="iconfont">&#xe6a7;</i>
-                                        <cite>开发中</cite>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a _href="xx.html">
-                                        <i class="iconfont">&#xe6a7;</i>
-                                        <cite>开发中</cite>
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
-                        <li>
+                        <li v-if="isAdmin || isFinalCus || isPartner">
                             <a href="javascript:;">
                                 <i class="iconfont">&#xe70b;</i>
                                 <cite>外呼号码</cite>
                                 <i class="iconfont nav_right">&#xe697;</i>
                             </a>
                             <ul class="sub-menu">
-                                <li>
+                                <li v-if="false">
                                     <a _href="realname/pages/number/index.html">
                                         <i class="iconfont">&#xe6a7;</i>
                                         <cite>号码申请</cite>
-
                                     </a>
                                 </li>
-                                <li>
-                                    <a _href="xx.html">
+                                <li v-if="isAdmin || isFinalCus">
+                                    <a _href="realname/pages/number/devolution.html">
                                         <i class="iconfont">&#xe6a7;</i>
-                                        <cite>实名认证</cite>
+                                        <cite>号码授权</cite>
                                     </a>
                                 </li>
-                                <li>
+                                <li v-if="isAdmin || isPartner">
+                                    <a _href="realname/pages/number/number-list.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>号码列表</cite>
+                                    </a>
+                                </li>
+                                <li v-if="false">
                                     <a _href="xx.html">
                                         <i class="iconfont">&#xe6a7;</i>
                                         <cite>等级管理</cite>
-
                                     </a>
                                 </li>
-
                             </ul>
                         </li>
-                        <li>
+                        <li v-if="false">
                             <a href="javascript:;">
                                 <i class="iconfont">&#xe70b;</i>
                                 <cite>个人认证</cite>
@@ -137,24 +127,9 @@
                                         <cite>开始认证</cite>
                                     </a>
                                 </li>
-                                <li>
-                                    <a _href="xx.html">
-                                        <i class="iconfont">&#xe6a7;</i>
-                                        <cite>开发中</cite>
-
-                                    </a>
-                                </li>
-                                <li>
-                                    <a _href="xx.html">
-                                        <i class="iconfont">&#xe6a7;</i>
-                                        <cite>开发中</cite>
-
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
-                        <li>
+                        <li v-if="isAdmin">
                             <a href="javascript:;">
                                 <i class="iconfont">&#xe70b;</i>
                                 <cite>认证列表</cite>
@@ -167,69 +142,36 @@
                                         <cite>认证审核</cite>
                                     </a>
                                 </li>
+                            </ul>
+                        </li>
+                        <li v-if="isAdmin">
+                            <a href="javascript:;">
+                                <i class="iconfont">&#xe70b;</i>
+                                <cite>号码管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i>
+                            </a>
+                            <ul class="sub-menu">
                                 <li>
-                                    <a _href="xx.html">
+                                    <a _href="realname/pages/numberManage/index.html">
                                         <i class="iconfont">&#xe6a7;</i>
-                                        <cite>开发中</cite>
-
+                                        <cite>接入号管理</cite>
                                     </a>
                                 </li>
-                                <li>
-                                    <a _href="xx.html">
-                                        <i class="iconfont">&#xe6a7;</i>
-                                        <cite>开发中</cite>
-
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li v-if="isAdmin || isFinalCus || isPartner">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe723;</i>
-                        <cite>开发中</cite>
+                        <cite>订单管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a _href="order-list.html">
+                            <a _href="realname/pages/order/index.html">
                                 <i class="iconfont">&#xe6a7;</i>
-                                <cite>开发中</cite>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="iconfont">&#xe726;</i>
-                        <cite>开发中</cite>
-                        <i class="iconfont nav_right">&#xe697;</i>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a _href="admin-list.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>开发中</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="admin-role.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>开发中</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="admin-cate.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>开发中</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="admin-rule.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>开发中</cite>
+                                <cite>订单列表</cite>
                             </a>
                         </li>
                     </ul>
@@ -322,26 +264,64 @@
     new Vue({
         el: '#realname-container',
         data: {
-            master: 10
+            master: 10,
+            roleId: [],
+            isFinalCus: false,
+            isPartner: false,
+            isAdmin: false,
         },
         created: function () {
-            this.loginMaster();
+            this.me();
+        },
+        mounted: function(){
+            // this.loginMaster();
+        },
+        watch: {
+            roleId:function(){
+                if(this.roleId.indexOf(1) !== -1){
+                    this.isAdmin = true;
+                }else if(this.roleId.indexOf(7) !== -1){
+                    this.isFinalCus = true;
+                }else if(this.roleId.indexOf(6) !== -1){
+                    this.isPartner = true;
+                }
+            },
         },
         methods: {
+            me() {
+                let that = this;
+                parent.AJAX.GET("/system/sysUser/getRoleId", {}, function (resp) {
+                    // that.roleId = JSON.parse(resp.data)
+                    that.roleId = resp.data
+                    console.log("that.roleId:",that.roleId)
+                })
+            },
             loginMaster(){
                 let that = this;
                 this.master = sessionStorage.getItem('master');
-                let masterJ = JSON.parse(this.master);
-                masterJ.forEach(e => {
-                    var authority = e.authority;
-                    if(authority ==='ROLE_ADMIN'){
-                        that.master = 0;
+                if(this.master){
+                    let masterJ = JSON.parse(this.master);
+                    for (let i = 0; i < masterJ.length; i++) {
+                        var authority = masterJ[i].authority;
+                        if(authority ==='ROLE_ADMIN'){
+                            that.master = 0;
+                        }
+                        if(authority ==='ROLE_DEVOPS'){
+                            that.master = 1;
+                        }
                     }
-                    if(authority ==='ROLE_DEVOPS'){
-                        that.master = 1;
-                    }
-                })
-                console.log(that.master)
+                    console.log("that.master:",that.master)
+                }
+
+                // masterJ.forEach(e => {
+                //     var authority = e.authority;
+                //     if(authority ==='ROLE_ADMIN'){
+                //         that.master = 0;
+                //     }
+                //     if(authority ==='ROLE_DEVOPS'){
+                //         that.master = 1;
+                //     }
+                // })
             },
         }
     });

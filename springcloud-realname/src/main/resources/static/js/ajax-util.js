@@ -38,7 +38,12 @@ function simpleSuccess(result) {
     } else {
         //其他错误情况，直接弹出提示框
         if (result.msg != null) {
-            layer.msg(result.msg);
+            layui.use('layer', function(){
+                var layer = layui.layer;
+
+                layer.msg(result.msg);
+            });
+
         }
     }
     return null;
@@ -85,7 +90,12 @@ __ajax = function (url, data, success, type, contentType, sync, json) {
                 location.href = '/login?redirect_url=/realname';
             }
             if (resp.status === web_status.NO_AUTHENTICATE) {
-                layer.msg(resp.responseJSON.error_description, {icon: 1, time: 1000});
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+
+                    layer.msg(resp.responseJSON.error_description, {icon: 1, time: 1000});
+
+                });
             }
         }
     };

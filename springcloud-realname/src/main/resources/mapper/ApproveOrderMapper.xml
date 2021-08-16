@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.realname.mapper.ApproveOrderMapper">
+
+    <resultMap id="approveOrderResult" type="com.camel.realname.model.ApproveOrder">
+        <id property="id" column="id" javaType="java.lang.String"/>
+        <result property="userId" column="user_id" javaType="java.lang.Integer"/>
+        <result property="price" column="price" javaType="java.math.BigDecimal"/>
+        <result property="body" column="body" javaType="java.lang.String"/>
+        <result property="subject" column="subject" javaType="java.lang.String"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="isPay" column="is_pay" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <result property="status" column="status" typeHandler="com.camel.realname.enumhandler.MyIntegerToEnumHandler"/>
+        <association property="sysUser" javaType="com.camel.core.model.SysUser">
+            <id property="uid" column="user_id"/>
+            <result property="username" column="username"/>
+        </association>
+    </resultMap>
+
+    <sql id="approve_order_colunm_list">
+        approve_order.id,approve_order.user_id,approve_order.price,approve_order.body,
+        approve_order.subject,approve_order.create_time,approve_order.is_pay,approve_order.status,sys_user.username
+    </sql>
+
+    <insert id="insertOrder">
+        insert into approve_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="price != null">price,</if>
+            <if test="body != null">body,</if>
+            <if test="subject != null">subject,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="isPay != null">is_pay,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="price != null">#{price},</if>
+            <if test="body != null">#{body},</if>
+            <if test="subject != null">#{subject},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="isPay != null">#{isPay.code},</if>
+            <if test="status != null">#{status.code},</if>
+        </trim>
+    </insert>
+
+    <update id="pay">
+        update approve_order
+        set is_pay = 1
+        where id = #{id}
+        and status = 1
+    </update>
+
+    <select id="getList" resultMap="approveOrderResult">
+        select <include refid="approve_order_colunm_list"/>
+        from approve_order
+        left join sys_user on sys_user.uid = approve_order.user_id
+        <where>
+            <if test="userId != null">and approve_order.user_id = #{userId}</if>
+            <if test="id != null">and approve_order.id like concat('%',#{id},'%')</if>
+            <if test="body != null and body != ''">and approve_order.body like concat('%',#{body},'%')</if>
+            <if test="subject != null and subject != ''">and approve_order.subject like concat('%',#{subject},'%')</if>
+            <if test="isPay != null">and approve_order.is_pay = #{isPay.code}</if>
+            and approve_order.status = 1
+        </where>
+    </select>
+
+    <select id="getOneById" resultMap="approveOrderResult">
+        select <include refid="approve_order_colunm_list"/>
+        from approve_order
+        left join sys_user on sys_user.uid = approve_order.user_id
+        where approve_order.id = #{id}
+        and approve_order.status = 1
+    </select>
+
+</mapper>

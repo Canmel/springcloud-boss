@@ -1,5 +1,7 @@
 package com.camel.core.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.camel.core.entity.BasePaginationEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,7 +15,7 @@ import java.io.Serializable;
  * @since 2021-04-27
  */
 @Data
-public class SysCompany implements Serializable {
+public class SysCompany extends BasePaginationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +23,12 @@ public class SysCompany implements Serializable {
     private String name;
     private String contacts;
     private String tel;
+
+    /**
+     * 号码是否绑定公司
+     */
+    @TableField(exist = false)
+    private Integer isBind;
 
     @Override
     public String toString() {

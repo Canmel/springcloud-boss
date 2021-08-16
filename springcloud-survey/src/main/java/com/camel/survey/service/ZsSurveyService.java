@@ -36,6 +36,8 @@ import java.util.List;
  *                ┗┻┛    ┗┻┛
  */
 public interface ZsSurveyService extends IService<ZsSurvey> {
+
+    List<ZsSurvey> selectList(ZsSurvey entity);
     /**
      分页查询
      @param entity

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.camel.survey.mapper.TelProtectionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.camel.survey.model.TelProtection">
+        <id column="id" property="id" javaType="java.lang.Integer"/>
+        <result column="final_cus_id" property="finalCusId" javaType="java.lang.Integer"/>
+        <result column="tel" property="tel" javaType="java.lang.String"/>
+        <result column="project_id" property="projectId" javaType="java.lang.Integer"/>
+        <result column="apply_time" property="applyTime" javaType="java.util.Date"/>
+        <result column="username" property="userName" javaType="java.lang.String"/>
+        <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
+        <association property="zsProject" column="project_id" select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"/>
+<!--        <collection property="partner" javaType="java.util.ArrayList" ofType="com.camel.core.model.SysUser">-->
+<!--            <id column="uid" property="uid"/>-->
+<!--            <result column="username" property="username"/>-->
+<!--        </collection>-->
+        <collection property="company" ofType="com.camel.core.model.SysCompany">
+            <id column="cid" property="id"/>
+            <result column="name" property="name"/>
+            <result column="contacts" property="contacts"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="finalCusResult" type="com.camel.survey.vo.FinalCusVo">
+        <result property="uid" column="uid"/>
+        <result property="username" column="username"/>
+        <result property="isBind" column="is_bind"/>
+        <result property="telProId" column="id"/>
+        <result property="tel" column="tel"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        tel_protection.id,tel_protection.final_cus_id,tel_protection.tel,tel_protection.project_id,tel_protection.apply_time,tel_protection.status,
+        sys_company.id as cid,sys_company.name,sys_company.contacts
+    </sql>
+
+    <insert id="updatePartner">
+        insert into tel_partner (tel_id,partner_id)
+            value (#{id},#{partnerId})
+    </insert>
+
+    <insert id="insertFinal" parameterType="com.camel.survey.model.TelProtection">
+        insert into tel_protection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="finalCusId != null">final_cus_id,</if>
+            <if test="tel != null">tel,</if>
+            <if test="projectId != null">project_id,</if>
+            <if test="applyTime != null">apply_time,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="finalCusId != null">#{finalCusId},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="applyTime != null">#{applyTime},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <delete id="delPromise">
+        delete from tel_partner
+        where tel_id = #{id}
+          and partner_id = #{partnerId}
+    </delete>
+
+    <delete id="revokeTel">
+        delete from tel_protection
+        where id = #{id}
+    </delete>
+
+    <select id="grantTelList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from
+        tel_protection left join tel_partner on tel_protection.id = tel_partner.tel_id
+        left join sys_company on sys_company.id = tel_partner.partner_id
+        where tel_protection.final_cus_id = #{finalCusId}
+    </select>
+
+    <select id="partnerList" resultType="com.camel.core.model.SysCompany">
+        SELECT sys_company.id,sys_company.name,sys_company.contacts,sys_company.tel , IFNULL(tel_partner.tel_id,-1) is_bind
+        from sys_company LEFT JOIN tel_partner on sys_company.id = tel_partner.partner_id
+        <where>
+            <if test="name != null and name != '' ">and name like concat('%',#{name},'%')</if>
+        </where>
+        ORDER BY is_bind desc
+    </select>
+
+    <select id="isExist" resultType="java.lang.Integer">
+        select count(1) from tel_partner
+        where partner_id = #{uid}
+          and tel_id = #{telId}
+    </select>
+
+    <select id="finalList" resultMap="finalCusResult">
+        select sys_user.uid,sys_user.username,IFNULL(tel_protection.final_cus_id,-1) is_bind,tel_protection.id,tel_protection.tel
+        from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+        left join tel_protection on sys_user.uid = tel_protection.final_cus_id
+        <where>
+            sys_user_role.role_id = 7
+            <if test="username != null and username != '' ">and name like concat('%',#{username},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectByTel" resultType="java.lang.String">
+        select username
+        from sys_user
+        where uid in (
+            select final_cus_id
+            from tel_protection
+            where tel = #{tel}
+        )
+    </select>
+
+    <!-- 供应商：分页查询号码列表 -->
+    <select id="selectByPid" resultMap="BaseResultMap">
+        SELECT t.id,u.username,t.tel,t.apply_time,t.status,t.final_cus_id,t.project_id
+        FROM tel_protection t
+        LEFT JOIN tel_partner p ON p.tel_id = t.id
+        LEFT JOIN sys_user u ON u.uid = t.final_cus_id
+        LEFT JOIN sys_company c ON p.partner_id = c.id
+        LEFT JOIN zs_project z ON t.project_id = z.id
+        <where>
+            p.partner_id = #{partnerId}
+            <if test="tel != null and tel != ''">
+                and t.tel like concat('%',#{tel},'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 供应商：分页查询项目列表 -->
+    <select id="selectByFid" resultMap="BaseResultMap">
+        SELECT z.id as project_id,u.username
+        from zs_project z LEFT JOIN sys_user u ON z.final_cus_id = u.uid
+        <where>
+            z.final_cus_id = #{finalCusId}
+            <if test="projectName != null and projectName != '' ">
+                and z.name like concat('%',#{projectName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getTelByProId" resultType="java.lang.String">
+        select tel from tel_protection
+        where project_id = #{projectId}
+        and status = 1
+    </select>
+
+    <!-- 供应商：修改项目 -->
+    <update id="updateByTid">
+        update
+            tel_protection
+        set project_id = #{projectId}
+        where id = #{id}
+    </update>
+
+</mapper>

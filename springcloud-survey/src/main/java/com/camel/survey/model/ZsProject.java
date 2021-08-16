@@ -50,6 +50,11 @@ public class ZsProject extends ZsSurveyBaseEntity implements Serializable {
 
     private Integer companyId;
 
+    /**
+     * 最终用户Id
+     */
+    private Integer finalCusId;
+
     @Override
     public String toString() {
         return "ZsProject{" +

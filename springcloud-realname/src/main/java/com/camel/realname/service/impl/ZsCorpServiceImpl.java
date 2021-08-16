@@ -9,14 +9,15 @@ import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.realname.config.QiNiuConfig;
-import com.camel.realname.enums.ApproveType;
-import com.camel.realname.enums.NumberStatus;
-import com.camel.realname.enums.ZsStatus;
+import com.camel.realname.enums.*;
+import com.camel.realname.mapper.ApproveOrderMapper;
 import com.camel.realname.mapper.ZsCorpMapper;
+import com.camel.realname.model.ApproveOrder;
 import com.camel.realname.model.ZsCorp;
 import com.camel.realname.service.ZsCorpService;
 import com.camel.realname.utils.ApplicationToolsUtils;
 import com.camel.realname.utils.ExportWordUtil;
+import com.camel.realname.utils.SnowflakeIdWorker;
 import com.camel.realname.vo.ZsCorpUrlVo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -39,12 +40,10 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -60,6 +59,9 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
 
     @Resource
     private ZsCorpMapper zsCorpMapper;
+
+    @Resource
+    private ApproveOrderMapper approveOrderMapper;
 
     @Resource
     private QiNiuConfig qiNiuConfig;
@@ -225,6 +227,7 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
             ZsCorp zsCorp = new ZsCorp();
             zsCorp.setUserId(userId);
             zsCorp.setStatus(ZsStatus.CREATED);
+            zsCorp.setApply(ZsApplyStatus.CREATED);
             zsCorpMapper.insert(zsCorp);
         }
         ZsCorp zsCorp = zsCorpMapper.getOneByUid(userId);
@@ -246,9 +249,10 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     public Result audit(ZsCorp zsCorp) {
         Integer res = zsCorpMapper.audit(zsCorp);
         if(res > 0){
+
             return ResultUtil.success("审核成功");
         }
-        return ResultUtil.error(ResultEnum.SERVICE_ERROR);
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"审核状态修改失败");
     }
 
     /**
@@ -278,29 +282,29 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
     }
 
     @Override
-    public void exportWord(Integer id, ApproveType approveType, HttpServletResponse response) throws IOException {
+    public void exportWord(Integer id, HttpServletResponse response) throws IOException {
         ExportWordUtil ewUtil = new ExportWordUtil();
         Map<String, Object> dataMap = new HashMap<>();
         //企业资质
-        String businessLicenseUrl = getImageAddr(id,approveType, "businessLicenseUrl");
+        String businessLicenseUrl = getImageAddr(id,ApproveType.企业, "businessLicenseUrl");
         String businessLicense = image2Byte(businessLicenseUrl);
         //法人身份证
-        String corporateIdUrl = getImageAddr(id,approveType, "corporateIdUrl");
+        String corporateIdUrl = getImageAddr(id,ApproveType.企业, "corporateIdUrl");
         String corporateId = image2Byte(corporateIdUrl);
         //法人手持照片
-        String corporateIdHurl = getImageAddr(id,approveType, "corporateIdHurl");
+        String corporateIdHurl = getImageAddr(id,ApproveType.企业, "corporateIdHurl");
         String corporateIdH = image2Byte(corporateIdHurl);
         //经办人身份证
-        String agentIdAddress = getImageAddr(id,approveType, "agentIdAddress");
+        String agentIdAddress = getImageAddr(id,ApproveType.企业, "agentIdAddress");
         String agentIdZ = image2Byte(agentIdAddress);
         //经办人手持照片
-        String agentIdHurl = getImageAddr(id,approveType, "agentIdHurl");
+        String agentIdHurl = getImageAddr(id,ApproveType.企业, "agentIdHurl");
         String agentIdH = image2Byte(agentIdHurl);
         //电信入网承诺书
-        String acceptanceUrl = getImageAddr(id,approveType, "acceptanceUrl");
+        String acceptanceUrl = getImageAddr(id,ApproveType.企业, "acceptanceUrl");
         String acceptance = image2Byte(acceptanceUrl);
         //号码申请公函
-        String entrustmentLetterUrl = getImageAddr(id,approveType, "entrustmentLetterUrl");
+        String entrustmentLetterUrl = getImageAddr(id,ApproveType.企业, "entrustmentLetterUrl");
         String entrustmentLetter = image2Byte(entrustmentLetterUrl);
 
         dataMap.put("businessLicense", businessLicense);
@@ -314,8 +318,7 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
         ewUtil.exportWord(dataMap, "demo.ftl", response, "全国语音实名材料.doc");
     }
 
-    @Override
-    public String image2Byte(String imgUrl) {
+    private String image2Byte(String imgUrl) {
         if (imgUrl == null || imgUrl.equals("")){
             return null;
         }

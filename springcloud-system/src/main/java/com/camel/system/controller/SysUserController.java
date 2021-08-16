@@ -240,6 +240,11 @@ public class SysUserController extends BaseCommonController {
         return ResultUtil.success(r);
     }
 
+    @GetMapping("/getRoleId")
+    public Result getRoleId(){
+        return ResultUtil.success(service.selectRoleId(currentUser()));
+    }
+
     public SysUser currentUser(OAuth2Authentication oAuth2Authentication) {
         ObjectMapper mapper = new ObjectMapper();
         SysUser user = null;
