@@ -57,8 +57,6 @@ public class TelProtectionController extends BaseCommonController {
     @Autowired
     private TelProtectionService telService;
 
-    @Autowired
-    private PstnnumberService pstnnumberService;
 
     // @GetMapping("/apply/{id}")
     // public Result apply(@PathVariable Integer id) {

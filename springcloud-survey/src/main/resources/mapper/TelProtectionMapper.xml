@@ -159,7 +159,7 @@
             )
             ) _t
             )
-        group by id
+        GROUP BY uid
         ORDER BY is_bind desc
     </select>
 
@@ -209,12 +209,24 @@
         and status = 1
     </select>
 
+    <select id="selectBytel" resultType="com.camel.survey.model.TelProtection">
+        select tel_protection.id,tel_protection.final_cus_id,tel_protection.tel,tel_protection.project_id,tel_protection.apply_time,tel_protection.status
+        from tel_protection
+        where tel = #{tel}
+    </select>
+
     <!-- 供应商：修改项目 -->
     <update id="updateByTid">
         update
             tel_protection
         set project_id = #{projectId}
         where id = #{id}
+    </update>
+
+    <update id="updateFinal">
+        update tel_protection
+        set final_cus_id = #{finalCusId}
+        where tel = #{tel}
     </update>
 
 </mapper>

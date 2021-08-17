@@ -38,7 +38,21 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
      */
     Integer revokeTel(Integer id);
 
+    /**
+     * 号码绑定最终用户
+     * @param telProtection
+     * @return
+     */
     Integer insertFinal(TelProtection telProtection);
+
+    /**
+     * 更新号码维护表
+     * @param telProtection
+     * @return
+     */
+    Integer updateFinal(TelProtection telProtection);
+
+    TelProtection selectBytel(String tel);
 
     /**
      * 根据项目id返回电话集合

@@ -158,9 +158,16 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
 
     @Override
     public Result grantFinal(TelProtection telProtection) {
+        TelProtection protection = telProtectionMapper.selectBytel(telProtection.getTel());
+        if (protection != null){
+            if (telProtectionMapper.updateFinal(telProtection) > 0) {
+                return ResultUtil.success("修改成功");
+            }
+            return ResultUtil.error(ResultEnum.SERVICE_ERROR);
+        }
         Integer res = telProtectionMapper.insertFinal(telProtection);
         if (res < 0){
-            return ResultUtil.error(ResultEnum.RESOURCESNOTFOUND);
+            return ResultUtil.error(ResultEnum.SERVICE_ERROR);
         }
         return ResultUtil.success("绑定成功");
     }
