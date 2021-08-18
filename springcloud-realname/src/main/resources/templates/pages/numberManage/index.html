@@ -61,15 +61,15 @@
             </el-table-column>
             <el-table-column
                     align="right">
-                <template slot="header" slot-scope="scope">
-                    <el-input
-                            v-model="search"
-                            size="mini"
-                            placeholder="输入 名称 搜索"
-                            @keyup.enter="searchList">
-                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
-                    </el-input>
-                </template>
+<!--                <template slot="header" slot-scope="scope">-->
+<!--                    <el-input-->
+<!--                            v-model="searchTel"-->
+<!--                            size="mini"-->
+<!--                            placeholder="输入 电话 搜索"-->
+<!--                            @keyup.enter="searchList">-->
+<!--                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>-->
+<!--                    </el-input>-->
+<!--                </template>-->
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
@@ -105,11 +105,11 @@
                     align="center">
                 <template slot="header" slot-scope="scope">
                     <el-input
-                            v-model="search"
+                            v-model="searchName"
                             size="mini"
                             placeholder="输入 名称 搜索"
                             @keyup.enter="searchList">
-                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                        <el-button slot="append" icon="el-icon-search" @click="finalCusList()"></el-button>
                     </el-input>
                 </template>
                 <template slot-scope="scope">
@@ -148,7 +148,8 @@
         data: {
             tableData:[],
             finalList:[],
-            search:"",
+            searchName:"",
+            searchTel:"",
             tel:"", // 外呼号码
             name:[],//  最终用户名称
             dialogTableVisible:false,
@@ -193,9 +194,15 @@
                 let that = this;
                 let finalData = that.finalData;
                 this.dialogTableVisible = true;
-                finalData['username'] = that.search;
-                finalData['tel'] = id;
-                that.tel = id;
+                finalData['username'] = that.searchName;
+
+                if (typeof (id) === "undefined"){
+                    finalData['tel'] = that.tel;
+                }
+                else {
+                    finalData['tel'] = id;
+                    that.tel = id;
+                }
                 AJAX.GET_SYNC("/survey/telProtection/finalList",finalData,function (res) {
                     that.finalList= res.data.list;
                     that.finalPage.total = res.data.total;
@@ -224,7 +231,7 @@
                         });
                     }
                 })
-                that.finalCusList(that.tel);
+                that.finalCusList();
             },
             revokeTel(id){
                 let that = this;
@@ -246,7 +253,7 @@
                         });
                     }
                 })
-                that.finalCusList(that.tel);
+                that.finalCusList();
             },
             getName(row){
                 let that = this;

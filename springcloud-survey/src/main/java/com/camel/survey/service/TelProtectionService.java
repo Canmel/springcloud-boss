@@ -36,22 +36,70 @@ public interface TelProtectionService extends IService<TelProtection> {
      */
     boolean modifiByTid(Integer projectId, Integer id);
 
+    /**
+     * 显示最终用户所有电话
+     * @param telProtection
+     * @return
+     */
     PageInfo<TelProtection> grantTelList(TelProtection telProtection);
 
+    /**
+     * 显示所有合作伙伴
+     * @param sysCompany
+     * @param telId
+     * @return
+     */
     PageInfo<CompanyVo> partnerList(SysCompany sysCompany, Integer telId);
 
+    /**
+     * 判断合作伙伴是否绑定了电话
+     * @param uid
+     * @param telId
+     * @return
+     */
     Integer isExist(Integer uid, Integer telId);
 
+    /**
+     * 对供应商进行授权
+     * @param telProtection
+     * @return
+     */
     Result grant(TelProtection telProtection);
 
+    /**
+     * 撤销授权
+     * @param telProtection
+     * @return
+     */
     Result revoke(TelProtection telProtection);
 
+    /**
+     * 从cti获取所有接入号
+     * @param numberVo
+     * @return
+     */
     PageInfo<JSONArray> all(NumberVo numberVo);
 
+    /**
+     * 最终用户列表
+     * @param sysUser
+     * @param tel
+     * @return
+     */
     PageInfo<FinalCusVo> finalList(SysUser sysUser,String tel);
 
+    /**
+     * 解除号码和最终用户的绑定
+     * @param id
+     * @return
+     */
     Integer revokeTel(Integer id);
 
+    /**
+     * 号码绑定最终用户
+     * @param telProtection
+     * @return
+     */
     Result grantFinal(TelProtection telProtection);
 
     /**
@@ -61,6 +109,11 @@ public interface TelProtectionService extends IService<TelProtection> {
      */
     List<String> getTelListByProId(Integer projectId);
 
+    /**
+     * 获得号码所属最终用户名字
+     * @param tel
+     * @return
+     */
     Result getFinalName(String tel);
 
 }

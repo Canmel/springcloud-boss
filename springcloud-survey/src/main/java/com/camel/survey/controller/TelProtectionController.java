@@ -57,12 +57,6 @@ public class TelProtectionController extends BaseCommonController {
     @Autowired
     private TelProtectionService telService;
 
-
-    // @GetMapping("/apply/{id}")
-    // public Result apply(@PathVariable Integer id) {
-    //     return service.apply(id);
-    // }
-
     /**
      * 供应商：分页查询号码列表
      * @param telProtection 查询条件
@@ -149,7 +143,7 @@ public class TelProtectionController extends BaseCommonController {
     }
 
     /**
-     * 解除绑定
+     * 解除号码和最终用户的绑定
      * @return
      */
     @DeleteMapping("/revokeTel/{id}")
@@ -161,6 +155,11 @@ public class TelProtectionController extends BaseCommonController {
         return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"解除绑定失败");
     }
 
+    /**
+     * 接入号管理index
+     * @param numberVo
+     * @return
+     */
     @GetMapping("/numberManage")
     public Result index(NumberVo numberVo){
         return ResultUtil.success("success",telService.all(numberVo));
@@ -183,20 +182,36 @@ public class TelProtectionController extends BaseCommonController {
 //        return ResultUtil.success("success",pageInfo);
     }
 
+    /**
+     * 最终用户列表
+     * @param sysUser
+     * @param tel
+     * @return
+     */
     @GetMapping("/finalList")
     public Result finalList(SysUser sysUser,String tel){
         PageInfo<FinalCusVo> finalList = telService.finalList(sysUser,tel);
         return ResultUtil.success("查询成功",finalList);
     }
 
+    /**
+     * 号码绑定最终用户
+     * @param telProtection
+     * @return
+     */
     @PostMapping("/grantFinal")
     public Result grantFinal(@RequestBody TelProtection telProtection){
         if (StringUtils.isEmpty(telProtection.getTel()) && !StringUtils.isEmpty(telProtection.getFinalCusId())){
-            return ResultUtil.error(ResultEnum.BAD_REQUEST);
+            return ResultUtil.error(ResultEnum.SERVICE_ERROR);
         }
         return ResultUtil.success("绑定最终用户成功",telService.grantFinal(telProtection));
     }
 
+    /**
+     * 获得号码所属最终用户名字
+     * @param tel
+     * @return
+     */
     @GetMapping("/getName/{tel}")
     public Result getFinalName(@PathVariable("tel") String tel){
         return telService.getFinalName(tel);
@@ -211,23 +226,5 @@ public class TelProtectionController extends BaseCommonController {
     public String getMouduleName() {
         return "外呼号码";
     }
-    //
-    // public boolean isExcel(MultipartFile file) {
-    //     String[] fileNames = file.getOriginalFilename().split("\\.");
-    //     if (ArrayUtil.isNotEmpty(fileNames)) {
-    //         String type = fileNames[fileNames.length - 1];
-    //         return excelFileSuf.indexOf(type.toUpperCase()) > -1;
-    //     }
-    //     return false;
-    // }
-    //
-    // public boolean isPic(MultipartFile file) {
-    //     String[] fileNames = file.getOriginalFilename().split("\\.");
-    //     if (ArrayUtil.isNotEmpty(fileNames)) {
-    //         String type = fileNames[fileNames.length - 1];
-    //         return picFileSuf.indexOf(type.toUpperCase()) > -1;
-    //     }
-    //     return false;
-    // }
 }
 

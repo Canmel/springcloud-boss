@@ -16,6 +16,11 @@ import java.util.List;
 @Repository
 public interface TelProtectionMapper extends BaseMapper<TelProtection> {
 
+    /**
+     *
+     * @param telProtection
+     * @return
+     */
     List<TelProtection> grantTelList(TelProtection telProtection);
 
     List<CompanyVo> partnerList(@Param("company") SysCompany sysCompany, @Param("telId") Integer telId);

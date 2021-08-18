@@ -129,36 +129,42 @@
     </select>
 
     <select id="finalList" resultMap="finalCusResult">
-        select _now.id,_now.uid,_now.username,_now.is_bind,_now.tel
-        from(
-            select tel_protection.id,sys_user.uid,sys_user.username,
-            IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
-            from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
-            left join tel_protection on sys_user.uid = tel_protection.final_cus_id
-            WHERE sys_user_role.role_id = 7
-            ) _now
-        where id is null or id not in(
-            select id from
-            (
-            select id,uid,username,is_bind,tel from (
-            select tel_protection.id,sys_user.uid,sys_user.username,
-            IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
-            from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
-            left join tel_protection on sys_user.uid = tel_protection.final_cus_id
-            WHERE sys_user_role.role_id = 7
-            ) _old
-            where is_bind = -1 and id is not null and uid in (
-            select uid from
-            (select tel_protection.id,sys_user.uid,sys_user.username,
-            IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
-            from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
-            left join tel_protection on sys_user.uid = tel_protection.final_cus_id
-            WHERE sys_user_role.role_id = 7
-            ) _s
-            where is_bind = 1
-            )
-            ) _t
-            )
+        select id,uid,username,is_bind,tel
+        from (
+                 select _now.id,_now.uid,_now.username,_now.is_bind,_now.tel
+                 from(
+                     select tel_protection.id,sys_user.uid,sys_user.username,
+                     IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
+                     from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+                     left join tel_protection on sys_user.uid = tel_protection.final_cus_id
+                     WHERE sys_user_role.role_id = 7
+                     ) _now
+                 where id is null or id not in(
+                     select id from
+                     (
+                     select id,uid,username,is_bind,tel from (
+                     select tel_protection.id,sys_user.uid,sys_user.username,
+                     IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
+                     from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+                     left join tel_protection on sys_user.uid = tel_protection.final_cus_id
+                     WHERE sys_user_role.role_id = 7
+                     ) _old
+                     where is_bind = -1 and id is not null and uid in (
+                     select uid from
+                     (select tel_protection.id,sys_user.uid,sys_user.username,
+                     IF(tel_protection.tel = #{tel},1,-1) is_bind,tel_protection.tel
+                     from sys_user left join sys_user_role on sys_user.uid = sys_user_role.user_id
+                     left join tel_protection on sys_user.uid = tel_protection.final_cus_id
+                     WHERE sys_user_role.role_id = 7
+                     ) _s
+                     where is_bind = 1
+                     )
+                     ) _t
+                     )
+             ) _f
+             <where>
+                 <if test="sysUser.username != null and sysUser.username != '' ">and username like concat ('%',#{sysUser.username},'%')</if>
+             </where>
         GROUP BY uid
         ORDER BY is_bind desc
     </select>
