@@ -125,19 +125,16 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
         JSONObject o = JSONUtil.parseObj(r);
         JSONArray array = o.getJSONArray("info");
 
-
-        //手动分页
-        List<JSONArray> list = Arrays.asList(array);
         //创建Page类
         Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
         //为Page类中的total属性赋值
-        int total = list.size();
+        int total = array.size();
         page.setTotal(total);
         //计算当前需要显示的数据下标起始值
         int startIndex = (numberVo.getPageNum() - 1) * numberVo.getPageSize();
         int endIndex = Math.min(startIndex + numberVo.getPageSize(),total);
         //从链表中截取需要显示的子链表，并加入到Page
-        page.addAll(list.subList(startIndex,endIndex));
+        page.addAll(array.subList(startIndex,endIndex));
         //以Page创建PageInfo
         PageInfo<JSONArray> pageInfo = new PageInfo<JSONArray>(page);
         return pageInfo;
