@@ -32,6 +32,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -164,19 +165,32 @@ public class TelProtectionController extends BaseCommonController {
     public Result index(NumberVo numberVo){
         return ResultUtil.success("success",telService.all(numberVo));
 
-//        String[] arr = {"1212","2323","3434","4545","5656","6767","7878","8989","9090","11111","22222","33333","44444","55555","66666","77777"};
-//        //手动分页
-//        List<String> list = Arrays.asList(arr);
+//        ArrayList<String> arr = new ArrayList();
+//        arr.add("1212");
+//        arr.add("2323");
+//        arr.add("3223");
+//        arr.add("4334");
+//        arr.add("54");
+//        arr.add("56");
+//        arr.add("67");
+//        arr.add("78");
+//        arr.add("89");
+//        arr.add("90");
+//        arr.add("3553");
+//        arr.add("2326363");
+//        arr.add("343");
+//        arr.add("45");
+//        arr.add("1222");
 //        //创建Page类
 //        Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
 //        //为Page类中的total属性赋值
-//        int total = list.size();
+//        int total = arr.size();
 //        page.setTotal(total);
 //        //计算当前需要显示的数据下标起始值
 //        int startIndex = (numberVo.getPageNum() - 1) * numberVo.getPageSize();
 //        int endIndex = Math.min(startIndex + numberVo.getPageSize(),total);
 //        //从链表中截取需要显示的子链表，并加入到Page
-//        page.addAll(list.subList(startIndex,endIndex));
+//        page.addAll(arr.subList(startIndex,endIndex));
 //        //以Page创建PageInfo
 //        PageInfo<String> pageInfo = new PageInfo<String>(page);
 //        return ResultUtil.success("success",pageInfo);
