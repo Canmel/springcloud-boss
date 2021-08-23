@@ -21,9 +21,11 @@ import com.camel.realname.utils.SnowflakeIdWorker;
 import com.camel.realname.vo.ZsCorpUrlVo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -176,12 +178,18 @@ public class ZsCorpServiceImpl extends ServiceImpl<ZsCorpMapper, ZsCorp> impleme
             Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
             // 1小时，可以自定义链接过期时间
             url = auth.privateDownloadUrl(publicUrl, 3600);
+            Configuration cfg = new Configuration(Region.region0());
+            BucketManager bucketManager = new BucketManager(auth, cfg);
+            FileInfo fileInfo = bucketManager.stat(BUCKET_NAME, key);
+            System.out.println(fileInfo.type);
             operations.set(redisKey, url, 50 * 60, TimeUnit.SECONDS);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }catch (QiniuException e) {
             e.printStackTrace();
         }
         return url;
