@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
@@ -40,7 +41,7 @@ public class ExportWordUtil {
             response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="+ URLEncoder.encode(fileName, "UTF-8"));
             OutputStream outputStream = response.getOutputStream();
-            Writer out = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
 
             //将模板中的预先的代码替换为数据
             template.process(dataMap, out);

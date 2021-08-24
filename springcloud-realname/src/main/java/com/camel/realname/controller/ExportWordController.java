@@ -20,6 +20,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -101,7 +102,7 @@ public class ExportWordController {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="
-                    + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
+                    + new String(excelName.getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xls");
             out = response.getOutputStream();
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out);
             byte[] bytes = new byte[4096];
@@ -153,7 +154,7 @@ public class ExportWordController {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="
-                    + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
+                    + new String(excelName.getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xls");
             out = response.getOutputStream();
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out);
 
