@@ -35,11 +35,12 @@ public class ExportWordUtil {
             if(templateName.endsWith(".ftl")) {
                 templateName = templateName.substring(0, templateName.indexOf(".ftl"));
             }
-            Template template = config.getTemplate(templateName + ".ftl");
-            response.setContentType("application/msword");
+            Template template = config.getTemplate(templateName + ".ftl","UTF-8");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="+ URLEncoder.encode(fileName, "UTF-8"));
             OutputStream outputStream = response.getOutputStream();
-            Writer out = new BufferedWriter(new OutputStreamWriter(outputStream));
+            Writer out = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
 
             //将模板中的预先的代码替换为数据
             template.process(dataMap, out);
