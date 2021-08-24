@@ -88,7 +88,7 @@ public class ExportWordController {
         String excelName = "客户申请表（模板）";
         //  返回excel
         InputStream is = null;
-        OutputStream os = null;
+        OutputStream out = null;
         HttpURLConnection httpUrl = null;
         try {
             URL url = new URL(modelUrl);
@@ -98,33 +98,22 @@ public class ExportWordController {
             httpUrl.connect();
             is = httpUrl.getInputStream();
             response.reset();
-            response.setContentType("application/vnd.ms-excel");
+            response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="
                     + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
-            os = response.getOutputStream();
-            int len = -1;
-            byte[] b = new byte[1024];
-            while((len = is.read(b)) != -1){
-                os.write(b,0,b.length);
+            out = response.getOutputStream();
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out);
+            byte[] bytes = new byte[4096];
+            int i = 0;
+            while ((i = is.read(bytes)) > 0) {
+                bufferedOutputStream.write(bytes, 0, i);
             }
+            bufferedOutputStream.flush();
+            bufferedOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
             throw new IIOException("Can't get input stream from URL!",e);
         }finally {
-            if(is != null){
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(os != null){
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if (httpUrl != null) {
                 httpUrl.disconnect();
             }
