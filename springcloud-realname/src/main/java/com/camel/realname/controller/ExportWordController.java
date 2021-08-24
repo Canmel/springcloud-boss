@@ -98,6 +98,7 @@ public class ExportWordController {
             httpUrl.connect();
             is = httpUrl.getInputStream();
             response.reset();
+            response.setCharacterEncoding("utf-8");
             response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="
                     + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
