@@ -21,6 +21,7 @@ import com.camel.survey.vo.NumberVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,7 +177,14 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
         }
         return ResultUtil.success("查询成功",telProtectionMapper.selectByTel(tel));
     }
-    
+
+    @Override
+    public List<TelProtection> getPartnerName(String tel) {
+        TelProtection telProtection = new TelProtection();
+        telProtection.setTel(tel);
+        return telProtectionMapper.grantTelList(telProtection);
+    }
+
     @Override
     public List<String> getTelListByProId(Integer projectId) {
         return telProtectionMapper.getTelByProId(projectId);

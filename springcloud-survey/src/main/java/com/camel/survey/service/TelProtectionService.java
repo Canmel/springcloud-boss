@@ -116,4 +116,5 @@ public interface TelProtectionService extends IService<TelProtection> {
      */
     Result getFinalName(String tel);
 
+    List<TelProtection> getPartnerName(String tel);
 }

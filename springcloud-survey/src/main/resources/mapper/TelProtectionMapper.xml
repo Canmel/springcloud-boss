@@ -86,7 +86,10 @@
         from
         tel_protection left join tel_partner on tel_protection.id = tel_partner.tel_id
         left join sys_company on sys_company.id = tel_partner.partner_id
-        where tel_protection.final_cus_id = #{finalCusId}
+        <where>
+            <if test="finalCusId != null and finalCusId != '' ">and tel_protection.final_cus_id = #{finalCusId}</if>
+            <if test="tel != null and tel != '' ">and tel_protection.tel = #{tel}</if>
+        </where>
     </select>
 
     <select id="partnerList" resultMap="companyResult">
