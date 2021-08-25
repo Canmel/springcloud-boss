@@ -25,9 +25,11 @@ import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -126,6 +128,26 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
         JSONObject o = JSONUtil.parseObj(r);
         JSONArray array = o.getJSONArray("info");
 
+        if (CollectionUtils.isEmpty(array)){
+            ArrayList<JSONArray> telList = new ArrayList();
+            return new PageInfo<>(telList);
+        }
+
+        if (!StringUtils.isEmpty(numberVo.getTel())){
+            boolean contains = array.contains(numberVo.getTel().trim());
+            if (contains){
+                ArrayList<String> telList = new ArrayList();
+                telList.add(numberVo.getTel());
+                Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+                //从链表中截取需要显示的子链表，并加入到Page
+                page.addAll(telList);
+                //以Page创建PageInfo
+                PageInfo<JSONArray> pageInfo = new PageInfo<JSONArray>(page);
+                return pageInfo;
+            }else {
+                return null;
+            }
+        }
         //创建Page类
         Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
         //为Page类中的total属性赋值
