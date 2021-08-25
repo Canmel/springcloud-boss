@@ -40,18 +40,29 @@
                     width="100">
             </el-table-column>
             <el-table-column
-                    prop="userName"
+                    prop="partner.username"
                     label="最终用户"
                     align="center"
                     width="200"
                     show-overflow-tooltip>
             </el-table-column>
             <el-table-column
-                    prop="zsProject.name"
+                    prop="partner.email"
+                    label="用户邮箱"
+                    align="center"
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
                     label="项目名称"
                     align="center"
                     width="200"
                     show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <span v-for="project in scope.row.telProject">
+                        {{project.name}},
+                    </span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="tel"
@@ -104,7 +115,8 @@
 
                 <el-dialog title="设置项目"
                            :visible.sync="dialogVisible"
-                           append-to-body>
+                           append-to-body
+                            @open="dialogOpen">
                     <el-table
                             ref="multipleTable"
                             :data="tableList"
@@ -115,28 +127,28 @@
                             style="width: 100%"
                             width="500">
                         <el-table-column
-                                prop="projectId"
+                                prop="id"
                                 label="ID"
                                 align="center"
                                 sortable
                                 width="100">
                         </el-table-column>
                         <el-table-column
-                                prop="userName"
+                                prop="sysUser.username"
                                 label="最终用户"
                                 align="center"
                                 width="200"
                                 show-overflow-tooltip>
                         </el-table-column>
                         <el-table-column
-                                prop="zsProject.name"
+                                prop="name"
                                 label="项目名称"
                                 align="center"
                                 width="200"
                                 show-overflow-tooltip>
                         </el-table-column>
                         <el-table-column
-                                prop="zsProject.createdAt"
+                                prop="createdAt"
                                 label="创建时间"
                                 sortable
                                 align="center"
@@ -155,9 +167,9 @@
                                     <el-button slot="append" icon="el-icon-search" @click="searchData"></el-button>
                                 </el-input>
                             </template>
-                            <el-button @click="dialogVisible = false">取 消</el-button>
                             <template slot-scope="scope">
-                                <el-button type="danger" @click="getSure(scope.row.projectId)">确 定</el-button>
+                                <el-button type="danger" @click="getSure(scope.row.id)">确 定</el-button>
+                                <el-button type="default" @click="getRemove(scope.row.id)">撤 销</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -219,19 +231,28 @@
             },
         },
         created: function () {
-            // this.me();
+            list.forEach(element => {
+                element["show"] = false
+            });
+            this.tableList = list
         },
         mounted:function(){
             console.log("mounted...");
             this.getList();
         },
         methods: {
-            handleClose(done) {
-                this.$confirm('确认关闭？')
-                        .then(_ => {
-                            done();
-                        })
-                        .catch(_ => {});
+            dialogOpen() {
+                this.$nextTick(() => {
+                    this.list.forEach((item, index) => {  //list是弹框所有的列表数据
+                        this.$refs.myTable.toggleRowSelection(  //myTable是 el-dialog的ref
+                                this.list[index],
+                                this.selectedId.includes(item.id),
+                                this.getSure(),
+                                // this.getDelete()
+
+                        );
+                    });
+                });
             },
             handleSizeChange(val){
                 // console.log(`每页 ${val} 条`);
@@ -266,6 +287,7 @@
             searchList(){
                 this.resetPage();
                 this.getList();
+
             },
             getList(){
                 let that = this;
@@ -312,6 +334,31 @@
                 });
                 this.getList();
             },
+            getRemove(project_id) {
+              let that = this;
+              let paramsData = this.paramsData;
+              paramsData['projectId'] = project_id;
+              paramsData['id'] = that.telId;
+              params = JSON.stringify(paramsData)
+              that.dialogVisible = false;
+              AJAX.PUT("/survey/telProtection/removeProject",params,function(res){
+                if(res.code === 200){
+                  that.telId = null;
+                  that.$message({
+                    message: res.msg,
+                    type: 'success',
+                    center: true
+                  });
+                }else{
+                  that.$message({
+                    message: res.msg,
+                    type: 'error',
+                    center: true
+                  });
+                }
+              });
+              this.getList();
+            },
             searchData(){
                 this.resetPage();
                 this.getData(this.finalCusId);
@@ -324,8 +371,13 @@
 
                 that.finalCusId = row;
                 paramsData.finalCusId = that.finalCusId;
+                if (typeof (id) ===  "undefined"){
+                  paramsData['telId'] = that.telId;
+                }else {
+                  paramsData['telId'] = id;
+                  that.telId = id ;
+                }
 
-                that.telId = id;
                 that.dialogVisible = true;
                 AJAX.GET_SYNC("/survey/telProtection/projectList",paramsData,function(res){
                     if(res.code === 200){

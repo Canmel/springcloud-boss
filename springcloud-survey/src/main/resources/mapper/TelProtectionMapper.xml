@@ -7,22 +7,34 @@
         <id column="id" property="id" javaType="java.lang.Integer"/>
         <result column="final_cus_id" property="finalCusId" javaType="java.lang.Integer"/>
         <result column="tel" property="tel" javaType="java.lang.String"/>
-        <result column="project_id" property="projectId" javaType="java.lang.Integer"/>
         <result column="apply_time" property="applyTime" javaType="java.util.Date"/>
-        <result column="username" property="userName" javaType="java.lang.String"/>
         <result column="status" property="status" typeHandler="com.camel.survey.enumhandler.MyIntegerToEnumHandler"/>
         <association property="zsProject" column="project_id" select="com.camel.survey.mapper.ZsProjectMapper.selectProjectById"/>
-<!--        <collection property="partner" javaType="java.util.ArrayList" ofType="com.camel.core.model.SysUser">-->
-<!--            <id column="uid" property="uid"/>-->
-<!--            <result column="username" property="username"/>-->
-<!--        </collection>-->
+        <association property="partner" javaType="com.camel.core.model.SysUser">
+            <id column="uid" property="uid"/>
+            <result column="username" property="username"/>
+            <result column="email" property="email"/>
+        </association>
         <collection property="company" ofType="com.camel.core.model.SysCompany">
             <id column="cid" property="id"/>
             <result column="name" property="name"/>
             <result column="contacts" property="contacts"/>
         </collection>
+        <collection property="telProject" ofType="com.camel.survey.model.ZsProject">
+            <result column="projectName" property="name"/>
+            <result column="project_id" property="id"/>
+        </collection>
     </resultMap>
-    
+
+    <resultMap id="projectRsesult" type="com.camel.survey.model.ZsProject">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="created_at" property="createdAt"/>
+        <association property="sysUser" javaType="com.camel.core.model.SysUser">
+            <result column="username" property="username"/>
+        </association>
+    </resultMap>
+
     <resultMap id="companyResult" type="com.camel.survey.vo.CompanyVo">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -186,12 +198,13 @@
 
     <!-- 供应商：分页查询号码列表 -->
     <select id="selectByPid" resultMap="BaseResultMap">
-        SELECT t.id,u.username,t.tel,t.apply_time,t.status,t.final_cus_id,t.project_id
+        SELECT t.id,u.username,u.email,c.name,t.tel,t.apply_time,t.status,t.final_cus_id,tp.project_id,zs.name as projectName
         FROM tel_protection t
         LEFT JOIN tel_partner p ON p.tel_id = t.id
         LEFT JOIN sys_user u ON u.uid = t.final_cus_id
         LEFT JOIN sys_company c ON p.partner_id = c.id
-        LEFT JOIN zs_project z ON t.project_id = z.id
+        LEFT JOIN tel_project tp ON tp.tel_id = t.id
+        LEFT JOIN zs_project zs ON tp.project_id = zs.id
         <where>
             p.partner_id = #{partnerId}
             <if test="tel != null and tel != ''">
@@ -201,8 +214,8 @@
     </select>
 
     <!-- 供应商：分页查询项目列表 -->
-    <select id="selectByFid" resultMap="BaseResultMap">
-        SELECT z.id as project_id,u.username
+    <select id="selectByFid" resultMap="projectRsesult">
+        SELECT z.id,u.username,z.name,z.created_at
         from zs_project z LEFT JOIN sys_user u ON z.final_cus_id = u.uid
         <where>
             z.final_cus_id = #{finalCusId}
@@ -225,12 +238,24 @@
     </select>
 
     <!-- 供应商：修改项目 -->
-    <update id="updateByTid">
-        update
-            tel_protection
-        set project_id = #{projectId}
-        where id = #{id}
-    </update>
+    <insert id="updateByTid">
+        insert into tel_project (project_id,tel_id)
+        values (#{projectId},#{id})
+    </insert>
+
+    <!-- 供应商：判断电话是否绑定了项目 -->
+    <select id="hasProject" resultType="java.lang.Integer">
+        select count(1) from tel_project
+        where project_id = #{projectId}
+          and tel_id = #{id}
+    </select>
+
+    <!-- 供应商：撤销授权 -->
+    <delete id="deleteProject">
+        delete from tel_project
+        where tel_id = #{id}
+          and project_id = #{projectId}
+    </delete>
 
     <update id="updateFinal">
         update tel_protection

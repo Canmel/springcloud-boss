@@ -36,15 +36,16 @@ function simpleSuccess(result) {
         // window.location.href =
         //     "http://127.0.0.1:8081/login.html?backToUrl="+encodeURIComponent(btoa(window.location.href));
     } else {
+        return result;
         //其他错误情况，直接弹出提示框
-        if (result.msg != null) {
-            layui.use('layer', function(){
-                var layer = layui.layer;
-
-                layer.msg(result.msg);
-            });
-
-        }
+        // if (result.msg != null) {
+        //     layui.use('layer', function(){
+        //         var layer = layui.layer;
+        //
+        //         layer.msg(result.msg);
+        //     });
+        //
+        // }
     }
     return null;
 }

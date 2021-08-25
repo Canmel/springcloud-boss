@@ -38,10 +38,12 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
      * 外呼号码
      */
     private String tel;
+
     /**
-     * 项目id
+     * 绑定项目集合
      */
-    private Integer projectId;
+    @TableField(exist = false)
+    private List<ZsProject> telProject;
 
     /**
      * 项目
@@ -66,8 +68,8 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
     @TableField(exist = false)
     private Integer partnerId;
 
-//    @TableField(exist = false)
-//    private List<SysUser> partner;
+   @TableField(exist = false)
+   private SysUser partner;
 
     @TableField(exist = false)
     private List<SysCompany> company;
@@ -79,10 +81,9 @@ public class TelProtection extends BasePaginationEntity implements Serializable{
     private String projectName;
 
     /**
-     * 最终用户名
+     * 项目ID
      */
     @TableField(exist = false)
-    private String userName;
-
+    private Integer projectId;
 
 }
