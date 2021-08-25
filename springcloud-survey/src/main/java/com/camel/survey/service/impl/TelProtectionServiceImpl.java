@@ -26,6 +26,7 @@ import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -142,12 +143,17 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
 
     @Override
+    @Transactional
     public Result revoke(TelProtection telProtection) {
-
         Integer res = telProtectionMapper.delPromise(telProtection);
         if (res > 0){
-            return ResultUtil.success("撤销成功");
+            Integer integer = telProtectionMapper.deleteProject(telProtection);
+            if(integer > 0){
+                return ResultUtil.success("撤销成功");
+            }
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         return ResultUtil.error(ResultEnum.UNKONW_ERROR);
     }
 

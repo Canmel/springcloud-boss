@@ -253,8 +253,10 @@
     <!-- 供应商：撤销授权 -->
     <delete id="deleteProject">
         delete from tel_project
-        where tel_id = #{id}
-          and project_id = #{projectId}
+        <where>
+            tel_id = #{id}
+            <if test="project_id != null">and project_id = #{projectId}</if>
+        </where>
     </delete>
 
     <update id="updateFinal">
