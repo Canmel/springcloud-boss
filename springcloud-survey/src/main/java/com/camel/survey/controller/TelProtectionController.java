@@ -16,6 +16,7 @@ import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.model.ZsProject;
 import com.camel.survey.service.PstnnumberService;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -76,7 +77,7 @@ public class TelProtectionController extends BaseCommonController {
      */
     @GetMapping("/projectList")
     public Result queryByFid(TelProtection telProtection) {
-        PageInfo<TelProtection> pageList = telService.queryByFid(telProtection);
+        PageInfo<ZsProject> pageList = telService.queryByFid(telProtection);
         return ResultUtil.success("查询成功",pageList);
     }
 
@@ -87,10 +88,24 @@ public class TelProtectionController extends BaseCommonController {
      */
     @PutMapping("/modifiByTid")
     public Result modifiByTid(@RequestBody TelProtection telProtection) {
-        if (telService.modifiByTid(telProtection.getProjectId(),telProtection.getId())) {
-            return ResultUtil.success("修改项目成功");
+        Integer project = telService.hasProject(telProtection.getProjectId(), telProtection.getId());
+        if (project > 0) {
+            return ResultUtil.error(400, "请勿重复操作");
         }
-        return ResultUtil.error(400, "修改项目失败");
+        return telService.modifiByTid(telProtection.getProjectId(),telProtection.getId());
+    }
+
+    /**
+     * 供应商：撤销授权
+     * @param telProtection 修改条件
+     * @return Result
+     */
+    @PutMapping("/removeProject")
+    public Result removeProject(@RequestBody TelProtection telProtection){
+        if (StringUtils.isEmpty(telProtection.getId()) && StringUtils.isEmpty(telProtection.getProjectId())){
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM);
+        }
+        return telService.removeProject(telProtection);
     }
 
     /**

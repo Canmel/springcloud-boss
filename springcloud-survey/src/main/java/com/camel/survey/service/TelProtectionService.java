@@ -6,6 +6,7 @@ import com.camel.core.entity.Result;
 import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.model.ZsProject;
 import com.camel.survey.vo.CompanyVo;
 import com.camel.survey.vo.FinalCusVo;
 import com.camel.survey.vo.NumberVo;
@@ -27,14 +28,30 @@ public interface TelProtectionService extends IService<TelProtection> {
      * @param telProtection 查询条件
      * @return Result
      */
-    PageInfo<TelProtection> queryByFid(TelProtection telProtection);
+    PageInfo<ZsProject> queryByFid(TelProtection telProtection);
 
     /**
      * 供应商：修改项目
-     * @param projectId, id 修改条件
+     * @param projectId 修改条件
+     * @param id
      * @return boolean
      */
-    boolean modifiByTid(Integer projectId, Integer id);
+    Result modifiByTid(Integer projectId, Integer id);
+
+    /**
+     * 供应商：判断电话是否绑定了项目
+     * @param projectId 修改条件
+     * @param id
+     * @return boolean
+     */
+    Integer hasProject(Integer projectId,Integer id);
+
+    /**
+     * 供应商：撤销授权
+     * @param telProtection 修改条件
+     * @return Result
+     */
+    Result removeProject(TelProtection telProtection);
 
     /**
      * 显示最终用户所有电话

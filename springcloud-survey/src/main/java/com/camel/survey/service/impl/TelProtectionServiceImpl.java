@@ -13,6 +13,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.mapper.SysUserMapper;
 import com.camel.survey.mapper.TelProtectionMapper;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.model.ZsProject;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.CompanyVo;
@@ -67,10 +68,10 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
      * @return Result
      */
     @Override
-    public PageInfo<TelProtection> queryByFid(TelProtection telProtection) {
+    public PageInfo<ZsProject> queryByFid(TelProtection telProtection) {
         PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
-        List<TelProtection> list = telProtectionMapper.selectByFid(telProtection);
-        return new PageInfo<TelProtection>(list);
+        List<ZsProject> list = telProtectionMapper.selectByFid(telProtection);
+        return new PageInfo<ZsProject>(list);
     }
 
     /**
@@ -79,11 +80,38 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
      * @return Result
      */
     @Override
-    public boolean modifiByTid(Integer projectId, Integer id) {
-        telProtectionMapper.updateByTid(projectId, id);
-        return true;
+    public Result modifiByTid(Integer projectId, Integer id) {
+        int i = telProtectionMapper.updateByTid(projectId, id);
+        if (i > 0) {
+            return ResultUtil.success("修改成功");
+        }
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改失败");
     }
 
+    /**
+     * 供应商：判断电话是否绑定了项目
+     * @param projectId 修改条件
+     * @param id
+     * @return boolean
+     */
+    @Override
+    public Integer hasProject(Integer projectId, Integer id) {
+        return telProtectionMapper.hasProject(projectId,id);
+    }
+
+    /**
+     * 供应商：撤销授权
+     * @param telProtection 修改条件
+     * @return Result
+     */
+    @Override
+    public Result removeProject(TelProtection telProtection) {
+        Integer res = telProtectionMapper.deleteProject(telProtection);
+        if (res > 0){
+            return ResultUtil.success("撤销成功");
+        }
+        return ResultUtil.error(ResultEnum.UNKONW_ERROR);
+    }
 
     @Override
     public PageInfo<TelProtection> grantTelList(TelProtection telProtection) {
