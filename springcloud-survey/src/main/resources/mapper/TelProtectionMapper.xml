@@ -224,9 +224,11 @@
     </select>
 
     <select id="getTelByProId" resultType="java.lang.String">
-        select tel from tel_protection
-        where project_id = #{projectId}
-        and status = 1
+        select tel_protection.tel
+        from tel_protection tel_protection
+        left join tel_project tel_project on tel_project.tel_id = tel_protection.id
+        where tel_project.project_id = #{projectId}
+        and tel_protection.status = 1
     </select>
 
     <select id="selectBytel" resultType="com.camel.survey.model.TelProtection">
