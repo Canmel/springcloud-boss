@@ -694,6 +694,7 @@
             result: false,//表示超级管理员权限
             resultDev: false,//表示操作人员权限
             user: {},
+            showAll: false
         },
         watch: {
             loadData(v, oldVal) {
@@ -769,6 +770,9 @@
                     }
                     if (authority === 'ROLE_DEVOPS') {
                         that.resultDev = true
+                    }
+                    if (authority === 'ROLE_SHOWAll') {
+                        that.result = true
                     }
                 })
             },
