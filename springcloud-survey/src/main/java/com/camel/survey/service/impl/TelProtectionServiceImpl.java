@@ -143,6 +143,7 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
 
     @Override
     public Result revoke(TelProtection telProtection) {
+
         Integer res = telProtectionMapper.delPromise(telProtection);
         if (res > 0){
             return ResultUtil.success("撤销成功");

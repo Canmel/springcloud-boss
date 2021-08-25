@@ -54,7 +54,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        tel_protection.id,tel_protection.final_cus_id,tel_protection.tel,tel_protection.project_id,tel_protection.apply_time,tel_protection.status,
+        tel_protection.id,tel_protection.final_cus_id,tel_protection.tel,tel_protection.apply_time,tel_protection.status,
         sys_company.id as cid,sys_company.name,sys_company.contacts
     </sql>
 
@@ -68,7 +68,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="finalCusId != null">final_cus_id,</if>
             <if test="tel != null">tel,</if>
-            <if test="projectId != null">project_id,</if>
             <if test="applyTime != null">apply_time,</if>
             <if test="status != null">status,</if>
         </trim>
@@ -76,7 +75,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="finalCusId != null">#{finalCusId},</if>
             <if test="tel != null">#{tel},</if>
-            <if test="projectId != null">#{projectId},</if>
             <if test="applyTime != null">#{applyTime},</if>
             <if test="status != null">#{status},</if>
         </trim>
@@ -232,7 +230,7 @@
     </select>
 
     <select id="selectBytel" resultType="com.camel.survey.model.TelProtection">
-        select tel_protection.id,tel_protection.final_cus_id,tel_protection.tel,tel_protection.project_id,tel_protection.apply_time,tel_protection.status
+        select tel_protection.id,tel_protection.final_cus_id,tel_protection.tel,tel_protection.apply_time,tel_protection.status
         from tel_protection
         where tel = #{tel}
     </select>
