@@ -20,6 +20,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class ExportWordController {
         String excelName = "客户申请表（模板）";
         //  返回excel
         InputStream is = null;
-        OutputStream os = null;
+        OutputStream out = null;
         HttpURLConnection httpUrl = null;
         try {
             URL url = new URL(modelUrl);
@@ -98,33 +99,23 @@ public class ExportWordController {
             httpUrl.connect();
             is = httpUrl.getInputStream();
             response.reset();
-            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="
-                    + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
-            os = response.getOutputStream();
-            int len = -1;
-            byte[] b = new byte[1024];
-            while((len = is.read(b)) != -1){
-                os.write(b,0,b.length);
+                    + new String(excelName.getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xls");
+            out = response.getOutputStream();
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out);
+            byte[] bytes = new byte[4096];
+            int i = 0;
+            while ((i = is.read(bytes)) > 0) {
+                bufferedOutputStream.write(bytes, 0, i);
             }
+            bufferedOutputStream.flush();
+            bufferedOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
             throw new IIOException("Can't get input stream from URL!",e);
         }finally {
-            if(is != null){
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(os != null){
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if (httpUrl != null) {
                 httpUrl.disconnect();
             }
@@ -150,7 +141,7 @@ public class ExportWordController {
         String excelName = "客户申请表";
         //  返回excel
         InputStream is = null;
-        OutputStream os = null;
+        OutputStream out = null;
         HttpURLConnection httpUrl = null;
         try {
             URL url = new URL(excelUrl);
@@ -160,33 +151,24 @@ public class ExportWordController {
             httpUrl.connect();
             is = httpUrl.getInputStream();
             response.reset();
-            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition", "attachment;filename="
-                    + new String(excelName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
-            os = response.getOutputStream();
-            int len = -1;
-            byte[] b = new byte[1024];
-            while((len = is.read(b)) != -1){
-                os.write(b,0,b.length);
+                    + new String(excelName.getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xls");
+            out = response.getOutputStream();
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out);
+
+            byte[] bytes = new byte[4096];
+            int i = 0;
+            while ((i = is.read(bytes)) > 0) {
+                bufferedOutputStream.write(bytes, 0, i);
             }
+            bufferedOutputStream.flush();
+            bufferedOutputStream.close();
+
         } catch (IOException e) {
             e.printStackTrace();
-            throw new IIOException("Can't get input stream from URL!",e);
         }finally {
-            if(is != null){
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(os != null){
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if (httpUrl != null) {
                 httpUrl.disconnect();
             }
