@@ -91,7 +91,6 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @GetMapping
     public Result index(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
-        entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
 

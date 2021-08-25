@@ -16,6 +16,7 @@ import com.camel.survey.enums.*;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.exceptions.SurveyNotValidException;
+import com.camel.survey.mapper.SysUserMapper;
 import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
@@ -72,6 +73,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Autowired
     private ZsSurveyMapper mapper;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -133,6 +137,13 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         SysUser user = applicationToolsUtils.currentUser();
+        List<Integer> roleIds = sysUserMapper.findRoleIdsByUserId(user.getUid());
+        if (!CollectionUtils.isEmpty(roleIds) && roleIds.contains(7)){
+            entity.setUid(user.getUid());
+        }else {
+            entity.setCompanyId(user.getCompanyId());
+        }
+
         if(ObjectUtil.isEmpty(entity.getState()) && ObjectUtil.isNotEmpty(entity.getStateId())) {
             entity.setState(ZsSurveyState.getEnumByValue(entity.getStateId()));
         }
