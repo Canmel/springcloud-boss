@@ -64,8 +64,10 @@
         <include refid="Base_Column_List"></include>
         from
         zs_survey zs_survey
+        left join zs_project zs_project on zs_project.id = zs_survey.id
+        left join sys_user u on u.uid = zs_project.final_cus_id
         <where>
-            status = 1
+            zs_survey.status = 1
             <if test="name != null and name != ''">
                 AND zs_survey.name like concat('%', #{name}, '%')
             </if>
@@ -83,6 +85,9 @@
             </if>
             <if test="creatorId != null">
                 AND zs_survey.creator = #{creatorId}
+            </if>
+            <if test="uid != null">
+                AND u.uid = #{uid}
             </if>
         </where>
         order by id desc

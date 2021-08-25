@@ -65,7 +65,7 @@
                         <cite>认证管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" v-if="isAdmin || isFinalCus || isPartner">
+                    <ul class="sub-menu" v-if="isAdmin || isFinalCus || isPartner || isSvdata">
                         <li>
                             <a href="javascript:;">
                                 <i class="iconfont">&#xe70b;</i>
@@ -144,7 +144,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li v-if="isAdmin">
+                        <li v-if="isAdmin || isSvdata">
                             <a href="javascript:;">
                                 <i class="iconfont">&#xe70b;</i>
                                 <cite>号码管理</cite>
@@ -269,9 +269,12 @@
             isFinalCus: false,
             isPartner: false,
             isAdmin: false,
+            userInfo: null,
+            isSvdata: false,
         },
         created: function () {
             this.me();
+            this.myself();
         },
         mounted: function(){
             // this.loginMaster();
@@ -286,6 +289,11 @@
                     this.isPartner = true;
                 }
             },
+            userInfo:function () {
+                if (this.userInfo.companyId === 4){
+                    this.isSvdata = true;
+                }
+            }
         },
         methods: {
             me() {
@@ -294,6 +302,15 @@
                     // that.roleId = JSON.parse(resp.data)
                     that.roleId = resp.data
                     console.log("that.roleId:",that.roleId)
+                })
+            },
+            myself(){
+              let that = this;
+                parent.AJAX.GET("/system/sysUser/myself", {}, function (resp) {
+                    // that.roleId = JSON.parse(resp.data)
+                    // that.roleId = resp.data
+                    that.userInfo = resp.data;
+                    console.log("resp.data",resp.data);
                 })
             },
             loginMaster(){
