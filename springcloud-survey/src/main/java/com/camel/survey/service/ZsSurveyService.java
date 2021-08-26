@@ -141,9 +141,10 @@ public interface ZsSurveyService extends IService<ZsSurvey> {
     /**
      * 难度系数
      * @param id
+     * @param typeId 难度系数类型
      * @return
      */
-    Result difficult(Integer id);
+    Result difficult(Integer id,Integer typeId);
 
     /**
      * 随机取几条号码
