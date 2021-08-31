@@ -1,6 +1,15 @@
 <head>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" type="text/css" media="all" href="/survey/css/plugins/daterangepicker/daterangepicker.css"/>
+
+
+<!--    &lt;!&ndash; import Vue before Element &ndash;&gt;-->
+<!--    <script src="/survey/js/vue.js"></script>-->
+<!--    &lt;!&ndash; 引入样式 &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css">-->
+<!--    &lt;!&ndash; 引入组件库 &ndash;&gt;-->
+<!--    <script src="https://unpkg.com/element-ui@2.15.3/lib/index.js"></script>-->
+
 </head>
 <style>
     .droppable-active {
@@ -81,8 +90,30 @@
                     <div class="col-sm-3">
                         <label class="col-sm-6 control-label">难度系数:</label>
                         <label class="col-sm-6 control-label" v-if="difficuteRate">{{(difficuteRate /60) | fixed2 }}</label>
-                        <a class="col-sm-6 control-label" v-if="!difficuteRate" v-on:click="getDifficuteRate()">点击获取</a>
+                        <a class="col-sm-6 control-label" v-if="!difficuteRate" v-on:click="getDifficuteRate(1)">点击获取</a>
                     </div>
+
+                    <div class="col-sm-3">
+                        <label class="col-sm-6 control-label">难度系数(统计局):</label>
+                        <label class="col-sm-6 control-label" v-if="difficuteRateT">{{(difficuteRateT /60) | fixed2 }}</label>
+                        <a class="col-sm-6 control-label" v-if="!difficuteRateT" v-on:click="getDifficuteRate(2)">点击获取</a>
+                    </div>
+
+<!--                    <el-popover-->
+<!--                            placement="top"-->
+<!--                            width="200"-->
+<!--                            trigger="click"-->
+<!--                            :content="difficuteRate">-->
+<!--                        <el-button slot="reference" @click="getDifficuteRate(1)">难度系数</el-button>-->
+<!--                    </el-popover>-->
+
+<!--                    <el-popover-->
+<!--                            placement="top"-->
+<!--                            width="200"-->
+<!--                            trigger="click"-->
+<!--                            :content="difficuteRateT">-->
+<!--                        <el-button slot="reference" @click="getDifficuteRate(2)">难度系数(统计局)</el-button>-->
+<!--                    </el-popover>-->
 
                     <div class="col-sm-3">
                         <label class="col-sm-6 control-label">平均时间:</label>
@@ -645,6 +676,7 @@
             avgTime: 0,
             reviewRate: 0,
             difficuteRate: 0,
+            difficuteRateT: 0,  //统计局难度系数
             loadData: {
                 zsQuestions: []
             },
@@ -727,11 +759,15 @@
                     }
                 })
             },
-            getDifficuteRate() {
+            getDifficuteRate(value) {
                 let that = this;
-                AJAX.GET("zsSurvey/difficult/" + this.survey.id, {}, function (resp) {
+                AJAX.GET("zsSurvey/difficult/" + this.survey.id + "/" + value, {}, function (resp) {
                     if (resp.data) {
-                        that.difficuteRate = resp.data;
+                        if (value === 1){
+                            that.difficuteRate = resp.data;
+                        }else {
+                            that.difficuteRateT = resp.data;
+                        }
                     }
                 })
             },

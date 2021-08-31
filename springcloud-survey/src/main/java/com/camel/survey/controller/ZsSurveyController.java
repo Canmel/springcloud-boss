@@ -308,9 +308,9 @@ public class ZsSurveyController extends BaseCommonController {
      * @param id
      * @return
      */
-    @GetMapping("/difficult/{id}")
-    public Result difficult(@PathVariable Integer id) {
-        return service.difficult(id);
+    @GetMapping("/difficult/{id}/{typeId}")
+    public Result difficult(@PathVariable Integer id,@PathVariable Integer typeId) {
+        return service.difficult(id,typeId);
     }
 
     @GetMapping("/random")
