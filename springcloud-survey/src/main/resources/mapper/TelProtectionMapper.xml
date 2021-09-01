@@ -220,6 +220,7 @@
             <if test="projectName != null and projectName != '' ">
                 and z.name like concat('%',#{projectName},'%')
             </if>
+            and z.status = 1
         </where>
     </select>
 

@@ -79,12 +79,16 @@
         <include refid="BASE_SQL"></include>
         FROM
         sys_user sys_user left join zs_agency zs_agency on sys_user.agency_id = zs_agency.id
-
+        left join sys_user_role sys_user_role on sys_user.uid = sys_user_role.user_id
+        left join sys_role sys_role on sys_role.role_id = sys_user_role.role_id
         <where>
             sys_user.status = 1
+            and sys_role.status = 1
             <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%')</if>
             <if test="username !=null and username != ''">and sys_user.username like CONCAT('%', #{username}, '%')</if>
             <if test="seatNum !=null and seatNum != ''">and sys_user.seat_num like CONCAT('%', #{seatNum}, '%')</if>
+            <if test="companyId !=null">and sys_user.company_id = #{companyId}</if>
+            <if test="roleId !=null">and sys_role.role_id = #{roleId}</if>
             <if test="workNum !=null and workNum != ''">and sys_user.work_num like CONCAT('%', #{workNum}, '%')</if>
             <if test="idNum !=null and idNum != ''">and sys_user.id_num like CONCAT('%', #{idNum}, '%')</if>
             <if test="mobile !=null and mobile != ''">and sys_user.mobile like CONCAT('%', #{mobile}, '%')</if>
