@@ -179,6 +179,11 @@ public class SysUser extends BasePaginationEntity implements Serializable {
 
     @TableField(exist = false)
     private List roleIds;
+    /**
+     * 用于用户管理的角色查询
+     */
+    @TableField(exist = false)
+    private Integer roleId;
 
     @TableField(exist = false)
     @JsonIgnore
