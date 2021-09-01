@@ -70,6 +70,7 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
      */
     @Override
     public PageInfo<ZsProject> queryByFid(TelProtection telProtection) {
+        telProtection.setPartnerId(applicationToolsUtils.currentUser().getCompanyId());
         PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
         List<ZsProject> list = telProtectionMapper.selectByFid(telProtection);
         return new PageInfo<ZsProject>(list);

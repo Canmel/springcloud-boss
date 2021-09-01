@@ -221,6 +221,7 @@
                 and z.name like concat('%',#{projectName},'%')
             </if>
             and z.status = 1
+            and z.company_id = #{partnerId}
         </where>
     </select>
 
