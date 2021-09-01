@@ -178,10 +178,55 @@ public class TelProtectionController extends BaseCommonController {
      */
     @GetMapping("/numberManage")
     public Result index(NumberVo numberVo){
-        if (telService.all(numberVo) == null){
-            return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"请输入完整电话");
+//        if (telService.all(numberVo) == null){
+//            return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"请输入完整电话");
+//        }
+//        return ResultUtil.success("success",telService.all(numberVo));
+        ArrayList<String> arr = new ArrayList();
+        arr.add("1212");
+        arr.add("2323");
+        arr.add("3223");
+        arr.add("4334");
+        arr.add("54");
+        arr.add("56");
+        arr.add("67");
+        arr.add("78");
+        arr.add("89");
+        arr.add("90");
+        arr.add("3553");
+        arr.add("2326363");
+        arr.add("343");
+        arr.add("45");
+        arr.add("1222");
+
+        if (numberVo.getTel() != null && numberVo.getTel() != ""){
+            boolean contains = arr.contains(numberVo.getTel().trim());
+            if (contains){
+                ArrayList<String> telList = new ArrayList();
+                telList.add(numberVo.getTel());
+                Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+                //从链表中截取需要显示的子链表，并加入到Page
+                page.addAll(telList);
+                //以Page创建PageInfo
+                PageInfo<String> pageInfo = new PageInfo<String>(page);
+                return ResultUtil.success("success",pageInfo);
+            }else {
+                return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"请输入完整电话");
+            }
         }
-        return ResultUtil.success("success",telService.all(numberVo));
+        //创建Page类
+        Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+        //为Page类中的total属性赋值
+        int total = arr.size();
+        page.setTotal(total);
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (numberVo.getPageNum() - 1) * numberVo.getPageSize();
+        int endIndex = Math.min(startIndex + numberVo.getPageSize(),total);
+        //从链表中截取需要显示的子链表，并加入到Page
+        page.addAll(arr.subList(startIndex,endIndex));
+        //以Page创建PageInfo
+        PageInfo<String> pageInfo = new PageInfo<String>(page);
+        return ResultUtil.success("success",pageInfo);
     }
 
     /**

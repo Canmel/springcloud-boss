@@ -220,6 +220,7 @@
             <if test="projectName != null and projectName != '' ">
                 and z.name like concat('%',#{projectName},'%')
             </if>
+            and z.status = 1
         </where>
     </select>
 
@@ -255,7 +256,7 @@
         delete from tel_project
         <where>
             tel_id = #{id}
-            <if test="project_id != null">and project_id = #{projectId}</if>
+            <if test="projectId != null">and project_id = #{projectId}</if>
         </where>
     </delete>
 

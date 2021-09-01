@@ -148,7 +148,7 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
         Integer res = telProtectionMapper.delPromise(telProtection);
         if (res > 0){
             Integer integer = telProtectionMapper.deleteProject(telProtection);
-            if(integer > 0){
+            if(integer >= 0){
                 return ResultUtil.success("撤销成功");
             }
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
