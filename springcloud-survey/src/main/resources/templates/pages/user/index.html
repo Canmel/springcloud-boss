@@ -279,7 +279,8 @@
             },
             applyRoles(item) {
                 this.selected = item;
-                this.roleIds = this.roleIds.concat(item.roleIds)
+                // this.roleIds = this.roleIds.concat(item.roleIds)
+                this.roleIds = item.roleIds;
                 $("#myModal").modal('show');
 
             },
