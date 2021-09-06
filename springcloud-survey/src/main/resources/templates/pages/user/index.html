@@ -44,12 +44,11 @@
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    <select class="form-control" v-model="pageInfo.grade" >
-                        <option disabled value="">请选择访员级别</option>
-                        <option value ="1">高级</option>
-                        <option value="2">中级</option>
-                        <option value="3">初级</option>
-                        <option value="4">见习</option>
+                    <select class="form-control" v-model="pageInfo.grade">
+                        <option :selected="true" disabled value="">请选择访员级别</option>
+                        <option v-for="grade in gradeStatus" :value="grade.code">
+                            {{grade.name}}
+                        </option>
                     </select>
                 </div>
                 <div class="col-sm-3">
@@ -192,6 +191,7 @@
             allRoles: [],  //   所有角色列表
             roleIds: [],
             companyList: [],//   所有公司列表
+            gradeStatus: [],
             selected: null,
             seat: {
                 uid: null,
@@ -209,8 +209,16 @@
             this.pagequery();
             this.loginMaster();
             this.getCompanyList();
+            this.getGradeStatus();
         },
         methods: {
+            getGradeStatus(){
+                let that = this;
+                AJAX.GET('/system/sysUser/gradeStatus',{}, function (resp) {
+                    that.gradeStatus = resp.data;
+                    console.log("this.gradeStatus",this.gradeStatus)
+                })
+            },
             getCompanyList(){
                 let that = this;
                 AJAX.GET('/survey/sysCompany/all',{}, function (resp) {

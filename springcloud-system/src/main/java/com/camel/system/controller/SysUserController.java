@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.camel.core.controller.BaseCommonController;
 import com.camel.core.entity.Result;
+import com.camel.core.enums.GradeStatus;
+import com.camel.core.enums.ResultEnum;
 import com.camel.core.model.SysRole;
 import com.camel.core.model.SysUser;
 import com.camel.core.model.SysUserRole;
@@ -79,6 +81,20 @@ public class SysUserController extends BaseCommonController {
     @Autowired
     private SysUserCacheConfig sysUserCacheConfig;
 
+    @GetMapping("/resetCompany")
+    public Result getResetCompany(Integer userid){
+        if (service.resetCompany(userid)) {
+            return ResultUtil.success( "重置成功");
+        }
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR);
+    }
+
+    @GetMapping("/gradeStatus")
+    public Result getGradeStatus(){
+        GradeStatus[] values = GradeStatus.values();
+        return ResultUtil.success(values);
+    }
+
     @Log(moduleName = "用户", option = "查询列表")
     @GetMapping
     public Result index(SysUser sysUser) {
@@ -88,6 +104,7 @@ public class SysUserController extends BaseCommonController {
     @PostMapping
     public Result save(@RequestBody SysUser sysUser) {
         sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
+        sysUser.setGrade(GradeStatus.GRADE_04.getCode());
         super.save(sysUser);
         Wrapper<SysUser> userWrapper = new EntityWrapper<>();
         userWrapper.eq("id_num", sysUser.getIdNum());

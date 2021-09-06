@@ -1,11 +1,17 @@
 package com.camel.core.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serializable;
+
 /**
  * @author 259
  * @version 1.0
  * @date 2021/6/22
  */
-public enum GradeStatus implements BaseEnum {
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public enum GradeStatus implements MyEnum {
+    GRADE_00(0, "其它"),
     GRADE_01(1, "高级"),
     GRADE_02(2, "中级"),
     GRADE_03(3, "初级"),
@@ -20,6 +26,7 @@ public enum GradeStatus implements BaseEnum {
      * 状态名称
      */
     private String name;
+
 
     public Integer getCode() {
         return code;
@@ -42,31 +49,18 @@ public enum GradeStatus implements BaseEnum {
         this.name = name;
     }
 
-    @Override
-    public Integer getValue() {
-        return  getCode();
-    }
 
-    /**
-     * 根据code获取name
-     * @param code 编号
-     * @return name
-     */
-    public static String getValue(Integer code){
-        GradeStatus[] values = GradeStatus.values();
-        for (GradeStatus gs : values) {
-          if(gs.getCode().equals(code)){
-              return gs.getName();
-          }
+    public static GradeStatus getEnumByValue(Integer value) {
+        for (GradeStatus enums : GradeStatus.values()) {
+            if (enums.getValue().equals(value)) {
+                return enums;
+            }
         }
         return null;
     }
 
     @Override
-    public String toString() {
-        return "GradeStatus{" +
-                "code=" + code +
-                ", name='" + name + '\'' +
-                '}';
+    public Integer getValue() {
+        return this.code;
     }
 }

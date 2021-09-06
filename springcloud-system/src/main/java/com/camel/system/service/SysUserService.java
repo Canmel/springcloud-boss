@@ -16,6 +16,9 @@ import java.util.List;
  * @since 2019-04-22
  */
 public interface SysUserService extends IService<SysUser> {
+
+    boolean resetCompany(Integer userid);
+
     /**
      * 用户分页查询
      * @param user
