@@ -8,7 +8,7 @@ spring:
     name: springcloud-survey
   redis:
     database: 0
-    host: ${REDIS_HOST}
+    host: ${REDIS_SERVICE_HOST}
     port: 6379
     password:
     jedis:
