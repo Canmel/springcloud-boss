@@ -1,7 +1,6 @@
 stages:
   - package
   - build
-  - deploy
 
 variables:
   eurka_service: 192.168.0.180:441/survey/eurka_service:latest
@@ -54,6 +53,7 @@ docker-build:
     - builder
   script:
     - pwd
+    - docker login 192.168.0.180:441 -u admin -p Harbor12345
     - docker build -t $eurka_service ./sartifacts/eurka_service/
     - docker push $eurka_service
 #    - docker build -t $system_service ./sartifacts/system_service/
