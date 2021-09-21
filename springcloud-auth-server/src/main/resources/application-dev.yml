@@ -55,7 +55,7 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
-    instance-id: ${eureka-service}:7070
+    instance-id: ${APPLICATION_IP}:7070
   client:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
