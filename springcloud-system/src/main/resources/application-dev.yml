@@ -55,7 +55,7 @@ spring:
   aop:
     auto: true
   activemq:
-    broker-url: tcp://${ACTIVEMQ_HOST}:61616
+    broker-url: tcp://${MQ_SERVICE_HOST}:61616
     close-timeout: 15s
     user: admin
     password: admin
