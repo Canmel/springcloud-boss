@@ -92,7 +92,6 @@ public class ZsSurveyController extends BaseCommonController {
      */
     @GetMapping
     public Result index(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
-        entity.setCompanyId(applicationToolsUtils.currentUser().getCompanyId());
         return ResultUtil.success(service.selectPage(entity, oAuth2Authentication));
     }
 
@@ -310,9 +309,9 @@ public class ZsSurveyController extends BaseCommonController {
      * @param id
      * @return
      */
-    @GetMapping("/difficult/{id}")
-    public Result difficult(@PathVariable Integer id) {
-        return service.difficult(id);
+    @GetMapping("/difficult/{id}/{typeId}")
+    public Result difficult(@PathVariable Integer id,@PathVariable Integer typeId) {
+        return service.difficult(id,typeId);
     }
 
     @GetMapping("/random")

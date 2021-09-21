@@ -15,4 +15,6 @@ import java.util.List;
 @Repository
 public interface SysUserMapper extends BaseMapper<SysUser> {
     SysUser selectByUid(Integer uid);
+
+    List<Integer> findRoleIdsByUserId(Integer uid);
 }

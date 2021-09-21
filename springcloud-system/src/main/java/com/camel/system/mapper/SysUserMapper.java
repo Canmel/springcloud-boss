@@ -35,6 +35,9 @@ import java.util.List;
 @Repository
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
+
+    int resetCompany(Integer userid);
+
     /**
      * 查询用户列表
      * @param sysUser

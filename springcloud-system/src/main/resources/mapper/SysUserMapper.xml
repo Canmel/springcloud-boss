@@ -2,40 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.camel.system.mapper.SysUserMapper">
     <resultMap id="BaseResultMap" type="com.camel.core.model.SysUser">
-        <id column="uid" property="uid" jdbcType="INTEGER"></id>
-        <result column="username" property="username" jdbcType="VARCHAR"></result>
-        <result column="password" property="password" jdbcType="VARCHAR"></result>
-        <result column="nickname" property="nickname" jdbcType="VARCHAR"></result>
-        <result column="email" property="email" jdbcType="VARCHAR"></result>
-        <result column="mobile" property="mobile" jdbcType="VARCHAR"></result>
-        <result column="status" property="status" jdbcType="VARCHAR"></result>
-        <result column="gmt_create" property="gmtCreate" jdbcType="DATE"></result>
-        <result column="gmt_modified" property="gmtModified" jdbcType="DATE"></result>
-        <result column="last_login_time" property="lastLoginTime" jdbcType="VARCHAR"></result>
-        <result column="password_expired_time" property="passwordExpiredTime" jdbcType="DATE"></result>
-        <result column="login_failure_count" property="loginFailureCount" jdbcType="INTEGER"></result>
-        <result column="szbm" property="szbm" jdbcType="VARCHAR"></result>
-        <result column="age" property="age" jdbcType="INTEGER"></result>
-        <result column="gender" property="gender" jdbcType="VARCHAR"></result>
-        <result column="org_no" property="orgNo" jdbcType="VARCHAR"></result>
-        <result column="org_name" property="orgName" jdbcType="VARCHAR"></result>
-        <result column="address" property="address" jdbcType="VARCHAR"></result>
-        <result column="remark" property="remark" jdbcType="VARCHAR"></result>
-        <result column="id_num" property="idNum" jdbcType="VARCHAR"></result>
-        <result column="seat_num" property="seatNum" jdbcType="VARCHAR"></result>
-        <result column="work_num" property="workNum" jdbcType="VARCHAR"></result>
-        <result column="company_id" property="companyId" jdbcType="INTEGER"></result>
-        <result column="grade" property="grade" jdbcType="INTEGER"></result>
-        <result column="has_account" property="hasAccount" jdbcType="INTEGER"></result>
+        <id column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="DATE"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="DATE"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="VARCHAR"/>
+        <result column="password_expired_time" property="passwordExpiredTime" jdbcType="DATE"/>
+        <result column="login_failure_count" property="loginFailureCount" jdbcType="INTEGER"/>
+        <result column="szbm" property="szbm" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="org_no" property="orgNo" jdbcType="VARCHAR"/>
+        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="id_num" property="idNum" jdbcType="VARCHAR"/>
+        <result column="seat_num" property="seatNum" jdbcType="VARCHAR"/>
+        <result column="work_num" property="workNum" jdbcType="VARCHAR"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="grade" property="grade" jdbcType="INTEGER"/>
+        <result column="has_account" property="hasAccount" jdbcType="INTEGER"/>
         <association property="agency" javaType="com.camel.core.model.ZsAgency">
-            <id column="zs_agency_id" property="id"></id>
-            <result column="zs_agency_name" property="name"></result>
-            <result column="zs_agency_type" property="type"></result>
-            <result column="zs_agency_svalue" property="svalue"></result>
-            <result column="zs_agency_max_value" property="maxValue"></result>
+            <id column="zs_agency_id" property="id"/>
+            <result column="zs_agency_name" property="name"/>
+            <result column="zs_agency_type" property="type"/>
+            <result column="zs_agency_svalue" property="svalue"/>
+            <result column="zs_agency_max_value" property="maxValue"/>
         </association>
         <collection property="roleIds" fetchType="eager" column="uid"
-                    select="findRoleIdsByUserId"></collection>
+                    select="findRoleIdsByUserId"/>
     </resultMap>
 
     <sql id="BASE_SQL">
@@ -79,12 +79,16 @@
         <include refid="BASE_SQL"></include>
         FROM
         sys_user sys_user left join zs_agency zs_agency on sys_user.agency_id = zs_agency.id
-
+        left join sys_user_role sys_user_role on sys_user.uid = sys_user_role.user_id
+        left join sys_role sys_role on sys_role.role_id = sys_user_role.role_id
         <where>
             sys_user.status = 1
+            and sys_role.status = 1
             <if test="email !=null and email != ''">and sys_user.email like CONCAT('%', #{email}, '%')</if>
             <if test="username !=null and username != ''">and sys_user.username like CONCAT('%', #{username}, '%')</if>
             <if test="seatNum !=null and seatNum != ''">and sys_user.seat_num like CONCAT('%', #{seatNum}, '%')</if>
+            <if test="companyId !=null">and sys_user.company_id = #{companyId}</if>
+            <if test="roleId !=null">and sys_role.role_id = #{roleId}</if>
             <if test="workNum !=null and workNum != ''">and sys_user.work_num like CONCAT('%', #{workNum}, '%')</if>
             <if test="idNum !=null and idNum != ''">and sys_user.id_num like CONCAT('%', #{idNum}, '%')</if>
             <if test="mobile !=null and mobile != ''">and sys_user.mobile like CONCAT('%', #{mobile}, '%')</if>
@@ -110,13 +114,11 @@
         sys_user
         set seat_num = '' where seat_num = #{seatNum}
     </update>
-
     <update id="loadWorkNum">
         update
         sys_user
         set work_num = '' + (uid+1000) + ''
     </update>
-
     <select id="detail" resultMap="BaseResultMap">
         SELECT
         zs_agency.id zs_agency_id,
@@ -132,7 +134,6 @@
             and sys_user.uid = #{id}
         </where>
     </select>
-
     <select id="selectByIdNum" resultMap="BaseResultMap">
         SELECT
         zs_agency.id zs_agency_id,
@@ -150,4 +151,12 @@
         </where>
         limit 1
     </select>
+
+    <update id="resetCompany">
+        update
+            sys_user
+        set company_id = null
+        where uid = #{userid}
+    </update>
+
 </mapper>

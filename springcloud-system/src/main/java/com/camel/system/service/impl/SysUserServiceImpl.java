@@ -52,11 +52,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysRoleMapper sysRoleMapper;
 
     @Override
+    public boolean resetCompany(Integer userid) {
+        if(mapper.resetCompany(userid) < 0){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public PageInfo<SysUser> pageQuery(SysUser entity) {
         PageInfo pageInfo = PageHelper.startPage(entity.getPageNum(), entity.getPageSize())
                 .doSelectPageInfo(
                         ()-> mapper.list(entity)
-                        .stream().forEach(x -> x.setGradeName(GradeStatus.getValue(x.getGrade())))
+                        .stream().forEach(x -> x.setGradeName(GradeStatus.getEnumByValue(x.getGrade()).getName()))
                 );
         mapper.loadWorkNum();
         return pageInfo;

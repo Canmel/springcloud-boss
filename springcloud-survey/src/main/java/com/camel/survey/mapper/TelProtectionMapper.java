@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.model.ZsProject;
 import com.camel.survey.vo.CompanyVo;
 import com.camel.survey.vo.FinalCusVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,6 +31,7 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
     Integer isExist(Integer uid, Integer telId);
 
     Integer delPromise(TelProtection telProtection);
+
 
     /**
      * 查询角色为最终用户的用户
@@ -78,7 +80,7 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
      * @param telProtection 查询条件
      * @return Result
      */
-    List<TelProtection> selectByFid(TelProtection telProtection);
+    List<ZsProject> selectByFid(TelProtection telProtection);
 
     /**
      * 供应商：修改项目
@@ -86,6 +88,21 @@ public interface TelProtectionMapper extends BaseMapper<TelProtection> {
      * @return boolean
      */
     int updateByTid(Integer projectId, Integer id);
+
+    /**
+     * 供应商：判断电话是否绑定了项目
+     * @param projectId 修改条件
+     * @param id
+     * @return boolean
+     */
+    Integer hasProject(Integer projectId, Integer id);
+
+    /**
+     * 供应商：撤销授权
+     * @param telProtection 修改条件
+     * @return Result
+     */
+    Integer deleteProject(TelProtection telProtection);
 
     List<String> selectByTel(String tel);
 }

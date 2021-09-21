@@ -6,4 +6,8 @@
         from sys_user
         where sys_user.uid = #{uid}
     </select>
+
+    <select id="findRoleIdsByUserId" resultType="integer">
+        select role_id from sys_user_role where user_id = #{uid}
+    </select>
 </mapper>

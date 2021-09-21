@@ -13,6 +13,7 @@ import com.camel.core.utils.ResultUtil;
 import com.camel.survey.mapper.SysUserMapper;
 import com.camel.survey.mapper.TelProtectionMapper;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.model.ZsProject;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
 import com.camel.survey.vo.CompanyVo;
@@ -21,12 +22,16 @@ import com.camel.survey.vo.NumberVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,10 +69,11 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
      * @return Result
      */
     @Override
-    public PageInfo<TelProtection> queryByFid(TelProtection telProtection) {
+    public PageInfo<ZsProject> queryByFid(TelProtection telProtection) {
+        telProtection.setPartnerId(applicationToolsUtils.currentUser().getCompanyId());
         PageHelper.startPage(telProtection.getPageNum(),telProtection.getPageSize());
-        List<TelProtection> list = telProtectionMapper.selectByFid(telProtection);
-        return new PageInfo<TelProtection>(list);
+        List<ZsProject> list = telProtectionMapper.selectByFid(telProtection);
+        return new PageInfo<ZsProject>(list);
     }
 
     /**
@@ -76,11 +82,38 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
      * @return Result
      */
     @Override
-    public boolean modifiByTid(Integer projectId, Integer id) {
-        telProtectionMapper.updateByTid(projectId, id);
-        return true;
+    public Result modifiByTid(Integer projectId, Integer id) {
+        int i = telProtectionMapper.updateByTid(projectId, id);
+        if (i > 0) {
+            return ResultUtil.success("修改成功");
+        }
+        return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"修改失败");
     }
 
+    /**
+     * 供应商：判断电话是否绑定了项目
+     * @param projectId 修改条件
+     * @param id
+     * @return boolean
+     */
+    @Override
+    public Integer hasProject(Integer projectId, Integer id) {
+        return telProtectionMapper.hasProject(projectId,id);
+    }
+
+    /**
+     * 供应商：撤销授权
+     * @param telProtection 修改条件
+     * @return Result
+     */
+    @Override
+    public Result removeProject(TelProtection telProtection) {
+        Integer res = telProtectionMapper.deleteProject(telProtection);
+        if (res > 0){
+            return ResultUtil.success("撤销成功");
+        }
+        return ResultUtil.error(ResultEnum.UNKONW_ERROR);
+    }
 
     @Override
     public PageInfo<TelProtection> grantTelList(TelProtection telProtection) {
@@ -111,11 +144,17 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
     }
 
     @Override
+    @Transactional
     public Result revoke(TelProtection telProtection) {
         Integer res = telProtectionMapper.delPromise(telProtection);
         if (res > 0){
-            return ResultUtil.success("撤销成功");
+            Integer integer = telProtectionMapper.deleteProject(telProtection);
+            if(integer >= 0){
+                return ResultUtil.success("撤销成功");
+            }
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         return ResultUtil.error(ResultEnum.UNKONW_ERROR);
     }
 
@@ -125,6 +164,26 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
         JSONObject o = JSONUtil.parseObj(r);
         JSONArray array = o.getJSONArray("info");
 
+        if (CollectionUtils.isEmpty(array)){
+            ArrayList<JSONArray> telList = new ArrayList();
+            return new PageInfo<>(telList);
+        }
+
+        if (!StringUtils.isEmpty(numberVo.getTel())){
+            boolean contains = array.contains(numberVo.getTel().trim());
+            if (contains){
+                ArrayList<String> telList = new ArrayList();
+                telList.add(numberVo.getTel());
+                Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+                //从链表中截取需要显示的子链表，并加入到Page
+                page.addAll(telList);
+                //以Page创建PageInfo
+                PageInfo<JSONArray> pageInfo = new PageInfo<JSONArray>(page);
+                return pageInfo;
+            }else {
+                return null;
+            }
+        }
         //创建Page类
         Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
         //为Page类中的total属性赋值
@@ -176,7 +235,14 @@ public class TelProtectionServiceImpl extends ServiceImpl<TelProtectionMapper, T
         }
         return ResultUtil.success("查询成功",telProtectionMapper.selectByTel(tel));
     }
-    
+
+    @Override
+    public List<TelProtection> getPartnerName(String tel) {
+        TelProtection telProtection = new TelProtection();
+        telProtection.setTel(tel);
+        return telProtectionMapper.grantTelList(telProtection);
+    }
+
     @Override
     public List<String> getTelListByProId(Integer projectId) {
         return telProtectionMapper.getTelByProId(projectId);

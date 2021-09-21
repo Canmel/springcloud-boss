@@ -27,7 +27,7 @@
         <el-table
                 ref="multipleTable"
                 :data="tableData"
-                height="500"
+                height="750"
                 :default-sort="{prop: 'submitDate', order: 'descending'}"
                 tooltip-effect="dark"
                 style="width: 100%">
@@ -60,16 +60,34 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    label="合作伙伴"
+                    align="center"
+                    width="200">
+                <template slot-scope="scope">
+                    <el-popover
+                            trigger="click"
+                            placement="top"
+                            @hide="partName = []"
+                            width="200"
+                            :content="partName">
+                        <el-button slot="reference" @click="getPartner(scope.row)">查看已绑定的合作伙伴</el-button>
+                    </el-popover>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    align="center">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="searchTel"
+                            size="mini"
+                            placeholder="输入 电话 搜索"
+                            @keyup.enter="searchList">
+                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                    </el-input>
+                </template>
+            </el-table-column>
+            <el-table-column
                     align="right">
-<!--                <template slot="header" slot-scope="scope">-->
-<!--                    <el-input-->
-<!--                            v-model="searchTel"-->
-<!--                            size="mini"-->
-<!--                            placeholder="输入 电话 搜索"-->
-<!--                            @keyup.enter="searchList">-->
-<!--                        <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>-->
-<!--                    </el-input>-->
-<!--                </template>-->
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
@@ -152,6 +170,7 @@
             searchTel:"",
             tel:"", // 外呼号码
             name:[],//  最终用户名称
+            partName:[],//合作伙伴名称
             dialogTableVisible:false,
             paramsData:{
                 pageNum:1,
@@ -257,10 +276,26 @@
             },
             getName(row){
                 let that = this;
-                console.log("row",row);
                 AJAX.GET_SYNC("/survey/telProtection/getName/"+row.tel,null,function (res) {
                     if(res.code === 200){
                         that.name = res.data;
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+            },
+            getPartner(row){
+                let that = this;
+                AJAX.GET_SYNC("/survey/telProtection/getPartner/"+row.tel,null,function (res) {
+                    if(res.code === 200){
+                        for (let i = 0; i < res.data[0].company.length; i++) {
+                            that.partName.push(res.data[0].company[i].name)
+                        }
+                        console.log("that.partName",that.partName)
                     }else{
                         that.$message({
                             message: res.msg,
@@ -309,6 +344,7 @@
             getList(){
                 let that = this;
                 let paramsData = this.paramsData;
+                paramsData['tel'] = that.searchTel
                 AJAX.GET_SYNC("/survey/telProtection/numberManage",paramsData,function(res){
                     if(res.code === 200){
                         for (let i = 0; i < res.data.list.length; i++) {

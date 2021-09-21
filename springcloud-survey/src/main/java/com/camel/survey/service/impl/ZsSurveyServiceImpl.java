@@ -16,6 +16,7 @@ import com.camel.survey.enums.*;
 import com.camel.survey.exceptions.SourceDataNotValidException;
 import com.camel.survey.exceptions.SurveyFormSaveException;
 import com.camel.survey.exceptions.SurveyNotValidException;
+import com.camel.survey.mapper.SysUserMapper;
 import com.camel.survey.mapper.ZsExamMapper;
 import com.camel.survey.mapper.ZsSurveyMapper;
 import com.camel.survey.model.*;
@@ -72,6 +73,9 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
 
     @Autowired
     private ZsSurveyMapper mapper;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -133,6 +137,13 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     @Override
     public PageInfo<ZsSurvey> selectPage(ZsSurvey entity, OAuth2Authentication oAuth2Authentication) {
         SysUser user = applicationToolsUtils.currentUser();
+        List<Integer> roleIds = sysUserMapper.findRoleIdsByUserId(user.getUid());
+        if (!CollectionUtils.isEmpty(roleIds) && roleIds.contains(7)){
+            entity.setUid(user.getUid());
+        }else {
+            entity.setCompanyId(user.getCompanyId());
+        }
+
         if(ObjectUtil.isEmpty(entity.getState()) && ObjectUtil.isNotEmpty(entity.getStateId())) {
             entity.setState(ZsSurveyState.getEnumByValue(entity.getStateId()));
         }
@@ -537,7 +548,7 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
     }
 
     @Override
-    public Result difficult(Integer id) {
+    public Result difficult(Integer id , Integer typeId) {
         Wrapper wrapper = new EntityWrapper<>();
         wrapper.eq("survey_id", id);
 
@@ -547,15 +558,28 @@ public class ZsSurveyServiceImpl extends ServiceImpl<ZsSurveyMapper, ZsSurvey> i
         answerWrapper.eq("valid", ZsYesOrNo.YES.getCode());
         answerWrapper.eq("survey_id", id);
         Integer answerCount = answerService.selectCount(answerWrapper);
-
         Integer avg = this.avgTime(id);
-        if(ObjectUtil.isNotEmpty(count) && count > 0) {
-            Double successRate = 1.0 * answerCount / count;
-            if(ObjectUtil.isNotEmpty(successRate) && successRate > 0) {
-                return  ResultUtil.success(avg / successRate);
-            }
-        }
 
+        if (null != typeId && typeId.equals(1)){
+            //难度一
+            //平均通话时长
+            if(ObjectUtil.isNotEmpty(count) && count > 0) {
+                Double successRate = 1.0 * answerCount / count;
+                if(ObjectUtil.isNotEmpty(successRate) && successRate > 0) {
+                    return  ResultUtil.success(avg / successRate);
+                }
+            }
+        }else if (null != typeId && typeId.equals(2)){
+            //难度二（统计局
+            if(ObjectUtil.isNotEmpty(count) && count > 0) {
+                Double successRate = 0.4 * (count / answerCount);
+                if(ObjectUtil.isNotEmpty(successRate) && successRate > 0) {
+                    return  ResultUtil.success(avg * 0.6 + successRate);
+                }
+            }
+        }else {
+            return ResultUtil.error(ResultEnum.BAD_REQUEST.getCode(),"难度系数类型选择错误");
+        }
         return ResultUtil.success(0);
     }
 

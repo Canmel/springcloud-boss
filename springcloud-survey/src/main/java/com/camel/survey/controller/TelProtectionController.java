@@ -16,6 +16,7 @@ import com.camel.core.model.SysCompany;
 import com.camel.core.model.SysUser;
 import com.camel.core.utils.ResultUtil;
 import com.camel.survey.model.TelProtection;
+import com.camel.survey.model.ZsProject;
 import com.camel.survey.service.PstnnumberService;
 import com.camel.survey.service.TelProtectionService;
 import com.camel.survey.utils.ApplicationToolsUtils;
@@ -76,7 +77,7 @@ public class TelProtectionController extends BaseCommonController {
      */
     @GetMapping("/projectList")
     public Result queryByFid(TelProtection telProtection) {
-        PageInfo<TelProtection> pageList = telService.queryByFid(telProtection);
+        PageInfo<ZsProject> pageList = telService.queryByFid(telProtection);
         return ResultUtil.success("查询成功",pageList);
     }
 
@@ -87,10 +88,24 @@ public class TelProtectionController extends BaseCommonController {
      */
     @PutMapping("/modifiByTid")
     public Result modifiByTid(@RequestBody TelProtection telProtection) {
-        if (telService.modifiByTid(telProtection.getProjectId(),telProtection.getId())) {
-            return ResultUtil.success("修改项目成功");
+        Integer project = telService.hasProject(telProtection.getProjectId(), telProtection.getId());
+        if (project > 0) {
+            return ResultUtil.error(400, "请勿重复操作");
         }
-        return ResultUtil.error(400, "修改项目失败");
+        return telService.modifiByTid(telProtection.getProjectId(),telProtection.getId());
+    }
+
+    /**
+     * 供应商：撤销授权
+     * @param telProtection 修改条件
+     * @return Result
+     */
+    @PutMapping("/removeProject")
+    public Result removeProject(@RequestBody TelProtection telProtection){
+        if (StringUtils.isEmpty(telProtection.getId()) && StringUtils.isEmpty(telProtection.getProjectId())){
+            return ResultUtil.error(ResultEnum.NOT_VALID_PARAM);
+        }
+        return telService.removeProject(telProtection);
     }
 
     /**
@@ -163,7 +178,55 @@ public class TelProtectionController extends BaseCommonController {
      */
     @GetMapping("/numberManage")
     public Result index(NumberVo numberVo){
+        if (telService.all(numberVo) == null){
+            return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"请输入完整电话");
+        }
         return ResultUtil.success("success",telService.all(numberVo));
+//        ArrayList<String> arr = new ArrayList();
+//        arr.add("1212");
+//        arr.add("2323");
+//        arr.add("3223");
+//        arr.add("4334");
+//        arr.add("54");
+//        arr.add("56");
+//        arr.add("67");
+//        arr.add("78");
+//        arr.add("89");
+//        arr.add("90");
+//        arr.add("3553");
+//        arr.add("2326363");
+//        arr.add("343");
+//        arr.add("45");
+//        arr.add("1222");
+//
+//        if (numberVo.getTel() != null && numberVo.getTel() != ""){
+//            boolean contains = arr.contains(numberVo.getTel().trim());
+//            if (contains){
+//                ArrayList<String> telList = new ArrayList();
+//                telList.add(numberVo.getTel());
+//                Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+//                //从链表中截取需要显示的子链表，并加入到Page
+//                page.addAll(telList);
+//                //以Page创建PageInfo
+//                PageInfo<String> pageInfo = new PageInfo<String>(page);
+//                return ResultUtil.success("success",pageInfo);
+//            }else {
+//                return ResultUtil.error(ResultEnum.SERVICE_ERROR.getCode(),"请输入完整电话");
+//            }
+//        }
+//        //创建Page类
+//        Page page = new Page(numberVo.getPageNum(), numberVo.getPageSize());
+//        //为Page类中的total属性赋值
+//        int total = arr.size();
+//        page.setTotal(total);
+//        //计算当前需要显示的数据下标起始值
+//        int startIndex = (numberVo.getPageNum() - 1) * numberVo.getPageSize();
+//        int endIndex = Math.min(startIndex + numberVo.getPageSize(),total);
+//        //从链表中截取需要显示的子链表，并加入到Page
+//        page.addAll(arr.subList(startIndex,endIndex));
+//        //以Page创建PageInfo
+//        PageInfo<String> pageInfo = new PageInfo<String>(page);
+//        return ResultUtil.success("success",pageInfo);
     }
 
     /**
@@ -199,6 +262,11 @@ public class TelProtectionController extends BaseCommonController {
     @GetMapping("/getName/{tel}")
     public Result getFinalName(@PathVariable("tel") String tel){
         return telService.getFinalName(tel);
+    }
+
+    @GetMapping("/getPartner/{tel}")
+    public Result getPartnerName(@PathVariable("tel") String tel){
+        return ResultUtil.success("success",telService.getPartnerName(tel));
     }
 
     @Override
