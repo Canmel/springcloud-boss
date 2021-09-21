@@ -6,7 +6,7 @@ spring:
     name: springcloud-auth
   redis:
     database: 0
-    host: ${REDIS_HOST}
+    host: ${redis}
     port: 6379
     password:
     jedis:
@@ -55,7 +55,7 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
-    instance-id: ${EUREKA_INSTANCE_IP}:${server.port}
+    instance-id: ${eureka-service}:7070
   client:
     service-url:
       defaultZone: http://${APPLICATION_IP}:8888/eureka/
