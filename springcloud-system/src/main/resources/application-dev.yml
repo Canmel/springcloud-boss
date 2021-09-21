@@ -6,7 +6,7 @@ spring:
     name: springcloud-system
   redis:
     database: 0
-    host: ${redis}
+    host: ${REDIS_HOST}
     port: 6379
     password:
     jedis:
